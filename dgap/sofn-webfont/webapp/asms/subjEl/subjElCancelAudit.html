@@ -1,0 +1,57 @@
+<link rel="stylesheet" href="assets/css/asms/subjSv/subjSvRevokeAudit.css"/>
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">监管系统</a>&gt;
+    <a ui-sref="index.content.asms/subjEl/subjElCancelList">主体管理</a>&gt;
+    <a ui-sref="index.content.asms/subjEl/subjElCancelList">执法机构</a>&gt;
+    <span>注册注销审核</span>
+</div>
+    <div class="gui-section gui-section-wid" >
+        <h4 class="mt15 mb25">注册注销申请审核</h4>
+        <form id="cancelForm" name="cancelForm">
+        <input type="hidden" ng-model="subjElCancelId">
+        <input type="hidden" ng-model="subjElCancel.applyUserId">
+        <input type="hidden" ng-model="subjElCancel.applyTime">
+        <input type="hidden" ng-model="subjELCancel.applySvId">
+        <table class="ApplyTable">
+            <tbody>
+            <tr><td>机构名称</td><td><span ng-bind="subjEl.elName"></span></td></tr>
+            <tr><td>机构代码</td><td><span ng-bind="subjEl.elCode"></span></td></tr>
+            <tr><td>机构类别</td><td><span ng-bind="subjEl.elType"></span></td></tr>
+            <tr><td>机构级别</td><td><span ng-bind="subjEl.elLevelName"></span></td></tr>
+            <tr><td>所属区域</td><td><span ng-bind="subjEl.elArea"></span></td></tr>
+            <tr><td>通讯地址</td><td><span ng-bind="subjEl.elAddress"></span></td></tr>
+            <tr><td>负责人</td><td><span ng-bind="subjEl.elLeader"></span></td></tr>
+            <tr><td>负责人电话</td><td><span ng-bind="subjEl.elLeaderPhone"></span></td></tr>
+            <tr><td>联系人</td><td><span ng-bind="subjEl.elContact"></span></td></tr>
+            <tr><td>联系人电话</td><td><span ng-bind="subjEl.elContactPhone"></span></td></tr>
+            <tr><td>联系人QQ</td><td><span>{{subjEl.elContactQQ||'无'}}</span></td></tr>
+            <tr><td>电子邮箱</td><td><span>{{subjEl.elContactEmail||'无'}}</span></td></tr>
+            <tr><td>邮编</td><td><span>{{subjEl.elPostcode||'无'}}</span></td></tr>
+            <tr><td>单位性质</td><td><span>{{subjEl.elUnitNature||'无'}}</span></td></tr>
+            <tr><td>具体办事机构</td><td><span>{{subjEl.elWorkBody||'无'}}</span></td></tr>
+            <tr><td>执法人数</td><td><span>{{subjEl.elPeopleNum||'无'}}</span></td></tr>
+            <tr class="Sup_contain_section_contain_head_photo"><td style="vertical-align: middle">注销原因</td><td >
+                <textarea style="max-width: 500px;" rows="3" class="form-control" readonly ng-model="subjElCancel.applyReason">
+                </textarea>
+            </td></tr>
+            <tr class="Sup_contain_section_contain_head_photo"><td style="vertical-align: middle">审核意见<span style="color:red;">*</span></td><td colspan="2" style="text-align: left;" class="form-group">
+                <textarea style="max-width: 500px;background-color: #f6f6f6" rows="3" name="auditSuggestion" ng-model="subjElCancel.auditSuggestion"
+                          class="form-control"
+                          data-bv-notempty="true"
+                          data-bv-notempty-message="审核意见不能为空"
+                          data-bv-stringlength="true"
+                          data-bv-stringlength-max="300"
+                          data-bv-stringlength-message="审核意见不能超过300个字符">
+                </textarea>
+            </td></tr>
+            </tbody>
+        </table>
+        </form>
+        <div align="center" class="mt15 mb25">
+            <button id="passBut" style="display: none;" class="gui-btn" ng-click="auditSubjElCancel(1)">审核通过</button>
+            <button id="refuseBut" style="display: none;" class="gui-btn" ng-click="auditSubjElCancel(2)">审核不通过</button>
+            <button id="closeBut" class="gui-btn" ng-click="removeLocalStorage()">关闭</button>
+        </div>
+
+    </div>
+

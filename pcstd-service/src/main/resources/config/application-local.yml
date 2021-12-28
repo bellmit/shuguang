@@ -1,0 +1,39 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://10.0.52.7:3306/pcstd_dev?characterEncoding=UTF-8&useUnicode=true&useSSL=false&autoReconnect=true&failOverReadOnly=false
+    username: root
+    password: 123456
+
+    druid:
+      async-init: true
+      initial-size: 15
+      max-active: 30
+      min-idle: 10
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      validation-query: SELECT 1 FROM DUAL
+      #connection-properties: config.decrypt=true;config.decrypt.key=${spring.datasource.publicKey}
+      filter:
+        config:
+          enabled: true
+
+  redis:
+    database: 0
+    host: 10.0.50.101
+    port: 6379
+    password:
+
+eureka:
+  instance:
+    hostname: ${spring.cloud.client.ip-address}
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://localhost:8880/eureka/

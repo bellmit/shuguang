@@ -1,0 +1,223 @@
+var webpack = require('webpack');
+var path = require('path');
+var node_modules = path.resolve(__dirname, 'node_modules');
+var htmlWebpackPlugin = require('html-webpack-plugin');
+
+//编译完，启动浏览器
+var OpenBrowserPlugin = require('open-browser-webpack-plugin');
+
+//提取通用部分
+var commonsPlugin = new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.min.js');
+
+//变量定义
+var DefinePlugin = new webpack.DefinePlugin({
+    "process.env": {
+        NODE_ENV: JSON.stringify("development")
+    }
+});
+
+//热替换
+var hotModuleReplacementPlugin = new webpack.HotModuleReplacementPlugin();
+
+//报错但不退出webpack进程
+var NoErrorsPlugin = new webpack.NoErrorsPlugin();
+
+//挂载到全局
+var providePlugin = new webpack.ProvidePlugin({ angular: 'angular', React: 'react', ReactDOM: 'react-dom' });
+
+module.exports = {
+    //页面入口文件配置
+    entry: {
+        field: [
+            'webpack-dev-server/client?http://0.0.0.0:8080/',
+            'webpack/hot/only-dev-server',
+            path.join(__dirname, 'webapp/template/containers/field')
+        ],
+        review: [
+            'webpack-dev-server/client?http://0.0.0.0:8080/',
+            'webpack/hot/only-dev-server',
+            path.join(__dirname, 'webapp/template/containers/review')
+        ],
+        structure: [
+            'webpack-dev-server/client?http://0.0.0.0:8080/',
+            'webpack/hot/only-dev-server',
+            path.join(__dirname, 'webapp/template/containers/structure')
+        ],
+        codeRule: [
+            'webpack-dev-server/client?http://0.0.0.0:8080/',
+            'webpack/hot/only-dev-server',
+            path.join(__dirname, 'webapp/template/containers/codeRule')
+        ],
+        vendors: ['angular', 'react', 'react-dom', 'ngreact']
+    },
+    //入口文件输出配置
+    output: {
+        path: path.resolve(__dirname, "webapp/dgap/resource_operation"),
+        // publicPath: '/webapp/template/views/',
+        publicPath: '/',
+        filename: '[name].min.js'
+    },
+    module: {
+        //加载器配置
+        loaders: [{
+            test: /\.jsx?$/,
+            exclude: /(node_modules|bower_components)/,
+            loaders: ['react-hot', 'babel?presets[]=react,presets[]=es2015']
+        }, {
+            test: /\.less/,
+            loader: 'style-loader!css-loader!less-loader'
+        }, {
+            test: /\.css/,
+            loader: 'style-loader!css-loader'
+        }, {
+            test: /\.(png|jpg|jpeg|gif)$/,
+            loader: 'url-loader?limit=8192&name=images/[name].[ext]?[hash]'
+        }, {
+            test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+            loader: `${require.resolve('url-loader')}?` + `limit=10000&minetype=application/font-woff`
+        }, {
+            test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+            loader: `${require.resolve('url-loader')}?` + `limit=10000&minetype=application/font-woff`
+        }, {
+            test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+            loader: `${require.resolve('url-loader')}?` + `limit=10000&minetype=application/octet-stream`
+        }, {
+            test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+            loader: `${require.resolve('file-loader')}`
+        }, {
+            test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+            loader: `${require.resolve('url-loader')}?` + `limit=10000&minetype=image/svg+xml`
+        }, {
+            test: /\.json$/,
+            loader: `${require.resolve('json-loader')}`
+        }, {
+            test: /\.html?$/,
+            loader: `${require.resolve('file-loader')}?name=[name].[ext]`
+        }],
+        noParse: []
+    },
+    //插件项
+    plugins: [
+        DefinePlugin,
+        commonsPlugin,
+        hotModuleReplacementPlugin,
+        NoErrorsPlugin,
+        new htmlWebpackPlugin({
+            // title: '',
+            template: path.resolve(__dirname, 'template.ejs'),
+            filename: 'field.html',
+            //chunks这个参数告诉插件要引用entry里面的哪几个入口
+            chunks: [
+                'vendors', 'field'
+            ],
+            hash: true,
+            // inject: 'body',
+            minify: {}
+        }),
+        new htmlWebpackPlugin({
+            // title: '',
+            template: path.resolve(__dirname, 'template.ejs'),
+            filename: 'review.html',
+            //chunks这个参数告诉插件要引用entry里面的哪几个入口
+            chunks: [
+                'vendors', 'review'
+            ],
+            hash: true,
+            // inject: 'body',
+            minify: {}
+        }),
+        new htmlWebpackPlugin({
+            // title: '',
+            template: path.resolve(__dirname, 'template.ejs'),
+            filename: 'structure.html',
+            //chunks这个参数告诉插件要引用entry里面的哪几个入口
+            chunks: [
+                'vendors', 'structure'
+            ],
+            hash: true,
+            // inject: 'body',
+            minify: {}
+        }),
+        new htmlWebpackPlugin({
+            // title: '',
+            template: path.resolve(__dirname, 'template.ejs'),
+            filename: 'codeRule.html',
+            //chunks这个参数告诉插件要引用entry里面的哪几个入口
+            chunks: [
+                'vendors', 'codeRule'
+            ],
+            hash: true,
+            // inject: 'body',
+            minify: {}
+        }),
+        new OpenBrowserPlugin({ url: 'http://localhost:8080/' })
+    ],
+    resolve: {
+        extensions: [
+            '',
+            '.js',
+            '.jsx',
+            '.json',
+            '.less',
+            '.css',
+            '.png',
+            '.jpg'
+        ],
+        //别名
+        alias: {}
+    },
+    //监视变化
+    // watch: true,
+    // 启用source-map
+    devtool: '#source-map',
+    debug: true,
+    devServer: {
+        contentBase: './',
+        hot: true,
+        compress: true,
+        headers: {
+            "X-Custom-Header": "yes"
+        },
+        stats: {
+            colors: true
+        },
+        proxy: { //各子系统代理配置
+            '/sofn-sso-web/*': {
+                target: 'http://218.89.222.117:8084/',
+                secure: false,
+            },
+            '/sofn-qry-web/*': {
+                target: 'http://218.89.222.117:8084/',
+                secure: false,
+            },
+            '/sofn-tts-web/*': {
+                target: 'http://218.89.222.117:8084/',
+                secure: false,
+            },
+            '/sofn-sys-web/*': {
+                target: 'http://218.89.222.117:8084/',
+                secure: false,
+            },
+            '/sofn-asms-web/*': {
+                target: 'http://218.89.222.117:8084/',
+                secure: false,
+            },
+            '/sofn-ales-web/*': {
+                target: 'http://218.89.222.117:8084/',
+                secure: false,
+            },
+            '/sofn-ads-web/*': {
+                target: 'http://218.89.222.117:8084/',
+                secure: false,
+            },
+            '/sofn-ssa-web/*': {
+                target: 'http://218.89.222.117:8084/',
+                secure: false,
+            },
+            '/sofn-dgap-web/*': {
+                target: 'http://218.89.222.117:8084/',
+                secure: false,
+            }
+        }
+    }
+};

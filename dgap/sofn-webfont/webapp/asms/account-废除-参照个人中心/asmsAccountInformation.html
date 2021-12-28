@@ -1,0 +1,500 @@
+<link rel="stylesheet" href="assets/css/asms/accountInformation/accountInformation.css" />
+<div class="gui-breadcrumbs">
+    <a href="">监管系统</a>&gt;
+    <span>账号信息</span>
+</div>
+<div class="gui-section">
+    <div class="gui-page-head gui-actions">
+        <h3>账号信息</h3>
+        <button class="fr gui-btn" ng-click="showPwdModal()">修改密码</button>
+    </div>
+    <div style="margin-top:20px;text-align:center;">
+        <table style="width: 100%">
+            <tr>
+                <td style="width: 50%;text-align: right">账号：</td>
+                <td style="width: 50%;text-align: left"><span ng-bind="user.userName"></span></td>
+            </tr>
+            <tr>
+                <td style="width: 50%;text-align: right">账号类型：</td>
+                <td style="width: 50%;text-align: left"><span ng-bind="user.userType"></span></td>
+            </tr>
+        </table>
+    </div>
+    <div class="gui-page-head gui-actions">
+        <h3>备案信息</h3>
+        <button id="modifyInfoCancle" class="fr ml15 gui-btn">备案信息注销</button>
+        <button id="modifyInfo" class="fr  gui-btn">备案信息变更</button>
+    </div>
+    <div>
+        <table class="gui-table text-left">
+            <tr>
+                <td>
+                    机构名称：
+                </td>
+                <td>
+                    <span ng-bind="subjSv.svName"></span>
+                </td>
+                <td>
+                    负责人：
+                </td>
+                <td>
+                    <span ng-bind="subjSv.svLeader"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    机构代码：
+                </td>
+                <td>
+                    <span ng-bind="subjSv.svCode"></span>
+                </td>
+                <td>
+                    负责人电话：
+                </td>
+                <td>
+                    <span ng-bind="subjSv.svLeaderPhone"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    机构类别：
+                </td>
+                <td>
+                    <span ng-bind="subjSv.svType"></span>
+                </td>
+                <td>
+                    联系人：
+                </td>
+                <td>
+                    <span ng-bind="subjSv.svContact"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    机构级别：
+                </td>
+                <td>
+                    <span ng-bind="subjSv.svLevel"></span>
+                </td>
+                <td>
+                    联系人电话：
+                    <td>
+                        <span ng-bind="subjSv.svContactPhone"></span>
+                    </td>
+            </tr>
+            <tr>
+                <td>
+                    所属区域：
+                </td>
+                <td>
+                    <span ng-bind="subjSv.svArea"></span>
+                </td>
+                <td>
+                    联系人QQ：
+                </td>
+                <td>
+                    <span ng-bind="subjSv.svContactQQ"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    所属行业：
+                </td>
+                <td>
+                    <span ng-bind="subjSv.industryName"></span>
+                </td>
+                <td>
+                    电子邮箱：
+                </td>
+                <td>
+                    <span ng-bind="subjSv.svContactEmail"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    通讯地址：
+                </td>
+                <td>
+                    <span ng-bind="subjSv.svAddress"></span>
+                </td>
+                <td>
+                    邮编：
+                </td>
+                <td>
+                    <span ng-bind="subjSv.svPostcode"></span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="gui-page-head">
+        <h3>机构变更历史</h3>
+    </div>
+    <div>
+        <table id="grid" class="gui-table">
+        </table>
+    </div>
+</div>
+<!-- 模态框（Modal）变更申请 -->
+<div class="modal fade " id="subjSvChangeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">变更备案信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="baChange-table" style="margin-right: 0px">
+                    <form id="subjSvChangeForm" name="subjSvChangeForm" class="changeEjb" data-bv-excluded data-bv-message="不能为空">
+                        <div class=" tb" id="enterpriseGrid_fa">
+                            <div class="table-responsive" style="margin-top:20px;text-align:center;">
+                                <table class="baChange-table" style="width:100%;margin:auto;">
+                                    <tr>
+                                        <td class="form-group">
+                                            <span class="col-lg-5 col-md-5 col-sm-5 control-label">机构名称<span style="color:red;">*</span></span>
+                                            <div class="col-lg-7 col-md-7 col-sm-7">
+                                                <input type="text" ng-model="subjSvChange.svName" name="svName" placeholder="请输入机构名称" class="form-control" data-bv-notempty="true" data-bv-notempty-message="机构名称不能为空" data-bv-stringlength="true" data-bv-stringlength-max="50" data-bv-stringlength-message="机构名称不能超过50个字符" />
+                                            </div>
+                                        </td>
+                                        <td class="form-group">
+                                            <span class="col-lg-5 col-md-5 col-sm-5 control-label">负责人<span style="color:red;">*</span></span>
+                                            <div class="col-lg-7 col-md-7 col-sm-7">
+                                                <input type="text" ng-model="subjSvChange.svLeader" name="svLeader" placeholder="请输入负责人" class="form-control" data-bv-notempty="true" data-bv-notempty-message="负责人不能为空" data-bv-stringlength="true" data-bv-stringlength-max="50" data-bv-stringlength-message="负责人不能超过50个字符" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="form-group">
+                                            <span class="col-lg-5 col-md-5 col-sm-5 control-label">机构代码<span style="color:red;">*</span></span>
+                                            <div class="col-lg-7 col-md-7 col-sm-7">
+                                                <input type="text" ng-model="subjSvChange.svCode" name="svCode" placeholder="请输入机构代码" class="form-control" data-bv-notempty="true" data-bv-notempty-message="机构代码不能为空" data-bv-stringlength="true" data-bv-stringlength-max="50" data-bv-stringlength-message="机构代码不能超过50个字符" />
+                                            </div>
+                                        </td>
+                                        <td class="form-group">
+                                            <span class="col-lg-5 col-md-5 col-sm-5 control-label">负责人电话</span>
+                                            <div class="col-lg-7 col-md-7 col-sm-7">
+                                                <input type="text" ng-model="subjSvChange.svLeaderPhone" name="svLeaderPhone" class="form-control" data-bv-isTelephone="true" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="form-group">
+                                            <span class="col-lg-5 col-md-5 col-sm-5 control-label">机构类别<span style="color:red;">*</span></span>
+                                            <div class="col-lg-7 col-md-7 col-sm-7">
+                                                <div class="gui-select">
+                                                    <select ng-model="subjSvChange.svTypeId" name="svType" class="form-control" data-bv-notempty="true" data-bv-notempty-message="机构类别不能为空">
+                                                        <option ng-repeat="x in orgType" value="{{x.id}}">{{x.dictName}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="form-group">
+                                            <span class="col-lg-5 col-md-5 col-sm-5 control-label">联系人<span style="color:red;">*</span></span>
+                                            <div class="col-lg-7 col-md-7 col-sm-7">
+                                                <input type="text" ng-model="subjSvChange.svContact" name="svContact" placeholder="请输入联系人" class="form-control" data-bv-notempty="true" data-bv-notempty-message="联系人不能为空" data-bv-stringlength="true" data-bv-stringlength-max="50" data-bv-stringlength-message="联系人不能超过50个字符" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="form-group">
+                                            <span class="col-lg-5 col-md-5 col-sm-5 control-label">机构级别<span style="color:red;">*</span></span>
+                                            <div class="col-lg-7 col-md-7 col-sm-7">
+                                                <div class="gui-select">
+                                                    <select ng-model="subjSvChange.svLevelId" name="svLevel" class="form-control" data-bv-notempty="true" data-bv-notempty-message="机构级别不能为空">
+                                                        <option ng-repeat="x in orgLevel" value="{{x.id}}" dictVal="{{x.dictValue}}">{{x.dictName}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="form-group">
+                                            <span class="col-lg-5 col-md-5 col-sm-5 control-label">联系人电话<span style="color:red;">*</span></span>
+                                            <div class="col-lg-7 col-md-7 col-sm-7">
+                                                <input type="text" ng-model="subjSvChange.svContactPhone" name="svContactPhone" placeholder="请输入联系人电话" class="form-control" data-bv-notempty="true" data-bv-notempty-message="联系人电话不能为空" data-bv-isTelephone="true" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="form-group">
+                                            <span class="col-lg-5 col-md-5 com-sm-5 control-label">所属行业<span style="color:red;">*</span></span>
+                                            <div class="col-lg-7 col-md-5 com-sm-5">
+                                                <div class=" " style="width: 100%">
+                                                    <span ng-repeat="a in industryType">
+                                                        <input type="checkbox" value="{{a.id}}" name="entityIndustryId"><span class="checkedIndustryTypeText" ng-bind="a.dictName"></span>
+                                                    </span>
+                                                    <div class="color-red" ng-hide="!industryChecked">请至少选择一个所属行业</div>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td class="form-group ">
+                                            <span class="col-lg-5 col-md-5 col-sm-5 control-label">所属区域<span style="color:red;">*</span></span>
+                                            <div class="col-lg-7 col-md-7 col-sm-7 " style="text-align: left">
+                                                <div class="gui-select">
+                                                    <select id="sheng" name="sheng" class="form-control" data-bv-notempty="true" data-bv-notempty-message="所属区域不能为空">
+                                                        <option value="">--请选择省份--</option>
+                                                    </select>
+                                                </div>
+                                                <div class="gui-select mt15 ">
+                                                    <select id="shi" class="mr15 ml15">
+                                                        <option value="">--请选择城市--</option>
+                                                    </select>
+                                                </div>
+                                                <div class="gui-select mt15">
+                                                    <select id="xian" class="ml15">
+                                                        <option value="">--请选择区/县--</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="form-group">
+                                            <span class="col-lg-5 col-md-5 col-sm-5 control-label">联系人QQ</span>
+                                            <div class="col-lg-7 col-md-7 col-sm-7">
+                                                <input type="text" ng-model="subjSvChange.svContactQQ" name="svContactQQ" class="form-control" data-bv-regexp="true" data-bv-regexp-regexp="^\d{5,11}$" data-bv-regexp-message="只能输入5到11位的数字" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="form-group">
+                                            <span class="col-lg-5 col-md-5 col-sm-5 control-label">通讯地址<span style="color:red;">*</span></span>
+                                            <div class="col-lg-7 col-md-7 col-sm-7">
+                                                <input type="text" ng-model="subjSvChange.svAddress" name="svAddress" placeholder="请输入通讯地址" class="form-control" data-bv-notempty="true" data-bv-notempty-message="通讯地址不能为空" data-bv-stringlength="true" data-bv-stringlength-max="50" data-bv-stringlength-message="通讯地址不能超过50个字符" />
+                                            </div>
+                                        </td>
+                                        <td class="form-group">
+                                            <span class="col-lg-5 col-md-5 col-sm-5 control-label">电子邮箱</span>
+                                            <div class="col-lg-7 col-md-7 col-sm-7">
+                                                <input type="text" ng-model="subjSvChange.svContactEmail" name="svContactEmail" class="form-control" data-bv-emailaddress="true" data-bv-emailaddress-message="输入不是一个有效的电子邮件地址" data-bv-stringlength="true" data-bv-stringlength-max="50" data-bv-stringlength-message="电子邮箱不能超过50个字符" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="form-group">
+                                            <span class="col-lg-5 col-md-5 col-sm-5 control-label">邮编</span>
+                                            <div class="col-lg-7 col-md-7 col-sm-7">
+                                                <input type="text" ng-model="subjSvChange.svPostcode" name="svPostcode" class="form-control" data-bv-isZipcode="true" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="form-group" colspan="2">
+                                            <div class="col-lg-2 col-md-2 col-sm-2 control-label">变更原因<span style="color:red;">*</span></div>
+                                            <div class="col-lg-9 col-md-9 col-sm-9 " style="margin-left: 28px">
+                                                <textarea name="applyReason" cols=50 rows=4 ng-model="subjSvChange.applyReason" class="form-control" data-bv-notempty="true" data-bv-notempty-message="变更原因不能为空" data-bv-stringlength="true" data-bv-stringlength-max="300" data-bv-stringlength-message="变更原因不能超过300个字符"></textarea>
+                                            </div>
+                                        </td>
+                                        <td>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" ng-click="cancelSubjSvChange()">取消</button>
+                <button class="gui-btn" type="button" ng-click="applySubjSvChange()">提交申请</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+<!--模态框的机构注销-->
+<div class="modal fade " id="subjSvCancelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabelCancle">注销备案信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form id="subjSvCancelForm" name="subjSvCancelForm" class="changeEjb" data-bv-excluded data-bv-message="不能为空">
+                        <div class="col-md-12 tb">
+                            <div class="table-responsive" style="padding:0px 20px;text-align:center;">
+                                <table style="width:100%;margin:auto;">
+                                    <tr>
+                                        <td style="width: 20%;vertical-align: top">
+                                            <span>注销原因<span style="color:red;">*</span></span>
+                                        </td>
+                                        <td class="form-group">
+                                            <textarea name="applyReason" cols="80" rows="3" ng-model="applyReason" class="form-control" data-bv-notempty="true" data-bv-notempty-message="注销原因不能为空" data-bv-stringlength="true" data-bv-stringlength-max="300" data-bv-stringlength-message="注销原因不能超过300个字符"></textarea>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" ng-click="cancelSubjSvCancel()">取消</button>
+                <button class="gui-btn" type="button" ng-click="applySubjSvCancel()">提交申请</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+<!-- 模态框（Modal）显示变更详情 -->
+<div class="modal fade " id="change_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-style">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title" id="change">机构变更历史</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form id="change_form" class="default_w_h">
+                        <div class="col-md-12 tb" id="change_fa">
+                            <div class="table-responsive" style="margin-top:20px;text-align:center;">
+                                <table class="table table-bordered" style="width:70%;margin:auto;">
+                                    <tr>
+                                        <th>
+                                            主体信息
+                                        </th>
+                                        <th>
+                                            变更前
+                                        </th>
+                                        <th>
+                                            变更后
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            机构名称
+                                        </td>
+                                        <td>
+                                            <span ng-bind="before.svName"></span>
+                                        </td>
+                                        <td>
+                                            <span ng-bind="after.svName"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            机构地址
+                                        </td>
+                                        <td>
+                                            <span ng-bind="before.svAddress">{{before.svAddress}}</span>
+                                        </td>
+                                        <td>
+                                            <span ng-bind="after.svAddress"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            组织机构代码
+                                        </td>
+                                        <td>
+                                            <span ng-bind="before.svCode"></span>
+                                        </td>
+                                        <td>
+                                            <span ng-bind="after.svCode"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            负责人姓名
+                                        </td>
+                                        <td>
+                                            <span ng-bind="before.svLeader"></span>
+                                        </td>
+                                        <td>
+                                            <span ng-bind="after.svLeader"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            负责人联系方式
+                                        </td>
+                                        <td>
+                                            <span ng-bind="before.svLeaderPhone"></span>
+                                        </td>
+                                        <td>
+                                            <span ng-bind="after.svLeaderPhone"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            变更原因
+                                        </td>
+                                        <td colspan="2">
+                                            <span ng-bind="after.applyReason"></span>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+<!--模态框的修改密码-->
+<div class="modal fade " id="pwdModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">修改密码</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form id="changePwdForm" name="changePwdForm" data-bv-excluded data-bv-message="不能为空">
+                        <ul>
+                            <li class="clearfix">
+                                <div class="form-group">
+                                    <span class="col-lg-4 col-md-4 col-sm-4 control-label ml15" style="text-align: right;padding-right: 25px">旧密码<span style="color:red;">*</span></span>
+                                    <div class="col-lg-5 col-md-5 col-sm-5">
+                                        <input type="password" ng-model="oldPwd" name="oldPwd" placeholder="请输入旧密码" class="form-control oldPwd" data-bv-notempty="true" data-bv-notempty-message="旧密码不能为空" />
+                                        <div class="dirVilidator" style="color:#a94442;margin-top: 5px;font-size: 12px;display: none">
+                                            旧密码不正确
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--<span class="important">旧 &nbsp;密 &nbsp;码</span>-->
+                                <!--<input type="password" ng-model="oldPwd" name="oldPwd" placeholder="请输入旧密码" class="Sup_contain_section_contain_input"/>-->
+                            </li>
+                            <li class="clearfix mt15">
+                                <div class="form-group">
+                                    <span class="col-lg-4 col-md-4 col-sm-4 control-label ml15" style="text-align: right;padding-right: 25px">新密码<span style="color:red;">*</span></span>
+                                    <div class="col-lg-5 col-md-5 col-sm-5">
+                                        <input type="password" ng-model="newPwd" name="newPwd" placeholder="请输入新密码" class="form-control" data-bv-notempty="true" data-bv-notempty-message="新密码不能为空" data-bv-stringlength="true" data-bv-stringlength-min="6" data-bv-stringlength-max="18" data-bv-stringlength-message="新密码必须超过6，不超过18个字符" />
+                                    </div>
+                                </div>
+                                <!--<span class="important">新 &nbsp;密 &nbsp;码</span>-->
+                                <!--<input type="password" ng-model="newPwd" name="newPwd" placeholder="请输入新密码" class="Sup_contain_section_contain_input"/>-->
+                            </li>
+                            <li class="clearfix mt15">
+                                <div class="form-group">
+                                    <span class="col-lg-4 col-md-4 col-sm-4 control-label ml15" style="text-align: right;padding-right: 25px">确认密码<span style="color:red;">*</span></span>
+                                    <div class="col-lg-5 col-md-5 col-sm-5">
+                                        <input type="password" ng-model="newPwdC" name="newPwdC" placeholder="请确认新密码" class="form-control" data-bv-notempty="true" data-bv-notempty-message="确认密码不能为空" data-bv-identical="true" data-bv-identical-field="newPwd" data-bv-identical-message="密码和它的确认不一样" />
+                                    </div>
+                                </div>
+                                <!--<span class="important">确认密码</span>-->
+                                <!--<input type="password" ng-model="newPwdC" name="newPwdC" placeholder="请确认新密码" class="Sup_contain_section_contain_input"/>-->
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" data-dismiss="modal">取消</button>
+                <button class="gui-btn" type="button" ng-click="changePwd()">保存</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>

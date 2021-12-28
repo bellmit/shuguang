@@ -1,0 +1,110 @@
+<div class="gui-mainBc">
+    <div class="gui-breadcrumbs">
+        <a href="">查询系统</a>&gt;
+        <a href="">执法信息查询</a>&gt;
+        <span>承担任务查询</span>
+    </div>
+    <div class="gui-TabCut">
+        <ul class="clearfix gov-h">
+            <li class="fl gp-r qrySubjDtList"  ui-sref="index.content.qry/taskManage/qryMyCheckTask">监督抽查任务</li>
+            <li class="fl gp-r gui-TabCheck">委托检测任务</li>
+
+        </ul>
+        <div class="gui-botLine"></div>
+    </div>
+    </div>
+<div class="gui-section clearfix gov-h">
+    <div class="gui-form-group">
+        <span>完成状态</span>
+        <div class="gui-select">
+            <select name="state">
+                <option value="">全部</option>
+                <option value="0">未发布</option>
+                <option value="1">已发布</option>
+                <option value="2">已废止</option>
+                <option value="3">执行中</option>
+                <option value="4">已结束，未完成</option>
+                <option value="5">已结束，已完成</option>
+            </select>
+        </div>
+        <span>年度</span>
+        <input name="taskyear" readonly style="width: 80px;cursor: pointer"  onfocus="WdatePicker({skin:'default',dateFmt:'yyyy',minDate:'2010',maxDate:'%y'})" class=" gui-input" />
+        <span>日期</span>
+        <input id="beginTime" name="beginTime" style="cursor: pointer;width: 100px" readonly class="gui-input" type="text" onFocus="var endDate=$dp.$('endTime');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'endTime\')}'})"/>
+        至
+        <input id="endTime" name="endTime" class="gui-input" style="cursor: pointer;width: 100px;" readonly type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'beginTime\')}'})"/>
+
+        <p class=" mt15">
+            <span>任务名称</span>
+            <input class="gui-input" type="text" name="taskName" id="taskNameId" style="width: 300px" maxlength="30" />
+            <button id="ToCheck" class="gui-btn">查询</button>
+            <button class="gui-btn " ng-click="cleeanAlesEntrust()">重置</button>
+        </p>
+    </div>
+    <div class="gui-actions">
+        <button  ng-click="exportData()" class="fr gui-btn fr ml15" id="delId">
+            <i class="gui-icon"></i>导出</button>
+       <!-- <button  ng-click="abo()" class="fr gui-btn fr ml15" id="aboId">
+            <i class="gui-icon icon-disable"></i>废止</button>
+        <button  ng-click="rel()"         class="fr gui-btn fr ml15" id="relId">
+            <i class="gui-icon icon-publish"></i>发布</button>
+        <button  ng-click="addTask()" class="fr gui-btn fr ml15" id="addTaskId">
+            <i class="gui-icon icon-add"></i>新增</button>-->
+    </div>
+    <table id="grid" class="gui-table mt15"
+           style="width: 100%">
+    </table>
+</div>
+
+<!--TaskInfoModel-->
+<div class="modal fade"  id="TaskInfoModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog removeBor" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">
+                    <span>任务信息</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <form class="bs-example bs-example-form" role="form">
+                    <div class="">
+                        <div class="">
+                            <div class="mt15 clearfix gov-h">
+                                <span class="col-lg-4 col-md-4 col-sm-4" style="text-align: right;padding-right: 10px;">任务名称:&nbsp;</span>
+                                <span class="col-lg-8 col-md-8 col-sm-8" ng-bind="EntrustDetectionInfo.taskName"/>
+                            </div>
+                            <div class="mt15 clearfix gov-h">
+                                <span class="col-lg-4 col-md-4 col-sm-4" style="text-align: right;padding-right: 10px;">年度:&nbsp;</span>
+                                <span class="col-lg-8 col-md-8 col-sm-8" ng-bind="EntrustDetectionInfo.taskyear"/>
+                            </div>
+                            <div class="mt15 clearfix gov-h">
+                                <span class="col-lg-4 col-md-4 col-sm-4" style="text-align: right;padding-right: 10px;">开始时间:&nbsp;</span>
+                                <span type="text" class="col-lg-8 col-md-8 col-sm-8" ng-bind="EntrustDetectionInfo.taskBeginTime"/>
+                            </div>
+                            <div class="mt15 clearfix gov-h">
+                                <span class="col-lg-4 col-md-4 col-sm-4" style="text-align: right;padding-right: 10px;">结束时间:&nbsp;</span>
+                                <span type="text" class="col-lg-8 col-md-8 col-sm-8" ng-bind="EntrustDetectionInfo.taskEndTime"/>
+                            </div>
+                            <div class="mt15 clearfix gov-h">
+                                <span class="col-lg-4 col-md-4 col-sm-4" style="text-align: right;padding-right: 10px;">受托单位:&nbsp;</span>
+                                <span type="text" class="col-lg-8 col-md-8 col-sm-8" ng-bind="EntrustDetectionInfo.stUnitName"/>
+                            </div>
+                            <div class="mt15 clearfix gov-h">
+                                <span class="col-lg-4 col-md-4 col-sm-4" style="text-align: right;padding-right: 10px;">文件号:&nbsp;</span>
+                                <span type="text" class="col-lg-8 col-md-8 col-sm-8" ng-bind="EntrustDetectionInfo.fileCode"/>
+                            </div>
+                            <div class="mt15 clearfix gov-h">
+                                <span class="col-lg-4 col-md-4 col-sm-4" style="text-align: right;padding-right: 10px;">备注:&nbsp;</span>
+                                <span type="text" class="col-lg-8 col-md-8 col-sm-8" ng-bind="EntrustDetectionInfo.remark"/>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" data-dismiss="modal">返回</button>
+            </div>
+        </div>
+    </div>
+</div>

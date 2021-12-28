@@ -1,0 +1,14 @@
+spring:
+  redis:
+    redisson:
+      file: classpath:config/redisson-chengdu.yaml
+
+eureka:
+  instance:
+    hostname: ${spring.cloud.client.ip-address}
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://192.168.21.38:8880/eureka/
+
+

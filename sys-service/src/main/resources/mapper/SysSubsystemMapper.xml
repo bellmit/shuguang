@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysSubsystemMapper" >
+    <resultMap id="customResultMap" type="com.sofn.sys.model.SysSubsystem">
+        <result column="ID" property="id"></result>
+        <result column="PARENT_ID" property="parentId"></result>
+        <result column="SUBSYSTEM_NAME" property="subsystemName"></result>
+        <result column="APP_ID" property="appId"></result>
+        <result column="DEL_FLAG" property="delFlag"></result>
+        <result column="UPDATE_TIME" property="updateTime"></result>
+        <result column="CREATE_TIME" property="createTime"></result>
+        <result column="UPDATE_USER_ID" property="updateUserId"></result>
+        <result column="CREATE_USER_ID" property="createUserId"></result>
+        <result column="PARENT_IDS" property="parentIds"></result>
+        <result column="DESCRIPTION" property="description"></result>
+        <result column="SORT" property="sort"></result>
+        <result column="VIEW_URL" property="viewUrl"></result>
+        <result column="SYSTEM_TYPE" property="systemType"></result>
+    </resultMap>
+
+    <select id="getSysSubsystemByNameOrAppId" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT count(1) from SYS_SUBSYSTEM a where 1 =1
+        <if test="name != null and name != ''">
+            and SUBSYSTEM_NAME = #{name}
+        </if>
+
+        <if test="appId != null and appId != ''">
+            and APP_ID = #{appId}
+        </if>
+
+        <if test="id != null and id != ''">
+            and ID != #{id}
+        </if>
+        and DEL_FLAG = 'N'
+
+    </select>
+
+    <select id="selectSubsystemByIds"  resultMap="customResultMap">
+        SELECT
+        ID						,
+        PARENT_ID               ,
+        SUBSYSTEM_NAME             ,
+        APP_ID             ,
+        DESCRIPTION         ,
+        PARENT_IDS,
+        CREATE_USER_ID          ,
+        CREATE_TIME             ,
+        UPDATE_USER_ID          ,
+        UPDATE_TIME             ,
+        DEL_FLAG         ,
+        sort,
+        VIEW_URL,
+        SYSTEM_TYPE
+        FROM SYS_SUBSYSTEM
+        where ID IN
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and DEL_FLAG != 'Y'
+    </select>
+    <select id="getSysSubsystemAppId"  parameterType="java.lang.String"  resultMap="customResultMap">
+        SELECT
+        ID						,
+        PARENT_ID               ,
+        SUBSYSTEM_NAME             ,
+        APP_ID             ,
+        DESCRIPTION         ,
+        PARENT_IDS,
+        CREATE_USER_ID          ,
+        CREATE_TIME             ,
+        UPDATE_USER_ID          ,
+        UPDATE_TIME             ,
+        DEL_FLAG,
+        VIEW_URL,
+        SYSTEM_TYPE
+        FROM SYS_SUBSYSTEM
+        where APP_ID =#{appId}
+        and DEL_FLAG != 'Y'
+    </select>
+
+    <select id="getSysSubsystemByCondition" parameterType="java.util.Map" resultMap="customResultMap">
+        SELECT
+        ID						,
+        PARENT_ID               ,
+        SUBSYSTEM_NAME          ,
+        APP_ID                  ,
+        DESCRIPTION             ,
+        PARENT_IDS,
+        CREATE_USER_ID          ,
+        UPDATE_USER_ID          ,
+        DEL_FLAG,
+        VIEW_URL,
+        SYSTEM_TYPE
+        FROM SYS_SUBSYSTEM
+        <where>  1=1
+            <if test="subsystemName != null and subsystemName != ''">
+                and SUBSYSTEM_NAME like '%' || #{subsystemName} || '%' escape '\'
+            </if>
+            <if test="appId != null and appId != ''">
+                and APP_ID like '%' || #{appId} || '%'
+            </if>
+            <if test="parentId != null and parentId != ''">
+                and PARENT_ID like '%' || #{parentId} || '%'
+            </if>
+            <if test="delFlag != null and delFlag != ''">
+                and DEL_FLAG = #{delFlag}
+            </if>
+        </where>
+    </select>
+    <select id="getParentIdsById" parameterType="java.lang.String" resultMap="customResultMap">
+        SELECT
+        ID						,
+        PARENT_ID               ,
+        SUBSYSTEM_NAME             ,
+        APP_ID             ,
+        DESCRIPTION         ,
+        PARENT_IDS,
+        CREATE_USER_ID          ,
+        CREATE_TIME             ,
+        UPDATE_USER_ID          ,
+        UPDATE_TIME             ,
+        DEL_FLAG,
+        VIEW_URL,
+        SYSTEM_TYPE
+        FROM SYS_SUBSYSTEM
+        where ID =#{subSystemId}
+        and DEL_FLAG != 'Y'
+    </select>
+
+
+    <delete id="batchDelete" parameterType="java.util.Map">
+        update SYS_SUBSYSTEM  set del_flag = 'Y',UPDATE_USER_ID= #{updateUserId},UPDATE_TIME = #{updateTime} where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+
+    </delete>
+
+    <select id="getSysSubsystemByRoleId"  resultMap="customResultMap">
+        select * from SYS_SUBSYSTEM ss where ss.APP_ID in(
+        select DISTINCT(sr.App_Id) from SYS_RESOURCE  sr
+        LEFT JOIN SYS_ROLE_RESOURCE srr on sr.id=srr.resource_id
+        where srr.ROLE_ID in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        ) and ss.del_flag != 'Y'
+    </select>
+
+    <sql id="selectUserHasSubsystemSql">
+         SS.ID id,
+                SS.PARENT_ID parentId,
+                SS.PARENT_IDS parentIds,
+                SS.SUBSYSTEM_NAME subsystemName,
+                SS.APP_ID appId,
+                SS.DESCRIPTION description,
+                ss.create_time createTime,
+                SS.SORT sort,
+                SS.VIEW_URL viewUrl,
+                SS.SYSTEM_TYPE systemType
+    </sql>
+
+    <select id="selectUserHasSubsystem" parameterType="java.util.Map" resultType="com.sofn.sys.vo.SysSubsystemTreeVo">
+        select A.id,A.parentId,A.parentIds,A.subsystemName,A.appId,A.description,A.sort,A.viewUrl,A.systemType
+        from (
+        SELECT  <include refid="selectUserHasSubsystemSql"></include> FROM SYS_SUBSYSTEM SS WHERE 1 =1
+        <if test="isSuperMan != null and isSuperMan == 'N'.toString()">and SS.ID IN (
+            SELECT SR.
+            SUBSYSTEM_ID FROM SYS_ROLE SR WHERE SR.DEL_FLAG != 'Y' AND SR.STATUS = '1'
+            <if test="roleIds != null and roleIds.size >0">
+                and SR.ID IN
+                <foreach collection="roleIds" item="roleId" open="(" close=")" separator=",">
+                    #{roleId}
+                </foreach>
+            </if>
+            )
+        </if>
+        AND SS.DEL_FLAG != 'Y'
+        <if test="subsystemName != null and subsystemName !=''" >
+            and SS.SUBSYSTEM_NAME like '%' || #{subsystemName} || '%'
+        </if>
+
+        <if test="keyword != null and keyword !=''" >
+            and (SS.SUBSYSTEM_NAME like '%' || #{keyword} || '%' OR SS.APP_ID like '%' || #{keyword})
+        </if>
+
+        <if test="rootLevel != null and rootLevel != ''">
+            union
+            select  <include refid="selectUserHasSubsystemSql"></include> from SYS_SUBSYSTEM SS WHERE SS.
+            ID = #{rootLevel}
+            AND SS.DEL_FLAG != 'Y'
+        </if>
+        <if test="loginUserId != null and loginUserId != ''">
+            union
+            select  <include refid="selectUserHasSubsystemSql"></include> from SYS_SUBSYSTEM SS WHERE SS.
+            create_user_id = #{loginUserId}
+            AND SS.DEL_FLAG != 'Y'
+            <if test="subsystemName != null and subsystemName != ''" >
+                AND SS.SUBSYSTEM_NAME like '%' || #{subsystemName} || '%'
+            </if>
+            <if test="keyword != null and keyword !=''" >
+                and (SS.SUBSYSTEM_NAME like '%' || #{keyword} || '%' OR SS.APP_ID like '%' || #{keyword} || '%' )
+            </if>
+        </if>
+        ) A order by A.createTime desc
+
+    </select>
+
+    <select id="selectSysSystemTreeVo" parameterType="java.util.Map" resultType="com.sofn.sys.vo.SysSubsystemTreeVo">
+        select
+        SS.ID id,
+        SS.PARENT_ID parentId,
+        SS.PARENT_IDS parentIds,
+        SS.SUBSYSTEM_NAME subsystemName,
+        SS.APP_ID appId,
+        SS.DESCRIPTION description,
+        SS.SORT sort,
+        SS.VIEW_URL viewUrl,
+        SS.SYSTEM_TYPE systemType
+        FROM SYS_SUBSYSTEM SS
+        where  (SS.DEL_FLAG = 'N'OR SS.DEL_FLAG IS NULL)
+        <if test="ids != null and ids.size > 0">
+            and ID in
+            <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+        <if test="parentIds != null and parentIds != ''">
+            and  SS.PARENT_IDS like #{parentIds} || '%'
+        </if>
+        <if test="parentIdList != null and parentIdList.size > 0">
+            and SS.PARENT_ID in
+            <foreach collection="parentIdList" item="parentId" open="(" close=")" separator=",">
+                #{parentId}
+            </foreach>
+        </if>
+
+
+    </select>
+
+    <select id="selectAllAppIdList" resultType="java.lang.String">
+    select DISTINCT APP_ID FROM SYS_SUBSYSTEM where DEL_FLAG = 'N'
+  </select>
+
+    <select id="getUserHaveAppId" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT DISTINCT ss.APP_ID FROM SYS_ROLE sr
+        INNER JOIN SYS_SUBSYSTEM ss ON SR.SUBSYSTEM_ID = SS.id AND SS.DEL_FLAG != 'Y'
+
+         WHERE SR.ID IN (
+        SELECT ROLE_ID FROM SYS_USER_ROLE SUR WHERE SUR.USER_ID = #{userId}
+
+        UNION ALL
+        SELECT ROLE_ID FROM SYS_USER_GROUP SUG
+
+        LEFT JOIN SYS_ROLE_GROUP SRG ON SUG.GROUP_ID= SRG.GROUP_ID
+
+        WHERE SUG.USER_ID = #{userId}) AND SR.DEL_FLAG != 'Y'
+
+    </select>
+
+
+    <select id="getSystemInfoLikeAppIds" parameterType="java.util.Map" resultType="com.sofn.sys.vo.SysSubsystemTreeVo">
+        select <include refid="selectUserHasSubsystemSql" />
+        from SYS_SUBSYSTEM  ss
+        WHERE
+        <foreach collection="appIds" item="appId" open="(" close=")" separator="or">
+            ss.APP_ID like #{appId} || '%'
+        </foreach>
+    </select>
+
+    <update id="updateParentId" parameterType="java.util.Map">
+        update SYS_SUBSYSTEM set PARENT_IDS = #{parentIds} where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+
+
+    </update>
+
+    <update id = "updateParentIdsByIds" parameterType="java.util.Map">
+        update SYS_SUBSYSTEM set PARENT_IDS = replace(PARENT_IDS,#{oldParentIdPrefix},#{newParentIdPrefix})  where id in
+        <foreach collection="ids" item="id" close=")" open="(" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+</mapper>

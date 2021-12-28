@@ -1,0 +1,80 @@
+.gui-col-1{
+  width: 100% !important;
+}
+.gui-col-2{
+  width: 50% !important;
+}
+.gui-col-3{
+  width: 33.33% !important;
+}
+.gui-col-4{
+  width: 25% !important;
+}
+.gui-list {
+    max-width: 800px;
+    margin: 15px auto;
+    overflow: hidden;
+    & > li, .list-item{
+      width: 100%;
+      padding: 5px 15px;
+      box-sizing: border-box;
+      float: left;
+    }
+    .form-item {
+        margin-bottom: 15px;
+        text-align: left;
+        padding-left: 95px;
+        padding-right: 15px;
+        box-sizing: border-box;
+        overflow: hidden;
+
+        .field-text,
+        .gui-btn,
+        .gui-input,
+        .gui-select,
+        .gui-textarea {
+            width: 100%;
+            box-sizing: border-box;
+            margin-right: 0;
+            vertical-align: top;
+            label{
+              margin: 0;
+              width: auto;
+              padding: 0;
+              text-align:left;
+              float: none;
+              color: #333;
+              vertical-align: middle;
+            }
+        }
+
+        .field-text {
+            line-height: 30px;
+            display: inline-block;
+        }
+
+        .title, label {
+            margin-left: -95px;
+            width: 95px;
+            padding-right: 15px;
+            text-align: right;
+            display: inline-block;
+            font-weight: 400;
+            line-height: 30px;
+            float: left;
+            vertical-align: top;
+            color: #666;
+            word-break: break-all;
+            white-space: normal;
+            &.required{
+              &:after{
+                display: inline-block;
+                content: '*';
+                color: red;
+                font-size: 12px;
+                vertical-align: middle;
+              }
+            }
+        }
+    }
+}

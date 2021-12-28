@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.CompSpeStockMapper" >
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="false">
+        insert into COMP_SPE_STOCK(ID,COMP_ID,SPECIES_ID,SPE_NUM,LAST_CHANGE_TIME,LAST_CHANGE_USER_ID)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+               #{item.id}
+                    ,#{item.compId}
+                    ,#{item.speciesId}
+                    ,#{item.speNum}
+                    ,#{item.lastChangeTime}
+                    ,#{item.lastChangeUserId}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="batchInsertForStockFlow" parameterType="java.util.List" useGeneratedKeys="false">
+        insert into COMP_SPE_STOCKFLOW(ID,COMP_ID,SPECIES_ID,SPE_NUM,BILL_TYPE
+                                        ,IMPORT_MARK,BEFORE_NUM,CH_NUM,AFTER_NUM,CH_TIME
+                                        ,LAST_CHANGE_USER_ID,OTHER_COM_NAME)
+                                        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+             #{item.id} ,#{item.compId},#{item.speciesId},#{item.speNum},#{item.billType}
+                    ,#{item.importMark} ,#{item.beforeNum},#{item.chNum},#{item.afterNum},#{item.chTime}
+                    ,#{item.lastChangeUserId} ,#{item.otherComName}
+
+            )
+        </foreach>
+    </insert>
+
+</mapper>

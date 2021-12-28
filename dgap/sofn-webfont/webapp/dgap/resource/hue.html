@@ -1,0 +1,65 @@
+<link rel="stylesheet" href="assets/css/dgap/resource/resourceMa.css">
+<link rel="stylesheet" href="/libs/bootstrap/bootstrap-3.3.5-dist/css/bootstrap-switch.min.css">
+<style>
+    .gui-graph .graph-block{
+        min-height: 500px;
+    }
+</style>
+<div class="gui-breadcrumbs">
+    <a href="">数据共享系统</a>&gt;
+    <a href="">资源管理</a>&gt;
+    <span>资源管理</span>
+</div>
+<div class="gui-section">
+    <div class="gui-tree-sidebar">
+        <div class="dropdown">
+            <ul class="gui-list">
+                <li><a>数据表</a></li>
+                <li ng-click="selectedTable(table, $event)" ng-class="{active: table.value == currentTable.value}" ng-repeat="table in tables">
+                    <a>{{table.name}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="gui-tree-content">
+        <!-- 图表面板 -->
+        <div class="gui-table-panel clearfix">
+            <p class="table-total" ng-show="isListView">符合条件的数据总计: {{tableTotal}} 项</p>
+            <!-- 切换视图展示 -->
+            <div class="view-type">展示方式
+                <i class="gui-icon icon-list highlight" ng-class="{'highlight': isListView}" ng-click="toggleView(true)" title="以列表视图展示"></i>
+                <i class="gui-icon icon-chart" ng-class="{'highlight': !isListView }" ng-click="toggleView(false)" title="以图形视图展示"></i>
+            </div>
+            <div class="fl" ng-show="!isListView">
+                <span>关键字</span>
+                <span class="gui-select" >
+                    <select ng-model="tablekey" ng-change="vm.chart.update()">
+                        <option value="{{item.value}}" ng-repeat="item in xAxis">{{item.name}}</option>
+                    </select>
+                </span>
+            </div>
+            <div class="fl" ng-show="!isListView">
+                <span>排序</span>
+                <span class="gui-select" >
+                    <select ng-model="tableSort" ng-change="vm.chart.update()">
+                        <option value="asc" ng-selected="true">升序</option>
+                        <option value="desc">降序</option>
+                    </select>
+                </span>
+            </div>
+           
+        </div>
+        <!-- 图表区域 -->
+        <div class="gui-content-slide">
+            <div ng-style="{'transform': viewX}" class="content-wrap">
+                <div class="content-block">
+                    <table id="resource" class="gui-table table-nowrap mt15" style="width: 100%">
+                    </table>
+                </div>
+                <div class="content-block">
+                    <div sg-chart options="vm.chartOptions" update="vm.chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

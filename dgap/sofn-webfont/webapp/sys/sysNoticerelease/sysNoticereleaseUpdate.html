@@ -1,0 +1,99 @@
+<link rel="stylesheet" href="assets/css/sys/sysNoticerelease/sysNoticerelease.css">
+<style>
+	.gui-list{
+		max-width: 800px;
+	}
+</style>
+<div class="gui-breadcrumbs">
+	<a href="">系统管理</a>&gt;
+	<a href="">公告信息管理</a>&gt;
+	<span>修改</span>
+</div>
+<div class="gui-section">
+	<form id="attributeForm">
+		<ul class="gui-list">
+			<li>
+				<div class="form-item form-group">
+					<label>发布时间<span class="color-red">*</span></label>
+					<input style="background-color: #fff;" name="releaseTime" readonly="true" ng-model="releaseTime" type="text" size="15" class=" gui-input" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'}) " onclick="SelectDate(this)">
+				</div>
+			</li>
+			<li>
+				<div class="form-item form-group">
+					<label>发布人</label>
+					<input type="text" disabled="disabled" ng-model="sysNoticerelease.releasePerson" name="releasePerson" placeholder="请输入发布人" class="gui-input">
+				</div>
+			</li>
+			<li>
+				<div class="form-item form-group">
+					<label>所属机构</label>
+					<input type="text" ng-model="orgName" disabled="disabled" class="gui-input">
+				</div>
+			</li>
+			<li>
+				<div class="form-item form-group">
+					<label>电话</label>
+					<input type="text" ng-model="sysNoticerelease.phone" name="phone" placeholder="请输入电话" class="gui-input" data-bv-isphone="true" data-bv-isphone-message="请填写正确的手机号">
+				</div>
+			</li>
+			<li>
+				<div class="form-item  form-group">
+					<label>邮箱</label>
+					<input type="text" ng-model="sysNoticerelease.email" name="email" placeholder="请输入邮箱" class="gui-input" data-bv-emailaddress="" data-bv-emailaddress-message="请输入一个有效的电子邮件地址">
+				</div>
+			</li>
+			<li class="gui-col-1">
+				<div class="form-item">
+					<label>用户类型</label>
+					<span class="gui-select">
+          <select id="userType" name="userType">
+              <option value="管理员">管理员</option>
+              <option value="用户">用户</option>
+           </select>
+        </span>
+				</div>
+			</li>
+			<li class="gui-col-1">
+				<div class="form-item">
+					<label>发布范围</label>
+					<span class="field-text">
+                  <label><input type="checkbox" value="综合服务网" name="releaseRange">综合服务网</label>
+                  <label><input type="checkbox" value="监管系统" name="releaseRange">监管系统</label>
+                  <label><input type="checkbox" value="检测系统" name="releaseRange">检测系统</label>
+                  <label><input type="checkbox" value="执法系统" name="releaseRange">执法系统</label>
+                </span>
+				</div>
+			</li>
+			<li class="gui-col-1">
+				<div class="form-item">
+					<label>公告类型</label>
+					<span class="gui-select">
+        <select id="noticeType" class="Sup_contain_section_contain_input" name="noticeType">
+          <option value="新闻">新闻</option>
+          <option value="公告">公告</option>
+        </select>
+      </span>
+				</div>
+			</li>
+			<li class="gui-col-1">
+				<div class="form-item form-group">
+					<label>标题<span class="color-red">*</span></label>
+					<input type="text" ng-model="sysNoticerelease.title" name="title" placeholder="请输入标题" class="gui-input" data-bv-notempty="true" data-bv-notempty-message="标题不能为空" data-bv-stringlength="true" data-bv-stringlength-max="30" data-bv-stringlength-message="标题不能超过30个字符长度 ">
+				</div>
+			</li>
+			<li class="gui-col-1">
+				<div class="form-item form-group">
+					<label>内容<span class="color-red">*</span></label>
+					<textarea class="gui-textarea" ng-model="sysNoticerelease.content" id="content" name="content" placeholder="请输入内容" data-bv-notempty="true" data-bv-notempty-message="内容不能为空" data-bv-stringlength="true" data-bv-stringlength-max="1300" data-bv-stringlength-message="标题不能超过1300个字符长度 "></textarea>
+					<input type="hidden" ng-model="sysNoticerelease.delFlag" name="delFlag" value="Y">
+				</div>
+			</li>
+		</ul>
+	</form>
+	<div class="text-center">
+
+		<button class="gui-btn mr15" ng-click="updateSysNoticerelease()">提交</button>
+		<button class="gui-btn" ui-sref="index.content.sys/sysNoticerelease/sysNocList">取消</button>
+	</div>
+</div>
+

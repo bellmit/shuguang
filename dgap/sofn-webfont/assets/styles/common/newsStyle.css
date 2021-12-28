@@ -1,0 +1,59 @@
+.gui-TabCut {
+  border: 1px solid #e0e0e0;
+  border-bottom: none;
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  min-height: 50px;
+  background-color: white;
+}
+.gui-TabCut ul {
+  margin-left: 15px;
+}
+.gui-TabCut ul li {
+  width: 120px;
+  height: 40px;
+  line-height: 40px;
+  cursor: pointer;
+  margin: 15px 5px -1px 0px;
+  text-align: center;
+  font-size: 14px;
+  background-color: #f7f7f7;
+  z-index: 1000;
+  border: 1px solid #ccc;
+  border-radius: 5px 5px 0px 0px;
+  border-bottom: 2px solid #33cc99;
+}
+.gui-TabCut ul li:hover {
+  border: 1px solid #33cc99;
+  background-color: white;
+  border-bottom: 2px solid white;
+}
+.gui-TabCut .gui-TabCheck {
+  background-color: white;
+  border: 1px solid #33cc99;
+  border-bottom: 2px solid white;
+}
+.gui-TabCut div {
+  width: 100%;
+  height: 1px;
+  margin-top: -1px;
+  border-top: 1px solid #33cc99;
+}
+.gui-TabLable {
+  background-color: white;
+  width: 40px;
+}
+.gui-conTain {
+  padding-top: 15px;
+  padding-left: 15px!important;
+  padding-right: 15px!important;
+  background-color: white;
+}
+.gui-formSea {
+  display: block;
+  padding: 25px 15px ;
+  border: 1px solid #cccccc;
+  -webkit-box-shadow: 0 2px 4px rgba(204, 204, 204, 0.7);
+          box-shadow: 0 2px 4px rgba(204, 204, 204, 0.7);
+  background-color: #f9fffb;
+}

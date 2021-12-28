@@ -1,0 +1,50 @@
+<link rel="stylesheet" href="assets/css/sys/sysBase/baseAdd.css">
+<div class="gui-breadcrumbs">
+    <a href="">系统管理</a>&gt;
+    <a href="">公告信息管理</a>&gt;
+    <span>查看</span>
+</div>
+
+<div class="gui-section">
+    <div class="list-wrapper">
+        <ul class="gui-list clearfix">
+          <li>
+              <div class="form-item"><label>发布时间</label> <input ng-model="releaseTime" disabled="disabled" type="text" class="gui-input"></div>
+          </li>
+          <li>
+              <div class="form-item"><label>发布人</label> <input ng-model="releasePerson" disabled="disabled" type="text" class="gui-input"></div>
+          </li>
+          <li>
+              <div class="form-item"><label>所属机构</label> <input ng-model="orgName" disabled="disabled" type="text" class="gui-input"></div>
+          </li>
+          <li>
+              <div class="form-item"><label>电话</label> <input ng-model="phone" disabled="disabled" type="text" class="gui-input"></div>
+          </li>
+          <li>
+              <div class="form-item"><label>邮箱</label> <input ng-model="email" disabled="disabled" type="text" class="gui-input"></div>
+          </li>
+          <li>
+              <div class="form-item"><label>用户类型</label> <input ng-model="userType" disabled="disabled" type="text" class="gui-input"></div>
+          </li>
+          <li>
+              <div class="form-item"><label>发布范围</label> <input ng-model="releaseRange" disabled="disabled" type="text" class="gui-input"></div>
+          </li>
+          <li>
+              <div class="form-item"><label>公告类型</label> <input ng-model="noticeType" disabled="disabled" type="text" class="gui-input"></div>
+          </li>
+          <li>
+              <div class="form-item"><label>标题</label>
+                  <textarea  class="gui-input" ng-model="title" disabled="disabled" rows="5"></textarea>
+              </div>
+          </li>
+          <li>
+              <div class="form-item"><label>内容</label> <textarea ng-model="content" disabled="disabled"  class="gui-input" rows="12"></textarea></div>
+          </li>
+        </ul>
+        <div class="text-center">
+          <button class="gui-btn" ng-click="removeLocalStorage()" ui-sref="index.content.sys/sysNoticerelease/sysNocList">返回</button>
+        </div>
+        <br>
+        <br>
+    </div>
+</div>

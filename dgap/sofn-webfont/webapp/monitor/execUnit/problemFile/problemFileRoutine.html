@@ -1,0 +1,109 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+    <div class="gui-breadcrumbs">
+        <a href="">监测系统</a>&gt;
+        <a href="">承担单位</a>&gt;
+        <span>问题单据</span>
+    </div>
+<div class="gui-section">
+    <ul class="gui-tab" role="tablist">
+        <li role="presentation" class="active"><a id="routine" role="tab" data-toggle="tab">例行监测</a></li>
+        <li role="presentation" class="pointer"><a id="special" role="tab" data-toggle="tab">专项监测</a></li>
+        <li role="presentation" class="pointer"><a id="audit" role="tab" data-toggle="tab">监督抽查</a></li>
+        <li role="presentation" class="pointer"><a id="detection" role="tab" data-toggle="tab">受托检测</a></li>
+        <!--<li role="presentation" class="pointer"><a id="others" role="tab" data-toggle="tab">其它</a></li>-->
+    </ul>
+        <div id="list"></div>
+</div>
+
+
+<!-- 基地图片上传model -->
+<div class="modal fade" id="loadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: center">基地图片上传</h4>
+            </div>
+            <div class="modal-body" style="min-height: 300px;">
+                <form method="post" enctype="multipart/form-data" id="eventForm">
+                    <!--<input style="display: inline;width: 225px" id="file-1" multiple="true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="1" type="file"/>-->
+                    <div file-upload options="vm.uploadOptions" files="vm.files"></div>
+                </form>
+                <p> 备注：文件只支持 “jpg, png, jpeg, bmp,gif” 格式，图片大小不超过5M。 </p>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" ng-click="loadFile2()">上传</span>
+                <span class="gui-btn" type="button" data-dismiss="modal">关闭</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 新增文件model -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: center">单据信息</h4>
+            </div>
+            <div class="modal-body" style="min-height: 80px;">
+                <form class="form-horizontal" id="add">
+                    <div class="form-group line-20">
+                        <label class="col-sm-5 control-task text-right">年份:</label>
+                        <select ng-model="selectedYear" id="year" name="year"  class="form-control" style="width: 100px">
+                            <option ng-repeat="x in year">{{x}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group line-20">
+                        <p></p>
+                        <label class="col-sm-5 control-task text-right">所属任务:</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="gui-input" id="taskName" name="taskName" readonly="readonly" placeholder="点击选择任务名称" ng-click="selectTaskName()">
+                            <!--<select ng-model="selectedMonitorTask" id="monitorTask" name="monitorTask" class="form-control">
+                                <option  ng-repeat="x in monitorTask">{{x.taskName}}</option>
+                            </select>-->
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-5 control-task">单据名称:</label>
+                        <div class="col-md-6 controls">
+                            <div class="input-group">
+                                <input type="text" id="fileName" name="fileName" class="form-control text-height-28"/>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" type="button" data-dismiss="modal" onclick="refresh()">关闭</span>
+                <span class="gui-btn" type="button" ng-click="addAdsFile()">上传</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 选择任务名称model -->
+<div class="modal fade" id="taskNameModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" ng-click="cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: center">选择任务名称</h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <div class="gui-section">
+                    <div class="gui-form-group">
+                        <input type="text" class="gui-input" name="sTaskName" placeholder="请输入任务名称">
+                        <span class="gui-btn" id="seachTaskName">查询</span>
+                    </div>
+                    <table id="taskNameGrid" class="gui-table mt15" style="width: 100%">
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" data-dismiss="modal" ng-click="cancel()">关闭</span>
+            </div>
+        </div>
+    </div>
+</div>

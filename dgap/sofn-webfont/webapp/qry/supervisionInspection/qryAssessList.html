@@ -1,0 +1,150 @@
+<link rel="stylesheet" href="assets/css/asms/ass/Assess.css"/>
+<style>
+    table thead tr th{
+        text-align: left;
+    }
+</style>
+<div class="gui-breadcrumbs">
+    <a href="">查询系统</a>&gt;
+    <a href="">监督检查</a>&gt;
+    <span>巡查人员考核</span>
+</div>
+<div class="gui-TabCut">
+    <ul class="clearfix gov-h">
+        <li class="fl gp-r" ui-sref="index.content.qry/supervisionInspection/qryInspectionBaseList">基地巡查</li>
+        <li class="fl gp-r" ui-sref="index.content.qry/supervisionInspection/qryKhTaskList">考核任务</li>
+        <li class="fl gp-r gui-TabCheck" ui-sref="index.content.qry/supervisionInspection/qryAssessList">巡查人员考核</li>
+        <li class="fl gp-r" ui-sref="index.content.qry/supervisionInspection/qryElInspectionList">执法检查</li>
+        <li class="fl gp-r" ui-sref="index.content.qry/supervisionInspection/qryElPersonList">执法人员</li>
+    </ul>
+    <div class="gui-botLine"></div>
+</div>
+<div class="gui-section">
+    <form class="gui-form-group">
+        <div class="clearfix gov-h">
+            <div class="gui-mediaInline">
+                <div >
+                    <span>所属区域</span>
+                <div class="gui-select">
+                <select id="querySheng" >
+                    <option value="">省</option>
+                </select>
+            </div>
+            <div class="gui-select">
+                <select id="queryShi" >
+                    <option value="">市</option>
+                </select>
+            </div>
+            <div class="gui-select">
+                <select id="queryXian" >
+                    <option value="">区/县</option>
+                </select>
+            </div>
+
+            <span>创建时间</span>
+            <input id="dateBegin" name="dateBegin" style="cursor: pointer;width: 120px;" class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('dateEnd');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateEnd\')}'})"/>
+                --
+            <input id="dateEnd" name="dateEnd" class="Wdate gui-input" style="cursor: pointer;width: 120px;margin-left:10px" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'dateBegin\')}'})"/>
+        </div>
+        
+                <!--暂时不设计任务类型的查询-->
+                <!--<span>任务类型</span>-->
+                <!--<div class="gui-select">-->
+                <!--<select name="Maintype" class="Maintype" style="width: 120px">-->
+                <!--<option value="">全部</option>-->
+                <!--<option value="基地">基地</option>-->
+                <!--<option value="主体">主体</option>-->
+                <!--<option value="农资">农资</option>-->
+                <!--<option value="其他">其他</option>-->
+                <!--</select>-->
+                <!--</div>-->
+                <div class="mt15">
+                    <span>考核结果</span>
+                    <div class="gui-select">
+                        <select name="taskResult" class="Jobstatus" style="width: 120px">
+                            <option value="">全部</option>
+                            <option value="合格">合格</option>
+                            <option value="不合格">不合格</option>
+                            <option value="未审核">未审核</option>
+                        </select>
+                    </div>
+                    <span>巡查人员</span>
+                    <input class="gui-input" type="text" name="userName" placeholder="巡查员"/>
+                    <span>考核类型</span>
+                    <div class="gui-select" style="width: 100px;min-width: 100px">
+                        <select name="taskDateType" id="taskDateType">
+                            <option value="">全部</option>
+                            <option value="年度">年度</option>
+                            <option value="月度">月度</option>
+                            <option value="季度">季度</option>
+                        </select>
+                    </div>
+                    <span style="display: none">
+                <span>考核时间</span>
+                  <input id="taskDateYear" name="taskDateYear" onfocus="WdatePicker({skin:'default',dateFmt:'yyyy'})" class="gui-input" placeholder="--年份--"/>
+                </span>
+                    <div class="gui-select" style="display: none">
+                        <select name="taskDateQuarter" id="taskDateQuarter">
+                            <option value="">--季度--</option>
+                            <option value="1">第一季度</option>
+                            <option value="2">第二季度</option>
+                            <option value="3">第三季度</option>
+                            <option value="4">第四季度</option>
+                        </select>
+                    </div>
+                    <div class="gui-select" style="display: none">
+                        <select name="taskDateMonths" id="taskDateMonths">
+                            <option value="">--月份--</option>
+                            <option value="01">一月</option>
+                            <option value="02">二月</option>
+                            <option value="03">三月</option>
+                            <option value="04">四月</option>
+                            <option value="05">五月</option>
+                            <option value="06">六月</option>
+                            <option value="07">七月</option>
+                            <option value="08">八月</option>
+                            <option value="09">九月</option>
+                            <option value="10">十月</option>
+                            <option value="11">十一月</option>
+                            <option value="12">十二月</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="gui-mediaInline mt15">
+                <button id="ToCheck" ng-disabled="!!btnDisabled" class="gui-btn" data-toggle="tooltip" data-placement="right" title="根据输入条件检索列表">查询</button>
+                <button data-toggle="tooltip" data-placement="right" class="gui-btn"  ng-click="resetArea($event)">重置</button>
+            </div>
+        </div>
+    </form>
+    <!--<div class="gui-table-panel clearfix">-->
+        <!--<p class="table-total">符合条件的数据总计: {{tableTotal}} 项</p>-->
+        <!--<button class="gui-btn" ng-click="exportData()">导出</button>-->
+    <!--</div>-->
+    <!--<table id="grid" class="gui-table mt15"-->
+           <!--style="width: 100%">-->
+    <!--</table>-->
+    <!-- 图表面板 -->
+    <div class="gui-table-panel clearfix">
+        <p class="table-total" ng-show="isListView">符合条件的数据总计: {{tableTotal}} 项</p>
+        <!-- 切换视图展示 -->
+        <div class="view-type">展示方式
+            <i class="gui-icon icon-list highlight" ng-class="{'highlight': isListView}" ng-click="toggleView(true)" title="以列表视图展示"></i>
+            <i class="gui-icon icon-chart" ng-class="{'highlight': !isListView }" ng-click="toggleView(false)" title="以图形视图展示"></i>
+        </div>
+        <button class="gui-btn" ng-show="isListView" ng-click="exportData()">导出</button>
+    </div>
+    <!-- 图表区域 -->
+    <div class="gui-content-slide">
+        <div ng-style="{'transform': viewX}" class="content-wrap">
+            <div class="content-block">
+                <table id="grid" class="gui-table table-nowrap mt15" style="width: 100%">
+                </table>
+            </div>
+            <div class="content-block">
+                <div sg-chart options="vm.chartOptions" update="vm.chart"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

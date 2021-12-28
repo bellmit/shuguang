@@ -1,0 +1,41 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css" />
+<div class="gui-breadcrumbs">
+    <a href="">监测系统</a>&gt;
+    <a href="">报告下载</a>&gt;
+    <span>例行监测</span>
+</div>
+<div class="gui-section">
+    <ul class="gui-tab" role="tablist">
+        <li role="presentation" class="active"><a id="routine" role="tab" data-toggle="tab">例行监测</a></li>
+        <li role="presentation" class="pointer"><a id="special" role="tab" data-toggle="tab">专项监测</a></li>
+    </ul>
+    <div class="form-inline well-sm">
+        <div class="form-group has-success has-feedback ">
+            <label class="control-label for=taskName">年度</label>
+            <span class="gui-select">
+                    <select id="year" class="gui-select">
+                        <option value="">全部</option>
+                        <option ng-repeat="x in year">{{x}}</option>
+                    </select>
+                </span>
+        </div>
+        <div class="form-group has-success has-feedback ">
+            <label class="control-label for=taskName">任务名称</label>
+            <span class="gui-select">
+                    <select id="taskName">
+                        <option value="">全部</option>
+                        <option ng-repeat="x in seachTask">{{x.monitorTask}}</option>
+                    </select>
+                </span>
+        </div>
+        <!-- <input type="text" class="form-control" name="fileName" placeholder="请输入报告名称" >-->
+        <span class="gui-btn" id="seachTask">查询</span>
+        <span class="gui-btn " ng-click="resetBtn()">重置</span>
+        <button class="gui-btn fr mr15" id="batchDel" ng-click="batchDownload()">批量下载</button>
+    </div>
+    <div class="clearfix gov-h">
+        <table id="grid" class="gui-table mt15">
+        </table>
+    </div>
+    <a download="" href="" target="blank" id="downFile"></a>
+</div>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.SturgeonPaperMapper">
+
+    <sql id="alias_Column_List_sp">
+      sp.ID, sp.PAPER_A, sp.PAPER_B, sp.PAPER_S, sp.STATUS,
+      sp.TOTAL, sp.OPINION, sp.APPLY_TIME, sp.EXPRESS, sp.APPLY_CODE
+    </sql>
+    <sql id="alias_Column_List_tc">
+      tc.COMP_NAME
+    </sql>
+
+    <select id="listByParams" resultType="com.sofn.fdpi.vo.SturgeonPaperVo">
+        select
+        <include refid="alias_Column_List_tc"/>,
+        <include refid="alias_Column_List_sp"/>
+        from STURGEON_PAPER sp left join TB_COMP tc on sp.COMP_ID = tc.ID
+        <where>
+            sp.DEL_FLAG = 'N' and tc.DEL_FLAG = 'N'
+            <if test="status != null and status != ''">
+                and sp.STATUS = #{status}
+            </if>
+            <if test="isMinistry1 != null and isMinistry1 != ''">
+                and sp.STATUS > '1' and sp.STATUS != '5'
+            </if>
+            <if test="isMinistry2 != null and isMinistry2 != ''">
+                and sp.STATUS > '1' and sp.STATUS != '5'
+            </if>
+            <if test="isPrint != null and isPrint != ''">
+                and sp.STATUS > '3' and sp.STATUS !='5'
+            </if>
+            <if test="compId != null and compId != ''">
+                and sp.COMP_ID = #{compId}
+            </if>
+            <if test="applyType != null and applyType != ''">
+                and sp.APPLY_TYPE = #{applyType}
+            </if>
+            <if test="compName != null and compName != ''">
+                and tc.COMP_NAME like '%' || #{compName} || '%'
+            </if>
+        </where>
+        order by sp.APPLY_TIME desc
+    </select>
+
+    <select id="getTodayMaxApplyNum" resultType="java.lang.String">
+        SELECT max(apply_code) FROM sturgeon_paper WHERE apply_code like #{todayStr}||'%'
+    </select>
+</mapper>

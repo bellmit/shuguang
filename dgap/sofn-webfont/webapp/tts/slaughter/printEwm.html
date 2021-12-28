@@ -1,0 +1,36 @@
+<link rel="stylesheet" href="assets/css/tts/base/baseAdd.css">
+
+<div class="Sup_contain_section col-lg-12 col-xs-12 col-sm-12 col-md-12">
+    <div class="Sup_contain_section_head col-lg-12 col-xs-12 col-sm-12 col-md-12 " style="background-color: white">
+        <h2 id="Sup_contain_section_head_h2">
+            <a href=""><span>追溯系统  > </span></a>
+            <a href=""><span>屠宰管理  > </span></a>
+            <a href=""><span>产品批次管理 > </span></a>
+            <span>  二维码打印 </span>
+        </h2>
+    </div>
+    <p class="col-lg-1 col-xs-0 col-sm-1 col-md-1"></p>
+    <div class="Sup_contain_section_contain_head col-lg-10 col-xs-12 col-sm-10 col-md-10">
+        <p>产品批次信息-打印</p>
+        <ul>
+            <li>产品二维码</li>
+            <li style="width: 400px;height: 260px;">
+                <div id="ewm">
+
+                </div>
+            </li>
+        </ul>
+        <ul>
+            <li><span>产品名称</span> <input ng-model="productName" readonly="readonly" type="text" class="Sup_contain_section_contain_input"></li>
+            <li><span>收获数量</span> <input ng-model="productAmount" readonly="readonly" type="text" class="Sup_contain_section_contain_input"></li>
+            <li><span>收获单位</span> <input ng-model="harvestUnit" readonly="readonly" type="text" class="Sup_contain_section_contain_input"></li>
+            <li><span>收获时间</span> <input ng-model="harvestTime" readonly="readonly" type="text" class="Sup_contain_section_contain_input"></li>
+            <li><span>产品批次</span> <input ng-model="productPc" readonly="readonly" type="text" class="Sup_contain_section_contain_input"></li>
+            <li><span>主体用户码</span> <input ng-model="userIdcode" readonly="readonly" type="text" class="Sup_contain_section_contain_input"></li>
+
+            <li>打印份数  <input type="text"> 份</li>
+        </ul>
+        <button class="Sup_contain_section_contain_head_button" ng-click="prit()">打印</button>
+        <button class="Sup_contain_section_contain_head_button" ng-click="removeLocalStorage()" ui-sref="index.content.tts/slaughter/slaughterStorList">关闭</button>
+    </div>
+</div>

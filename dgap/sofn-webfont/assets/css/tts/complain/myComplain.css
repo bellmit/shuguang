@@ -1,0 +1,26 @@
+.Sup_contain_section_contain_head_button{
+     width: 120px;
+     margin: 0px 60px 0px 150px;
+
+ }
+.Sup_contain_section_contain_head_button1{
+    width: 120px;
+    height: 30px;
+    font-size: 20px;
+    background: #4BA0D6;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    outline: none;
+}
+
+.Sup_contain_section_contain_01 table{
+    font-size: 14px;
+}
+.Sup_contain_section_contain_01 table td,th{
+    text-align: center;
+}
+.form-horizontal .form-group {
+    margin-right: 0px;
+    margin-left: 0px;
+}

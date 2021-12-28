@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agpjyz.mapper.AnalysisMapper">
+    <select id="pollute" resultType="com.sofn.agpjyz.vo.TholdResult">
+    SELECT
+    th.ID,
+    th.CASE1,
+    th.CASE1_VALUE,
+    th.CASE2,
+    th.CASE2_VALUE
+    FROM
+    monitoring_warning mw,
+    threshold th
+    WHERE
+    mw.ID=th.WARNING_ID
+    <if test="testType != null and testType != ''">
+        AND mw.TEST_TYPE = #{testType}
+    </if>
+    <if test="indexId != null and indexId != ''">
+        AND mw.INDEX_ID = #{indexId}
+    </if>
+    <if test="protectId != null and protectId != ''">
+        AND mw.PROTECT_ID =#{protectId}
+    </if>
+
+</select>
+
+    <select id="amount" resultType="com.sofn.agpjyz.vo.TholdResult">
+        SELECT
+        th.ID,
+        th.CASE1,
+        th.CASE1_VALUE,
+        th.CASE2,
+        th.CASE2_VALUE
+        FROM
+        monitoring_warning mw,
+        threshold th
+        WHERE
+        mw.ID=th.WARNING_ID
+        <if test="testType != null and testType != ''">
+            AND mw.TEST_TYPE = #{testType}
+        </if>
+        <if test="specId != null and specId != ''">
+            AND mw.PLANT_ID = #{specId}
+        </if>
+        <if test="indexId != null and indexId != ''">
+            AND mw.INDEX_ID = #{indexId}
+        </if>
+        <if test="protectId != null and protectId != ''">
+            AND mw.PROTECT_ID =#{protectId}
+        </if>
+
+    </select>
+    <select id="param" resultType="com.sofn.agpjyz.model.TargetSpecies">
+
+        select * from   TARGET_SPECIES
+        where
+         PROTECT_ID = #{protectId}
+         and SPEC_ID =  #{specId}
+         and to_char(INPUTER_TIME,'yyyy') =#{year}
+        ORDER BY
+			INPUTER_TIME DESC LIMIT 1
+
+</select>
+    <select id="param1" resultType="com.sofn.agpjyz.model.ThreatFactor">
+
+		SELECT
+			*
+		FROM
+			THREAT_FACTOR
+		WHERE
+			PROTECT_ID =#{protectId}
+		AND TO_CHAR (INPUTER_TIME, 'yyyy') =#{year}
+		ORDER BY
+			INPUTER_TIME DESC
+			LIMIT 1
+
+
+    </select>
+    <resultMap id="rs1" type="com.sofn.agpjyz.vo.TholdDeatilResult">
+        <result column="COLOR_MARK" property="colorMark"></result>
+        <result column="RISK_LEVEL" property="riskLevel"></result>
+    </resultMap>
+    <select id="warning" resultMap="rs1">
+        SELECT
+        a.COLOR_MARK,
+        a.RISK_LEVEL
+        from (
+        SELECT
+        a.ID,
+        a.COLOR_MARK,
+        a.RISK_LEVEL,
+        b.EXCAVATION,
+        b.INPUTER_TIME
+        from
+        (SELECT
+        mw.INDEX_ID,
+        mw.TEST_TYPE,
+        mw.PLANT_ID,
+        mw.PROTECT_ID,
+        th.ID,
+        th.CASE1,
+        th.CASE1_VALUE,
+        th.CASE2,
+        th.CASE2_VALUE,
+        th.COLOR_MARK,
+        th.RISK_LEVEL
+        FROM
+        monitoring_warning mw,
+        threshold th
+        WHERE
+        mw.ID = th.WARNING_ID)a,
+        (
+        SELECT
+        c.PROTECT_ID,
+        c.EXCAVATION,
+        c.INPUTER_TIME
+        FROM
+        (
+        SELECT
+        *
+        FROM
+        THREAT_FACTOR
+        WHERE
+        PROTECT_ID =#{protectId}
+        AND TO_CHAR (INPUTER_TIME, 'yyyy') =#{year}
+        ORDER BY
+        INPUTER_TIME DESC LIMIT 1
+        ) as c
+
+        ) b
+        WHERE
+        a .PROTECT_ID = b.PROTECT_ID
+        AND a .PROTECT_ID = #{protectId}
+        AND a.INDEX_ID = #{indexId}
+        AND a .TEST_TYPE =#{testType}
+        AND TO_CHAR (b.INPUTER_TIME, 'yyyy') = #{year})
+        a
+        where 1=1
+        <if test="th!=null">
+            and
+            <foreach collection="th" item="item" index="i" separator="or" open="(" close=")">
+                <if test="item.case2!=''">
+                    a.id=#{item.id} and a.EXCAVATION ${item.case1} ${item.case1Value}
+                    and a.EXCAVATION ${item.case2} ${item.case2Value}
+                </if>
+                <if test="item.case2==''">
+                    a.id=#{item.id} and a.EXCAVATION ${item.case1} ${item.case1Value}
+                </if>
+            </foreach>
+        </if>
+        ORDER BY RISK_LEVEL desc
+    </select>
+
+    <select id="warningNumber" resultMap="rs1">
+        SELECT
+        a.COLOR_MARK,
+        a.RISK_LEVEL
+        from (
+        SELECT
+        a.ID,
+        a.COLOR_MARK,
+        a.RISK_LEVEL,
+        b.AMOUNT,
+        b.INPUTER_TIME
+        from
+        (SELECT
+        mw.INDEX_ID,
+        mw.TEST_TYPE,
+        mw.PLANT_ID,
+        mw.PROTECT_ID,
+        th.ID,
+        th.CASE1,
+        th.CASE1_VALUE,
+        th.CASE2,
+        th.CASE2_VALUE,
+        th.COLOR_MARK,
+        th.RISK_LEVEL
+        FROM
+        monitoring_warning mw,
+        threshold th
+        WHERE
+        mw.ID = th.WARNING_ID)a,
+        (
+        select c.PROTECT_ID,c.SPEC_ID,c.INPUTER_TIME,c.AMOUNT from
+        (
+        select * from TARGET_SPECIES
+        where
+        PROTECT_ID = #{protectId}
+        and SPEC_ID = #{specId}
+        and to_char(INPUTER_TIME,'yyyy') =#{year}
+        ORDER BY
+        INPUTER_TIME DESC
+        LIMIT 1)  as c
+
+
+        ) b
+        WHERE
+        a .PROTECT_ID = b.PROTECT_ID
+        AND a .PROTECT_ID = #{protectId}
+        AND a.INDEX_ID = #{indexId}
+        AND a .TEST_TYPE =#{testType}
+        and a.PLANT_ID=b.SPEC_ID
+        and a.PLANT_ID=#{specId}
+        AND TO_CHAR (b.INPUTER_TIME, 'yyyy') = #{year})
+        a
+        where
+        1=1
+        <if test="th!=null">
+            and
+            <foreach collection="th" item="item" index="i" separator="or" open="(" close=")">
+                <if test="item.case2!=''">
+                    a.id=#{item.id} and a.AMOUNT ${item.case1} ${item.case1Value}
+                    and a.AMOUNT ${item.case2} ${item.case2Value}
+                </if>
+                <if test="item.case2==''">
+                    a.id=#{item.id} and a.AMOUNT ${item.case1} ${item.case1Value}
+                </if>
+            </foreach>
+        </if>
+        ORDER BY RISK_LEVEL desc
+    </select>
+
+</mapper>

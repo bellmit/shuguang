@@ -1,0 +1,198 @@
+<div class="gui-breadcrumbs">
+    <a href="">销售管理</a>&gt;
+    <a href="">入市销售</a>&gt;
+    <span>入市销售</span>
+</div>
+<!-- 检测机构主体信息-->
+<div class="gui-section">
+    <!--客户信息登记-->
+    <div class="ovh">
+        <div class="gui-page-head">
+            <h3>客户信息</h3>
+        </div>
+        <ul class="gui-list clearfix">
+            <li class="gui-col-2">
+                <div class="form-item">
+                    <label>单位名称</label>
+                    <input type="text" class="gui-input" id="ztmc">
+                    <input type="hidden" id="customerEntityIdCode">
+                </div>
+            </li>
+            <li class="gui-col-2">
+                <div class="form-item">
+                    <label>客户名称</label>
+                    <input type="text" class="gui-input" id="lxr">
+                </div>
+            </li>
+            <li class="gui-col-2">
+                <div class="form-item">
+                    <label>主体地址</label>
+                    <input type="text" class="gui-input" id="ztdz">
+                </div>
+            </li>
+            <li class="gui-col-2">
+                <div class="form-item">
+                    <label>联系电话</label>
+                    <input type="text" class="gui-input" id="lxdh">
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!--常客户信息-->
+    <div>
+        <div class="gui-page-head">
+            <h3>常客户信息</h3>
+        </div>
+        <table class="gui-table">
+            <tr>
+                <td id="kh0"></td>
+                <td id="kh1"></td>
+                <td id="kh2"></td>
+                <td id="kh3"></td>
+                <td id="kh4"></td>
+                <td id="kh5"></td>
+                <td id="khmore"><a href="#" class="gui-btn btn-small" id="findMoreKh" ng-click="findCustomer()">查看更多</a></td>
+            </tr>
+        </table>
+    </div>
+    <div class="gui-form-group">
+        <span class="important">产品名称</span>
+        <!--<input type="hidden" name="in_productId" />
+        <input type="text" class="gui-input" name="in_productName" placeholder="请输入产品名称" readonly="readonly" ng-click="findProduct()" />-->
+        <input type="text" class="gui-input" name="in_productName" placeholder="请输入产品名称">
+    </div>
+    <div class="gui-form-group">
+        <span class="important">收获时间</span>
+        <input id="startDate" name="startDate" readonly="readonly" class="gui-input Wdate" type="text" onfocus="var endDate=$dp.$('endDate');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'endDate\')}'})">至
+        <input id="endDate" name="endDate" class="gui-input Wdate" readonly="readonly" type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}'})">
+        <button class="gui-btn" id="ToCheck">查询</button>
+        <button class="gui-btn" id="ToClean">清空</button>
+        
+    </div><div class="gui-actions"><button class="gui-btn fr" id="ToCpxs" ng-click="subCpxs()"><i class="gui-icon icon-sale"></i>产品销售</button></div>
+    <!-- 销售登记主体信息-->
+    <div>
+        <table id="grid" class="gui-table">
+        </table>
+    </div>
+</div>
+<!-- 选择客户信息  start -->
+<div class="modal fade" id="customer_info" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">
+                    客户信息
+                </h4>
+            </div>
+            <div class="" style="margin-top: 2px;">
+                <div class="form-group">
+                    <div id="search_form" class="form-inline btn-space">
+                        <!--<input id="in_base_name" type="text" class="form-control" ait="基地名称 />-->
+                        <!--<button type="button" class="btn btn-primary" id="search_btbaseName">查询</button>-->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <!-- 表格部分 -->
+                <table id="customerList" class="gui-table">
+                </table>
+            </div>
+            <!-- /.modal-body -->
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+<!--  选择客户信息 end -->
+<!-- 销售确认信息  start -->
+<div class="modal fade" id="countersign" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">
+                    入市销售详细信息确认
+                </h4>
+            </div>
+            <div class="col-md-12" style="margin-top: 2px;">
+                <div class="form-group">
+                    <div id="countersign_search" class="form-inline btn-space">
+                        <!--<input id="in_base_name" type="text" class="form-control" ait="基地名称 />-->
+                        <!--<button type="button" class="btn btn-primary" id="search_btbaseName">查询</button>-->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <table class="gui-table">
+                    <thead>
+                        <tr>
+                            <th colspan="4">客户信息</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>单位名称</td>
+                            <td><span id="s_ztmc"></span></td>
+                            <td>客户名称</td>
+                            <td><span id="s_lxr"></span></td>
+                        </tr>
+                        <tr>
+                            <td>主体地址</td>
+                            <td><span id="s_ztdz"></span></td>
+                            <td>联系电话</td>
+                            <td><span id="s_lxdh"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- 表格部分 -->
+                <div>
+                    <table id="countersignList" class="gui-table">
+                        <thead>
+                            <tr>
+                                <th colspan="4">销售确认</th>
+                            </tr>
+                            <tr>
+                                <td>产品名称</td>
+                                <td>产品码</td>
+                                <td>销售数量</td>
+                                <td>单位</td>
+                            </tr>
+                        </thead>
+                        <tbody id="countersignBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- /.modal-body -->
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" ng-click="toCpxs()" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+<!--  销售确认信息 end -->
+<!-- 选择产品信息  start -->
+<div class="modal fade" id="product_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-style">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel1"> 产品信息</h4>
+            </div>
+            <div class="modal-body">
+                <table id="productList" class="gui-table">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  选择产品信息 end -->

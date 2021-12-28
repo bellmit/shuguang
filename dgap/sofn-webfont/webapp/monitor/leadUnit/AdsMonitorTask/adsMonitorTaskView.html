@@ -1,0 +1,212 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+	<div class="gui-breadcrumbs">
+		<a href="">监测系统</a>&gt;
+		<a href="">牵头单位</a>&gt;
+		<a id="jiance" href="">例行监测</a>&gt;
+		<a id="pubTask" href="">待发布任务</a>&gt;
+		<span>基本信息查看</span>
+	</div>
+<div class="gui-section">
+	<ul class="gui-tab" role="tablist">
+		<li role="presentation" class="active"><a id="adsMonitorTaskView" role="tab" data-toggle="tab">基本信息</a></li>
+		<li role="presentation" class="pointer"><a id="organRegionTaskList" role="tab" data-toggle="tab">机构与地域</a></li>
+		<li role="presentation" class="pointer"><a id="overView" role="tab" data-toggle="tab">总览</a></li>
+	</ul>
+	<div class="Sup_contain_section_contain_head col-lg-10 col-xs-12 col-sm-10 col-md-10">
+		<div id="addOrgTaskForm" class="col-md-10">
+			<form class="form-horizontal" role="form" id="viewForm" name="viewForm">
+				<div class="form-group line-20">
+					<p></p>
+					<div id="tip_info" class="alert alert-warning hide text-center" style="margin-left: 30%;" role="alert"></div>
+					<label class="col-sm-6 control-task">发布单位<span class="this-after1">*</span></label>
+					<div class="col-sm-3">
+						<div class="input-group">
+							<input type="text" ng-model="releaseUnit" readonly="readonly" name="releaseUnit" id="releaseUnit" class="gui-input text-height-28"
+								   data-bv-notempty="true"
+								   data-bv-notempty-message="请填写发布单位"/>
+						</div>
+					</div>
+				</div>
+				<div class="form-group line-20">
+					<p></p>
+					<label class="col-sm-6 control-task">任务名称<span class="this-after1">*</span></label>
+					<div class="col-sm-3">
+						<div class="input-group">
+							<input type="text" ng-model="taskName" readonly="readonly" name="taskName" id="taskName" class="gui-input text-height-28" disabled
+								   data-bv-notempty="true"
+								   data-bv-notempty-message="请填写任务名称"/>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group line-20">
+					<p></p>
+					<label class="col-sm-6 control-task">任务优先级<span class="this-after1">*</span></label>
+					<div class="col-sm-3">
+						<div class="input-group">
+							<input type="text" ng-model="priority" readonly="readonly" name="priority" id="priority" class="gui-input text-height-28" disabled
+								   data-bv-notempty="true"
+								   data-bv-notempty-message="请填写任务优先级"/>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group line-20">
+					<label class="col-sm-6 control-task">监测类型<span class="this-after1">*</span></label>
+					<div class="input-group" >
+						<select ng-model="selectedMonitorClass" id="monitorClass" name="monitorClass" class="gui-select" disabled>
+							<!--<option ng-repeat="x in monitorClass" value="{{x}}">{{x}}</option>-->
+							<option value="例行监测">例行监测</option>
+							<option value="专项监测">专项监测</option>
+							<option value="监督抽查">监督抽查</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group line-20">
+					<label class="col-sm-6 control-task">检测模型<span class="this-after1">*</span></label>
+					<div class="input-group">
+						<select ng-model="selectedCheckModel" id="checkModel" name="checkModel" class="gui-select" style="width: 300px;">
+							<option ng-repeat="x in checkModel" value="{{x.MODEL_ID}}" title="{{ $index }}">{{x.MODEL_NAME}}</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group line-20">
+					<label class="col-sm-6 control-task">年&nbsp&nbsp度<span class="this-after1">*</span></label>
+					<div class="col-md-2 controls">
+						<select ng-model="selectedYear" id="year" class="gui-select" disabled>
+							<option ng-repeat="x in year">{{x}}</option>
+						</select>
+					</div>
+				</div>
+				<!--<input type="hidden" id="batch" value="1" />-->
+				<!--<div class="form-group line-20">-->
+					<!--<label class="col-sm-6 control-task">批&nbsp&nbsp次<span class="this-after1">*</span></label>-->
+					<!--<div class="col-md-2 controls">-->
+						<!--<select type="hidden" ng-model="selectedBatch" id="batch" class="gui-select" disabled>-->
+							<!--<option ng-repeat="x in batch" value="{{x.site}}">{{x.url}}</option>-->
+						<!--</select>-->
+					<!--</div>-->
+				<!--</div>-->
+				<input type="hidden" ng-model="selectedBatch"  class="gui-input text-height-28" />
+				<div class="form-group line-20">
+					<label class="col-sm-6 control-task">抽检分离<span class="this-after1">*</span></label>
+					<div class="col-md-2 controls">
+						<select ng-model="selectedSeparation" id="separation" name="separation" class="gui-select" disabled>
+							<option value="0">否</option>
+							<option value="1">是</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group line-20">
+					<p></p>
+					<label class="col-sm-6 control-task">发布机构所属区域<span class="this-after1">*</span></label>
+					<div class="col-sm-3">
+						<div class="input-group">
+							<input type="text" ng-model="createOrgRegionId" readonly="readonly" name="createOrgRegionId" id="createOrgRegionId" class="gui-input text-height-28" disabled/>
+						</div>
+					</div>
+				</div>
+				<div class="form-group line-20">
+					<p></p>
+					<label class="col-sm-6 control-task">机构级别<span class="this-after1">*</span></label>
+					<div class="col-sm-3">
+						<div class="input-group">
+							<input type="text" ng-model="levelEnum" readonly="readonly" name="levelEnum" id="levelEnum" class="gui-input text-height-28" disabled/>
+						</div>
+					</div>
+				</div>
+				<div class="form-group line-20">
+					<label class="col-sm-6 control-task">开始时间和结束时间<span class="this-after1">*</span></label>
+					<div class="input-group">
+						<div class="col-sm-4">
+							<input ng-model="startTime"  readonly="readonly"  id="startTime" name="startTime" style="cursor: pointer" placeholder="请选择开始时间" class="gui-input"  type="text" />
+						</div>
+						<div class="col-sm-4" style="margin-left: 80px">
+							<input ng-model="endTime"  readonly="readonly"  class="gui-input"  style="cursor: pointer" id="endTime" name="endTime" type="text" />
+						</div>
+					</div>
+				</div>
+				<div class="form-group line-20">
+					<label class="col-sm-6 control-task">抽样信息上报截止时间<span class="this-after1">*</span></label>
+					<div class="col-sm-3">
+						<div class="input-group">
+							<input ng-model="deadline" id="deadline" name="deadline" type="text" size="30" class="Wdate gui-input" placeholder="请选择抽样信息上报截止时间" onfocus = "WdatePicker({dateFmt:'yyyy-MM-dd '}) "/>
+						</div>
+					</div>
+				</div>
+				<div class="form-group line-20">
+					<label class="col-sm-6 control-task">附&nbsp&nbsp件</label>
+					<input class="gui-input" type="text" ng-model="attachment" readonly="readonly" id="attachment">
+							<span id="loadFile" class="gui-btn" style="padding:5px 1px;
+    margin-top: 3px;margin-left: -14px" onclick="loadFile()">上传</span>
+							<!--<a href="" id="view" class="gui-btn" style="color: white;padding: 5px 1px;margin-top: 3px;" target="_blank" ng-click="viewFile()">查看</a>-->
+							<a id="down" download="" class="gui-btn" style="padding: 5px 1px;margin-top: 3px;" target="_blank" ng-click="downFile()">下载</a>
+				</div>
+				<div class="form-group line-20">
+					<label class="col-sm-6 control-task">文件号</label>
+					<div class="col-sm-3">
+						<div class="input-group">
+							<input type="text" ng-model="attachmentcode" readonly="readonly" id="attachmentcode" class="gui-input text-height-28">
+						</div>
+					</div>
+				</div>
+				<div class="form-group line-20">
+					<label class="col-sm-6 control-task">备&nbsp&nbsp注</label>
+					<div class="col-sm-3">
+						<div class="input-group">
+							<textarea ng-model="comment" readonly="readonly" rows="3" cols="50" id="comment" class="gui-input text_sketch"></textarea>
+						</div>
+					</div>
+				</div>
+				<div class="form-group line-20">
+					<span class="gui-btn pull-right mgt-15" id="next" style="display:none;">下一步</span>
+					<span class="gui-btn pull-right mgt-15 mgr-10" id="upDate" style="display:none;">保存</span>
+					<!--<span class="gui-btn pull-right mgt-15 mgr-10" id="removeLocalStorage">关闭</span>-->
+				</div>
+			</form>
+		</div>
+	</div>
+
+
+<!-- 上传附件model -->
+<div class="modal fade" id="loadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-stylemid">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" style="text-align: center">上传附件</h4>
+			</div>
+			<div class="modal-body clearfix gov-h" >
+				<form method="post" enctype="multipart/form-data" id="eventForm">
+					<input style="display: inline;width: 225px" id="file-1" multiple="true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="1" type="file"/>
+				</form>
+			</div>
+			<div class="modal-footer" style="text-align:center;">
+				<span  class="gui-btn" type="button" data-dismiss="modal">关闭</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 上传附件model -->
+<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-stylemid">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" style="text-align: center">图片预览</h4>
+			</div>
+			<div class="modal-body clearfix gov-h">
+				<form method="post" enctype="multipart/form-data" id="veiwForm">
+					<div align="center">
+						<img id="viewImg" src="" class="img-thumbnail">
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer" style="text-align:center;">
+				<span class="gui-btn" type="button" data-dismiss="modal">关闭</span>
+			</div>
+		</div>
+	</div>
+</div>
+</div>

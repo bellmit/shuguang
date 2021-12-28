@@ -1,0 +1,45 @@
+
+.Sup_contain_section_contain_head{
+    text-align: center;
+    overflow: hidden;
+}
+.Sup_contain_section_contain_head p{
+    font-size: 25px;
+    margin:20px 0px 30px 20px;
+}
+.Sup_contain_section_contain_head_button{
+    width: 150px;
+    height: 30px;
+    font-size: 20px;
+    background: #20944d;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    color: white;
+    margin: 0px 150px;
+}
+.ApplyTable{
+    width: 100%;
+}
+.ApplyTable tbody tr td:nth-of-type(1){
+    width: 20%;
+}
+.ApplyTable tbody tr:nth-child(even){
+    background-color: #f6f6f6;
+}
+.Sup_contain_section_contain_head_photo{
+    height: 120px;
+}
+.Sup_contain_section_contain_head_photo textarea{
+    line-height: 30px;
+    outline: none;
+    text-align: left;
+    vertical-align: middle;
+}
+.accessory_img td{
+    padding: 5px 0px;
+}
+.accessory_img td img{
+    width: 50px;
+    height: 50px;
+}

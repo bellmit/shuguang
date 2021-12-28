@@ -1,0 +1,144 @@
+<div class="gui-breadcrumbs">
+    <a href="">内部管理</a>&gt;
+    <a href="">客户信息管理</a>&gt;
+    <span>修改</span>
+</div>
+<div class="gui-section">
+    <div class="ovh">
+        <ul class="gui-list">
+            <li>
+                <div class="form-item">
+                    <span class="title">主体用户码<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjCustomer.userIdCode" name="userIdCode" placeholder="请输入主体用户码" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">客户主体身份码<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjCustomer.customerEntityIdCode" name="customerEntityIdCode" placeholder="请输入客户主体身份码" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">客户主体用户码<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjCustomer.customerUserIdCode" name="customerUserIdCode" placeholder="请输入客户主体用户码" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">IP地址<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjCustomer.ipAddress" name="ipAddress" placeholder="请输入IP地址" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">删除标识<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjCustomer.delflag" name="delflag" placeholder="请输入删除标识" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">创建人<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjCustomer.createby" name="createby" placeholder="请输入创建人" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">修改人<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjCustomer.updateby" name="updateby" class="gui-input" readonly="readonly" onclick="SelectDate(this)">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">修改时间<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjCustomer.updatetime" name="updatetime" class="gui-input" readonly="readonly" onclick="SelectDate(this)">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">客户名称<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjCustomer.name" name="name" placeholder="请输入客户名称" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">客户类型<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjCustomer.type" name="type" placeholder="请输入客户类型" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">组织形式<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjCustomer.organizationType" name="organizationType" placeholder="请输入组织形式" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">法定代表人<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjCustomer.legalRepresentative" name="legalRepresentative" placeholder="请输入法定代表人" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">用户名字<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjCustomer.userName" name="userName" placeholder="请输入用户名字" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">身份证号码<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjCustomer.idCardNo" name="idCardNo" placeholder="请输入身份证号码" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">电话<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjCustomer.phone" name="phone" placeholder="请输入电话" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">邮箱<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjCustomer.email" name="email" placeholder="请输入邮箱" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">地址<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjCustomer.address" name="address" placeholder="请输入地址" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">状态<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjCustomer.status" name="status" placeholder="请输入状态" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">创建时间<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjCustomer.createtime" name="createtime" class="gui-input" readonly="readonly" onclick="SelectDate(this)">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">主体身份码<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjCustomer.entityIdCode" name="entityIdCode" placeholder="请输入主体身份码" class="gui-input">
+                </div>
+            </li>
+            <input type="hidden" ng-model="ttsScltxxcjCustomer.delFlag" name="delFlag">
+            <input type="hidden" ng-model="ttsScltxxcjCustomer.createBy" name="createBy">
+            <input type="hidden" ng-model="ttsScltxxcjCustomer.createTime" name="createTime">
+            <li>
+                <div class="text-center">
+                    <button class="gui-btn" ui-sref="index.content.tts/TtsScltxxcjCustomer/TtsScltxxcjCustomerlist">取消</button>
+                    <button class="gui-btn" ng-disabled="myform.JGname.$dirty&&myform.JGname.$invalid" ng-click="updateTtsScltxxcjCustomer()">提交</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <table id="grid" class="gui-table">
+        </table>
+    </div>
+</div>

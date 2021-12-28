@@ -1,0 +1,40 @@
+<div class="gui-mainBc">
+    <div class="gui-breadcrumbs">
+        <a href="">系统管理</a>&gt;
+        <span>在线编辑管理</span>
+    </div>
+    <div class="gui-section">
+        <div class="gui-form-group" ng-cloak>
+            <input class="gui-input form_input" style="font-size: 13px" type="text" placeholder="标题关键字" ng-model="queryCondition.title">
+            <span class="gui-select" style="width: 120px;">
+                <select class="gui-select form-control" style="font-size: 13px;padding: 0 12px 4px 5px;max-width:100%;min-width:100%;" ng-model="queryCondition.type">
+                    <option value="">选择类别</option>
+                    <option ng-repeat="o in docTypeOptions" value="{{o.dictName}}">{{o.dictName}}</option>
+                </select>
+            </span>
+            <span class="gui-select" style="width: 120px;">
+                <select class="gui-select form-control" style="font-size: 13px;padding: 0 12px 4px 5px;max-width:100%;min-width:100%;" ng-model="queryCondition.applyTo">
+                    <option value="">选择系统</option>
+                    <option ng-repeat="(k, v) in systemOptions" value="{{k}}">{{v}}</option>
+                </select>
+            </span>
+            <input class="gui-input form_input" type="text" placeholder="发布时间" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd', onpicked:createTimeOnPicked, oncleared:createTimeOnCleared})" ng-model="queryCondition.createTime">
+            <input class="gui-input form_input" type="text" placeholder="发布人" ng-model="queryCondition.createBy">
+            <span class="gui-select" style="width: 120px;">
+                <select class="gui-select form-control" style="font-size: 13px;padding: 0 12px 4px 5px;max-width:100%;min-width:100%;" ng-model="queryCondition.enableFlag">
+                    <option value="">发布状态</option>
+                    <option value="Y">启用</option>
+                    <option value="N">禁用</option>
+                </select>
+            </span>
+            <button class="gui-btn" ng-click="queryList();">查询</button>
+        </div>
+        <div class="gui-actions" ng-if="permission.add" ng-cloak>
+            <button class="gui-btn fr" ng-click="addDocument()"><i class="gui-icon icon-add"></i>新增</button>
+        </div>
+        <div>
+            <table id="grid" class="gui-table"></table>
+        </div>
+    </div>
+
+</div>

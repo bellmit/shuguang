@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agpjyz.mapper.KnowledgeBaseAttachmentMapper" >
+
+    <insert id="save" parameterType="java.util.Map">
+        insert into KNOWLEDGE_BASE_ATTACHMENT
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="fileId != null">FILE_ID,</if>
+            <if test="knowledgeId != null">KNOWLEDGE_ID,</if>
+            <if test="fileName != null">FILE_NAME,</if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="fileId != null">#{fileId},</if>
+            <if test="knowledgeId != null">#{knowledgeId},</if>
+            <if test="fileName != null">#{fileName},</if>
+
+        </trim>
+    </insert>
+    <delete id="del" >
+         DELETE  FROM KNOWLEDGE_BASE_ATTACHMENT where ID=#{id}
+    </delete>
+    <update id="update">
+        update KNOWLEDGE_BASE_ATTACHMENT
+        <set>
+        <if test="fileId!= null and fileId != ''">
+            FILE_ID=#{fileId},
+        </if>
+        <if test="fileName != null and fileName!= ''">
+            FILE_NAME=#{fileName},
+        </if>
+         </set>
+         where  KNOWLEDGE_ID=#{id}
+    </update>
+   <select id="getOne" resultType="com.sofn.agpjyz.model.KnowledgeBaseAttachment">
+       select ID,FILE_ID,KNOWLEDGE_ID from KNOWLEDGE_BASE_ATTACHMENT where  ID=#{id}
+   </select>
+    <select id="getOneBySouceId" resultType="com.sofn.agpjyz.model.KnowledgeBaseAttachment">
+       select ID,FILE_ID,KNOWLEDGE_ID from KNOWLEDGE_BASE_ATTACHMENT where  KNOWLEDGE_ID=#{id}
+   </select>
+</mapper>

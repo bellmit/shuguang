@@ -1,0 +1,241 @@
+<style>
+    .onoffswitch {
+        position: relative;
+        width: 83px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        text-align: left;
+        margin: 0 auto;
+        transform: scale(0.7);
+    }
+
+    .onoffswitch-checkbox {
+        display: none!important;
+    }
+
+    .onoffswitch-label {
+        display: block;
+        overflow: hidden;
+        cursor: pointer;
+        border: 1px solid #999999;
+        border-radius: 20px;
+    }
+
+    .onoffswitch-inner {
+        display: block;
+        width: 200%;
+        margin-left: -100%;
+        transition: margin 0.3s ease-in 0s;
+    }
+
+    .onoffswitch-inner:before,
+    .onoffswitch-inner:after {
+        display: block;
+        float: left;
+        width: 50%;
+        height: 30px;
+        padding: 0;
+        line-height: 30px;
+        font-size: 19px;
+        color: white;
+        font-family: Trebuchet, Arial, sans-serif;
+        font-weight: bold;
+        box-sizing: border-box;
+    }
+
+    .onoffswitch-inner:before {
+        content: "ON";
+        padding-left: 13px;
+        background-color: #4FACDB;
+        color: #FFFFFF;
+    }
+
+    .onoffswitch-inner:after {
+        content: "OFF";
+        padding-right: 13px;
+        background-color: #F50E4C;
+        color: #FAFAFA;
+        text-align: right;
+    }
+
+    .onoffswitch-switch {
+        display: block;
+        width: 21px;
+        margin: 4.5px;
+        background: #FFFFFF;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 49px;
+        border: 2px solid #999999;
+        border-radius: 20px;
+        transition: all 0.3s ease-in 0s;
+    }
+
+    .onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-inner {
+        margin-left: 0;
+    }
+
+    .onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-switch {
+        right: 0px;
+    }
+    .newCodeRule{
+    	float: right;
+    }
+    .newCodeRule button{
+    	border:1px solid #ccc;
+    	padding: 5px 10px;
+    	border-radius:5px;
+    	background: #d6d6d6;
+    	margin-bottom: 10px;
+    	margin-right: 30px;
+    }
+    .codeManage{
+    	margin-top: 50px;
+    }
+    th,tr>td{
+    	text-align: center;
+    }
+    td .codeManage_a{
+    	color: blue;
+    	cursor: pointer;
+    }
+</style>
+<div class="gui-mainBc">
+    <div class="gui-breadcrumbs">
+        <a href="javascript:void(0)">系统管理</a>&gt;
+        <span>编码管理</span>
+    </div>
+    <div class="gui-section" style="min-height: 640px;">
+	    <div class="codeManage">
+	    	<div class="gui-actions">
+				<button class="gui-btn fr" ng-click="delRules()">删除编码规则</button>
+				<button class="gui-btn fr ml15 mr15" ng-click="openAddRuleModal()">新增编码规则</button>
+	    	</div>
+	    	<div class="CodeRule_main">
+	    		<table class="gui-table">
+	    			<thead>
+	    				<tr>
+	    					<th>序号</th>
+	    					<th>编码规则名称</th>
+	    					<th>状态</th>
+	    					<th>操作</th>
+	    				</tr>
+	    			</thead>
+	    			<tbody>
+						<tr ng-repeat="rule in rules track by $index">
+							<!--重要提示： ng-true-value ng-false-value 中的值 如果需要显示字符串的话必须使用单引号-->
+							<td><input type="checkbox" ng-true-value="'Y'" ng-false-value="'N'" ng-model="rule.selected" >&nbsp;{{$index + 1}}</td>
+							<td>{{rule.ruleName}}</td>
+							<td>
+								<div class="onoffswitch">
+									<input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox" id="myonoffswitch{{$index + 1}}" ng-change="changeRuleEnable(rule.id, rule.enable)" ng-true-value="'Y'" ng-false-value="'N'" ng-model="rule.enable">
+									<label class="onoffswitch-label" for="myonoffswitch{{$index + 1}}">
+										<span class="onoffswitch-inner"></span>
+										<span class="onoffswitch-switch"></span>
+									</label>
+								</div>
+							</td>
+							<td>
+								<a class="codeManage_a" ng-click="gotoRuleConfig(rule.id, rule.ruleName)" href="javascript:void(0);">修改编码值</a>
+								<a class="codeManage_a" ng-click="gotoRuleView(rule.id, rule.ruleName)" href="javascript:void(0);">查看编码详情</a>
+								<a ng-if="rule.ruleName != '主体身份码' && rule.ruleName != '产品追溯码'" class="codeManage_a" ng-click="openAddCodeSegmentModal(rule.id, true)" href="javascript:void(0);">配置码段规则</a>
+							</td>
+						</tr>
+	    			</tbody>
+	    		</table>
+	    	</div>
+	    </div>
+	</div>
+	<div class="modal fade " id="addRule_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-stylesm" style="padding-top:15px;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">新增编码规则</h4>
+				</div>
+				<div class="modal-body">
+					<form class="default_w_h modal-form form-horizontal" id="ruleModalForm" name="ruleForm" style="text-align: center" novalidate>
+						<div class="form-item form-group">
+							<label>规则名称<span class="color-red">*</span></label>
+							<input type="text" id="ruleName" class="gui-input form-control" name="ruleName" ng-model="addCodingRule.ruleName" maxlength="40" required>
+							<span style="color:red" ng-show="ruleForm.ruleName.$invalid && ruleForm.ruleName.$dirty || ruleForm.ruleName.$invalid && isSubmit">
+                        		<span ng-show="ruleForm.ruleName.$error.required">规则名称不能为空</span>
+                    		</span>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="saveBtn" class="gui-btn" ng-click="addRule()">保存</button>
+					<button type="button" id="closeBtn" class="gui-btn" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal -->
+	</div>
+
+	<div class="modal fade " id="addCodeSegmentModal" tabindex="-1" role="dialog" aria-labelledby="addCodeSegmentModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-style">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="addCodeSegmentModalLabel">配置码段规则</h4>
+				</div>
+				<div class="modal-body">
+					<div class="gui-actions">
+						<label>注意：顺序号越小，码段越靠前</label>
+						<button class="gui-btn fr ml15" ng-click="deleteCodeSegment();"><i class="gui-icon icon-remove"></i>删除</button>
+						<button class="gui-btn fr" ng-click="addCodeSegment();"><i class="gui-icon icon-add"></i>新增</button>
+					</div>
+					<div class="CodeRule_main" style="padding-bottom: 10px;">
+						<table>
+							<thead>
+								<tr>
+									<th width="5%"></th>
+									<th width="35%">码段名称</th>
+									<th width="20%">顺序号</th>
+									<th width="20%">码段位数</th>
+									<th width="20%">生成方式</th>
+								</tr>
+							</thead>
+							<tbody>
+								<form name="codesegmentsForm" novalidate>
+									<tr ng-repeat="codesegment in codesegments track by $index">
+										<td><input type="checkbox" ng-true-value="'Y'" ng-false-value="'N'" ng-model="codesegment.selected"></td>
+										<td>
+											<input type="text" name="segmentName" ng-model="codesegment.segmentName" maxlength="32" style="width: 230px;" placeholder="必填" required>
+										</td>
+										<td>
+											<input type="text" name="seqNo" ng-model="codesegment.seqNo" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" maxlength="1" style="width: 80px;" placeholder="最大值9" required>
+										</td>
+										<td>
+											<input type="text" name="length" ng-model="codesegment.length" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" maxlength="2" style="width: 100px;" placeholder="最大值24" required>
+										</td>
+										<td>
+											<div class="gui-select">
+												<select class="gui-disabled" name="generateMode" ng-model="codesegment.generateMode">
+													<option value="配置固定值">配置固定值</option>
+													<option value="获取参数值">获取参数值</option>
+													<option value="固定日期格式">固定日期格式</option>
+													<option value="顺序生成">顺序生成</option>
+												</select>
+											</div>
+										</td>
+									</tr>
+								</form>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="saveBtn2" class="gui-btn" ng-click="saveCodeSegment()">保存</button>
+					<button type="button" id="closeBtn2" class="gui-btn" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal -->
+	</div>
+</div>

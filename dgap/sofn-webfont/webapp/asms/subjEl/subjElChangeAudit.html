@@ -1,0 +1,65 @@
+<link rel="stylesheet" href="assets/css/asms/subjSv/subjSvChange.css"/>
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">监管系统</a>&gt;
+    <a ui-sref="index.content.asms/subjEl/subjElChangeList">主体管理</a>&gt;
+    <a ui-sref="index.content.asms/subjEl/subjElChangeList">执法机构</a>&gt;
+    <span>注册变更审核</span>
+</div>
+    <div class=" gui-section gui-section-wid" >
+        <h4 class="mt15 mb25">注册变更审核</h4>
+        <form id="changeForm" name="changeForm">
+            <input class="gui-input" type="hidden" ng-model="subjElChangeId">
+            <input class="gui-input" type="hidden" ng-model="subjElChange.applyUserId">
+            <input class="gui-input" type="hidden" ng-model="subjElChange.applyTime">
+            <input class="gui-input" type="hidden" ng-model="subjElChange.applyElId">
+            <table class="ApplyTable" style="text-align: left">
+                <tbody>
+                <tr>
+                    <td style="font-weight: 700">主体信息</td>
+                    <td style="font-weight: 700">变更前</td>
+                    <td style="font-weight: 700">变更后</td>
+                </tr>
+                <tr><td>机构名称</td><td><span ng-bind="subjEl.elName"></span><img class="pull-right" ng-show="subjEl.elName!=subjElChange.elName" src="../assets/imgs/common/arrow.png"/></td><td><span ng-bind="subjElChange.elName"></span></td></tr>
+                <tr><td>机构代码</td><td><span ng-bind="subjEl.elCode"></span><img class="pull-right" ng-show="subjEl.elCode!=subjElChange.elCode" src="../assets/imgs/common/arrow.png"/></td><td><span ng-bind="subjElChange.elCode"></span></td></tr>
+                <tr><td>机构类别</td><td><span ng-bind="subjEl.elType"></span><img class="pull-right" ng-show="subjEl.elType!=subjElChange.elType" src="../assets/imgs/common/arrow.png"/></td><td><span ng-bind="subjElChange.elType"></span></td></tr>
+                <tr><td>机构级别</td><td><span ng-bind="subjEl.elLevelName"></span><img class="pull-right" ng-show="subjEl.elLevelName!=subjElChange.elLevelName" src="../assets/imgs/common/arrow.png"/></td><td><span ng-bind="subjElChange.elLevelName"></span></td></tr>
+                <tr><td>所属区域</td><td><span ng-bind="subjEl.elArea"></span><img class="pull-right" ng-show="subjEl.elArea!=subjElChange.elArea" src="../assets/imgs/common/arrow.png"/></td><td><span ng-bind="subjElChange.elArea"></span></td></tr>
+                <tr><td>通讯地址</td><td><span ng-bind="subjEl.elAddress"></span><img class="pull-right" ng-show="subjEl.elAddress!=subjElChange.elAddress" src="../assets/imgs/common/arrow.png"/></td><td><span ng-bind="subjElChange.elAddress"></span></td></tr>
+                <tr><td>负责人</td><td><span ng-bind="subjEl.elLeader"></span><img class="pull-right" ng-show="subjEl.elLeader!=subjElChange.elLeader" src="../assets/imgs/common/arrow.png"/></td><td><span ng-bind="subjElChange.elLeader"></span></td></tr>
+                <tr><td>负责人电话</td><td><span ng-bind="subjEl.elLeaderPhone"></span><img class="pull-right" ng-show="subjEl.elLeaderPhone!=subjElChange.elLeaderPhone" src="../assets/imgs/common/arrow.png"/></td><td><span ng-bind="subjElChange.elLeaderPhone"></span></td></tr>
+                <tr><td>联系人</td><td><span ng-bind="subjEl.elContact"></span><img class="pull-right" ng-show="subjEl.elContact!=subjElChange.elContact" src="../assets/imgs/common/arrow.png"/></td><td><span ng-bind="subjElChange.elContact"></span></td></tr>
+                <tr><td>联系人电话</td><td><span ng-bind="subjEl.elContactPhone"></span><img class="pull-right" ng-show="subjEl.elContactPhone!=subjElChange.elContactPhone" src="../assets/imgs/common/arrow.png"/></td><td><span ng-bind="subjElChange.elContactPhone"></span></td></tr>
+                <tr><td>联系人QQ</td><td><span>{{subjEl.elContactQQ||'无'}}</span><img class="pull-right" ng-show="subjEl.elContactQQ!=subjElChange.elContactQQ" src="../assets/imgs/common/arrow.png"/></td><td><span>{{subjElChange.elContactQQ||'无'}}</span></td></tr>
+                <tr><td>电子邮箱</td><td><span>{{subjEl.elContactEmail||'无'}}</span><img class="pull-right" ng-show="subjEl.elContactEmail!=subjElChange.elContactEmail" src="../assets/imgs/common/arrow.png"/></td><td><span>{{subjElChange.elContactEmail||'无'}}</span></td></tr>
+                <tr><td>邮编</td><td><span>{{subjEl.elPostcode||'无'}}</span><img class="pull-right" ng-show="subjEl.elPostcode!=subjElChange.elPostcode" src="../assets/imgs/common/arrow.png"/></td><td><span>{{subjElChange.elPostcode||'无'}}</span></td></tr>
+                <tr><td>单位性质</td><td><span>{{subjEl.elUnitNature||'无'}}</span><img class="pull-right" ng-show="subjEl.elUnitNature!=subjElChange.elUnitNature" src="../assets/imgs/common/arrow.png"/></td><td><span>{{subjElChange.elUnitNature||'无'}}</span></td></tr>
+                <tr><td>具体办事机构</td><td><span>{{subjEl.elWorkBody||'无'}}</span><img class="pull-right" ng-show="subjEl.elWorkBody!=subjElChange.elWorkBody" src="../assets/imgs/common/arrow.png"/></td><td><span>{{subjElChange.elWorkBody||'无'}}</span></td></tr>
+                <tr><td>执法人数</td><td><span>{{subjEl.elPeopleNum||'无'}}</span><img class="pull-right" ng-show="subjEl.elPeopleNum!=subjElChange.elPeopleNum" src="../assets/imgs/common/arrow.png"/></td><td><span>{{subjElChange.elPeopleNum||'无'}}</span></td></tr>
+                <tr class="Sup_contain_section_contain_head_photo">
+                    <td style="vertical-align: middle">变更原因</td>
+                    <td colspan="2" style="text-align: left;">
+                    <textarea class="gui-textarea form-control" rows="3" readonly="readonly" ng-model="subjElChange.applyReason">
+                    </textarea>
+                </td></tr>
+                <tr class="Sup_contain_section_contain_head_photo">
+                    <td style="vertical-align: middle">审核意见<span style="color:red;">*</span></td>
+                    <td colspan="2" style="text-align: left;" class="form-group">
+                    <textarea placeholder="请输入审核意见" rows="3" name="auditSuggestion" ng-model="subjElChange.auditSuggestion"
+                              class="gui-textarea form-control"
+                              data-bv-notempty="true"
+                              data-bv-notempty-message="审核意见不能为空"
+                              data-bv-stringlength="true"
+                              data-bv-stringlength-max="300"
+                              data-bv-stringlength-message="审核意见不能超过300个字符">
+                    </textarea>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+        <div align="center" class="mt15 mb25">
+            <button id="passBut" style="display: none;" class="gui-btn" ng-click="auditSubjElChange(1)">审核通过</button>
+            <button id="refuseBut" style="display: none;" class="gui-btn" ng-click="auditSubjElChange(2)">审核不通过</button>
+            <button id="closeBut" class="gui-btn" ng-click="removeLocalStorage()">关闭</button>
+        </div>
+    </div>

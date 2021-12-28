@@ -1,0 +1,22 @@
+spring:
+    redis:
+      host: 10.0.50.101
+      port: 6379
+      timeout: 6000ms
+      lettuce:
+          pool:
+              max-active: 100
+              max-wait: -1ms
+              max-idle: 10
+      database: 0
+      #password: gjzspt@sofn
+
+eureka:
+  instance:
+    hostname: ${spring.cloud.client.ip-address}
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://localhost:8880/eureka/
+
+

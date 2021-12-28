@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agzirz.mapper.XgxxsjMapper" >
+
+  <resultMap id="BaseResultMap" type="com.sofn.agzirz.model.Xgxxsj" >
+    <result column="XGXXSJ_NO" property="xgxxsjNo" jdbcType="VARCHAR" />
+    <result column="CN_NAME" property="cnName" jdbcType="VARCHAR" />
+    <result column="LATIN_NAME" property="latinName" jdbcType="VARCHAR" />
+    <result column="SCHO_NAME" property="schoName" jdbcType="VARCHAR" />
+    <result column="APPEAR_CHARA" property="appearChara" jdbcType="VARCHAR" />
+    <result column="BIOLOG_CHARA" property="biologChara" jdbcType="VARCHAR" />
+    <result column="HAZARD_CHARA" property="hazardChara" jdbcType="VARCHAR" />
+    <result column="SPECIAL_LAW" property="specialLaw" jdbcType="VARCHAR" />
+    <result column="RELATED_LAW" property="relatedLaw" jdbcType="VARCHAR" />
+    <result column="HAVE_MEASURE" property="haveMeasure" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION_OF_MEASURE" property="descriptionOfMeasure" jdbcType="VARCHAR" />
+    <result column="INTRUSION_EVENT" property="intrusionEvent" jdbcType="VARCHAR" />
+    <result column="PRECON_CASE" property="preconCase" jdbcType="VARCHAR" />
+    <result column="REFE_FILE" property="refeFile" jdbcType="VARCHAR" />
+    <result column="RELEVANT_FILES" property="relevantFiles" jdbcType="VARCHAR" />
+    <result column="REPORT_USER" property="reportUser" jdbcType="VARCHAR" />
+    <result column="REPORT_TIME" property="reportTime" jdbcType="TIMESTAMP" />
+    <result column="ENABLE_STATUS" property="enableStatus" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    XGXXSJ_NO,CN_NAME,LATIN_NAME,SCHO_NAME,APPEAR_CHARA,BIOLOG_CHARA,HAZARD_CHARA,SPECIAL_LAW,RELATED_LAW,
+    HAVE_MEASURE,DESCRIPTION_OF_MEASURE,INTRUSION_EVENT,PRECON_CASE,REFE_FILE,RELEVANT_FILES,REPORT_USER,REPORT_TIME,ENABLE_STATUS
+  </sql>
+
+
+  <select id="getXgxxsjByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM XGXXSJ
+    <where>
+      1=1 AND ENABLE_STATUS = 'Y'
+      <if test="cnName != null and cnName != ''">
+        and CN_NAME like '%'||#{cnName}||'%'
+      </if>
+      <if test="schoName != null and schoName != ''">
+        and SCHO_NAME like '%'||#{schoName}||'%'
+      </if>
+      <if test="haveMeasure != null and haveMeasure != ''">
+        and HAVE_MEASURE = #{haveMeasure}
+      </if>
+      <if test="colName!=null and colName!=''">
+        and ${colName} = #{colVal}
+      </if>
+      <if test="dateBegin != null and ''!=dateBegin">and to_date(#{dateBegin},'yyyy-MM-dd') &lt; REPORT_TIME</if>
+      <if test="dateEnd != null and ''!=dateEnd">and to_date(#{dateEnd},'yyyy-MM-dd') &gt; REPORT_TIME</if>
+
+    </where>
+
+  </select>
+
+
+  <select id="getXgxxsjById" parameterType="java.lang.String" resultType="com.sofn.agzirz.model.Xgxxsj">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM XGXXSJ
+    WHERE XGXXSJ_NO = #{id} AND ENABLE_STATUS = 'Y'
+
+  </select>
+
+
+</mapper>

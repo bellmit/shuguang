@@ -1,0 +1,39 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css" />
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">查询系统</a>&gt;
+    <a href="" ng-click='rebackBtn()'>检测任务</a>&gt;
+    <span>任务完成情况</span>
+</div>
+<div class="gui-section">
+    <!--<div class="gui-form-group clearfix">-->
+    <!--<span class="color-gray">监测类型</span>-->
+    <!--<div class="gui-select">-->
+    <!--<select id="monitorClass" name="monitorClass">-->
+    <!--<option value="">全部</option>-->
+    <!--<option ng-repeat="x in monitorClass">{{x}}</option>-->
+    <!--</select>-->
+    <!--</div>-->
+    <!--<span class="color-gray">年份</span>-->
+    <!--<div class="gui-select">-->
+    <!--<select id="year" name="year">-->
+    <!--<option value="">全部</option>-->
+    <!--<option ng-repeat="x in year">{{x}}</option>-->
+    <!--</select>-->
+    <!--</div>-->
+    <!--</div>-->
+    <div class="gui-form-group clearfix">
+        <span class="color-gray">任务名称</span>
+        <input type="text" class="gui-input" id="taskName" name="taskName" readonly="readonly">
+        <span class="gui-btn" ng-click="rebackBtn()">返回</span>
+    </div>
+
+    <!--<div id="taskStatusStatus" style="display: none;">-->
+    <!--<span class="color-gray">任务状态:</span>-->
+    <!--<span class="color-red" id="TaskStatusValue">已发布</span>-->
+    <!--</div>-->
+
+    <div class="clearfix gov-h">
+        <table id="grid" class="gui-table mt15" >
+        </table>
+    </div>
+</div>

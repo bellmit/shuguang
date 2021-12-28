@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<p>
+    日期　从：<input id="beginDate" style="cursor: pointer" readonly="readonly" class="Wdate" type="text" onFocus="var endDate=$dp.$('lessDate');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'lessDate\')}'})"/>
+    至
+    <input id="lessDate" class="Wdate" style="cursor: pointer" readonly="readonly" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'beginDate\')}'})"/>
+</p>
+<p>
+    日期　从：<input id="beginDate1" style="cursor: pointer" readonly="readonly" class="Wdate" type="text" onFocus="var endDate=$dp.$('lessDate1');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'lessDate1\')}'})"/>
+    至
+    <input id="lessDate1" class="Wdate" style="cursor: pointer" readonly="readonly" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'beginDate1\')}'})"/>
+</p>
+<h1>demo说明：</h1>
+<p>直接将上面代码复制过去，不用再更改参数，样式根据需要自己设置，若需要自己设置手动输入，取消（readonly="readonly"）属性即可</p>
+<p>
+    详细参数可以参考官方api :<a href="http://hongtaq.iteye.com/blog/1498057">http://hongtaq.iteye.com/blog/1498057</a>
+</p>
+<!--只显示年份-->
+<input id="Ddl_Year" type="text" runat="server"  onfocus="WdatePicker({skin:'default',dateFmt:'yyyy'})" class="Wdate" style=" width:80px;"/>
+<!--单独日期-->
+<input name="birthday" type="text" size="15" class="Wdate"  onfocus = "WdatePicker({dateFmt:'yyyy-MM-dd '}) "/>
+<script src="WdatePicker.js"></script>
+</body>
+</html>

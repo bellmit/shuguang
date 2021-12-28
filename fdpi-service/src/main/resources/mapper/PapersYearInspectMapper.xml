@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.PapersYearInspectMapper" >
+    <resultMap id="baseResultMap" type="com.sofn.fdpi.vo.PapersYearInspectVo">
+        <id column="ID" property="id" jdbcType="VARCHAR"></id>
+        <result column="YEAR" property="year" jdbcType="VARCHAR"></result>
+        <result column="TB_COMP_ID" property="compId" jdbcType="VARCHAR"></result>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"></result>
+        <result column="APPLY_NUM" property="applyNum" jdbcType="VARCHAR"></result>
+        <result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR"></result>
+        <result column="COMP_NAME" property="compName" jdbcType="VARCHAR"></result>
+        <result column="COMP_TYPE" property="compType" jdbcType="VARCHAR"></result>
+        <result column="LINKMAN" property="linkMan" jdbcType="VARCHAR"></result>
+        <result column="REGION_IN_CH" property="regionInCh" jdbcType="VARCHAR"></result>
+        <result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR"></result>
+    </resultMap>
+    <resultMap id="inspectAndCompResultMap" type="com.sofn.fdpi.vo.PapersYearInspectViewVo">
+        <id column="ID" property="id" jdbcType="VARCHAR"></id>
+        <result column="YEAR" property="year" jdbcType="VARCHAR"></result>
+        <result column="TB_COMP_ID" property="compId" jdbcType="VARCHAR"></result>
+        <result column="COMP_NAME" property="compName" jdbcType="VARCHAR"></result>
+        <result column="COMP_PROVINCE" property="compProvince" jdbcType="VARCHAR"></result>
+        <result column="COMP_CITY" property="compCity" jdbcType="VARCHAR"></result>
+        <result column="COMP_DISTRICT" property="compDistrict" jdbcType="VARCHAR"></result>
+        <result column="REGION_IN_CH" property="regionInCh" jdbcType="VARCHAR"></result>
+        <result column="CONTACT_ADDRESS" property="contactAddress" jdbcType="VARCHAR"></result>
+        <result column="POST_ADDRESS" property="postAddress" jdbcType="VARCHAR"></result>
+        <result column="LEGAL" property="legal" jdbcType="VARCHAR"></result>
+        <result column="LINKMAN" property="LinkMan" jdbcType="VARCHAR"></result>
+        <result column="PHONE" property="phone" jdbcType="VARCHAR"></result>
+        <result column="EMAIL" property="email" jdbcType="VARCHAR"></result>
+        <result column="BUS_LICENSE_FILE_ID" property="busLicenseFileId" jdbcType="VARCHAR"></result>
+        <result column="BUS_LICENSE_FILE_NAME" property="busLicenseFileName" jdbcType="VARCHAR"></result>
+        <result column="BUS_LICENSE_FILE_PATH" property="busLicenseFilePath" jdbcType="VARCHAR"></result>
+        <result column="COMP_CODE" property="compCode" jdbcType="VARCHAR"/>
+        <result column="APPLY_NUM" property="applyNum" jdbcType="VARCHAR"/>
+        <result column="COMP_TYPE" property="compType" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="listSpeciesResultMap" type="com.sofn.fdpi.vo.SpecieVoInPapersYear">
+        <result column="INSPECT_RETAIL_ID" property="inspectRetailId" jdbcType="VARCHAR"></result>
+        <result column="SPECIES_ID" property="speciesId" jdbcType="VARCHAR"></result>
+        <result column="PAPERS_ID" property="papersId" jdbcType="VARCHAR"></result>
+        <result column="PAPERS_TYPE" property="papersType" jdbcType="VARCHAR"></result>
+        <result column="PAPERS_TYPE_NAME" property="papersTypeName" jdbcType="VARCHAR"></result>
+        <result column="PAPERS_NUMBER" property="papersNumber" jdbcType="VARCHAR"></result>
+        <result column="DATA_CLOS" property="dataClos" jdbcType="VARCHAR"></result>
+        <result column="COMP_NAME" property="compName" jdbcType="VARCHAR"></result>
+        <result column="SPE_NAME" property="speciesName" jdbcType="VARCHAR"></result>
+        <result column="ISSUE_NUM" property="speciesNumber" jdbcType="INTEGER"></result>
+        <result column="SIGNBOARD_NUM" property="signboardNumber" jdbcType="INTEGER"></result>
+    </resultMap>
+
+    <resultMap id="listSpeciesResultMapNew" type="com.sofn.fdpi.vo.SpecieVoInPapersYear">
+        <result column="INSPECT_RETAIL_ID" property="inspectRetailId" jdbcType="VARCHAR"></result>
+<!--        <result column="PAPERS_ID" property="papersId" jdbcType="VARCHAR"></result>-->
+        <result column="SPECIES_ID" property="speciesId" jdbcType="VARCHAR"></result>
+        <result column="SPE_NAME" property="speciesName" jdbcType="VARCHAR"></result>
+        <result column="ISSUE_NUM" property="speciesNumber" jdbcType="INTEGER"></result>
+        <result column="SIGNBOARD_NUM" property="signboardNumber" jdbcType="INTEGER"></result>
+    </resultMap>
+
+    <resultMap id="listPapersInYearResultMap" type="com.sofn.fdpi.vo.PapersVoInPapersYear">
+        <result column="PAPERS_ID" property="papersId" jdbcType="VARCHAR"></result>
+        <result column="PAPERS_TYPE" property="papersType" jdbcType="VARCHAR"></result>
+        <result column="PAPERS_TYPE_NAME" property="papersTypeName" jdbcType="VARCHAR"></result>
+        <result column="PAPERS_NUMBER" property="papersNumber" jdbcType="VARCHAR"></result>
+        <result column="COMP_NAME" property="compName" jdbcType="VARCHAR"></result>
+        <result column="SPE_NAMES" property="speciesNames" jdbcType="VARCHAR"></result>
+        <result column="DATA_CLOS" property="dataClos" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        A.ID,A.YEAR,A.TB_COMP_ID,A.STATUS,A.APPLY_NUM,B.COMP_TYPE
+        <!-- 1：未上报；2：上报；3：初审退回；4;初审通过；5：复审退回；6：复审通过;7撤回-->
+            ,(case A.STATUS when '1' then '未上报'
+                                    WHEN '2' THEN '上报'
+                                    WHEN '3' THEN '审核退回'
+                                    WHEN '4' THEN '审核通过'
+                                    WHEN '5' THEN '复审退回'
+                                    WHEN '6' THEN '复审通过'
+                                    WHEN '7' THEN '撤回'
+                end) STATUS_NAME
+            ,B.COMP_NAME,B.LINKMAN,B.REGION_IN_CH,A.CREATE_TIME
+    </sql>
+    <select id="listByParams" parameterType="java.util.Map" resultMap="baseResultMap">
+        select B.COMP_PROVINCE, COMP_CITY, COMP_DISTRICT,
+        <include refid="Base_Column_List"></include>
+        from papers_year_inspect A
+        left join TB_COMP B on A.TB_COMP_ID=B.ID
+        <where>
+            A.DEL_FLAG='N'
+            <if test="year!=null and year!=''">
+                and A.YEAR=#{year}
+            </if>
+            <if test="status!=null and status!=''">
+                and A.STATUS=#{status}
+            </if>
+            <if test="provinceCode!=null and provinceCode!=''">
+                and B.COMP_PROVINCE=#{provinceCode}
+            </if>
+            <if test="cityCode!=null and cityCode!=''">
+                and B.COMP_CITY=#{cityCode}
+            </if>
+            <if test="districtCode!=null and districtCode!=''">
+                and B.COMP_DISTRICT=#{districtCode}
+            </if>
+            <if test="compName!=null and compName!=''">
+                and B.COMP_NAME like '%'||#{compName}||'%'
+            </if>
+            <if test="compId!=null and compId!=''">
+                and A.TB_COMP_ID=#{compId}
+            </if>
+            <if test="ignore!=null and ignore!=''">
+                and A.STATUS!=#{ignore}
+            </if>
+            <if test="sysOrgProvince!=null and sysOrgProvince!=''">
+                and B.COMP_PROVINCE=#{sysOrgProvince}
+            </if>
+            <if test="sysOrgCity!=null and sysOrgCity!=''">
+                and B.COMP_CITY = #{sysOrgCity}
+            </if>
+            <if test="sysOrgDistrict!=null and sysOrgDistrict!=''">
+                and B.COMP_DISTRICT=#{sysOrgDistrict}
+            </if>
+            <if test="sysStatus!=null and sysStatus!=''">
+                and A.STATUS &gt;=#{sysStatus}
+            </if>
+            <choose>
+                <!--区级初审权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.fdpi.constants.Constants@REGION_TYPE_COUNTY">
+                    and A.STATUS >= '2' and A.STATUS !='7' and B.COMP_DISTRICT = #{regionLastCode}
+                </when>
+                <!--市级初审权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.fdpi.constants.Constants@REGION_TYPE_CITY">
+                    and A.STATUS >= '2' and A.STATUS !='7' and B.COMP_CITY = #{regionLastCode}
+                </when>
+                <!--省级有初审和复审权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.fdpi.constants.Constants@REGION_TYPE_PROVINCE">
+                    and A.STATUS >= '2' and A.STATUS !='7' and B.COMP_PROVINCE = #{regionLastCode}
+                </when>
+            </choose>
+        </where>
+        order by A.CREATE_TIME desc
+    </select>
+    <select id="list" parameterType="java.util.Map" resultMap="baseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from papers_year_inspect A
+        left join TB_COMP B on A.TB_COMP_ID=B.ID
+        <where>
+            A.DEL_FLAG='N'
+            <if test="year!=null and year!=''">
+                and A.YEAR=#{year}
+            </if>
+            <if test="status!=null and status!=''">
+                and A.STATUS=#{status}
+            </if>
+            <if test="provinceCode!=null and provinceCode!=''">
+                and B.COMP_PROVINCE=#{provinceCode}
+            </if>
+            <if test="cityCode!=null and cityCode!=''">
+                and B.COMP_CITY=#{cityCode}
+            </if>
+            <if test="districtCode!=null and districtCode!=''">
+                and B.COMP_DISTRICT=#{districtCode}
+            </if>
+            <if test="compName!=null and compName!=''">
+                and B.COMP_NAME like '%'||#{compName}||'%'
+            </if>
+            <if test="compId!=null and compId!=''">
+                and A.TB_COMP_ID=#{compId}
+            </if>
+            <if test="ignore!=null and ignore!=''">
+                and A.STATUS!=#{ignore}
+            </if>
+<!--            <if test="sysDirectOrgId!=null and sysDirectOrgId!=''">-->
+<!--                and B.DIRECLY_ID=#{sysDirectOrgId}-->
+<!--            </if>-->
+            <if test="sysOrgProvince!=null and sysOrgProvince!=''">
+                and B.COMP_PROVINCE=#{sysOrgProvince}
+            </if>
+            <if test="sysOrgCity!=null and sysOrgCity!=''">
+                and B.COMP_CITY = #{sysOrgCity}
+            </if>
+            <if test="sysOrgDistrict!=null and sysOrgDistrict!=''">
+                and B.COMP_DISTRICT=#{sysOrgDistrict}
+            </if>
+            <if test="sysStatus!=null and sysStatus!=''">
+                and A.STATUS &gt;=#{sysStatus}
+            </if>
+            <if test="excludeCityCodeList!=null">
+               and B.COMP_CITY not in
+                <foreach collection="excludeCityCodeList" index="index" item="item" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="excludeAreaCodeList!=null">
+                and B.COMP_DISTRICT not in
+                <foreach collection="excludeAreaCodeList" index="index" item="item" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+<!--            <if test="sysDirectAndProvinceOrgId!=null and sysDirectAndProvinceOrgId!=''">-->
+<!--                &#45;&#45; 既是直属又是省级,能看直属上报和省内初审通过的数据-->
+<!--                and ((B.DIRECLY_ID=#{sysDirectAndProvinceOrgId} and A.STATUS &gt;='2') or (B.COMP_PROVINCE=#{sysOrgProvince} and A.STATUS &gt;='4'))-->
+<!--            </if>-->
+        </where>
+        order by A.CREATE_TIME desc
+    </select>
+    <select id="getInspectById" resultMap="inspectAndCompResultMap">
+        select A.ID,A.YEAR,A.TB_COMP_ID,b.COMP_NAME,b.COMP_TYPE,A.APPLY_NUM
+                ,B.COMP_PROVINCE, B.COMP_CITY, B.COMP_DISTRICT,B.REGION_IN_CH,B.CONTACT_ADDRESS
+                ,B.POST_ADDRESS,B.LEGAL,B.LINKMAN,B.PHONE
+                ,B.EMAIL,B.BUS_LICENSE_FILE_ID,B.BUS_LICENSE_FILE_NAME,B.BUS_LICENSE_FILE_PATH
+        from papers_year_inspect A
+        left join TB_COMP B on A.TB_COMP_ID=B.ID
+        <where>
+            and A.ID=#{inspectId}
+        </where>
+        LIMIT 1 OFFSET 0
+    </select>
+    <select id="getCompanyByComId" resultMap="inspectAndCompResultMap">
+        select '' AS ID,'' AS YEAR,B.ID AS TB_COMP_ID,b.COMP_NAME,b.COMP_CODE,b.COMP_TYPE
+        ,B.COMP_PROVINCE, B.COMP_CITY, B.COMP_DISTRICT,B.REGION_IN_CH,B.CONTACT_ADDRESS
+        ,B.POST_ADDRESS,C.LEGAL,B.LINKMAN,B.PHONE
+        ,B.EMAIL,B.BUS_LICENSE_FILE_ID,B.BUS_LICENSE_FILE_NAME,B.BUS_LICENSE_FILE_PATH
+        from TB_COMP B
+        left join (	select COMP_ID,LEGAL
+                    from PAPERS
+                    where PAR_STATUS='4'
+                    AND COMP_ID=#{compId}
+                    order by UPDATE_TIME DESC
+                    ) C ON B.ID=C.COMP_ID
+        <where>
+            and B.ID=#{compId}
+        </where>
+        LIMIT 1 OFFSET 0
+    </select>
+
+    <select id="listSpeciesByCompId" resultMap="listSpeciesResultMap">
+        select  '' as INSPECT_RETAIL_ID, A.SPE_ID AS SPECIES_ID, A.ID PAPERS_ID,A.PAPERS_TYPE
+                  ,(CASE A.PAPERS_TYPE WHEN '1' THEN '人工繁育许可证' WHEN '2' THEN '驯养繁殖许可证' WHEN '3' THEN '经营利用许可证' END) PAPERS_TYPE_NAME
+                    ,A.PAPERS_NUMBER,A.DATA_CLOS,C.COMP_NAME,B.SPE_NAME
+                    ,coalesce(D.SPE_NUM, 0) ISSUE_NUM
+                    ,coalesce(E.SIGNBOARD_NUM,0) SIGNBOARD_NUM
+        from PAPERS A
+        inner join PAPERS_SPEC spe on A.ID=SPE.PAPERS_ID AND A.PAR_STATUS='4' AND A.IS_ENABLE='1' AND spe.DEL_Flag='N'
+        left join TB_SPECIES B ON spe.SPEC_ID=B.ID
+        left join TB_COMP C ON A.COMP_ID=C.ID
+        left join COMP_SPE_STOCK D ON A.COMP_ID=D.COMP_ID AND A.SPE_ID=D.SPECIES_ID
+        left join (select COMP_ID,SPE_ID,count(0) AS SIGNBOARD_NUM
+                             from SIGNBOARD
+                            <where>
+                                COMP_ID=#{compId}
+                                and DEL_Flag='N'
+                                and STATUS!='3'
+                            </where>
+                            group by COMP_ID,SPE_ID) E on A.COMP_ID=E.COMP_ID AND spe.SPEC_ID=E.SPE_ID
+        <where>
+            A.COMP_ID=#{compId}
+            AND A.DEL_Flag='N'
+            AND A.PAR_STATUS='4'
+        </where>
+        order by A.CREATE_TIME DESC
+    </select>
+
+    <select id="listSpeciesByCompIdNew" resultMap="listSpeciesResultMapNew">
+        select  '' as INSPECT_RETAIL_ID
+            -- , A.ID AS PAPERS_ID
+            , spe.SPEC_ID AS SPECIES_ID
+            ,B.SPE_NAME
+            ,coalesce(D.SPE_NUM, 0) ISSUE_NUM
+            ,coalesce(E.SIGNBOARD_NUM,0) SIGNBOARD_NUM
+        from PAPERS A
+        INNER join PAPERS_SPEC spe on A.ID=SPE.PAPERS_ID AND A.PAR_STATUS='4' AND A.IS_ENABLE='1' AND spe.DEL_Flag='N'
+        left join TB_SPECIES B ON spe.SPEC_ID=B.ID
+        left join COMP_SPE_STOCK D ON A.COMP_ID=D.COMP_ID AND spe.SPEC_ID=D.SPECIES_ID
+        left join (select COMP_ID,SPE_ID,count(0) AS SIGNBOARD_NUM
+                   from SIGNBOARD
+                    <where>
+                        COMP_ID=#{compId}
+                        and DEL_Flag='N'
+                        and STATUS!='3'
+                    </where>
+                    group by COMP_ID,SPE_ID) E on A.COMP_ID=E.COMP_ID AND spe.SPEC_ID=E.SPE_ID
+        <where>
+            A.COMP_ID=#{compId}
+            AND A.DEL_Flag='N'
+            AND A.PAR_STATUS='4'
+        </where>
+        -- order by A.CREATE_TIME DESC
+        group by spe.SPEC_ID ,B.SPE_NAME,coalesce(D.SPE_NUM,0),coalesce(E.SIGNBOARD_NUM,0)
+    </select>
+
+    <select id="listPapersInYearByCompId" resultMap="listPapersInYearResultMap">
+        select A.ID PAPERS_ID,A.PAPERS_TYPE
+        ,(CASE A.PAPERS_TYPE WHEN '1' THEN '人工繁育许可证' WHEN '2' THEN '驯养繁殖许可证' WHEN '3' THEN '经营利用许可证' END) PAPERS_TYPE_NAME
+        ,A.PAPERS_NUMBER,B.COMP_NAME
+        ,C.SPE_NAMES
+        ,A.DATA_CLOS
+        FROM PAPERS A
+        left join TB_COMP B on A.COMP_ID=B.ID
+        left join (SELECT C.PAPERS_ID,replace(wmsys.wm_concat(D.SPE_NAME),',','、') SPE_NAMES
+        FROM PAPERS_SPEC C LEFT JOIN TB_SPECIES D ON C.SPEC_ID=D.ID where C.DEL_Flag='N' GROUP BY C.PAPERS_ID
+        ) C on A.ID=C.PAPERS_ID
+        <where>
+            A.COMP_ID=#{compId}
+            AND A.DEL_Flag='N'
+            AND A.PAR_STATUS='4'
+        </where>
+        order by A.CREATE_TIME DESC
+    </select>
+
+    <select id="listSpeciesById" resultMap="listSpeciesResultMap">
+        select  A.ID AS INSPECT_RETAIL_ID,B.SPE_ID AS SPECIES_ID,B.ID AS PAPERS_ID,B.PAPERS_TYPE
+			 ,(CASE B.PAPERS_TYPE WHEN '1' THEN '人工繁育许可证' WHEN '2' THEN '驯养繁殖许可证' WHEN '3' THEN '经营利用许可证' END) PAPERS_TYPE_NAME
+			 ,B.PAPERS_NUMBER,B.DATA_CLOS,D.COMP_NAME,C.SPE_NAME
+			 ,A.ISSUE_NUM
+			 ,A.SIGNBOARD_NUM
+        from PAPERS_YEAR_INSPECT_RETAIL A
+        LEFT JOIN PAPERS B ON A.PAPERS_ID=B.ID
+        left join PAPERS_SPEC spe on A.PAPERS_ID=spe.PAPERS_ID AND A.SPECIES_ID=spe.SPEC_ID
+        LEFT JOIN TB_SPECIES C ON spe.SPEC_ID=C.ID
+        LEFT JOIN TB_COMP D ON B.COMP_ID=D.ID
+        <where>
+            AND A.PAPERS_YEAR_INSPECT_ID=#{inspectId}
+            AND A.DEL_FLAG='N'
+            AND spe.DEL_FLAG='N'
+        </where>
+        order by A.UPDATE_TIME DESC
+    </select>
+
+    <select id="listSpeciesByIdNew" resultMap="listSpeciesResultMapNew">
+        select  A.ID AS INSPECT_RETAIL_ID,A.SPECIES_ID,A.PAPERS_ID,C.SPE_NAME
+            ,A.ISSUE_NUM
+            ,A.SIGNBOARD_NUM
+        from PAPERS_YEAR_INSPECT_RETAIL A
+        -- left join PAPERS_SPEC spe on A.PAPERS_ID=SPE.PAPERS_ID and A.SPECIES_ID=SPE.SPEC_ID
+        LEFT JOIN TB_SPECIES C ON A.SPECIES_ID=C.ID
+        <where>
+            AND A.PAPERS_YEAR_INSPECT_ID=#{inspectId}
+            AND A.DEL_FLAG='N'
+            -- AND spe.DEL_FLAG='N'
+        </where>
+        order by A.UPDATE_TIME DESC
+    </select>
+
+    <select id="listPapersInYearById" resultMap="listPapersInYearResultMap">
+        select  A.PAPERS_YEAR_INSPECT_ID AS INSPECT_RETAIL_ID,B.ID AS PAPERS_ID ,B.PAPERS_TYPE
+                ,(CASE B.PAPERS_TYPE WHEN '1' THEN '人工繁育许可证' WHEN '2' THEN '驯养繁殖许可证' WHEN '3' THEN '经营利用许可证' END) PAPERS_TYPE_NAME
+                ,B.PAPERS_NUMBER,B.DATA_CLOS,D.COMP_NAME,C.SPE_NAMES
+        from PAPERS_YEAR_INSPECT_P_RETAIL A
+        LEFT JOIN PAPERS B ON A.PAPERS_ID=B.ID
+        left join (SELECT C.PAPERS_ID,replace(wmsys.wm_concat(D.SPE_NAME),',','、') SPE_NAMES
+        FROM PAPERS_SPEC C LEFT JOIN TB_SPECIES D ON C.SPEC_ID=D.ID WHERE C.DEL_FLAG='N' GROUP BY C.PAPERS_ID
+        ) C on B.ID=C.PAPERS_ID
+        LEFT JOIN TB_COMP D ON B.COMP_ID=D.ID
+        <where>
+            AND A.PAPERS_YEAR_INSPECT_ID=#{inspectId}
+            AND A.DEL_FLAG='N'
+        </where>
+        order by A.UPDATE_TIME DESC
+    </select>
+
+
+    <resultMap id="listForInspectHistoryResultMap" type="com.sofn.fdpi.vo.PapersYearInspectHistoryVo">
+        <result column="YEAR" property="year" jdbcType="VARCHAR"></result>
+        <result column="COMP_NAME" property="compName" jdbcType="VARCHAR"></result>
+        <result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR"></result>
+        <result column="UPDATE_TIME" property="approveTime" jdbcType="VARCHAR"></result>
+    </resultMap>
+    <select id="listForInspectHistory" parameterType="java.util.Map" resultMap="listForInspectHistoryResultMap">
+        select
+             A.YEAR,C.COMP_NAME,A.CREATE_TIME,A.UPDATE_TIME
+        from PAPERS_YEAR_INSPECT A
+        left join TB_COMP C ON A.TB_COMP_ID=C.ID
+        <where>
+             A.STATUS='4'
+            AND A.DEL_FLAG='N'
+            <if test="compId!=null and compId!=''">
+                AND  A.TB_COMP_ID=#{compId}
+            </if>
+            <if test="endTime!=null">
+                AND A.CREATE_TIME &lt;= to_timestamp(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+        </where>
+        order by A.CREATE_TIME desc
+    </select>
+
+    <select id="getTodayMaxApplyNum" resultType="java.lang.String">
+        SELECT max(apply_num) FROM PAPERS_YEAR_INSPECT WHERE apply_num like #{todayStr}||'%'
+    </select>
+</mapper>

@@ -1,0 +1,229 @@
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">监管系统</a>&gt;
+    <a ui-sref="index.content.asms/check/checkTask">监测任务</a>&gt;
+    <span>监督抽查</span>
+</div>
+<div class="gui-section">
+    <form class="gui-form-group" id="queryForm">
+        <div class="clearfix gov-h mt15">
+            <div class="gui-mediaInline ">
+                <span>任务时间</span>
+                <input id="datebegin" name="datebegin" style="cursor: pointer;width: 120px;"
+                       class="Wdate gui-input" type="text"
+                       onFocus="var endDate=$dp.$('dateend');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateend\')}'})"/>--
+                <input id="dateend" name="dateend" class="Wdate gui-input"
+                       style="cursor: pointer;width: 120px;margin: 0px 10px;" type="text"
+                       onFocus="WdatePicker({minDate:'#F{$dp.$D(\'datebegin\')}'})"/>
+                <span id="areaSpan" style="display: none;">受检区域</span>
+                <div class="gui-select " id="queryShengDiv" style="width: 120px;display: none">
+                    <select id="querySheng" style="width: 120px;">
+                        <option value="">省</option>
+                    </select>
+                </div>
+                <div class="gui-select " id="queryShiDiv" style="width: 120px;display: none">
+                    <select id="queryShi" style="width: 120px;">
+                        <option value="">市</option>
+                    </select>
+                </div>
+                <div class="gui-select " id="queryXianDiv" style="width: 120px;display: none">
+                    <select id="queryXian">
+                        <option value="">区/县</option>
+                    </select>
+                </div>
+                <span>任务状态</span>
+                <div class="gui-select  ">
+                    <select name="state">
+                        <option value="">全部</option>
+                        <option value="0">未发布</option>
+                        <option value="1">已发布</option>
+                        <option value="2">已废止</option>
+                        <option value="3">执行中</option>
+                        <option value="4">已结束,未完成</option>
+                        <option value="5">已结束,已完成</option>
+                    </select>
+                </div>
+                <div class="mt15">
+                    <span>任务名称</span>
+                    <input class="gui-input " type="text" name="taskName"/>
+                    <button id="ToCheck" ng-disabled="!!btnDisabled" class="gui-btn " data-toggle="tooltip" data-placement="right"
+                            title="根据输入条件检索列表">查询
+                    </button>
+                    <button data-toggle="tooltip" class="gui-btn " data-placement="right" ng-click="resetQuery()">重置</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="gui-actions">
+
+        <button ng-click="del()" ng-show="{{iswrite==2}}" class="gui-btn fr mr15" data-toggle="tooltip" data-placement="top" title="删除任务">
+            <i class="gui-icon icon-remove"></i>删除</button>
+        <button ng-click="abo()" ng-show="{{iswrite==2}}" class="gui-btn fr mr15" data-toggle="tooltip" data-placement="top" title="废止任务">
+            <i class="gui-icon icon-disable"></i>废止</button>
+        <button ng-click="rel()" ng-show="{{iswrite==2}}" class="gui-btn fr mr15" data-toggle="tooltip" data-placement="top" title="发布任务">
+            <i class="gui-icon icon-publish"></i>发布</button>
+
+
+        <!--<button id="BjupdTaskBut" class="gui-btn fr mr15" style="display: none" ng-click="updBj()"><i-->
+                <!--class="gui-icon icon-edit"></i>修改-->
+        <!--</button>-->
+        <!--<button id="SjupdTaskBut" class="gui-btn fr ml15 mr15" style="display: none" ng-click="upd()"-->
+                <!--data-toggle="tooltip" data-placement="top"><i class="gui-icon icon-edit"></i>修改-->
+        <!--</button>-->
+
+        <button id="SjAddTaskBut" ng-show="{{iswrite==2}}" style="display: none" ui-sref="index.content.asms/check/checkTaskAddSj"
+                class="gui-btn fr mr15" ng-click="cleanCookie()">
+            <i class="gui-icon icon-add"></i>
+            新增
+        </button>
+        <button id="BjAddTaskBut" ng-show="{{iswrite==2}}" class="gui-btn fr mr15" style="display: none"
+                ui-sref="index.content.asms/check/checkTaskAddBj" ng-click="cleanCookie()">
+            <i class="gui-icon icon-add"></i>
+            新增
+        </button>
+    </div>
+    <table id="grid" class="gui-table "
+           style="width: 100%">
+    </table>
+</div>
+
+<!--infoModel-->
+<div class="modal fade" id="TaskInfoModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-stylesm" style="width: 40%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">
+                    <span>查看</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <!--页签-->
+                <ul id="myTab" class="nav nav-tabs">
+                    <li class="active" ng-click="myTab('基本信息')">
+                        <a data-toggle="tab">
+                            基本信息
+                        </a>
+                    </li>
+                    <li ng-click="myTab('监测信息')"><a data-toggle="tab">监测信息</a></li>
+                </ul>
+                <!--基本信息-->
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="JB_XX">
+                        <form class="bs-example bs-example-form" role="form">
+                            <div class="row">
+                                <div class="">
+                                    <div class="form-group col-lg-12 col-sm-12 col-md-12 mt15" name="parentTaskName" style="display: none">
+                                        <label class="col-lg-5 col-sm-5 col-md-5 control-label"
+                                               style="text-align: right;padding-right: 10px">上级任务:</label>
+                                        <span class="col-lg-6 col-sm-6 col-md-6 "
+                                              ng-bind="checkTask.parentTaskName"></span>
+                                    </div>
+                                    <div class="form-group col-lg-12 col-sm-12 col-md-12">
+                                        <label class="col-lg-5 col-sm-5 col-md-5 control-label"
+                                               style="text-align: right;padding-right: 10px">任务名称:</label>
+                                        <span class="col-lg-6 col-sm-6 col-md-6 " ng-bind="checkTask.taskName"></span>
+                                    </div>
+                                    <div class="form-group col-lg-12 col-sm-12 col-md-12" name="taskPriority" >
+                                        <label class="col-lg-5 col-sm-5 col-md-5 control-label"
+                                               style="text-align: right;padding-right: 10px">任务优先级:</label>
+                                        <span class="col-lg-6 col-sm-6 col-md-6 " ng-bind="(checkTask.taskPriority == '1'? '特急':false) ||(checkTask.taskPriority == '2'? '紧急':false) || (checkTask.taskPriority == '3'? '一般':false)||(checkTask.taskPriority ='无')"></span>
+                                    </div>
+                                    <div class="form-group col-lg-12 col-sm-12 col-md-12">
+                                        <label class="col-lg-5 col-sm-5 col-md-5 control-label"
+                                               style="text-align: right;padding-right: 10px">监测类型:</label>
+                                        <span class="col-lg-6 col-sm-6 col-md-6 " ng-bind="checkTask.taskType"></span>
+                                    </div>
+                                    <div class="form-group col-lg-12 col-sm-12 col-md-12">
+                                        <label class="col-lg-5 col-sm-5 col-md-5 control-label"
+                                               style="text-align: right;padding-right: 10px">年度:</label>
+                                        <span class="col-lg-6 col-sm-6 col-md-6 " ng-bind="checkTask.taskYear"></span>
+                                    </div>
+                                    <div class="form-group col-lg-12 col-sm-12 col-md-12">
+                                        <label class="col-lg-5 col-sm-5 col-md-5 control-label"
+                                               style="text-align: right;padding-right: 10px">任务时间:</label>
+                                        <div class="col-lg-6 col-sm-6 col-md-6 ">
+                                            <span ng-bind="checkTask.taskBeginTime"></span>&nbsp;&nbsp;至&nbsp;&nbsp;
+                                            <span ng-bind="checkTask.taskEndTime"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-12 col-sm-12 col-md-12">
+                                        <label class="col-lg-5 col-sm-5 col-md-5 control-label"
+                                               style="text-align: right;padding-right: 10px">发布单位:</label>
+                                        <span class="col-lg-6 col-sm-6 col-md-6 "
+                                              ng-bind="checkTask.taskReleaseUnit"></span>
+                                    </div>
+                                    <div class="form-group col-lg-12 col-sm-12 col-md-12" name="cdUnit" style="display: none">
+                                        <label class="col-lg-5 col-sm-5 col-md-5 control-label"
+                                               style="text-align: right;padding-right: 10px">承担单位:</label>
+                                        <span class="col-lg-6 col-sm-6 col-md-6 " ng-bind="checkTask.cdUnits"></span>
+                                    </div>
+                                    <div class="form-group col-lg-12 col-sm-12 col-md-12" name="cyUnit" style="display: none">
+                                        <label class="col-lg-5 col-sm-5 col-md-5 control-label"
+                                               style="text-align: right;padding-right: 10px">抽样单位:</label>
+                                        <span class="col-lg-6 col-sm-6 col-md-6 " ng-bind="checkTask.cyUnitName"></span>
+                                    </div>
+                                    <div class="form-group col-lg-12 col-sm-12 col-md-12">
+                                        <label class="col-lg-5 col-sm-5 col-md-5 control-label"
+                                               style="text-align: right;padding-right: 10px">抽样截止时间:</label>
+                                        <span class="col-lg-6 col-sm-6 col-md-6 " ng-bind="checkTask.taskSampleDeadline"></span>
+                                    </div>
+                                    <div class="form-group col-lg-12 col-sm-12 col-md-12" name="cyUnit" style="display: none">
+                                        <label class="col-lg-5 col-sm-5 col-md-5 control-label"
+                                               style="text-align: right;padding-right: 10px">监督执法单位:</label>
+                                        <span class="col-lg-6 col-sm-6 col-md-6 " ng-bind="checkTask.jdUnitName"></span>
+                                    </div>
+                                    <div class="form-group col-lg-12 col-sm-12 col-md-12" name="jcUnit" style="display: none">
+                                        <label class="col-lg-5 col-sm-5 col-md-5 control-label"
+                                               style="text-align: right;padding-right: 10px">检测单位:</label>
+                                        <span class="col-lg-6 col-sm-6 col-md-6 " ng-bind="checkTask.jcUnitName"></span>
+                                    </div>
+                                    <div class="form-group col-lg-12 col-sm-12 col-md-12" name="taskAreaId" style="display: none">
+                                        <label class="col-lg-5 col-sm-5 col-md-5 control-label"
+                                               style="text-align: right;padding-right: 10px">受检区域:</label>
+                                        <span class="col-lg-6 col-sm-6 col-md-6 " ng-bind="checkTask.taskAreaId"></span>
+                                    </div>
+                                    <div class="form-group col-lg-12 col-sm-12 col-md-12" name="fileCode">
+                                        <label class="col-lg-5 col-sm-5 col-md-5 control-label"
+                                               style="text-align: right;padding-right: 10px">文件号:</label>
+                                        <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="checkTask.fileNumber"></span>
+                                    </div>
+                                    <div class="form-group col-lg-12 col-sm-12 col-md-12" name="remark" style="display: none">
+                                        <label class="col-lg-5 col-sm-5 col-md-5 control-label"
+                                               style="text-align: right;padding-right: 10px">备 注:</label>
+                                        <span class="col-lg-6 col-sm-6 col-md-6 " ng-bind="checkTask.remark"></span>
+                                    </div>
+                                    <div class="form-group col-lg-12 col-sm-12 col-md-12">
+                                        <label class="col-lg-5 col-sm-5 col-md-5"
+                                               style="text-align: right;padding-right: 10px">附 件:</label>
+                                        <a class="col-lg-6 col-sm-6 col-md-6" style="cursor: pointer;" onclick="downloadFileName()"><span
+                                                ng-bind="checkTask.attachmentName"></span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!--复检对象-->
+                <div class="tab-pane fade in active" id="FJ_DX">
+                    <table class="gui-table" id="Fjtable">
+                        <thead>
+                        <tr>
+                            <th>名称</th>
+                            <th>种类</th>
+                            <th>数量</th>
+                            <th>受检区域</th>
+                        </tr>
+                        </thead>
+                        <tbody class="diy-input-nobody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" data-dismiss="modal">返回</button>
+            </div>
+        </div>
+    </div>
+</div>

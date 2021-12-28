@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.dao.dgap.TDgapWsDailyStatExpandMapper">
+    <resultMap id="BaseResultMap" type="com.sofn.model.generator.TDgapWsDailyStat">
+        <id column="ID" property="id" jdbcType="VARCHAR"/>
+        <result column="STAT_DATE" property="statDate" jdbcType="TIMESTAMP"/>
+        <result column="RESOURCE_DIR" property="resourceDir" jdbcType="VARCHAR"/>
+        <result column="WEB_SERVICE_ID" property="webServiceId" jdbcType="VARCHAR"/>
+        <result column="WEB_SERVICE_NAME" property="webServiceName" jdbcType="VARCHAR"/>
+        <result column="BUSSNESS_NAME" property="bussnessName" jdbcType="VARCHAR"/>
+        <result column="CALLER_USER" property="callerUser" jdbcType="VARCHAR"/>
+        <result column="SUCCESS_TIMES" property="successTimes" jdbcType="DECIMAL"/>
+        <result column="FAIL_TIMES" property="failTimes" jdbcType="DECIMAL"/>
+        <result column="AVG_TIMECOST" property="avgTimecost" jdbcType="DECIMAL"/>
+        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="DEL_FLAG" property="delFlag" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD1" property="reservedField1" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD2" property="reservedField2" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD3" property="reservedField3" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD4" property="reservedField4" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD5" property="reservedField5" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD6" property="reservedField6" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD7" property="reservedField7" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD8" property="reservedField8" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD9" property="reservedField9" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD10" property="reservedField10" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD11" property="reservedField11" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD12" property="reservedField12" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD13" property="reservedField13" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD14" property="reservedField14" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD15" property="reservedField15" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD16" property="reservedField16" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD17" property="reservedField17" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD18" property="reservedField18" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD19" property="reservedField19" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD20" property="reservedField20" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getList" resultType="java.util.Map">
+        SELECT * FROM (
+        SELECT M.*,ROWNUM as rn FROM (
+        SELECT
+        distinct T.ID ,
+        T.RESOURCE_DIR ,
+        TD.NAME AS RESOURCE_DIR_NAME,
+        T.WEB_SERVICE_ID ,
+        T.WEB_SERVICE_NAME ,
+        T.BUSSNESS_NAME ,
+        T.STAT_DATE,
+        T.CALLER_USER ,
+        T.SUCCESS_TIMES ,
+        T.FAIL_TIMES ,
+        T.AVG_TIMECOST ,
+        T.CREATE_BY ,
+        T.CREATE_TIME ,
+        T.UPDATE_BY ,
+        T.UPDATE_TIME
+        FROM T_DGAP_WS_DAILY_STAT T
+        LEFT JOIN T_DGAP_RESOURCE_DIRECTORY TD ON T.RESOURCE_DIR = TD.ID
+        WHERE 1=1 AND T.DEL_FLAG='N'
+        <if test="resourceDir !=null and resourceDir !=''">
+            AND T.RESOURCE_DIR = #{resourceDir}
+        </if>
+        <if test="webServiceName !=null and webServiceName !=''">
+            AND T.WEB_SERVICE_NAME LIKE '%' || #{webServiceName} || '%'
+        </if>
+        <if test="webServiceId !=null and webServiceId !=''">
+            AND T.WEB_SERVICE_ID = #{webServiceId}
+        </if>
+        <if test="bussnessName !=null and bussnessName !=''">
+            AND T.BUSSNESS_NAME LIKE '%' || #{bussnessName} || '%'
+        </if>
+        <if test="callerUser !=null and callerUser !=''">
+            AND T.CALLER_USER LIKE '%' || #{callerUser} || '%'
+        </if>
+        <if test="startTime !=null">
+            <![CDATA[
+                AND T.STAT_DATE  >= #{startTime}
+             ]]>
+        </if>
+        <if test="endTime !=null">
+            <![CDATA[
+               AND T.STAT_DATE < #{endTime}
+             ]]>
+        </if>
+        ORDER BY T.UPDATE_TIME DESC
+        ) M )
+        WHERE rn BETWEEN 1+#{pageSize}*(#{pageNum}-1) AND #{pageSize}*#{pageNum}
+    </select>
+
+    <select id="getCount" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM(
+        SELECT distinct T.ID  FROM T_DGAP_WS_DAILY_STAT T
+        LEFT JOIN T_DGAP_RESOURCE_DIRECTORY TD ON T.RESOURCE_DIR = TD.ID
+        WHERE 1=1 AND T.DEL_FLAG='N'
+        <if test="resourceDir !=null and resourceDir !=''">
+            AND T.RESOURCE_DIR = #{resourceDir}
+        </if>
+        <if test="webServiceName !=null and webServiceName !=''">
+            AND T.WEB_SERVICE_NAME LIKE '%' || #{webServiceName} || '%'
+        </if>
+        <if test="webServiceId !=null and webServiceId !=''">
+            AND T.WEB_SERVICE_ID = #{webServiceId}
+        </if>
+        <if test="bussnessName !=null and bussnessName !=''">
+            AND T.BUSSNESS_NAME LIKE '%' || #{bussnessName} || '%'
+        </if>
+        <if test="callerUser !=null and callerUser !=''">
+            AND T.CALLER_USER LIKE '%' || #{callerUser} || '%'
+        </if>
+        <if test="startTime !=null">
+            <![CDATA[
+                AND T.STAT_DATE  >= #{startTime}
+             ]]>
+        </if>
+        <if test="endTime !=null">
+            <![CDATA[
+               AND T.STAT_DATE < #{endTime}
+             ]]>
+        </if>
+        )
+    </select>
+
+    <select id="getDailyLogs" resultType="com.sofn.model.generator.TDgapWsDailyStat">
+        SELECT   t.RESOURCE_DIR,
+                 t.web_service_id,
+                 t.WEB_SERVICE_NAME,
+                 t.BUSSNESS_NAME,
+                 t.caller_user,
+                 create_time AS STAT_DATE,
+                 0 as success_times,
+                 0 as fail_times,
+                 0 as avg_timecost,
+                 sysdate as create_time,
+                 sysdate as update_time,
+                 0 as create_by,
+                 0 as update_by
+            FROM (SELECT T1.ID, T1.RESOURCE_DIR,
+                         T1.WEB_SERVICE_ID,
+                         T1.WEB_SERVICE_NAME,
+                         T1.METHOD_NAME as BUSSNESS_NAME,
+                         T1.CALLER_USER,
+                         T1.INVOKE_START_DATE,
+                         T1.INVOKE_END_DATE,
+                         trunc(t1.create_time) as create_time
+           <![CDATA[
+                    FROM T_DGAP_WS_LOG T1 where t1.create_time>=Trunc(#{time}) and t1.create_time<=Trunc(#{time}) + 1) t
+             ]]>
+           GROUP BY t.RESOURCE_DIR, t.web_service_id, t.WEB_SERVICE_NAME, t.caller_user,t.BUSSNESS_NAME,t.create_time
+    </select>
+
+    <select id="calcFailTimes" resultType="java.math.BigDecimal" parameterType="map">
+         select count(*) as FAIL_TIMES
+       from (select *
+               from t_dgap_ws_log
+              where
+              <![CDATA[
+               create_time>=Trunc(#{time}) and create_time<=Trunc(#{time}) + 1
+               ]]>
+        <if test="webserviceId !=null and webserviceId !=''">
+            AND WEB_SERVICE_ID = #{webserviceId}
+        </if>
+        <if test="webserviceId == null">
+            AND WEB_SERVICE_ID is NULL
+        </if>
+        <if test="callerUser !=null and callerUser !=''">
+              AND CALLER_USER = #{callerUser}
+        </if>
+        <if test="callerUser == null">
+            AND CALLER_USER is NULL
+        </if>
+                and METHOD_NAME = #{bussnessName}
+                and ERROR_TYPE is not null)
+    </select>
+
+    <select id="calcAvgTimeCost" resultType="java.math.BigDecimal" parameterType="map">
+        select AVG((cast(t.invoke_end_date as date) -
+        cast(t.invoke_start_date as date)) * 24 * 60 * 60 * 1000
+        +(
+            to_number(substr(T .invoke_end_date, 20, 3))-
+            to_number(substr(T .invoke_start_date, 20, 3))
+        )
+        ) as minus_time
+        from t_dgap_ws_log t
+        where
+        <![CDATA[
+              create_time>=Trunc(#{time}) and create_time<=Trunc(#{time}) + 1
+               ]]>
+        <if test="webserviceId !=null and webserviceId !=''">
+            AND WEB_SERVICE_ID = #{webserviceId}
+        </if>
+        <if test="webserviceId == null">
+            AND WEB_SERVICE_ID is NULL
+        </if>
+        <if test="callerUser !=null and callerUser !=''">
+            AND CALLER_USER = #{callerUser}
+        </if>
+        <if test="callerUser == null ">
+            AND CALLER_USER is NULL
+        </if>
+        and METHOD_NAME = #{bussnessName}
+    </select>
+
+    <select id="calcSuccessTimes" resultType="java.math.BigDecimal" parameterType="map">
+        select count(*) as SUCCESS_TIMES
+        from (select *
+        from t_dgap_ws_log
+        where
+          <![CDATA[
+              create_time>=Trunc(#{time}) and create_time<=Trunc(#{time}) + 1
+               ]]>
+        <if test="webserviceId !=null and webserviceId !=''">
+            AND WEB_SERVICE_ID = #{webserviceId}
+        </if>
+        <if test="webserviceId == null">
+            AND WEB_SERVICE_ID is NULL
+        </if>
+        <if test="callerUser !=null and callerUser !=''">
+            AND CALLER_USER = #{callerUser}
+        </if>
+        <if test="callerUser == null">
+            AND CALLER_USER is NULL
+        </if>
+        and METHOD_NAME = #{bussnessName}
+        and ERROR_TYPE is NULL)
+</select>
+
+    <insert id="statSuccDailyLog" parameterType="date">
+
+INSERT INTO T_DGAP_WS_DAILY_STAT
+  (STAT_DATE,
+   RESOURCE_DIR,
+   WEB_SERVICE_ID,
+   WEB_SERVICE_NAME,
+    BUSSNESS_NAME,
+   CALLER_USER,
+   SUCCESS_TIMES,
+   FAIL_TIMES,
+   AVG_TIMECOST,
+   CREATE_TIME,
+   UPDATE_TIME)
+  SELECT sysdate,
+         t.RESOURCE_DIR,
+         t.web_service_id,
+         t.WEB_SERVICE_NAME,
+          method_name,
+         t.caller_user,
+         count(1) as count,
+         '0',
+         AVG((cast(t.invoke_end_date as date) -
+             cast(t.invoke_start_date as date)) * 24 * 60 * 60) as minus_time,
+         sysdate,
+         sysdate
+    FROM (SELECT T1.ID, T1.RESOURCE_DIR,
+
+                 T1.WEB_SERVICE_ID,
+                 T1.WEB_SERVICE_NAME,
+                 T1.METHOD_NAME,
+                 T1.CALLER_USER,
+                 CASE T1.ERROR_TYPE
+                   WHEN '0' THEN
+                    'succ'
+                   else
+                    'fail'
+                 end res,
+                 T1.INVOKE_START_DATE,
+                 T1.INVOKE_END_DATE
+  <![CDATA[
+            FROM T_DGAP_WS_LOG T1 where t1.create_time>=Trunc(SYSDATE) - 1 and create_time<=sysdate) T
+    ]]>
+   where t.res = 'succ'
+   GROUP BY t.web_service_id, t.res, T.WEB_SERVICE_NAME, t.caller_user,t.method_name
+
+</insert>
+
+    <insert id="statFaildDailyLog" parameterType="date">
+          <![CDATA[
+            INSERT INTO T_DGAP_WS_DAILY_STAT
+            (STAT_DATE,
+            RESOURCE_DIR,
+            WEB_SERVICE_ID,
+            WEB_SERVICE_NAME,
+            BUSSNESS_NAME,
+            CALLER_USER,
+            SUCCESS_TIMES,
+            FAIL_TIMES,
+            AVG_TIMECOST,
+            CREATE_TIME,
+            UPDATE_TIME)
+            SELECT sysdate,
+            t.RESOURCE_DIR,
+            t.web_service_id,
+            t.WEB_SERVICE_NAME,
+            method_name,
+            t.caller_user,
+            '0',
+            count(1) as count,
+            AVG((cast(t.invoke_end_date as date) -
+            cast(t.invoke_start_date as date)) * 24 * 60 * 60) as minus_time,
+            sysdate,
+            sysdate
+            FROM (SELECT T1.ID,
+            T1.RESOURCE_DIR,
+            T1.WEB_SERVICE_ID,
+            T1.WEB_SERVICE_NAME,
+            T1.METHOD_NAME,
+            T1.CALLER_USER,
+            CASE T1.ERROR_TYPE
+            WHEN '0' THEN
+            'succ'
+            else
+            'fail'
+            end res,
+            T1.INVOKE_START_DATE,
+            T1.INVOKE_END_DATE
+            FROM T_DGAP_WS_LOG T1 where t1.create_time>=Trunc(SYSDATE) - 1 and create_time<=sysdate) T
+            where t.res = 'fail'
+            GROUP BY t.web_service_id, t.res, T.WEB_SERVICE_NAME, t.caller_user,t.method_name
+        ]]>
+    </insert>
+
+    <insert id="insert" parameterType="com.sofn.model.generator.TDgapWsDailyStat">
+    insert into T_DGAP_WS_DAILY_STAT (ID, STAT_DATE, RESOURCE_DIR,
+      WEB_SERVICE_ID, WEB_SERVICE_NAME, BUSSNESS_NAME,
+      CALLER_USER, SUCCESS_TIMES, FAIL_TIMES,
+      AVG_TIMECOST, CREATE_BY, CREATE_TIME,
+      UPDATE_BY, UPDATE_TIME, DEL_FLAG,
+      RESERVED_FIELD1, RESERVED_FIELD2, RESERVED_FIELD3,
+      RESERVED_FIELD4, RESERVED_FIELD5, RESERVED_FIELD6,
+      RESERVED_FIELD7, RESERVED_FIELD8, RESERVED_FIELD9,
+      RESERVED_FIELD10, RESERVED_FIELD11, RESERVED_FIELD12,
+      RESERVED_FIELD13, RESERVED_FIELD14, RESERVED_FIELD15,
+      RESERVED_FIELD16, RESERVED_FIELD17, RESERVED_FIELD18,
+      RESERVED_FIELD19, RESERVED_FIELD20)
+    values (#{id,jdbcType=VARCHAR}, #{statDate,jdbcType=TIMESTAMP}, #{resourceDir,jdbcType=VARCHAR},
+      #{webServiceId,jdbcType=VARCHAR}, #{webServiceName,jdbcType=VARCHAR}, #{bussnessName,jdbcType=VARCHAR},
+      #{callerUser,jdbcType=VARCHAR}, #{successTimes,jdbcType=DECIMAL}, #{failTimes,jdbcType=DECIMAL},
+      #{avgTimecost,jdbcType=DECIMAL}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+      #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 'N',
+      #{reservedField1,jdbcType=VARCHAR}, #{reservedField2,jdbcType=VARCHAR}, #{reservedField3,jdbcType=VARCHAR},
+      #{reservedField4,jdbcType=VARCHAR}, #{reservedField5,jdbcType=VARCHAR}, #{reservedField6,jdbcType=VARCHAR},
+      #{reservedField7,jdbcType=VARCHAR}, #{reservedField8,jdbcType=VARCHAR}, #{reservedField9,jdbcType=VARCHAR},
+      #{reservedField10,jdbcType=VARCHAR}, #{reservedField11,jdbcType=VARCHAR}, #{reservedField12,jdbcType=VARCHAR},
+      #{reservedField13,jdbcType=VARCHAR}, #{reservedField14,jdbcType=VARCHAR}, #{reservedField15,jdbcType=VARCHAR},
+      #{reservedField16,jdbcType=VARCHAR}, #{reservedField17,jdbcType=VARCHAR}, #{reservedField18,jdbcType=VARCHAR},
+      #{reservedField19,jdbcType=VARCHAR}, #{reservedField20,jdbcType=VARCHAR})
+    </insert>
+
+    <select id="getBy" resultType="com.sofn.model.generator.TDgapWsDailyStat" parameterType="com.sofn.model.generator.TDgapWsDailyStat">
+        select ID, STAT_DATE, RESOURCE_DIR,
+        WEB_SERVICE_ID, WEB_SERVICE_NAME, BUSSNESS_NAME,
+        CALLER_USER, SUCCESS_TIMES, FAIL_TIMES,
+        AVG_TIMECOST, CREATE_BY, CREATE_TIME,
+        UPDATE_BY, UPDATE_TIME, DEL_FLAG,
+        RESERVED_FIELD1, RESERVED_FIELD2, RESERVED_FIELD3,
+        RESERVED_FIELD4, RESERVED_FIELD5, RESERVED_FIELD6,
+        RESERVED_FIELD7, RESERVED_FIELD8, RESERVED_FIELD9,
+        RESERVED_FIELD10, RESERVED_FIELD11, RESERVED_FIELD12,
+        RESERVED_FIELD13, RESERVED_FIELD14, RESERVED_FIELD15,
+        RESERVED_FIELD16, RESERVED_FIELD17, RESERVED_FIELD18,
+        RESERVED_FIELD19, RESERVED_FIELD20
+        from T_DGAP_WS_DAILY_STAT
+        <where>
+            STAT_DATE = #{statDate,jdbcType=TIMESTAMP}
+            <if test="webServiceId != null">
+                and WEB_SERVICE_ID = #{webServiceId,jdbcType=VARCHAR}
+            </if>
+            <if test="webServiceId == null">
+                and WEB_SERVICE_ID is NULL
+            </if>
+            <if test="bussnessName != null">
+                and BUSSNESS_NAME = #{bussnessName,jdbcType=VARCHAR}
+            </if>
+            <if test="bussnessName == null">
+                and BUSSNESS_NAME is NULL
+            </if>
+            <if test="callerUser != null">
+                and CALLER_USER = #{callerUser,jdbcType=VARCHAR}
+            </if>
+            <if test="callerUser == null">
+                and CALLER_USER is NULL
+            </if>
+        </where>
+    </select>
+
+    <select id="newGetBy" resultType="com.sofn.model.generator.TDgapWsDailyStat" parameterType="com.sofn.model.generator.TDgapWsDailyStat">
+        select ID, STAT_DATE, RESOURCE_DIR,
+        WEB_SERVICE_ID, WEB_SERVICE_NAME, BUSSNESS_NAME,
+        CALLER_USER, SUCCESS_TIMES, FAIL_TIMES,
+        AVG_TIMECOST, CREATE_BY, CREATE_TIME,
+        UPDATE_BY, UPDATE_TIME, DEL_FLAG,
+        RESERVED_FIELD1, RESERVED_FIELD2, RESERVED_FIELD3,
+        RESERVED_FIELD4, RESERVED_FIELD5, RESERVED_FIELD6,
+        RESERVED_FIELD7, RESERVED_FIELD8, RESERVED_FIELD9,
+        RESERVED_FIELD10, RESERVED_FIELD11, RESERVED_FIELD12,
+        RESERVED_FIELD13, RESERVED_FIELD14, RESERVED_FIELD15,
+        RESERVED_FIELD16, RESERVED_FIELD17, RESERVED_FIELD18,
+        RESERVED_FIELD19, RESERVED_FIELD20
+        from T_DGAP_WS_DAILY_STAT
+        <where>
+            STAT_DATE = #{statDate,jdbcType=TIMESTAMP}
+            <if test="webServiceId != null">
+                and WEB_SERVICE_ID = #{webServiceId,jdbcType=VARCHAR}
+            </if>
+            <if test="webServiceId == null">
+                and WEB_SERVICE_ID is NULL
+            </if>
+            <if test="bussnessName != null">
+                and BUSSNESS_NAME = #{bussnessName,jdbcType=VARCHAR}
+            </if>
+            <if test="bussnessName == null">
+                and BUSSNESS_NAME is NULL
+            </if>
+            <if test="callerUser != null">
+                and CALLER_USER = #{callerUser,jdbcType=VARCHAR}
+            </if>
+            <if test="callerUser == null">
+                and CALLER_USER is NULL
+            </if>
+        </where>
+    </select>
+
+
+    <update id="update" parameterType="com.sofn.model.generator.TDgapWsDailyStat">
+        update T_DGAP_WS_DAILY_STAT
+        set SUCCESS_TIMES=#{successTimes,jdbcType=DECIMAL}, FAIL_TIMES=#{failTimes,jdbcType=DECIMAL},
+        AVG_TIMECOST=#{avgTimecost,jdbcType=DECIMAL},
+        UPDATE_TIME = SYSDATE
+        <where>
+            STAT_DATE = #{statDate,jdbcType=TIMESTAMP}
+            <if test="webServiceId != null">
+                and WEB_SERVICE_ID = #{webServiceId,jdbcType=VARCHAR}
+            </if>
+            <if test="webServiceId == null">
+                and WEB_SERVICE_ID is NULL
+            </if>
+            <if test="bussnessName != null">
+                and BUSSNESS_NAME = #{bussnessName,jdbcType=VARCHAR}
+            </if>
+            <if test="bussnessName == null">
+                and BUSSNESS_NAME is NULL
+            </if>
+            <if test="callerUser != null">
+                and CALLER_USER = #{callerUser,jdbcType=VARCHAR}
+            </if>
+            <if test="callerUser == null">
+                and CALLER_USER is NULL
+            </if>
+        </where>
+    </update>
+
+
+    <sql id="fields">
+ID, STAT_DATE, RESOURCE_DIR,
+WEB_SERVICE_ID, WEB_SERVICE_NAME, BUSSNESS_NAME,
+CALLER_TOKEN, SUCCESS_TIMES, FAIL_TIMES,
+AVG_TIMECOST, CREATE_BY, CREATE_TIME,
+UPDATE_BY, UPDATE_TIME, DEL_FLAG
+</sql>
+
+</mapper>
+

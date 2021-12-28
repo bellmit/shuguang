@@ -1,0 +1,249 @@
+<link rel="stylesheet" href="assets/css/ales/ales.css"/>
+<style>
+    .gui-mid-wrapper{
+        display: none !important;
+    }
+</style>
+<header class="gui-header clearfix">
+    <div class="section-logo" ui-sref="login/applications">
+        <img src="/assets/imgs/icon/logo.png" alt="国家农产品质量安全追溯管理信息平台（政务办公）" class="logo">
+        <h1>国家农产品质量安全追溯管理信息平台<em></em></h1>
+    </div>
+    <div class="section-menu" ng-show="systemName != 'tts' ">
+        <ul class="clearfix">
+            <li ng-show="!!systems.ASMS" ui-sref-active="active">
+                <a ng-click="sysName('asms')">
+                    <img src="../assets/imgs/menu/jgxt.png" alt="监管系统"><span>监管系统</span>
+                </a>
+            </li>
+            <li ng-show="!!systems.ADS" ui-sref-active="active">
+                <a ui-sref="index.content.monitor/welcome/welcome" ng-click="sysName('ads')"><img src="../assets/imgs/menu/jcxt.png" alt="监测系统"><span>监测系统</span></a>
+            </li>
+            <li ui-sref-active="active" ng-show="!!systems.ALES">
+                <a ng-click="sysName('ales')"><img src="../assets/imgs/menu/zfxt.png" alt="执法系统"><span>执法系统</span></a>
+            </li>
+            <li ui-sref-active="active" ng-show="!!systems.FXJC">
+                <a ng-click="go($event)"><img src="../assets/imgs/menu/fxjc.png" alt="分析决策"><span>分析决策</span></a>
+            </li>
+            <li ui-sref-active="active" ng-show="!!systems.QRY">
+                <a ui-sref="index.content.qry/subject/qrySubjSvList" ng-click="sysName('qry')"><img src="../assets/imgs/menu/xxcx.png" alt="信息查询"><span>信息查询</span></a>
+            </li>
+            <li ui-sref-active="active" ng-show="!!systems.DGAP">
+                <a ui-sref="index.content.dgap/resource/resourceDir" ng-click="sysName('dgap')"><img src="../assets/imgs/menu/sjgx.png" alt="数据共享"><span>数据共享</span></a>
+            </li>
+            <li ui-sref-active="active" ng-show="!!systems.SYS">
+                <a ui-sref="index.content.sys/role/roleList" ng-click="sysName('sys')"><img src="../assets/imgs/menu/xtgl.png" alt="系统管理"><span>系统管理</span></a>
+            </li>
+        </ul>
+    </div>
+    <div class="section-nav">
+        <span class="gui-dropdown">
+      <span class="current">
+        <img src="../assets/imgs/icon/img_11.png" alt=""/>
+        <span class="text" title={{user.account}}>{{user.account}}</span>
+        </span>
+        <ul class="dropdown-list clearfix" id="oUl">
+            <li><a name="个人中心">个人中心</a></li>
+            <li><a name="退出登录">退出登录</a></li>
+        </ul>
+        </span>
+    </div>
+</header>
+<div class="gui-breadcrumbs">
+    <a ng-click="sysName('sys')">系统管理</a>&gt;
+    <a ui-sref="account/asmsPersonalCenterAdmin">个人中心</a>&gt;
+    <span>机构变更</span>
+</div>
+<div class=" gui-section gui-section-wid col-lg-offset-1 col-md-offset-1 col-sm-offset-1" style="width: 80%" >
+    <h4 class="mt15 mb25">机构变更历史</h4>
+    <table class="ApplyTable mt15">
+        <tr>
+            <td>主体信息</td>
+            <td>变更前</td>
+            <td>变更后</td>
+        </tr>
+        <tr>
+            <td>
+                机构名称
+            </td>
+            <td>
+                <span ng-bind="before.svName"></span><img class="pull-right" ng-show="before.svName!=after.svName" src="../assets/imgs/common/arrow.png"/>
+            </td>
+            <td>
+                <span ng-bind="after.svName"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                机构代码
+            </td>
+            <td>
+                <span ng-bind="before.svCode"></span><img class="pull-right" ng-show="before.svCode!=after.svCode" src="../assets/imgs/common/arrow.png"/>
+            </td>
+            <td>
+                <span ng-bind="after.svCode"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                机构类别
+            </td>
+            <td>
+                <span ng-bind="before.svType"></span><img class="pull-right" ng-show="before.svType!=after.svType" src="../assets/imgs/common/arrow.png"/>
+            </td>
+            <td>
+                <span ng-bind="after.svType"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                机构级别
+            </td>
+            <td>
+                <span ng-bind="before.svLevel"></span><img class="pull-right" ng-show="before.svLevel!=after.svLevel" src="../assets/imgs/common/arrow.png"/>
+            </td>
+            <td>
+                <span ng-bind="after.svLevel"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                所属区域
+            </td>
+            <td>
+                <span ng-bind="before.svArea"></span><img class="pull-right" ng-show="before.svArea!=after.svArea" src="../assets/imgs/common/arrow.png"/>
+            </td>
+            <td>
+                <span ng-bind="after.svArea"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                所属行业
+            </td>
+            <td>
+                <span ng-bind="before.industryName"></span><img class="pull-right" ng-show="before.industryName!=after.industryName" src="../assets/imgs/common/arrow.png"/>
+            </td>
+            <td>
+                <span ng-bind="after.industryName"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                通讯地址
+            </td>
+            <td>
+                <span ng-bind="before.svAddress"></span><img class="pull-right" ng-show="before.svAddress!=after.svAddress" src="../assets/imgs/common/arrow.png"/>
+            </td>
+            <td>
+                <span ng-bind="after.svAddress"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                负责人
+            </td>
+            <td>
+                <span ng-bind="before.svLeader"></span><img class="pull-right" ng-show="before.svLeader!=after.svLeader" src="../assets/imgs/common/arrow.png"/>
+            </td>
+            <td>
+                <span ng-bind="after.svLeader"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                负责人电话
+            </td>
+            <td>
+                <span ng-bind="before.svLeaderPhone"></span><img class="pull-right" ng-show="before.svLeaderPhone!=after.svLeaderPhone" src="../assets/imgs/common/arrow.png"/>
+            </td>
+            <td>
+                <span ng-bind="after.svLeaderPhone"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                联系人
+            </td>
+            <td>
+                <span ng-bind="before.svContact"></span><img class="pull-right" ng-show="before.svContact!=after.svContact" src="../assets/imgs/common/arrow.png"/>
+            </td>
+            <td>
+                <span ng-bind="after.svContact"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                联系人电话
+            </td>
+            <td>
+                <span ng-bind="before.svContactPhone"></span><img class="pull-right" ng-show="before.svContactPhone!=after.svContactPhone" src="../assets/imgs/common/arrow.png"/>
+            </td>
+            <td>
+                <span ng-bind="after.svContactPhone"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                联系人QQ
+            </td>
+            <td>
+                <span ng-bind="before.svContactQQ"></span><img class="pull-right" ng-show="before.svContactQQ!=after.svContactQQ" src="../assets/imgs/common/arrow.png"/>
+            </td>
+            <td>
+                <span ng-bind="after.svContactQQ"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                电子邮箱
+            </td>
+            <td>
+                <span ng-bind="before.svContactEmail"></span><img class="pull-right" ng-show="before.svContactEmail!=after.svContactEmail" src="../assets/imgs/common/arrow.png"/>
+            </td>
+            <td>
+                <span ng-bind="after.svContactEmail"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                邮编
+            </td>
+            <td>
+                <span ng-bind="before.svPostcode"></span><img class="pull-right" ng-show="before.svPostcode!=after.svPostcode" src="../assets/imgs/common/arrow.png"/>
+            </td>
+            <td>
+                <span ng-bind="after.svPostcode"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                变更原因
+            </td>
+            <td colspan="2">
+                <span ng-bind="after.applyReason"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                审核状态
+            </td>
+            <td colspan="2">
+                <span ng-bind="after.auditState"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                审核意见
+            </td>
+            <td colspan="2">
+                <span ng-bind="after.auditSuggestion"></span>
+            </td>
+        </tr>
+    </table>
+       <p align="center">
+           <button  class="gui-btn mt15 mb25" ui-sref="account/asmsPersonalCenterAdmin">关闭</button>
+       </p>
+
+</div>
+

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.PeritoneumMapper">
+    <resultMap id="rs1" type="com.sofn.fdpi.model.Peritoneum">
+        <id column="ID" property="id"></id>
+        <result column="CERTIFICATE_NO" property="certificateNo" jdbcType="VARCHAR"></result>
+        <result column="SPECIES_NAME" property="speciesNames" jdbcType="VARCHAR"></result>
+        <result column="UNIT" property="units" jdbcType="VARCHAR"></result>
+    </resultMap>
+    <select id="listParam" resultMap="rs1">
+        SELECT
+        P . ID,
+        P .CERTIFICATE_NO,
+        D .SPECIES_NAME,
+        D .UNIT
+        FROM
+        PERITONEUM P,
+        (
+        SELECT
+        c.PERITONEUM_ID,
+        REPLACE (wmsys.wm_concat (C.SPECIES_NAME), ',', '、' ) SPECIES_NAME,
+        REPLACE (wmsys.wm_concat (C.UNIT),',','、') UNIT
+        FROM
+        PERITONEUM_SPEC c
+        GROUP BY
+        c.PERITONEUM_ID
+        ) D
+        WHERE
+        P . ID = D .PERITONEUM_ID
+        <if test="certificateNo!=null and certificateNo!=''">
+            and p.CERTIFICATE_NO like '%' || #{certificateNo} || '%'
+        </if>
+        <if test="speciesName!=null and speciesName!=''">
+            and D.SPECIES_NAME like '%' || #{speciesName} || '%'
+        </if>
+        order by P .CREATE_TIME desc
+    </select>
+</mapper>

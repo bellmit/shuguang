@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-lazy-init="true">
+	<bean id="parallelCache"
+		class="com.cvicse.workflow.examples.ehcache.AppCacheManager" >
+	</bean>
+
+	<!--<bean id="cacheManager"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation">
+			<value>classpath:ehcache.xml</value>
+		</property>
+	</bean>-->
+	<bean id="createWorkItemListener"
+	     class="com.cvicse.workflow.examples.ehcache.listener.AppCreateWorkItemListener" scope="prototype">
+		<property name="manager">
+			<ref bean="parallelCache"/>
+		</property>
+		<property name="useListener" value="true"/>
+	</bean>
+	
+	<bean id="destroyWorkItemListener"
+	     class="com.cvicse.workflow.examples.ehcache.listener.AppDestroyWorkItemListener" scope="prototype">
+		<property name="manager">
+			<ref bean="parallelCache"/>
+		</property>
+		<property name="useListener" value="true"/>
+	</bean>
+	
+	<bean id="updateWorkItemListener"
+	     class="com.cvicse.workflow.examples.ehcache.listener.AppUpdateWorkItemListener" scope="prototype">
+		<property name="manager">
+			<ref bean="parallelCache"/>
+		</property>
+		<property name="useListener" value="true"/>
+	</bean>
+	<bean id="backupWorkItemListener"
+	     class="com.cvicse.workflow.examples.ehcache.listener.AppBackupWorkItemListener" scope="prototype">
+		<property name="manager">
+			<ref bean="parallelCache"/>
+		</property>
+		<property name="useListener" value="true"/>
+	</bean>
+	<!-- bean id="CacheObjectsPool"
+	     class="com.cvicse.workflow.examples.ehcache.DefaultCacheObjectsPool" singleton="true" lazy-init="true">
+		<constructor-arg type="int" value="1000"/>
+		<property name="manager">
+			<ref bean="parallelCache"/>
+		</property>
+	</bean
+-->
+	
+	<bean id="InforFlowCacheUtil"
+	     class="com.cvicse.workflow.ehcache.CacheUtil" scope="singleton">
+		<property name="useCache">
+			<value>false</value>
+		</property>
+		<property name="manager">
+			<ref bean="parallelCache"/>
+		</property>
+		<property name="createWorkItemListener">
+			<ref bean="createWorkItemListener"/>
+		</property>
+		<property name="destroyWorkItemListener">
+			<ref bean="destroyWorkItemListener"/>
+		</property>
+		<property name="updateWorkItemListener">
+			<ref bean="updateWorkItemListener"/>
+		</property>
+		<property name="backupWorkItemListener">
+			<ref bean="backupWorkItemListener"/>
+		</property>
+		<property name="useCacheObjectsPool">
+			<value>false</value>
+		</property>
+		<!-- property name="objectsPool">
+			<ref bean="CacheObjectsPool"/>
+		</property
+-->
+	</bean>
+</beans>

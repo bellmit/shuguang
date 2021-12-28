@@ -1,0 +1,63 @@
+spring:
+  rabbitmq:
+    password: admin
+    username: admin
+    port: 5672
+    addresses: 47.93.97.50
+
+    #开启发送失败返回
+    publisher-returns: true
+    #开启发送确认
+    publisher-confirms: true
+    listener:
+      simple:
+        #指定最小的消费者数量
+        concurrency: 2
+        #指定最大的消费者数量
+        max-concurrency: 2
+        #开启ack
+        acknowledge-mode: auto
+      #开启ack
+      direct:
+        acknowledge-mode: auto
+    #支持消息的确认与返回
+    template:
+      mandatory: true
+  datasource:
+      driver-class-name: com.uxsino.uxdb.Driver
+      url: jdbc:uxdb://47.93.97.50:5432/sys_test?stringtype=unspecified
+      username: uxdb
+      password: uxdb
+      filters: stat
+#    publicKey: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAItqdfGG8XYAkX59PE6R9PxFG5igPqs4xxj19VMd0jeeXPojJveMxoPLLKR1CONKRaNOxcu93P0PgY19FUCUEkcCAwEAAQ==
+#    druid:
+#      connection-properties: config.decrypt=true;config.decrypt.key=${spring.datasource.publicKey}
+
+  redis:
+    redisson:
+      file: classpath:config/redisson-fdpi.yaml
+
+eureka:
+  instance:
+    hostname: ${spring.cloud.client.ip-address}
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://47.94.214.55:8880/eureka/
+
+
+
+proxy:
+  user:
+    username: share_api
+    password: e10adc3949ba59abbe56e057f20f883e
+
+sofn:
+  fineReport:
+    enable: true
+    password: 123456
+    reportUrl: http://218.89.222.119:8080/webroot/decision/view/report?viewlet=
+    
+jasypt:
+  encryptor:
+    password: sofn@2021

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.PapersYearInspectRetailMapper" >
+    <resultMap id="inspectRetailResultMap" type="com.sofn.fdpi.vo.PapersYearInspectProcessVo">
+        <result column="PAPERS_NUMBER" property="papersNumber" jdbcType="VARCHAR"></result>
+        <result column="CREATE_TIME" property="applyTime" jdbcType="VARCHAR"></result>
+        <result column="CON_TIME" property="approveTime" jdbcType="VARCHAR"></result>
+        <result column="SPE_NAME" property="speciesName" jdbcType="VARCHAR"></result>
+        <result column="ISSUE_NUM" property="speciesNumber" jdbcType="INTEGER"></result>
+        <result column="PERSON_NAME" property="approveOrg" jdbcType="VARCHAR"></result>
+    </resultMap>
+    <sql id="inspectRetailSQL">
+         C.PAPERS_NUMBER,E.CREATE_TIME,B.CON_TIME,D.SPE_NAME
+	    ,A.ISSUE_NUM, B.PERSON_NAME
+    </sql>
+    <select id="listForCondition" parameterType="java.util.Map" resultMap="inspectRetailResultMap">
+        select  
+        <include refid="inspectRetailSQL"></include>
+        from PAPERS_YEAR_INSPECT_RETAIL A
+        left join PAPERS_YEAR_INSPECT E on a.PAPERS_YEAR_INSPECT_ID=E.ID
+        left join PAPERS_YEAR_INSPECT_PROCESS B ON E.ID= B.PAPERS_YEAR_INSPECT_ID AND E.STATUS=B.STATUS
+        left join PAPERS C ON A.PAPERS_ID=C.ID
+        left join PAPERS_SPEC spe on C.ID=SPE.PAPERS_ID
+        left join tb_species D ON spe.SPEC_ID=D.ID
+        <where>
+             E.DEL_FLAG='N'
+            AND E.STATUS='6'
+            AND A.DEL_FLAG='N'
+            <if test="compId!=null and compId!=''">
+                AND  E.TB_COMP_ID=#{compId}
+            </if>
+            <if test="endTime!=null">
+                AND E.CREATE_TIME &lt;= to_timestamp(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="inspectId!=null and inspectId!=''">
+                AND E.ID=#{inspectId}
+            </if>
+            <if test="papersId!=null and papersId!=''">
+                AND A.PAPERS_ID=#{papersId}
+            </if>
+
+        </where>
+        order by E.CREATE_TIME desc
+    </select>
+</mapper>

@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysResourceMapper" >
+    <resultMap id="customResultMap" type="com.sofn.sys.model.SysResource">
+        <result column="ID" property="id"></result>
+        <result column="PARENT_ID" property="parentId"></result>
+        <result column="RESOURCE_NAME" property="resourceName"></result>
+        <result column="TYPE" property="type"></result>
+        <result column="PARENT_IDS" property="parentIds"></result>
+        <result column="PERMISSION" property="permission"></result>
+        <result column="ICON" property="icon"></result>
+        <result column="LEAF" property="leaf"></result>
+        <result column="RESOURCE_URL" property="resourceUrl"></result>
+        <result column="DEL_FLAG" property="delFlag"></result>
+        <result column="PRIORITY" property="priority"></result>
+        <result column="APP_ID" property="appId"></result>
+        <result column="UPDATE_TIME" property="updateTime"></result>
+        <result column="CREATE_TIME" property="createTime"></result>
+        <result column="UPDATE_USER_ID" property="updateUserId"></result>
+        <result column="CREATE_USER_ID" property="createUserId"></result>
+    </resultMap>
+
+    <sql id="sysResourceResult">
+        ID						,
+        PARENT_ID               ,
+        RESOURCE_NAME           ,
+        RESOURCE_URL            ,
+        PERMISSION              ,
+        TYPE        AS TYPE     ,
+        LEAF                    ,
+        PRIORITY                ,
+        ICON                    ,
+        CREATE_USER_ID          ,
+        CREATE_TIME             ,
+        UPDATE_USER_ID          ,
+        UPDATE_TIME             ,
+        DEL_FLAG                ,
+        PARENT_IDS              ,
+        APP_ID
+    </sql>
+
+    <select id="getSysResourceByPermissionOrUrl" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT count(1) from SYS_RESOURCE a where 1 =1
+        <if test="resourceUrl != null and resourceUrl != ''">
+            and RESOURCE_URL = #{resourceUrl}
+        </if>
+
+        <if test="permission != null and permission != ''">
+            and PERMISSION = #{permission}
+        </if>
+        <if test="id != null and id != ''">
+            and ID != #{id}
+        </if>
+        and DEL_FLAG = 'N'
+    </select>
+
+
+
+    <select id="selectResourceListByPriority" parameterType="java.lang.String" resultMap="customResultMap">
+        SELECT
+        <include refid="sysResourceResult"/>
+        FROM SYS_RESOURCE where DEL_FLAG = #{delFlag} order by PRIORITY
+    </select>
+
+
+    <select id="getAllResourceByRoleId" parameterType="java.lang.String" resultType="com.sofn.sys.vo.SysResourceForm">
+        SELECT
+         SR.ID id					,
+        SR.PARENT_ID        parentId        ,
+        SR.RESOURCE_NAME resourceName           ,
+        SR.RESOURCE_URL    resourceUrl         ,
+        SR.PERMISSION    permission           ,
+        SR.TYPE  AS   type                ,
+        PSR.RESOURCE_NAME   parentName,
+        SR.LEAF             leaf         ,
+        SR.PRIORITY      priority          ,
+        SR.ICON          icon           ,
+        SS.SUBSYSTEM_NAME  sysSubsystemName,
+        SR.DEL_FLAG       delFlag           ,
+        SR.PARENT_IDS    parentIds           ,
+        SR.APP_ID   appId,
+            SR.CREATE_TIME createTime
+        FROM SYS_RESOURCE SR
+        LEFT JOIN SYS_RESOURCE PSR ON SR.PARENT_ID = PSR.ID
+        LEFT JOIN SYS_SUBSYSTEM SS ON SR.APP_ID = SS.APP_ID
+        where SR.ID in (select rs.RESOURCE_ID from
+        SYS_ROLE_RESOURCE rs where rs.ROLE_ID=#{roleId}) AND SR.DEL_FLAG = 'N'
+    </select>
+
+
+    <select id="getSysResourceByCondition" parameterType="java.util.Map" resultType="com.sofn.sys.vo.SysResourceForm">
+        SELECT
+        SR.ID id					,
+        SR.PARENT_ID        parentId        ,
+        SR.RESOURCE_NAME resourceName           ,
+        SR.RESOURCE_URL    resourceUrl         ,
+        SR.PERMISSION    permission           ,
+        SR.TYPE  AS   type                ,
+        PSR.RESOURCE_NAME   parentName,
+        SR.LEAF             leaf         ,
+        SR.PRIORITY      priority          ,
+        SR.ICON          icon           ,
+        SS.SUBSYSTEM_NAME  sysSubsystemName,
+        SR.DEL_FLAG       delFlag           ,
+        SR.PARENT_IDS    parentIds           ,
+        SR.APP_ID   appId,
+        SR.CREATE_TIME createTime
+        FROM SYS_RESOURCE SR
+        LEFT JOIN SYS_RESOURCE PSR ON SR.PARENT_ID = PSR.ID
+        LEFT JOIN SYS_SUBSYSTEM SS ON SR.APP_ID = SS.APP_ID
+        <where>  1=1
+            <if test="resourceName != null and resourceName != ''">
+                and SR.RESOURCE_NAME like '%' || #{resourceName} || '%'
+            </if>
+
+            <if test="resourceUrl != null and resourceUrl != ''">
+                and SR.RESOURCE_URL =  #{resourceUrl}
+            </if>
+            <if test="delFlag != null and delFlag != ''">
+                and SR.DEL_FLAG = #{delFlag}
+            </if>
+            <if test="parentId != null and parentId != ''">
+                and SR.PARENT_ID = #{parentId}
+            </if>
+            <if test="appId != null and appId != ''">
+                and SR.APP_ID = #{appId}
+            </if>
+        </where>
+
+    </select>
+
+
+    <select id="getListByIds" parameterType="java.util.Map" resultType="com.sofn.sys.vo.SysResourceForm" >
+        SELECT
+        SR.ID id					,
+        SR.PARENT_ID        parentId        ,
+        SR.RESOURCE_NAME resourceName           ,
+        SR.RESOURCE_URL    resourceUrl         ,
+        SR.PERMISSION    permission           ,
+        SR.TYPE  as   type                ,
+        PSR.RESOURCE_NAME   parentName,
+        SR.LEAF             leaf         ,
+        SR.PRIORITY      priority          ,
+        SR.ICON          icon           ,
+        SS.SUBSYSTEM_NAME  sysSubsystemName,
+        SR.DEL_FLAG       delFlag           ,
+        SR.PARENT_IDS    parentIds           ,
+        SR.APP_ID   appId,
+        SR.CREATE_TIME createTime
+        from SYS_RESOURCE SR
+        LEFT JOIN SYS_RESOURCE PSR ON SR.PARENT_ID = PSR.ID
+        LEFT JOIN SYS_SUBSYSTEM SS ON SR.APP_ID = SS.APP_ID
+        where SR.ID in
+        <foreach collection="ids" item="item"  open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND SR.DEL_FLAG != 'Y'
+    </select>
+
+
+
+
+    <select id="getSysResourceByUserAppId" parameterType="java.util.Map" resultMap="customResultMap">
+        select
+        <include refid="sysResourceResult"/>
+        from SYS_RESOURCE  SR where SR.id in (
+        select DISTINCT(SRR.resource_id) from SYS_ROLE_RESOURCE SRR
+        where  SRR.ROLE_ID in
+        <foreach collection="roleIds" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        )
+        <if test="appId != null and appId != ''">
+            and SR.app_id=#{appId}
+        </if>
+        and SR.DEL_FLAG = 'N'
+    </select>
+
+    <sql id="getSysResourceTreeVoSql">
+         DISTINCT
+            SS.ID id,
+            SS.PARENT_ID parentId,
+            SS.PARENT_IDS parentIds,
+            SS.RESOURCE_NAME resourceName,
+            SS.TYPE as type,
+            SS.RESOURCE_URL resourceUrl,
+            SS.PERMISSION permission,
+            SS.ICON icon,
+            SS.APP_ID    appId,
+            SS.CREATE_TIME createTime
+    </sql>
+
+    <select id="getSysResourceTreeVo" parameterType="java.util.Map" resultType="com.sofn.sys.vo.SysResourceTreeVo">
+        select
+        id,
+        parentId,
+        parentIds,
+        resourceName,
+        type,
+        resourceUrl,
+        permission,
+        icon,
+        appId,
+        createTime
+        from (
+        select
+        <include refid="getSysResourceTreeVoSql"></include> from SYS_RESOURCE SS
+        LEFT JOIN SYS_ROLE_RESOURCE SRR ON SRR.RESOURCE_ID = SS.ID
+        WHERE (SS.DEL_FLAG = 'N' OR SS.DEL_FLAG IS NULL)
+        <if test="roleIds != null and roleIds.size > 0">
+            AND SRR.ROLE_ID IN
+            <foreach collection="roleIds" item="roleId" open="(" close=")" separator=",">
+                #{roleId}
+            </foreach>
+        </if>
+        <if test="ids != null and ids.size > 0">
+            AND SS.ID IN
+            <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+        <if test="parentIds != null and parentIds != ''">
+            and PARENT_IDS like #{parentIds} || '%'
+        </if>
+        <if test="appId != null and appId != ''">
+            and (APP_ID = #{appId} or SS.ID = #{appId})
+        </if>
+        <if test="resourceName != null and resourceName != ''">
+            AND POSITION (#{resourceName} in RESOURCE_NAME)>0
+        </if>
+        <if test="parentIdList != null and parentIdList.size > 0">
+            and  SS.PARENT_ID in
+            <foreach collection="parentIdList" item="parentId" open="(" close=")" separator=",">
+                #{parentId}
+            </foreach>
+        </if>
+
+        <if test="userId != null and userId != ''">
+            union
+            select
+            <include
+                    refid="getSysResourceTreeVoSql"></include>
+            from SYS_RESOURCE SS
+            LEFT JOIN SYS_ROLE_RESOURCE SRR ON SRR.RESOURCE_ID = SS.ID WHERE (SS.DEL_FLAG = 'N' OR SS.DEL_FLAG IS
+            NULL)
+            and SS.CREATE_USER_ID = #{userId}
+            <if test="resourceName != null and resourceName != ''">
+                AND instr(RESOURCE_NAME,#{resourceName})>0
+            </if>
+            <if test="appId != null and appId != ''">
+                and (APP_ID = #{appId} or SS.ID = #{appId})
+            </if>
+        </if>
+        ) order by createTime desc
+    </select>
+
+    <insert id="batchSave" parameterType="java.util.List">
+        insert into SYS_RESOURCE (
+        ID                ,
+        TYPE              ,
+        RESOURCE_NAME     ,
+        PERMISSION        ,
+        PARENT_ID         ,
+        PARENT_IDS        ,
+        DEL_FLAG          ,
+        RESOURCE_URL      ,
+        CREATE_USER_ID    ,
+        CREATE_TIME       ,
+        APP_ID
+        )VALUES
+        <foreach collection="sysResources" item="sysResource" separator=",">
+            (#{sysResource.id,jdbcType=VARCHAR} ,
+            #{sysResource.type,jdbcType=VARCHAR} ,
+            #{sysResource.resourceName,jdbcType=VARCHAR} ,
+            #{sysResource.permission,jdbcType=VARCHAR} ,
+            #{sysResource.parentId,jdbcType=VARCHAR} ,
+            #{sysResource.parentIds,jdbcType=VARCHAR} ,
+            #{sysResource.delFlag,jdbcType=VARCHAR} ,
+            #{sysResource.resourceUrl,jdbcType=VARCHAR} ,
+            #{sysResource.createUserId,jdbcType=VARCHAR} ,
+            #{sysResource.createTime,jdbcType=VARCHAR} ,
+            #{sysResource.appId,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <select id="getSysResourceByParentStrIds" parameterType="java.util.List" resultMap="customResultMap">
+        select
+        <include refid="sysResourceResult"/>
+        from SYS_RESOURCE
+        where DEL_FLAG != 'Y'
+        and (
+        <foreach collection="parentIds" item="parentId" separator="or">
+            PARENT_IDS like #{parentId} || '%'
+        </foreach>
+        )
+    </select>
+
+    <update id="batchDelete" parameterType="java.util.Map">
+        update SYS_RESOURCE set DEL_FLAG='Y',UPDATE_USER_ID=#{deleteUserId},UPDATE_TIME=#{deleteDate}
+        where ID in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </update>
+
+
+    <update id = "updateParentIdsByIds" parameterType="java.util.Map">
+        update SYS_RESOURCE set PARENT_IDS = replace(PARENT_IDS,#{oldParentIdPrefix},#{newParentIdPrefix})  where id in
+        <foreach collection="ids" item="id" close=")" open="(" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <resultMap id="roleHaveResourceResultMap" type="com.sofn.sys.vo.RoleHaveResourceVo" >
+        <result column="ROLE_ID" property="roleId" jdbcType="VARCHAR" />
+        <result column="ROLE_CODE" property="roleCode" jdbcType="VARCHAR" />
+        <result column="ROLE_APP_ID" property="appId" jdbcType="VARCHAR" />
+        <collection property="sysResources" ofType="com.sofn.sys.vo.SysResourceForm">
+            <id column="RESOURCE_ID" property="id" jdbcType="VARCHAR" />
+            <result column="resourceName" property="resourceName" jdbcType="VARCHAR" />
+            <result column="type" property="type" jdbcType="VARCHAR" />
+            <result column="resourceUrl" property="resourceUrl" jdbcType="VARCHAR" />
+            <result column="permission" property="permission" jdbcType="VARCHAR" />
+            <result column="parentId" property="parentId" jdbcType="VARCHAR" />
+            <result column="appId" property="appId" jdbcType="VARCHAR" />
+            <result column="parentIds" property="parentIds" jdbcType="VARCHAR" />
+            <result column="pResourceName" property="parentName" jdbcType="VARCHAR" />
+            <result column="priority" property="priority" jdbcType="VARCHAR" />
+            <result column="sysSubsystemName" property="sysSubsystemName" jdbcType="VARCHAR" />
+        </collection>
+    </resultMap>
+
+
+    <select id="getResourceByRoleIdsOrRoleCodesOrAppId" parameterType="java.util.Map" resultMap="roleHaveResourceResultMap">
+        select
+        SROLE.ID ROLE_ID,
+        SROLE.ROLE_CODE ROLE_CODE,
+        SR.APP_ID ROLE_APP_ID,
+        SR.ID RESOURCE_ID,
+        SR.RESOURCE_NAME resourceName,
+        SR.TYPE AS type,
+        SR.RESOURCE_URL resourceUrl,
+        SR.PERMISSION permission,
+        SR.PARENT_ID parentId,
+        SR.APP_ID    appId,
+        SR.priority priority,
+        PSR.RESOURCE_NAME pResourceName,
+        ss.SUBSYSTEM_NAME sysSubsystemName,
+        SR.PARENT_IDS parentIds,
+        SR.CREATE_TIME createTime
+        from SYS_RESOURCE SR
+        LEFT JOIN SYS_ROLE_RESOURCE SRR ON SR.ID = SRR.RESOURCE_ID
+        LEFT JOIN SYS_RESOURCE PSR on SR.PARENT_ID = PSR.ID
+        LEFT JOIN SYS_SUBSYSTEM ss ON SR.APP_ID = SS.APP_ID
+        LEFT JOIN SYS_ROLE SROLE ON SROLE.ID = SRR.ROLE_ID
+        WHERE SR.DEL_FLAG = 'N' AND SROLE.DEL_FLAG = 'N'
+        <if test="roleIdsOrRoleCodes != null and roleIdsOrRoleCodes.size > 0">
+            AND (
+            SROLE.ID IN
+            <foreach collection="roleIdsOrRoleCodes" item="roleId" open="(" close=")" separator=",">
+                #{roleId}
+            </foreach>
+            OR
+            SROLE.ROLE_CODE IN
+            <foreach collection="roleIdsOrRoleCodes" item="roleCode" open="(" close=")" separator=",">
+                #{roleCode}
+            </foreach>
+            )
+        </if>
+
+        <if test="appIds != null and appIds.size > 0">
+            AND SR.APP_ID in
+            <foreach collection="appIds" item="appId" open="(" close=")" separator=",">
+                #{appId}
+            </foreach>
+        </if>
+
+    </select>
+
+    <select id="getResourceInfoByAppId" parameterType="java.util.Map" resultType="com.sofn.sys.vo.SysResourceForm">
+        select
+        DISTINCT
+        SR.ID id,
+        SR.RESOURCE_NAME resourceName,
+        SR.TYPE AS type,
+        SR.RESOURCE_URL resourceUrl,
+        SR.PERMISSION permission,
+        SR.PARENT_ID parentId,
+        SR.APP_ID    appId,
+        SR.priority priority,
+        PSR.RESOURCE_NAME pResourceName,
+        SS.SUBSYSTEM_NAME sysSubsystemName,
+        SR.PARENT_IDS parentIds,
+        SR.CREATE_TIME createTime
+        from SYS_RESOURCE SR
+        LEFT JOIN SYS_ROLE_RESOURCE SRR ON SR.ID = SRR.RESOURCE_ID
+        LEFT JOIN SYS_RESOURCE PSR on SR.PARENT_ID = PSR.ID
+        LEFT JOIN SYS_SUBSYSTEM SS ON SR.APP_ID = SS.APP_ID
+        WHERE SR.DEL_FLAG = 'N'
+        <if test="appIds != null and appIds.size > 0">
+            AND SR.APP_ID in
+            <foreach collection="appIds" item="appId" open="(" close=")" separator=",">
+                #{appId}
+            </foreach>
+        </if>
+    </select>
+
+
+    <select id="getResourceInfoByParentIdStrings" parameterType="java.util.Map" resultType="com.sofn.sys.vo.SysResourceForm">
+        select
+        DISTINCT
+        SR.ID id,
+        SR.RESOURCE_NAME resourceName,
+        SR.TYPE as type,
+        SR.RESOURCE_URL resourceUrl,
+        SR.PERMISSION permission,
+        SR.PARENT_ID parentId,
+        SR.APP_ID    appId,
+        SR.priority priority,
+        PSR.RESOURCE_NAME pResourceName,
+        ss.SUBSYSTEM_NAME sysSubsystemName,
+        SR.PARENT_IDS parentIds,
+        SR.CREATE_TIME createTime
+        from SYS_RESOURCE SR
+        LEFT JOIN SYS_ROLE_RESOURCE SRR ON SR.ID = SRR.RESOURCE_ID
+        LEFT JOIN SYS_RESOURCE PSR on SR.PARENT_ID = PSR.ID
+        LEFT JOIN SYS_SUBSYSTEM ss ON SR.APP_ID = SS.APP_ID
+        WHERE SR.DEL_FLAG = 'N'
+        AND (
+        <foreach collection="parentIdStrings" separator="or"  item="parentIdString">
+            SR.PARENT_IDS like #{parentIdString} || '%'
+        </foreach>
+        )
+        <if test="appId != null and appId != ''">
+            AND SR.APP_ID = #{appId}
+        </if>
+    </select>
+
+
+    <select id="getUserCreateResource" parameterType="java.lang.String" resultType="com.sofn.sys.vo.SysResourceForm">
+         select
+                DISTINCT
+                SR.ID id,
+                SR.RESOURCE_NAME resourceName,
+                SR.TYPE as type,
+                SR.RESOURCE_URL resourceUrl,
+                SR.PERMISSION permission,
+                SR.PARENT_ID parentId,
+                SR.APP_ID    appId,
+                SR.priority priority,
+                PSR.RESOURCE_NAME pResourceName,
+                ss.SUBSYSTEM_NAME sysSubsystemName,
+                SR.PARENT_IDS parentIds,
+                SR.CREATE_TIME createTime
+            from SYS_RESOURCE SR
+            LEFT JOIN SYS_ROLE_RESOURCE SRR ON SR.ID = SRR.RESOURCE_ID
+            LEFT JOIN SYS_RESOURCE PSR on SR.PARENT_ID = PSR.ID
+            LEFT JOIN SYS_SUBSYSTEM ss ON SR.APP_ID = SS.APP_ID
+            WHERE SR.DEL_FLAG = 'N'
+            and SR.create_user_id = #{userId}
+    </select>
+
+</mapper>

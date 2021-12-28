@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysInterParamsMapper" >
+
+    <resultMap id="BaseResultMap" type="com.sofn.sys.model.SysInterParams" >
+        <result column="id" property="id" />
+        <result column="params_name" property="paramsName" />
+        <result column="variable_name" property="variableName" />
+        <result column="is_required" property="isRequired" />
+        <result column="params_type" property="paramsType" />
+        <result column="data_des" property="dataDes" />
+        <result column="example_values" property="exampleValues" />
+        <result column="inter_id" property="interId" />
+        <result column="different_req" property="differentReq" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                ID,
+                PARAMS_NAME,
+                VARIABLE_NAME,
+                IS_REQUIRED,
+                PARAMS_TYPE,
+                DATA_DES,
+                EXAMPLE_VALUES,
+                INTER_ID,
+                DIFFERENT_REQ
+    </sql>
+    <delete id="deleteByInterId">
+        delete from SYS_INTER_PARAMS where INTER_ID=#{interId}
+    </delete>
+
+
+    <select id="showReqParams" resultType="com.sofn.sys.model.SysInterBase">
+        SELECT <include refid="Base_Column_List"/> FROM SYS_INTER_PARAMS WHERE INTER_ID = #{interId}
+
+    </select>
+
+
+</mapper>

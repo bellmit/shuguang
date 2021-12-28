@@ -1,0 +1,125 @@
+<div class="gui-breadcrumbs">
+    <a href="">查询系统</a>&gt;
+    <a href="">监督检查信息查询</a>&gt;
+    <span>执法人员</span>
+</div>
+<div class="gui-TabCut">
+    <ul class="clearfix gov-h">
+        <li class="fl gp-r" ui-sref="index.content.qry/supervisionInspection/qryInspectionBaseList">基地巡查</li>
+        <li class="fl gp-r" ui-sref="index.content.qry/supervisionInspection/qryKhTaskList">考核任务</li>
+        <li class="fl gp-r" ui-sref="index.content.qry/supervisionInspection/qryAssessList">巡查人员考核</li>
+        <li class="fl gp-r" ui-sref="index.content.qry/supervisionInspection/qryElInspectionList">执法检查</li>
+        <li class="fl gp-r gui-TabCheck">执法人员</li>
+    </ul>
+    <div class="gui-botLine"></div>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group">
+        <span>区域</span>
+        <div class="gui-select">
+            <select id="sheng" name="sheng"style="width: 122px;height: 27px;">
+                <option value="">省</option>
+            </select>
+        </div>
+        <div class="gui-select">
+            <select id="shi" name="shi"style="width: 122px;height: 27px;">
+                <option value="">市</option>
+            </select>
+        </div>
+        <div class="gui-select">
+            <select id="xian" name="xian"style="width: 122px;height: 27px;">
+                <option value="">区/县</option>
+            </select>
+        </div>
+        <span>机构级别</span>
+        <div class="gui-select" style="min-width: 60px;">
+            <select  ng-model="levelId" name="level">
+                <option value="">全部</option>
+                <option ng-repeat="x in orgLevel" value="{{x.id}}">{{x.dictName}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="gui-form-group">
+        <span>职务</span>
+        <div class="gui-select" style="min-width: 60px;">
+            <select  ng-model="userPostId" name="userPostId">
+                <option value="">全部</option>
+                <option ng-repeat="x in userPost" value="{{x.id}}">{{x.dictName}}</option>
+            </select>
+        </div>
+        <span>姓名</span>
+        <input class="gui-input" maxlength="30" type="text" style="width: 150px" id="userName" name="userName" placeholder="请输入执法人员姓名" maxlength="30"/>
+        <span>电话</span>
+        <input class="gui-input" maxlength="30" type="text" style="width: 150px" name="phone" placeholder="请输入电话" maxlength="30"/>
+        <span>单位名称</span>
+        <input class="gui-input" maxlength="30" type="text" style="width: 150px" name="elName" placeholder="请输入单位名称" maxlength="30"/>
+        <button class="gui-btn" ng-disabled="!!btnDisabled" ng-click="queryEnfPerson()">查询</button>
+        <button class="gui-btn" ng-click="cleanSelectModelQuery()">重置</button>
+    </div>
+    <!--<div class="gui-table-panel clearfix">-->
+            <!--<p class="table-total">符合条件的数据总计: {{tableTotal}} 项</p>-->
+            <!--<button class="gui-btn" ng-click="exportData()">导出</button>-->
+        <!--</div>-->
+    <!--<table id="grid"-->
+           <!--class="gui-table mt15" style="width: 100%">-->
+    <!--</table>-->
+    <!-- 图表面板 -->
+    <div class="gui-table-panel clearfix">
+        <p class="table-total" ng-show="isListView">符合条件的数据总计: {{tableTotal}} 项</p>
+        <!-- 切换视图展示 -->
+        <div class="view-type">展示方式
+            <i class="gui-icon icon-list highlight" ng-class="{'highlight': isListView}" ng-click="toggleView(true)" title="以列表视图展示"></i>
+            <i class="gui-icon icon-chart" ng-class="{'highlight': !isListView }" ng-click="toggleView(false)" title="以图形视图展示"></i>
+        </div>
+        <button class="gui-btn" ng-show="isListView" ng-click="exportData()">导出</button>
+    </div>
+    <!-- 图表区域 -->
+    <div class="gui-content-slide">
+        <div ng-style="{'transform': viewX}" class="content-wrap">
+            <div class="content-block">
+                <table id="grid" class="gui-table table-nowrap mt15" style="width: 100%">
+                </table>
+            </div>
+            <div class="content-block">
+                <div sg-chart options="vm.chartOptions" update="vm.chart"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--模态框-->
+<div class="modal fade" id="enforceLawPersonModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog removeBor">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel" style="text-align: center">详细信息</h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <form class="bs-example bs-example-form" role="form">
+                    <div class="row">
+                        <div  class="col-lg-12 col-sm-12 col-md-12">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">用户名&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="enforceLawUser.userName"/>
+                        </div>
+                        <div  class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">职务&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="enforceLawUser.userPost"/>
+                        </div>
+                        <div  class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">电话&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6"  ng-bind="enforceLawUser.userPhone"/>
+                        </div>
+                        <div  class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">邮箱:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="enforceLawUser.userEmail"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer mt15">
+                <button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>

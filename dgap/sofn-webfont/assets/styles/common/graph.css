@@ -1,0 +1,50 @@
+.view-type {
+  margin-left: 15px;
+  float: right;
+  line-height: 30px;
+}
+.view-type .gui-icon {
+  padding: 15px;
+  margin-left: 5px;
+  background-color: #eee;
+  cursor: pointer;
+  border-radius: 3px;
+}
+.gui-graph {
+  padding: 15px 0;
+  margin-left: -20px;
+}
+.gui-graph > li {
+  float: left;
+  width: 25%;
+  margin-bottom: 20px;
+  padding-left: 20px;
+}
+.gui-graph .graph-block {
+  background-color: #eee;
+  min-height: 250px;
+  border-radius: 2px;
+}
+.gui-graph .desc {
+  text-align: center;
+  font-size: 14px;
+  padding: 10px 0;
+}
+.gui-content-slide {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+.gui-content-slide .content-wrap {
+  width: 200%;
+  overflow: hidden;
+  -webkit-transition: -webkit-transform ease-in-out 0.3s;
+  transition: -webkit-transform ease-in-out 0.3s;
+  transition: transform ease-in-out 0.3s;
+  transition: transform ease-in-out 0.3s, -webkit-transform ease-in-out 0.3s;
+}
+.gui-content-slide .content-block {
+  width: 50%;
+  float: left;
+  overflow: hidden;
+}

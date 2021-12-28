@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Reports using TreeGrid - jQuery EasyUI Demo</title>
+    <link rel="stylesheet" type="text/css" href="../easyui/themes/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../easyui/themes/icon.css">
+    <!--<link rel="stylesheet" type="text/css" href="demo.css">-->
+    <script type="text/javascript" src="../jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../easyui/jquery.easyui.min.js"></script>
+</head>
+<body>
+<h2>Reports using TreeGrid</h2>
+<p>Using TreeGrid to show complex reports.</p>
+<div style="margin:20px 0;"></div>
+<table id="tb123" title="Reports using TreeGrid" class="easyui-treegrid" style="width:700px;height:250px"
+       data-options="
+				method: 'get',
+				animate:true
+				">
+    <thead frozen="true">
+    <thead>
+    <tr>
+        <th field="name" width="60" align="right">1st qrt.</th>
+        <th field="age" width="60" align="right">2st qrt.</th>
+        <th field="age" width="60" align="right">3st qrt.</th>
+        <th field="age" width="60" align="right">4st qrt.</th>
+        <th field="age" width="60" align="right">1st qrt.</th>
+        <th field="age" width="60" align="right">2st qrt.</th>
+        <th field="age" width="60" align="right">3st qrt.</th>
+        <th field="age" width="60" align="right">4st qrt.</th>
+    </tr>
+    </thead>
+</table>
+<script>
+    var data=[
+        {"id":1,"name":"asdasda","age":12,"children":[
+            {"id":2,"name":"asdasda","age":12},
+            {"id":3,"name":"asdasda","age":12}
+        ]},
+        {"id":2,"name":"asdasda","age":12},
+        {"id":3,"name":"asdasda","age":12},
+        {"id":4,"name":"asdasda","age":12},
+        {"id":5,"name":"asdasda","age":12}
+    ];
+    $(function(){
+        $('#tb123').treegrid({
+//            url: 'asms_data.json',
+            <!--method: 'get',-->
+//            rownumbers: true,
+            showFooter: true,
+            idField: 'id',
+            treeField: 'name',
+            data:data
+        })
+    })
+
+
+</script>
+</body>
+</html>

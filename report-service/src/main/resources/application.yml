@@ -1,0 +1,93 @@
+server:
+  port: 8084
+
+spring:
+  servlet:
+    multipart:
+      max-request-size: 1024MB
+      max-file-size: 1024MB
+  application:
+    name: report-service
+  profiles:
+    active: dev
+#  # 注册到Admin
+#  boot:
+#    admin:
+#      client:
+#        url: http://localhost:7888
+
+# swagger配置
+swagger:
+  # 扫描包
+  base-package: com.sofn.report.web
+  # 名称
+  name: 测试
+  # 接口前缀
+  prefix:
+
+eureka:
+  instance:
+    # 心跳时间，即服务续约间隔时间（缺省为30s）
+    lease-renewal-interval-in-seconds: 10
+    # 发呆时间，即服务续约到期时间（缺省为90s）
+    lease-expiration-duration-in-seconds: 20
+    health-check-url-path: /actuator/health
+  client:
+    healthcheck:
+      # 开启健康检查（依赖spring-boot-starter-actuator）
+      enabled: true
+    fetch-registry: true
+    register-with-eureka: true
+
+# 健康数据
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    health:
+      show-details: ALWAYS
+
+logging:
+  config: classpath:logback-spring.xml
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*Mapper.xml
+  typeAliasesPackage: com.sofn.report.model
+  global-config:
+    id-type: 3
+    field-strategy: 2
+    auto-set-db-type: true
+    db-column-underline: false
+    refresh-mapper: true
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    log-prefix: mybatis.sql.
+    default-fetch-size: 1000
+feign:
+  hystrix:
+    enabled: true
+  httpclient:
+    enabled: false
+  okhttp:
+    enabled: true
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+      isolation:
+        strategy: SEMAPHORE
+        thread:
+          #目前有两个容器实例，单个请求超时5s,+重试>10s，超15s则熔断
+          timeoutInMilliseconds: 15000
+
+ribbon:
+  #ribbon请求连接的超时时间- 限制3秒内必须请求到服务，并不限制服务处理的返回时间
+  connectTimeout: 3000
+  #请求处理的超时时间 下级服务响应最大时间,超出时间消费方（路由也是消费方）返回timeout,超时时间不可大于断路器的超时时间
+  readTimeout: 5000

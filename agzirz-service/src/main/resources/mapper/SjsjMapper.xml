@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sofn.agzirz.mapper.SjsjMapper">
+
+    <sql id="Base_Column_List" >
+        SJSJ_NO,REPORT_USER,REPORT_TIME,EVENT_ABT_FILES,DISPOSAL_ORGANI,EVENT_TIME,EVENT_LOCATION,EVENT_CONTENT,TREATMENT_MEASURE,EVENT_IMGS,EVENT_VEDIOS,EVENT_AFFECT,PROCESS_REPORT,ENABLE_STATUS
+    </sql>
+    <select id="getPage" resultType="com.sofn.agzirz.model.Sjsj">
+        select
+        <include refid="Base_Column_List"/>
+        from SJSJ
+        where enable_status = 'Y'
+        <if test="colName!=null and colName!=''">
+            and ${colName} = #{colVal}
+        </if>
+        <if test="disposalOrgani!=null and disposalOrgani!=''">
+            and DISPOSAL_ORGANI like '%'||#{disposalOrgani}||'%'
+        </if>
+
+        <if test="eventLocation != null and eventLocation != ''">
+            and EVENT_LOCATION like '%'||#{eventLocation}||'%'
+        </if>
+        <if test="startTime!=null">
+            and EVENT_TIME &gt;= #{startTime}
+        </if>
+        <if test="endTime!=null">
+            and EVENT_TIME &lt;= #{endTime}
+        </if>
+        order by REPORT_TIME desc
+
+    </select>
+</mapper>

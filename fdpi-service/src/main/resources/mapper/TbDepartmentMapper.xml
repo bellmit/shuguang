@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.TbDepartmentMapper" >
+    <resultMap id="BaseResultMap" type="com.sofn.fdpi.vo.TbDepartmentVo">
+        <id column="ID" property="id" jdbcType="VARCHAR"/>
+        <result column="DEPT_NAME" property="deptName" jdbcType="VARCHAR"/>
+        <result column="DEPT_PRO" property="deptPro" jdbcType="VARCHAR"/>
+        <result column="DEPT_CITY" property="deptCity" jdbcType="VARCHAR"/>
+        <result column="DEPT_AREA" property="deptArea" jdbcType="VARCHAR"/>
+        <result column="REGION_IN_CHINA" property="regionInChina" jdbcType="VARCHAR"/>
+        <result column="ORG_ID" property="orgId" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR"/>
+        <result column="DEL_FLAG" property="delFlag" jdbcType="VARCHAR"/>
+        <result column="TYPE" property="type" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    ID, DEPT_NAME, DEPT_PRO, DEPT_CITY
+    , DEPT_AREA,ORG_ID, CREATE_TIME, TYPE
+    , DEL_FLAG, REGION_IN_CHINA
+  </sql>
+
+    <select id="ListByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_DEPARTMENT
+        <where>
+            <if test="deptName != null and deptName != ''">
+                and DEPT_NAME like '%'||#{deptName}||'%'
+            </if>
+            <if test="type != null and type != ''">
+                and TYPE =#{type}
+            </if>
+            <if test="deptPro != null and deptPro != ''">
+                and DEPT_PRO =#{deptPro}
+            </if>
+            <if test="deptCity != null and deptCity != ''">
+                and DEPT_CITY =#{deptCity}
+            </if>
+            <if test="deptArea != null and deptArea != ''">
+                and DEPT_AREA =#{deptArea}
+            </if>
+            <if test="sysOrgProvince!=null and sysOrgProvince!=''">
+                and DEPT_PRO=#{sysOrgProvince}
+            </if>
+            <if test="sysOrgCity!=null and sysOrgCity!=''">
+                and DEPT_CITY=#{sysOrgCity}
+            </if>
+            <if test="sysOrgDistrict!=null and sysOrgDistrict!=''">
+                and DEPT_AREA=#{sysOrgDistrict}
+            </if>
+            <if test="types!=null and types.size > 0 ">
+                and TYPE in
+                <foreach collection="types" index="index" item="type" open="(" close=")" separator=",">
+                    #{type}
+                </foreach>
+            </if>
+            and DEL_FLAG='N'
+        </where>
+        ORDER By DEPT_CITY desc, DEPT_AREA desc
+    </select>
+
+    <!--修改删除状态-->
+    <update id="deleteDepartment" parameterType="java.util.Map">
+    update TB_DEPARTMENT
+        set DEL_FLAG='Y',
+            DEPT_CITY=null,
+            DEPT_AREA=null,
+            UPDATE_TIME=#{updateTime},
+            UPDATE_USER_ID=#{updateUserId}
+    where ID=#{deptId}
+    </update>
+    <select id="getOneForCheckRepeat" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_DEPARTMENT
+        <where>
+            <if test="deptName != null and deptName != ''">
+                and (DEPT_NAME = #{deptName} or ORG_ID=#{orgId})
+            </if>
+            <if test="type != null and type != ''">
+                and TYPE =#{type}
+            </if>
+            <if test="id != null and id !=''">
+                and ID !=#{id}
+            </if>
+            <if test="delFlag!=null and delFlag!=''">
+                and DEL_FLAG='N'
+            </if>
+        </where>
+        LIMIT 1 OFFSET 0
+    </select>
+    <select id="getOneById" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_DEPARTMENT
+        <where>
+            <if test="id != null and id != ''">
+                and ID = #{id}
+            </if>
+            <if test="type != null and type != ''">
+                and TYPE =#{type}
+            </if>
+            and DEL_FLAG='N'
+            LIMIT 1 OFFSET 0
+        </where>
+    </select>
+</mapper>

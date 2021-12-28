@@ -1,0 +1,44 @@
+spring:
+  datasource:
+    driver-class-name: com.uxsino.uxdb.Driver
+    url: jdbc:uxdb://192.168.21.62:5432/infor_test?stringtype=unspecified
+    username: uxdb
+    password: sofn@123
+
+    druid:
+      async-init: true
+      initial-size: 15
+      max-active: 30
+      min-idle: 10
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      # validation-query: SELECT 1 FROM DUAL
+      #connection-properties: config.decrypt=true;config.decrypt.key=${spring.datasource.publicKey}
+      filter:
+        config:
+          enabled: true
+
+  redis:
+    cluster:
+      nodes: 10.0.50.103:7000,10.0.50.103:7001,10.0.50.103:7002,10.0.50.103:7003,10.0.50.103:7004,10.0.50.103:7005
+    timeout: 6000ms
+    lettuce:
+      pool:
+        max-active: 100
+        max-wait: -1ms
+        max-idle: 10
+    database: 0
+
+eureka:
+  instance:
+    hostname: ${spring.cloud.client.ip-address}
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://10.0.50.103:8880/eureka/

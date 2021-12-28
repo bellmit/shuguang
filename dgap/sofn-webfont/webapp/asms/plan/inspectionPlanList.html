@@ -1,0 +1,349 @@
+<link rel="stylesheet" href="assets/css/asms/baseInspection/inspectionList.css"/>
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">监管系统</a>&gt;
+    <a ui-sref="index.content.asms/baseInspection/inspectionList">监督检查</a>&gt;
+    <span>巡查计划</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group">
+
+        <form name="searchForm" id="searchForm" class="mt15">
+            <div class="mt15">
+                <span>巡查计划</span>
+                <input class="gui-input" name="planName" type="text" placeholder="请输入巡查计划"/>
+                <span>考核任务</span>
+                <input class="gui-input" name="taskName" type="text" placeholder="请输入考核任务"/>
+                <span>任务状态</span>
+                <div class="gui-select">
+                    <select name="status">
+                        <option value="">全部</option>
+                        <option ng-repeat="x in statusDict" value="{{x.value}}">{{x.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mt15">
+                <span>巡查主体</span>
+                <input class="gui-input" name="entityName" type="text" placeholder="请巡查主体"/>
+                <button class="gui-btn" ng-disabled="!!btnDisabled" ng-click="queryPlan()">查询</button>
+                <button class="gui-btn" ng-click="resetPlan()">重置</button>
+            </div>
+        </form>
+    </div>
+    <div class="gui-actions">
+        <button class="gui-btn fr ml15" ng-click="deletePlans()" ng-show="{{iswrite==2}}">
+            <i class="gui-icon icon-remove"></i>删除
+        </button>
+        <button class="gui-btn fr" ng-click="addPlan()">
+            <i class="gui-icon icon-add"></i>新增
+        </button>
+    </div>
+    <table id="grid" class="gui-table mt15" style="width: 100%">
+    </table>
+</div>
+
+<!--巡查计划新增修改模态框-->
+<div class="modal fade" id="planOprModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm" style="width: 40%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">
+                    <span id="planOprModelTitle">查看</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <!--********************-->
+                <form id="attributeForm" class="form-horizontal"
+                      data-bv-excluded>
+                    <div class="form-group">
+                        <label class="col-sm-3 col-sm-3 col-lg-3  control-label">巡查计划&nbsp;<span
+                                style="color: red">*</span>：</label>
+                        <div class="col-sm-8 col-md-8 col-lg-8">
+                            <input name="planName" type="text" class="form-control gui-input" ng-model="plan.planName"
+                                   data-bv-notempty="true"
+                                   data-bv-notempty-message="请填写巡查计划"
+                                   placeholder="巡查计划最长60字符"
+                                   data-bv-stringlength-message="巡查计划最长60字符"
+                                   maxlength="60"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 col-sm-3 col-lg-3  control-label">关联考核任务&nbsp;：</label>
+                        <div class="col-sm-8 col-md-8 col-lg-8">
+                            <input id="taskName" name="taskName" type="text" ng-click="selectTask()"
+                                   class="form-control gui-input" readonly ng-model="plan.taskName"
+                                   placeholder="请选择考核任务"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 col-sm-3 col-lg-3  control-label">任务类型&nbsp;<span
+                                style="color: red">*</span>：</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <div class="gui-checkbox" style="width: 100%">
+                                <input name="taskType" class="ThisType" ng-model="taskType.a" type="checkbox" value="1"
+                                       ng-required="taskType.a || taskType.b || taskType.c || taskType.d"/><span>基地</span>
+                                <input name="taskType" class="ThisType" ng-model="taskType.b" type="checkbox" value="2"
+                                       ng-required="taskType.a || taskType.b || taskType.c || taskType.d"/><span>主体</span>
+                                <input name="taskType" class="ThisType" ng-model="taskType.c" type="checkbox" value="3"
+                                       ng-required="taskType.a || taskType.b || taskType.c || taskType.d"/><span>农资</span>
+                                <input name="taskType" class="ThisType" ng-model="taskType.d" type="checkbox" value="0"
+                                       ng-required="taskType.a || taskType.b || taskType.c || taskType.d"/><span>其他</span>
+                            </div>
+                            <div class="color-red"
+                                 ng-hide="!taskTypeTouched ||(taskType.a || taskType.b || taskType.c || taskType.d) ">
+                                请至少选中一个类型
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-3 col-md-3 control-label">巡查区域&nbsp;<span
+                                style="color: red">*</span>：</label>
+                        <div class="col-sm-8 col-md-8 col-lg-8">
+                            <div class="gui-select" style="width: 100%;">
+                                <select name="sheng" id="sheng" class="form-control"
+                                        data-bv-notempty="true"
+                                        data-bv-notempty-message="巡查区域不能为空">
+                                    <option value="">--请选择省份--</option>
+                                </select>
+                            </div>
+                            <div class="gui-select mt15" style="width: 100%;">
+                                <select name="shi" id="shi" class="form-control">
+                                    <option value="">--请选择城市--</option>
+                                </select>
+                            </div>
+                            <div class="gui-select mt15" style="width: 100%;">
+                                <select name="xian" id="xian" class="form-control">
+                                    <option value="">--请选择区/县--</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-3 col-md-3 control-label">巡查时间&nbsp;<span
+                                style="color: red">*</span>：</label>
+                        <div class="col-sm-8 col-lg-8 col-md-8">
+                            <input type="text" name="planStartDate" id="planStartDate" class="Wdate gui-input gui-col-3"
+                                   readonly="readonly"
+                                   onFocus="var endDate=$dp.$('planEndDate');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'planEndDate\')}', minDate:'%y-%M-%d', onpicked:pickedFunc, oncleared:clearedFunc})"
+                            />
+                            -
+                            <input type="text" name="planEndDate" id="planEndDate" class="Wdate gui-input gui-col-3"
+                                   readonly="readonly"
+                                   onfocus="endDatePickerRule(this)"/>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-3 col-md-3 control-label">巡查次数&nbsp;<span
+                                style="color: red">*</span>：</label>
+                        <div class="col-sm-8 col-md-8 col-lg-8">
+                            <input name="ObjInspectionCount" type="text" class="form-control gui-input"
+                                   ng-model="plan.planCount" data-bv-notempty="true"
+                                   data-bv-notempty-message="请填写巡查次数" data-bv-integer="true"
+                                   data-bv-min="0"
+                                   data-bv-integer-message="请输入整数" maxlength="4"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-3 col-md-3 control-label">主体名称&nbsp;:&nbsp;&nbsp;</label>
+                        <div class="col-sm-8 col-md-8 col-lg-8">
+                            <input id="entityName" name="entityName" readonly ng-click="selectEnt()"
+                                   placeholder="请选择巡查主体" type="text" class="form-control gui-input"
+                                   ng-model="plan.entityName"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-3 col-md-3 control-label">备注&nbsp;:&nbsp;&nbsp;</label>
+                        <div class="col-sm-8 col-md-8 col-lg-8">
+                            <textarea name="remark" type="text" class="form-control gui-input" ng-model="plan.remark"
+                                      maxlength="300"
+                                      data-bv-stringlength-message="备注不超过300个字符" placeholder="备注不超过300个字符"></textarea>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn mt15" type="button" data-dismiss="modal" ng-click="cleanSelected()">关闭</button>
+                <button class="gui-btn mt15" type="button" ng-click="savePlan($event)">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--关联考核任务模态框-->
+<div class="modal fade" id="selectTaskModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-stylemid" style="width: 60%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">
+                    <span id="modalTitle">关联考核任务</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <table id="selectTaskGrid" style="width: 100%;" class="gui-table mt15">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn mt15" type="button" ng-click="submitTask()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--巡查计划详情模态框-->
+<div class="modal fade" id="planInfoModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-stylesm" style="width: 40%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">
+                    <span>巡查计划详情</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <form class="bs-example bs-example-form" role="form">
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-md-12">
+                            <label class="col-lg-4 col-sm-4 col-md-4" style="text-align: right;padding-right: 15px">巡查计划&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="planInfo.planName"></span>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-4 col-sm-4 col-md-4" style="text-align: right;padding-right: 15px">关联考核任务&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="planInfo.taskName"></span>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-4 col-sm-4 col-md-4" style="text-align: right;padding-right: 15px">巡查类型&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="planInfo.taskType"></span>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-4 col-sm-4 col-md-4" style="text-align: right;padding-right: 15px">巡查区域:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="planInfo.areaName"></span>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 mt15">
+                            <label class="col-lg-4 col-md-4 col-sm-4" style="text-align: right;padding-right: 10px">巡查时间&nbsp;:</label>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <span ng-bind="planInfo.planStartDate"></span>&nbsp;&nbsp;至&nbsp;&nbsp;
+                                <span ng-bind="planInfo.planEndDate"></span>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-4 col-sm-4 col-md-4" style="text-align: right;padding-right: 15px">巡查次数&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="planInfo.planCount"></span>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-4 col-sm-4 col-md-4" style="text-align: right;padding-right: 15px">巡查主体&nbsp;:</label>
+                            <div class="col-lg-6 col-sm-6 col-md-6">
+                                <textarea readonly class="form-control gui-input"
+                                          ng-bind="planInfo.entityName"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-4 col-sm-4 col-md-4" style="text-align: right;padding-right: 15px">备注&nbsp;:</label>
+                            <div class="col-lg-6 col-sm-6 col-md-6">
+                                <textarea readonly class="form-control gui-input" ng-bind="planInfo.remark"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer mt15">
+                <button class="gui-btn" type="button" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 模态框（Modal）生产经营主体列表 -->
+<div class="modal fade " id="enterpriseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-style" style="padding-top:15px;width:75%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">巡查对象</h4>
+            </div>
+            <div class="gui-TabCut ">
+                <ul class="clearfix gov-h">
+                    <li id="entTab" class="fl gp-r gui-TabCheck" ng-click="switchEnt()">生产经营主体</li>
+                    <li id="entTempTab" class="fl gp-r" ng-click="switchEntTemp()">临时登记主体</li>
+                </ul>
+                <div class="gui-botLine"></div>
+            </div>
+            <div id="entDiv">
+                <div class="modal-body clearfix gov-h" style="padding: 10px 10px">
+                    <div class="">
+                        <span>区域</span>
+                        <div class="gui-select">
+                            <select id="querySheng">
+                                <option value="">省</option>
+                            </select>
+                        </div>
+                        <div class="gui-select">
+                            <select id="queryShi">
+                                <option value="">市</option>
+                            </select>
+                        </div>
+                        <div class="gui-select">
+                            <select id="queryXian">
+                                <option value="">区/县</option>
+                            </select>
+                        </div>
+                        <span>主体名称</span>
+                        <input class="gui-input" type="text" placeholder="请输入主体名称" name="entName"/>
+                        <span>主体身份码</span>
+                        <input class="gui-input" type="text" placeholder="请输入主体身份码" name="userIdcode"/>
+                        <button class="gui-btn" ng-click="querySubjEntList()">查询</button>
+                        <table id="enterpriseGrid" style="width: 100%;" class="gui-table mt15">
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+                    <button type="button" class="gui-btn" ng-click="submitEnt()">提交</button>
+                </div>
+            </div>
+            <div id="entTempDiv" style="display: none;">
+                <div class="modal-body clearfix gov-h" style="padding: 10px 10px">
+                    <div class="">
+                        <span>区域</span>
+                        <div class="gui-select">
+                            <select id="queryTempSheng">
+                                <option value="">省</option>
+                            </select>
+                        </div>
+                        <div class="gui-select">
+                            <select id="queryTempShi">
+                                <option value="">市</option>
+                            </select>
+                        </div>
+                        <div class="gui-select">
+                            <select id="queryTempXian">
+                                <option value="">区/县</option>
+                            </select>
+                        </div>
+                        <span>主体名称</span>
+                        <input class="gui-input" type="text" placeholder="请输入主体名称" name="entTempName"/>
+                        <button class="gui-btn" ng-click="querySubjEntTempList()">查询</button>
+                        <table id="entTempGrid" style="width: 100%;" class="gui-table mt15">
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+                    <button type="button" class="gui-btn" ng-click="submitEnt()">提交</button>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>

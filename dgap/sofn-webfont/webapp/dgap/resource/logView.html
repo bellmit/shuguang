@@ -1,0 +1,87 @@
+<link rel="stylesheet" href="/assets/css/dgap/resource/logView.css"/>
+<div class="gui-breadcrumbs">
+    <a href="">数据共享系统</a>&gt;
+    <a href="">服务监控</a>&gt;
+    <span>日志管理</span>
+</div>
+<style type="text/css">
+  .phcolor{
+    color:#ccc;
+  }
+</style>
+
+<!-- 开发人员只需要在跟换下面这个div里面内容即可   begin-->
+<div class="gui-section">
+  <div class="gui-form-group clearfix">
+    <span class="gui-select">
+      <select class="mr15" name="type" id="handType" style="width:100px;">
+          <option value="">全部</option>
+          <option value="删除">删除</option>
+          <option value="修改">修改</option>
+          <option value="新增">新增</option>
+           <option value="分页">分页</option>
+      </select>
+    </span>
+    <!-- <span>操作人</span> -->
+    <input class="gui-input form_input" type="text" placeholder="操作人" id="logUser" ng-model="logUser" maxlength="30" onkeyup="this.value=this.value.replace(/\s+/g,'')"  disabled="true">
+    <input class="gui-input" type="text" placeholder="请输入操作说明" id="logDesc" maxlength="30" name="logDesc" onkeyup="this.value=this.value.replace(/\s+/g,'')"  disabled="true">
+    <input class="gui-input" type="text" placeholder="请输入操作IP" id="logIP" maxlength="30" name="logIP" onkeyup="this.value=this.value.replace(/\s+/g,'')" disabled="true" >
+  </div>
+  <div class="gui-form-group clearfix">
+    <span>日志时间段</span>
+      <input name="dateBegin" style="cursor: pointer;width: 120px;" class="Wdate gui-input main_ch" id="dateBegin"
+             onfocus="var endDate=$dp.$('dateEnd');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateEnd\')}'})" disabled="disabled">--
+      <input name="dateEnd" style="cursor: pointer;width: 120px;" class="Wdate gui-input main_ch" id="dateEnd"
+             onfocus="WdatePicker({minDate:'#F{$dp.$D(\'dateBegin\')}'})"  disabled="disabled">
+  </div><div class="gui-actions"><button class="gui-btn fr ml15" ng-click="queryhistoryList()"><i class="gui-icon icon-history"></i>查询历史记录</button><button class="gui-btn fr" ng-click="queryList()"><i class="gui-icon icon-record"></i>查询今日记录</button></div>
+  <div>
+      <table id="grid" class="gui-table" style="width: 100%"></table>
+  </div>
+</div>
+<script>
+function isPlaceholer(){
+var input = document.getElementsByTagName("input");
+console.log(input);
+    return "placeholder" in input;
+};
+function placeholder(input){
+var text = input.attr('placeholder'),
+defaultValue = input.defaultValue;
+
+if(!defaultValue){
+  // input.val(text).addClass("phcolor");
+}
+
+input.focus(function(){
+
+if(input.val() == text){
+
+$(this).val("");
+}
+});
+
+
+input.blur(function(){
+
+if(input.val() == ""){
+
+// $(this).val(text).addClass("phcolor");
+}
+});
+
+//输入的字符不为灰色
+input.keydown(function(){
+
+$(this).removeClass("phcolor");
+});
+};
+
+//当浏览器不支持placeholder属性时，调用placeholder函数
+if(!isPlaceholer()){
+$('input').each(function(){
+// text = $(this).attr("placeholder");
+placeholder($(this));
+});
+}
+</script>
+</html>

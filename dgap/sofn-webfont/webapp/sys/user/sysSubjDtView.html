@@ -1,0 +1,184 @@
+<link rel="stylesheet" href="assets/css/asms/subjSv/subjSvAdd.css"/>
+<div class="gui-breadcrumbs">
+    <a href="">系统管理</a>&gt;
+    <a ui-sref="index.content.sys/user/sysSubjEntList">用户管理</a>&gt;
+    <a ui-sref="index.content.sys/user/sysSubjDtList">机构用户管理</a>&gt;
+    <a ui-sref="index.content.sys/user/sysSubjDtList">检测机构</a>&gt;
+    <span>查看</span>
+</div>
+    <div class="Sup_contain_section_contain_head gui-section  gui-section-wid  " >
+        <p>注册详情</p>
+        <ul>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-sm-3 col-md-3 control-label">机构名称</span>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <input type="text" readonly="readonly" ng-model="subjDt.dtName" class="form-control"/>
+                    </div>
+                </div>
+                <!--<span>机构名称</span>-->
+                <!--<input ng-model="subjDt.dtName" readonly="readonly" type="text" class="Sup_contain_section_contain_input"/>-->
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-sm-3 col-md-3 control-label">机构代码</span>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <input type="text" readonly="readonly" ng-model="subjDt.dtCode" class="form-control"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-sm-3 col-md-3 control-label">机构类别</span>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <input type="text" readonly="readonly" ng-model="subjDt.dtType" class="form-control"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-sm-3 col-md-3 control-label">机构性质</span>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <input type="text" readonly="readonly" ng-model="subjDt.dtNature" class="form-control"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-sm-3 col-md-3 control-label">资质</span>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <input type="text" readonly="readonly" ng-model="subjDt.dtQualifications" class="form-control"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-sm-3 col-md-3 control-label">依托单位</span>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <input type="text" readonly="readonly" ng-model="subjDt.dtRelyOnUnit" class="form-control"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-sm-3 col-md-3 control-label">机构级别</span>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <input type="text" readonly="readonly" ng-model="subjDt.dtLevel" class="form-control"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-sm-3 col-md-3 control-label">所属区域</span>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <input type="text" readonly="readonly" ng-model="subjDt.dtArea" class="form-control"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-sm-3 col-md-3 control-label">通讯地址</span>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <input type="text" readonly="readonly" ng-model="subjDt.dtAddress" class="form-control"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-sm-3 col-md-3 control-label">法人</span>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <input type="text" readonly="readonly" ng-model="subjDt.dtLegalMan" class="form-control"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-sm-3 col-md-3 control-label">负责人</span>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <input type="text" readonly="readonly" ng-model="subjDt.dtLeader" class="form-control"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-sm-3 col-md-3 control-label">负责人电话</span>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <input type="text" readonly="readonly" ng-model="subjDt.dtLeaderPhone" class="form-control"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-sm-3 col-md-3 control-label">联系人</span>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <input type="text" readonly="readonly" ng-model="subjDt.dtContact" class="form-control"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-sm-3 col-md-3 control-label">联系人电话</span>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <input type="text" readonly="readonly" ng-model="subjDt.dtContactPhone" class="form-control"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-sm-3 col-md-3 control-label">联系人QQ</span>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <input type="text" readonly="readonly" ng-model="subjDt.dtContactQQ" class="form-control"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-sm-3 col-md-3 control-label">电子邮箱</span>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <input type="text" readonly="readonly" ng-model="subjDt.dtContactEmail" class="form-control"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-sm-3 col-md-3 control-label">邮编</span>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <input type="text" readonly="readonly" ng-model="subjDt.dtPostcode" class="form-control"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-sm-3 col-md-3 control-label">技术负责人</span>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <input type="text" readonly="readonly" ng-model="subjDt.dtTechnicalDirector" class="form-control"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-sm-3 col-md-3 control-label">质量负责人</span>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <input type="text" readonly="readonly" ng-model="subjDt.dtQualityDirector" class="form-control"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-sm-3 col-md-3 control-label">参数</span>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <input type="text" readonly="readonly" ng-model="subjDt.dtParameter" class="form-control"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-sm-3 col-md-3 control-label">产品范围</span>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <input type="text" readonly="readonly" ng-model="subjDt.dtProductRange" class="form-control"/>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <button class="gui-btn mt15" alain="center" ng-click="removeLocalStorage()">关闭</button>
+    </div>

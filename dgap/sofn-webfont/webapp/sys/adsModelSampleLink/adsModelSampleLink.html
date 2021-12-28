@@ -1,0 +1,68 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css">
+<div class="gui-breadcrumbs">
+    <a ui-sref="index.content.sys/adsModelSampleLink/adsModelSampleLink">系统管理</a>&gt;
+    <a ui-sref="index.content.sys/adsModelSampleLink/adsModelSampleLink">基础数据管理</a>&gt;
+    <a ui-sref="index.content.sys/adsModelSampleLink/adsModelSampleLink">检测基本配置</a>&gt;
+    <span>抽样环节</span>
+</div>
+<div class="gui-section">
+    <form id="sectionForm">
+  <div class="gui-form-group form-group clearfix">
+      <input class="gui-input" data-bv-stringlength="true" data-bv-stringlength-max="30" data-bv-stringlength-message="不能超过30个字符长度" type="text" id="nameS" name="nameS" ng-keyup="onInputChanged($event)"  placeholder="请输入环节名称">
+      <button class="gui-btn" id="seachTask">查询</button>
+      
+      
+  </div><div class="gui-actions"><button class="gui-btn fr ml15" onclick="delAdsModelSampleLink()"><i class="gui-icon icon-remove"></i>删除</button><button class="gui-btn fr" ng-click="addAdsModel()"><i class="gui-icon icon-add"></i>新增</button></div>
+  <div>
+      <table id="grid" class="gui-table" style="width: 100%"></table>
+  </div>
+  </form>
+</div>
+<!-- 新增模型_抽样环节model -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">新增抽样环节</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="addAdsModelSampleLink" data-bv-excluded="">
+                    <div class="form-item form-group line-20">
+                        <label class="required">环节名称</label>
+                                <input type="text" id="name" name="name" class="gui-input form-control text-height-28" data-bv-notempty="true" data-bv-notempty-message="内容不能是空" data-bv-stringlength="true" data-bv-stringlength-max="60" data-bv-stringlength-message="不能超过60个字符长度">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="gui-btn" ng-click="addAdsModelSampleLink()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 修改模型_抽样环节model -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">修改抽样环节</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="updateAdsModelSampleLink" data-bv-excluded="">
+                    <div class="form-item form-group line-20">
+                        <label class="required">环节名称</label>
+                          <input type="hidden" id="id" name="id">
+                          <input type="text" id="nameU" name="nameU" class="gui-input form-control text-height-28" data-bv-notempty="true" data-bv-notempty-message="内容不能是空" data-bv-stringlength="true" data-bv-stringlength-max="60" data-bv-stringlength-message="不能超过60个字符长度">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="gui-btn" ng-click="updateAdsModel()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>

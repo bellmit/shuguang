@@ -1,0 +1,107 @@
+
+.Sup_contain_section_contain_head_ul>li{
+    line-height: 30px;
+    text-align: center;
+}
+.Sup_contain_section_contain_head_ul>li ul li{
+    padding: 5px 0px;
+}
+/*.Sup_contain_section_contain_head_ul>li ul li:first-child{
+    width: 20%;
+    text-align: right;
+    padding-right: 40px;
+}*//*修改执法系统-现场巡查-新增执法日志-布局css样式 2018年4月16日15:13:55*/
+.Sup_contain_section_contain_head_ul>li ul li:first-child{
+    width: 20%;
+    text-align: right;
+    padding-right: 15px;
+}
+.Sup_contain_section_contain_head_ul>li ul li:nth-of-type(2){
+    width: 80%;
+    text-align: left;
+}
+.Sup_contain_section_contain form>ul>li:last-child button:hover{
+    background-color: #9d9d9d;
+    color: white;
+}
+.Sup_contain_section_contain>form>ul>li div{
+    display: inline-block;
+    margin-right: 30px;
+    padding: 5px 0px;
+}
+/*�ύ������ʽ*/
+.Sup_contain_section_contain form>ul>li:nth-of-type(2) p:first-child input{
+    width: 300px;
+    padding: 3px 0px;
+    font-size: 14px;
+}
+/*����ȡ����ť*/
+.Sup_contain_section button{
+    /*margin-left: 100px;*/
+    /*margin-right: 100px;*/
+    /*margin-bottom: 10px;*/
+    /*background-color: inherit;*/
+    /*padding: 5px 30px;*/
+    /*font-size: 14px;*/
+    /*line-height: 12px;*/
+    /*border: 1px solid #4BA0D6;*/
+    /*outline: none;*/
+    /*background-color: #4BA0D6;*/
+    /*color: white;*/
+    /*border-radius: 15px;*/
+}
+.Sup_contain_section button a:hover{
+    text-decoration: none;
+    color: white;
+}
+.Sup_contain_section_contain form>ul>li:nth-of-type(2) p:first-child input:first-child{
+    margin-left: -10px;
+}
+.Sup_contain_section_contain form>ul>li:nth-of-type(2) ul li{
+    margin:0px 0px 5px 0px;
+}
+.Sup_contain_section_contain form>ul>li:nth-of-type(2) ul input{
+    width: 500px;
+    /*padding: 3px 0px;*/
+    font-size: 14px;
+    text-align: left;
+    border: none;
+    outline: none;
+}
+.Sup_contain_section_contain form>ul>li:nth-of-type(4) select{
+    cursor: pointer;
+    outline: none;
+    margin-bottom: 20px;
+}
+.Sup_contain_section_contain form>ul>li:nth-of-type(4) input{
+    cursor: pointer;
+    margin-left: 15%;
+}
+.Add_img{
+    /*width: 100px!important;*/
+    /*height: 150px!important;*/
+    border: 3px dashed #9d9d9d;
+}
+/*�б�*/
+/*#enterpriseGrid,#enterpriseGrid_fa{*/
+/*width: 900px!important;*/
+/*}*/
+#enterpriseGrid td:nth-of-type(1){
+    text-align: center;
+}
+.inspectionUl li ul:after{
+    content: "";
+    display: block;
+    clear: both;
+    overflow: hidden;
+}
+.inspectionUl li ul li{
+    padding: 5px 0px;
+}
+.inspectionUl li ul li:nth-of-type(1){
+    width: 20%;
+}
+._line{
+    border-bottom: 1px solid #f6f6f6;
+}
+

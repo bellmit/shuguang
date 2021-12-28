@@ -1,0 +1,127 @@
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">监管系统</a>&gt;
+    <a ui-sref="index.content.asms/check/routineMonitor">监测任务</a>&gt;
+    <span>例行监测</span>
+</div>
+    <div class="gui-section">
+        <form class="gui-form-group">
+            <div class="clearfix gov-h">
+                <div class="gui-mediaInline">
+                    <span>年度</span>
+                    <input name="queryYear" style="width:30px" onfocus="WdatePicker({skin:'default',dateFmt:'yyyy'})" class="Wdate gui-input" />
+                    <span>任务状态</span>
+                    <div class="gui-select" >
+                        <select name="rmState">
+                            <option value="">全部</option>
+                            <option value="0">未发布</option>
+                            <option value="1">已发布</option>
+                            <option value="2">已废止</option>
+                            <option value="3">执行中</option>
+                            <option value="4">已结束,未完成</option>
+                            <option value="5">已结束,已完成</option>
+                        </select>
+                    </div>
+                    <span>任务时间</span>
+                    <input id="datebegin" name="datebegin" style="cursor: pointer;width: 120px;"  class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('dateend');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateend\')}'})"/>--
+                    <input id="dateend"  name="dateend" class="Wdate gui-input" style="cursor: pointer;width: 120px;margin: 0px 10px;"  type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'datebegin\')}'})"/>
+                    <span>任务名称</span>
+                    <input class="gui-input" style="width: 80px;" type="text" name="rmName" />
+
+                    <button id="ToCheck" ng-disabled="!!btnDisabled" data-toggle="tooltip" class="gui-btn" data-placement="right">查询</button>
+                    <button data-toggle="tooltip" class="gui-btn" data-placement="right" type="reset">重置</button>
+                </div>
+            </div>
+        </form>
+        <div class="gui-actions">
+
+            <button ng-click="del()" ng-show="{{iswrite==2}}"  class="gui-btn fr" data-toggle="tooltip" data-placement="top" title="删除任务">
+                <i class="gui-icon icon-remove"></i>删除</button>
+            <button ng-click="abo()" ng-show="{{iswrite==2}}"  class="gui-btn fr mr15" data-toggle="tooltip" data-placement="top" title="废止任务">
+                <i class="gui-icon icon-disable"></i>废止</button>
+            <button ng-click="rel()" ng-show="{{iswrite==2}}"  class="gui-btn fr ml15 mr15" data-toggle="tooltip" data-placement="top" title="发布任务">
+
+                <i class="gui-icon icon-publish"></i>发布</button>
+            <!--<button  class="gui-btn fr ml15"  ng-click="upd()" >-->
+                <!--<i class="gui-icon icon-edit"></i>修改</button>-->
+            <button class="gui-btn fr" ng-show="{{iswrite==2}}"  ui-sref="index.content.asms/check/routineMonitorAdd" ng-click="cleanCookie()" >
+                <i class="gui-icon icon-add"></i>新增</button>
+        </div>
+        <table id="grid" class="gui-table mt15"
+               style="width: 100%">
+        </table>
+    </div>
+
+<!--infoModel-->
+<div class="modal fade" id="TaskInfoModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-stylesm" style="width: 40%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">
+                    <span>查看</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <form class="" role="form">
+                    <div class="row">
+                        <div class="">
+                            <div class="col-lg-12 col-md-12 col-sm-12" >
+                                <label class="col-lg-5 col-md-5 col-sm-5" style="text-align: right;padding-right: 10px">任务名称：</label>
+                                <span class="col-lg-6 col-md-6 col-sm-6" ng-bind="routineMonitor.rmName"></span>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 mt15">
+                                <label class="col-lg-5 col-md-5 col-sm-5 " style="text-align: right;padding-right: 10px">任务优先级：</label>
+                                <span class="col-lg-6 col-md-6 col-sm-6 " ng-bind="(routineMonitor.rmPriority == '1'? '特急':false) ||(routineMonitor.rmPriority == '2'? '紧急':false) || (routineMonitor.rmPriority == '3'? '一般':false)||(routineMonitor.rmPriority ='无')"></span>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 mt15">
+                                <label class="col-lg-5 col-md-5 col-sm-5 " style="text-align: right;padding-right: 10px">监测类型：</label>
+                                <span class="col-lg-6 col-md-6 col-sm-6 " ng-bind="routineMonitor.rmType"></span>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 mt15">
+                                <label class="col-lg-5 col-md-5 col-sm-5" style="text-align: right;padding-right: 10px">年度：</label>
+                                <span class="col-lg-6 col-md-6 col-sm-6"  ng-bind="routineMonitor.rmYear"></span>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 mt15">
+                                <label class="col-lg-5 col-md-5 col-sm-5" style="text-align: right;padding-right: 10px">批次：</label>
+                                <span class="col-lg-6 col-md-6 col-sm-6" ng-bind="routineMonitor.rmBatch"></span>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 mt15">
+                                <label class="col-lg-5 col-md-5 col-sm-5" style="text-align: right;padding-right: 10px" >任务时间：</label>
+                                <div class="col-lg-6 col-md-6 col-sm-6" >
+                                    <span  ng-bind="routineMonitor.rmDateBegin"></span>&nbsp;&nbsp;至&nbsp;&nbsp;
+                                    <span ng-bind="routineMonitor.rmDateEnd"></span>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 mt15">
+                                <label class="col-lg-5 col-md-5 col-sm-5" style="text-align: right;padding-right: 10px">发布单位：</label>
+                                <span class="col-lg-6 col-md-6 col-sm-6"  ng-bind="routineMonitor.rmReleaseUnit"></span>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 mt15">
+                                <label class="col-lg-5 col-md-5 col-sm-5" style="text-align: right;padding-right: 10px">牵头单位：</label>
+                                <span class="col-lg-6 col-md-6 col-sm-6"  ng-bind="routineMonitor.qtName"></span>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 mt15">
+                                <label class="col-lg-5 col-md-5 col-sm-5" style="text-align: right;padding-right: 10px">附件：</label>
+                                <a style="cursor: pointer;" onclick="downloadFileName()" class="col-lg-6 col-md-6 col-sm-6" ><span ng-bind="routineMonitor.rmFileName"></span></a>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 mt15">
+                                <label class="col-lg-5 col-md-5 col-sm-5" style="text-align: right;padding-right: 10px">文件号：</label>
+                                <span class="col-lg-6 col-md-6 col-sm-6"  ng-bind="routineMonitor.rmFileNum"></span>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 mt15">
+                                <label class="col-lg-5 col-md-5 col-sm-5" style="text-align: right;padding-right: 10px">备注：</label>
+                                <span class="col-lg-6 col-md-6 col-sm-6"  ng-bind="routineMonitor.rmRemark"></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer mt15">
+                <button class="gui-btn" type="button" data-dismiss="modal">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
+

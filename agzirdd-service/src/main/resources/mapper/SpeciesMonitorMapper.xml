@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agzirdd.mapper.SpeciesMonitorMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.agzirdd.model.SpeciesMonitor" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="BELONG_YEAR" property="belongYear" jdbcType="VARCHAR" />
+    <result column="MONITOR_TIME" property="monitorTime" jdbcType="TIMESTAMP" />
+    <result column="FORM_NUMBER" property="formNumber" jdbcType="VARCHAR" />
+    <result column="PROVINCE_ID" property="provinceId" jdbcType="VARCHAR" />
+    <result column="CITY_ID" property="cityId" jdbcType="VARCHAR" />
+    <result column="COUNTY_ID" property="countyId" jdbcType="VARCHAR" />
+    <result column="TOWN" property="town" jdbcType="VARCHAR" />
+    <result column="MONITOR" property="monitor" jdbcType="VARCHAR" />
+    <result column="TELEPHONE" property="telephone" jdbcType="VARCHAR" />
+    <result column="COMPANY" property="company" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="HAS_ALIEN_SPECIES" property="hasAlienSpecies" jdbcType="VARCHAR" />
+    <result column="CREATE_USER_ID" property="createUserId" jdbcType="VARCHAR" />
+    <result column="CREATE_USER_NAME" property="createUserName" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="ROLE_CODE" property="roleCode" jdbcType="VARCHAR" />
+    <result column="is_new" property="isNew" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ID, BELONG_YEAR,MONITOR_TIME, FORM_NUMBER, PROVINCE_ID, CITY_ID, COUNTY_ID, TOWN,
+    MONITOR, TELEPHONE, COMPANY, STATUS,HAS_ALIEN_SPECIES, CREATE_USER_ID, CREATE_USER_NAME,
+    CREATE_TIME,ROLE_CODE,IS_NEW,PROVINCE_NAME,CITY_NAME,COUNTY_NAME
+  </sql>
+
+  <resultMap id="testTable" type="com.sofn.agzirdd.vo.SpeciesMonitorForm">
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="belongYear" property="belongYear" jdbcType="VARCHAR" />
+    <result column="monitorTime" property="monitorTime" jdbcType="TIMESTAMP" />
+    <result column="formNumber" property="formNumber" jdbcType="VARCHAR" />
+    <result column="provinceId" property="provinceId" jdbcType="VARCHAR" />
+    <result column="cityId" property="cityId" jdbcType="VARCHAR" />
+    <result column="countyId" property="countyId" jdbcType="VARCHAR" />
+    <result column="town" property="town" jdbcType="VARCHAR" />
+    <result column="monitor" property="monitor" jdbcType="VARCHAR" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="company" property="company" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="hasAlienSpecies" property="hasAlienSpecies" jdbcType="VARCHAR" />
+    <result column="areaName" property="areaName" jdbcType="VARCHAR" />
+    <result column="hasAlienSpeciesName" property="hasAlienSpeciesName" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getSpeciesMonitorByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM SPECIES_MONITOR
+    <where>
+      1=1
+      <if test="monitor != null and monitor != ''">
+        and MONITOR like '%'||#{monitor}||'%'
+      </if>
+      <if test="provinceId != null and provinceId != ''">
+        and PROVINCE_ID = #{provinceId}
+      </if>
+      <if test="cityId != null and cityId != ''">
+        and CITY_ID = #{cityId}
+      </if>
+      <if test="countyId != null and countyId != ''">
+        and COUNTY_ID = #{countyId}
+      </if>
+      <if test="inStatus!=null and inStatus!=''">
+        and status in (${inStatus})
+      </if>
+      <if test="status != null and status != ''">
+        and STATUS = #{status}
+      </if>
+      <if test="beginDate != null and beginDate != ''">
+        AND MONITOR_TIME &gt;=to_date(#{beginDate},'yyyy-MM-dd')
+      </if>
+      <if test="endDate != null and endDate != ''">
+        AND MONITOR_TIME &lt;(to_date(#{endDate},'yyyy-MM-dd'))+1
+      </if>
+      <if test="createUserId != null and createUserId != ''">
+        AND CREATE_USER_ID = #{createUserId}
+      </if>
+      <if test="roleCode != null and roleCode != ''">
+        AND ROLE_CODE = #{roleCode}
+      </if>
+    </where>
+    ORDER BY CREATE_TIME desc
+  </select>
+
+  <select id="getSpeciesMonitorByParam" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM SPECIES_MONITOR
+    <where>
+      1=1
+      <if test="formNumber != null and formNumber != ''">
+        and FORM_NUMBER = #{formNumber}
+      </if>
+      <if test="provinceId != null and provinceId != ''">
+        and PROVINCE_ID = #{provinceId}
+      </if>
+      <if test="cityId != null and cityId != ''">
+        and CITY_ID = #{cityId}
+      </if>
+      <if test="countyId != null and countyId != ''">
+        and COUNTY_ID = #{countyId}
+      </if>
+      <if test="status != null and status != ''">
+        and STATUS = #{status}
+      </if>
+
+      <if test="roleCode != null and roleCode != ''">
+        AND ROLE_CODE = #{roleCode}
+      </if>
+    </where>
+    ORDER BY CREATE_TIME desc
+  </select>
+
+  <select id="getSpeciesMonitorForm" parameterType="java.util.Map" resultMap="testTable">
+    SELECT
+    ID as id,
+    BELONG_YEAR as belongYear,
+    MONITOR_TIME as monitorTime,
+    FORM_NUMBER as formNumber,
+    PROVINCE_ID as provinceId,
+    PROVINCE_NAME as provinceName,
+    CITY_ID as cityId,
+    CITY_NAME as cityName,
+    COUNTY_ID as countyId,
+    COUNTY_NAME as countyName,
+    TOWN as town,
+    MONITOR as monitor,
+    TELEPHONE as telephone,
+    COMPANY as company,
+    STATUS as status,
+    HAS_ALIEN_SPECIES as hasAlienSpecies,
+    '' as areaName,
+    '' as hasAlienSpeciesName
+    FROM SPECIES_MONITOR
+    <where>
+      1=1
+      <if test="monitor != null and monitor != ''">
+        and MONITOR like '%'||#{monitor}||'%'
+      </if>
+
+      <if test="provinceId != null and provinceId != ''">
+        and PROVINCE_ID = #{provinceId}
+      </if>
+      <if test="cityId != null and cityId != ''">
+        and CITY_ID = #{cityId}
+      </if>
+      <if test="countyId != null and countyId != ''">
+        and COUNTY_ID = #{countyId}
+      </if>
+      <if test="inStatus!=null and inStatus!=''">
+        and status in (${inStatus})
+      </if>
+      <if test="status != null and status != ''">
+        and STATUS = #{status}
+      </if>
+      <if test="beginDate != null and beginDate != ''">
+        AND MONITOR_TIME &gt;=to_date(#{beginDate},'yyyy-MM-dd')
+      </if>
+      <if test="endDate != null and endDate != ''">
+        AND MONITOR_TIME &lt;(to_date(#{endDate},'yyyy-MM-dd'))+1
+      </if>
+      <if test="roleCode != null and roleCode != ''">
+        AND ROLE_CODE = #{roleCode}
+      </if>
+      <if test="createUserId != null and createUserId != ''">
+        AND CREATE_USER_ID = #{createUserId}
+      </if>
+    </where>
+    ORDER BY CREATE_TIME desc
+  </select>
+
+  <select id="getSpeciesMonitorById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from SPECIES_MONITOR
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectListYearData" resultType="com.sofn.agzirdd.vo.WelcomeTableDBVo">
+    select s.belong_year dataYear,sum(to_number(mi.amount,'99999999999999999D9999')) dataVal
+    <if test="groupCol!=''">,s.${groupCol} areaId</if>
+    from species_monitor s
+    inner join monitor_invasive_alien_species mi on mi.species_monitor_id = s.id
+    <where>
+      s.status = '7' and s.belong_year &gt; #{startYear} and s.belong_year &lt;= #{endYear}
+      <if test="speciesName!=null and speciesName!=''">
+        and mi.species_name = #{speciesName}
+      </if>
+      <if test="provinceId!=null and provinceId!=''">
+        and s.province_id = #{provinceId}
+      </if>
+      <if test="cityId!=null and cityId!=''">
+        and s.city_id = #{cityId}
+      </if>
+      <if test="countyId!=null and countyId!=''">
+        and s.county_id=#{countyId}
+      </if>
+
+    </where>
+    group by s.belong_year <if test="groupCol!=null and groupCol!=''">,s.${groupCol}</if>
+
+  </select>
+
+
+  <select id="getWelcomeMapInfo" resultType="com.sofn.agzirdd.vo.WelcomeMapVo">
+    select ${orderByAreaIdColumn} areaId,mi.species_type speciesType,mi.species_name speciesName
+    from species_monitor sm
+    left join monitor_invasive_alien_species mi on mi.species_monitor_id=sm.id
+    <where>
+      sm.status = '7' and sm.belong_year = #{belongYear} and mi.species_type is not null
+      <if test="speciesName!=null and speciesName!=''">
+        and mi.species_name = #{speciesName}
+      </if>
+      <if test="whereAreaIdColumn!=null">
+        and ${whereAreaIdColumn} = #{whereAreaIdVal}
+      </if>
+      <if test="isNew!=null">
+        and sm.is_new = #{isNew}
+      </if>
+    </where>
+    group by ${orderByAreaIdColumn},mi.species_type,mi.species_name
+  </select>
+
+  <!--修改监测点基本信息状态-->
+  <update id="updateStatus" parameterType="java.util.Map">
+    update SPECIES_MONITOR
+    <set >
+      <if test=" status != null and  status != '' " >
+        STATUS = #{status}
+      </if>
+    </set>
+    where
+    ID = #{id}
+  </update>
+  <update id="updateStatusToOld">
+    update SPECIES_MONITOR
+    set is_new = '0'
+    where province_id = #{provinceId} and city_id = #{cityId} and county_id=#{countyId} and belong_year=#{belongYear}
+        and is_new = '1'
+        <if test="roleCode!=null and roleCode!=''">
+          and role_code= #{roleCode}
+        </if>
+  </update>
+  <update id="updateStatusToNew">
+    update species_monitor
+    set is_new='1'
+    where id = (
+        select id from SPECIES_MONITOR
+        where province_id = #{provinceId} and city_id = #{cityId} and county_id=#{countyId} and belong_year=#{belongYear}
+            and status = '7'
+            <if test="roleCode!=null and roleCode!=''">
+              and role_code= #{roleCode}
+            </if>
+        order by MONITOR_TIME desc,create_time desc
+        limit 1
+    )
+  </update>
+
+</mapper>

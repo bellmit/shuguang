@@ -1,0 +1,626 @@
+<link rel="stylesheet" href="assets/css/asms/baseInspection/inspectionUpdate.css" />
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">监管系统</a>&gt;
+    <a ui-sref="index.content.asms/baseInspection/inspectionList">监督检查</a>&gt;
+    <a ui-sref="index.content.asms/baseInspection/inspectionList">基地巡查</a>&gt;
+    <span>新增</span>
+</div>
+<div class="gui-section Sup_contain_section_contain " id="printContent">
+    <form id="baseInspectionForm" name="baseInspectionForm">
+        <ul>
+            <li class="Bor_line">巡查信息</li>
+            <li>
+                <p style="display: inline-block">
+                <div class="form-group">
+                    <span>巡查计划</span>：
+                    <input class="gui-input" readonly ng-click="selectPlanGrid()" id="planName" name="planName" type="text" placeholder="选择巡查计划" ng-model="planName"/>
+                </div>
+                </p>
+                <p style="display: inline-block">
+                    <div class="form-group">
+                        <span>主体名称<span style="color:red">*</span></span>
+                        <input class="gui-input" id="enterpriseName" name="enterpriseName" type="text" placeholder="选择生产经营主体" ng-model="subjEnt.enterpriseName" data-bv-notempty="true" data-bv-notempty-message="主体不能为空" />
+                        <div style="display: none;">
+                            <input class="gui-input" id="enterpriseId" name="enterpriseId" type="text" ng-model="subjEnt.id" />
+                            <input type="hide" ng-model="subjEnt.userIdcode" />
+                        </div>
+                        <button type="button" class="gui-btn" ng-click="gotoAddSubjEntTemp()">新增临时主体注册</button>
+                    </div>
+                </p>
+                <div id="subjEntM" class="gui-mainViews">
+                    <p style="vertical-align: top">主体信息</p>
+                    <ul class="mt15">
+                        <li>主体名称：
+                            {{subjEnt.enterpriseName}}
+                            <input type="hidden" ng-model="subjEnt.enterpriseName" readonly="readonly" />
+                        </li>
+                        <li>组织形式：
+                            <input type="text" ng-model="subjEnt.entityScaleName" readonly="readonly" />
+                        </li>
+                        <li>所属行业：
+                            <input type="text" ng-model="subjEnt.entityIndustryName" readonly="readonly" />
+                        </li>
+                        <li>主体地址：
+                            <input type="text" ng-model="subjEnt.address" readonly="readonly" />
+                        </li>
+                        <li id="frdb">法定代表人：
+                            <input type="text" ng-model="subjEnt.legalName" readonly="readonly" />
+                        </li>
+                        <li id="dbdh">代表电话：
+                            <input type="text" ng-model="subjEnt.legalPhone" readonly="readonly" />
+                        </li>
+                        <li>联 系 人：
+                            <input type="text" ng-model="subjEnt.contactName" readonly="readonly" />
+                        </li>
+                        <li>联系电话：
+                            <input type="text" ng-model="subjEnt.contactPhone" readonly="readonly" />
+                        </li>
+                        <li>
+                            <button type="button" class="gui-btn" ng-click="gis()">查看地理位置</button>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="Bor_line">
+                巡查内容及意见
+            </li>
+            <li>
+                <p class="form-group">
+                    任务类型<span style="color:red;">*</span>
+                    <!--原设计为单选-->
+                    <!--<input ng-model="baseInspection.inspectionType" name="inspectionType" class="ThisType"  type="radio" value="1"/>基地-->
+                    <!--<input ng-model="baseInspection.inspectionType" name="inspectionType" class="ThisType"  type="radio" value="2"/>主体-->
+                    <!--<input ng-model="baseInspection.inspectionType" name="inspectionType" class="ThisType"  type="radio" value="3"/>农资-->
+                    <!--<input ng-model="baseInspection.inspectionType" name="inspectionType" class="ThisType"  type="radio" value="0"/>其他-->
+                    <!--暂时修改为复选-->
+                    <input name="inspectionTypej" class="ThisType" ng-model="taskType.a" ng-required="taskType.a || taskType.b || taskType.c || taskType.d" type="checkbox" value="1" /><span>基地</span>
+                    <input name="inspectionTypej" class="ThisType" ng-model="taskType.b" ng-required="taskType.a || taskType.b || taskType.c || taskType.d" type="checkbox" value="2" /><span>主体</span>
+                    <input name="inspectionTypej" class="ThisType" ng-model="taskType.c" ng-required="taskType.a || taskType.b || taskType.c || taskType.d" type="checkbox" value="3" /><span>农资</span>
+                    <input name="inspectionTypej" class="ThisType" ng-model="taskType.d" ng-required="taskType.a || taskType.b || taskType.c || taskType.d" type="checkbox" value="0" /><span>其他</span>
+                </p>
+                <smalll style="color: #953b39" ng-hide="!taskTypeTouched ||(taskType.a || taskType.b || taskType.c || taskType.d) ">请至少选中一个类型</smalll>
+                <br>
+                <p class="form-group">
+                    巡查结果<span style="color:red;">*</span>
+                    <!-- 改为从数据字段获取巡查结果,需要将系统管理中的巡查结果字典对应改为 合格--1 不合格--2 整改--3 -->
+                    <span ng-repeat="x in inspectionResults"><input ng-model="baseInspection.inspectionResult" name="inspectionResult" class="ThisEnd"  type="radio" value="{{x.dictValue}}"/>{{x.dictName}}</span>
+                    <!--<input ng-model="baseInspection.inspectionResult" name="inspectionResult" class="ThisEnd"  type="radio" value="1"/>合格-->
+                    <!--<input ng-model="baseInspection.inspectionResult" name="inspectionResult" class="ThisEnd"  type="radio" value="3"/>整改-->
+                    <!--<input ng-model="baseInspection.inspectionResult" name="inspectionResult" class="ThisEnd"  type="radio" value="2"/>不合格-->
+                </p>
+                <br> 常用意见：
+                <div class="gui-select">
+                    <select name="commonOpinion" onchange="selectCommonOpinion()">
+                        <option ng-repeat="x in commonOpinion" value="{{x.id}}" dictVal="{{x.dictValue}}">{{x.dictName}}</option>
+                    </select>
+                </div>
+                <input type="checkbox" id="saveCommonOpinion" />保存为常用意见
+                <div class="form-group">
+                    <textarea class="form-control gui-input mt15" cols="120" rows="5" ng-model="baseInspection.inspectionView" name="inspectionView" data-bv-notempty="true" data-bv-notempty-message="巡查意见不能为空" data-bv-stringlength="true" data-bv-stringlength-max="300" data-bv-stringlength-message="巡查意见不能超过300个字符"></textarea>
+                </div>
+            </li>
+            <li class="Bor_line Photo">现场照片<span style="color:red;">*</span></li>
+            <li class="_box Photo">
+                <div file-upload options="vm.uploadOptions" files="vm.files"></div>
+            </li>
+            <li class="Bor_line Photo">现场视频</li>
+            <li class="_box Photo">
+                <div file-upload options="vm.uploadVideoOptions" files="vm.video"></div>
+            </li>
+            <li class="Bor_line">巡查机构信息</li>
+            <li class="_box">
+                <div class="form-group">巡查时间<span style="color:red;">*</span>
+                    <input ng-model="inspectionTime" name="date" id="date" type="text" size="15" class="gui-input" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'%y-%M-%d'}) " onblur="clearValidate()" data-max-date="%y-%m-%d" class="form-control" data-bv-notempty="true" data-bv-notempty-message="巡查时间不能为空" />
+                </div>
+                <div>巡查机构
+                    <input class="gui-input" ng-model="baseInspection.inspectionSvName" type="text" name="inspectionSvName" placeholder="请录入巡查机构" ng-click="selectInspectionSv()" />
+                    <input class="gui-input" ng-model="baseInspection.inspectionSvId" style="display: none;" name="inspectionSvId" />
+                </div>
+                <div class="form-group">巡查人员<span style="color:red;">*</span>
+                    <input title="" class="gui-input" ng-click="selectPerson()" type="text" name="inspectionUserName" placeholder="请录入巡查人员" readonly class="form-control" data-bv-notempty="true" data-bv-notempty-message="巡查人员不能为空" />
+                    <input class="gui-input" ng-model="baseInspection.inspectionUserName" style="display: none;" />
+                </div>
+            </li>
+            <li class="Bor_line">被巡查对象签字</li>
+            <li class="_box">
+                <div class="form-group">
+                    <lable>负责人签字<span style="color:red;">*</span></lable>
+                    <input class="gui-input form-control" ng-model="baseInspection.headSign" type="text" name="headSign" placeholder="请录入负责人" class="form-control" data-bv-notempty="true" data-bv-notempty-message="负责人签字不能为空" data-bv-stringlength="true" data-bv-stringlength-max="50" data-bv-stringlength-message="负责人签字不能超过50个字符" />
+                </div>
+            </li>
+            <li>
+                签&nbsp;字&nbsp;照&nbsp;片&nbsp;</span>
+            </li>
+            <li class="_box">
+                <div file-upload options="vm.uploadHeadOptions" files="vm.headSignFile"></div>
+                <!--<img id="imgHeadSign" class="Add_img cursor_pointer" src="assets/imgs/photo/u21163.png" alt="" ng-click="openImgHeadSign()"/>-->
+            </li>
+        </ul>
+    </form>
+    <div style="text-align: center;">
+        <button class="gui-btn mr15" ng-click="addBaseInspection(1)">保存草稿</button>
+        <button class="gui-btn mr15" ng-click="addBaseInspection(0)">保存</button>
+        <button class="gui-btn mr15" ng-click="removeLocalStorage()">取消</button>
+    </div>
+</div>
+<!-- 模态框（Modal）生产经营主体列表 -->
+<div class="modal fade " id="enterpriseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-style" style="padding-top:15px;width:75%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">巡查对象</h4>
+            </div>
+            <div class="gui-TabCut ">
+                <ul class="clearfix gov-h">
+                    <li id="entTab" class="fl gp-r gui-TabCheck" ng-click="switchEnt()">生产经营主体</li>
+                    <li id="entTempTab" class="fl gp-r" ng-click="switchEntTemp()">临时登记主体</li>
+                </ul>
+                <div class="gui-botLine"></div>
+            </div>
+            <div id="entDiv">
+                <div class="modal-body clearfix gov-h" style="padding: 10px 10px">
+                    <div class="">
+                        <span>区域</span>
+                        <div class="gui-select">
+                            <select id="querySheng">
+                                <option value="">省</option>
+                            </select>
+                        </div>
+                        <div class="gui-select">
+                            <select id="queryShi">
+                                <option value="">市</option>
+                            </select>
+                        </div>
+                        <div class="gui-select">
+                            <select id="queryXian">
+                                <option value="">区/县</option>
+                            </select>
+                        </div>
+                        <span>主体名称</span>
+                        <input class="gui-input" type="text" placeholder="请输入主体名称" name="entName" />
+                        <span>主体身份码</span>
+                        <input class="gui-input" type="text" placeholder="请输入主体身份码" name="userIdcode" />
+                        <button class="gui-btn" ng-disabled="!!btnEntDisabled" ng-click="querySubjEntList()">查询</button>
+                        <table id="enterpriseGrid" style="width: 100%;" class="gui-table mt15">
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+                    <button type="button" class="gui-btn" ng-click="submitEnt()">提交</button>
+                </div>
+            </div>
+            <div id="entTempDiv" style="display: none;">
+                <div class="modal-body clearfix gov-h" style="padding: 10px 10px">
+                    <div class="">
+                        <span>区域</span>
+                        <div class="gui-select">
+                            <select id="queryTempSheng">
+                                <option value="">省</option>
+                            </select>
+                        </div>
+                        <div class="gui-select">
+                            <select id="queryTempShi">
+                                <option value="">市</option>
+                            </select>
+                        </div>
+                        <div class="gui-select">
+                            <select id="queryTempXian">
+                                <option value="">区/县</option>
+                            </select>
+                        </div>
+                        <span>主体名称</span>
+                        <input class="gui-input" type="text" placeholder="请输入主体名称" name="entTempName" />
+                        <button class="gui-btn" ng-disabled="!!btnTempEntDisabled" ng-click="querySubjEntTempList()">查询</button>
+                        <!--<button class="gui-btn" id="addSubjEntTemp">新增</button>-->
+                        <table id="entTempGrid" style="width: 100%;" class="gui-table mt15">
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+                    <button type="button" class="gui-btn" ng-click="submitEntTemp()">提交</button>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+<!-- 模态框（Modal）临时生产经营主体列表 -->
+<!--<div class="modal fade " id="entTempListModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">-->
+<!--<div class="modal-dialog modal-style" style="padding-top:15px;">-->
+<!--<div class="modal-content" >-->
+<!--<div class="modal-header">-->
+<!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
+<!--<h4 class="modal-title">临时生产经营主体</h4>-->
+<!--</div>-->
+<!--<div class="modal-body clearfix gov-h" style="padding: 10px 10px">-->
+<!--<div class="">-->
+<!--<input class="gui-input" type="text" placeholder="请输入主体名称" name="entTempName"/>-->
+<!--<button class="gui-btn" ng-click="querySubjEntTempList()">查询</button>-->
+<!--<button class="gui-btn" id="addSubjEntTemp">新增</button>-->
+<!--<table id="entTempGrid" style="width: 100%;" class="gui-table mt15">-->
+<!--</table>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="modal-footer">-->
+<!--<button type="button" class="gui-btn" data-dismiss="modal">关闭</button>-->
+<!--<button type="button" class="gui-btn" ng-click="submitEntTemp()">提交</button>-->
+<!--</div>-->
+<!--</div>-->
+<!--&lt;!&ndash; /.modal-content &ndash;&gt;-->
+<!--</div>-->
+<!--&lt;!&ndash; /.modal &ndash;&gt;-->
+<!--</div>-->
+<!-- 模态框（Modal）生产经营主体临时备案 -->
+<div class="modal fade " id="entTempModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid" style="height:680px;overflow: auto;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">生产经营主体临时注册</h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <div class="Sup_contain_section_contain" style="margin-top: 0px;padding: 0px 0px 20px 0px">
+                    <ul class="inspectionUl" id="entTemp">
+                        <li style="border-bottom: 1px solid #9d9d9d;padding-top: 5px">生产经营主体信息</li>
+                        <li>
+                            <ul class="Sup_contain_section_contain_ul">
+                                <li class="fl">组织形式<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl">
+                                    <span ng-repeat="c in orgMode">
+                                        <input name="entityScaleId" type="radio" ng-model="subjEntTemp.entityScaleId"  value="{{c.id}}" ng-click="selectEntityScale(c.dictName)"/><span>{{c.dictName}}</span>
+                                    </span>
+                                </li>
+                            </ul>
+                        </li>
+                        <li id="credType" style="display: block;">
+                            <ul class="Sup_contain_section_contain_ul">
+                                <li class="fl">证件类型<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl">
+                                    <select ng-model="subjEntTemp.credType" ng-change="selectBusiness()" id="selectBusiness" class="gui-select" data-bv-notempty="true" data-bv-notempty-message="证照类型不能为空">
+                                        <option value="普通营业执照(有独立组织机构代码证)">普通营业执照(有独立组织机构代码证)</option>
+                                        <option value="三证合一营业执照(无独立组织机构代码证)">三证合一营业执照(无独立组织机构代码证)</option>
+                                    </select>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <ul class="Sup_contain_section_contain_ul">
+                                <li class="fl">主体类型<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl">
+                                    <span ng-repeat="b in subjEntTempType">
+                                        <input  name="entityTypeId" type="radio" ng-model="subjEntTemp.entityTypeId"  value="{{b.id}}"/><span>{{b.dictName}}</span>
+                                    </span>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <ul class="Sup_contain_section_contain_ul">
+                                <li class="fl">所属行业<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl">
+                                    <span ng-repeat="a in industryType">
+                                        <input type="checkbox" value="{{a.id}}" name="entityIndustryId"><span class="checkedIndustryTypeText" ng-bind="a.dictName"></span>
+                                    <!--<input  name="entityIndustryId" type="radio" ng-model="subjEntTemp.entityIndustryId"  value="{{a.id}}"/><span>{{a.dictName}}</span>-->
+                                    </span>
+                                    <div class="color-red" ng-hide="!industryChecked">请至少选择一个所属行业</div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <ul class="Sup_contain_section_contain_Text">
+                                <li class="fl">企业名称<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl form-group">
+                                    <input class="gui-input form-control"
+                                           name="entityName" type="text"
+                                           ng-model="subjEntTemp.entityName"
+                                           data-bv-notempty="true"
+                                           data-bv-notempty-message="企业名称不能为空"
+                                           data-bv-stringlength="true"
+                                           data-bv-stringlength-max="60"
+                                           data-bv-stringlength-message="企业名称不能超过60个字符"
+                                           data-bv-regexp="true"
+                                           data-bv-regexp-regexp="^[\u4e00-\u9fa5()（）]+$"
+                                           data-bv-regexp-message="企业名称只能为中文和括号"
+                                    />
+                                </li>
+                            </ul>
+                        </li>
+                        <li id="zjhm1" style="display:block;">
+                            <ul class="Sup_contain_section_contain_Text">
+                                <li class="fl">证件号码<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl form-group">
+                                    <input class="gui-input form-control" name="orgCode1" type="text" ng-model="subjEntTemp.orgCode" data-bv-notempty="true" data-bv-notempty-message="证件号码不能为空" data-bv-regexp="true" placeholder="请填写15位企业注册号" data-bv-regexp-regexp="^[0-9a-zA-Z-]{15}$" data-bv-regexp-message="有组织机构代码的企业号由15位字符组成" />
+                                </li>
+                            </ul>
+                        </li>
+                        <li id="zjhm2" style="display:none;">
+                            <ul class="Sup_contain_section_contain_Text">
+                                <li class="fl">证件号码<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl form-group">
+                                    <input class="gui-input form-control" name="orgCode2" type="text" ng-model="subjEntTemp.orgCode" data-bv-notempty="true" data-bv-notempty-message="证件号码不能为空" data-bv-regexp="true" placeholder="请填写18位企业注册号" data-bv-regexp-regexp="^[0-9a-zA-Z-]{18}$" data-bv-regexp-message="无组织机构代码的企业号由18位字符组成" />
+                                </li>
+                            </ul>
+                        </li>
+                        <li id="zjhm3" style="display:none;">
+                            <ul class="Sup_contain_section_contain_Text">
+                                <li class="fl">证件号码<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl form-group">
+                                    <input class="gui-input form-control" name="orgCode3" type="text" ng-model="subjEntTemp.orgCode" data-bv-notempty="true" data-bv-notempty-message="证件号码不能为空" data-bv-regexp="true" placeholder="请填写18位身份证号码" data-bv-regexp-regexp="^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$" data-bv-regexp-message="家庭农场或个人请填写身份证号" />
+                                </li>
+                            </ul>
+                        </li>
+                        <li id="organizationCode">
+                            <ul class="Sup_contain_section_contain_Text">
+                                <li class="fl">组织机构代码<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl form-group">
+                                    <input class="gui-input form-control" name="organizationCode" type="text" ng-model="subjEntTemp.organizationCode" data-bv-notempty="true" data-bv-notempty-message="证件号码不能为空" data-bv-regexp="true" maxlength="10" data-bv-regexp-regexp="^[0-9a-zA-Z-]{10}" data-bv-regexp-message="组织机构代码由10位字符组成，格式为xxxxxxxx-x" />
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <ul class="Sup_contain_section_contain_Text">
+                                <li class="fl">所属区域<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl form-group">
+                                    <div class="gui-select">
+                                        <select class="form-control" id="sheng" name="sheng" data-bv-notempty="true" data-bv-notempty-message="省不能为空">
+                                            <option value="">--省--</option>
+                                        </select>
+                                    </div>
+                                    <div class="gui-select">
+                                        <select class="form-control" id="shi" name="shi" data-bv-notempty="true" data-bv-notempty-message="市不能为空">
+                                            <option value="">--市--</option>
+                                        </select>
+                                    </div>
+                                    <div class="gui-select">
+                                        <select class="form-control" id="xian" name="xian" data-bv-notempty="true" data-bv-notempty-message="县不能为空">
+                                            <option value="">--区/县--</option>
+                                        </select>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li style="">
+                            <ul class="Sup_contain_section_contain_Text">
+                                <li class="fl">详细地址</li>
+                                <li class="fl form-group">
+                                    <input class="gui-input form-control" type="text" name="address" ng-model="subjEntTemp.address" data-bv-stringlength="true" data-bv-stringlength-max="50" data-bv-stringlength-message="详细地址不能超过50个字符" />
+                                </li>
+                            </ul>
+                        </li>
+                        <li style="border-bottom: 1px solid #9d9d9d;padding-top: 5px">联系人信息</li>
+                        <li>
+                            <ul class="Sup_contain_section_contain_Text">
+                                <li class="fl">联系人姓名<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl form-group">
+                                    <input class="gui-input form-control" type="text" name="contactName" ng-model="subjEntTemp.contactName" data-bv-notempty="true" data-bv-notempty-message="联系人姓名不能为空" data-bv-stringlength="true" data-bv-stringlength-max="60" data-bv-stringlength-message="联系人姓名不能超过60个字符" />
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <ul class="Sup_contain_section_contain_Text">
+                                <li class="fl">联系电话<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl form-group">
+                                    <input class="gui-input form-control" type="text" name="contactPhone" ng-model="subjEntTemp.contactPhone" data-bv-notempty="true" data-bv-notempty-message="联系人电话不能为空" data-bv-isTelephone="true" />
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <ul class="Sup_contain_section_contain_Text">
+                                <li class="fl">电子邮箱
+                                </li>
+                                <li class="fl form-group" style="text-align: left">
+                                    <input class="gui-input form-control" type="text" name="contactEmail" ng-model="subjEntTemp.contactEmail" data-bv-stringlength="true" data-bv-stringlength-max="50" data-bv-stringlength-message="电子邮箱不能超过50个字符" data-bv-emailaddress="true" data-bv-emailaddress-message="输入不是一个有效的电子邮件地址" />
+                                </li>
+                            </ul>
+                        </li>
+                        <li id="businessHead" style="border-bottom: 1px solid #9d9d9d;padding-top: 5px;">主体证照信息<span style="color:red;">*</span></li>
+                        <li id="businessContent">
+                            <ul>
+                                <li style="margin-right:65px;" class="fl form-group">
+                                    <div file-upload options="vm.uploadHeadOptions" files="vm.businessLicenceimg"></div>
+                                </li>
+                                <li id="selectOrganizationCertificateimg" style="margin-right:10px;" class="fl form-group">
+                                    <div file-upload options="vm.uploadHeadOptions" files="vm.organizationCertificateimg"></div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li style="border-bottom: 1px solid #9d9d9d;padding-top: 5px;">法定代表人证照信息</li>
+                        <li>
+                            <ul>
+                                <li style="margin-right:65px;" class="fl form-group">
+                                    <div file-upload options="vm.uploadHeadOptions" files="vm.positiveIdcardeimg"></div>
+                                </li>
+                                <li style="margin-right:15px;" class="fl form-group">
+                                    <div file-upload options="vm.uploadHeadOptions" files="vm.negativeIdcardimg"></div>
+                                </li>
+                                <li class="fl form-group">
+                                    <div file-upload options="vm.uploadHeadOptions" files="vm.handIdcardimg"></div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" ng-click="addSubjEntTemp()">提交</button>
+                <button class="gui-btn" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+<!-- 模态框（Modal）上传图片 -->
+<div class="modal fade " id="imgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">上传图片</h4>
+            </div>
+            <div class="modal-body">
+                <div class="Sup_contain_section_contain" style="margin-top: 0px;padding: 0px 0px 20px 0px">
+                    <input id="file-1" type="file" name="file" multiple=" true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="5">
+                    <br>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="gui-btn">关闭</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+<!-- 模态框（Modal）上传图片 -->
+<div class="modal fade " id="imgModalHead" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-style">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">上传图片</h4>
+            </div>
+            <div class="modal-body">
+                <div class="Sup_contain_section_contain" style="margin-top: 0px;padding: 0px 0px 20px 0px">
+                    <input id="file-2" type="file" name="file" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="1">
+                    <br>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="gui-btn">关闭</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+<!-- 模态框（Modal）巡查机构列表 -->
+<div class="modal fade " id="superviseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-style" style="padding-top:15px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">巡查机构</h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <div class="row">
+                    <form id="superviseForm" class="default_w_h">
+                    </form>
+                    <input class="gui-input" type="text" placeholder="请输入机构名称" name="svName" />
+                    <button class="gui-btn" ng-click="querySubjSvList()">查询</button>
+                    <table id="superviseGrid" style="width: 100%;" class="gui-table mt15">
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" data-dismiss="modal">关闭</button>
+                <button class="gui-btn" type="button" ng-click="submitSv()">提交</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+    <input class="gui-input" type="hidden" name="enterpriseId" />
+    <input class="gui-input" type="hidden" name="userIdcode" />
+</div>
+<!--personSelectList-->
+<div class="modal fade" id="selectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title">
+                    <span>人员选择</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <!--<select id="selectQueryShen" style="width: 100px">-->
+                <!--<option value="">&#45;&#45;请选择省&#45;&#45;</option>-->
+                <!--</select>-->
+                <!--<select id="selectQueryShi" style="width: 100px">-->
+                <!--<option value="">&#45;&#45;请选择市&#45;&#45;</option>-->
+                <!--</select>-->
+                <!--<select id="selectQueryXian" style="width: 100px">-->
+                <!--<option value="">&#45;&#45;请选择县&#45;&#45;</option>-->
+                <!--</select>-->
+                <input type="text" class="gui-input" name="selectQueryName" placeholder="请输入名称">
+                <button id="selectTocheck" class="gui-btn">查询</button>
+                <button class="gui-btn" ng-click="cleanSelectModelQuery()">重置</button>
+                <button class="gui-btn" ng-click="cleanSelected()">清空已选择</button>
+                <!--list-->
+                <table id="selectGrid" style="width: 100%;" class="gui-table mt15">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" ng-click="selectModalQdButt()">选择</button>
+                <button class="gui-btn" type="button" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--巡查计划模态框-->
+<div class="modal fade" id="planModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog " style="width: 70%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">
+                    <span>巡查计划</span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <table id="planGrid" style="width: 100%;" class="gui-table mt15">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" data-dismiss="modal">关闭</button>
+                <button class="gui-btn" type="button" ng-click="submitPlan()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="gis" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog " style="width: 80%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">
+                    <span>查看地理位置</span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="mapDiv" style="width:100%; height:500px;"></div>
+                <!-- point overlay -->
+                <div id="info" class="ol-popup gui-hide"><div id="info-content"></div></div>
+                <div id="searchBar"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>

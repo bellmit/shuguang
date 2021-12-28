@@ -1,0 +1,123 @@
+.dashboard-feature {
+  padding: 15px 20px 50px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+.dashboard-feature li {
+  float: left;
+  display: inline-block;
+  width: 25%;
+  text-align: center;
+  padding: 30px 15px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  position: relative;
+}
+.dashboard-feature li:after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  height: 18px;
+  width: 100%;
+  background: url(../../images/login/icon/bg_shadow.png) center center no-repeat;
+}
+.dashboard-feature li a {
+  display: block;
+  width: 200px;
+  margin: 0 auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  color: #666;
+  cursor: pointer;
+  -webkit-box-sizing: content-box;
+          box-sizing: content-box;
+  text-decoration: none;
+  background-color: #f4f4f4;
+}
+.dashboard-feature li a:hover {
+  border-color: #46b994;
+  -webkit-box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  -webkit-transform: translate3d(0, -2px, 0);
+  transform: translate3d(0, -2px, 0);
+}
+.dashboard-feature li a:hover .highlight {
+  -webkit-transform: translate(0, 0);
+          transform: translate(0, 0);
+  -webkit-animation: wave-in 0.7s 0s 1 linear;
+          animation: wave-in 0.7s 0s 1 linear;
+}
+.dashboard-feature li a:hover .text {
+  color: #FFF;
+}
+.dashboard-feature li a:hover img {
+  -webkit-transform: scale(1);
+          transform: scale(1);
+}
+.dashboard-feature li .icon {
+  width: 100%;
+  height: 180px;
+  line-height: 180px;
+  text-align: center;
+  background-color: #FFF;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.dashboard-feature li img {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: scale(0.9);
+          transform: scale(0.9);
+  -webkit-transition: -webkit-transform ease-in-out 0.15s;
+  transition: -webkit-transform ease-in-out 0.15s;
+  transition: transform ease-in-out 0.15s;
+  transition: transform ease-in-out 0.15s, -webkit-transform ease-in-out 0.15s;
+}
+.dashboard-feature .bottom {
+  height: 60px;
+  overflow: hidden;
+  font-size: 16px;
+  position: relative;
+}
+.dashboard-feature .bottom .normal {
+  display: block;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: url(../../images/login/icon/bg_block.png) 0 0 no-repeat;
+}
+.dashboard-feature .bottom .text {
+  line-height: 80px;
+  position: relative;
+  color: #333;
+  -webkit-transition: color ease-out 0.65s;
+  transition: color ease-out 0.65s;
+}
+.dashboard-feature .bottom .highlight {
+  display: block;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: url(../../images/login/icon/bg_block_h.png) 0 0 no-repeat;
+  -webkit-transform: translate(0, 100%);
+          transform: translate(0, 100%);
+  -webkit-transition: -webkit-transform ease-out 0.65s;
+  transition: -webkit-transform ease-out 0.65s;
+  transition: transform ease-out 0.65s;
+  transition: transform ease-out 0.65s, -webkit-transform ease-out 0.65s;
+  display: inline-block;
+  -webkit-animation: wave-out 1s 0s infinite linear;
+  animation: wave-out 0.5s 0s infinite linear;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}

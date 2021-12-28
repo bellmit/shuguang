@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.FeedbackMapper" >
+    <resultMap id="BaseResultMap" type="com.sofn.fdpi.model.Feedback">
+        <id property="id" column="ID"/>
+        <result property="ffUnit" column="FF_UNIT"/>
+        <result property="ffLocal" column="FF_LOCAL"/>
+        <result property="ffDesc" column="FF_DESC"/>
+        <result property="ffPerson" column="FF_PERSON"/>
+        <result property="province" column="PROVINCE"/>
+        <result property="city" column="CITY"/>
+        <result property="area" column="AREA"/>
+        <result property="ffDate" column="FF_DATE"/>
+        <result property="speName" column="SPE_NAME"/>
+        <result property="brType" column="BR_TYPE"/>
+        <result property="brStatus" column="BR_STATUS"/>
+        <result property="code" column="CODE"/>
+        <result property="createUserId" column="CREATE_USER_ID"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="updateUserId" column="UPDATE_USER_ID"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="delFlag" column="DEL_FLAG"/>
+        <result property="deptId" column="DEPT_ID"/>
+        <result property="ffFrom" column="FF_FROM"/>
+        <result property="email" column="EMAIL"/>
+        <result property="ffPhone" column="FF_PHONE"/>
+        <collection property="files" ofType="com.sofn.fdpi.model.FileManage">
+            <id column="exID" property="id"></id>
+            <result column="FILE_SOURCE_ID" property="fileSourceId"></result>
+        </collection>
+    </resultMap>
+    
+
+    <sql id="Base_Column_List">
+        ID,FF_DESC,CODE,SPE_NAME,FF_UNIT,FF_LOCAL,FF_PERSON,FF_DATE
+    </sql>
+    <sql id="Base_Column_List1">
+        b.ID,b.FF_DESC,b.CODE,b.SPE_NAME,b.FF_UNIT,b.FF_LOCAL,b.FF_PERSON,b.FF_DATE,b.BR_STATUS,
+        b.FF_FROM
+    </sql>
+    <sql id="Base_Column_List2">
+       dept.DEPT_PRO,dept.DEPT_CITY,dept.DEPT_AREA
+    </sql>
+    <sql id="file">
+      c.ID as exID,c.FILE_SOURCE_ID
+  </sql>
+    <select id="getFeedbackList" resultMap="BaseResultMap">
+        select
+        *
+        FROM
+        TB_BREAK b
+        <where>
+            b.DEL_FLAG='N' and b.FF_FROM ='2'
+            <if test="code != null and code != ''">
+                and b.CODE like '%'||#{code}||'%'
+            </if>
+            <if test="speName != null and speName != ''">
+                and b.SPE_NAME like '%'||#{speName}||'%'
+            </if>
+            <if test="ffUnit != null and ffUnit != ''">
+                and b.FF_UNIT like '%'||#{ffUnit}||'%'
+            </if>
+            <if test="startTime !=null">
+                AND b.FF_DATE >= to_timestamp(#{startTime},'yyyy-MM-dd HH24:MI:SS')
+            </if>
+            <if test="endTime !=null">
+               AND b.FF_DATE &lt;= to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+           </if>
+            <if test="provincialId != null and provincialId != ''">
+               and b.PROVINCE_ID =#{provincialId}
+           </if>
+        </where>
+        ORDER By b.CREATE_TIME DESC
+    </select>
+    <update id="del">
+        update TB_BREAK set DEL_FLAG='Y' where ID=#{id}
+    </update>
+    <resultMap id="BaseResultMap1" type="com.sofn.fdpi.model.Feedback">
+        <id property="id" column="ID"/>
+        <result property="ffUnit" column="FF_UNIT"/>
+        <result property="ffLocal" column="FF_LOCAL"/>
+        <result property="ffDesc" column="FF_DESC"/>
+        <result property="ffPerson" column="FF_PERSON"/>
+        <result property="province" column="PROVINCE"/>
+        <result property="city" column="CITY"/>
+        <result property="area" column="AREA"/>
+        <result property="ffDate" column="FF_DATE"/>
+        <result property="speName" column="SPE_NAME"/>
+        <result property="brType" column="BR_TYPE"/>
+        <result property="brStatus" column="BR_STATUS"/>
+        <result property="code" column="CODE"/>
+        <result property="createUserId" column="CREATE_USER_ID"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="updateUserId" column="UPDATE_USER_ID"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="delFlag" column="DEL_FLAG"/>
+        <result property="deptId" column="DEPT_ID"/>
+        <result property="ffFrom" column="FF_FROM"/>
+        <result property="email" column="EMAIL"/>
+        <result property="status" column="STATUS"/>
+        <result property="record" column="RECORD"/>
+        <result property="advice" column="ADVICE"/>
+        <result property="ffPhone" column="FF_PHONE"/>
+        <collection property="files" ofType="com.sofn.fdpi.model.FileManage">
+            <id column="exID" property="id"></id>
+            <result column="FILE_SOURCE_ID" property="fileSourceId"></result>
+        </collection>
+    </resultMap>
+    <select id="listPublic" resultMap="BaseResultMap1">
+        select
+         *
+        FROM
+        TB_BREAK b
+        <where>
+         b.DEL_FLAG='N' and b.FF_FROM ='1'
+            <if test="code != null and code != ''">
+                and b.CODE like '%'||#{code}||'%'
+            </if>
+            <if test="speName != null and speName != ''">
+                and b.SPE_NAME like '%'||#{speName}||'%'
+            </if>
+            <if test="ffUnit != null and ffUnit != ''">
+                and b.FF_UNIT like '%'||#{ffUnit}||'%'
+            </if>
+            <if test="startTime !=null">
+                AND b.FF_DATE >= to_timestamp(#{startTime},'yyyy-MM-dd HH24:MI:SS')
+            </if>
+            <if test="endTime !=null">
+                AND b.FF_DATE &lt;= to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+            </if>
+            <if test="direclyId != null and direclyId != ''">
+                and b.DIRECLY_ID =#{direclyId}
+            </if>
+            <if test="provincialId != null and provincialId != ''">
+                and b.PROVINCE =#{provincialId} and b.RECORD='1'
+            </if>
+        </where>
+    </select>
+    <update id="advice">
+        update TB_BREAK   <set>
+            STATUS='1',
+        <if test="record!= null and record != ''">
+            RECORD=#{record},
+        </if>
+        <if test="record != null and record!= ''">
+            ADVICE=#{advice}
+        </if>
+              </set>
+               where ID=#{id}
+    </update>
+    <select id="getDireclyId" resultType="java.lang.String">
+        select   DIRECLY_ID from TB_COMP
+        where  COMP_NAME=#{compName}
+        AND DEL_FLAG = 'N'
+        ORDER BY
+	    CREATE_TIME
+	    LIMIT 1 OFFSET 0
+    </select>
+</mapper>

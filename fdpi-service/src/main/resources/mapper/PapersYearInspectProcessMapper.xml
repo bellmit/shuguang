@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.PapersYearInspectProcessMapper">
+    <resultMap id="BaseResultMap" type="com.sofn.fdpi.model.PapersYearInspectProcess">
+        <id column="ID" property="id" jdbcType="VARCHAR"></id>
+        <result column="PAPERS_YEAR_INSPECT_ID" property="papersYearInspectId" jdbcType="VARCHAR"></result>
+        <result column="ADVICE" property="advice" jdbcType="VARCHAR"></result>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"></result>
+        <result column="APPLY_NUM" property="applyNum" jdbcType="VARCHAR"></result>
+        <result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR"></result>
+        <result column="PERSON" property="person" jdbcType="VARCHAR"></result>
+        <result column="PERSON_NAME" property="personName" jdbcType="VARCHAR"></result>
+        <result column="CON_TIME" property="conTime" jdbcType="VARCHAR"></result>
+        <result column="YEAR" property="year" jdbcType="VARCHAR"></result>
+    </resultMap>
+    <select id="getProcessByInspectId" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select ID,PAPERS_YEAR_INSPECT_ID,ADVICE,STATUS
+                ,(case STATUS WHEN '1' THEN '未上报'
+                            WHEN '2' THEN '上报'
+                            WHEN '3' THEN '审核退回'
+                            WHEN '4' THEN '审核通过'
+                            WHEN '5' THEN '复审退回'
+                            WHEN '6' THEN '复审通过'
+                  end) STATUS_NAME
+                ,PERSON,PERSON_NAME,CON_TIME
+        from PAPERS_YEAR_INSPECT_PROCESS
+        <where>
+            <if test="id!=null and id!=''">
+                and ID=#{id}
+            </if>
+            <if test="inspectId!=null and inspectId!=''">
+                and PAPERS_YEAR_INSPECT_ID=#{inspectId}
+            </if>
+            <if test="status!=null and status!=''">
+                and STATUS=#{status}
+            </if>
+        </where>
+        LIMIT 1 OFFSET 0
+    </select>
+
+    <select id="listByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select A.ID,A.PAPERS_YEAR_INSPECT_ID,A.ADVICE,A.STATUS,A.APPLY_NUM
+              ,(case A.STATUS WHEN '1' THEN '未上报'
+                            WHEN '2' THEN '上报'
+                            WHEN '3' THEN '审核退回'
+                            WHEN '4' THEN '审核通过'
+                            WHEN '5' THEN '复审退回'
+                            WHEN '6' THEN '复审通过'
+                            WHEN '7' THEN '撤回'
+                end) STATUS_NAME
+              ,A.PERSON,A.PERSON_NAME,A.CON_TIME,B.YEAR
+        from PAPERS_YEAR_INSPECT_PROCESS A
+        left join PAPERS_YEAR_INSPECT B on A.PAPERS_YEAR_INSPECT_ID=B.ID
+        <where>
+             B.DEL_FLAG='N'
+            <if test="year!=null and year !=''">
+                and B.YEAR=#{year}
+            </if>
+            <if test="status!=null and status !=''">
+                and A.STATUS=#{status}
+            </if>
+            <if test="compId!=null and compId !=''">
+                and B.TB_COMP_ID=#{compId}
+            </if>
+        </where>
+    </select>
+
+    <resultMap id="listFroProcessResultMap" type="com.sofn.fdpi.vo.AuditProcessVo">
+        <result column="CON_TIME" property="operationTime" jdbcType="VARCHAR"></result>
+        <result column="PERSON_NAME" property="personName" jdbcType="VARCHAR"></result>
+        <result column="STATUS" property="parStatus" jdbcType="VARCHAR"></result>
+        <result column="STATUS_NAME" property="parStatusName" jdbcType="VARCHAR"></result>
+        <result column="ADVICE" property="advice" jdbcType="VARCHAR"></result>
+    </resultMap>
+    <select id="listForAuditProcessByInspectId" parameterType="java.lang.String" resultMap="listFroProcessResultMap">
+        select CON_TIME,PERSON_NAME
+            ,STATUS
+            ,(CASE STATUS WHEN '1' THEN '未上报'
+                            WHEN '2' THEN '上报'
+                            WHEN '3' THEN '审核退回'
+                            WHEN '4' THEN '审核通过'
+                            WHEN '5' THEN '复审退回'
+                            WHEN '6' THEN '复审通过'
+            END) STATUS_NAME,ADVICE
+        from PAPERS_YEAR_INSPECT_PROCESS
+        where PAPERS_YEAR_INSPECT_ID = #{inspectId}
+        order by CON_TIME desc
+    </select>
+
+    <select id="listByConditionByInfo" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select id, YEAR , APPLY_NUM FROM PAPERS_YEAR_INSPECT
+        <where>
+            and DEL_FLAG='N'
+            <if test="year!=null and year !=''">
+                and YEAR=#{year}
+            </if>
+            <if test="compId!=null and compId !=''">
+                and TB_COMP_ID=#{compId}
+            </if>
+        </where>
+    </select>
+</mapper>

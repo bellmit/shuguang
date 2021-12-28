@@ -1,0 +1,47 @@
+<link rel="stylesheet" href="assets/css/asms/subjSv/subjSvRevokeApply.css"/>
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">监管系统</a>&gt;
+    <a ui-sref="index.content.asms/subjSv/subjSvList">主体管理</a>&gt;
+    <a ui-sref="index.content.asms/subjSv/subjSvList">监管机构</a>&gt;
+    <span>注册撤销申请</span>
+</div>
+
+    <div class=" gui-section gui-section-wid" >
+        <h4 class="mt15 mb25">注册撤销申请</h4>
+        <form id="applyRevokeForm" name="applyRevokeForm">
+            <input ng-model="subjSvId" type="hidden"/>
+            <table class="ApplyTable ">
+                <tbody>
+                <tr><td>机构名称</td><td><span ng-bind="subjSv.svName"></span></td></tr>
+                <tr><td>机构代码</td><td><span ng-bind="subjSv.svCode"></span></td></tr>
+                <tr><td>机构类别</td><td><span ng-bind="subjSv.svType"></span></td></tr>
+                <tr><td>机构级别</td><td><span ng-bind="subjSv.svLevelName"></span></td></tr>
+                <tr><td>所属区域</td><td><span ng-bind="subjSv.svArea"></span></td></tr>
+                <tr><td>通讯地址</td><td><span ng-bind="subjSv.svAddress"></span></td></tr>
+                <tr><td>负责人</td><td><span ng-bind="subjSv.svLeader"></span></td></tr>
+                <tr><td>负责人电话</td><td><span>{{subjSv.svLeaderPhone||'无'}}</span></td></tr>
+                <tr><td>联系人</td><td><span ng-bind="subjSv.svContact"></span></td></tr>
+                <tr><td>联系人电话</td><td><span ng-bind="subjSv.svContactPhone"></span></td></tr>
+                <tr><td>联系人QQ</td><td><span>{{subjSv.svContactQQ||'无'}}</span></td></tr>
+                <tr><td>电子邮箱</td><td><span>{{subjSv.svContactEmail||'无'}}</span></td></tr>
+                <tr><td>邮编</td><td><span>{{subjSv.svPostcode||'无'}}</span></td></tr>
+                <!--<tr class="accessory_img"><td>附件</td><td><img src="../../../../res/img/Work/实例图片.png" alt=""/></td></tr>-->
+                <tr class="Sup_contain_section_contain_head_photo"><td style="vertical-align: middle">撤销原因<span style="color:red;">*</span></td>
+                    <td class="form-group">
+                    <textarea  style="max-width: 500px;background-color: #f6f6f6" rows="3" ng-model="applyReason"  name="applyReason"
+                              class="form-control gui-textarea"
+                              data-bv-notempty="true"
+                              data-bv-notempty-message="撤销原因不能为空"
+                              data-bv-stringlength="true"
+                              data-bv-stringlength-max="300"
+                              data-bv-stringlength-message="撤销原因不能超过300个字符"></textarea>
+                </td></tr>
+                </tbody>
+            </table>
+        </form>
+        <div class="mt15" style="text-align: center">
+            <button class="gui-btn mr15 mb25" ui-sref="index.content.asms/subjSv/subjSvList" ng-click="removeLocalStorage()">取消</button>
+            <button class="gui-btn ml15 mb25" ng-click="applySubjSvRevoke()">确认</button>
+        </div>
+
+    </div>

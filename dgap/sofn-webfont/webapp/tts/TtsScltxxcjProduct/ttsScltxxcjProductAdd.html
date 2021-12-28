@@ -1,0 +1,86 @@
+<link rel="stylesheet" href="assets/css/tts/base/baseAdd.css">
+<div class="gui-breadcrumbs">
+    <a href="">内部管理</a>&gt;
+    <a href="">产品管理</a>&gt;
+    <span>新增</span>
+</div>
+<div class="gui-section">
+    <ul class="gui-tab">
+        <li><a ui-sref="index.content.tts/TtsScltxxcjProduct/TtsScltxxcjProductlist">产品信息管理</a></li>
+        <li class="active"><a ui-sref="index.content.tts/TtsScltxxcjProduct/ttsScltxxcjProductAdd">新增产品信息</a></li>
+    </ul>
+    <div class="ovh">
+        <ul class="gui-list">
+            <li>
+                <div class="form-item">
+                    <span class="title important">所属行业<span class="this-after">*</span></span>
+                    <div class="gui-select">
+                        <select onchange="clearPro()" id="pro_industry" name="industry">
+                            <option value="">请选择</option>
+                            <option ng-repeat="n in activities" value="{{n.dictValue}}">{{n.dictName}}</option>
+                        </select>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title important">名称<span class="this-after">*</span></span>
+                    <input class="modal fade" type="text" ng-model="ttsScltxxcjProduct.type" nama="type" id="type" value="">
+                    <input class="modal fade" type="text" nama="productCode" id="pro_productCode">
+                    <input type="text" name="name" id="name" placeholder="点击选择产品名称" readonly="readonly" onclick="findProductInfo()" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title important">种类<span class="this-after"></span></span>
+                    <input class="gui-input" readonly="readonly" type="text" nama="typeName" id="typeName">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title important">状态<span class="this-after">*</span></span>
+                    <div class="gui-select">
+                        <select autocomplete="off" id="pro_status" name="status">
+                            <option value="">请选择</option>
+                            <option selected="selected" value="Y">启用</option>
+                            <option value="N">停用</option>
+                        </select>
+                    </div>
+                </div>
+            </li>
+            <input type="hidden" ng-model="ttsScltxxcjProduct.delFlag" name="delFlag" value="N">
+            <input type="hidden" ng-model="ttsScltxxcjProduct.createBy" name="createBy">
+            <input type="hidden" ng-model="ttsScltxxcjProduct.createTime" name="updateTime">
+        </ul>
+    </div>
+    <div class="text-center">
+        <button class="gui-btn mr15" ui-sref="index.content.tts/TtsScltxxcjProduct/TtsScltxxcjProductlist">取消</button>
+        <button class="gui-btn" ng-disabled="myform.JGname.$dirty&&myform.JGname.$invalid" ng-click="addTtsScltxxcjProduct()">提交</button>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="product_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                <h4 class="modal-title" id="myModalLabel1">产品信息</h4>
+            </div>
+            <div class="modal-body">
+            	<div class="gui-form-group">
+            		<input name="keyWord" class="gui-input" type="text" placeholder="请输入名称关键字">
+            		<button class="gui-btn" id="ToCheck">查询</button>
+            	</div>
+                <div>
+                    <table id="productList" class="gui-table">
+                    </table>
+                </div>
+            </div>
+            <!--<div class="modal-body" style="padding: 0px 10px">-->
+            <!--</div>-->
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>

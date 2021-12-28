@@ -1,0 +1,354 @@
+@import "variable";
+@import "reset";
+@import "resetFix";
+@import "utils";
+@import "icon";
+@import "menu";
+@import "btn";
+@import "list";
+@import "modal";
+@import "tab";
+@import "loading";
+@import "tree";
+@import "fileupload";
+@import "dropdown";
+@import "header";
+@import "breadcrumbs";
+@import "table";
+@import "form";
+@import "graph";
+@import "step";
+@import "fileupload";
+
+@import "newsStyle";
+
+body {
+    height: 100%;
+    background-color: #fff;
+}
+
+.gui-mid-wrapper {
+    padding-top: 80px;
+    min-height: 100%;
+    // height: 100%;
+    box-sizing: border-box;
+    margin-top: -80px;
+    background: linear-gradient(to right, #f9fffb,  #f9fffb 200px, #e4e4e4 200px, #e4e4e4 201px, #eee 201px, #eee);
+    
+}
+
+.gui-menu {
+    float: left;
+    width: 200px;
+    min-height: 100%;
+    // height: 100%;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+.gui-content {
+    min-height: 100%;
+    margin-left: 201px;
+    padding: 10px 15px 0;
+    box-sizing: border-box;
+    // background-color: #eee;
+    // border-left: 1px solid #e4e4e4;
+}
+
+.gui-section {
+    padding: 5px 15px 15px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-top: none;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    margin-bottom: 15px;
+    .gui-form-group + .gui-form-group {
+        margin-top: -16px;
+        border-top-color: #f9fffb;
+        padding-top: 0;
+    }
+}
+
+/*ģ̬��*/
+
+.modal-style {
+    width: 1000px;
+    height: 700px;
+}
+
+.modal-stylemid {
+    width: 680px;
+    height: 520px;
+}
+
+.modal-stylesm {
+    width: 496px;
+    height: 256px;
+}
+
+.this-after {
+    position: absolute;
+    right: -70px;
+    top: -3px;
+    color: red;
+    font-size: 1px;
+    font-family: xinhao;
+}
+
+.gov-h {
+    overflow: hidden;
+}
+
+.gp-r {
+    position: relative;
+}
+
+.gui-tree-sidebar {
+    float: left;
+    width: 200px;
+}
+
+.gui-tree-content {
+    margin-left: 200px;
+}
+
+.ApplyTable {
+    width: 100%;
+}
+
+.ApplyTable tbody tr td {
+    width: 50%;
+    border: 1px solid #e3e3e3;
+    padding: 8px 5px;
+}
+
+.ApplyTable tbody tr:nth-child(even) {
+    background-color: #f6f6f6;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    margin: 0px;
+    margin-top: 1px\9;
+    line-height: normal;
+}
+
+//datatable下拉框
+.input-sm {
+    padding: 0px 10px;
+}
+
+select.input-sm {
+    height: 20px;
+    line-height: 20px;
+}
+
+.gui-page-head {
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 15px;
+    padding-top: 10px;
+    color: #333;
+    h1 {
+        font-weight: 700;
+        display: inline-block;
+        font-size: 16px;
+        border-bottom: 1px solid #20944d;
+        vertical-align: middle;
+        line-height: 1.5;
+        padding: 0 15px;
+        padding-bottom: 5px;
+        margin-bottom: -1px;
+    }
+    h3 {
+        font-size: 14px;
+        font-weight: 700;
+        display: inline-block;
+        padding-bottom: 5px;
+        vertical-align: middle;
+    }
+}
+
+//上传
+.input-group-btn:last-child > .btn {
+    height: 30px;
+    color: white;
+    margin-left: 10px;
+    border-radius: 4px;
+    background-color: #218d4a !important;
+    border: 1px solid white;
+}
+
+//
+// @media (min-width: 1366px) {
+//   .gui-mediaInline
+// {
+//     display: inline-block;
+//     float: left;
+//     text-align: right;
+//     margin-top: 0px;
+//     &:after{
+//       content: "";
+//       display: table;
+//       clear: both;
+//       overflow: hidden;
+//     }
+//     & .ML15{
+//       margin-left: 15px;
+//     }
+//     //& .FL{
+//     //  float: left;
+//     //}
+//   }
+// }
+.form-control {
+    // height: 30px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+.gui-mainViews {
+    //border: 1px solid #9d9d9d;
+    padding: 10px;
+    & ul {
+        padding-left: 10px;
+    }
+    & p {
+        font-weight: 700;
+    }
+}
+
+.gui-colorRed {
+    color: red;
+}
+
+select {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+select::-ms-expand {
+    display: none;
+}
+.gui-checkbox-group {
+    width: 100%;
+    height: 230px;
+    border: 1px solid #e9e9e9;
+    margin: 0 auto;
+    .gui-checkbox-group-item {
+        height: 46px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        line-height: 46px;
+        border: 1px solid #fff;
+        text-align: center;
+        float: left;
+        border-right: 1px solid #e9e9e9;
+        cursor: default;
+        &:nth-child(1),
+        &:nth-child(2),
+        &:nth-child(3),
+        &:nth-child(4),
+        &:nth-child(9),
+        &:nth-child(10),
+        &:nth-child(11),
+        &:nth-child(12),
+        &:nth-child(17),
+        &:nth-child(18),
+        &:nth-child(19),
+        &:nth-child(20) {
+            background-color: #f9f9f9;
+        }
+        &:nth-child(4),
+        &:nth-child(8),
+        &:nth-child(12),
+        &:nth-child(16),
+        &:nth-child(20) {
+            border: none;
+        }
+        &.active {
+            border: 1px solid #f2a113;
+            background: url(../../imgs/dist/selected.png) right bottom no-repeat;
+            background-color: #fff8eb;
+        }
+    }
+}
+
+.gui-table-panel {
+  overflow: hidden;
+  margin:0 0 -5px 0;
+}
+.gui-table-panel p {
+  font-size: 14px;
+  color: #1b8243;
+  float: left;
+  line-height: 30px;
+}
+
+.gui-table-panel .gui-btn {
+  float: right;
+}
+.gui-form-group {
+  position: relative;
+}
+.gui-form-group .custom-condition {
+  position: absolute;
+  display: inline-block;
+  right: 15px;
+  top: 15px;
+  font-size: 14px;
+  color: #5db9f8;
+  cursor: pointer;
+  line-height: 20px;
+}
+.list-condition {
+  margin-top: 0;
+}
+.list-condition li {
+  width: inherit;
+  min-width: 140px;
+}
+
+.list-condition label {
+  font-weight: 400;
+  cursor: pointer;
+}
+.list-condition input {
+  margin: -3px 5px 0 0;
+}
+.list-condition .disabled {
+  color: #999;
+}
+
+.gui-form-group .condition-item {
+  display: inline-block;
+  margin-top: 15px;
+  white-space: nowrap;
+}
+.list-head{
+  padding: 0 15px;
+  font-weight: 400;
+}
+.list-head label{
+  color: #333;
+  cursor: pointer;
+  font-weight: 400;
+}
+.list-head input{
+  margin-right: 5px;  
+  margin-top: -2px;
+}
+.dataTables_wrapper{
+    overflow: hidden;
+}
+
+
+.bv-form .help-block{
+    line-height: 1.5;
+}
+.popover .popover-content{
+    word-break: break-all;
+    white-space: normal;
+    vertical-align: middle;
+}

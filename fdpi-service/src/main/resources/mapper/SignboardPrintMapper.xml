@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.SignboardPrintMapper">
+
+    <sql id="alias_Column_List_sp">
+      sp.ID, sp.NUM, sp.STATUS, sp.CONTRACT_NUM
+    </sql>
+    <sql id="alias_Column_List_sa">
+      sa.APPLY_CODE
+    </sql>
+    <sql id="alias_Column_List_s">
+      s.APPLY_CODE
+    </sql>
+    <sql id="alias_Column_List_tc">
+      tc.COMP_NAME, tc.COMP_TYPE, tc.CONTACT_ADDRESS, tc.LINKMAN, tc.PHONE
+    </sql>
+    <select id="listByParams" resultType="com.sofn.fdpi.model.SignboardPrint">
+        select
+        <include refid="alias_Column_List_sp"/>,
+        <choose>
+            <when test='applyType == "2"'>
+                <include refid="alias_Column_List_s"/>,
+            </when>
+            <otherwise>
+                <include refid="alias_Column_List_sa"/>,
+            </otherwise>
+        </choose>
+        <include refid="alias_Column_List_tc"/>
+        from SIGNBOARD_PRINT sp
+        left join TB_COMP tc on tc.ID = sp.COMP_ID
+        <choose>
+            <when test='applyType == "2"'>
+                left join STURGEON s on s.id = sp.apply_id
+            </when>
+            <otherwise>
+                left join SIGNBOARD_APPLY sa on sa.id = sp.apply_id
+            </otherwise>
+        </choose>
+        <where>
+            sp.DEL_FLAG = 'N'
+            <if test="compType != null and compType != ''">
+                and tc.COMP_TYPE = #{compType}
+            </if>
+            <if test="applyType != null and applyType != ''">
+                and sp.APPLY_TYPE = #{applyType}
+            </if>
+            <if test="compName != null and compName != ''">
+                and tc.COMP_NAME like '%' || #{compName} || '%'
+            </if>
+            <if test="applyCode != null and applyCode != ''">
+                <choose>
+                    <when test="applyType = '1'">
+                        and s.APPLY_CODE like '%' || #{applyCode} || '%'
+                    </when>
+                    <otherwise>
+                        and sa.APPLY_CODE like '%' || #{applyCode} || '%'
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="contractNum != null and contractNum != ''">
+                and sp.CONTRACT_NUM like '%' || #{contractNum} || '%'
+            </if>
+        </where>
+        order by sp.CREATE_TIME desc
+    </select>
+
+    <select id="getCompNameByPrintId" resultType="java.lang.String">
+        select tc.COMP_NAME
+        from SIGNBOARD_PRINT sp
+        left join TB_COMP tc on tc.ID = sp.COMP_ID
+        where sp.ID = #{printId}
+    </select>
+
+    <select id="getYearMaxSequenceNum" resultType="java.lang.String">
+        SELECT max(contract_num) FROM signboard_print WHERE contract_num like #{contractNum}||'%'
+    </select>
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">-->
+<!--<beans>-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="localCacheClient"
+	     class="com.cvicse.workflow.api.ehcache.LocalCacheClient" scope="prototype">
+	</bean>
+	
+	<bean id="rmiCacheClient"
+	      class="com.cvicse.workflow.api.ehcache.RMICacheClient"  scope="prototype" init-method="init">
+		<property name="hostUrl">
+			<value>localhost</value>
+		</property>
+		<property name="hostPort">
+			<value>5501</value>
+		</property>
+		<property name="serviceName">
+			<value>InforFlowCacheProvider</value>
+		</property>
+	</bean>
+	
+	<!-- 若使用wsClient,需将axis.jar,axis-ant.jar,saaj.jar,jaxrpc.jar,commons-discovery.jar,wsdl4j.jar加入到客户端应用的classpath中 -->
+	<bean id="wsCacheClient"
+	      class="com.cvicse.workflow.api.ehcache.webservice.WebServiceCacheClient"  scope="prototype" init-method="init">
+		<property name="serviceAddress">
+			<value>http://localhost:8080/flowservice/WsCacheClient</value>
+		</property>
+	</bean>
+	
+	<bean id="InforFlowCacheClient" parent="localCacheClient"/>
+	<!--bean id="InforFlowCacheClient" parent="rmiCacheClient"/-->
+	<!--bean id="InforFlowCacheClient" parent="wsCacheClient"/-->
+	
+</beans>

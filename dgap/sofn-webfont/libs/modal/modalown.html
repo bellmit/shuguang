@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        .fr{
+            float: right;
+        }
+    </style>
+</head>
+<body>
+<!--modal-->
+<div>
+    <button class="modal-ownOpen">dianji</button>
+</div>
+<div class="modal-ownOcclusion">
+    <div class="modal-stylemid modal-margin " >
+        <div class="modalHeader modal-owmcommon">
+            <h4>头部信息</h4>
+            <h5 class="fr">×</h5>
+        </div>
+        <div class="modal-conTain  modal-owmcommon">
+            ........
+        </div>
+        <div class="modal-ownfooter modal-owmcommon">
+            <button  class="modal-ownClosde">确定</button>
+            <button  class="modal-ownClosde">关闭</button>
+
+        </div>
+    </div>
+</div>
+
+<script src="../jquery/jquery-1.11.3.js"></script>
+<script >
+    $(function() {
+        //        自制模态框
+        var a = $(".modal-ownOcclusion")
+        a.css({"width": $(window).width(), "height": $(window).height()})
+//        进入
+        $(".modal-ownOpen").click(function () {
+            a.css("top", "0px")
+            //        退出
+            $(".modal-ownClosde").click(function () {
+                a.css("top", "-20000%")
+            })
+        })
+    })
+
+</script>
+</body>
+</html>

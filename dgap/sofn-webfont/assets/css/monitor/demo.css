@@ -1,0 +1,15 @@
+.jc-item{
+    border: 1px solid silver;height: 150px;width: 50%;margin: auto;margin-top: 20px;line-height: 35px;cursor: pointer;
+}
+
+.pd-5{
+    padding: 5px;
+}
+
+.pdr-p25{
+    padding-right: 25%;
+}
+
+.textr-silver{
+    color: silver;
+}

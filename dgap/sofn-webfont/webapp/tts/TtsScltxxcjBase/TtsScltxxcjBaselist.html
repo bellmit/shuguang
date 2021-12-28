@@ -1,0 +1,26 @@
+<link rel="stylesheet" href="assets/css/tts/base/baseInfoList.css">
+<link rel="stylesheet" href="assets/css/tts/base/baseAdd.css">
+<div class="gui-breadcrumbs">
+    <a href="">内部管理</a>&gt;
+    <span>基地信息管理</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group">
+        <span class="gui-select">
+        <select ng-model="ttsScltxxcjBase.status" name="in_status">
+            <option value="">选择基地状态</option>
+            <option value="Y">启用</option>
+            <option value="N">停用</option>
+        </select>
+    </span>
+        <input name="keyWord" class="gui-input" type="text" placeholder="请输入基地名称关键字">
+        <button id="ToCheck" class="gui-btn">查询</button>
+    </div>
+    <div class="gui-actions">
+        <button class="gui-btn fr" ui-sref="index.content.tts/TtsScltxxcjBase/ttsScltxxcjBaseAdd"><i class="gui-icon icon-add"></i>新增</button>
+    </div>
+    <div>
+        <table id="grid" class="gui-table">
+        </table>
+    </div>
+</div>

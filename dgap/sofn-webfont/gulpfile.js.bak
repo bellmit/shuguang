@@ -1,0 +1,118 @@
+var gulp = require('gulp');
+var less = require('gulp-less');
+var path = require('path');
+var watch = require('gulp-watch');
+var plumber = require('gulp-plumber');
+var notify = require('gulp-notify');
+var spritesmith = require('gulp.spritesmith');
+var buffer = require('vinyl-buffer');
+var cheerio = require('gulp-cheerio');
+var rename = require('gulp-rename');
+var LessPluginCleanCSS = require('less-plugin-clean-css'),
+    LessPluginAutoPrefix = require('less-plugin-autoprefix'),
+    cleancss = new LessPluginCleanCSS({ advanced: true }),
+    autoprefix = new LessPluginAutoPrefix({ browsers: ["last 2 versions"] });
+gulp.task('less', function() {
+    return gulp.src('assets/styles/**/*.less', { base: process.cwd() }).pipe(plumber({ errorHandler: notify.onError('Error: <%= error.message %>') })).pipe(less({
+        paths: [path.join(__dirname, 'less', 'includes')],
+        plugins: [autoprefix, cleancss]
+    })).pipe(gulp.dest("./"));
+});
+//css sprite
+gulp.task('sprite', () => {
+    var spriteData = gulp.src('assets/imgs/common/*.png').pipe(spritesmith({
+        imgName: 'sprite.png',
+        cssName: 'sprite.less',
+        imgPath: '../../imgs/dist/sprite.png',
+        cssVarMap: function(sprite) {
+            sprite.name = sprite.name.replace(/^\s{1}/, ''); //去除文件名前空白
+            sprite.name = sprite.name.replace('@2x', '');
+            sprite.name = sprite.name.replace(/^\d\./, '');
+            sprite.name = sprite.name.toLowerCase();
+            sprite.name = ~sprite.name.indexOf('icon-') ?
+                sprite.name :
+                'icon-' + sprite.name;
+        },
+        algorithm: 'binary-tree',
+        // 可选: 指定CSS格式 (默认根据destCSS中的后缀设置格式)
+        // (stylus, scss, scss_maps, sass, less, json, json_array, css)
+        cssFormat: 'less',
+        padding: 10
+    }));
+    spriteData.img.pipe(buffer()).pipe(gulp.dest('assets/imgs/dist/'));
+    spriteData.css.pipe(gulp.dest('assets/styles/common/'));
+});
+const classNameByText = (text) => {
+    var className = 'gui-icon';
+    var configs = {
+        text: ['新增'],
+        className: 'add'
+    };
+
+    if (~text.indexOf('新增')) {
+        className += ' icon-add';
+    } else if (~text.indexOf('编辑') || ~text.indexOf('修改')) {
+        className += ' icon-edit';
+    } else if (~text.indexOf('发布')) {
+        className += ' icon-publish';
+    } else if (~text.indexOf('删除')) {
+        className += ' icon-remove';
+    } else if (~text.indexOf('导入')) {
+        className += ' icon-import';
+    } else if (~text.indexOf('导出')) {
+        className += ' icon-export';
+    } else if (~text.indexOf('废弃') || ~text.indexOf('废止')) {
+        className += ' icon-disable';
+    } else if (~text.indexOf('合成')) {
+        className += ' icon-compose';
+    } else if (~text.indexOf('销售')) {
+        className += ' icon-sale';
+    } else if (~text.indexOf('角色')) {
+        className += ' icon-role';
+    } else if (~text.indexOf('配置')) {
+        className += ' icon-config';
+    } else if (~text.indexOf('下载')) {
+        className += ' icon-download';
+    } else if (~text.indexOf('任务')) {
+        className += ' icon-task';
+    } else if (~text.indexOf('今日记录')) {
+        className += ' icon-record';
+    } else if (~text.indexOf('历史记录')) {
+        className += ' icon-history';
+    } else if (~text.indexOf('抽样单')) {
+        className += ' icon-smaple';
+    } else if (~text.indexOf('检测任务单')) {
+        className += ' icon-test_list';
+    }
+    return className;
+};
+
+
+//handle yellow button
+gulp.task('sync', function() {
+    return gulp.src(['webapp/sys/**/*.html'], { base: process.cwd() }).pipe(cheerio({
+        run: function($, file) {
+            var section = $('.gui-section').first();
+            var form = section.find('.gui-form-group').last();
+            var btns = form.find('.gui-btn.fr');
+            var actions = $('.gui-actions').length ?
+                $('.gui-actions') :
+                $('<div class="gui-actions"></div>');
+            actions.append(btns);
+            btns = $('.gui-actions').find('.gui-btn');
+            btns.each(function() {
+                $(this).find('i').remove();
+                $(this).prepend('<i class="' + classNameByText($(this).text()) + '" />');
+            });
+            form.after(actions);
+        },
+        parserOptions: {
+            decodeEntities: false //强制中文不转换成Unicode
+        }
+    })).pipe(gulp.dest('./'));
+});
+//监听less文件变化
+gulp.task('watchLess', function() {
+    gulp.watch('assets/styles/**/*.less', ['less']);
+});
+gulp.task('default', ['watchLess']);

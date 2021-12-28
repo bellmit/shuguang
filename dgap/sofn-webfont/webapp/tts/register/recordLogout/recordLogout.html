@@ -1,0 +1,90 @@
+<div class="gui-breadcrumbs">
+    <a href="">用户主体管理</a>&gt;
+    <span>备案注销申请</span>
+</div>
+<div class="gui-section">
+    <form id="attributeForm" method="post" class="form-horizontal" data-bv-message="This value is not valid" data-bv-feedbackicons-valid="glyphicon glyphicon-ok" data-bv-feedbackicons-invalid="glyphicon glyphicon-remove" data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+        <div class="ovh">
+            <ul class="gui-list">
+                <li>
+                    <div class="gui-page-head">
+                        <h3>注销原因</h3>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <textarea class="gui-textarea" id="recordLogout" style="width: 90%; min-height:120px;" name="recordLogout" placeholder="注销原因（500字）" rows="4" data-bv-notempty="true" data-bv-notempty-message="请输入注销原因" data-bv-stringlength="true" data-bv-stringlength-min="1" data-bv-stringlength-max="300" data-bv-stringlength-message="1-300"></textarea>
+                    </div>
+                </li>
+                <li>
+                    <div class="gui-page-head">
+                        <h3>生产经营主体企业证照上传 (照片或电子扫描文档)</h3>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <div class="text-field">
+                            <img src="images/register/add.jpg" class="mr15" isupload="N" id="img61" width="200" height="120" ng-click="myModal61()">
+                            <img src="images/register/add.jpg" isupload="N" id="img62" width="200" height="120" ng-click="myModal62()">
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="text-center">
+                        <!--<button class="gui-btn" ui-sref="index.content.register/secondChoose/secondChoose">返回-->
+                        <!--</button>-->
+                        <button ng-click="addTtsScltxxcjChangeRecord()" class="gui-btn ml15">提交申请
+                        </button>
+                    </div>
+                </li>
+            </ul>
+            <!-- Modal -->
+            <div class="modal fade" id="myModal61" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-stylesm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" id="myModalLabel61">营业执照</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>营业执照</p>
+                            <div>
+                                <p>{{imgsrc}}</p>
+                                <form enctype="multipart/form-data">
+                                    <input id="file6-1" type="file" name="file" multiple=" true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="1">
+                                    <br>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="gui-btn" data-dismiss="modal">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="myModal62" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-stylesm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" id="myModalLabel62">组织机构代码证</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>组织机构代码证</p>
+                            <div>
+                                <p>{{imgsrc}}</p>
+                                <form enctype="multipart/form-data">
+                                    <input id="file6-2" type="file" name="file" multiple=" true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="1">
+                                    <br>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="gui-btn" data-dismiss="modal">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

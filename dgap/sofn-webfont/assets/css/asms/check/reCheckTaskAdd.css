@@ -1,0 +1,41 @@
+.Sup_contain_section_contain_head{
+    margin: auto;
+    overflow: hidden;
+}
+.Sup_contain_section_contain_head p{
+    font-size: 25px;
+    margin:20px 0px 30px 20px;
+}
+
+.Sup_contain_section_contain_head span{
+    margin-right: 50px;
+    display: inline-block;
+    text-align: right;
+    height: 30px;
+    line-height: 30px;
+    vertical-align: middle;
+}
+.gui-select{
+    width: 100%;
+}
+.Sup_contain_section_contain_input{
+    width: 450px;
+    outline: none;
+    /*height: 30px;*/
+}
+.Sup_contain_section_contain_head_button{
+    width: 120px;
+    height: 30px;
+    font-size: 20px;
+    background: #20944d;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    outline: none;
+    margin: 15px 60px 15px 150px;
+
+}
+.form-horizontal .form-group {
+     margin-right: 0px;
+     margin-left: 0px;
+}

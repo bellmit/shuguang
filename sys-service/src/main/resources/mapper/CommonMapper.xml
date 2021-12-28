@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.CommonMapper" >
+
+
+    <!--  获取机构能够查看的机构  -->
+    <sql id="getOrgCanShowOrgIds">
+        select so.id from SYS_ORG so where so.id in (
+        select id from SYS_ORG  where id = #{orgId}
+        <if test="carryProxyOrg != null and 'Y'.toString() == carryProxyOrg">
+            union
+            select THIRD_ORG_ID from SYS_ORG_AGENT where org_id = #{orgId}
+            <if test="appIds != null and appIds.size() > 0">
+                and SUBSYSTEM_ID
+                in
+                <foreach collection="appIds" item="appId" open="(" close=")" separator=",">
+                    #{appId}
+                </foreach>
+            </if>
+        </if>
+        <if test="carryChildren != null and 'Y'.toString() == carryChildren">
+            union
+            select id from sys_org  where PARENT_IDS like
+            (select PARENT_IDS || '/' || id || '%' from SYS_ORG  where id = #{orgId} )
+        </if>
+        )
+        <if test="appIds != null and  appIds.size() > 0">
+            and exists (
+            select sso.org_id from SYS_SYSTEM_ORG sso
+            where sso.app_id in
+            <foreach collection="appIds" item="appId" open="(" close=")" separator=",">
+                #{appId}
+            </foreach>
+            and so.id = sso.org_id
+            )
+        </if>
+    </sql>
+
+
+    <sql id="getUserHaveRoleIds">
+        select
+             roleId
+        from (
+        select G.ROLE_ID roleId
+         FROM sys_user aa
+         LEFT JOIN SYS_USER_GROUP k  ON aa.ID = k.user_id -- 关联用户角色组表
+         LEFT JOIN SYS_ROLE_GROUP G ON k.GROUP_ID= G.GROUP_ID
+        where aa.id = #{userId} and aa.DEL_FLAG = 'N' and G.ROLE_ID is not null
+        UNION -- 去重取交集
+        select r.ROLE_ID roleId from sys_user aa
+        left join SYS_USER_ROLE r on aa.ID = r.USER_ID    -- 关联用户角色表
+        where aa.id = #{userId} and aa.DEL_FLAG = 'N' and r.ROLE_ID is not null
+        )
+    </sql>
+
+    <sql id="getUserHaveRoleCodes">
+        select ROLE_CODE from SYS_ROLE where id in (
+        <include refid="getUserHaveRoleIds"></include>
+        )
+    </sql>
+
+
+
+
+
+
+
+</mapper>

@@ -1,0 +1,51 @@
+<link rel="stylesheet" href="assets/css/tts/base/baseAdd.css"/>
+
+<div class="Sup_contain_section col-lg-12 col-xs-12 col-sm-12 col-md-12">
+    <div class="Sup_contain_section_head col-lg-12 col-xs-12 col-sm-12 col-md-12 " style="background-color: white">
+         <h2 id="Sup_contain_section_head_h2">
+            <a href=""><span >追溯系统  > </span></a>  
+            <a href=""><span >内部管理  > </span></a>
+            <a href=""><span >部门管理管理 > </span></a>
+            <span>  查看</span>
+         </h2>
+    </div>
+    <p class="col-lg-1 col-xs-0 col-sm-1 col-md-1"></p>
+    <div class="Sup_contain_section_contain_head col-lg-10 col-xs-12 col-sm-10 col-md-10">
+        <p>查看部门管理信息</p>
+        <ul>
+        	<li>
+        		<span>机构名称</span>
+        		<input type="text" ng-model="reservedField1" readonly="readonly" class="Sup_contain_section_contain_input"/>
+        	</li>
+        	 <li>
+        		<span>机构类别</span>
+        		<input type="text" ng-model="deptType" readonly="readonly"  class="Sup_contain_section_contain_input"/>
+        	</li>
+        	<li>
+        		<span>机构级别</span>
+        		<input type="text" ng-model="deptLevel" readonly="readonly"  class="Sup_contain_section_contain_input"/>
+        	</li>
+        	<li>
+        		<span>所属区域</span>
+        		<input type="text" ng-model="regionId" readonly="readonly"  class="Sup_contain_section_contain_input"/>
+        	</li>
+        	<li>
+        		<span>部门名称</span>
+        		<input type="text" ng-model="deptName" readonly="readonly"  class="Sup_contain_section_contain_input"/>
+        	</li>
+        	 <li>
+        		<span>部门负责人</span>
+        		<input type="text" ng-model="deptManager" readonly="readonly" type="text" class="Sup_contain_section_contain_input"/>
+        	</li>
+        	<li>
+        		<span>联系电话</span>
+        		<input type="text" ng-model="phone" readonly="readonly" type="text" class="Sup_contain_section_contain_input"/>
+        	</li>
+        	<li>
+        		<span>状       态</span>
+        		<input type="text" ng-model="status" readonly="readonly" type="text" class="Sup_contain_section_contain_input"/>
+        	</li>
+        </ul>
+        <button class="Sup_contain_section_contain_head_button" ng-click="removeLocalStorage()" ui-sref="index.content.sys/sysDept/list">关闭</button>
+    </div>
+</div>

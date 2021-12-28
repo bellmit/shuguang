@@ -1,0 +1,46 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.21.129:3306/ducss_test_gz?characterEncoding=UTF-8&serverTimezone=Hongkong&useUnicode=true&useSSL=false&autoReconnect=true&failOverReadOnly=false&allowMultiQueries=true
+    username: root
+    password: 123456
+      #    publicKey: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAItqdfGG8XYAkX59PE6R9PxFG5igPqs4xxj19VMd0jeeXPojJveMxoPLLKR1CONKRaNOxcu93P0PgY19FUCUEkcCAwEAAQ==
+    #    username: root
+    #    password: Wrlk4Rufp4uRtrXsj+yRP11S0TUVw9I5aqznV5ZekRp5gZergh0pS8iLTmkghX8hrm2Nm6czeye7n6UKGiTGUw==
+    #    publicKey: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBANcfx/ueRBAT/KCi7baD2YOQJ34OQjpuw0HBHaI8zQUizDl41NBEL2XUQP3CqhGPW/B9vp5aXqX+hZhpkKjW5MUCAwEAAQ==
+
+    druid:
+      async-init: true
+      initial-size: 15
+      max-active: 30
+      min-idle: 10
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      #      validation-query: SELECT 1 FROM DUAL
+      #      connection-properties: config.decrypt=true;config.decrypt.key=${spring.datasource.publicKey}
+      filter:
+        config:
+          enabled: true
+
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
+
+#  redis:
+#    cluster:
+#      nodes: 10.0.50.103:7000,10.0.50.103:7001,10.0.50.103:7002,10.0.50.103:7003,10.0.50.103:7004,10.0.50.103:7005
+#    timeout: 6000ms
+#    lettuce:
+#      pool:
+#        max-active: 100
+#        max-wait: -1ms
+#        max-idle: 10
+#    database: 0

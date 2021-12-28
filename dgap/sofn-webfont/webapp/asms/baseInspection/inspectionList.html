@@ -1,0 +1,82 @@
+<link rel="stylesheet" href="assets/css/asms/baseInspection/inspectionList.css"/>
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">监管系统</a>&gt;
+    <a ui-sref="index.content.asms/baseInspection/inspectionList">监督检查</a>&gt;
+    <span>基地巡查</span>
+</div>
+    <div class="gui-section">
+        <div class="gui-form-group">
+            <span id="AnyArea">所属区域</span>
+            <div class="gui-select">
+                <select id="sheng">
+                    <option value="">省</option>
+                </select>
+            </div>
+            <div class="gui-select">
+                <select id="shi">
+                    <option value="">市</option>
+                </select>
+            </div>
+            <div class="gui-select">
+                <select id="xian">
+                    <option value="">区/县</option>
+                </select>
+            </div>
+
+            <form name="searchForm" id="searchForm" class="mt15">
+                <span>所属行业</span>
+                <div class="gui-select">
+                    <select name="enterpriseIndustryId">
+                        <option ng-selected="{{x.id == inspectionListQueryParams.enterpriseIndustryId && industryType.length>1}}" ng-repeat="x in industryType" value="{{x.id}}">{{x.dictName}}</option>
+                    </select>
+                </div>
+                <span>组织形式</span>
+                <div class="gui-select">
+                    <select name="entityScaleId" ng-model="entityScaleId">
+                        <option value="">全部</option>
+                        <option ng-selected="{{x.id == inspectionListQueryParams.entityScaleId }}" ng-repeat="x in orgMode" value="{{x.id}}">{{x.dictName}}</option>
+                    </select>
+                </div>
+                <div class="mt15">
+                    <span>主体类别</span>
+                    <div class="gui-select">
+                        <select name="entityTypeId" ng-model="entityTypeId">
+                            <option value="">全部</option>
+                            <option ng-repeat="x in subjType" ng-selected="{{x.id == inspectionListQueryParams.entityTypeId }}" value="{{x.id}}">{{x.dictName}}</option>
+                        </select>
+                    </div>
+                    <span>年度</span>
+                    <input name="queryYear" style="width:30px" onfocus="WdatePicker({skin:'default',dateFmt:'yyyy'})" class="Wdate gui-input" />
+                    <span>巡查结果</span>
+                    <div class="gui-select">
+                        <select name="inspectionResult">
+                            <option value="">全部</option>
+                            <option ng-select="{{x.dictValue == inspectionListQueryParams.inspectionResults}}" ng-repeat="x in inspectionResults" value="{{x.dictValue}}">{{x.dictName}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mt15">
+                    <span>巡查日期</span>
+                    <input id="dateBegin" name="dateBegin" style="cursor: pointer;width: 120px;" class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('dateEnd');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateEnd\')}'})"/>
+                    --
+                    <input id="dateEnd" name="dateEnd" class="Wdate gui-input" style="cursor: pointer;width: 120px;margin-left: 10px;"  type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'dateBegin\')}'})"/>
+                    <span>主体名称</span>
+                    <input class="gui-input" name="enterpriseName" type="text" placeholder="请输入主体名称"/>
+                    <button class="gui-btn" ng-disabled="!!btnDisabled" ng-click="queryBaseInspection()">查询</button>
+                    <button class="gui-btn"  ng-click="resetArea()">重置</button>
+                </div>
+            </form>
+        </div>
+        <div class="gui-actions">
+            <button class="gui-btn fr ml15" ng-click="downBaseInpsCollTab()" ng-show="{{iswrite==2}}">
+                <i class="gui-icon icon-download"></i>基地巡查信息采集表</button>
+            <button class="gui-btn fr ml15" ng-click="updateBaseInspectionDraftBatch()" ng-show="{{iswrite==2}}">
+                <i class="gui-icon icon-add"></i>批量上传</button>
+            <button class="gui-btn fr ml15" ng-click="deleteBaseInspection()" ng-show="{{iswrite==2}}">
+                <i class="gui-icon icon-remove"></i>删除</button>
+            <button class="gui-btn fr" ui-sref="index.content.asms/baseInspection/inspectionAdd" ng-show="{{iswrite==2}}">
+                <i class="gui-icon icon-add"></i>新增</button>
+        </div>
+        <table id="grid" class="gui-table mt15" style="width: 100%">
+        </table>
+    </div>

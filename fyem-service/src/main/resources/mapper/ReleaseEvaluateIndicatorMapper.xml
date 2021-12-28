@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fyem.mapper.ReleaseEvaluateIndicatorMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.fyem.model.ReleaseEvaluateIndicator" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="belong_year" property="belongYear" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+    <result column="indicator_type" property="indicatorType" jdbcType="VARCHAR" />
+    <result column="indicator_name" property="indicatorName" jdbcType="VARCHAR" />
+    <result column="reference_value" property="referenceValue" jdbcType="DOUBLE" />
+    <result column="total_value" property="totalValue" jdbcType="DOUBLE" />
+    <result column="add_man" property="addMan" jdbcType="VARCHAR" />
+    <result column="add_man" property="addMan" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <resultMap id="testTable" type="com.sofn.fyem.vo.SecondEvaluateIndicatorVo" >
+    <result column="secondId" property="secondId" jdbcType="VARCHAR" />
+    <result column="parentId" property="parentId" jdbcType="VARCHAR" />
+    <result column="indicatorName" property="indicatorName" jdbcType="VARCHAR" />
+    <result column="referenceValue" property="referenceValue" jdbcType="DOUBLE" />
+    <result column="totalValue" property="totalValue" jdbcType="DOUBLE" />
+    <result column="valueId" property="valueId" jdbcType="VARCHAR" />
+    <result column="numericaValue" property="numericaValue" jdbcType="DOUBLE" />
+    <result column="actualValue" property="actualValue" jdbcType="DOUBLE" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, belong_year, parent_id, indicator_type, indicator_name, reference_value, total_value,
+    add_man, status,create_user_id, create_time
+  </sql>
+
+  <select id="getReleaseEvaluateIndicatorList" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM RELEASE_EVALUATE_INDICATOR
+    <where>
+      1=1
+      <if test="parentId != null and parentId != ''">
+        and parent_id = #{parentId}
+      </if>
+      <if test="indicatorType != null and indicatorType != ''">
+        and indicator_type = #{indicatorType}
+      </if>
+      <if test="indicatorName != null and indicatorName != ''">
+        and indicator_name = #{indicatorName}
+      </if>
+       <if test="status != null and status != ''">
+        and status = #{status}
+      </if>
+      <if test="beginDate != null and ''!=beginDate">
+        <!-- and create_time >= str_to_date(DATE_FORMAT(#{beginDate},'%Y-%m-%d'),'%Y-%m-%d %H:%i:%s') -->
+        and create_time >= to_timestamp(#{beginDate},'yyyy-MM-dd hh24:mi:ss')
+      </if>
+      <if test="endDate != null and ''!=endDate">
+        <!-- and create_time &lt;= str_to_date(DATE_FORMAT(#{endDate},'%Y-%m-%d'),'%Y-%m-%d %H:%i:%s') -->
+        and create_time &lt;= to_timestamp(#{endDate},'yyyy-MM-dd hh24:mi:ss')
+      </if>
+    </where>
+    ORDER BY create_time desc
+  </select>
+
+  <select id="getReleaseEvaluateIndicatorById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from RELEASE_EVALUATE_INDICATOR
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <!--修改监测点基本信息状态-->
+  <update id="updateStatus" parameterType="java.util.Map">
+    update RELEASE_EVALUATE_INDICATOR
+    <set >
+      <if test=" status != null and  status != '' " >
+        status = #{status}
+      </if>
+    </set>
+    <where>
+      1=1
+      <if test="id != null and id != ''">
+        and id = #{id}
+      </if>
+      <if test="parentId != null and parentId != ''">
+        and parent_id = #{parentId}
+      </if>
+    </where>
+  </update>
+
+  <select id="getSecondEvaluateIndicatorType" parameterType="java.util.List"  resultMap="testTable">
+    SELECT
+    a.id AS secondId,
+    a.parent_id AS parentId,
+    a.indicator_name AS indicatorName,
+    a.reference_value AS referenceValue,
+    a.total_value AS totalValue
+    FROM
+    RELEASE_EVALUATE_INDICATOR a
+    <where>
+       a.status = '0'
+       and a.parent_id in
+      <foreach item="item" index="index" collection="firstIds"
+               open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </where>
+  </select>
+
+  <select id="getSecondEvaluateIndicatorVo" parameterType="java.util.List"  resultMap="testTable">
+    SELECT
+    a.id AS secondId,
+    a.parent_id AS parentId,
+    a.indicator_name AS indicatorName,
+    a.reference_value AS referenceValue,
+    a.total_value AS totalValue,
+    b.id AS valueId,
+    b.belong_year AS belongYear,
+    b.numerica_value AS numericaValue,
+    b.actual_value AS actualValue
+    FROM
+    RELEASE_EVALUATE_INDICATOR a
+    left join evaluate_standard_value b
+    on a.id = b.second_indicator_id
+    and a.parent_id = b.first_indicator_id
+    left join basic_proliferation_release c
+    on b.basic_release_id = c.id
+    <where>
+        a.status = '0'
+        and a.parent_id in
+      <foreach item="item" index="index" collection="firstIds"
+               open="(" separator="," close=")">
+        #{item}
+      </foreach>
+      <if test="belongYear != null and belongYear != ''">
+        and b.belong_year = #{belongYear}
+      </if>
+      <if test="basicReleaseId != null and basicReleaseId != ''">
+        and b.basic_release_id = #{basicReleaseId}
+      </if>
+    </where>
+  </select>
+
+  <select id="getSecondEvaluateIndicatorHistory" parameterType="java.util.List"  resultMap="testTable">
+    SELECT
+    a.id AS secondId,
+    a.parent_id AS parentId,
+    a.indicator_name AS indicatorName,
+    a.reference_value AS referenceValue,
+    a.total_value AS totalValue,
+    b.id AS valueId,
+    b.belong_year AS belongYear,
+    b.numerica_value AS numericaValue,
+    b.actual_value AS actualValue
+    FROM
+    RELEASE_EVALUATE_INDICATOR a
+    left join evaluate_standard_value_history b
+    on a.id = b.second_indicator_id
+    and a.parent_id = b.first_indicator_id
+    left join basic_proliferation_release c
+    on b.basic_release_id = c.id
+    <where>
+      a.status = '0'
+      and a.parent_id in
+      <foreach item="item" index="index" collection="firstIds"
+               open="(" separator="," close=")">
+        #{item}
+      </foreach>
+      <if test="belongYear != null and belongYear != ''">
+        and b.belong_year = #{belongYear}
+      </if>
+      <if test="basicReleaseId != null and basicReleaseId != ''">
+        and b.basic_release_id = #{basicReleaseId}
+      </if>
+    </where>
+  </select>
+
+  <delete id="removeByParentId" parameterType="java.util.Map">
+    delete
+    from RELEASE_EVALUATE_INDICATOR
+    <where>
+      parent_id = #{parentId}
+
+    </where>
+  </delete>
+</mapper>

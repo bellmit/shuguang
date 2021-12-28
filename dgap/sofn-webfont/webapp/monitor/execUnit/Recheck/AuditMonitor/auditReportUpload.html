@@ -1,0 +1,39 @@
+<link rel="stylesheet" href="../../assets/css/monitor/subjSvList.css"/>
+<style>
+    .file-preview{
+        display: none;
+    }
+</style>
+<div class="gui-breadcrumbs">
+    <a href="">监测系统</a>&gt;
+    <a href="">承担单位</a>&gt;
+    <span>监督抽检报告上传</span>
+</div>
+<div class="Sup_contain_section_head_nav bcgreypl25 mb25 col-lg-12 col-xs-12 col-sm-12 col-md-12">
+        <ul>
+            <!--<li class="fl" href="#" ng-click="taskDetail()">任务详情</li>-->
+            <li class="fl" href="#" ng-click="sampleMessage()">样品信息</li>
+            <li class="fl" href="#" ng-click="test()">检测</li>
+            <li class="fl" href="#" ng-click="routineMonitorList()">检测信息汇总</li>
+            <li class="fl" href="#" ng-click="routineReportUpload()">报告上传</li>
+        </ul>
+</div>
+<span class="gui-btn btn bg-primary pull-right" ng-click="reback()">返回详情页</span>
+<div>
+    <div class="col-md-11 col-md-offset-1">
+        <div class="modal-body">
+            <div class="row">
+                <div style="width: 600px">
+                    <form method="post" enctype="multipart/form-data" id="eventForm">
+                        <input style="display: inline;width: 225px" id="file-1" multiple="true"
+                               data-overwrite-initial="false" accept="*"
+                               data-min-file-count="1" data-max-file-count="1" type="file"/>
+
+                </form>
+                <p> 备注：文件只支持 “word，pdf，xlsl，rar” 格式，文件大小不超过50M。 </p>
+                <!--   <a href="webapp\monitor\cq\导入.xlsx">导入模板</a>-->
+            </div>
+        </div>
+    </div>
+</div>
+</div>

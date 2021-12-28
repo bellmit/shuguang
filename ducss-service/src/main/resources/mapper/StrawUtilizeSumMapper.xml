@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.StrawUtilizeSumMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.ducss.model.StrawUtilizeSum" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="year" property="year" jdbcType="VARCHAR" />
+    <result column="province_id" property="provinceId" jdbcType="VARCHAR" />
+    <result column="city_id" property="cityId" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaId" jdbcType="VARCHAR" />
+    <result column="straw_type" property="strawType" jdbcType="VARCHAR" />
+    <result column="main_fertilising" property="mainFertilising" jdbcType="DECIMAL" />
+    <result column="main_forage" property="mainForage" jdbcType="DECIMAL" />
+    <result column="main_fuel" property="mainFuel" jdbcType="DECIMAL" />
+    <result column="main_base" property="mainBase" jdbcType="DECIMAL" />
+    <result column="main_material" property="mainMaterial" jdbcType="DECIMAL" />
+    <result column="main_total" property="mainTotal" jdbcType="DECIMAL" />
+    <result column="main_total_other" property="mainTotalOther" jdbcType="DECIMAL" />
+    <result column="disperse_fertilising" property="disperseFertilising" jdbcType="DECIMAL" />
+    <result column="disperse_forage" property="disperseForage" jdbcType="DECIMAL" />
+    <result column="disperse_fuel" property="disperseFuel" jdbcType="DECIMAL" />
+    <result column="disperse_base" property="disperseBase" jdbcType="DECIMAL" />
+    <result column="disperse_material" property="disperseMaterial" jdbcType="DECIMAL" />
+    <result column="disperse_total" property="disperseTotal" jdbcType="DECIMAL" />
+    <result column="pro_still_field" property="proStillField" jdbcType="DECIMAL" />
+    <result column="pro_straw_utilize" property="proStrawUtilize" jdbcType="DECIMAL" />
+    <result column="collect_resource" property="collectResource" jdbcType="DECIMAL" />
+    <result column="theory_resource" property="theoryResource" jdbcType="DECIMAL" />
+    <result column="export_yield_total" property="exportYieldTotal" jdbcType="DECIMAL" />
+      <result column="grain_yield" property="grainYield" jdbcType="DECIMAL" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, year, province_id, city_id, area_id, straw_type, main_fertilising, main_forage, 
+    main_fuel, main_base, main_material, main_total, main_total_other, disperse_fertilising, 
+    disperse_forage, disperse_fuel, disperse_base, disperse_material, disperse_total, 
+    pro_still_field, pro_straw_utilize, collect_resource, theory_resource, export_yield_total
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from straw_utilize_sum
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from straw_utilize_sum
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <update id="updateByPrimaryKey" parameterType="com.sofn.ducss.model.StrawUtilizeSum" >
+    update straw_utilize_sum
+    set year = #{year,jdbcType=SMALLINT},
+      province_id = #{provinceId,jdbcType=VARCHAR},
+      city_id = #{cityId,jdbcType=VARCHAR},
+      area_id = #{areaId,jdbcType=VARCHAR},
+      straw_type = #{strawType,jdbcType=VARCHAR},
+      main_fertilising = #{mainFertilising,jdbcType=DECIMAL},
+      main_forage = #{mainForage,jdbcType=DECIMAL},
+      main_fuel = #{mainFuel,jdbcType=DECIMAL},
+      main_base = #{mainBase,jdbcType=DECIMAL},
+      main_material = #{mainMaterial,jdbcType=DECIMAL},
+      main_total = #{mainTotal,jdbcType=DECIMAL},
+      main_total_other = #{mainTotalOther,jdbcType=DECIMAL},
+      disperse_fertilising = #{disperseFertilising,jdbcType=DECIMAL},
+      disperse_forage = #{disperseForage,jdbcType=DECIMAL},
+      disperse_fuel = #{disperseFuel,jdbcType=DECIMAL},
+      disperse_base = #{disperseBase,jdbcType=DECIMAL},
+      disperse_material = #{disperseMaterial,jdbcType=DECIMAL},
+      disperse_total = #{disperseTotal,jdbcType=DECIMAL},
+      pro_still_field = #{proStillField,jdbcType=DECIMAL},
+      pro_straw_utilize = #{proStrawUtilize,jdbcType=DECIMAL},
+      collect_resource = #{collectResource,jdbcType=DECIMAL},
+      theory_resource = #{theoryResource,jdbcType=DECIMAL},
+      export_yield_total = #{exportYieldTotal,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <delete id="deleteStrawUtilizeSum" parameterType="com.sofn.ducss.model.StrawUtilizeSum">
+    delete from straw_utilize_sum where year=#{year} and area_id=#{areaId}
+  </delete>
+
+  <select id="selectStrawUtilize" resultType="com.sofn.ducss.vo.StrawUtilizeResVo">
+    SELECT
+    straw_type as straw_type,
+    sum(main_fertilising) as main_fertilising,
+    sum(main_forage) as main_forage,
+    sum(main_fuel) as main_fuel,
+    sum(main_base) as main_base,
+    sum(main_material) as main_material,
+    sum(main_total) as main_total,
+    sum(main_total_other) as main_total_other,
+    sum(disperse_fertilising) as disperse_fertilising,
+    sum(disperse_forage) as disperse_forage,
+    sum(disperse_fuel) as disperse_fuel,
+    sum(disperse_base) as disperse_base,
+    sum(disperse_material) as disperse_material,
+    sum(disperse_total) as disperse_total,
+    sum(pro_still_field) as pro_still_field,
+    sum(pro_straw_utilize) as pro_straw_utilize,
+    sum(collect_resource) as collect_resource,
+    sum(theory_resource) as theory_resource,
+    sum(export_yield_total) as yield_all_export,
+    <!--2019.04.16修改，综合利用率公式（本县秸秆利用量-收购外县的秸秆总量）+调出秸秆量/可收集量-->
+    case sum(collect_resource)) when 0 then 0
+    else ROUND((sum(pro_straw_utilize-main_total_other+export_yield_total)*100/sum(collect_resource)), 10) end as comprehensive
+    FROM
+      straw_utilize_sum a,collect_flow c
+    WHERE
+     c.area_id = a.area_id and c.year=a.year and a.area_id in (#{childrenIds})
+    and a.year = #{year}
+    <if test="status!=null and status!=''">
+      and c.status in(${status})
+    </if>
+    group by straw_type
+  </select>
+
+  <select id="selectStrawUtilizeExamineSum" resultType="com.sofn.ducss.vo.StrawUtilizeSumResVo">
+		SELECT
+		#{year} as year,
+		straw_type as straw_type,
+		sum(main_fertilising) as main_fertilising,
+		sum(main_forage) as main_forage,
+		sum(main_fuel) as main_fuel,
+		sum(main_base) as main_base,
+		sum(main_material) as main_material,
+		sum(main_total) as main_total,
+		sum(main_total_other) as main_total_other,
+		sum(disperse_fertilising) as disperse_fertilising,
+		sum(disperse_forage) as disperse_forage,
+		sum(disperse_fuel) as disperse_fuel,
+		sum(disperse_base) as disperse_base,
+		sum(disperse_material) as disperse_material,
+		sum(disperse_total) as disperse_total,
+		sum(pro_still_field) as pro_still_field,
+		sum(pro_straw_utilize) as pro_straw_utilize,
+		sum(collect_resource) as collect_resource,
+		sum(theory_resource) as theory_resource,
+		sum(disperse_fertilising + main_fertilising) as fertilising,
+		sum(disperse_forage + main_forage) as forage,
+		sum(disperse_fuel + main_fuel) as fuel,
+		sum(disperse_base + main_base) as base,
+		sum(disperse_material + main_material) material,
+
+		case sum(collect_resource) when 0 then 0
+		else ROUND((sum(pro_straw_utilize)+sum(export_yield_total))/sum(collect_resource)),10) end  as comprehensiveIndex,
+
+		case sum(collect_resource) when 0 then 0
+		else ROUND((sum(main_total)/sum(collect_resource)), 10) end  as industrializationIndex,
+
+        case sum(collect_resource) when 0 then 0
+        else ROUND(((sum(pro_straw_utilize)-sum(main_total_other)+sum(export_yield_total))*100/sum(collect_resource), 10) ebd as comprehensive
+			FROM
+		straw_utilize_sum a,collect_flow c
+		WHERE
+		a.area_id = c.area_id and a.year = c.year and c.status in(${status})
+		and a.area_id in (#{childrenIds})
+		and a.year = #{year}
+		group by straw_type
+	</select>
+    <select id="selectStrawUtilizeExamineThisSum" resultType="com.sofn.ducss.vo.StrawUtilizeSumResVo">
+        SELECT
+        #{areaId} as area_id,
+        #{year} as year,
+        straw_type as straw_type,
+        sum(main_fertilising) as main_fertilising,
+        sum(main_forage) as main_forage,
+        sum(main_fuel) as main_fuel,
+        sum(main_base) as main_base,
+        sum(main_material) as main_material,
+        sum(main_total) as main_total,
+        sum(main_total_other) as main_total_other,
+        sum(disperse_fertilising) as disperse_fertilising,
+        sum(disperse_forage) as disperse_forage,
+        sum(disperse_fuel) as disperse_fuel,
+        sum(disperse_base) as disperse_base,
+        sum(disperse_material) as disperse_material,
+        sum(disperse_total) as disperse_total,
+        sum(pro_still_field) as pro_still_field,
+        sum(pro_straw_utilize) as pro_straw_utilize,
+        sum(collect_resource) as collect_resource,
+        sum(theory_resource) as theory_resource,
+
+        case sum(collect_resource) when 0 then 0
+        else
+        ROUND((sum(pro_straw_utilize)/sum(collect_resource)),10) end as comprehensiveIndex,
+
+        case sum(collect_resource) when 0 then 0
+        else
+        ROUND((sum(main_total)/sum(collect_resource)),10) end as industrializationIndex,
+
+        case sum(collect_resource) when 0 then 0
+        else
+        ROUND(((sum(pro_straw_utilize)-sum(main_total_other))*100/sum(collect_resource)),10) as comprehensive
+
+
+        FROM
+        straw_utilize_sum a,collect_flow b
+        WHERE
+        a.area_id = b.area_id and a.year = b.year
+        and a.area_id=#{areaId}
+        and a.year = #{year}
+        <if test="status!=null and status!=''">
+            and b.status in(${status})
+        </if>
+        group by straw_type
+    </select>
+    <select id="selectStrawUtilizeByAreaIds" resultType="com.sofn.ducss.model.StrawUtilizeSum">
+        select
+        id, year, province_id, city_id, area_id, straw_type, main_fertilising, main_forage,
+        main_fuel, main_base, main_material, main_total, main_total_other, disperse_fertilising,
+        disperse_forage, disperse_fuel, disperse_base, disperse_material, disperse_total,
+        pro_still_field, pro_straw_utilize, collect_resource, theory_resource, export_yield_total
+        from straw_utilize_sum
+        where area_id in
+         <foreach collection="childrenIds" item="areaId" open="(" close=")" separator=",">
+             #{areaId}
+         </foreach>
+
+         and year = #{year}
+    </select>
+
+    <insert id="insertBatchStrawUtilizeSum" parameterType="java.util.List">
+        insert into straw_utilize_sum (id,year, area_id,
+        straw_type,
+        main_fertilising, main_forage,
+        main_fuel, main_base, main_material,main_total,main_total_other,
+        disperse_fertilising, disperse_forage,
+        disperse_fuel,
+        disperse_base,
+        disperse_material,
+        disperse_total,
+        pro_still_field,
+        pro_straw_utilize,collect_resource,theory_resource,
+        export_yield_total,grain_yield,collect_resource_v2,straw_utilization_v2
+        ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id,jdbcType=VARCHAR}, #{item.year,jdbcType=VARCHAR}, #{item.areaId,jdbcType=VARCHAR},
+            #{item.strawType,jdbcType=VARCHAR},
+            #{item.mainFertilising,jdbcType=DECIMAL},
+            #{item.mainForage,jdbcType=DECIMAL},
+            #{item.mainFuel,jdbcType=DECIMAL},
+            #{item.mainBase,jdbcType=DECIMAL},
+            #{item.mainMaterial,jdbcType=DECIMAL},
+            #{item.mainTotal,jdbcType=DECIMAL},
+            #{item.mainTotalOther,jdbcType=DECIMAL},
+            #{item.disperseFertilising,jdbcType=DECIMAL},
+            #{item.disperseForage,jdbcType=DECIMAL},
+            #{item.disperseFuel,jdbcType=DECIMAL},
+            #{item.disperseBase,jdbcType=DECIMAL},
+            #{item.disperseMaterial,jdbcType=DECIMAL},
+            #{item.disperseTotal,jdbcType=DECIMAL},
+            #{item.proStillField,jdbcType=DECIMAL},
+            #{item.proStrawUtilize,jdbcType=DECIMAL},
+            #{item.collectResource,jdbcType=DECIMAL},
+            #{item.theoryResource,jdbcType=DECIMAL},
+            #{item.yieldAllExport,jdbcType=DECIMAL},
+            #{item.grainYield,jdbcType=DECIMAL},
+            #{item.collectResourceV2,jdbcType=DECIMAL},
+            #{item.strawUtilizationV2,jdbcType=DECIMAL}
+            )
+        </foreach>
+    </insert>
+
+    <select id="sumStrawUtilizeSum" resultType="com.sofn.ducss.model.StrawUtilizeSum">
+        SELECT
+        #{parentAreaId} as area_id,
+        #{year} as year,
+        straw_type as straw_type,
+        sum(main_fertilising) as main_fertilising,
+        sum(main_forage) as main_forage,
+        sum(main_fuel) as main_fuel,
+        sum(main_base) as main_base,
+        sum(main_material) as main_material,
+        sum(main_total) as main_total,
+        sum(main_total_other) as main_total_other,
+        sum(disperse_fertilising) as disperse_fertilising,
+        sum(disperse_forage) as disperse_forage,
+        sum(disperse_fuel) as disperse_fuel,
+        sum(disperse_base) as disperse_base,
+        sum(disperse_material) as disperse_material,
+        sum(disperse_total) as disperse_total,
+        sum(pro_still_field) as pro_still_field,
+        sum(pro_straw_utilize) as pro_straw_utilize,
+        sum(collect_resource) as collect_resource,
+        sum(theory_resource) as theory_resource,
+        sum(export_yield_total) as yield_all_export,
+        sum(grain_yield) as grain_yield,
+        <!--2019.04.16修改，综合利用率公式（本县秸秆利用量-收购外县的秸秆总量）+调出秸秆量/可收集量-->
+        case sum( case when pro_straw_utilize > 0 and collect_resource > 0 then collect_resource else 0 end ) when 0 then 0
+        else
+        ROUND(  ( sum( case when pro_straw_utilize > 0 and collect_resource > 0 then pro_straw_utilize else 0 end ) * 100 / sum( case when pro_straw_utilize > 0 and collect_resource > 0 then collect_resource else 0 end ) ), 10 ) end AS comprehensive,
+
+        case sum(collect_resource) when 0 then 0
+        else
+        ROUND(((sum(main_total+disperse_total+pro_still_field))/sum(collect_resource)),10) end as comprehensiveIndex,
+        case sum(collect_resource) when 0 then 0
+        else
+        ROUND((sum(main_total)/sum(collect_resource)),10) end as industrializationIndex,
+
+        sum( case when a.straw_utilization_v2 > 0 and a.collect_resource_v2 > 0 then a.straw_utilization_v2 else 0 end ) as "strawUtilizationV2",
+        sum( case when a.straw_utilization_v2 > 0 and a.collect_resource_v2 > 0 then a.collect_resource_v2 else 0 end ) as "collectResourceV2"
+
+        FROM
+        straw_utilize_sum a,collect_flow c
+        WHERE
+        a.area_id in
+
+         <foreach collection="ids" item="id" open="(" close=")" separator=",">
+             #{id}
+         </foreach>
+         and c.area_id = a.area_id and c.year=a.year
+        and a.year = #{year}
+        <if test="status!=null and status.size>0">
+            and c.status in
+            <foreach collection="status" item="stat" open="(" close=")" separator=",">
+                #{stat}
+            </foreach>
+        </if>
+        group by straw_type
+    </select>
+
+    <select id="selectThanCountrySum" resultType="com.sofn.ducss.model.StrawUtilizeSum" >
+        SELECT
+        '合计' as straw_name,
+        #{parentAreaId} as area_id,
+        #{year} as year,
+        sum(main_fertilising) as main_fertilising,
+        sum(main_forage) as main_forage,
+        sum(main_fuel) as main_fuel,
+        sum(main_base) as main_base,
+        sum(main_material) as main_material,
+        sum(main_total) as main_total,
+        sum(main_total_other) as main_total_other,
+        sum(disperse_fertilising) as disperse_fertilising,
+        sum(disperse_forage) as disperse_forage,
+        sum(disperse_fuel) as disperse_fuel,
+        sum(disperse_base) as disperse_base,
+        sum(disperse_material) as disperse_material,
+        sum(disperse_total) as disperse_total,
+        sum(return_resource) as pro_still_field,
+        sum(pro_straw_utilize) as pro_straw_utilize,
+        sum(collect_resource) as collect_resource,
+        sum(theory_resource) as theory_resource,
+        sum(return_resource) as return_resource,
+        sum(fertilising) as fertilising,
+        sum(forage) as forage,
+        sum(fuel) as fuel,
+        sum(base) as base,
+        sum(material) material,
+        sum(c.export_num) as yield_all_export,
+        sum( case when c.straw_utilization_v2 > 0 and c.collect_resource_v2 > 0 then c.straw_utilization_v2 else 0 end ) as "strawUtilizationV2",
+        sum( case when c.straw_utilization_v2 > 0 and c.collect_resource_v2 > 0 then c.collect_resource_v2 else 0 end ) as "collectResourceV2",
+
+        case sum( case when pro_straw_utilize > 0 and collect_resource > 0 then collect_resource else 0 end )  when 0 then 0
+        else
+        ROUND(  ( sum( case when pro_straw_utilize > 0 and collect_resource > 0 then pro_straw_utilize else 0 end ) * 100 / sum( case when pro_straw_utilize > 0 and collect_resource > 0 then collect_resource else 0 end ) ), 10 ) end AS comprehensive,
+
+        case sum(collect_resource) when 0 then 0
+        else
+        ROUND((sum(main_total)/sum(collect_resource)),10) end as industrializationIndex,
+
+        case sum( collect_resource ) when 0 then 0
+        else
+        ROUND(  ( ( sum( main_total + disperse_total + return_resource ) )  / sum( collect_resource ) ), 10 ) end AS comprehensiveIndex,
+        10000 as order_no
+        FROM
+        straw_utilize_sum_total a,collect_flow c
+        WHERE
+        a.area_id in
+         <foreach collection="ids" item="id" open="(" close=")" separator=",">
+             #{id}
+         </foreach>
+         and a.area_id = c.area_id and a.year = c.year
+        <if test="status!=null and status.size>0">
+            and c.status in
+            <foreach collection="status" item="stat" open="(" close=")" separator=",">
+                #{stat}
+            </foreach>
+        </if>
+        and a.year = #{year}
+    </select>
+
+    <insert id="insertStrawUtilizeSumTotal" parameterType="com.sofn.ducss.model.StrawUtilizeSum" useGeneratedKeys="true" keyProperty="id">
+        insert into straw_utilize_sum_total (id,year, area_id,
+        main_fertilising, main_forage, main_fuel,
+        main_base, main_material, main_total,
+        main_total_other, disperse_fertilising, disperse_forage,
+        disperse_fuel, disperse_base, disperse_material,
+        disperse_total,pro_straw_utilize,return_ratio, comprehensive,
+        comprehensive_index, industrialization_index,
+        collect_resource, yield_all_num, theory_resource,
+        fertilising, forage, fuel,
+        base, material, grass_valley_ratio,
+        return_resource, collection_ratio,export_yield_total)
+        values (#{id,jdbcType=VARCHAR},#{year,jdbcType=VARCHAR}, #{areaId,jdbcType=INTEGER},
+        #{mainFertilising,jdbcType=BIGINT}, #{mainForage,jdbcType=BIGINT}, #{mainFuel,jdbcType=BIGINT},
+        #{mainBase,jdbcType=BIGINT}, #{mainMaterial,jdbcType=BIGINT}, #{mainTotal,jdbcType=BIGINT},
+        #{mainTotalOther,jdbcType=BIGINT}, #{disperseFertilising,jdbcType=BIGINT}, #{disperseForage,jdbcType=BIGINT},
+        #{disperseFuel,jdbcType=BIGINT}, #{disperseBase,jdbcType=BIGINT}, #{disperseMaterial,jdbcType=BIGINT},
+        #{disperseTotal,jdbcType=BIGINT}, #{proStrawUtilize,jdbcType=BIGINT},#{returnRatio,jdbcType=BIGINT}, #{comprehensive,jdbcType=BIGINT},
+        #{comprehensiveIndex,jdbcType=BIGINT}, #{industrializationIndex,jdbcType=BIGINT},
+        #{collectResource,jdbcType=BIGINT}, #{yieldAllNum,jdbcType=BIGINT}, #{theoryResource,jdbcType=BIGINT},
+        #{fertilising,jdbcType=BIGINT}, #{forage,jdbcType=BIGINT}, #{fuel,jdbcType=BIGINT},
+        #{base,jdbcType=BIGINT}, #{material,jdbcType=BIGINT}, #{grassValleyRatio,jdbcType=BIGINT},
+        #{returnResource,jdbcType=BIGINT}, #{collectionRatio,jdbcType=BIGINT},#{yieldAllExport,jdbcType=DECIMAL})
+    </insert>
+
+    <select id="getStrawResourceByStrawTypeGroupByAreaId" resultType="com.sofn.ducss.vo.DateShow.ColumnPieChartVo">
+        SELECT
+        su.area_id AS name ,
+        sum( ${dataType} ) AS value
+        FROM
+        straw_utilize_sum su LEFT JOIN
+        collect_flow cf on cf.area_id = su.area_id AND cf.year = su.year
+        <where>
+            <if test="areaCodes != null and areaCodes.size() > 0">
+                su.area_id in
+                <foreach collection="areaCodes" item="item" open="(" separator="," close=")">
+                      #{item}
+                </foreach>
+            </if>
+            <if test="year != null and year != ''">
+                and su.year= #{year}
+            </if>
+            <if test="strawType != null and strawType != ''">
+                and su.straw_type= #{strawType}
+            </if>
+            <if test="status != null and status.size() > 0">
+                and cf.status in
+                <foreach collection="status" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        group by su.area_id
+    </select>
+</mapper>

@@ -1,0 +1,87 @@
+<link rel="stylesheet" href="assets/css/ales/ales.css" />
+<div class="gui-breadcrumbs">
+    <a ui-sref="index.content.ales/taskManage/sampleTask/sampleTaskList">执法系统</a>&gt;
+    <a ui-sref="index.content.ales/taskManage/sampleTask/sampleTaskList">监督抽查管理</a>&gt;
+    <span>抽样任务</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group">
+        <div class="">
+            <div class="condition-item">
+                <span>计划名称</span>
+                <input class="gui-input" type="text" ng-model="planName" id="planNameId" name="planName"  placeholder="请输入查询条件" maxlength="30" />
+                <span>任务名称</span>
+                <input class="gui-input" type="text" ng-model="taskName" id="taskNameId"  name="taskName"  placeholder="请输入案件名称" maxlength="80" />
+                <span>状态</span>
+                <div class="gui-select">
+                    <select ng-init="taskSource=''" ng-model="taskSource" name="taskSource">
+                        <option value="" ng-selected="true">全部</option>
+                        <option value="0">未发布</option>
+                        <option value="1">已发布</option>
+                        <option value="2">执行中</option>
+                        <option value="3">已结束</option>
+                    </select>
+                </div>
+            <span>抽样人员</span>
+            <input class="gui-input" type="text" ng-model="sampleUser" id="sampleUserId" name="sampleUser" placeholder="请输入查询条件" maxlength="30" />
+            </div>
+            <div class="condition-item">
+                <button class="gui-btn" id="ToCheck" style="">查询</button>
+                <button class="gui-btn" ng-click="reset()" style="">重置</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 图表面板 -->
+    <div class="gui-table-panel clearfix">
+
+    <!-- 图表区域 -->
+    <div class="gui-content-slide">
+                <table id="grid" class="gui-table table-nowrap mt15" style="width: 100%">
+                </table>
+</div>
+<!--模态框的添加-&#45;&#45;查看-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog removeBor">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel" style="text-align: center">查看</h4>
+            </div>
+            <div class="modal-body clearfix gov-h " style="padding-left: 0px;padding-right: 0px;background-color: white;">
+                <div class="table-responsive">
+
+                    <table class="ApplyTable table-bordered" >
+                        <tr>
+                            <td style="text-align: right">
+                               计划抽样时间 :
+                            </td>
+                            <td>
+                                <span ng-bind="beginTime"></span>至
+                                <span ng-bind="endTime"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                抽样人员 :
+                            </td>
+                            <td title="{{reCord.sampleUser}}" style="max-width: 320px;">
+                                <span ng-bind="reCord.sampleUser" style="vertical-align: text-top; display: inline-block; word-break: break-all; white-space: normal;"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">抽样对象及数量 :</td>
+                            <td title="{{reCord.sampleNumber}}">
+                               <span ng-bind="reCord.sampleNumber" style="word-break: break-all;"></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal" onclick="qinchuhuanchun()">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

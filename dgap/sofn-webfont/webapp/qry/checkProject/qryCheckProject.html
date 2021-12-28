@@ -1,0 +1,306 @@
+<link rel="stylesheet" href="assets/css/asms/check/cheRoutine.css"/>
+<link rel="stylesheet" href="assets/css/ales/etl/etlDailyEnforceLawlist.css"/>
+<div class="gui-breadcrumbs">
+    <a href="">信息查询</a>&gt;
+    <a href="">检测信息查询</a>&gt;
+    <span>检测项目查询</span>
+</div>
+<!--<div class="gui-TabCut">-->
+<!--<ul class="clearfix gov-h">-->
+<!--<li class="fl gp-r gui-TabCheck">例行监测</li>-->
+<!--<li class="fl gp-r" ui-sref="index.content.qry/monitorTask/specialMonitor">专项监测</li>-->
+<!--<li class="fl gp-r" ui-sref="index.content.qry/monitorTask/checkTask">监督抽查</li>-->
+<!--<li class="fl gp-r" ui-sref="index.content.qry/monitorTask/reCheckTask">复检任务</li>-->
+<!--</ul>-->
+<!--<div class="gui-botLine"></div>-->
+<!--</div>-->
+<div class="gui-section">
+    <form class="gui-form-group">
+        <div class="clearfix gov-h">
+            <div class="gui-mediaInline">
+                <span>检测项目</span>
+                <input class="gui-input" style="width: 200px;" type="text" ng-model="checkProject" name="checkProject"
+                       placeholder="请选择项目名称" onclick="checks()"/>
+                       <span>任务年度</span>
+                <input name="year" style="width:120px" onfocus="WdatePicker({skin:'default',dateFmt:'yyyy'})"
+                       class="Wdate gui-input"
+                       placeholder="选择年份"/>
+                    <span>产品名称</span>
+                    <!--<div class="gui-input" STYLE="width: 120px;">-->
+                        <!--&lt;!&ndash;<select name="sampleName">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<option value="">不限</option>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<option ng-repeat="x in sampleName">{{x.NAME}}</option>&ndash;&gt;-->
+
+                        <!--&lt;!&ndash;</select>&ndash;&gt;-->
+
+
+                    <!--</div>-->
+                    <input class="gui-input" style="width: 120px;" type="text" name="sampleName" id="products" ng-model="names" placeholder="请选择产品名称" onclick="checkProduct()"/>
+
+                    <!--<input class="gui-input" style="width: 80px;" type="text" name="productName" placeholder="请输入产品名称"/>-->
+            </div>
+            <div class="gui-mediaInline mt15">
+                
+                <!--<span>任务状态</span>-->
+                <!--<div class="gui-select" STYLE="width: 80px;">-->
+                <!--<select name="rmState">-->
+                <!--<option value="">全部</option>-->
+                <!--<option value="0">未发布</option>-->
+                <!--<option value="1">已发布</option>-->
+                <!--<option value="2">已废止</option>-->
+                <!--</select>-->
+                <!--</div>-->
+                <span>任务时间</span>
+                <input id="datebegin" name="datebegin" style="cursor: pointer;width: 120px;" placeholder="开始时间"
+                       class="Wdate gui-input" type="text"
+                       onFocus="var endDate=$dp.$('dateend');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateend\')}'})"/>--
+                <input id="dateend" name="dateend" class="Wdate gui-input" style="cursor: pointer;width: 120px;"
+                       type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'datebegin\')}'})"/>
+                <span>样品编码</span>
+                <input class="gui-input" maxlength="30" type="text" style="width: 150px;" placeholder="请输入样品编码" name="sampleCode"/>
+                <span>产品追溯码</span>
+                <input class="gui-input" maxlength="30" type="text" style="width: 150px;" placeholder="请输入产品追溯码" name="productTraceabilityCode"/>
+            </div>
+            <!--<span>任务名称</span>-->
+            <!--<input class="gui-input" style="width: 80px;" type="text" name="rmName" placeholder="请输入任务名称"/>-->
+
+            <!--<button id="ToCheck" data-toggle="tooltip" class="gui-btn" data-placement="right" title="根据输入条件检索列表">-->
+            <!--查询-->
+            <!--</button>-->
+            <!--<button data-toggle="tooltip" class="gui-btn" data-placement="right" type="reset">重置</button>-->
+        </div>
+        <br>
+        <span>检测结果</span>
+        <div class="gui-select" STYLE="width: 120px;">
+            <select id="result" name="result">
+                <option value="">所有</option>
+                <option value="1">合格</option>
+                <option value="0">不合格</option>
+                <option value="-1">暂未检测</option>
+            </select>
+        </div>
+            <span style="margin-left: 30px;">监测行业</span>
+            <div class="gui-select" STYLE="width: 120px;">
+                <select name="hangye">
+                    <option value="">选择行业</option>
+                    <option ng-repeat="x in hangye">{{x.INDUSTRY}}</option>
+                </select>
+            </div><br>
+        <div class="gui-mediaInline mt15">
+            
+            
+
+
+            <span>区域</span>
+            <div class="gui-select">
+                <select id="sheng" name="ObjShen" style="width: 122px;height: 27px;">
+                    <option value="">省</option>
+                </select>
+            </div>
+            <div class="gui-select">
+                <select id="shi" name="ObjShi" style="width: 122px;height: 27px;">
+                    <option value="">市</option>
+                </select>
+            </div>
+            <div class="gui-select">
+                <select id="xian" name="ObjXian" style="width: 122px;height: 27px;">
+                    <option value="">区/县</option>
+                </select>
+            </div>
+
+
+
+
+        <!--<div class="gui-mediaInline mt15">-->
+            <!--<span>关键字&nbsp;&nbsp;&nbsp;&nbsp;</span>-->
+
+            <!--<input class="gui-input" style="width: 120px;" type="text" name="rmName" placeholder="请输入关键字"/>-->
+            <!--<span>常用关键字：藏区</span>-->
+
+        <!--</div>-->
+        <div class="gui-mediaInline mt15">
+            <button id="ToCheck" data-toggle="tooltip" class="gui-btn" ng-disabled="!!btnDisabled" data-placement="right" title="根据输入条件检索列表" ng-click="ToCheck($event)">
+                查询
+            </button>
+            <button class="gui-btn" ng-click="reloadArea($event)">重置</button>
+            
+        </div>
+
+
+
+
+
+
+</div>
+
+
+</form>
+<div class="gui-table-panel clearfix">
+    <p class="table-total">符合条件的数据总计: {{tableTotal}} 项</p>
+    <button class="gui-btn" ng-click="exportData()">导出</button>
+</div>
+<table id="grid" class="gui-table mt15"
+       style="width: 100%">
+</table>
+</div>
+<!--检测项目-->
+<div class="modal fade" id="check_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-style" style="width: 800px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">关闭</span></button>
+                <h4 class="modal-title" id="myModalLabels">检测项目</h4>
+            </div>
+
+            <div class="modal-body">
+                <input class="gui-input" maxlength="30" style="width: 200px;" type="text"  name="checkname" placeholder="请输入检测项目名称"/>
+                <button id="seach" data-toggle="tooltip" class="gui-btn" data-placement="right" title="根据输入条件检索列表">
+                    查询
+                </button>
+                <div>
+                    <table id="checkList" class="gui-table">
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="sure1()" data-toggle="tooltip" class="gui-btn" data-placement="right" title="">
+                    确定
+                </button>
+                <span type="button" class="gui-btn" data-dismiss="modal" >返回</span>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--产品模态框-->
+<div class="modal fade" id="product_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-style" style="width: 800px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">关闭</span></button>
+                <h4 class="modal-title" id="myModalLabel1">产品名称</h4>
+            </div>
+
+            <div class="modal-body">
+                <input class="gui-input" maxlength="30" style="width: 200px;" type="text"  name="name1" placeholder="请输入产品名称"/>
+                <button id="chaxun" data-toggle="tooltip" class="gui-btn" data-placement="right" title="根据输入条件检索列表">
+                    查询
+                </button>
+                <div>
+                    <table id="productList" class="gui-table">
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="sure()" data-toggle="tooltip" class="gui-btn" data-placement="right" title="">
+                    确定
+                </button>
+                <span type="button" class="gui-btn" data-dismiss="modal" >返回</span>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="product_info2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-style" style="width: 800px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">关闭</span></button>
+                <h4 class="modal-title" id="myModalLabel">检测项目详情</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-header">
+                产品名称: <input  readonly="readonly" id="sampleName"> 样品编码：<input  id="sampleCode" readonly="readonly"> 产品编码：<input  id="productTraceabilityCode" readonly="readonly">
+                </div>
+                <div>
+                    <table id="productList1" class="gui-table">
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!--<span type="button" class="gui-btn"   onclick="fanhui()">返回</span>-->
+                <span type="button" class="gui-btn" data-dismiss="modal" >返回</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--infoModel-->
+<div class="modal fade" id="TaskInfoModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">
+                    <span>查看</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <form class="" role="form">
+                    <div class="row">
+                        <div class="">
+                            <div class="">
+                                <label class="col-lg-4 col-md-4 col-sm-4" style="text-align: right;padding-right: 10px">任务名称：</label>
+                                <span class="col-lg-8 col-md-8 col-sm-8" ng-bind="routineMonitor.rmName"></span>
+                            </div>
+                            <div class="">
+                                <label class="col-lg-4 col-md-4 col-sm-4 "
+                                       style="text-align: right;padding-right: 10px">监测类型：</label>
+                                <span class="col-lg-8 col-md-8 col-sm-8 " ng-bind="routineMonitor.rmType"></span>
+                            </div>
+                            <div class="">
+                                <label class="col-lg-4 col-md-4 col-sm-4" style="text-align: right;padding-right: 10px">年度：</label>
+                                <span class="col-lg-8 col-md-8 col-sm-8" ng-bind="routineMonitor.rmYear"></span>
+                            </div>
+                            <div class="">
+                                <label class="col-lg-4 col-md-4 col-sm-4" style="text-align: right;padding-right: 10px">批次：</label>
+                                <span class="col-lg-8 col-md-8 col-sm-8" ng-bind="routineMonitor.rmBatch"></span>
+                            </div>
+                            <div class="">
+                                <label class="col-lg-4 col-md-4 col-sm-4" style="text-align: right;padding-right: 10px">任务时间：</label>
+                                <div class="col-lg-8 col-md-8 col-sm-8">
+                                    <span ng-bind="routineMonitor.rmDateBegin"></span>&nbsp;&nbsp;至&nbsp;&nbsp;
+                                    <span ng-bind="routineMonitor.rmDateEnd"></span>
+                                </div>
+
+                            </div>
+                            <div class="">
+                                <label class="col-lg-4 col-md-4 col-sm-4" style="text-align: right;padding-right: 10px">发布单位：</label>
+                                <span class="col-lg-8 col-md-8 col-sm-8" ng-bind="routineMonitor.rmReleaseUnit"></span>
+                            </div>
+                            <div class="">
+                                <label class="col-lg-4 col-md-4 col-sm-4" style="text-align: right;padding-right: 10px">牵头单位：</label>
+                                <span class="col-lg-8 col-md-8 col-sm-8" ng-bind="routineMonitor.qtName"></span>
+                            </div>
+                            <div class="" id="File">
+                            </div>
+                            <div class="">
+                                <label class="col-lg-4 col-md-4 col-sm-4" style="text-align: right;padding-right: 10px">文件号：</label>
+                                <span class="col-lg-8 col-md-8 col-sm-8" ng-bind="routineMonitor.rmFileNum"></span>
+                            </div>
+                            <div class="">
+                                <label class="col-lg-4 col-md-4 col-sm-4" style="text-align: right;padding-right: 10px">备注：</label><br/>
+                                <span class="col-lg-8 col-md-8 col-sm-8" ng-bind="routineMonitor.rmRemark"></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" data-dismiss="modal">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
+

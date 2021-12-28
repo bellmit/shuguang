@@ -1,0 +1,274 @@
+input[type=checkbox] {
+  display: inline-block;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border: 1px solid #d9d9d9;
+  background-color: #FFF;
+  border-radius: 3px;
+  outline: none;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
+}
+input[type=checkbox]:after {
+  -webkit-transform: rotate(45deg) scale(0);
+  transform: rotate(45deg) scale(0);
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  display: table;
+  width: 5px;
+  height: 8px;
+  border: 2px solid #fff;
+  border-top: 0;
+  border-left: 0;
+  content: ' ';
+  -webkit-transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6);
+  transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6);
+}
+input[type=checkbox]:focus {
+  outline: none;
+}
+input[type=checkbox]:checked {
+  outline: none;
+  background-color: #20944d;
+  border-color: #1b8243;
+}
+input[type=checkbox]:checked:after {
+  -webkit-transform: rotate(45deg) scale(1);
+  transform: rotate(45deg) scale(1);
+  -webkit-transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
+  transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
+}
+input[type=checkbox]:disabled {
+  background-color: #e1e1e1;
+  cursor: not-allowed;
+  border-color: #d3d3d3;
+}
+::-webkit-input-placeholder {
+  /* WebKit browsers */
+  color: #aaa;
+}
+:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #aaa;
+}
+::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #aaa;
+}
+:-ms-input-placeholder {
+  /* Internet Explorer 10+ */
+  color: #aaa;
+}
+input[type=radio] {
+  position: relative;
+  display: inline-block;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 14px;
+  border-color: #d9d9d9;
+  background-color: #fff;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 0;
+  outline: none;
+}
+input[type=radio]:after {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  left: 3px;
+  top: 3px;
+  border-radius: 4px;
+  display: table;
+  border-top: 0;
+  border-left: 0;
+  content: ' ';
+  background-color: #20944d;
+  opacity: 0;
+  -webkit-transform: scale(0);
+  transform: scale(0);
+  -webkit-transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+  transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+}
+input[type=radio]:focus {
+  outline: none;
+}
+input[type=radio]:checked {
+  border-color: #20944d;
+}
+input[type=radio]:checked:after {
+  -webkit-transform: scale(1);
+  transform: scale(1);
+  opacity: 1;
+  -webkit-transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+  transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+}
+input[type=radio]:disabled {
+  border-color: #d9d9d9 !important;
+  background-color: #f3f3f3;
+  cursor: not-allowed;
+}
+input[type=radio]:disabled:after {
+  background-color: #cccccc;
+}
+.gui-input,
+.gui-textarea {
+  display: inline-block;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font-size: 14px;
+  line-height: 25px;
+  color: #333;
+  border: 1px solid #e0e0e0;
+  background-color: #FFF;
+  text-align: left;
+  outline: none;
+  padding: 2px 8px;
+  border-radius: 4px;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  vertical-align: middle;
+  margin-right: 10px;
+  min-width: 100px;
+}
+.gui-input:focus,
+.gui-textarea:focus {
+  border-color: #66afe9;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+.gui-input.ng-dirty.ng-valid,
+.gui-textarea.ng-dirty.ng-valid {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  border-color: #47b995;
+}
+.gui-input.ng-dirty.ng-invalid,
+.gui-textarea.ng-dirty.ng-invalid {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  border-color: #FA787E;
+}
+.gui-input:-moz-read-only,
+.gui-textarea:-moz-read-only {
+  background-color: #f7f7f7;
+}
+.gui-input:read-only,
+.gui-textarea:read-only {
+  background-color: #f7f7f7;
+}
+.gui-input:disabled,
+.gui-textarea:disabled {
+  background-color: #eee;
+  color: #999;
+  border-color: #ccc;
+  cursor: not-allowed;
+}
+.gui-textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+.gui-select {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: middle;
+  margin-right: 10px;
+  height: 30px;
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  color: #333;
+  -webkit-transition: border-color 0.2s linear;
+  transition: border-color 0.2s linear;
+  border-radius: 4px;
+}
+.gui-select:before,
+.gui-select:after {
+  content: '';
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  border: 6px solid #aaa;
+  margin-top: -3px;
+  border-color: #aaa transparent transparent;
+  width: 0;
+  height: 0;
+  font-size: 0;
+  pointer-events: none;
+}
+.gui-select:after {
+  margin-top: -4px;
+  border-color: #FFF transparent transparent;
+}
+.gui-select select {
+  background: red;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 120%;
+  max-width: 120%;
+  min-width: 120%;
+  height: 30px;
+  margin: 0;
+  border: 0;
+  padding: 0 26px 0 16px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 30px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  _zoom: 1;
+  vertical-align: middle;
+  background: none;
+  color: #333;
+  outline: none;
+  cursor: pointer;
+}
+.gui-select.disabled,
+.gui-select:disabled {
+  background-color: #eee;
+  color: #999;
+  border-color: #ccc;
+  cursor: not-allowed;
+}
+.gui-select.disabled select,
+.gui-select:disabled select {
+  color: #999;
+}
+.gui-select.disabled:after,
+.gui-select:disabled:after {
+  border-color: #eee transparent transparent;
+}
+.gui-form-group {
+  margin: 15px 0;
+  overflow: hidden;
+  background-color: #f9fffb;
+  border: 1px solid #e4e4e4;
+  padding: 15px;
+}
+.gui-form-group label {
+  font-weight: 400;
+  color: #666;
+}
+.gui-tree-content {
+  margin-left: 200px;
+}
+.form-control-feedback {
+  display: none !important;
+}

@@ -1,0 +1,18 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    113.94728904805373,
+                    22.9089623367874
+                ]
+            },
+            "properties": {
+                "name": "东莞市"
+            },
+            "type": "Feature"
+        }
+    ]
+}

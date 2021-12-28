@@ -1,0 +1,78 @@
+.gui-step {
+    overflow: hidden;
+    width: 800px;
+    margin: 0 auto;
+    padding: 10px 0;
+    li {
+        float: left;
+        width: 25%;
+        text-align: center;
+        position: relative;
+        position: relative;
+        &:before,
+        &:after {
+            position: absolute;
+            content: '';
+            display: block;
+            height: 2px;
+            left: 0;
+            width: 40%;
+            top: 15px;
+            background-color: #ff8607;
+        }
+        &:after {
+            left: auto;
+            right: 0;
+            width: 40%;
+        }
+        &:first-child {
+            &:before {
+                display: none;
+            }
+        }
+        &:last-child {
+            &:after {
+                display: none;
+            }
+        }
+        &.active {
+            &:after {
+                background-color: #bbb;
+            }
+            & ~ li {
+                &:before,
+                &:after {
+                    background-color: #bbb;
+                }
+                strong {
+                    background-color: #bbb;
+                }
+                span {
+                    color: #bbb;
+                }
+            }
+        }
+        strong {
+            position: relative;
+            z-index: 1;
+            border-radius: 100%;
+            background-color: #ff8607;
+            color: #FFF;
+            width: 30px;
+            line-height: 30px;
+            // border: 8px solid #eee;
+            box-sizing: content-box;
+            vertical-align: middle;
+            display: inline-block;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        span {
+            font-size: 16px;
+            font-weight: 700;
+            display: block;
+            color: #ff8607;
+            text-align: center;
+        }
+    }
+}

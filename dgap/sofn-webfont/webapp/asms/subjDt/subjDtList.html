@@ -1,0 +1,321 @@
+<link rel="stylesheet" href="assets/css/asms/subjSv/subjSvList.css"/>
+<div class="gui-mainBc">
+    <div class="gui-breadcrumbs">
+        <a href="javascript:void(0)">监管系统</a>&gt;
+        <a ui-sref="index.content.asms/subjDt/subjDtList">主体管理</a>&gt;
+        <span>检测机构</span>
+    </div>
+    <div class="gui-TabCut">
+        <ul class="clearfix gov-h" >
+            <li id="" class="fl gp-r gui-TabCheck">检测机构主体信息</li>
+            <li class="fl gp-r subjDtChangeList" style="display: none" ui-sref="index.content.asms/subjDt/subjDtChangeList">注册变更待审核<span class="news" ng-show="changeToAuditCount>0">{{changeToAuditCount}}</span></li>
+            <li class="fl gp-r subjDtCancelList" style="display: none" ui-sref="index.content.asms/subjDt/subjDtCancelList">注册注销待审核<span class="news" ng-show="cancelToAuditCount>0">{{cancelToAuditCount}}</span></li>
+            <li class="fl gp-r subjDtRevokeList" style="display: none" ui-sref="index.content.asms/subjDt/subjDtRevokeList">注册撤销待审核<span class="news" ng-show="revokeToAuditCount>0">{{revokeToAuditCount}}</span></li>
+        </ul>
+        <div class="gui-botLine"></div>
+    </div>
+    <div class="gui-section">
+        <div class="gui-form-group">
+            <form id="queryForm">
+                <span>机构性质</span>
+                <input type="checkbox" value="" checked name="dtNatureLimit" ng-click="limitCheckBox('dtNature','dtNatureLimit')"><span class="checkedDtNatureText">不限</span>
+                <span ng-repeat="a in dtNature">
+                    <input type="checkbox" value="{{a.id}}" name="dtNature" ng-click="limitCheckBox('dtNatureLimit','dtNature')"><span class="checkedDtNatureText" ng-bind="a.dictName"></span>
+                </span>
+                <div class="mt15">
+                    <span>资质证书</span>
+                    <input type="checkbox" value="" checked name="dtQualificationsLimit" ng-click="limitCheckBox('dtQualifications','dtQualificationsLimit')"><span class="checkedDtQualificationsText">不限</span>
+                    <span ng-repeat="a in dtQualifications">
+                        <input type="checkbox" value="{{a.dictName}}" name="dtQualifications" ng-click="limitCheckBox('dtQualificationsLimit','dtQualifications')"><span class="checkedDtQualificationsText" ng-bind="a.dictName"></span>
+                    </span>
+                </div>
+                <div class="mt15">
+                    <span>主体状态</span>
+                    <input type="checkbox" value="" checked name="statuslLimit" ng-click="limitCheckBoxAll('status','statuslLimit')"><span class="checkedIndustryTypeText">不限</span>
+                    <input type="checkbox" value="0" name="status" ng-click="limitCheckBox('statuslLimit','status')"><span class="checkedIndustryTypeText">正常</span>
+                    <input type="checkbox" value="1" name="status" ng-click="limitCheckBox('statuslLimit','status')"><span class="checkedIndustryTypeText">变更申请中</span>
+                    <input type="checkbox" value="2" name="status" ng-click="limitCheckBox('statuslLimit','status')"><span class="checkedIndustryTypeText">注销申请中</span>
+                    <input type="checkbox" value="3" name="status" ng-click="limitCheckBox('statuslLimit','status')"><span class="checkedIndustryTypeText">撤销申请中</span>
+                    <input type="checkbox" value="4" name="status" ng-click="limitCheckBox('statuslLimit','status')"><span class="checkedIndustryTypeText">已注销</span>
+                    <input type="checkbox" value="5" name="status" ng-click="limitCheckBox('statuslLimit','status')"><span class="checkedIndustryTypeText">已撤销</span>
+                </div>
+                <div class="mt15">
+                    <span id="AnyArea">所属区域</span>
+                    <div class="gui-select">
+                        <select id="sheng" >
+                            <option value="">省</option>
+                        </select>
+                    </div>
+                    <div class="gui-select">
+                        <select id="shi">
+                            <option value="">市</option>
+                        </select>
+                    </div>
+                    <div class="gui-select">
+                        <select id="xian">
+                            <option value="">区/县</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="mt15">
+                    <span>注册日期</span>
+                    <input id="dateBegin" name="dateBegin" style="cursor: pointer;width: 120px;"  class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('dateEnd');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateEnd\')}'})"/>
+                    --
+                    <input id="dateEnd" name="dateEnd" class="Wdate gui-input" style="cursor: pointer;width: 120px;margin-left: 10px;" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'dateBegin\')}'})"/>
+                    <span>机构名称</span>
+                    <input class="gui-input" maxlength="30" type="text" placeholder="请输入机构名称" name="dtName"/>
+                    <span>机构负责人</span>
+                    <input class="gui-input" maxlength="30" type="text" placeholder="请输入机构负责人" name="dtLeader"/>
+
+                    <div class="condition-item condition-custom" data-control="text" ng-show="visibledtCode">
+                        <span>机构代码</span>
+                        <input class="gui-input" ng-model="dtCode" maxlength="80" type="text" placeholder="请输入机构代码" name="dtCode" />
+                    </div>
+                    <div class="condition-item condition-custom" data-control="text" ng-show="visibledtLeaderPhone">
+                        <span>负责人电话</span>
+                        <input class="gui-input" ng-model="dtLeaderPhone" maxlength="80" type="text" placeholder="请输入联系人电话" name="dtLeaderPhone" />
+                    </div>
+                    <div class="condition-item condition-custom" data-control="text" ng-show="visibledtContact">
+                        <span>联系人</span>
+                        <input class="gui-input" ng-model="dtContact" maxlength="80" type="text" placeholder="请输入联系人" name="dtContact" />
+                    </div>
+                    <div class="condition-item condition-custom" data-control="text" ng-show="visibledtContactPhone">
+                        <span>联系人电话</span>
+                        <input class="gui-input" ng-model="dtContactPhone" maxlength="80" type="text" placeholder="请输入联系人电话" name="dtContactPhone" />
+                    </div>
+                    <div class="condition-item condition-custom" data-control="text" ng-show="visibledtContactQQ">
+                        <span>联系人QQ</span>
+                        <input class="gui-input" ng-model="dtContactQQ" maxlength="80" type="text" placeholder="请输入联系人QQ" name="dtContactQQ" />
+                    </div>
+                    <div class="condition-item condition-custom" data-control="text" ng-show="visibledtContactEmail">
+                        <span>电子邮箱</span>
+                        <input class="gui-input" ng-model="dtContactEmail" maxlength="80" type="text" placeholder="请输入电子邮箱" name="dtContactEmail" />
+                    </div>
+                    <div class="condition-item condition-custom" data-control="text" ng-show="visibledtPostcode">
+                        <span>邮编</span>
+                        <input class="gui-input" ng-model="dtPostcode" maxlength="80" type="text" placeholder="请输入邮编" name="dtPostcode" />
+                    </div>
+                    <div class="condition-item condition-custom" data-control="text" ng-show="visibledtAddress">
+                        <span>通讯地址</span>
+                        <input class="gui-input" ng-model="dtAddress" maxlength="80" type="text" placeholder="请输入通讯地址" name="dtAddress" />
+                    </div>
+                    <div class="condition-item condition-custom" data-control="text" ng-show="visibledtRelyOnUnit">
+                        <span>依托单位</span>
+                        <input class="gui-input" ng-model="dtRelyOnUnit" maxlength="80" type="text" placeholder="请输入依托单位" name="dtRelyOnUnit" />
+                    </div>
+                    <div class="condition-item condition-custom" data-control="text" ng-show="visibledtLegalMan">
+                        <span>法人</span>
+                        <input class="gui-input" ng-model="dtLegalMan" maxlength="80" type="text" placeholder="请输入法人" name="dtLegalMan" />
+                    </div>
+                    <div class="condition-item condition-custom" data-control="text" ng-show="visibledtTechnicalDirector">
+                        <span>技术负责人</span>
+                        <input class="gui-input" ng-model="dtTechnicalDirector" maxlength="80" type="text" placeholder="请输入技术负责人" name="dtTechnicalDirector" />
+                    </div>
+                    <div class="condition-item condition-custom" data-control="text" ng-show="visibledtQualityDirector">
+                        <span>质量负责人</span>
+                        <input class="gui-input" ng-model="dtQualityDirector" maxlength="80" type="text" placeholder="请输入质量负责人" name="dtQualityDirector" />
+                    </div>
+                    <div class="condition-item condition-custom" data-control="text" ng-show="visibledtParameter">
+                        <span>参数</span>
+                        <input class="gui-input" ng-model="dtParameter" maxlength="80" type="text" placeholder="请输入参数" name="dtParameter" />
+                    </div>
+                    <div class="condition-item condition-custom" data-control="text" ng-show="visibledtProductRange">
+                        <span>产品范围</span>
+                        <input class="gui-input" ng-model="dtProductRange" maxlength="80" type="text" placeholder="请输入产品范围" name="dtProductRange" />
+                    </div>
+                    <div class="mt15">
+                        <button class="gui-btn" ng-disabled="!!btnDisabled" ng-click="querySubjDtList($event)">查询</button>
+                        <button class="gui-btn" ng-click="reloadArea($event)">重置</button>
+                    </div>
+                </div>
+            </form>
+            <span href="#modalCondition" data-toggle="modal" class="custom-condition">自定义条件</span>
+        </div>
+        <!-- 图表面板 -->
+        <div class="gui-table-panel clearfix">
+            <p class="table-total" ng-show="isListView">符合条件的数据总计: {{tableTotal}} 项</p>
+            <!-- 切换视图展示 -->
+            <div class="view-type">展示方式
+                <i class="gui-icon icon-list highlight" ng-class="{'highlight': isListView}" ng-click="toggleView(true)" title="以列表视图展示"></i>
+                <i class="gui-icon icon-chart" ng-class="{'highlight': !isListView }" ng-click="toggleView(false)" title="以图形视图展示"></i>
+            </div>
+        </div>
+        <!-- 图表区域 -->
+        <div class="gui-content-slide">
+            <div ng-style="{'transform': viewX}" class="content-wrap">
+                <div class="content-block">
+                    <table id="dtGrid" class="gui-table table-nowrap mt15" style="width: 100%">
+                    </table>
+                </div>
+                <div class="content-block">
+                    <div sg-chart options="vm.chartOptions" update="vm.chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- 模态框（Modal） -->
+<div class="modal fade " id="importModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm" >
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel2">批量导入检测机构</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div style="width: 500px">
+                        <form enctype="multipart/form-data">
+                            <input id="file-1"  type="file" name="file"  multiple=" true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="5">
+                            <br>
+                        </form>
+                        <a href="webapp\asms\subjDt\jcdrModel.xlsx" style="color:#0000FF;">检测导入模板</a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" data-dismiss="modal">关闭</button>
+                <button class="gui-btn" type="button" id="save" ng-click="importSubjDt()">提交</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalCondition" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">请选择自定义条件</h4>
+            </div>
+            <div class="modal-body">
+                <form novalidate="novalidate">
+                <div class="list-head">
+                    <label>
+                        <input type="checkbox" class="condition-checked-all" />全选
+                    </label>
+                </div>
+                <ul class="gui-list list-condition">
+                    <li class="disabled">
+                        <label>
+                            <input type="checkbox" checked disabled />机构性质
+                        </label>
+
+                    </li>
+                    <li class="disabled">
+                        <label>
+                            <input type="checkbox" checked disabled>机构级别
+                        </label>
+                    </li>
+                    <li class="disabled">
+                        <label>
+                            <input type="checkbox" checked disabled>所属区域
+                        </label>
+                    </li>
+                    <li class="disabled">
+                        <label>
+                            <input type="checkbox" checked disabled>主体状态
+                        </label>
+                    </li>
+                    <li class="disabled">
+                        <label>
+                            <input type="checkbox" checked disabled>注册日期
+                        </label>
+                    </li>
+                    <li class="disabled">
+                        <label>
+                            <input type="checkbox" checked disabled>机构名称
+                        </label>
+                    </li>
+                    <li class="disabled">
+                        <label>
+                            <input type="checkbox" checked disabled>机构负责人
+                        </label>
+                    </li>
+                    <li class="disabled">
+                        <label>
+                            <input type="checkbox" checked disabled>资质证书
+                        </label>
+                    </li>
+                    <li data-key="dtCode">
+                        <label>
+                            <input type="checkbox">机构代码
+                        </label>
+                    </li>
+                    <li data-key="dtLeaderPhone">
+                        <label>
+                            <input type="checkbox">负责人电话
+                        </label>
+                    </li>
+                    <li data-key="dtContact">
+                        <label>
+                            <input type="checkbox">联系人
+                        </label>
+                    </li>
+                    <li data-key="dtContactPhone">
+                        <label>
+                            <input type="checkbox">联系人电话
+                        </label>
+                    </li>
+                    <li data-key="dtContactQQ">
+                        <label>
+                            <input type="checkbox">联系人QQ
+                        </label>
+                    </li>
+                    <li data-key="dtContactEmail">
+                        <label>
+                            <input type="checkbox">电子邮箱
+                        </label>
+                    </li>
+                    <li data-key="dtPostcode">
+                        <label>
+                            <input type="checkbox">邮编
+                        </label>
+                    </li>
+                    <li data-key="dtAddress">
+                        <label>
+                            <input type="checkbox">通讯地址
+                        </label>
+                    </li>
+                    <li data-key="dtRelyOnUnit">
+                        <label>
+                            <input type="checkbox">依托单位
+                        </label>
+                    </li>
+                    <li data-key="dtLegalMan">
+                        <label>
+                            <input type="checkbox">法人
+                        </label>
+                    </li>
+                    <li data-key="dtTechnicalDirector">
+                        <label>
+                            <input type="checkbox">技术负责人
+                        </label>
+                    </li>
+                    <li data-key="dtQualityDirector">
+                        <label>
+                            <input type="checkbox">质量负责人
+                        </label>
+                    </li>
+                    <li data-key="dtParameter">
+                        <label>
+                            <input type="checkbox">参数
+                        </label>
+                    </li>
+                    <li data-key="dtProductRange">
+                        <label>
+                            <input type="checkbox">产品范围
+                        </label>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="gui-btn" ng-click="confirmCondition()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>

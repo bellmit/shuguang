@@ -1,0 +1,220 @@
+<link rel="stylesheet" href="assets/css/asms/subjSv/subjSvAdd.css"/>
+<div class="gui-breadcrumbs">
+    <a href="">系统管理</a>&gt;
+    <a ui-sref="index.content.sys/user/sysSubjEntList">用户管理</a>&gt;
+    <a ui-sref="index.content.sys/user/sysSubjSvList">机构用户管理</a>&gt;
+    <a ui-sref="index.content.sys/user/sysSubjSvList">监管机构</a>&gt;
+    <span>新增</span>
+</div>
+<div class="Sup_contain_section_contain_head gui-section">
+    <p style="font-size: 20px;margin: 0;">新增注册</p>
+    <form name="addSvForm" id="addSvForm"
+          data-bv-message="不能为空"
+          data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+          data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+          data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+        <ul>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-4 col-md-4 com-sm-4 control-label">机构名称<span style="color:red;">*</span></span>
+                    <div class="col-lg-5 col-md-5 com-sm-5">
+                        <input type="text" ng-model="subjSv.svName" name="svName" placeholder="请输入机构名称"
+                               class="form-control"
+                               data-bv-notempty="true"
+                               data-bv-notempty-message="机构名称不能为空"
+                               data-bv-stringlength="true"
+                               data-bv-stringlength-max="50"
+                               data-bv-stringlength-message="机构名称不能超过50个字符"
+                               data-bv-regexp="true"
+                               data-bv-regexp-regexp="^[\u4e00-\u9fa5]+$"
+                               data-bv-regexp-message="机构名称只能输入中文"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-4 col-md-4 com-sm-4 control-label">机构代码<span style="color:red;">*</span></span>
+                    <div class="col-lg-5 col-md-5 com-sm-5">
+                        <input type="text" ng-model="subjSv.svCode" name="svCode" placeholder="请输入机构代码"
+                               class="form-control"
+                               data-bv-notempty="true"
+                               data-bv-notempty-message="机构代码不能为空"
+                               data-bv-stringlength="true"
+                               data-bv-stringlength-max="50"
+                               data-bv-stringlength-message="机构代码不能超过50个字符"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-4 col-md-4 com-sm-4 control-label">机构类别<span style="color:red;">*</span></span>
+                    <div class="col-lg-5 col-md-5 com-sm-5">
+                        <div class="gui-select" style="width: 100%">
+                            <select name="svType"
+                                    class="form-control"
+                                    data-bv-notempty="true"
+                                    data-bv-notempty-message="机构类别不能为空">
+                                <!--<option ng-repeat="x in orgType" value="{{x.id}}">{{x.dictName}}</option>-->
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-4 col-md-4 com-sm-4 control-label">机构级别<span style="color:red;">*</span></span>
+                    <div class="col-lg-5 col-md-5 com-sm-5">
+                        <div class="gui-select " style="width: 100%">
+                            <select ng-model="subjSv.svLevelId" name="svLevel" ng-change="limitArea()"
+                                    class="form-control"
+                                    data-bv-notempty="true"
+                                    data-bv-notempty-message="机构级别不能为空">
+                                <option  ng-repeat="x in orgLevel" value="{{x.id}}" dictVal="{{x.dictValue}}">{{x.dictName}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-4 col-md-4 com-sm-4 control-label">所属行业<span style="color:red;">*</span></span>
+                    <div class="col-lg-6 col-md-5 com-sm-5">
+                        <div class=" " style="width: 100%">
+                            <span ng-repeat="a in industryType">
+                                <input type="checkbox" value="{{a.id}}" name="entityIndustryId" dictVal="{{a.dictValue}}"><span class="checkedIndustryTypeText" ng-bind="a.dictName"></span>
+                            </span>
+                            <div class="color-red" ng-hide="!industryChecked">请至少选择一个所属行业</div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-4 col-md-4 com-sm-4 control-label">所属区域<span style="color:red;">*</span></span>
+                    <div class="col-lg-5 col-md-5 com-sm-5" style="text-align: left">
+                        <div class="gui-select " style="width: 100%">
+                            <select name="sheng" id="sheng" class="form-control">
+                                <option value="">--省--</option>
+                            </select>
+                        </div>
+                        <div class="gui-select mt15" style="width:100%;">
+                            <select name="shi" id="shi" class="form-control mr15 ml15">
+                                <option value="">--市--</option>
+                            </select>
+                        </div>
+                        <div class="gui-select mt15" style="width: 100%">
+                            <select name="xian" id="xian" class="form-control ml15"
+                                    data-bv-notempty="true"
+                                    data-bv-notempty-message="省、市、县必须全选">
+                                <option value="">--区/县--</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-4 col-md-4 com-sm-4 control-label">通讯地址<span style="color:red;">*</span></span>
+                    <div class="col-lg-5 col-md-5 com-sm-5">
+                        <input type="text" ng-model="subjSv.svAddress" name="svAddress" placeholder="请详细填写乡镇、街道、社区、楼牌号等信息"
+                               class="form-control"
+                               data-bv-notempty="true"
+                               data-bv-notempty-message="通讯地址不能为空"
+                               data-bv-stringlength="true"
+                               data-bv-stringlength-max="50"
+                               data-bv-stringlength-message="通讯地址不能超过50个字符"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-4 col-md-4 com-sm-4 control-label">负责人<span style="color:red;">*</span></span>
+                    <div class="col-lg-5 col-md-5 com-sm-5">
+                        <input type="text" ng-model="subjSv.svLeader" name="svLeader" placeholder="请输入负责人"
+                               class="form-control"
+                               data-bv-notempty="true"
+                               data-bv-notempty-message="负责人不能为空"
+                               data-bv-stringlength="true"
+                               data-bv-stringlength-max="50"
+                               data-bv-stringlength-message="负责人不能超过50个字符"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-4 col-md-4 com-sm-4 control-label">负责人电话<span>&nbsp;&nbsp;</span></span>
+                    <div class="col-lg-5 col-md-5 com-sm-5">
+                        <input type="text" ng-model="subjSv.svLeaderPhone" name="svLeaderPhone" class="form-control"
+                               data-bv-isTelephone="true"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-4 col-md-4 com-sm-4 control-label">联系人<span style="color:red;">*</span></span>
+                    <div class="col-lg-5 col-md-5 com-sm-5">
+                        <input type="text" ng-model="subjSv.svContact" name="svContact" placeholder="请输入联系人"
+                               class="form-control"
+                               data-bv-notempty="true"
+                               data-bv-notempty-message="联系人不能为空"
+                               data-bv-stringlength="true"
+                               data-bv-stringlength-max="50"
+                               data-bv-stringlength-message="联系人不能超过50个字符"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-4 col-md-4 com-sm-4 control-label">联系人电话<span style="color:red;">*</span></span>
+                    <div class="col-lg-5 col-md-5 com-sm-5">
+                        <input type="text" ng-model="subjSv.svContactPhone" name="svContactPhone" placeholder="请输入联系人电话"
+                               class="form-control"
+                               data-bv-notempty="true"
+                               data-bv-notempty-message="联系人电话不能为空"
+                               data-bv-isTelephone="true"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-4 col-md-4 com-sm-4 control-label">联系人QQ<span>&nbsp;&nbsp;</span></span>
+                    <div class="col-lg-5 col-md-5 com-sm-5">
+                        <input type="text" ng-model="subjSv.svContactQQ" name="svContactQQ" class="form-control"
+                               data-bv-regexp="true"
+                               data-bv-regexp-regexp="^\d{5,11}$"
+                               data-bv-regexp-message="只能输入5到11位的数字"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-4 col-md-4 com-sm-4 control-label">电子邮箱<span>&nbsp;&nbsp;</span></span>
+                    <div class="col-lg-5 col-md-5 com-sm-5">
+                        <input type="text" ng-model="subjSv.svContactEmail" name="svContactEmail" class="form-control"
+                               data-bv-stringlength="true"
+                               data-bv-stringlength-max="50"
+                               data-bv-stringlength-message="电子邮箱不能超过50个字符"
+                               data-bv-emailaddress="true"
+                               data-bv-emailaddress-message="输入不是一个有效的电子邮件地址" />
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-4 col-md-4 com-sm-4 control-label">邮编<span>&nbsp;&nbsp;</span></span>
+                    <div class="col-lg-4 col-md-4 com-sm-4">
+                        <input type="text" ng-model="subjSv.svPostcode" name="svPostcode" class="form-control"
+                               data-bv-regexp="true"
+                               data-bv-regexp-regexp="^\d{6}$"
+                               data-bv-regexp-message="邮编只能为6位数字" />
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </form>
+    <div align="center" class="mt15">
+        <button class="gui-btn mr15" ui-sref="index.content.sys/user/sysSubjSvList">取消</button>
+        <button class="gui-btn ml15" ng-click="addSubjSupervise()">提交</button>
+    </div>
+
+</div>

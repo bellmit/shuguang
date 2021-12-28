@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysRegionMapper">
+    <resultMap id="customResultMap" type="com.sofn.sys.model.SysRegion">
+        <result column="ID" property="id"></result>
+        <result column="PARENT_ID" property="parentId"></result>
+        <result column="REGION_NAME" property="regionName"></result>
+        <result column="REGION_CODE" property="regionCode"></result>
+        <result column="REGION_PINYIN" property="regionPinyin"></result>
+        <result column="REGION_TYPE" property="regionType"></result>
+        <result column="REGION_FULLNAME" property="regionFullname"></result>
+        <result column="SORTID" property="sortid"></result>
+        <result column="REMARK" property="remark"></result>
+        <result column="DEL_FLAG" property="delFlag"></result>
+        <result column="STATUS" property="status"></result>
+        <result column="AREA_ID" property="areaId"></result>
+        <result column="PARENT_IDS" property="parentIds"></result>
+        <result column="PARENT_NAMES" property="parentNames"></result>
+        <result column="LONGITUDE" property="longitude"></result>
+        <result column="LATITUDE" property="latitude"></result>
+        <result column="VERSION_YEAR" property="versionYear"></result>
+        <result column="VERSION_CODE" property="versionCode"></result>
+    </resultMap>
+    <delete id="batchDelete" parameterType="java.util.Map">
+        delete from SYS_REGION where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getSysRegionByContion" parameterType="java.util.Map" resultMap="customResultMap">
+        SELECT
+        ID ,
+        PARENT_ID ,
+        REGION_NAME ,
+        REGION_CODE ,
+        REGION_PINYIN ,
+        REGION_TYPE ,
+        REGION_FULLNAME ,
+        SORTID ,
+        REMARK ,
+        CREATE_USER_ID ,
+        CREATE_TIME ,
+        UPDATE_USER_ID ,
+        UPDATE_TIME ,
+        DEL_FLAG ,
+        RESERVED_FIELD1 ,
+        RESERVED_FIELD2 ,
+        STATUS ,
+        AREA_ID ,
+        PARENT_IDS ,
+        PARENT_NAMES ,
+        LONGITUDE ,
+        LATITUDE ,
+        VERSION_YEAR ,
+        VERSION_CODE
+        FROM SYS_REGION RO
+        <where>
+            AND DEL_FLAG != 'Y'
+            <if test="regionName != null and regionName != ''">
+                AND RO.REGION_NAME like '%' || #{regionName} || '%'
+            </if>
+            <!--新增查询是添加年份时间-->
+            <if test="versionYear != null and versionYear != ''">
+                AND RO.version_year = #{versionYear}
+            </if>
+
+            <if test="status != null and status != ''">
+                AND RO.STATUS= #{status}
+            </if>
+            <if test="parentId != null and parentId != ''">
+                AND RO.PARENT_ID = #{parentId}
+            </if>
+            <if test="ids != null and ids.size > 0">
+                AND RO.region_code in
+                <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                    #{id,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            AND VERSION_CODE=(
+            SELECT MAX(VERSION_CODE) FROM SYS_REGION RI
+            WHERE RI.REGION_CODE=RO.REGION_CODE
+            <!--新增查询是添加年份时间-->
+            <if test="versionYear != null and versionYear != ''">
+                AND RI.version_year = #{versionYear}
+            </if>
+
+            AND RI.VERSION_CODE &lt;= #{versionCode}
+
+            <if test="regionCode != null and regionCode != ''">
+                AND RI.REGION_CODE = #{regionCode}
+            </if>
+            <if test="regionId != null and regionId != ''">
+                AND RI.ID = #{regionId}
+            </if>
+            )
+        </where>
+        ORDER BY REGION_CODE ASC,VERSION_CODE DESC
+
+    </select>
+
+    <select id="getSysRegionByContionBy" parameterType="java.util.Map" resultMap="customResultMap">
+        SELECT
+        ID ,
+        PARENT_ID ,
+        REGION_NAME ,
+        REGION_CODE ,
+        REGION_PINYIN ,
+        REGION_TYPE ,
+        REGION_FULLNAME ,
+        SORTID ,
+        REMARK ,
+        CREATE_USER_ID ,
+        CREATE_TIME ,
+        UPDATE_USER_ID ,
+        UPDATE_TIME ,
+        DEL_FLAG ,
+        RESERVED_FIELD1 ,
+        RESERVED_FIELD2 ,
+        STATUS ,
+        AREA_ID ,
+        PARENT_IDS ,
+        PARENT_NAMES ,
+        LONGITUDE ,
+        LATITUDE ,
+        VERSION_YEAR ,
+        VERSION_CODE
+        FROM SYS_REGION RO
+        <where>
+            AND DEL_FLAG != 'Y'
+            <if test="regionName != null and regionName != ''">
+                AND RO.REGION_NAME like '%' || #{regionName} || '%'
+            </if>
+            <if test="status != null and status != ''">
+                AND RO.STATUS= #{status}
+            </if>
+            <if test="parentId != null">
+                AND RO.PARENT_ID in
+                <foreach collection="parentId" item="item" open="(" close=")" separator=",">
+                   #{item}
+                </foreach>
+            </if>
+            <if test="ids != null and ids.size > 0">
+                AND RO.region_code in
+                <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                    #{id,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            AND VERSION_CODE=(
+            SELECT MAX(VERSION_CODE) FROM SYS_REGION RI
+            WHERE RI.REGION_CODE=RO.REGION_CODE
+            AND RI.VERSION_CODE &lt;= #{versionCode}
+
+            <if test="regionCode != null and regionCode != ''">
+                AND RI.REGION_CODE = #{regionCode}
+            </if>
+            <if test="regionId != null and regionId != ''">
+                AND RI.ID = #{regionId}
+            </if>
+            )
+        </where>
+        ORDER BY REGION_CODE ASC,VERSION_CODE DESC
+    </select>
+
+
+
+    <select id="getProvinceList" resultType="map">
+        SELECT
+            REGION_NAME "name",
+            SUBSTR (REGION_CODE, 1, 2) "province",
+            'PROVINCE' "type"
+        FROM
+            SYS_REGION
+        WHERE
+            DEL_FLAG = 'N'
+            AND
+            PARENT_ID = '100000'
+        ORDER BY REGION_CODE
+    </select>
+    <select id="getCityList" resultType="map">
+        SELECT
+            REGION_NAME "name",
+            SUBSTR (REGION_CODE, 1, 2) "province",
+            SUBSTR (REGION_CODE, 3, 2) "city",
+            'CITY' "type"
+        FROM
+            SYS_REGION
+        WHERE
+            DEL_FLAG = 'N'
+            AND
+            PARENT_ID IN (
+                SELECT
+                    ID
+                FROM
+                    SYS_REGION
+                WHERE
+                    DEL_FLAG = 'N'
+                    AND
+                    PARENT_ID = '100000'
+            )
+        ORDER BY REGION_CODE
+    </select>
+    <select id="getCountryList" resultType="map">
+        SELECT
+            REGION_NAME "name",
+            SUBSTR (REGION_CODE, 1, 2) "province",
+            SUBSTR (REGION_CODE, 3, 2) "city",
+            SUBSTR (REGION_CODE, 5) "country",
+            'COUNTRY' "type"
+        FROM
+            SYS_REGION
+        WHERE
+            DEL_FLAG = 'N'
+            AND
+            PARENT_ID IN (
+                SELECT
+                    ID
+                FROM
+                    SYS_REGION
+                WHERE
+                    DEL_FLAG = 'N'
+                    AND
+                    PARENT_ID IN (
+                        SELECT
+                            ID
+                        FROM
+                            SYS_REGION
+                        WHERE
+                            DEL_FLAG = 'N'
+                            AND
+                            PARENT_ID = '100000'
+                    )
+            )
+        ORDER BY REGION_CODE
+    </select>
+
+
+    <select id="getInfoByParentIdStrs" parameterType="java.util.Map" resultMap="customResultMap">
+
+        SELECT
+        ID ,
+        PARENT_ID ,
+        REGION_NAME ,
+        REGION_CODE ,
+        REGION_PINYIN ,
+        REGION_TYPE ,
+        REGION_FULLNAME ,
+        version_year ,
+        version_code ,
+        SORTID ,
+        REMARK ,
+        CREATE_USER_ID ,
+        CREATE_TIME ,
+        UPDATE_USER_ID ,
+        UPDATE_TIME ,
+        DEL_FLAG ,
+        RESERVED_FIELD1 ,
+        RESERVED_FIELD2 ,
+        STATUS ,
+        AREA_ID ,
+        PARENT_IDS ,
+        PARENT_NAMES ,
+        LONGITUDE ,
+        LATITUDE
+        FROM SYS_REGION a
+        where a.del_flag = 'N'
+        and
+        <foreach collection="parentIdStrs" open="(" close=")" separator="or" item="parentIdStr">
+            POSITION (#{parentIdStr} in a.PARENT_IDS)=1
+        </foreach>
+        AND version_year = #{versionYear}
+        AND VERSION_CODE=(
+        SELECT MAX(VERSION_CODE)
+        FROM SYS_REGION RI
+        WHERE RI.REGION_CODE=a.REGION_CODE AND RI.VERSION_CODE &lt;= #{versionCode} )
+
+    </select>
+
+    <update id="updateParentIdsByIds" parameterType="java.util.Map">
+        update SYS_REGION set PARENT_IDS = replace(PARENT_IDS,#{oldParentIdPrefix},#{newParentIdPrefix}) where id in
+        <foreach collection="ids" item="id" close=")" open="(" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+
+    <update id="updateParentNamesByIds" parameterType="java.util.Map">
+        update SYS_REGION set PARENT_NAMES = replace(PARENT_NAMES,#{oldParentNamePrefix},#{newParentNamePrefix}) where
+        id in
+        <foreach collection="ids" item="id" close=")" open="(" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="getVersionYearList" resultType="java.lang.Integer">
+        select DISTINCT(VERSION_YEAR) from SYS_REGION ORDER BY VERSION_YEAR DESC
+    </select>
+
+    <select id="getMaxVersionYear" resultType="java.lang.Integer">
+        select max(VERSION_YEAR) from SYS_REGION
+    </select>
+
+    <select id="getMaxVersionCodeByYear" resultType="java.lang.Long">
+        select max(version_code) as versioncode  from sys_region where version_year=#{versionYear}
+    </select>
+
+    <select id="selectFList" resultType="com.sofn.sys.model.SysRegion" parameterType="java.util.Map">
+
+        SELECT
+        ID,parent_id,parent_ids,region_name,parent_names,region_code,region_pinyin,region_type,region_fullname,sortid,remark,area_id,status,longitude,latitude,version_year,version_code,create_user_id,create_time,update_user_id,update_time,del_flag
+        FROM SYS_REGION RO
+        WHERE del_flag = 'N' AND
+        region_code IN
+        <foreach collection="parentIds" item="id" open="(" close=")" separator=",">
+            #{id,jdbcType=VARCHAR}
+        </foreach>
+        AND RO.version_year = #{versionYear}
+        AND VERSION_CODE=(
+        SELECT MAX(VERSION_CODE) FROM SYS_REGION RI
+        WHERE RI.REGION_CODE=RO.REGION_CODE
+        AND RI.VERSION_CODE &lt;= #{versionCode}
+
+        )
+    </select>
+
+
+    <select id="selectByRegioncode" resultType="com.sofn.sys.model.SysRegion" parameterType="java.util.Map">
+
+        SELECT
+        ID,parent_id,parent_ids,region_name,parent_names,region_code,region_pinyin,region_type,region_fullname,sortid,remark,area_id,status,longitude,latitude,version_year,version_code,create_user_id,create_time,update_user_id,update_time,del_flag
+        FROM SYS_REGION a
+        WHERE region_code in
+        <foreach collection="parentIdList" item="id" open="(" close=")" separator=",">
+            #{id,jdbcType=VARCHAR}
+        </foreach>
+        AND VERSION_CODE=(
+        SELECT MAX(VERSION_CODE) FROM SYS_REGION RI
+        WHERE RI.REGION_CODE=a.REGION_CODE
+        AND RI.VERSION_CODE &lt;= #{versionCode}
+        );
+    </select>
+
+
+    <select id="getParentRegion" parameterType="java.util.Map" resultType="com.sofn.sys.model.SysRegion">
+        SELECT ID,parent_id,parent_ids,region_name,parent_names,region_code,region_pinyin,region_type,region_fullname,sortid,remark,area_id,status,longitude,latitude,version_year,version_code,create_user_id,create_time,update_user_id,update_time,del_flag
+        FROM SYS_REGION a
+        WHERE region_code = #{parentId}
+        AND VERSION_CODE=(
+        SELECT MAX(VERSION_CODE) FROM SYS_REGION RI
+        WHERE RI.REGION_CODE=a.REGION_CODE
+        AND RI.VERSION_CODE &lt;= #{versionCode}
+        )
+    </select>
+
+    <select id="selectMinVersionCodeByyear" resultType="java.lang.String" parameterType="java.lang.String">
+        SELECT min(version_code) from sys_region WHERE version_year=#{versionYear}
+    </select>
+
+
+    <select id="getSysRegionByParentIds" parameterType="java.util.Map" resultType="com.sofn.sys.model.SysRegion">
+        SELECT ID,parent_id,parent_ids,region_name,parent_names,region_code,region_pinyin,region_type,region_fullname,sortid,remark,area_id,status,longitude,latitude,version_year,version_code,create_user_id,create_time,update_user_id,update_time,del_flag
+        FROM SYS_REGION a
+        WHERE parent_ids like #{parentIds} || '%'
+        AND VERSION_CODE=(
+        SELECT MAX(VERSION_CODE) FROM SYS_REGION RI
+        WHERE RI.REGION_CODE=a.REGION_CODE
+        AND RI.VERSION_CODE &lt;= #{versionCode}
+        )
+
+    </select>
+    
+    
+    <select id="getSysRegionByRegionCode" parameterType="java.util.Map" resultType="com.sofn.sys.model.SysRegion">
+        select
+        ID,parent_id,parent_ids,region_name,parent_names,region_code,region_pinyin,region_type,region_fullname,sortid,remark,area_id,status,longitude,latitude,version_year,version_code,create_user_id,create_time,update_user_id,update_time,del_flag
+        from sys_region where version_code = (
+            select max(version_code) from sys_region a where a.region_code = #{regionCode} and version_year = #{year}
+        ) and region_code = #{regionCode} limit 1
+    </select>
+
+</mapper>

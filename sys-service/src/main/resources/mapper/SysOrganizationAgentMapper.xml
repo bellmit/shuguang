@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysOrganizationAgentMapper">
+
+  <resultMap id="orgProxyRelationshipMap" type="com.sofn.sys.vo.SysOrgAgentForm">
+    <result property="subsystemId" column="SUBSYSTEM_ID"></result>
+    <result property="orgId" column="ORG_ID"></result>
+    <result property="agentCode" column="AGENT_CODE"></result>
+    <collection property="agentOrgIds" ofType="java.lang.String">
+      <result column="THIRD_ORG_ID" property="agentOrgId"/>
+    </collection>
+  </resultMap>
+
+  <select id="selectOrgAgentByOrgId" resultType="com.sofn.sys.model.SysOrganization">
+    SELECT SO.*  FROM SYS_ORGANIZATION SO INNER JOIN SYS_ORGANIZATION_AGENT SOA ON SO.ID=SOA.THIRD_ORG_ID
+    <where>
+      <if test="subsystemId != null and subsystemId != ''">
+        AND SOA.SUBSYSTEM_ID=#{subsystemId}
+      </if>
+      <if test="orgId != null and orgId != ''">
+        AND SOA.ORG_ID=#{orgId}
+      </if>
+      <if test="agentCode != null and agentCode != ''">
+        AND SOA.AGENT_CODE=#{agentCode}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectOrgListByAgentOrgId" parameterType="java.util.Map" resultType="com.sofn.sys.model.SysOrganization">
+    SELECT SO.*  FROM SYS_ORGANIZATION SO INNER JOIN SYS_ORGANIZATION_AGENT SOA ON SO.ID=SOA.ORG_ID
+    <where>
+      <if test="subsystemId != null and subsystemId != ''">
+        AND SOA.SUBSYSTEM_ID=#{subsystemId}
+      </if>
+      <if test="agentOrgId != null and agentOrgId != ''">
+        AND SOA.THIRD_ORG_ID=#{agentOrgId}
+      </if>
+      <if test="agentCode != null and agentCode != ''">
+        AND SOA.AGENT_CODE=#{agentCode}
+      </if>
+    </where>
+  </select>
+
+  <select id="getOrgAndProOrgInfo" parameterType="java.util.Map" resultType="com.sofn.sys.vo.OrgAndProOrgInfoVo">
+    select
+    sr.ID regionId,
+    sr.region_name regionName,
+    so.ID orgId,
+    so.organization_name orgName,
+    SO.phone  orgPhone,
+    pro_so.ID proxyId,
+    pro_so.organization_name proxyOrgName,
+    pro_so.phone proxyPhone
+    from SYS_ORGANIZATION_AGENT soa
+    left join SYS_ORGANIZATION so on soa.ORG_ID = SO.ID  and so.del_flag != 'Y'
+    left join SYS_REGION sr on so.REGION_LAST_CODE = sr.ID and sr.del_flag != 'Y'
+    left join SYS_ORGANIZATION pro_so  on soa.third_org_id = pro_so.ID and pro_so.del_flag != 'Y'
+    left join SYS_SUBSYSTEM ss on soa.subsystem_id = ss.ID and ss.del_flag != 'Y'
+    where 1=1
+    <if test="orgLevel != null and orgLevel != ''">
+      and SO.ORGANIZATION_LEVEL = #{orgLevel}
+    </if>
+    <if test="appId != null and appId != ''">
+      and  (SOA.subsystem_id = #{appId} or ss.app_id = #{appId})
+    </if>
+    <if test="proxyId != null and proxyId != ''">
+      and pro_so.ID = #{proxyId}
+    </if>
+    <if test="orgId != null and orgId != ''">
+      and so.ID = #{orgId}
+    </if>
+    <if test="regionId != null and regionId != ''">
+      and sr.ID = #{regionId}
+    </if>
+    <if test="agentCode != null and agentCode != ''">
+      and soa.agent_code = #{agentCode}
+
+    </if>
+  </select>
+
+  <insert id="batchInserInfo" parameterType="java.util.List">
+    insert into SYS_ORGANIZATION_AGENT (
+    "ID",
+    SUBSYSTEM_ID,
+    ORG_ID,
+    THIRD_ORG_ID,
+    AGENT_CODE
+    )VALUES
+    <foreach collection="sysOrganizationAgents" item="sysOrganizationAgent"  separator=",">
+      (#{sysOrganizationAgent.id},
+      #{sysOrganizationAgent.subsystemId},
+      #{sysOrganizationAgent.orgId},
+      #{sysOrganizationAgent.thirdOrgId},
+      #{sysOrganizationAgent.agentCode,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+
+  <select id="getOrgProxyRelationship" parameterType="java.lang.String" resultMap="orgProxyRelationshipMap">
+    select
+        "ID",
+        SUBSYSTEM_ID,
+        ORG_ID,
+        THIRD_ORG_ID,
+        AGENT_CODE
+    from
+        SYS_ORG_AGENT
+    where ORG_ID = #{orgId}
+  </select>
+
+  <select id="getOrgListHasAgent" parameterType="java.lang.String" resultType="com.sofn.sys.model.SysOrganization">
+    select
+        so.*
+    from
+        SYS_ORGANIZATION_AGENT soa
+        inner join SYS_ORGANIZATION so on soa.ORG_ID=so.ID  and so.DEL_FLAG != 'Y'
+        inner join SYS_SUBSYSTEM ss on ss.ID=soa.SUBSYSTEM_ID
+    where ss.APP_ID = #{appId}
+  </select>
+</mapper>

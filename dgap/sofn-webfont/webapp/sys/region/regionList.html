@@ -1,0 +1,148 @@
+<style>
+    .modal-backdrop {
+        filter: alpha(opacity=0)!important;
+        opacity: 0!important;
+    }
+    .tooltip {
+        background-color: #1d75b3;
+        border-color: #1d75b3;
+        color:#fafafa;
+    }
+</style>
+<div class="gui-breadcrumbs">
+    <a href="">系统管理</a>&gt;
+    <a href="">基础数据管理</a>&gt;
+    <span>行政区划管理</span>
+</div>
+<div class="gui-section">
+    <div class="gui-tree-sidebar">
+        <div class="easyui-panel easyui-Owndirevtive" style="border-width: 0px;">
+            <ul id="regionEasyUi" class="" url="/sofn-sys-web/region/queryMenu"></ul>
+        </div>
+    </div>
+    <div class="gui-tree-content">
+        <div class="gui-form-group clearfix">
+            <input class="gui-input" type="text" name="keyWord" ng-model="keyWord" placeholder="请输入查询关键字">
+            <button class="gui-btn" ng-click="queryList();">查询</button>
+        </div>
+        <div class="gui-actions">
+            <button class="gui-btn fr ml15" ng-click="delete()" ng-if="menuAuthority == readWriteAuthority"><i class="gui-icon icon-remove"></i>删除</button>
+            <button class="gui-btn fr" ng-click="addModal()" ng-if="menuAuthority == readWriteAuthority"><i class="gui-icon icon-add"></i>新增</button>
+        </div>
+        <div>
+            <table id="grid" class="gui-table" style="width: 100%"></table>
+        </div>
+    </div>
+</div>
+
+ <!--模态框（Modal）新增-->
+<div class="modal fade" id="add_modal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm" style="padding-top:15px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">{{title}}</h4>
+            </div>
+            <div class="modal-body">
+                <form class="default_w_h modal-form form-horizontal" name="regionForm" style="text-align: center" novalidate>
+                    <div class="form-item form-group">
+                        <input type="hidden" name="regionId" ng-model="region.id">
+                        <input type="hidden" name="parentId" ng-model="region.parentId">
+                    </div>
+                    <div class="form-item form-group">
+                        <label class="required">父节点</label>
+                        <input type="text" class="gui-input form-control" name="parentText" ng-model="region.parentText" readonly="readonly" placeholder="请先选择左边树形节点" required>
+                        <span style="color:red" ng-show="regionForm.parentText.$invalid && submittingValidate">
+                            <span ng-show="regionForm.parentText.$error.required">父节点为空</span>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label class="required">名称</label>
+                        <input type="text" ng-model="region.regionName" class="gui-input form-control" name="regionName" maxlength="16" placeholder="行政区划名称" required>
+                        <span style="color:red" ng-show="regionForm.regionName.$invalid && submittingValidate">
+                            <span ng-show="regionForm.regionName.$error.required">名称为空</span>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label class="required">编码</label>
+                        <input type="text" ng-model="region.regionCode" class="gui-input form-control" name="regionCode" maxlength="32" placeholder="行政区划编码" data-toggle="tooltip" title="必须保证编码唯一，否则不能保存" required>
+                        <span style="color:red" ng-show="regionForm.regionCode.$invalid && submittingValidate">
+                            <span ng-show="regionForm.regionCode.$error.required">编码为空</span>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>备注</label>
+                        <textarea name="remark" ng-model="region.remark" class="gui-textarea form-control" maxlength="133"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="gui-btn" ng-click="save(regionForm.$valid)">保存</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+
+<!--模态框（Modal）修改 查看-->
+<div class="modal fade" id="update_modal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm" style="padding-top:15px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel2">{{title}}</h4>
+            </div>
+            <div class="modal-body">
+                <form class="default_w_h modal-form form-horizontal" name="regionForm" style="text-align: center" novalidate>
+                    <div class="form-item form-group">
+                        <input type="hidden" name="regionId" ng-model="region.id">
+                        <input type="hidden" name="parentId" ng-model="region.parentId">
+                    </div>
+                    <div class="form-item form-group">
+                        <label>选择父节点</label>
+                        <select id="cc" class="easyui-combotree gui-select form-control" style="width:383px;height: 35px;" ng-model="region.parentId"></select>
+                    </div>
+                    <div class="form-item form-group">
+                        <label class="required">父节点</label>
+                        <input type="text" class="gui-input form-control" name="parentText" ng-model="region.parentText" readonly="readonly" placeholder="选择上面树形节点" data-toggle="tooltip" title="修改父节点，需要在上面的树形节点中进行点击选择" required>
+                        <span style="color:red" ng-show="regionForm.parentText.$invalid && submittingValidate">
+                            <span ng-show="regionForm.parentText.$error.required">父节点为空</span>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label class="required">名称</label>
+                        <input type="text" ng-model="region.regionName" class="gui-input form-control" name="regionName" maxlength="16" placeholder="行政区划名称" required>
+                        <span style="color:red" ng-show="regionForm.regionName.$invalid && submittingValidate">
+                            <span ng-show="regionForm.regionName.$error.required">名称为空</span>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label class="required">编码</label>
+                        <input type="text" ng-model="region.regionCode" class="gui-input form-control" name="regionCode" maxlength="32" placeholder="行政区划编码" data-toggle="tooltip" title="必须保证编码唯一，否则不能保存" required>
+                        <span style="color:red" ng-show="regionForm.regionCode.$invalid && submittingValidate">
+                            <span ng-show="regionForm.regionCode.$error.required">编码为空</span>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>是否省管县</label>
+                        <select class="gui-select form-control" style="min-width: 100%;" ng-model="region.isProvAdmCounty" name="isProvAdmCounty">
+                            <option ng-repeat="o in isProvAdmCountyOptions" value="{{o.value}}">{{o.text}}</option>
+                        </select>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>备注</label>
+                        <textarea name="remark" ng-model="region.remark" class="gui-textarea form-control" maxlength="133"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="gui-btn" ng-click="save(regionForm.$valid)">保存</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<infor-licenses version="1.0">
+  <production name="Flow" version="V9" />
+  <license component="Server" version="V8">
+    <formal>false</formal>
+    <licensee>Standard</licensee>
+    <cpus>nolimited</cpus>
+    <expiration>20210509</expiration>
+    <serial>svcfhh650916</serial>
+    <units>nolimited</units>
+    <ip>any</ip>
+    <userinfor>\u519c\u4e1a\u519c\u6751\u90e8</userinfor>
+    <signature>nNsbUSMrknNWtZZMSK2gEv1b/6Q/9zs2O75fSJ0f8XGLzwntIlZjrGwxmB/qFyKHWB2DpqIiPYodC0fxm3BU+fb60csd5x7+Ofbc6NcNKXvuPe+wIc8pZTFuyZbwPUhEyo4E7DbVoxo1RcPFgr31SEyyTBujXox/byyki10vrishuHytgZ/BZVFXrBPLJsID07V0Qsw6wjkZJA81ti4M4Lv2DHmkDoKVzV30hOKJk4rtCLzTKjHuKnJ1OF/vg3hN/iec2QS2pIsR5P1f6GAJy7HigOOAIJmd</signature>
+  </license>
+  <license component="Flow" version="V9">
+    <formal>false</formal>
+    <licensee>Standard</licensee>
+    <cpus>nolimited</cpus>
+    <expiration>20210509</expiration>
+    <serial>svcfhh650916</serial>
+    <units>nolimited</units>
+    <ip>any</ip>
+    <userinfor>\u519c\u4e1a\u519c\u6751\u90e8</userinfor>
+    <signature>nNsbUSMrknNWtZZMSK2gEv1b/6Q/9zs2O75fSJ0f8XFiuya6Ddz9PbhEalNIuXLRUVesE8smwgMGSlGYkFN1S8IBuYZ58h4wtXTzgVqCJxGX7rnW/G2RuC+qvCco7pEfOMDmIFseDMabJfC/403RgLPx9NTD+CpCJQkLLmYmwzLXDxosRxseEsj3sMUDs4p66GRWULAuOq4hWT5MpEpzZ/wp0ZRC2C1pH0EbZIkBRbjPa+sDi2CUWwrlugNBDyYAnHtEGfbnqKxewG3wBjjAjt8sMLVd04jh</signature>
+  </license>
+</infor-licenses>
+

@@ -1,0 +1,754 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.PapersMapper">
+    <resultMap id="papersByNumberResultMap" type="com.sofn.fdpi.model.Papers">
+        <id column="ID" property="id"></id>
+        <result column="PAPERS_TYPE" property="papersType"></result>
+        <result column="PAPERS_NUMBER" property="papersNumber"></result>
+        <result column="COMP_NAME" property="compName"></result>
+        <result column="DATA_START" property="dataStart"></result>
+        <result column="DATA_CLOS" property="dataClos"></result>
+        <result column="ISSUE_UNIT" property="issueUnit"></result>
+        <result column="ISSUE_DATE" property="issueDate"></result>
+        <!--        <result column="ISSUE_SPE" property="issueSpe"></result>-->
+        <result column="LEGAL" property="legal"></result>
+    </resultMap>
+    <select id="getPaperByPapersNumber" resultMap="papersByNumberResultMap">
+        select ID,PAPERS_TYPE,PAPERS_NUMBER,COMP_NAME,
+        ISSUE_SPE,DATA_START,DATA_CLOS,ISSUE_UNIT,ISSUE_DATE,LEGAL
+         from  PAPERS p
+        where PAPERS_NUMBER=#{papersNumber} and  DEL_FLAG='N'
+    </select>
+    <resultMap id="papersInfo" type="com.sofn.fdpi.model.Papers">
+        <id column="ID" property="id"></id>
+        <result column="PAPERS_TYPE" property="papersType"></result>
+        <result column="PAPERS_NUMBER" property="papersNumber"></result>
+        <result column="COMP_NAME" property="compName"></result>
+        <result column="LEGAL" property="legal"></result>
+        <result column="TECHNICAL_DIRECTOR" property="technicalDirector"></result>
+        <result column="PURPOSE" property="purpose"></result>
+        <result column="PURPOSE_NAME" property="purposeName"></result>
+        <!--        <result column="ISSUE_SPE" property="issueSpe"></result>-->
+        <result column="DATA_START" property="dataStart"></result>
+        <result column="APPLY_NUM" property="applyNum"></result>
+        <result column="DATA_CLOS" property="dataClos"></result>
+        <result column="ISSUE_UNIT" property="issueUnit"></result>
+        <result column="ISSUE_DATE" property="issueDate"></result>
+        <result column="SOURCE" property="source"></result>
+        <result column="COMP_ID" property="compId"></result>
+        <result column="SOURCE_FORM" property="sourceForm"></result>
+        <result column="MODE_OPERATION" property="modeOperation"></result>
+        <result column="SALES_DESTINATION" property="salesDestination"></result>
+        <result column="COMP_TYPE" property="compType"/>
+        <!--        <result column="SPE_ID" property="speId"></result>-->
+    </resultMap>
+    <select id="getPapersById" resultMap="papersInfo">
+    select A.ID,A.PAPERS_TYPE,A.PAPERS_NUMBER,A.COMP_NAME,A.COMP_TYPE
+           -- ,B.SPE_NAME ISSUE_SPE
+           ,A.LEGAL,A.TECHNICAL_DIRECTOR,A.APPLY_NUM
+           ,A.DATA_START,A.DATA_CLOS,A.ISSUE_UNIT
+           ,A.ISSUE_DATE,A.SOURCE,A.COMP_ID,A.PURPOSE
+           ,A.SOURCE_FORM
+           ,A.TECHNICAL_DIRECTOR
+           ,(case A.PURPOSE when '1' then '物种保护'
+                          when '2' then '经营利用'
+                          when '3' then '人工繁育'
+                          when '4' then '科学研究'
+                          when '5' then '其他'
+           end ) PURPOSE_NAME
+           ,A.MODE_OPERATION
+           ,A.SALES_DESTINATION
+           ,A.COMP_ADDRESS
+           -- ,A.SPE_ID
+    from  PAPERS A
+    -- left join TB_SPECIES B on A.SPE_ID=B.ID
+    where A.ID=#{id}
+ </select>
+    <update id="removePapers">
+          update PAPERS set DEL_FLAG='Y' where ID=#{id}
+    </update>
+    <resultMap id="papersList" type="com.sofn.fdpi.vo.PapersListVo">
+        <id column="ID" property="id"></id>
+        <result column="PAPERS_TYPE" property="papersType"></result>
+        <result column="PAPERS_NUMBER" property="papersNumber"></result>
+        <result column="COMP_NAME" property="compName"></result>
+        <result column="LEGAL" property="legal"></result>
+        <result column="ISSUE_SPE" property="issueSpe"></result>
+        <result column="DATA_CLOS" property="dataClos"></result>
+        <result column="COMP_TYPE" property="compType"></result>
+        <result column="PAR_STATUS" property="parStatus"></result>
+    </resultMap>
+    <select id="getArtificialPaperList" resultMap="papersList">
+        select A.ID,A.PAPERS_TYPE, A.PROVINCIAL_ID, A.CITY_ID, A.AREA_ID
+        ,A.PAPERS_NUMBER,A.COMP_NAME,A.LEGAL,A.COMP_TYPE, A.PAR_STATUS
+        ,C.ISSUE_SPE
+        ,A.DATA_CLOS
+        FROM PAPERS A
+        left join (SELECT C.PAPERS_ID,replace(wmsys.wm_concat(D.SPE_NAME),',','、') ISSUE_SPE
+        FROM PAPERS_SPEC C LEFT JOIN TB_SPECIES D ON C.SPEC_ID=D.ID and C.DEL_FLAG='N' and D.DEL_FLAG='N' GROUP BY
+        C.PAPERS_ID
+        ) C on A.ID=C.PAPERS_ID
+        where
+        A.DEL_FLAG='N'
+        <if test="papersType!=null and papersType!=''">
+            and A.PAPERS_TYPE=#{papersType}
+        </if>
+        <if test="papersType==null or papersType==''">
+            and (A.PAPERS_TYPE='1' or A.PAPERS_TYPE='2')
+        </if>
+        <if test="papersNumber!=null and papersNumber!=''">
+            and A.PAPERS_NUMBER like '%'||#{papersNumber}||'%'
+        </if>
+        <if test="issueSpe!=null and issueSpe!=''">
+            and C.ISSUE_SPE like '%'||#{issueSpe}||'%'
+        </if>
+        <if test="compName!=null and compName!=''">
+            and A.COMP_NAME like '%'||#{compName}||'%'
+        </if>
+        <if test="province!= null and province!=''">
+            and A.PROVINCIAL_ID=#{province}
+        </if>
+        <if test="city!= null and city!=''">
+            and A.CITY_ID=#{city}
+        </if>
+        <if test="area!= null and area!=''">
+            and A.AREA_ID=#{area}
+        </if>
+        order by A.CREATE_TIME desc,A.PAPERS_NUMBER desc
+    </select>
+    <select id="getManagementPaperList" resultMap="papersList">
+        select A.ID,A.PAPERS_TYPE,A.PROVINCIAL_ID, A.CITY_ID, A.AREA_ID
+        ,A.PAPERS_NUMBER,A.COMP_NAME,A.LEGAL,A.COMP_TYPE, A.PAR_STATUS
+        ,C.ISSUE_SPE
+        ,A.DATA_CLOS
+        FROM PAPERS A
+        left join (SELECT C.PAPERS_ID,replace(wmsys.wm_concat(D.SPE_NAME),',','、') ISSUE_SPE
+        FROM PAPERS_SPEC C LEFT JOIN TB_SPECIES D ON C.SPEC_ID=D.ID and C.DEL_FLAG='N' and D.DEL_FLAG='N' GROUP BY
+        C.PAPERS_ID
+        ) C on A.ID=C.PAPERS_ID
+        where
+        A.DEL_FLAG='N'
+        and (A.PAPERS_TYPE='3' or A.PAPERS_TYPE = '4')
+        <if test="papersNumber!=null and papersNumber!=''">
+            and A.PAPERS_NUMBER like '%'||#{papersNumber}||'%'
+        </if>
+        <if test="issueSpe!=null and issueSpe!=''">
+            and C.ISSUE_SPE like '%'||#{issueSpe}||'%'
+        </if>
+        <if test="compName!=null and compName!=''">
+            and A.COMP_NAME like '%'||#{compName}||'%'
+        </if>
+        <if test="province!= null and province!=''">
+            and A.PROVINCIAL_ID=#{province}
+        </if>
+        <if test="city!= null and city!=''">
+            and A.CITY_ID=#{city}
+        </if>
+        <if test="area!= null and area!=''">
+            and A.AREA_ID=#{area}
+        </if>
+        order by A.CREATE_TIME desc,A.PAPERS_NUMBER desc
+    </select>
+
+    <resultMap id="selectResultMap" type="com.sofn.fdpi.vo.SelectVo">
+        <result column="ID" property="key" jdbcType="VARCHAR"></result>
+        <result column="PAPERS_NUMBER" property="val" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <select id="listPapersForSelect" parameterType="java.util.Map" resultMap="selectResultMap">
+        select ID,PAPERS_NUMBER
+        FROM PAPERS
+        <where>
+            DEL_FLAG='N'
+            <if test="compName!=null and compName!=''">
+                and COMP_NAME=#{compName}
+            </if>
+            <if test="papersId!=null and papersId!=''">
+                and (PAR_STATUS='0' and id=#{papersId} or ((PAR_STATUS='1' or PAR_STATUS='3' or PAR_STATUS='5') ))
+            </if>
+            <if test="papersId==null or papersId==''">
+                and (PAR_STATUS='0' or (SOURCE='0' and (PAR_STATUS='3' or PAR_STATUS='5')))
+            </if>
+            <if test="provinceCode!=null and provinceCode!=''">
+                and PROVINCIAL_ID=#{provinceCode}
+            </if>
+            and PAPERS_TYPE=#{papersType}
+        </where>
+        order by CREATE_TIME desc
+    </select>
+    <resultMap id="listForBindingResultMap" type="com.sofn.fdpi.vo.PapersVo">
+        <id column="ID" property="id" jdbcType="VARCHAR"></id>
+        <result column="PAPERS_TYPE" property="papersType" jdbcType="VARCHAR"></result>
+        <result column="PAPERS_TYPE_NAME" property="papersTypeName" jdbcType="VARCHAR"></result>
+        <result column="PAPERS_NUMBER" property="papersNumber" jdbcType="VARCHAR"></result>
+        <result column="COMP_NAME" property="compName" jdbcType="VARCHAR"></result>
+        <result column="COMP_CODE" property="compCode" jdbcType="VARCHAR"></result>
+        <result column="COMP_TYPE" property="compType" jdbcType="VARCHAR"></result>
+        <result column="APPLY_NUM" property="applyNum" jdbcType="VARCHAR"></result>
+        <result column="LEGAL" property="legal" jdbcType="VARCHAR"></result>
+        <result column="ISSUE_SPE" property="issueSpe" jdbcType="VARCHAR"></result>
+        <result column="DATA_CLOS" property="dataClos" jdbcType="VARCHAR"></result>
+        <result column="PAR_STATUS" property="parStatus" jdbcType="VARCHAR"></result>
+        <result column="PAR_STATUS_NAME" property="parStatusName" jdbcType="VARCHAR"></result>
+    </resultMap>
+    <select id="listForBinding" parameterType="java.util.Map" resultMap="listForBindingResultMap">
+        select A.ID,A.PAPERS_TYPE
+        ,A.PAPERS_NUMBER,B.COMP_NAME,A.LEGAL,a.APPLY_NUM
+        ,B.COMP_CODE
+        ,B.COMP_TYPE
+        ,C.SPE_NAMES ISSUE_SPE
+        ,A.DATA_CLOS,A.PAR_STATUS
+        FROM PAPERS A
+        left join TB_COMP B on A.COMP_ID=B.ID
+        left join (SELECT C.PAPERS_ID,replace(wmsys.wm_concat(D.SPE_NAME),',','、') SPE_NAMES
+        FROM PAPERS_SPEC C LEFT JOIN TB_SPECIES D ON C.SPEC_ID=D.ID
+        Where C.DEL_FLAG='N' GROUP BY C.PAPERS_ID
+        ) C on A.ID=C.PAPERS_ID
+        <where>
+            A.DEL_FLAG='N'
+            and A.PAR_STATUS!='0'
+            <if test="papersType!=null and papersType!=''">
+                and A.PAPERS_TYPE=#{papersType}
+            </if>
+            <if test="papersNumber!=null and papersNumber!=''">
+                and A.PAPERS_NUMBER like '%'||#{papersNumber}||'%'
+            </if>
+            <if test="parStatus!=null and parStatus!=''">
+                and A.PAR_STATUS=#{parStatus}
+            </if>
+            <if test="issueSpe!=null and issueSpe!=''">
+                and C.SPE_NAMES like '%'||#{issueSpe}||'%'
+            </if>
+            <if test="compId!=null and compId!=''">
+                and B.ID=#{compId}
+            </if>
+            <if test="compName!=null and compName!=''">
+                and B.COMP_NAME like '%'||#{compName}||'%'
+            </if>
+        </where>
+        order by A.UPDATE_TIME desc
+    </select>
+    <!--修改状态-->
+    <update id="updateStatusById" parameterType="java.util.Map">
+        UPDATE PAPERS
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parStatus!=null and parStatus!=''">
+                PAR_STATUS=#{parStatus},
+            </if>
+            <if test="updateTime!=null">
+                UPDATE_TIME=#{updateTime},
+            </if>
+            <if test="updateUserId!=null and updateUserId!=''">
+                UPDATE_USER_ID=#{updateUserId},
+            </if>
+            <if test="applyNum!=null and applyNum!=''">
+                APPLY_NUM=#{applyNum},
+            </if>
+            <if test="compId!=null and compId!=''">
+                COMP_ID=#{compId},
+            </if>
+            <if test="isEnable!=null and isEnable!=''">
+                IS_ENABLE=#{isEnable},
+            </if>
+        </trim>
+        WHERE ID=#{papersId}
+    </update>
+
+    <!--修改状态-->
+    <update id="updateStatusByIds" parameterType="java.util.Map">
+        UPDATE PAPERS
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parStatus!=null and parStatus!=''">
+                PAR_STATUS=#{parStatus},
+            </if>
+            <if test="updateTime!=null">
+                UPDATE_TIME=#{updateTime},
+            </if>
+            <if test="updateUserId!=null and updateUserId!=''">
+                UPDATE_USER_ID=#{updateUserId},
+            </if>
+            <if test="compId!=null and compId!=''">
+                COMP_ID=#{compId},
+            </if>
+            <if test="isEnable!=null and isEnable!=''">
+                IS_ENABLE=#{isEnable},
+            </if>
+        </trim>
+        WHERE ID in
+        <foreach collection="papersIdList" index="index" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+
+    </update>
+    <resultMap id="papersInfoResultMap" type="com.sofn.fdpi.vo.PapersBindingVo">
+        <id column="ID" property="papersId" jdbcType="VARCHAR"></id>
+        <result column="COMP_ID" property="compId" jdbcType="VARCHAR"></result>
+        <result column="COMP_NAME" property="compName" jdbcType="VARCHAR"></result>
+        <result column="COMP_TYPE" property="compType" jdbcType="VARCHAR"></result>
+        <result column="COMP_PROVINCE" property="province" jdbcType="VARCHAR"></result>
+        <result column="COMP_CITY" property="city" jdbcType="VARCHAR"></result>
+        <result column="COMP_DISTRICT" property="district" jdbcType="VARCHAR"></result>
+        <result column="REGION_IN_CH" property="region" jdbcType="VARCHAR"></result>
+        <result column="CONTACT_ADDRESS" property="addr" jdbcType="VARCHAR"></result>
+        <result column="POST_ADDRESS" property="postcode" jdbcType="VARCHAR"></result>
+        <result column="LEGAL" property="legal" jdbcType="VARCHAR"></result>
+        <result column="LINKMAN" property="linKMan" jdbcType="VARCHAR"></result>
+        <result column="PHONE" property="phone" jdbcType="VARCHAR"></result>
+        <result column="EMAIL" property="email" jdbcType="VARCHAR"></result>
+        <result column="BUS_LICENSE_FILE_NAME" property="busLicenseFileName" jdbcType="VARCHAR"></result>
+        <result column="BUS_LICENSE_FILE_ID" property="busLicenseFileId" jdbcType="VARCHAR"></result>
+        <result column="BUS_LICENSE_FILE_PATH" property="busLicenseFilePath" jdbcType="VARCHAR"></result>
+        <result column="PAPERS_TYPE" property="papersType" jdbcType="VARCHAR"></result>
+        <result column="PAPERS_TYPE_NAME" property="papersTypeName" jdbcType="VARCHAR"></result>
+        <result column="PAPERS_NUMBER" property="papersNumber" jdbcType="VARCHAR"></result>
+        <result column="TECHNICAL_DIRECTOR" property="technicalDirector" jdbcType="VARCHAR"></result>
+        <result column="PURPOSE" property="purpose" jdbcType="VARCHAR"></result>
+        <result column="PURPOSE_NAME" property="purposeName" jdbcType="VARCHAR"></result>
+        <result column="DATA_START" property="dataStart" jdbcType="VARCHAR"></result>
+        <result column="DATA_CLOS" property="dataClos" jdbcType="VARCHAR"></result>
+        <result column="ISSUE_UNIT" property="issueUnit" jdbcType="VARCHAR"></result>
+        <result column="ISSUE_DATE" property="issueDate" jdbcType="VARCHAR"></result>
+        <result column="MODE_OPERATION" property="modeOperation" jdbcType="VARCHAR"></result>
+        <result column="SALES_DESTINATION" property="salesDestination" jdbcType="VARCHAR"></result>
+        <result column="SOURCE" property="source" jdbcType="VARCHAR"></result>
+        <result column="COMP_ADDRESS" property="source" jdbcType="VARCHAR"></result>
+        <result column="APPLY_NUM" property="applyNum" jdbcType="VARCHAR"></result>
+    </resultMap>
+    <select id="getPapersInfo" resultMap="papersInfoResultMap">
+        select A.ID,A.COMP_ID,B.COMP_NAME,B.COMP_PROVINCE,B.COMP_CITY,B.REGION_IN_CH,A.APPLY_NUM
+                    ,B.COMP_DISTRICT,B.CONTACT_ADDRESS,B.POST_ADDRESS,A.LEGAL,B.COMP_TYPE
+                    ,B.LINKMAN,B.PHONE,B.EMAIL,B.BUS_LICENSE_FILE_NAME
+                    ,B.BUS_LICENSE_FILE_ID,B.BUS_LICENSE_FILE_PATH
+                    ,A.PAPERS_TYPE
+                    ,(CASE A.PAPERS_TYPE WHEN '1' THEN '人工繁育许可证' WHEN '2' THEN '驯养繁殖许可证' WHEN '3' THEN '经营利用许可证' WHEN '4' THEN '无证书备案' END) PAPERS_TYPE_NAME
+                    ,A.PAPERS_NUMBER
+                    ,A.TECHNICAL_DIRECTOR
+                    ,A.PURPOSE
+                    ,(case A.PURPOSE when '1' then '物种保护'
+                          when '2' then '经营利用'
+                          when '3' then '人工繁育'
+                          when '4' then '科学研究'
+                          when '5' then '其他'
+                     end ) PURPOSE_NAME
+                    ,A.DATA_START,A.DATA_CLOS
+                    ,A.ISSUE_UNIT,A.ISSUE_DATE
+                    ,A.MODE_OPERATION
+                    ,A.SALES_DESTINATION
+                    ,A.SOURCE
+        FROM PAPERS A
+        left join TB_COMP B on A.COMP_ID=B.ID
+        where A.ID=#{papersId}
+    </select>
+    <resultMap id="PapersTypeByissueSpe" type="com.sofn.fdpi.model.Papers">
+        <result property="papersType" column="PAPERS_TYPE"></result>
+    </resultMap>
+
+    <resultMap id="listForBindingApproveResultMap" type="com.sofn.fdpi.vo.PapersVo">
+        <id column="ID" property="id" jdbcType="VARCHAR"></id>
+        <result column="PAPERS_TYPE" property="papersType" jdbcType="VARCHAR"></result>
+        <result column="PAPERS_TYPE_NAME" property="papersTypeName" jdbcType="VARCHAR"></result>
+        <result column="COMP_NAME" property="compName" jdbcType="VARCHAR"></result>
+        <result column="COMP_TYPE" property="compType" jdbcType="VARCHAR"></result>
+        <result column="APPLY_NUM" property="applyNum" jdbcType="VARCHAR"></result>
+        <result column="LINKMAN" property="linkMan" jdbcType="VARCHAR"></result>
+        <result column="REGION_IN_CH" property="regionInCh" jdbcType="VARCHAR"></result>
+        <result column="PAR_STATUS" property="parStatus" jdbcType="VARCHAR"></result>
+        <result column="PAR_STATUS_NAME" property="parStatusName" jdbcType="VARCHAR"></result>
+    </resultMap>
+    <select id="listForBindingApprove" parameterType="java.util.Map" resultMap="listForBindingApproveResultMap">
+        select
+        A.ID
+        ,A.PAPERS_TYPE
+        ,B.COMP_NAME
+        ,B.LINKMAN
+        ,B.COMP_TYPE
+        ,COMP_PROVINCE
+        ,COMP_CITY
+        ,COMP_DISTRICT
+        ,A.APPLY_NUM
+        ,B.REGION_IN_CH
+        ,A.PAR_STATUS
+        from
+        (
+        select wmsys.wm_concat(C.ID) AS ID
+        ,wmsys.wm_concat(C.PAPERS_TYPE) AS PAPERS_TYPE
+        ,C.APPLY_NUM
+        ,MAX(C.PAR_STATUS) PAR_STATUS
+        ,C.COMP_ID
+        ,MAX(C.UPDATE_TIME) UPDATE_TIME
+        from  PAPERS C
+        where C.source='0' AND C.PAR_STATUS &gt;='2' and C.DEL_FLAG='N'
+        group by C.COMP_ID, C.APPLY_NUM
+        UNION ALL
+        select C.ID
+        ,C.PAPERS_TYPE
+        ,C.APPLY_NUM
+        ,C.PAR_STATUS
+        ,C.COMP_ID
+        ,C.UPDATE_TIME
+        FROM PAPERS C
+        where
+        C.DEL_FLAG='N'
+        AND C.PAR_STATUS &gt;='2' AND C.source != '0'
+        ) A
+        left join TB_COMP B on A.COMP_ID=B.ID
+        <where>
+            <if test="province!=null and province!=''">
+                and B.COMP_PROVINCE=#{province}
+            </if>
+            <if test="city!=null and city!=''">
+                and B.COMP_CITY = #{city}
+            </if>
+            <if test="district!=null and district!=''">
+                and B.COMP_DISTRICT=#{district}
+            </if>
+            <if test="compName!=null and compName!=''">
+                and B.COMP_NAME like '%'||#{compName}||'%'
+            </if>
+            <if test="papersType!=null and papersType!=''">
+                and A.PAPERS_TYPE like '%'|| #{papersType}||'%'
+            </if>
+            <if test="parStatus!=null and parStatus!=''">
+                and A.PAR_STATUS = #{parStatus}
+            </if>
+            <if test="compId!=null and compId!=''">
+                and A.COMP_ID=#{compId}
+            </if>
+            <if test="sysDirectOrgId!=null and sysDirectOrgId!=''">
+                and B.DIRECLY_ID=#{sysDirectOrgId}
+            </if>
+            <if test="sysOrgProvince!=null and sysOrgProvince!=''">
+                and B.COMP_PROVINCE=#{sysOrgProvince}
+            </if>
+            <if test="sysOrgCity!=null and sysOrgCity!=''">
+                and B.COMP_CITY = #{sysOrgCity}
+            </if>
+            <if test="sysOrgDistrict!=null and sysOrgDistrict!=''">
+                and B.COMP_DISTRICT=#{sysOrgDistrict}
+            </if>
+            <if test="sysStatus!=null and sysStatus!=''">
+                and A.PAR_STATUS &gt;=#{sysStatus}
+            </if>
+            <choose>
+                <!--区级初审权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.fdpi.constants.Constants@REGION_TYPE_COUNTY">
+                    and A.PAR_STATUS >= '2' and A.PAR_STATUS !='7' and B.COMP_DISTRICT = #{regionLastCode}
+                </when>
+                <!--市级初审权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.fdpi.constants.Constants@REGION_TYPE_CITY">
+                    and A.PAR_STATUS >= '2' and A.PAR_STATUS !='7' and B.COMP_CITY = #{regionLastCode}
+                </when>
+                <!--省级有初审和复审权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.fdpi.constants.Constants@REGION_TYPE_PROVINCE">
+                    and A.PAR_STATUS >= '2' and A.PAR_STATUS !='7' and B.COMP_PROVINCE = #{regionLastCode}
+                </when>
+            </choose>
+        </where>
+        order by A.UPDATE_TIME desc,A.PAR_STATUS asc
+    </select>
+    <select id="listForBindingApproveNew" parameterType="java.util.Map" resultMap="listForBindingApproveResultMap">
+        select
+        A.ID
+        ,A.PAPERS_TYPE
+        ,B.COMP_NAME
+        ,B.LINKMAN
+        ,B.COMP_TYPE
+        ,A.APPLY_NUM
+        ,B.REGION_IN_CH
+        ,A.PAR_STATUS
+        from
+        (
+            select wmsys.wm_concat(C.ID) AS ID
+            ,wmsys.wm_concat(C.PAPERS_TYPE) AS PAPERS_TYPE
+            ,C.APPLY_NUM
+            ,MAX(C.PAR_STATUS) PAR_STATUS
+            ,C.COMP_ID
+            ,MAX(C.UPDATE_TIME) UPDATE_TIME
+            from  PAPERS C
+            where C.source='0' AND C.PAR_STATUS &gt;='2' and C.DEL_FLAG='N'
+            group by C.COMP_ID, C.APPLY_NUM
+            UNION ALL
+            select C.ID
+            ,C.APPLY_NUM
+            ,C.PAPERS_TYPE
+            ,C.PAR_STATUS
+            ,C.COMP_ID
+            ,C.UPDATE_TIME
+            FROM PAPERS C
+            where
+            C.DEL_FLAG='N'
+            AND C.PAR_STATUS &gt;='2' AND C.source != '0'
+        ) A
+        left join TB_COMP B on A.COMP_ID=B.ID
+        <where>
+            <if test="province!=null and province!=''">
+                and B.COMP_PROVINCE=#{province}
+            </if>
+            <if test="city!=null and city!=''">
+                and B.COMP_CITY = #{city}
+            </if>
+            <if test="district!=null and district!=''">
+                and B.COMP_DISTRICT=#{district}
+            </if>
+            <if test="compName!=null and compName!=''">
+                and B.COMP_NAME like '%'||#{compName}||'%'
+            </if>
+            <if test="papersType!=null and papersType!=''">
+                and A.PAPERS_TYPE like '%'|| #{papersType}||'%'
+            </if>
+            <if test="parStatus!=null and parStatus!=''">
+                and A.PAR_STATUS = #{parStatus}
+            </if>
+            <if test="compId!=null and compId!=''">
+                and A.COMP_ID=#{compId}
+            </if>
+            <if test="sysDirectOrgId!=null and sysDirectOrgId!=''">
+                and B.DIRECLY_ID=#{sysDirectOrgId}
+            </if>
+            <if test="sysOrgProvince!=null and sysOrgProvince!=''">
+                and B.COMP_PROVINCE=#{sysOrgProvince}
+            </if>
+            <if test="sysOrgCity!=null and sysOrgCity!=''">
+                and B.COMP_CITY = #{sysOrgCity}
+            </if>
+            <if test="sysOrgDistrict!=null and sysOrgDistrict!=''">
+                and B.COMP_DISTRICT=#{sysOrgDistrict}
+            </if>
+            <if test="sysStatus!=null and sysStatus!=''">
+                and A.PAR_STATUS &gt;=#{sysStatus}
+            </if>
+            <if test="sysDirectAndProvinceOrgId!=null and sysDirectAndProvinceOrgId!=''">
+                -- 既是直属又是省级,能看直属上报和省内初审通过的数据
+                <!-- and ((B.DIRECLY_ID=#{sysDirectAndProvinceOrgId} and A.PAR_STATUS &gt;='2') or (B.COMP_PROVINCE=#{sysOrgProvince} and A.PAR_STATUS &gt;='4'))-->
+                and B.DIRECLY_ID=#{sysDirectAndProvinceOrgId,jdbcType=VARCHAR} and A.PAR_STATUS &gt;='2'
+            </if>
+            <!-- 只要不是第三方企业就不能看到已经撤回的数据 -->
+            <if test="compId==null or compId==''">
+                and A.PAR_STATUS !='7'
+            </if>
+        </where>
+        order by A.UPDATE_TIME desc,A.PAR_STATUS asc
+    </select>
+    <resultMap id="papersAndYearInspectResultMap" type="com.sofn.fdpi.vo.PapersAndYearInspectVo">
+        <id column="ID" property="id" jdbcType="VARCHAR"></id>
+        <result column="PAPERS_TYPE" property="papersType" jdbcType="VARCHAR"></result>
+        <result column="PAPERS_TYPE_NAME" property="papersTypeName" jdbcType="VARCHAR"></result>
+        <result column="PAPERS_NUMBER" property="papersNumber" jdbcType="VARCHAR"></result>
+        <result column="ISSUE_SPE" property="issueSpe" jdbcType="VARCHAR"></result>
+        <result column="ISSUE_NUM" property="issueNumber" jdbcType="INTEGER"></result>
+        <result column="DATA_START" property="dataStart" jdbcType="VARCHAR"></result>
+        <result column="DATA_CLOS" property="dataClos" jdbcType="VARCHAR"></result>
+        <result column="ISSUE_UNIT" property="issueUnit" jdbcType="VARCHAR"></result>
+        <result column="ISSUE_DATE" property="issueDate" jdbcType="VARCHAR"></result>
+        <result column="FILE_NAME" property="fileName" jdbcType="VARCHAR"></result>
+        <result column="FILE_ID" property="fileId" jdbcType="VARCHAR"></result>
+        <result column="FILE_PATH" property="filePath" jdbcType="VARCHAR"></result>
+    </resultMap>
+    <update id="deleteBindingByPapersId" parameterType="java.util.Map">
+        UPDATE PAPERS
+                set PAR_STATUS=#{status},
+                    UPDATE_TIME=#{updateTime},
+                    UPDATE_USER_ID=#{updateUserId}
+        WHERE ID=#{papersId}
+    </update>
+
+    <select id="getPaperByNumber" resultType="com.sofn.fdpi.model.Papers">
+        select ID from PAPERS where PAPERS_NUMBER =#{papersNumber} and  ID!=#{id} and DEL_FLAG='N' and  (PAPERS_TYPE='1' or PAPERS_TYPE='2')
+    </select>
+    <select id="getPaperByNumber1" resultType="com.sofn.fdpi.model.Papers">
+        select ID from PAPERS where PAPERS_NUMBER =#{papersNumber} and  ID!=#{id}  and DEL_FLAG='N' and  PAPERS_TYPE='3'
+    </select>
+
+    <update id="updateIsEnableByPapersType" parameterType="java.lang.String">
+        update PAPERS set IS_ENABLE='0'
+        <where>
+            IS_ENABLE='1'
+            and COMP_ID=#{compId}
+            <if test='papersType=="1" or papersType=="2"'>
+                and PAPERS_TYPE in ('1','2')
+            </if>
+            <if test='papersType=="3"'>
+                and PAPERS_TYPE ='3'
+            </if>
+        </where>
+    </update>
+
+    <select id="getPrintList" resultType="com.sofn.fdpi.vo.PaperPrintVo">
+        SELECT
+        PAPERS.ID,
+        (CASE PAPERS.PAPERS_TYPE WHEN '1' THEN '人工繁育许可证' WHEN '2' THEN '驯养繁殖许可证' WHEN '3' THEN '经营利用许可证' END) as
+        PAPERS_TYPE,
+        PAPERS.PAPERS_NUMBER,
+        PAPERS.COMP_NAME,
+        PAPERS.LEGAL,
+        PAPERS.DATA_CLOS,
+        (CASE PAPERS.IS_PRINT WHEN '0' THEN '未打印'
+        WHEN '1' THEN '已打印' END) as IS_PRINT,
+        (CASE PAPERS.IS_COPY_PRINT WHEN '0' THEN '未打印'
+        WHEN '1' THEN '未打印'
+        WHEN '2' THEN '未打印'
+        WHEN '3' THEN '已打印' END) as IS_COPY_PRINT
+        from
+        PAPERS
+        where
+        PAPERS.DEL_FLAG='N'
+        <if test="papersType!= null and papersType != ''">
+            and PAPERS.PAPERS_TYPE like '%'||#{papersType}||'%'
+        </if>
+        <if test="isPrint != null and isPrint!=''">
+            and PAPERS.IS_PRINT like '%'||#{isPrint}||'%'
+        </if>
+        <if test="isCopyPrint != null and isCopyPrint!=''">
+            and PAPERS.IS_COPY_PRINT like '%'||#{isCopyPrint}||'%'
+        </if>
+        <if test="compName!= null and compName!=''">
+            and PAPERS.COMP_NAME like '%'||#{compName}||'%'
+        </if>
+        <if test="papersNumber!=null and papersNumber!=''">
+            and PAPERS.PAPERS_NUMBER like '%'||#{papersNumber}||'%'
+        </if>
+        <if test="province!= null and province!=''">
+            and PAPERS.PROVINCIAL_ID=#{province}
+        </if>
+        order by PAPERS.CREATE_TIME desc
+    </select>
+    <resultMap id="rs4" type="com.sofn.fdpi.vo.LicenceVo">
+        <id property="id" column="ID"></id>
+        <result property="papersType" column="PAPERS_TYPE"></result>
+        <result property="papersNumber" column="PAPERS_NUMBER"></result>
+        <result property="compName" column="COMP_NAME"></result>
+        <result property="dataClos" column="DATA_CLOS"></result>
+        <result property="proLevel" column="PRO_LEVEL"></result>
+    </resultMap>
+    <select id="getLicence" resultMap="rs4">
+        SELECT
+        ID,
+        PAPERS_TYPE,
+        PAPERS_NUMBER,
+        COMP_NAME,
+        DATA_CLOS,
+        PRO_LEVEL
+        FROM
+        (
+        SELECT
+        ID,
+        (CASE PAPERS_TYPE WHEN '1' THEN '人工繁育许可证' WHEN '2' THEN '驯养繁殖许可证' WHEN '3' THEN '经营利用许可证' END) as PAPERS_TYPE,
+        PAPERS_NUMBER as PAPERS_NUMBER,
+        COMP_NAME AS COMP_NAME,
+        DATA_CLOS AS DATA_CLOS,
+        '' AS PRO_LEVEL,
+        CREATE_TIME AS CREATE_TIME
+        FROM
+        papers
+        WHERE
+        DEL_FLAG = 'N'
+        <if test="province!= null and province!=''">
+            AND PROVINCIAL_ID = #{province}
+        </if>
+        UNION ALL
+        SELECT
+        ID,
+        PAPERS_TYPE,
+        PAPERS_NUMBER as PAPERS_NUMBER,
+        CAP_UNIT AS COMP_NAME,
+        DATA_CLOS AS DATA_CLOS,
+        PRO_LEVEL,
+        CREATE_TIME AS CREATE_TIME
+        FROM
+        CAPTURE
+        WHERE
+        DEL_FLAG = 'N'
+        <if test="province!= null and province!=''">
+            AND PROVINCE = #{province}
+        </if>
+        )
+        WHERE 1=1
+        <if test="compName!= null and compName!=''">
+            and COMP_NAME LIKE '%'||#{compName}||'%'
+        </if>
+        ORDER BY
+        CREATE_TIME desc ,PAPERS_NUMBER DESC
+    </select>
+    <select id="getCompByCompName" parameterType="java.lang.String" resultType="com.sofn.fdpi.vo.CompInRegisterVo">
+    select a.ADDR,a.LEGAL
+    from
+    (select COMP_ADDRESS as ADDR,LEGAL
+      from papers
+        where COMP_NAME=#{compName}
+                 and DEL_FLAG='N'
+        ORDER BY CREATE_TIME DESC
+    )a
+	LIMIT 1 OFFSET 0
+    </select>
+    <select id="getCache" resultType="com.sofn.fdpi.vo.PapersCacheVo">
+SELECT
+	p.id,
+	p.PAPERS_NUMBER,
+	p.PAR_STATUS,
+	sp.SPEC_ID
+FROM
+	papers p
+	LEFT JOIN PAPERS_SPEC sp ON p.id = sp.papers_ID
+	AND p.DEL_FLAG = 'N'
+	AND sp.DEL_FLAG = 'N'
+    </select>
+    <select id="getTodayMaxApplyNum" resultType="java.lang.String">
+        SELECT max(apply_num) FROM papers WHERE apply_num like #{todayStr}||'%'
+    </select>
+    <select id="getMaxPaperNumber" resultType="java.lang.String">
+        SELECT max(papers_number) FROM papers WHERE del_flag = 'N' and papers_type = '4' and papers_number like #{paperNumber}||'%'
+    </select>
+    <select id="lastMonthPrompting" parameterType="java.util.Map" resultMap="papersInfoResultMap">
+        select papers_number, data_clos from papers
+        <where>
+            <if test="compId != null and compId!=''">
+                and comp_id = #{compId}
+            </if>
+            <if test="papersType != null and papersType!=''">
+                and papers_type = #{papersType}
+            </if>
+            <if test="nextMoth != null  ">
+                and data_clos &lt; #{nextMoth}
+            </if>
+        </where>
+        order by create_time desc
+        limit 1
+    </select>
+    <select id="exportPapers" parameterType="java.util.Map" resultType="com.sofn.fdpi.vo.exportBean.ExporrtPapers" >
+        select p.papers_type, p.papers_number, p.comp_name, p.comp_address, p.legal, p.technical_director,
+        p.sales_destination, p.purpose,  p.data_clos, p.issue_unit, p.issue_date, ts.spe_name, ps.source,
+        ps.mode, ps.amount, p.mode_operation, ts.spe_type, ps.unit
+        from papers p left join papers_spec ps on p.id = ps.papers_id  left join tb_species ts on ts.id = ps.spec_id
+        <where>
+            p.del_flag = 'N'
+            <choose>
+                <when test='papersType=="1"'>
+                    and papers_type = '1'
+                </when>
+                <otherwise>
+                    and (papers_type = '3' or papers_type = '4')
+                </otherwise>
+            </choose>
+            <if test="papersNumber!=null and papersNumber!=''">
+                and p.papers_number like '%'||#{papersNumber}||'%'
+            </if>
+            <if test="province!= null and province!=''">
+                and p.provincial_id=#{province}
+            </if>
+            <if test="city!= null and city!=''">
+                and p.city_id=#{city}
+            </if>
+            <if test="area!= null and area!=''">
+                and p.area_id=#{area}
+            </if>
+            <if test="compName!=null and compName!=''">
+                and p.comp_name like '%'||#{compName}||'%'
+            </if>
+            <if test="issueSpe!=null and issueSpe!=''">
+                and ts.spe_name like '%'||#{issueSpe}||'%'
+            </if>
+        </where>
+        order by p.create_time desc,p.papers_number desc
+    </select>
+
+</mapper>

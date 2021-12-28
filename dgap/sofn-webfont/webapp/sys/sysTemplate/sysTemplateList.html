@@ -1,0 +1,106 @@
+<link rel="stylesheet" href="assets/css/sys/sysBase/baseInfoList.css">
+<style>
+    .file-preview {
+        display: none;
+    }
+</style>
+<div class="gui-breadcrumbs">
+    <a href="">系统管理</a>&gt;<span>附件管理</span>
+</div>
+<!-- 开发人员只需要在跟换下面这个div里面内容即可   begin-->
+<div class="gui-section">
+    <div class="gui-form-group clearfix">
+        <span>附件名称</span>
+        <input type="text" class="gui-input" name="templateName" placeholder="附件名称">
+        <button class="gui-btn" id="ToCheck">查询</button>
+
+
+    </div>
+    <div class="gui-actions"><button class="gui-btn fr" ng-click="listAdd()" ng-if="menuAuthority == readWriteAuthority"><i class="gui-icon icon-add"></i>新增</button>
+        <!--<button class="gui-btn fr ml15 mr15" ng-click="deleteTemp()"><i class="gui-icon icon-remove"></i>删除</button><!--></div>
+    <table id="grid" class="gui-table mt15">
+    </table>
+</div>
+
+
+<!--add Modal -->
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">新增附件</h4>
+            </div>
+            <div class="modal-body">
+                <form id="attributeForm">
+                    <div class="form-item form-group">
+                        <label>附件名称<span class="color-red">*</span></label>
+                        <input type="text" class="gui-input form-control" ng-model="sysTemplate.templateName" name="templateName2" placeholder="请输入附件名称" data-bv-notempty="true" data-bv-notempty-message="附件名不能为空且不能超过100个字符长度" maxlength="100">
+                    </div>
+                    <div class="form-item form-group">
+                        <label>备注<span class="color-red">*</span></label>
+                        <textarea class="gui-textarea form-control" ng-model="sysTemplate.remark" name="remark2" placeholder="请输入备注" data-bv-notempty="true" data-bv-notempty-message="附件备注不能为空且不能超过100个字符长度" maxlength="100"></textarea>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>附件<span class="color-red">*</span></label>
+                        <div class="field-text">
+                            <form enctype="multipart/form-data" id="attributeFormFile">
+                                <div file-upload options="vm.uploadOptions" files="vm.files"></div>
+                            </form>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="gui-btn templateSave" ng-click="addSysTemplate() ">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--update Modal -->
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel2">修改附件</h4>
+            </div>
+            <div class="modal-body">
+                <form id="attributeForm2">
+                    <div class="form-item form-group">
+                        <label>附件名称<span class="color-red">*</span></label>
+                        <input type="text" class="gui-input form-control" ng-model="sysTemplate.templateName" name="templateName2" placeholder="请输入附件名称" data-bv-notempty="true" data-bv-notempty-message="附件名不能为空且不能超过15个汉字长度" maxlength="30">
+                    </div>
+                    <div class="form-item form-group">
+                        <label>备注<span class="color-red">*</span></label>
+                        <textarea class="gui-textarea form-control" ng-model="sysTemplate.remark" name="remark2" placeholder="请输入备注" data-bv-notempty="true" data-bv-notempty-message="附件备注不能为空且不能超过100个汉字长度" maxlength="200"></textarea>
+                    </div>
+                    <!--<div class="form-item">
+                        <label>原附件名</label>
+                        <input type="text" class="gui-input form-control" ng-model="sysTemplate.templateFilename" disabled="disabled">
+                    </div>-->
+                    <div class="form-item form-group">
+                        <label>附件</label>
+                        <div class="field-text">
+                            <form enctype="multipart/form-data">
+                                <div file-upload options="vm.uploadOptions2" files="vm.files2"></div>
+                            </form>
+                            <!--<form enctype="multipart/form-data" id="attributeFormFile2">
+                                <input id="tempFile2" type="file" name="tempFile" multiple=" true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="5">
+                                <p class="help-block">支持png、jpg、jpeg、bmp格式，大小不超过5M，支持rar、zip、doc、docx、xls、xlsx、pdf格式，大小不超过50M</p>
+                            </form>-->
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="gui-btn templateUpdate" ng-disabled="myform.JGname.$dirty&&myform.JGname.$invalid" ng-click="updateSysTemplate() ">保存</button>
+            </div>
+        </div>
+    </div>
+</div>

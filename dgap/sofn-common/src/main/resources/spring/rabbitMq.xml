@@ -1,0 +1,100 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/rabbit
+    http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd" >
+
+    <!-- 配置connetionFactoru 指定rabbit-server参数 -->
+    <rabbit:connection-factory id="connectionFactory" username="${rabbitmq.username}" password="${rabbitmq.password}" host="${rabbitmq.host}" port="${rabbitmq.port}"/>
+    <!-- 通过指定下面的admin信息，当前的交换机会在服务器上自动生成 -->
+    <rabbit:admin connection-factory="connectionFactory"/>
+    <!-- 配置rabbitmq传输协议 -->
+    <!-- direct 一对一传输 -->
+    <!-- 定义directTemplate用于数据的接收和发送 -->
+    <rabbit:template id="directTemplate" connection-factory="connectionFactory" exchange="directExchange"/>
+    <!-- 定义队列 -->
+    <rabbit:queue name="directQueue" durable="true" auto-delete="false" exclusive="false"/>
+    <rabbit:queue name="ttsApp" durable="true" auto-delete="false" exclusive="false"/>
+    <!-- 定义交换机 -->
+    <rabbit:direct-exchange name="directExchange" durable="true" auto-delete="false">
+        <rabbit:bindings>
+            <rabbit:binding queue="directQueue" key="sofn"/>
+            <rabbit:binding queue="ttsApp" key="tts_app"/>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+
+
+
+
+
+    <!-- fanout 一对多传输 -->
+    <!-- 定义fanoutTemplate用于数据的接收和发送 -->
+    <rabbit:template id="fountTemplate" connection-factory="connectionFactory" exchange="fountExchange"/>
+    <!-- 定义队列 -->
+    <rabbit:queue name="fountQueueSofn-sys" durable="true" auto-delete="false" exclusive="false"/>
+    <rabbit:queue name="fountQueueSofn-sso" durable="true" auto-delete="false" exclusive="false"/>
+    <rabbit:queue name="fountQueueSofn-ssa" durable="true" auto-delete="false" exclusive="false"/>
+    <rabbit:queue name="fountQueueSofn-tts" durable="true" auto-delete="false" exclusive="false"/>
+    <rabbit:queue name="fountQueueSofn-asms" durable="true" auto-delete="false" exclusive="false"/>
+    <rabbit:queue name="fountQueueSofn-ales" durable="true" auto-delete="false" exclusive="false"/>
+    <rabbit:queue name="fountQueueSofn-dgap" durable="true" auto-delete="false" exclusive="false"/>
+    <rabbit:queue name="fountQueueSofn-ads" durable="true" auto-delete="false" exclusive="false"/>
+    <rabbit:queue name="fountQueueSofn-dss" durable="true" auto-delete="false" exclusive="false"/>
+    <rabbit:queue name="fountQueueSofn-portal" durable="true" auto-delete="false" exclusive="false"/>
+    <!-- 定义交换机 -->
+    <rabbit:fanout-exchange name="fountExchange" durable="true" auto-delete="false">
+        <rabbit:bindings>
+            <rabbit:binding queue="fountQueueSofn-sys"/>
+            <rabbit:binding queue="fountQueueSofn-sso"/>
+            <rabbit:binding queue="fountQueueSofn-ssa"/>
+            <rabbit:binding queue="fountQueueSofn-tts"/>
+            <rabbit:binding queue="fountQueueSofn-asms"/>
+            <rabbit:binding queue="fountQueueSofn-ales"/>
+            <rabbit:binding queue="fountQueueSofn-dgap"/>
+            <rabbit:binding queue="fountQueueSofn-ads"/>
+            <rabbit:binding queue="fountQueueSofn-dss"/>
+            <rabbit:binding queue="fountQueueSofn-portal"/>
+        </rabbit:bindings>
+    </rabbit:fanout-exchange>
+
+
+    <!-- topic 主题传输 -->
+    <!-- 定义topicTemplate用于数据的接收和发送 -->
+    <rabbit:template id="topicTemplate" connection-factory="connectionFactory" exchange="topicExchange"/>
+    <!-- 定义队列 -->
+    <rabbit:queue name="topicQueueSofn-sys" durable="true" auto-delete="false" exclusive="false"/>
+    <rabbit:queue name="topicQueueSofn-sso" durable="true" auto-delete="false" exclusive="false"/>
+    <rabbit:queue name="topicQueueSofn-ssa" durable="true" auto-delete="false" exclusive="false"/>
+    <rabbit:queue name="topicQueueSofn-tts" durable="true" auto-delete="false" exclusive="false"/>
+    <rabbit:queue name="topicQueueSofn-asms" durable="true" auto-delete="false" exclusive="false"/>
+    <rabbit:queue name="topicQueueSofn-ales" durable="true" auto-delete="false" exclusive="false"/>
+    <rabbit:queue name="topicQueueSofn-dgap" durable="true" auto-delete="false" exclusive="false"/>
+    <rabbit:queue name="topicQueueSofn-ads" durable="true" auto-delete="false" exclusive="false"/>
+    <rabbit:queue name="topicQueueSofn-dss" durable="true" auto-delete="false" exclusive="false"/>
+    <rabbit:queue name="topicQueueSofn-portal" durable="true" auto-delete="false" exclusive="false"/>
+    <!-- 定义交换机 -->
+    <rabbit:topic-exchange name="topicExchange" durable="true" auto-delete="false">
+        <rabbit:bindings>
+            <!-- 后台管理系统 -->
+            <rabbit:binding queue="topicQueueSofn-sys" pattern="com.wsClient.sofn.sys"/>
+            <rabbit:binding queue="topicQueueSofn-sso" pattern="com.wsClient.sofn.sso"/>
+            <rabbit:binding queue="topicQueueSofn-ssa" pattern="com.wsClient.sofn.ssa"/>
+            <!-- 追溯系统 -->
+            <rabbit:binding queue="topicQueueSofn-tts" pattern="com.wsClient.sofn.tts"/>
+            <!-- 监管系统 -->
+            <rabbit:binding queue="topicQueueSofn-asms" pattern="com.wsClient.sofn.asms"/>
+            <!-- 执法系统 -->
+            <rabbit:binding queue="topicQueueSofn-ales" pattern="com.wsClient.sofn.ales"/>
+            <!-- 数据共享系统 -->
+            <rabbit:binding queue="topicQueueSofn-dgap" pattern="com.wsClient.sofn.dgap"/>
+            <!-- 检测系统 -->
+            <rabbit:binding queue="topicQueueSofn-ads" pattern="com.wsClient.sofn.ads"/>
+            <!-- 分析决策系统 -->
+            <rabbit:binding queue="topicQueueSofn-dss" pattern="com.wsClient.sofn.dss"/>
+            <!-- 门户 -->
+            <rabbit:binding queue="topicQueueSofn-portal" pattern="com.wsClient.sofn.portal"/>
+        </rabbit:bindings>
+    </rabbit:topic-exchange>
+</beans>

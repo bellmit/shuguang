@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.SignboardApplyListMapper">
+
+
+    <sql id="alias_Column_List_sal">
+      sal.ID, sal.APPLY_ID, sal.SIGNBOARD_ID,
+      sal.CREATE_USER_ID, sal.CREATE_TIME, sal.UPDATE_USER_ID, sal.UPDATE_TIME, sal.DEL_FLAG
+    </sql>
+    <sql id="alias_Column_List_s">
+      s.CODE, s.STATUS
+    </sql>
+    <sql id="alias_Column_List_tc">
+      tc.COMP_NAME
+    </sql>
+    <sql id="alias_Column_List_ts">
+      ts.SPE_NAME
+    </sql>
+
+    <select id="listByApplyId" resultType="com.sofn.fdpi.model.SignboardApplyList">
+        select
+        <include refid="alias_Column_List_s"/>,<include refid="alias_Column_List_ts"/>,
+        <include refid="alias_Column_List_tc"/>,<include refid="alias_Column_List_sal"/>
+        from SIGNBOARD_APPLY_LIST sal
+        left join SIGNBOARD s on s.ID = sal.SIGNBOARD_ID
+        left join TB_SPECIES ts on s.SPE_ID = ts.ID
+        left join TB_COMP tc on tc.ID = s.COMP_ID
+        <where>
+            sal.DEL_FLAG = 'N'
+            <if test="applyId != null and applyId != ''">
+                and sal.APPLY_ID = #{applyId}
+            </if>
+        </where>
+        order by sal.CREATE_TIME desc
+    </select>
+
+    <select id="listByParams" resultType="com.sofn.fdpi.model.SignboardApplyList">
+        select s.code, ts.spe_name from SIGNBOARD_APPLY_LIST sal join SIGNBOARD s on sal.SIGNBOARD_ID = s.ID
+        join TB_SPECIES ts on ts.id = s.spe_id
+        <where>
+            sal.DEL_FLAG = 'N'
+            <if test="applyId != null and applyId != ''">
+                and sal.APPLY_ID = #{applyId}
+            </if>
+            <if test="code != null and code != ''">
+                and s.CODE like '%' || #{code} || '%'
+            </if>
+        </where>
+        order by s.CODE
+    </select>
+
+    <update id="updateDelFlagByPringId">
+        update signboard_apply_list set del_flag = signboard.del_flag from signboard
+        where signboard.id = signboard_apply_list.signboard_id and signboard.print_id = #{pringId}
+    </update>
+
+</mapper>

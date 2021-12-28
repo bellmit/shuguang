@@ -1,0 +1,53 @@
+server:
+  port: 7999
+
+spring:
+  application:
+    name: gateway-service
+
+  redis:
+      cluster:
+        nodes: 10.0.50.103:7000,10.0.50.103:7001,10.0.50.103:7002,10.0.50.103:7003,10.0.50.103:7004,10.0.50.103:7005
+      timeout: 6000ms
+      lettuce:
+        pool:
+          max-active: 100
+          max-wait: -1ms
+          max-idle: 10
+      database: 0
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8880/eureka/
+
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
+
+zuul:
+  # 配置header过滤，设置空，避免Authorization信息丢失
+  sensitive-headers:
+  host:
+    connect-timeout-millis: 10000
+    socket-timeout-millis: 60000
+  hystrix:
+    command:
+      default:
+        execution:
+          isolation:
+            thread:
+              timeoutInMilliseconds: 60000
+  routes:
+    sys-service: /sys/**
+    flow-service: /flow/**
+    aeem-service: /aeem/**
+
+# swagger配置
+swagger:
+  # 扫描包
+  base-package: com.sofn.reportservice.web
+  # 名称
+  name: 网关
+  # 接口前缀
+  prefix:

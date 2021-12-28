@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agzirdd.mapper.ThresholdValueMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.agzirdd.model.ThresholdValue" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="WT_ID" property="wtId" jdbcType="VARCHAR" />
+    <result column="CONDITION1" property="condition1" jdbcType="VARCHAR" />
+    <result column="VALUE1" property="value1" jdbcType="DECIMAL" />
+    <result column="CONDITION2" property="condition2" jdbcType="VARCHAR" />
+    <result column="VALUE2" property="value2" jdbcType="DECIMAL" />
+    <result column="RISK_LEVEL" property="riskLevel" jdbcType="VARCHAR" />
+    <result column="COLOR" property="color" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, WT_ID, CONDITION1, VALUE1, CONDITION2, VALUE2, RISK_LEVEL, COLOR
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from THRESHOLD_VALUE
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from THRESHOLD_VALUE
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sofn.agzirdd.model.ThresholdValue" >
+    update THRESHOLD_VALUE
+    <set >
+      <if test="wtId != null" >
+        WT_ID = #{wtId,jdbcType=VARCHAR},
+      </if>
+      <if test="condition1 != null" >
+        CONDITION1 = #{condition1,jdbcType=VARCHAR},
+      </if>
+      <if test="value1 != null" >
+        VALUE1 = #{value1,jdbcType=DECIMAL},
+      </if>
+      <if test="condition2 != null" >
+        CONDITION2 = #{condition2,jdbcType=VARCHAR},
+      </if>
+      <if test="value2 != null" >
+        VALUE2 = #{value2,jdbcType=DECIMAL},
+      </if>
+      <if test="riskLevel != null" >
+        RISK_LEVEL = #{riskLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="color != null" >
+        COLOR = #{color,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sofn.agzirdd.model.ThresholdValue" >
+    update THRESHOLD_VALUE
+    set WT_ID = #{wtId,jdbcType=VARCHAR},
+      CONDITION1 = #{condition1,jdbcType=VARCHAR},
+      VALUE1 = #{value1,jdbcType=DECIMAL},
+      CONDITION2 = #{condition2,jdbcType=VARCHAR},
+      VALUE2 = #{value2,jdbcType=DECIMAL},
+      RISK_LEVEL = #{riskLevel,jdbcType=VARCHAR},
+      COLOR = #{color,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="getThresholdValueByWtId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from THRESHOLD_VALUE
+    where WT_ID = #{wtId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByWtId" parameterType="java.lang.String" >
+    delete from THRESHOLD_VALUE
+    where WT_ID = #{wtId,jdbcType=VARCHAR}
+  </delete>
+</mapper>

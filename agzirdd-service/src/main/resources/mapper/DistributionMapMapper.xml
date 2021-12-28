@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agzirdd.mapper.DistributionMapMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.agzirdd.model.DistributionMap" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="SPECIES_ID" property="speciesId" jdbcType="VARCHAR" />
+    <result column="SPECIES_NAME" property="speciesName" jdbcType="VARCHAR" />
+    <result column="PROVINCE_ID" property="provinceId" jdbcType="VARCHAR" />
+    <result column="CITY_ID" property="cityId" jdbcType="VARCHAR" />
+    <result column="COUNTY_ID" property="countyId" jdbcType="VARCHAR" />
+    <result column="AREA_NAME" property="areaName" jdbcType="VARCHAR" />
+    <result column="LONGITUDE" property="longitude" jdbcType="VARCHAR" />
+    <result column="LATITUDE" property="latitude" jdbcType="VARCHAR" />
+    <result column="FINDER" property="finder" jdbcType="VARCHAR" />
+    <result column="GPS" property="gps" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="PROVINCE_NAME" property="provinceName" jdbcType="VARCHAR" />
+    <result column="CITY_NAME" property="cityName" jdbcType="VARCHAR" />
+    <result column="COUNTY_NAME" property="countyName" jdbcType="VARCHAR" />
+    <result column="INVESTIGATOR_COMPANY" property="investigatorCompany" jdbcType="VARCHAR" />
+    <result column="AMOUNT" property="amount" jdbcType="VARCHAR" />
+    <result column="AREA" property="area" jdbcType="VARCHAR" />
+    <result column="RESULT_IMG" property="resultImg" jdbcType="VARCHAR" />
+    <result column="UTILIZE_IMG" property="utilizeImg" jdbcType="VARCHAR" />
+    <result column="SPECIES_IMG" property="speciesImg" jdbcType="VARCHAR" />
+    <result column="species_investigation_id" property="speciesInvestigationId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, SPECIES_ID,SPECIES_NAME, PROVINCE_ID, CITY_ID, COUNTY_ID, AREA_NAME, LONGITUDE, LATITUDE,
+    FINDER, GPS, CREATE_TIME, PROVINCE_NAME, CITY_NAME, COUNTY_NAME, INVESTIGATOR_COMPANY, AMOUNT,
+    AREA, RESULT_IMG, UTILIZE_IMG,SPECIES_IMG,species_investigation_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from DISTRIBUTION_MAP
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from DISTRIBUTION_MAP
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="removeBySpecInveId" parameterType="java.lang.String">
+    delete from DISTRIBUTION_MAP
+    where species_investigation_id = #{id}
+  </delete>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sofn.agzirdd.model.DistributionMap" >
+    update DISTRIBUTION_MAP
+    <set >
+      <if test="speciesName != null" >
+        SPECIES_NAME = #{speciesName,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null" >
+        PROVINCE_ID = #{provinceId,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null" >
+        CITY_ID = #{cityId,jdbcType=VARCHAR},
+      </if>
+      <if test="countyId != null" >
+        COUNTY_ID = #{countyId,jdbcType=VARCHAR},
+      </if>
+      <if test="areaName != null" >
+        AREA_NAME = #{areaName,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null" >
+        LONGITUDE = #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null" >
+        LATITUDE = #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="finder != null" >
+        FINDER = #{finder,jdbcType=VARCHAR},
+      </if>
+      <if test="gps != null" >
+        GPS = #{gps,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="provinceName != null" >
+        PROVINCE_NAME = #{provinceName,jdbcType=VARCHAR},
+      </if>
+      <if test="cityName != null" >
+        CITY_NAME = #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="countyName != null" >
+        COUNTY_NAME = #{countyName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sofn.agzirdd.model.DistributionMap" >
+    update DISTRIBUTION_MAP
+    set SPECIES_NAME = #{speciesName,jdbcType=VARCHAR},
+      PROVINCE_ID = #{provinceId,jdbcType=VARCHAR},
+      CITY_ID = #{cityId,jdbcType=VARCHAR},
+      COUNTY_ID = #{countyId,jdbcType=VARCHAR},
+      AREA_NAME = #{areaName,jdbcType=VARCHAR},
+      LONGITUDE = #{longitude,jdbcType=VARCHAR},
+      LATITUDE = #{latitude,jdbcType=VARCHAR},
+      FINDER = #{finder,jdbcType=VARCHAR},
+      GPS = #{gps,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      PROVINCE_NAME = #{provinceName,jdbcType=VARCHAR},
+      CITY_NAME = #{cityName,jdbcType=VARCHAR},
+      COUNTY_NAME = #{countyName,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectDuringOneYear" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from DISTRIBUTION_MAP
+    where CREATE_TIME > trunc(sysdate)-(INTERVAL '1' YEAR)
+  </select>
+
+  <select id="selectByConditions" resultMap="BaseResultMap">
+    select
+    dm.ID, dm.SPECIES_ID,dm.SPECIES_NAME, dm.PROVINCE_ID, dm.CITY_ID, dm.COUNTY_ID, dm.AREA_NAME, dm.LONGITUDE, dm.LATITUDE,
+    dm.FINDER, dm.GPS, dm.CREATE_TIME, dm.PROVINCE_NAME, dm.CITY_NAME, dm.COUNTY_NAME, dm.INVESTIGATOR_COMPANY, dm.AMOUNT,
+    dm.AREA, dm.RESULT_IMG, dm.UTILIZE_IMG,dm.SPECIES_IMG,dm.species_investigation_id
+    from DISTRIBUTION_MAP dm
+    left join species_investigation si on si.id = dm.species_investigation_id
+    where 1=1
+    <if test="provinceId != null and provinceId != '' ">
+      and dm.PROVINCE_ID = #{provinceId,jdbcType=VARCHAR}
+    </if>
+    <if test="cityId != null and cityId != '' ">
+      and dm.CITY_ID = #{cityId,jdbcType=VARCHAR}
+    </if>
+    <if test="countyId != null and countyId != '' ">
+      and dm.COUNTY_ID = #{countyId,jdbcType=VARCHAR}
+    </if>
+    <if test="beginDate != null and beginDate != ''">
+      AND dm.CREATE_TIME &gt;=to_date(#{beginDate},'yyyy-MM-dd')
+    </if>
+    <if test="endDate != null and endDate != ''">
+      AND dm.CREATE_TIME &lt;(to_date(#{endDate},'yyyy-MM-dd'))+1
+    </if>
+    <if test="speciesName != null" >
+      AND dm.SPECIES_NAME = #{speciesName,jdbcType=VARCHAR}
+    </if>
+    <if test="createTime != null and beginDate != ''">
+      AND dm.CREATE_TIME =to_date(#{createTime},'yyyy-MM-dd')
+    </if>
+    <if test="isNew!=null">
+      and si.is_new = #{isNew}
+    </if>
+    <if test="roleCode!=null and roleCode!=''">
+      and si.role_code = #{roleCode}
+    </if>
+    ORDER BY dm.CREATE_TIME
+
+    <!--select
+    <include refid="Base_Column_List" />
+    from DISTRIBUTION_MAP
+    where 1=1
+    <if test="provinceId != null and provinceId != '' ">
+      and PROVINCE_ID = #{provinceId,jdbcType=VARCHAR}
+    </if>
+    <if test="cityId != null and cityId != '' ">
+      and CITY_ID = #{cityId,jdbcType=VARCHAR}
+    </if>
+    <if test="countyId != null and countyId != '' ">
+      and COUNTY_ID = #{countyId,jdbcType=VARCHAR}
+    </if>
+    <if test="beginDate != null and beginDate != ''">
+      AND CREATE_TIME &gt;=to_date(#{beginDate},'yyyy-MM-dd')
+    </if>
+    <if test="endDate != null and endDate != ''">
+      AND CREATE_TIME &lt;(to_date(#{endDate},'yyyy-MM-dd'))+1
+    </if>
+    <if test="speciesName != null" >
+      AND SPECIES_NAME = #{speciesName,jdbcType=VARCHAR}
+    </if>
+    <if test="createTime != null and beginDate != ''">
+      AND CREATE_TIME =to_date(#{createTime},'yyyy-MM-dd')
+    </if>
+    ORDER BY CREATE_TIME-->
+  </select>
+
+</mapper>

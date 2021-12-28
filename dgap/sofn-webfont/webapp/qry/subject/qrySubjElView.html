@@ -1,0 +1,361 @@
+<link rel="stylesheet" href="assets/css/ales/ales.css"/>
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">查询系统</a>&gt;
+    <a ui-sref="index.content.qry/subject/qrySubjSvList">主体信息查询</a>&gt;
+    <a ui-sref="index.content.qry/subject/qrySubjElList">执法机构主体</a>&gt;
+    <span>查看</span>
+    <button class="gui-btn fr mr15" ng-click="callBack()" style="margin-top: 4px;">关闭</button>
+</div>
+<style>
+</style>
+    <div class="mt15 ml25pr30">
+        <div class="Sup_contain_section_contain">
+                        <div style="border-bottom: 1px solid #9d9d9d;line-height: 30px;padding-bottom: 5px" class="clearfix gov-h">
+                注册信息
+            </div>
+            <div class="table-responsive" style="margin-top:20px;text-align:center;">
+                <table class="gui-table" style="margin:auto;text-align: left">
+                    <tr>
+                        <td width="8%">
+                            机构名称：
+                        </td>
+                        <td width="42%">
+                            <span ng-bind="subjEl.elName"></span>
+                        </td>
+                        <td width="8%">
+                            通讯地址：
+                        </td>
+                        <td width="42%">
+                            <span ng-bind="subjEl.elAddress"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                          机构代码：
+                        </td>
+                        <td>
+                            <span ng-bind="subjEl.elCode"></span>
+                        </td>
+                        <td>
+                            主要负责人：
+                        </td>
+                        <td>
+                            <span ng-bind="subjEl.elLeader"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            机构类别：
+                        </td>
+                        <td>
+                            <span ng-bind="subjEl.elType"></span>
+                        </td>
+                        <td>
+                            负责人电话：
+                        </td>
+                        <td>
+                            <span ng-bind="subjEl.elLeaderPhone"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            机构级别：
+                        </td>
+                        <td>
+                            <span ng-bind="subjEl.elLevel"></span>
+                        </td>
+                        <td>
+                            联系人：
+                        </td>
+                        <td>
+                            <span ng-bind="subjEl.elContact"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            单位性质：
+                        </td>
+                        <td>
+                            <span ng-bind="subjEl.elUnitNature"></span>
+                        </td>
+                        <td>
+                            联系人电话：
+                        <td>
+                            <span ng-bind="subjEl.elContactPhone"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            执法人数：
+                        </td>
+                        <td>
+                            <span ng-bind="subjEl.elPeopleNum"></span>
+                        </td>
+                        <td>
+                            联系人QQ：
+                        </td>
+                        <td>
+                            <span ng-bind="subjEl.elContactQQ"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            具体办事机构：
+                        </td>
+                        <td>
+                            <span ng-bind="subjEl.elWorkBody"></span>
+                        </td>
+                         <td>
+                            电子邮箱：
+                        </td>
+                        <td>
+                            <span ng-bind="subjEl.elContactEmail"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            所属区域：
+                        </td>
+                        <td>
+                            <span ng-bind="subjEl.elArea"></span>
+                        </td>
+                         <td>
+                            邮编：
+                        </td>
+                        <td>
+                            <span ng-bind="subjEl.elPostcode"></span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="mt15" style="border-bottom: 1px solid #9d9d9d">
+                机构变更历史
+            </div>
+            <table id="grid"
+                   class="gui-table mt15" style="width: 100%;">
+            </table>
+        </div>
+    </div>
+
+<!-- 模态框（Modal）添加 -->
+<div class="modal fade " id="changeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title" id="change">机构变更详情</h3>
+            </div>
+            <div class="modal-body">
+                <div class="gui-section gui-section-wid">
+                    <table class="ApplyTable" style="margin:auto;" >
+                        <tr style="font-weight: 700">
+                            <td>
+                                主体信息
+                            </td>
+                            <td>
+                                变更前
+                            </td>
+                            <td>
+                                变更后
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                机构名称
+                            </td>
+                            <td>
+                                <span ng-bind="before.elName"></span><img class="pull-right" ng-show="before.elName!=after.elName" src="../assets/imgs/common/arrow.png"/>
+                            </td>
+                            <td>
+                                <span ng-bind="after.elName"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                机构代码
+                            </td>
+                            <td>
+                                <span ng-bind="before.elCode"></span><img class="pull-right" ng-show="before.elCode!=after.elCode" src="../assets/imgs/common/arrow.png"/>
+                            </td>
+                            <td>
+                                <span ng-bind="after.elCode"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                机构级别
+                            </td>
+                            <td>
+                                <span ng-bind="before.elLevel"></span><img class="pull-right" ng-show="before.elLevel!=after.elLevel" src="../assets/imgs/common/arrow.png"/>
+                            </td>
+                            <td>
+                                <span ng-bind="after.elLevel"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                所属区域
+                            </td>
+                            <td>
+                                <span ng-bind="before.elAreaId"></span><img class="pull-right" ng-show="before.elAreaId!=after.elAreaId" src="../assets/imgs/common/arrow.png"/>
+                            </td>
+                            <td>
+                                <span ng-bind="after.elAreaId"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                通讯地址
+                            </td>
+                            <td>
+                                <span ng-bind="before.elAddress"></span><img class="pull-right" ng-show="before.elAddress!=after.elAddress" src="../assets/imgs/common/arrow.png"/>
+                            </td>
+                            <td>
+                                <span ng-bind="after.elAddress"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                负责人
+                            </td>
+                            <td>
+                                <span ng-bind="before.elLeader"></span><img class="pull-right" ng-show="before.elLeader!=after.elLeader" src="../assets/imgs/common/arrow.png"/>
+                            </td>
+                            <td>
+                                <span ng-bind="after.elLeader"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                负责人电话
+                            </td>
+                            <td>
+                                <span ng-bind="before.elLeaderPhone"></span><img class="pull-right" ng-show="before.elLeaderPhone!=after.elLeaderPhone" src="../assets/imgs/common/arrow.png"/>
+                            </td>
+                            <td>
+                                <span ng-bind="after.elLeaderPhone"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                联系人
+                            </td>
+                            <td>
+                                <span ng-bind="before.elContact"></span><img class="pull-right" ng-show="before.elContact!=after.elContact" src="../assets/imgs/common/arrow.png"/>
+                            </td>
+                            <td>
+                                <span ng-bind="after.elContact"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                联系人电话
+                            </td>
+                            <td>
+                                <span ng-bind="before.elContactPhone"></span><img class="pull-right" ng-show="before.elContactPhone!=after.elContactPhone" src="../assets/imgs/common/arrow.png"/>
+                            </td>
+                            <td>
+                                <span ng-bind="after.elContactPhone"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                联系人QQ
+                            </td>
+                            <td>
+                                <span ng-bind="before.elContactQQ"></span><img class="pull-right" ng-show="before.elContactQQ!=after.elContactQQ" src="../assets/imgs/common/arrow.png"/>
+                            </td>
+                            <td>
+                                <span ng-bind="after.elContactQQ"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                电子邮箱
+                            </td>
+                            <td>
+                                <span ng-bind="before.elContactEmail"></span><img class="pull-right" ng-show="before.elContactEmail!=after.elContactEmail" src="../assets/imgs/common/arrow.png"/>
+                            </td>
+                            <td>
+                                <span ng-bind="after.elContactEmail"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                邮编
+                            </td>
+                            <td>
+                                <span ng-bind="before.elPostcode"></span><img class="pull-right" ng-show="before.elPostcode!=after.elPostcode" src="../assets/imgs/common/arrow.png"/>
+                            </td>
+                            <td>
+                                <span ng-bind="after.elPostcode"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                单位性质
+                            </td>
+                            <td>
+                                <span ng-bind="before.elUnitNature"></span><img class="pull-right" ng-show="before.elUnitNature!=after.elUnitNature" src="../assets/imgs/common/arrow.png"/>
+                            </td>
+                            <td>
+                                <span ng-bind="after.elUnitNature"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                具体办事机构
+                            </td>
+                            <td>
+                                <span ng-bind="before.elWorkBody"></span><img class="pull-right" ng-show="before.elWorkBody!=after.elWorkBody" src="../assets/imgs/common/arrow.png"/>
+                            </td>
+                            <td>
+                                <span ng-bind="after.elWorkBody"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                执法人数
+                            </td>
+                            <td>
+                                <span ng-bind="before.elPeopleNum"></span><img class="pull-right" ng-show="before.elPeopleNum!=after.elPeopleNum" src="../assets/imgs/common/arrow.png"/>
+                            </td>
+                            <td>
+                                <span ng-bind="after.elPeopleNum"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                变更原因
+                            </td>
+                            <td colspan="2">
+                                <span ng-bind="after.applyReason"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                审核状态
+                            </td>
+                            <td colspan="2">
+                                <span ng-bind="after.auditState"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                审核意见
+                            </td>
+                            <td colspan="2">
+                                <span ng-bind="after.auditSuggestion"></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>

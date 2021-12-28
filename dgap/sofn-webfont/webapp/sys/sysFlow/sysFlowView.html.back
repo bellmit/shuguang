@@ -1,0 +1,32 @@
+<link rel="stylesheet" href="assets/css/sys/sysbase/baseAdd.css"/>
+<div class="Sup_contain_section col-lg-12 col-xs-12 col-sm-12 col-md-12">
+    <div class="Sup_contain_section_head col-lg-12 col-xs-12 col-sm-12 col-md-12 " style="background-color: white">
+         <h2 id="Sup_contain_section_head_h2">
+            <a href=""><span >追溯系统  > </span></a>  
+            <a href=""><span >内部管理  > </span></a>
+            <a href=""><span >流程管理 > </span></a>
+            <span>  查看</span>
+         </h2>
+    </div>
+    <p class="col-lg-1 col-xs-0 col-sm-1 col-md-1"></p>
+    <div class="Sup_contain_section_contain_head col-lg-10 col-xs-12 col-sm-10 col-md-10">
+        <p>查看流程管理信息</p>
+        <ul>
+        	<li><span>流程名称</span> <input ng-model="flowName" readonly="readonly" type="text" class="Sup_contain_section_contain_input"/></li>
+        	<li><span>流程标识</span> <input ng-model="flowFlag" readonly="readonly" type="text" class="Sup_contain_section_contain_input"/></li>
+        	<li><span>流程访问路劲</span> <input ng-model="flowUrl" readonly="readonly" type="text" class="Sup_contain_section_contain_input"/></li>
+        	<li><span>流程文件名</span> <input ng-model="flowFile" readonly="readonly" type="text" class="Sup_contain_section_contain_input"/></li>
+        	<li><span>流程图片</span> <input ng-model="flowImg" readonly="readonly" type="text" class="Sup_contain_section_contain_input"/></li>
+        	<li><span>流程状态</span> 
+        	<select ng-model="status"  readonly="readonly">
+                            <option value="">全部</option>
+							<option value="0">可用</option>
+							<option value="1">禁用</option>
+							<option value="2">注销</option>
+                			</select>
+        	</li>
+        
+        </ul>
+        <button class="Sup_contain_section_contain_head_button" ng-click="removeLocalStorage()" ui-sref="index.content.sys/sysFlow/flowlist">关闭</button>
+    </div>
+</div>

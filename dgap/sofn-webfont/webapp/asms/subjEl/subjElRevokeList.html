@@ -1,0 +1,57 @@
+<link rel="stylesheet" href="assets/css/asms/subjSv/subjSvList.css"/>
+<div class="gui-mainBc">
+    <div class="gui-breadcrumbs">
+        <a href="javascript:void(0)">监管系统</a>&gt;
+        <a ui-sref="index.content.asms/subjEl/subjElRevokeList">主体管理</a>&gt;
+        <span>执法机构</span>
+    </div>
+    <div class="gui-TabCut">
+        <ul class="clearfix gov-h">
+            <li class="fl gp-r subjElList" style="display: none" ui-sref="index.content.asms/subjEl/subjElList">执法机构主体信息</li>
+            <li class="fl gp-r subjElChangeList" style="display: none" ui-sref="index.content.asms/subjEl/subjElChangeList">注册变更待审核<span class="news" ng-show="changeToAuditCount>0">{{changeToAuditCount}}</span></li>
+            <li class="fl gp-r subjElCancelList" style="display: none" ui-sref="index.content.asms/subjEl/subjElCancelList">注册注销待审核<span class="news" ng-show="cancelToAuditCount>0">{{cancelToAuditCount}}</span></li>
+            <li id="" class="fl gp-r gui-TabCheck">注册撤销待审核<span class="news" ng-show="revokeToAuditCount>0">{{revokeToAuditCount}}</span></li>
+        </ul>
+        <div class="gui-botLine"></div>
+    </div>
+    <div class="gui-section">
+        <div class="gui-form-group">
+            <span id="AnyArea">所属区域</span>
+            <div class="gui-select">
+                <select id="sheng" >
+                    <option value="">省</option>
+                </select>
+            </div>
+            <div class="gui-select">
+                <select id="shi">
+                    <option value="">市</option>
+                </select>
+            </div>
+            <div class="gui-select">
+                <select id="xian">
+                    <option value="">区/县</option>
+                </select>
+            </div>
+            <form id="queryForm" class="mt15">
+                <span>审核状态</span>
+                <div class="gui-select">
+                    <select name="auditState">
+                        <option value="">全部</option>
+                        <option value="0">待审核</option>
+                        <option value="1">通过</option>
+                        <option value="2">未通过</option>
+                    </select>
+                </div>
+                <span>申请日期</span>
+                <input name="date" type="text" size="15" style="width: 120px;" class="Wdate gui-input"  onfocus = "WdatePicker({dateFmt:'yyyy-MM-dd '}) "/>
+                <span>机构名称</span>
+                <input class="gui-input" name="elName" type="text" style="width: 120px;" placeholder="请输入机构名称"/>
+                <button class="gui-btn" ng-disabled="!!btnDisabled" ng-click="querySubjElRevoke()">查询</button>
+                <button class="gui-btn " ng-click="reloadArea()">重置</button>
+            </form>
+        </div>
+        <table id="elRevokeGrid"
+               class="gui-table mt15" style="width: 100%">
+        </table>
+    </div>
+</div>

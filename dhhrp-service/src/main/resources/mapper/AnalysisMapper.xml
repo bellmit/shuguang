@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.dhhrp.mapper.AnalysisMapper">
+<select id="getList1" resultType="com.sofn.dhhrp.vo.MonitoringPointVo">
+	SELECT  a1.*,a2.variety from
+	(
+	SELECT point_name,id,variety,longitude,latitude,province,city,county,monitoring_time,amount,year from baseinfo b
+	where b. STATUS = '8'
+	)a1,
+	(
+	SELECT b.point_name,b.variety,max(b.monitoring_time) monitoring_time FROM
+	baseinfo b where  b. STATUS = '8' GROUP BY
+	b.point_name,b.variety)a2
+	where a1.monitoring_time=a2.monitoring_time
+		<!--<if test="year != null and year != ''">
+			and to_char(a1.monitoring_time,'YYYY') = #{year}
+		</if>-->
+		<if test="year != null and year != ''">
+			and a1.year = #{year}
+		</if>
+		<if test="variety != null and variety != ''">
+			and a2.variety=#{variety}
+		</if>
+</select>
+
+
+
+
+
+
+    <resultMap id="rs1" type="com.sofn.dhhrp.vo.MonitoringVo">
+        <result column="point_name" property="pointName"></result>
+        <collection property="spe" ofType="com.sofn.dhhrp.vo.SpeVo">
+            <result column="amount" property="amount"></result>
+            <result column="variety" property="variety"></result>
+            <result column="condition1" property="condition1"></result>
+            <result column="val1" property="val1"></result>
+            <result column="condition2" property="condition2"></result>
+            <result column="val2" property="val2"></result>
+            <result column="grade" property="grade"></result>
+            <result column="color" property="color"></result>
+        </collection>
+    </resultMap>
+
+	<select id="getById" resultType="com.sofn.dhhrp.model.Baseinfo">
+		select   id, province_name, city_name, county_name from baseinfo where id=#{id} and del_flag='N'
+	</select>
+	<resultMap id="rs2" type="com.sofn.dhhrp.vo.NewSpeInfo">
+		<result column="amount" property="amount"></result>
+		<result column="variety" property="variety"></result>
+		<result column="point_name" property="pointName"></result>
+	</resultMap>
+	<select id="getSpe" resultMap="rs2">
+		SELECT a1.*,a2.variety from (SELECT
+	point_name,
+	id,
+	longitude,
+	latitude,
+	province,
+	city,
+	county,
+	monitoring_time,
+	amount
+FROM
+	baseinfo
+) a1,
+ (
+	SELECT
+		max(b.monitoring_time) monitoring_time,
+		bs.variety
+	FROM
+		baseinfo b
+	LEFT JOIN baseinfo bs ON b.id = bs.id
+	WHERE
+		1 = 1
+	AND b. STATUS = '8'
+	AND b.point_name = #{pointName}
+	AND b.del_flag = 'N'
+	GROUP BY
+		bs.variety
+) a2
+WHERE
+	a1.monitoring_time = a2.monitoring_time
+	</select>
+
+	<select id="thresholdForSpe" resultType="com.sofn.dhhrp.vo.TholdResult">
+		SELECT
+					B.id,
+					B.condition1,
+					B.val1,
+					B.condition2,
+					B.val2
+				FROM
+					threshold A,
+					threshold_sub B
+				WHERE
+					A.ID = B.threshold_id
+					and A.variety=#{variety}
+</select>
+
+
+	<resultMap id="rs3" type="com.sofn.dhhrp.vo.AnalysisVo">
+		<result column="amount" property="amount"></result>
+		<result column="grade" property="grade"></result>
+		<result column="color" property="color"></result>
+		<result column="variety" property="variety"></result>
+	</resultMap>
+	<select id="param" resultMap="rs3">
+		SELECT
+		a.point_name,a.id,a.amount,a.grade,a.color,a.variety
+		FROM
+		(
+		SELECT t1.point_name,t1.amount,a2.id,a2.grade,a2.color,a2.variety FROM
+		(	SELECT a1.*,a2.variety from
+		(SELECT point_name,id,longitude,latitude,province,city,county,monitoring_time,amount from baseinfo)a1, (SELECT
+		max(b.monitoring_time) monitoring_time,
+		bs.variety
+		FROM
+		baseinfo b
+		LEFT JOIN baseinfo bs ON b.id = bs.id
+		WHERE
+		1 = 1
+		AND b. STATUS = '8'
+		AND b.point_name = #{pointName}
+		and b.del_flag='N'
+		GROUP BY
+		bs.variety)a2
+		where a1.monitoring_time= a2.monitoring_time) t1,
+		(
+		SELECT
+		B.id,
+		A.variety,
+		B.condition1,
+		B.val1,
+		B.condition2,
+		B.val2,
+		B.grade,
+		B.color
+		FROM
+		threshold A,
+		threshold_sub B
+		WHERE
+		A.ID = B.threshold_id
+		) a2
+		where t1.variety =a2.variety and a2.variety=#{variety}
+		) a
+		where
+		1=1
+		<if test="th!=null">
+			and
+			<foreach collection="th" item="item" index="i" separator="or" open="(" close=")">
+				<if test="item.condition2!=''">
+					a.id=#{item.id} and a.amount ${item.condition1} ${item.val1}
+					and a.amount ${item.condition2} ${item.val2}
+				</if>
+				<if test="item.condition2==''">
+					a.id=#{item.id} and a.amount ${item.condition1} ${item.val1}
+				</if>
+			</foreach>
+		</if>
+		ORDER BY grade desc
+	</select>
+</mapper>

@@ -1,0 +1,33 @@
+var myapp=angular.module("myapp",[]).controller("addSysMenu",function($scope,$http,$state){
+    //导航对齐
+    $("#collapseTwo").attr("class","panel-collapse collapse in");
+    $("#collapseTwo li:nth-of-type(2)").css("background-color","#64ABDB").addClass("Sup_contain_side_nav_item_after").siblings().css("background-color","#3695D4").removeClass("Sup_contain_side_nav_item_after")
+
+    //新增测试信息
+    $scope.addSysMenu = function(){
+		 $scope.sysMenu.menuName = $("input[name='menuName']").val();
+    	 $scope.sysMenu.numbers = $("input[name='numbers']").val();
+    	 $scope.sysMenu.parentId = $("input[name='parentId']").val();
+    	 $scope.sysMenu.describes = $("input[name='describes']").val();
+    	 $scope.sysMenu.url = $("input[name='url']").val();
+    	 $scope.sysMenu.menuType = $("input[name='menuType']").val();
+    	 
+    	 $scope.sysMenu.menuValue = $("input[name='menuValue']").val();
+    	 $scope.sysMenu.image = $("input[name='image']").val();
+    	 $scope.sysMenu.reservedField1 = $("input[name='reservedField1']").val();
+    	 $scope.sysMenu.status = 1;
+        $http({
+            url:"/sofn-sys-web/sysMenu/addSysMenu",
+            data:$scope.sysMenu,
+            method:"post",
+            headers: {
+                post: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }
+        }).success(function(data){
+            alert("保存成功");
+            $state.go("index.content.sys/sysMenu/list");
+        }).error(function(){
+            alert("保存失败");
+        })
+    }
+})

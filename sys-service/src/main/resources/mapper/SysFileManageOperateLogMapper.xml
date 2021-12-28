@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysFileManageOperateLogMapper">
+    <resultMap id="customResultMap" type="com.sofn.sys.model.SysFileManageOperateLog">
+        <result column="ID" property="id"></result>
+        <result column="FILE_ID" property="fileId"></result>
+        <result column="FILE_NAME" property="fileName"></result>
+        <result column="FILE_SIZE" property="fileSize"></result>
+        <result column="FILE_TYPE" property="fileType"></result>
+
+        <result column="OPERATOR" property="operator"></result>
+        <result column="OPERATE_TYPE" property="operateType"></result>
+        <result column="OPERATE_TIME" property="operateTime"></result>
+        <result column="SYSTEM" property="system"></result>
+        <result column="DEL_FLAG" property="delFlag"></result>
+    </resultMap>
+
+    <select id="getSysFileOperateLogByFileId" parameterType="java.lang.String" resultMap="customResultMap">
+        SELECT
+         *
+        from sys_file_manage_operate_log where file_id= #{fileId} and del_flag != 'Y' order by operate_time desc
+    </select>
+
+    <insert id="batchSaveLog" parameterType="java.util.List">
+        insert INTO sys_file_manage_operate_log(
+        ID ,
+        FILE_ID ,
+        FILE_NAME ,
+        FILE_TYPE ,
+        FILE_SIZE ,
+        OPERATE_TYPE ,
+        OPERATOR ,
+        OPERATE_TIME ,
+        DEL_FLAG ,
+        SYSTEM
+        )values
+        <foreach collection="sysFileManageOperateLogs" item="sysFileManageOperateLog"
+                 separator=",">
+            (#{sysFileManageOperateLog.id},
+            #{sysFileManageOperateLog.fileId},
+            #{sysFileManageOperateLog.fileName},
+            #{sysFileManageOperateLog.fileType},
+            #{sysFileManageOperateLog.fileSize},
+            #{sysFileManageOperateLog.operateType},
+            #{sysFileManageOperateLog.operator},
+            #{sysFileManageOperateLog.operateTime},
+            #{sysFileManageOperateLog.delFlag},
+            #{sysFileManageOperateLog.system})
+        </foreach>
+    </insert>
+
+    <update id="deleteByFileIds" parameterType="java.util.Map">
+        update sys_file_manage_operate_log
+        set
+        DEL_FLAG = 'Y',
+        OPERATE_TIME = current_timestamp ,
+        OPERATOR = #{updateUserId}
+        WHERE FILE_ID in
+        <foreach collection="fileIds" item="fileId" separator="," open="(" close=")">
+            #{fileId}
+        </foreach>
+    </update>
+
+
+</mapper>

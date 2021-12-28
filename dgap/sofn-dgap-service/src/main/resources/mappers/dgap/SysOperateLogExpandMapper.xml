@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.dao.dgap.SysOperateLogExpandMapper">
+    <resultMap id="BaseResultMap" type="com.sofn.model.generator.SysOperateLog">
+        <id column="ID" property="id" jdbcType="VARCHAR"/>
+        <result column="OPERATE_USERID" property="operateUserid" jdbcType="VARCHAR"/>
+        <result column="OPERATE_USERNAME" property="operateUsername" jdbcType="VARCHAR"/>
+        <result column="OPERATE_TIME" property="operateTime" jdbcType="TIMESTAMP"/>
+        <result column="OPERATE_IP" property="operateIp" jdbcType="VARCHAR"/>
+        <result column="USER_TOKEN" property="userToken" jdbcType="VARCHAR"/>
+        <result column="VISIT_URL" property="visitUrl" jdbcType="VARCHAR"/>
+        <result column="VISIT_PARAM" property="visitParam" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"/>
+        <result column="FAIL_INFO" property="failInfo" jdbcType="VARCHAR"/>
+        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="DEL_FLAG" property="delFlag" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD1" property="reservedField1" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD2" property="reservedField2" jdbcType="VARCHAR"/>
+        <result column="OPERATE_DESCRIBE" property="operateDescribe" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="getPageInfo" parameterType="hashmap" resultType="com.sofn.model.generator.SysOperateLog">
+        SELECT * FROM
+        (
+        SELECT A.*, ROWNUM RN
+        FROM (
+        SELECT * FROM SYS_OPERATE_LOG
+        WHERE 1=1 AND DEL_FLAG !='Y'
+        <if test="operateUsername!=null and operateUsername!=''">
+            AND operate_username = #{operateUsername,jdbcType=VARCHAR}
+        </if>
+        <if test="operateType!=null and operateType!=''">
+            AND operate_type = #{operateType,jdbcType=VARCHAR}
+        </if>
+        <if test="operateDescribe!=null and operateDescribe!=''">
+            AND OPERATE_DESCRIBE LIKE '%'|| #{operateDescribe,jdbcType=VARCHAR} ||'%'
+        </if>
+        <if test="operateIp!=null and operateIp!=''">
+            AND operate_Ip = #{operateIp,jdbcType=VARCHAR}
+        </if>
+        <if test="startTime!=null and startTime!=''">
+            AND operate_time &gt;= TO_DATE(#{startTime},'yyyy-mm-dd hh24:mi:ss')
+        </if>
+        <if test="endTime!=null and endTime!=''">
+            AND operate_time &lt;= TO_DATE(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+        </if>
+        ORDER BY OPERATE_TIME DESC) A
+        <![CDATA[
+            WHERE ROWNUM <= #{pager.pageTail}
+            ]]>
+        )
+        <![CDATA[
+        WHERE RN >= #{pager.pageOffset}
+        ]]>
+    </select>
+
+    <select id="getCount" parameterType="hashmap" resultType="long">
+        select COUNT(*)
+        from SYS_OPERATE_LOG
+        WHERE 1=1 and DEL_FLAG !='Y'
+        <if test="operateUsername!=null and operateUsername!=''">
+            AND operate_username = #{operateUsername,jdbcType=VARCHAR}
+        </if>
+        <if test="operateType!=null and operateType!=''">
+            AND operate_Type = #{operateType,jdbcType=VARCHAR}
+        </if>
+        <if test="operateIp!=null and operateIp!=''">
+            AND operate_Ip = #{operateIp,jdbcType=VARCHAR}
+        </if>
+        <if test="startTime!=null and startTime!=''">
+            AND operate_time &gt;= TO_DATE(#{startTime},'yyyy-mm-dd hh24:mi:ss')
+        </if>
+        <if test="endTime!=null and endTime!=''">
+            AND operate_time &lt;= TO_DATE(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+        </if>
+        <if test="operateDescribe!=null and operateDescribe!=''">
+            AND OPERATE_DESCRIBE LIKE '%'|| #{operateDescribe,jdbcType=VARCHAR} ||'%'
+        </if>
+    </select>
+
+    <select id="findByIp" parameterType="java.lang.String" resultType="com.sofn.model.generator.SysOperateLog">
+    SELECT * FROM SYS_OPERATE_LOG WHERE OPERATE_IP = #{operateIp}
+  </select>
+
+
+    <select id="getDataPageInfo" parameterType="hashmap" resultType="com.sofn.model.generator.SysOperateLog">
+        SELECT * FROM
+        (
+        SELECT A.*, ROWNUM RN
+        FROM (
+        SELECT * FROM SYS_OPERATE_LOG
+        WHERE 1=1 AND DEL_FLAG !='Y'
+        <if test="operateUsername!=null and operateUsername!=''">
+            AND operate_username = #{operateUsername,jdbcType=VARCHAR}
+        </if>
+        <if test="operateType!=null and operateType!=''">
+            AND operate_type = #{operateType,jdbcType=VARCHAR}
+        </if>
+        <if test="operateDescribe!=null and operateDescribe!=''">
+            AND OPERATE_DESCRIBE LIKE '%'|| #{operateDescribe,jdbcType=VARCHAR} ||'%'
+        </if>
+        <if test="operateIp!=null and operateIp!=''">
+            AND operate_Ip = #{operateIp,jdbcType=VARCHAR}
+        </if>
+        <if test="startTime!=null and startTime!=''">
+            AND operate_time &gt;= TO_DATE(#{startTime},'yyyy-mm-dd hh24:mi:ss')
+        </if>
+        <if test="endTime!=null and endTime!=''">
+            AND operate_time &lt;= TO_DATE(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+        </if>
+        AND (visit_url = '/sofn-dgap-web/resourceDirectory/add'
+        OR visit_url    = '/sofn-dgap-web/resourceDirectory/delete'
+        OR visit_url    = '/sofn-dgap-web/resourceDirectory/deletes'
+        OR visit_url    = '/sofn-dgap-web/resourceDirectory/update'
+        OR visit_url    = '/sofn-dgap-web/resourceDirectory/list')
+        ORDER BY OPERATE_TIME DESC) A
+        <![CDATA[
+            WHERE ROWNUM <= #{pager.pageTail}
+            ]]>
+        )
+        <![CDATA[
+        WHERE RN >= #{pager.pageOffset}
+        ]]>
+    </select>
+
+
+    <select id="getDataCount" parameterType="hashmap" resultType="long">
+        select COUNT(*)
+        from SYS_OPERATE_LOG
+        WHERE 1=1 and DEL_FLAG !='Y'
+        <if test="operateUsername!=null and operateUsername!=''">
+            AND operate_username = #{operateUsername,jdbcType=VARCHAR}
+        </if>
+        <if test="operateType!=null and operateType!=''">
+            AND operate_Type = #{operateType,jdbcType=VARCHAR}
+        </if>
+        <if test="operateIp!=null and operateIp!=''">
+            AND operate_Ip = #{operateIp,jdbcType=VARCHAR}
+        </if>
+        <if test="startTime!=null and startTime!=''">
+            AND operate_time &gt;= TO_DATE(#{startTime},'yyyy-mm-dd hh24:mi:ss')
+        </if>
+        <if test="endTime!=null and endTime!=''">
+            AND operate_time &lt;= TO_DATE(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+        </if>
+        <if test="operateDescribe!=null and operateDescribe!=''">
+            AND OPERATE_DESCRIBE LIKE '%'|| #{operateDescribe,jdbcType=VARCHAR} ||'%'
+        </if>
+        AND (visit_url = '/sofn-dgap-web/resourceDirectory/add'
+        OR visit_url    = '/sofn-dgap-web/resourceDirectory/delete'
+        OR visit_url    = '/sofn-dgap-web/resourceDirectory/deletes'
+        OR visit_url    = '/sofn-dgap-web/resourceDirectory/update'
+        OR visit_url    = '/sofn-dgap-web/resourceDirectory/list')
+    </select>
+    <select id="getOperateLogStats" resultType="com.sofn.model.sys.OperateLogStats">
+        SELECT
+            OPERATE_TYPE,
+            STATUS,
+            count( ID ) AS "COUNT"
+        FROM
+            "SYS_OPERATE_LOG" t1
+        WHERE
+            OPERATE_TYPE IS NOT NULL
+            <if test="startDate != null and startDate !=''">
+                <![CDATA[
+                AND t1.OPERATE_TIME >= TO_DATE( #{startDate} || ' 00:00:00','yyyy-mm-dd hh24:mi:ss' )
+                ]]>
+            </if>
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[
+                AND t1.OPERATE_TIME <= TO_DATE( #{endDate} || ' 23:59:59','yyyy-mm-dd hh24:mi:ss' )
+                ]]>
+            </if>
+        GROUP BY
+            OPERATE_TYPE,
+            STATUS
+        ORDER BY
+            OPERATE_TYPE,
+            STATUS DESC
+    </select>
+    <select id="getMinDate" resultType="java.util.Date">
+        SELECT
+            MIN( OPERATE_TIME )
+        FROM
+            "SYS_OPERATE_LOG"
+    </select>
+    <select id="queryOperateLog" resultType="com.sofn.model.generator.SysOperateLog">
+        SELECT
+            ID,
+            OPERATE_USERNAME,
+            OPERATE_TIME,
+            OPERATE_IP,
+            STATUS,
+            OPERATE_TYPE,
+            OPERATE_DESCRIBE
+        FROM
+            SYS_OPERATE_LOG
+        WHERE
+            DEL_FLAG = 'N'
+        <if test="operateUsername != null and operateUsername !=''">
+            AND OPERATE_USERNAME = #{operateUsername}
+        </if>
+        <if test="operateType != null and operateType != ''">
+            AND OPERATE_TYPE = #{operateType}
+        </if>
+        <if test="operateDescribe !=null and operateDescribe != ''">
+            AND OPERATE_DESCRIBE LIKE '%'|| #{operateDescribe} || '%'
+        </if>
+        <if test="operateIp != null and operateIp != ''">
+            AND OPERATE_IP = #{operateIp}
+        </if>
+        <if test="startTime != null and startTime != ''">
+            <![CDATA[
+            AND OPERATE_TIME >= TO_DATE( #{startTime} || ' 00:00:00','yyyy-mm-dd hh24:mi:ss' )
+            ]]>
+        </if>
+        <if test="endTime != null and endTime != ''">
+            <![CDATA[
+            AND OPERATE_TIME <= TO_DATE( #{endTime} || ' 23:59:59','yyyy-mm-dd hh24:mi:ss' )
+            ]]>
+        </if>
+        ORDER BY
+            OPERATE_TIME DESC
+    </select>
+    <select id="queryOperateTypes" resultType="java.lang.String">
+        SELECT
+            OPERATE_TYPE
+        FROM
+            "SYS_OPERATE_LOG" t1
+        WHERE
+            OPERATE_TYPE IS NOT NULL
+        GROUP BY
+            OPERATE_TYPE
+        ORDER BY
+            OPERATE_TYPE DESC
+    </select>
+</mapper>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.dao.generator.TDgapLocalPlatFormAppliMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.model.generator.TDgapLocalPlatFormAppli" >
+    <id column="ID" property="id" jdbcType="VARCHAR"/>
+    <result column="PLATFORM_NAME" property="platFormName" jdbcType="VARCHAR"/>
+    <result column="PLATFORM_AREA_ID" property="platFormAreaId" jdbcType="VARCHAR"/>
+    <result column="PLATFORM_LEVEL" property="platFormLevel" jdbcType="VARCHAR"/>
+    <result column="INDUSTRY" property="industry" jdbcType="TIMESTAMP"/>
+    <result column="URL" property="url" jdbcType="VARCHAR"/>
+    <result column="NOTE" property="note" jdbcType="TIMESTAMP"/>
+    <result column="DEL_FLAG" property="delFlag" jdbcType="VARCHAR"/>
+    <result column="APPLICANT" property="appliCant" jdbcType="VARCHAR"/>
+    <result column="APPLICATION_TIME" property="appliCationTime" jdbcType="TIMESTAMP"/>
+    <result column="APPLICATION_DEPARTMENT" property="appliCationDepartment" jdbcType="VARCHAR"/>
+    <result column="AUDIT_USER_ID" property="auditUserId" jdbcType="VARCHAR"/>
+    <result column="AUDIT_TIME" property="auditTime" jdbcType="TIMESTAMP"/>
+    <result column="AUDIT_COMMENTS" property="auditComments" jdbcType="VARCHAR"/>
+    <result column="STATUS" property="status" jdbcType="VARCHAR"/>
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+    <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR"/>
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR"/>
+    <result column="ENABLE_STATUS" property="enableStatus" jdbcType="VARCHAR"/>
+    <result column="DATANOTIFIER_URL" property="dataNotifierUrl" jdbcType="VARCHAR"/>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from T_DGAP_LOCAL_PLATFORM_APPLI
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.sofn.model.generator.TDgapLocalPlatFormAppli" >
+    insert into T_DGAP_LOCAL_PLATFORM_APPLI (ID, PLATFORM_NAME, PLATFORM_AREA_ID,
+      CREATE_BY, CREATE_TIME, UPDATE_BY, 
+      UPDATE_TIME, DEL_FLAG, PLATFORM_LEVEL,
+      INDUSTRY, URL, NOTE,
+      APPLICANT, APPLICATION_TIME,
+      APPLICATION_DEPARTMENT, AUDIT_USER_ID, AUDIT_TIME,
+      AUDIT_COMMENTS, STATUS,ENABLE_STATUS,DATANOTIFIER_URL)
+    values (#{id,jdbcType=VARCHAR}, #{platFormName,jdbcType=VARCHAR}, #{platFormAreaId,jdbcType=VARCHAR},
+      #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=VARCHAR}, #{platFormLevel,jdbcType=VARCHAR},
+      #{industry,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR},
+      #{appliCant,jdbcType=VARCHAR}, #{appliCationTime,jdbcType=TIMESTAMP}, #{appliCationDepartment,jdbcType=VARCHAR},
+      #{auditUserId,jdbcType=VARCHAR}, #{auditTime,jdbcType=TIMESTAMP}, #{auditComments,jdbcType=VARCHAR},
+      #{status,jdbcType=VARCHAR}, #{enableStatus,jdbcType=VARCHAR}, #{dataNotifierUrl,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sofn.model.generator.TDgapLocalPlatFormAppli" >
+    update T_DGAP_LOCAL_PLATFORM_APPLI
+    set PLATFORM_NAME = #{platFormName,jdbcType=VARCHAR},
+      PLATFORM_AREA_ID = #{platFormAreaId,jdbcType=VARCHAR},
+      CREATE_BY = #{createBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_BY = #{updateBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      DEL_FLAG = #{delFlag,jdbcType=VARCHAR},
+      PLATFORM_LEVEL = #{platFormLevel,jdbcType=VARCHAR},
+      INDUSTRY = #{industry,jdbcType=VARCHAR},
+      URL = #{url,jdbcType=VARCHAR},
+      NOTE = #{note,jdbcType=VARCHAR},
+      APPLICANT = #{appliCant,jdbcType=VARCHAR},
+      APPLICATION_TIME = #{appliCationTime,jdbcType=TIMESTAMP},
+      APPLICATION_DEPARTMENT = #{appliCationDepartment,jdbcType=VARCHAR},
+      AUDIT_USER_ID = #{auditUserId,jdbcType=VARCHAR},
+      AUDIT_TIME = #{auditTime,jdbcType=TIMESTAMP},
+      AUDIT_COMMENTS = #{auditComments,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR}, ENABLE_STATUS = #{enableStatus,jdbcType=VARCHAR}, DATANOTIFIER_URL = #{dataNotifierUrl,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select ID, PLATFORM_NAME, PLATFORM_AREA_ID,
+      CREATE_BY, CREATE_TIME, UPDATE_BY,
+      UPDATE_TIME, DEL_FLAG, PLATFORM_LEVEL,
+      INDUSTRY, URL, NOTE,
+      APPLICANT, APPLICATION_TIME,
+      APPLICATION_DEPARTMENT, AUDIT_USER_ID, AUDIT_TIME,
+      AUDIT_COMMENTS, STATUS,ENABLE_STATUS,DATANOTIFIER_URL
+    from T_DGAP_LOCAL_PLATFORM_APPLI
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select ID, PLATFORM_NAME, PLATFORM_AREA_ID,
+      CREATE_BY, CREATE_TIME, UPDATE_BY,
+      UPDATE_TIME, DEL_FLAG, PLATFORM_LEVEL,
+      INDUSTRY, URL, NOTE,
+      APPLICANT, APPLICATION_TIME,
+      APPLICATION_DEPARTMENT, AUDIT_USER_ID, AUDIT_TIME,
+      AUDIT_COMMENTS, STATUS,ENABLE_STATUS,DATANOTIFIER_URL
+    from T_DGAP_LOCAL_PLATFORM_APPLI
+  </select>
+</mapper>

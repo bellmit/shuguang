@@ -1,0 +1,85 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+
+    <div class="gui-breadcrumbs">
+        <a href="">监测系统</a>&gt;
+        <a href="">监测模型</a>&gt;
+        <a href="">基本配置</a>&gt;
+        <a href="" id="checkObject">检测对象</a>&gt;
+        <span>编辑</span>
+    </div>
+<div class="gui-section">
+    <ul class="gui-tab" role="tablist">
+        <li role="presentation" class="active"><a role="tab" data-toggle="tab" ng-click="goCheckObject()">检测对象</a></li>
+        <li role="presentation" class="pointer" ><a role="tab" data-toggle="tab" ng-click="goCheckStandard()">检测标准</a></li>
+        <li role="presentation" class="pointer" ><a role="tab" data-toggle="tab" ng-click="goCheckItem()">检测项目</a></li>
+        <!--<li role="presentation" class="pointer" ><a role="tab" data-toggle="tab" ng-click="goModelType()">模型种类</a></li>-->
+        <li role="presentation" class="pointer" ><a role="tab" data-toggle="tab" ng-click="goSampleLink()">抽样环节</a></li>
+        <li role="presentation" class="pointer" ><a role="tab" data-toggle="tab" ng-click="goJudgeStabdard()">判定标准</a></li>
+    </ul>
+
+    <div class="Sup_contain_section_contain col-lg-12 col-xs-12 col-sm-12 col-md-12">
+        <p class="col-lg-1 col-xs-0 col-sm-1 col-md-1"></p>
+        <div class="Sup_contain_section_contain_head col-lg-10 col-xs-12 col-sm-12 col-md-12">
+
+            <!-- 左侧菜单 -->
+            <div class="col-md-2">
+                <div class="panel-group list-group-panel pd-20">
+                    <div class="panel panel-default">
+                        <div class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div class="list-group" style="margin-bottom:0px;">
+                                    <a  ng-click="edit()" class="list-group-item line-20">修改对象名称</a>
+                                    <a  class="list-group-item active line-20">编辑项目</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="col-md-1">
+            </div>-->
+            <!-- 右侧内容 -->
+            <div class="col-md-10">
+                    <div class="tab-content">
+                        <div class="text-left pd-20 mg-auto">
+                            <div class="gui-section">
+                                <div class="gui-form-group">
+                                    <input class="gui-input" type="text"id="nameS" name="nameS" placeholder="请输入检测项目名称" >
+                                    <span class="gui-btn" id="seachTask">查询</span>
+                                </div>
+                                <div class="gui-actions">
+                                    <span class="gui-btn fr " ng-click="addAdsModel()" ><i class="gui-icon icon-add"></i>添加项目</span>
+                                    <span class="gui-btn fr mr15" onclick="delAdsModelObjectItemMapping()"><i class="gui-icon icon-remove"></i>删除项目</span>
+
+                                </div>
+                                <table id="grid" class="gui-table table table-striped table-hover data-table ">
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 新增模型_检测项目model -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: center">对象添加项目</h4>
+            </div>
+            <div class="modal-body" style="min-height: 100px;">
+                <table id="itemGrid" class="gui-table table table-striped table-hover data-table">
+                </table>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" type="button" data-dismiss="modal">关闭</span>
+                <span class="gui-btn" type="button" ng-click="addAdsModelObjectItemMapping()">确定</span>
+            </div>
+        </div>
+    </div>
+</div>

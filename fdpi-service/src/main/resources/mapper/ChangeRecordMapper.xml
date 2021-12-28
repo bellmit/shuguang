@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.ChangeRecordMapper">
+    <resultMap id="speciesMap" type="com.sofn.fdpi.vo.SpeciesSelect">
+        <result property="speciesId" column="SPE_ID"></result>
+        <result property="speciesName" column="SPE_NAME"></result>
+        <result property="speciesNum" column="SPE_NUM"></result>
+        <result property="speciesSign" column="SPE_SIGN"></result>
+    </resultMap>
+
+    <resultMap id="changeTypeMap" type="com.sofn.fdpi.model.ChangeType">
+        <result property="id" column="ID"></result>
+        <result property="type" column="TYPE"></result>
+    </resultMap>
+
+
+    <resultMap id="companyMap" type="com.sofn.fdpi.vo.ChangeRecordCompanyVO">
+        <result column="id" property="companyId"></result>
+        <result column="comp_name" property="compName"></result>
+        <result column="comp_province" property="compProvince"></result>
+        <result column="comp_city" property="compCity"></result>
+        <result column="comp_district" property="compDistrict"></result>
+        <result column="contact_address" property="contactAddress"></result>
+        <result column="post_address" property="postAddress"></result>
+        <result column="legal" property="legal"></result>
+        <result column="linkman" property="linkman"></result>
+        <result column="phone" property="phone"></result>
+        <result column="email" property="email"></result>
+        <result column="DIRECLY_ID" property="direclyId"></result>
+        <result column="PROVINCIAL_ID" property="provincialId"></result>
+        <result column="DIRECT_ORG_LEVEL" property="directOrgLevel"></result>
+        <result column="COMP_TYPE" property="compType"/>
+
+    </resultMap>
+
+
+    <resultMap id="changeRecordDetail" type="com.sofn.fdpi.vo.ChangeRecordDetailVO">
+        <result column="id" property="id"></result>
+        <result column="comp_id" property="companyId"></result>
+        <result column="source" property="source"></result>
+        <result column="mode" property="mode"></result>
+        <result column="comp_name" property="compName"></result>
+        <result column="comp_type" property="compType"></result>
+        <result column="comp_province" property="compProvince"></result>
+        <result column="comp_city" property="compCity"></result>
+        <result column="comp_district" property="compDistrict"></result>
+        <result column="apply_code" property="applyCode"></result>
+        <result column="contact_address" property="contactAddress"></result>
+        <result column="post_address" property="postAddress"></result>
+        <result column="legal" property="legal"></result>
+        <result column="linkman" property="linkman"></result>
+        <result column="phone" property="phone"></result>
+        <result column="email" property="email"></result>
+        <result column="SPECIES_ID" property="speciesId"></result>
+        <result column="SPE_NAME" property="speciesName"></result>
+        <result column="CHANGE_REASON" property="changeReason"></result>
+        <result column="remark" property="remark"></result>
+        <result column="CHANGE_NUM" property="changeNum"></result>
+        <result column="FILE_ID" property="fileId"></result>
+        <result column="FILE_PATH" property="filePath"></result>
+        <result column="FILE_NAME" property="fileName"></result>
+        <result column="FIRST_OPNION" property="firstOpnion"></result>
+        <result column="SECOND_OPNION" property="secondOpnion"></result>
+        <result column="CHANGE_STATUS" property="changeStatus"></result>
+        <result column="CREATE_USER_ID" property="createUserId"></result>
+        <result column="CREATE_USER_ID" property="createUserId"></result>
+        <result column="CHANGE_COMPANY" property="companyId"></result>
+        <result column="HIS_SPENUM" property="speciesNum"></result>
+        <result column="REQUESTREPORT" property="requestReport"></result>
+        <result column="CHANGE_DATE" property="changeDate"></result>
+
+
+    </resultMap>
+
+    <resultMap id="changeRecForInspectResultMap" type="com.sofn.fdpi.vo.ChangeRecVoInPapersYearVo">
+        <result column="UPDATE_TIME" property="createTime" jdbcType="DATE"></result>
+        <result column="CHANGE_REASON" property="changeReason" jdbcType="VARCHAR"></result>
+        <result column="COMP_NAME" property="otherCompName" jdbcType="VARCHAR"></result>
+        <result column="SPE_NAME" property="speciesName" jdbcType="VARCHAR"></result>
+        <result column="CHANGE_NUM" property="changeNum" jdbcType="INTEGER"></result>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+
+    <sql id="colum">
+        ID,
+        SPECIES_ID,
+        CHANGE_DATE,
+        CHANGE_REASON,
+        CHANGE_COMPANY,
+        REMARK,
+        CHANGE_NUM,
+        CHANGE_STATUS,
+        FILE_ID,
+        FILE_PATH,
+        FILE_NAME,
+        CREATE_TIME,
+        CREATE_USER_ID,
+        UPDATE_TIME,
+        UPDATE_USER_ID,
+        FIRST_OPNION,
+        SECOND_OPNION,
+        DEL_FLAG
+    </sql>
+
+    <select id="listChangeRecordDetail" resultMap="changeRecordDetail">
+        SELECT
+        A.ID,
+        A.SPECIES_ID,
+        C.SPE_NAME,
+        A.CHANGE_REASON CHANGE_REASON,
+        A.REMARK,
+        A.APPLY_CODE,
+        A.CHANGE_DATE,
+        A.CHANGE_NUM,
+        A.FILE_ID,
+        A.FILE_PATH,
+        A.FILE_NAME,
+        A.FIRST_OPNION,
+        A.SECOND_OPNION,
+        A.CHANGE_STATUS,
+        A.CREATE_USER_ID,
+        A.CHANGE_COMPANY,
+        A.REQUESTREPORT,
+        B.COMP_NAME,
+        B.COMP_TYPE,
+        B.COMP_PROVINCE,
+        B.COMP_CITY,
+        B.COMP_DISTRICT,
+        B.CONTACT_ADDRESS,
+        B.POST_ADDRESS,
+        B.LEGAL,
+        B.LINKMAN,
+        B.PHONE,
+        B.EMAIL,
+        E.SPE_NUM
+        FROM
+        CHANGE_REC A
+        LEFT JOIN TB_COMP B ON A.CHANGE_COMPANY = B.ID
+        LEFT JOIN TB_SPECIES C ON A.SPECIES_ID = C.ID
+        LEFT JOIN COMP_SPE_STOCK E ON A.CHANGE_COMPANY=E.COMP_ID
+        WHERE
+        1=1
+        AND A.SPECIES_ID=E.SPECIES_ID
+        AND A.DEL_FLAG='N'
+        <if test="queryType=='1'.toString()">
+            AND A.CHANGE_COMPANY=#{curCompanyId}
+            AND A.CHANGE_STATUS>='0'
+        </if>
+        <if test="queryType=='2'.toString()">
+            AND B.DIRECLY_ID=#{curCompanyId}
+            AND A.CHANGE_STATUS>='1'
+        </if>
+        <if test="queryType=='3'.toString()">
+            AND B.COMP_PROVINCE=#{curCompanyId}
+            AND A.CHANGE_STATUS>='3'
+        </if>
+        <if test="queryType=='4'.toString()">
+            AND ((B.COMP_PROVINCE=#{province}
+            AND A.CHANGE_STATUS>='3')
+            OR (B.DIRECLY_ID=#{curCompanyId}
+            AND A.CHANGE_STATUS>='1'))
+        </if>
+        <if test="speciesId!=null and speciesId!=''">
+            AND C.ID=#{speciesId}
+        </if>
+        <if test="changeStatus!=null and changeStatus!=''">
+            AND A.CHANGE_STATUS=#{changeStatus}
+        </if>
+        <if test="companyId!=null and companyId!=''">
+            AND A.CHANGE_COMPANY=#{companyId}
+        </if>
+        <if test="companyName!=null and companyName!=''">
+            AND B.COMP_NAME like #{companyName}
+        </if>
+        <if test="changeDateStart!=null and changeDateStart!=''">
+            AND A.CHANGE_DATE &gt;= to_timestamp(#{changeDateStart},'yyyy-MM-dd HH24:MI:SS')
+        </if>
+        <if test="changeDateEnd!=null and changeDateEnd!=''">
+            AND A.CHANGE_DATE &lt;= to_timestamp(#{changeDateEnd},'yyyy-MM-dd HH24:MI:SS')
+        </if>
+        <if test="ignore!=null and ignore!=''">
+            AND A.CHANGE_STATUS!=#{ignore}
+        </if>
+        ORDER BY A.CREATE_TIME DESC
+    </select>
+    <select id="listChangeRecordDetail2" resultMap="changeRecordDetail">
+        SELECT
+        A.ID,
+        A.SPECIES_ID,
+        C.SPE_NAME,
+        A.CHANGE_REASON CHANGE_REASON,
+        A.REMARK,
+        A.APPLY_CODE,
+        A.CHANGE_DATE,
+        A.CHANGE_NUM,
+        A.FILE_ID,
+        A.FILE_PATH,
+        A.FILE_NAME,
+        A.FIRST_OPNION,
+        A.SECOND_OPNION,
+        A.CHANGE_STATUS,
+        A.CREATE_USER_ID,
+        A.CHANGE_COMPANY,
+        A.REQUESTREPORT,
+        B.COMP_NAME,
+        B.COMP_TYPE,
+        B.COMP_PROVINCE,
+        B.COMP_CITY,
+        B.COMP_DISTRICT,
+        B.CONTACT_ADDRESS,
+        B.POST_ADDRESS,
+        B.LEGAL,
+        B.LINKMAN,
+        B.PHONE,
+        B.EMAIL,
+        E.SPE_NUM
+        FROM
+        CHANGE_REC A
+        LEFT JOIN TB_COMP B ON A.CHANGE_COMPANY = B.ID
+        LEFT JOIN TB_SPECIES C ON A.SPECIES_ID = C.ID
+        LEFT JOIN COMP_SPE_STOCK E ON A.CHANGE_COMPANY=E.COMP_ID
+        WHERE A.SPECIES_ID=E.SPECIES_ID AND A.DEL_FLAG='N'
+        <choose>
+            <!--区级初审权限-->
+            <when test="organizationLevel!=null and organizationLevel eq @com.sofn.fdpi.constants.Constants@REGION_TYPE_COUNTY">
+                and A.CHANGE_STATUS >= '1' and A.CHANGE_STATUS !='4' and B.COMP_DISTRICT = #{regionLastCode}
+            </when>
+            <!--市级初审权限-->
+            <when test="organizationLevel!=null and organizationLevel eq @com.sofn.fdpi.constants.Constants@REGION_TYPE_CITY">
+                and A.CHANGE_STATUS >= '1' and A.CHANGE_STATUS !='4' and B.COMP_CITY = #{regionLastCode}
+            </when>
+            <!--省级有初审和复审权限-->
+            <when test="organizationLevel!=null and organizationLevel eq @com.sofn.fdpi.constants.Constants@REGION_TYPE_PROVINCE">
+                and A.CHANGE_STATUS >= '1' and A.CHANGE_STATUS !='4' and B.COMP_PROVINCE = #{regionLastCode}
+            </when>
+        </choose>
+        <if test="compId!=null and compId!=''">
+            and A.CHANGE_COMPANY=#{compId}
+        </if>
+        <if test="speciesId!=null and speciesId!=''">
+            and C.ID=#{speciesId}
+        </if>
+        <if test="changeStatus!=null and changeStatus!=''">
+            and A.CHANGE_STATUS=#{changeStatus}
+        </if>
+        <if test="companyId!=null and companyId!=''">
+            and A.CHANGE_COMPANY=#{companyId}
+        </if>
+        <if test="companyName!=null and companyName!=''">
+            and B.COMP_NAME like '%' || #{companyName} || '%'
+        </if>
+        <if test="changeDateStart!=null and changeDateStart!=''">
+            and A.CHANGE_DATE &gt;= to_timestamp(#{changeDateStart},'yyyy-MM-dd HH24:MI:SS')
+        </if>
+        <if test="changeDateEnd!=null and changeDateEnd!=''">
+            and A.CHANGE_DATE &lt;= to_timestamp(#{changeDateEnd},'yyyy-MM-dd HH24:MI:SS')
+        </if>
+        <if test="ignore!=null and ignore!=''">
+            and A.CHANGE_STATUS!=#{ignore}
+        </if>
+        ORDER BY A.CREATE_TIME DESC
+    </select>
+    <select id="getChangeRecordDetailById" resultMap="changeRecordDetail">
+
+        SELECT
+            A.ID,
+            A.SOURCE,
+            A.MODE,
+            A.SPECIES_ID,
+            C.SPE_NAME,
+            A.APPLY_CODE,
+            A.CHANGE_REASON,
+            A.CHANGE_DATE,
+            A.REMARK,
+            A.CHANGE_NUM,
+            A.FILE_ID,
+            A.FILE_PATH,
+            A.FILE_NAME,
+            A.FIRST_OPNION,
+            A.SECOND_OPNION,
+            A.CHANGE_STATUS,
+            A.CREATE_USER_ID,
+            A.CHANGE_COMPANY,
+            A.REQUESTREPORT,
+            B.ID COMP_ID,
+            B.COMP_NAME,
+            B.COMP_TYPE,
+            B.COMP_PROVINCE,
+            B.COMP_CITY,
+            B.COMP_DISTRICT,
+            B.CONTACT_ADDRESS,
+            B.POST_ADDRESS,
+            B.LEGAL,
+            B.LINKMAN,
+            B.PHONE,
+            B.EMAIL,
+            A.HIS_SPENUM
+        FROM
+            CHANGE_REC A
+            LEFT JOIN TB_COMP B ON A.CHANGE_COMPANY = B.ID
+            LEFT JOIN TB_SPECIES C ON A.SPECIES_ID = C.ID
+        WHERE
+            A.ID =#{ id }
+            AND A.DEL_FLAG='N'
+    </select>
+
+    <select id="getCompanyByIdOrName" resultMap="companyMap">
+        SELECT
+        ID,
+        COMP_TYPE,
+        COMP_NAME,
+        COMP_PROVINCE,
+        COMP_CITY,
+        COMP_DISTRICT,
+        CONTACT_ADDRESS,
+        POST_ADDRESS,
+        LEGAL,
+        LINKMAN,
+        PHONE,
+        EMAIL,
+        DIRECLY_ID,
+        PROVINCIAL_ID,
+        DIRECT_ORG_LEVEL
+        FROM
+        TB_COMP A
+        WHERE
+        1=1
+        AND A.DEL_FLAG='N'
+        <if test="companyId!=null">
+            AND A.ID=#{companyId}
+        </if>
+        <if test="companyName!=null">
+            AND A.COMP_NAME like #{companyName}
+        </if>
+    </select>
+
+    <select id="listCompanyByIdOrName" resultMap="companyMap">
+        SELECT
+        ID,
+        COMP_NAME,
+        COMP_PROVINCE,
+        COMP_CITY,
+        COMP_DISTRICT,
+        CONTACT_ADDRESS,
+        POST_ADDRESS,
+        LEGAL,
+        LINKMAN,
+        PHONE,
+        EMAIL,
+        DIRECLY_ID,
+        PROVINCIAL_ID,
+        DIRECT_ORG_LEVEL
+        FROM
+        TB_COMP A
+        WHERE
+        A.COMP_STATUS = '1'
+        AND A.DEL_FLAG='N'
+        <if test="companyId!=null">
+            AND A.ID=#{companyId}
+        </if>
+        <if test="companyName!=null">
+            AND A.COMP_NAME like #{companyName}
+        </if>
+    </select>
+
+
+    <select id="listSpeciesSelect" resultMap="speciesMap">
+        SELECT
+        C.ID SPE_ID,
+        C.SPE_NAME,
+        D.SPE_NUM,
+        C.IDENTIFY SPE_SIGN
+        FROM
+        PAPERS_SPEC A,
+        PAPERS B,
+        TB_SPECIES C,
+        COMP_SPE_STOCK D
+        <where>
+            A.PAPERS_ID = B.ID
+            AND A.SPEC_ID = C.ID
+            AND D.COMP_ID = B.COMP_ID
+            AND D.SPECIES_ID = A.SPEC_ID
+            AND B.COMP_ID =#{ companyId }
+            AND A.DEL_FLAG='N'
+            AND B.IS_ENABLE='1'
+            <if test="identify!=null and identify !=''">
+                AND (C.IDENTIFY= '1' or C.IDENTIFY= '2')
+            </if>
+        </where>
+        GROUP BY
+        C.ID ,
+        C.SPE_NAME,
+        D.SPE_NUM,
+        C.IDENTIFY
+    </select>
+
+    <select id="listChangeType" resultMap="changeTypeMap">
+        SELECT * FROM CHANGE_TYPE A
+    </select>
+    <insert id="save">
+        insert into change_rec
+            (ID,
+            SPECIES_ID,
+            APPLY_CODE,
+            MODE,
+            SOURCE,
+            CHANGE_DATE,
+            CHANGE_REASON,
+            CHANGE_COMPANY,
+            REMARK,
+            CHANGE_NUM,
+            CHANGE_STATUS,
+            FILE_ID,
+            FILE_PATH,
+            FILE_NAME,
+            CREATE_TIME,
+            CREATE_USER_ID,
+            UPDATE_TIME,
+            UPDATE_USER_ID,
+            FIRST_OPNION,
+            SECOND_OPNION,
+            DEL_FLAG,
+            REQUESTREPORT,
+            HIS_SPENUM,
+            IS_REPORT)
+        values (
+            #{id,jdbcType=VARCHAR},
+            #{speciesId,jdbcType=VARCHAR},
+            #{applyCode,jdbcType=VARCHAR},
+            #{mode,jdbcType=VARCHAR},
+            #{source,jdbcType=VARCHAR},
+            #{changeDate,jdbcType=DATE},
+            #{changeReason,jdbcType=VARCHAR},
+            #{changeCompany,jdbcType=VARCHAR},
+            #{remark,jdbcType=VARCHAR},
+            #{changeNum,jdbcType=INTEGER},
+            #{changeStatus,jdbcType=VARCHAR},
+            #{fileId,jdbcType=VARCHAR},
+            #{filePath,jdbcType=VARCHAR},
+            #{fileName,jdbcType=VARCHAR},
+            #{createTime},
+            #{createUserId,jdbcType=VARCHAR},
+            #{updateTime,jdbcType=DATE},
+            #{updateUserId,jdbcType=VARCHAR},
+            #{firstOpnion,jdbcType=VARCHAR},
+            #{secondOpnion,jdbcType=VARCHAR},
+            #{delFlag,jdbcType=VARCHAR},
+            #{requestReport,jdbcType=VARCHAR},
+            #{hisSpeNum,jdbcType=INTEGER},
+            #{isReport,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="updateChangeRecord">
+        UPDATE CHANGE_REC
+        <set>
+            <if test="speciesId!=null">
+                SPECIES_ID=#{speciesId},
+            </if>
+            <if test="changeDate!=null">
+                CHANGE_DATE=#{changeDate},
+            </if>
+            <if test="changeReason!=null">
+                CHANGE_REASON=#{changeReason},
+            </if>
+            <if test="applyCode!=null">
+                APPLY_CODE=#{applyCode},
+            </if>
+            <if test="mode!=null">
+                MODE=#{mode},
+            </if>
+            <if test="source!=null">
+                SOURCE=#{source},
+            </if>
+            <if test="changeCompany!=null">
+                CHANGE_COMPANY=#{changeCompany},
+            </if>
+            <if test="remark!=null">
+                REMARK=#{remark},
+            </if>
+            <if test="changeNum!=null">
+                CHANGE_NUM=#{changeNum},
+            </if>
+            <if test="changeStatus!=null">
+                CHANGE_STATUS=#{changeStatus},
+            </if>
+            <if test="fileId!=null">
+                FILE_ID=#{fileId},
+            </if>
+            <if test="filePath!=null">
+                FILE_PATH=#{filePath},
+            </if>
+            <if test="fileName!=null">
+                FILE_NAME=#{fileName},
+            </if>
+            <if test="updateUserId!=null">
+                UPDATE_USER_ID=#{updateUserId},
+            </if>
+            <if test="updateTime!=null">
+                UPDATE_TIME=#{updateTime},
+            </if>
+            <if test="firstOpnion!=null">
+                FIRST_OPNION=#{firstOpnion},
+            </if>
+            <if test="secondOpnion!=null">
+                SECOND_OPNION=#{secondOpnion},
+            </if>
+            <if test="delFlag!=null">
+                DEL_FLAG=#{delFlag},
+            </if>
+            <if test="requestReport!=null">
+                REQUESTREPORT=#{requestReport},
+            </if>
+            <if test="hisSpeNum!=null">
+                HIS_SPENUM=#{hisSpeNum},
+            </if>
+            <if test="isReport!=null">
+                IS_REPORT=#{isReport},
+            </if>
+        </set>
+        WHERE ID=#{id}
+    </update>
+
+    <select id="listByConditionForInspect" parameterType="java.util.Map" resultMap="changeRecForInspectResultMap">
+        select
+        A.CH_TIME AS UPDATE_TIME,
+        A.BILL_TYPE AS CHANGE_REASON
+        ,(case when '' = other_com_name then '无' when other_com_name is null then '无' else other_com_name end) COMP_NAME
+        ,B.SPE_NAME
+        ,A.CH_NUM as CHANGE_NUM
+        ,F.REMARK
+        from COMP_SPE_STOCKFLOW A
+        left join TB_SPECIES B on a.SPECIES_ID=B.ID
+        left join TB_COMP E ON A.COMP_ID=E.ID
+        left join CHANGE_REC F ON A.COMP_ID=F.CHANGE_COMPANY AND A.SPE_NUM=F.ID
+        <where>
+            A.COMP_ID=#{compId}
+            and A.CH_TIME &lt;=to_timestamp(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+            <if test="speciesId!=null and speciesId!=''">
+                and A.SPECIES_ID=#{speciesId}
+            </if>
+        </where>
+        ORDER BY A.CH_TIME DESC
+    </select>
+    <select id="listByInspectConditionForInspect" parameterType="java.util.Map"
+            resultMap="changeRecForInspectResultMap">
+        select
+        flow.CH_TIME AS UPDATE_TIME
+        ,flow.BILL_TYPE AS CHANGE_REASON
+        ,(case when '' = other_com_name then '无' when other_com_name is null then '无' else other_com_name end) COMP_NAME
+        ,spe.SPE_NAME
+        ,flow.CH_NUM AS CHANGE_NUM
+        ,F.REMARK
+        from PAPERS_YEAR_INSPECT_RETAIL A
+        left join PAPERS_YEAR_INSPECT B on A.PAPERS_YEAR_INSPECT_ID=B.ID
+        left join COMP_SPE_STOCKFLOW flow ON B.TB_COMP_ID=flow.COMP_ID and A.SPECIES_ID=flow.SPECIES_ID
+        left join TB_SPECIES spe on flow.SPECIES_ID=spe.ID
+        left join TB_COMP E ON flow.COMP_ID=E.ID
+        left join CHANGE_REC F ON flow.COMP_ID=F.CHANGE_COMPANY AND flow.SPE_NUM=F.ID
+        <where>
+            and A.PAPERS_YEAR_INSPECT_ID=#{inspectId}
+            and flow.CH_TIME &lt;=to_timestamp(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+            <if test="speciesId!=null and speciesId!=''">
+                and A.SPECIES_ID=#{speciesId}
+            </if>
+        </where>
+    </select>
+
+    <select id="checkOnProcess" resultType="com.sofn.fdpi.vo.CheckVo">
+        SELECT
+	    t.ID
+        FROM
+	    TRANSFER t
+	    LEFT JOIN TRANSFER_SPE ts ON t.ID = TS.TRANSFER_ID
+        WHERE
+	    t.DEL_FLAG = 'N'
+	    AND t.REDUCE_COMPANY_ID = #{compId}
+	    AND ts.SPE_ID=#{speId}
+	    and (t.TRANSFER_STATUS='1' or  t.TRANSFER_STATUS='3' or t.TRANSFER_STATUS='5')
+    </select>
+
+    <select id="getReportNum" resultType="java.lang.Integer">
+    SELECT
+	Sum( a.CHANGE_NUM )
+        FROM
+	CHANGE_REC a
+        WHERE
+	a.DEL_FLAG = 'N'
+	AND a.CHANGE_COMPANY = #{compId}
+	AND a.SPECIES_ID = #{speId}
+	AND ( a.CHANGE_STATUS ='0' OR a.CHANGE_STATUS ='1' )
+	AND ( a.CHANGE_REASON ='2' OR a.CHANGE_REASON ='4'  OR a.CHANGE_REASON ='6' )
+    </select>
+
+
+    <select id="getReportTranNum" resultType="java.lang.Integer">
+    SELECT
+	sum( ts.SPE_NUM )
+    FROM
+	TRANSFER t
+	LEFT JOIN TRANSFER_SPE ts ON t.id = ts.TRANSFER_ID
+    WHERE
+	t.DEL_FLAG = 'N'
+	AND (t.TRANSFER_STATUS = '0' OR t.TRANSFER_STATUS = '1' OR t.TRANSFER_STATUS = '3' OR t.TRANSFER_STATUS = '5' )
+	AND t.REDUCE_COMPANY_ID = #{compId}
+	AND SPE_ID=#{speId}
+    </select>
+    <select id="getAssemblyId" resultType="com.sofn.fdpi.model.ChangeRecord">
+        SELECT
+        c.id,
+        t.SPE_NAME as speciesId,
+        c.CHANGE_REASON,
+        c.APPLY_CODE,
+        c.CREATE_TIME as changeDate
+        FROM
+        CHANGE_REC c
+        LEFT JOIN TB_SPECIES t ON c.SPECIES_ID = t.ID
+        WHERE
+        c.DEL_FLAG = 'N'
+        AND c.CHANGE_COMPANY =#{curCompanyId}
+        <if test="changeDateStart!=null and changeDateStart!=''">
+            AND c.CHANGE_DATE &gt;= to_timestamp( #{changeDateStart}, 'yyyy-MM-dd HH24:MI:SS' )
+        </if>
+        <if test="changeDateEnd!=null and changeDateEnd!=''">
+            AND c.CHANGE_DATE &lt;= to_timestamp(#{changeDateEnd}, 'yyyy-MM-dd HH24:MI:SS' )
+        </if>
+    </select>
+    <select id="getChangeRecordbyId" resultType="com.sofn.fdpi.model.ChangeRecord">
+
+SELECT
+	id,
+	species_id,
+	change_date,
+	change_reason,
+	change_company,
+	remark,
+	change_num,
+	change_status,
+	file_id,
+	file_path,
+	file_name,
+	first_opnion,
+	second_opnion,
+	is_report,
+	create_user_id,
+	create_time,
+	update_user_id,
+	update_time,
+	del_flag
+FROM
+	CHANGE_REC
+WHERE
+	ID = #{id}
+	AND DEL_FLAG = 'N'
+	AND IS_REPORT = 'Y'
+    </select>
+    <select id="getApplyNum" resultType="java.lang.Integer">
+        select count(*) from change_rec where
+         change_date &gt;= to_timestamp( #{changeDateStart}, 'yyyy-MM-dd HH24:MI:SS' )
+         and change_date &lt;= to_timestamp(#{changeDateEnd}, 'yyyy-MM-dd HH24:MI:SS' )
+         and change_status != '0'
+    </select>
+</mapper>

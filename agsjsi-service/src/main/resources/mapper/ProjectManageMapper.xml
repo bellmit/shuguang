@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agsjsi.mapper.ProjectManageMapper" >
+
+  <resultMap id="BaseResultMap" type="com.sofn.agsjsi.model.ProjectManage" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="CONTENT" property="content" jdbcType="VARCHAR" />
+    <result column="ORG_ID" property="orgId" jdbcType="VARCHAR" />
+    <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+    <result column="PLAN_TIME_START" property="planTimeStart" jdbcType="VARCHAR" />
+    <result column="PLAN_TIME_END" property="planTimeEnd" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="DATE" />
+    <result column="CREATE_USER_ID" property="createUserId" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE" />
+    <result column="UPDATE_USER_ID" property="updateUserId" jdbcType="VARCHAR" />
+    <result column="DEL_FLAG" property="delFlag" jdbcType="VARCHAR" />
+    <result column="CREATE_USER_NAME" property="createUserName" jdbcType="VARCHAR" />
+    <result column="UPDATE_USER_NAME" property="updateUserName" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+       ID,NAME,CONTENT,ORG_ID,ORG_NAME,PLAN_TIME_START,PLAN_TIME_END,STATUS,CREATE_TIME,CREATE_USER_ID,UPDATE_TIME,UPDATE_USER_ID,DEL_FLAG,CREATE_USER_NAME,UPDATE_USER_NAME
+  </sql>
+
+
+  <!--根据id进行逻辑删除-->
+  <update id="logicDelete" parameterType="java.lang.String">
+    update PROJECT_MANAGE
+    set
+    DEL_FLAG = 'Y'
+    where
+    ID = #{id,jdbcType=VARCHAR}
+
+  </update>
+
+
+  <!--条件查询+分页-->
+  <select id="getAllByQuery" resultType="com.sofn.agsjsi.model.ProjectManage" parameterType="java.util.Map">
+    select <include refid="Base_Column_List"/> from project_manage
+    <where> DEL_FLAG='N'
+
+      <if test="name !=null and name != ''">
+        and NAME LIKE  '%'|| #{name} || '%'
+      </if>
+
+      <if test="orgId !=null and orgId != ''">
+        and ORG_ID = #{orgId,jdbcType=VARCHAR}
+      </if>
+
+      <if test="status !=null and status != ''">
+        and status = #{status,jdbcType=VARCHAR}
+      </if>
+
+      <if test="surveyTimeLeft != null and surveyTimeLeft != ''">
+        and CREATE_TIME &gt;=to_date(#{surveyTimeLeft},'YYYY-MM-DD')
+      </if>
+
+      <if test="surveyTimeRight != null and surveyTimeRight != ''">
+        and CREATE_TIME &lt;=(to_date(#{surveyTimeRight},'YYYY-MM-DD HH24:MI:SS')+interval '1 D,-1 S')
+      </if>
+      <if test="sysOrgId !=null and sysOrgId != ''">
+        and ORG_ID = #{sysOrgId,jdbcType=VARCHAR}
+      </if>
+
+    </where>
+    ORDER BY CREATE_TIME DESC
+  </select>
+
+  <select id="getOneById" parameterType="java.lang.String" resultType="com.sofn.agsjsi.model.ProjectManage">
+    select <include refid="Base_Column_List"/> from project_manage where ID = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getAllByOrgName" parameterType="java.lang.String" resultType="com.sofn.agsjsi.model.ProjectManage">
+    select <include refid="Base_Column_List"/> from project_manage where ORG_NAME = #{orgName,jdbcType=VARCHAR}
+  </select>
+
+  <insert id="insertOne" parameterType="com.sofn.agsjsi.model.ProjectManage">
+    insert into project_manage (<include refid="Base_Column_List"/>) values
+    (#{id,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR},#{orgId,jdbcType=VARCHAR},
+    #{orgName,jdbcType=VARCHAR},#{planTimeStart,jdbcType=VARCHAR},#{planTimeEnd,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},#{createTime,jdbcType=VARCHAR},
+    #{createUserId,jdbcType=VARCHAR},#{updateTime,jdbcType=VARCHAR},#{updateUserId,jdbcType=VARCHAR},
+    #{delFlag,jdbcType=VARCHAR},#{createUserName,jdbcType=VARCHAR},#{updateUserName,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateOne" parameterType="com.sofn.agsjsi.model.ProjectManage">
+    update  project_manage
+    set NAME=#{name,jdbcType=VARCHAR},CONTENT=#{content,jdbcType=VARCHAR},
+    ORG_ID=#{orgId,jdbcType=VARCHAR},ORG_NAME=#{orgName,jdbcType=VARCHAR},PLAN_TIME_START=#{planTimeStart,jdbcType=VARCHAR},
+    PLAN_TIME_END=#{planTimeEnd,jdbcType=VARCHAR},
+    UPDATE_TIME=#{updateTime,jdbcType=VARCHAR},
+    UPDATE_USER_ID=#{updateUserId,jdbcType=VARCHAR},
+    UPDATE_USER_NAME=#{updateUserName,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateTwo" parameterType="java.lang.String">
+    update project_manage
+    set
+    STATUS = '2'
+    where
+    ID = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateThree" parameterType="java.lang.String">
+    update project_manage
+    set
+    STATUS = '3'
+    where
+    ID = #{id,jdbcType=VARCHAR}
+  </update>
+
+</mapper>

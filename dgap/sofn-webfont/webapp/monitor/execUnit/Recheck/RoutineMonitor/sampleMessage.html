@@ -1,0 +1,75 @@
+<link rel="stylesheet" href="../../assets/css/monitor/cq.css"/>
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+<link rel="stylesheet" href="../../assets/css/monitor/task.css"/>
+<link rel="stylesheet" href="../../assets/css/monitor/subjSvList.css"/>
+<link rel="stylesheet" href="assets/css/sys/sysBase/baseInfoList.css"/>
+        <div class="Sup_contain_section_head_nav bcgreypl25 mb25 col-lg-12 col-xs-12 col-sm-12 col-md-12">
+            <ul>
+                <li class="fl"  href="#" ng-click="taskDetail()">任务详情</li>
+                <li class="fl"  href="#" ng-click="sampleMessage()">样品信息</li>
+                <li class="fl"  href="#" ng-click="test()">检测</li>
+                <li class="fl"  href="#" ng-click="routineMonitorList()">检测信息汇总</li>
+                <li class="fl"  href="#" ng-click="routineReportUpload()">报告上传</li>
+            </ul>
+        </div>
+        <div class="gui-breadcrumbs">
+            <a href="">{{monitorClass}}</a>&gt;
+            <a href="">样品信息</a>&gt;
+            <span>抽样信息管理</span>
+        </div>
+            <!--<div Sup_contain_section_contain col-lg-10 col-xs-12 col-sm-10 col-md-10>-->
+                <!--<ul class="nav nav-tabs" role="tablist">-->
+                    <!--<li role="presentation" class="pointer"><a ng-click="downloadSample()" role="tab" data-toggle="tab">下载抽样单</a></li>-->
+                    <!--<li role="presentation" class="active"><a ng-click="sampleMessage()" role="tab" data-toggle="tab">抽样信息管理</a></li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="gui-section">
+            <div class="gui-form-group">
+                <span >年份</span>
+                <input class="gui-input" type="text" name="sampleDate" ng-model="sampleDate">
+                <span >样品编码</span>
+                <input class="gui-input" type="text" name="sampleCode" ng-model="sampleCode">
+                <span >样品名称</span>
+                <input class="gui-input" type="text" name="" ng-model="sampleName" >
+                <span class="gui-btn btn bg-primary pull-right" ng-click="reback()">返回详情页</span>
+            </div>
+            <div class="gui-form-group">
+                <span >任务名称</span>
+                <span class="gui-select">
+                     <select id="taskName" class="combobox" data-style="btn-info" ng-model="taskName">
+                     </select>
+                </span>
+                <span>检测单位</span>
+                <span class="gui-select">
+                    <select id="sampleOrgan" class="combobox" data-style="btn-info" >
+                    </select>
+                </span>
+            </div>
+            <div class="gui-form-group">
+                <span class="">样品来源</span>
+                <span class="gui-select">
+                     <select id="producingAreaName" class="combobox" data-style="btn-info" >
+                         <option>全部</option>
+                        <option value="自产">自产</option>
+                        <option value="其他">其他</option>
+                     </select>
+                </span>
+                <span class="gui-btn btn bg-primary" ng-click="toCheck()">查询</span>
+                <span class="gui-btn btn bg-primary" ng-click="reset()">重置</span>
+
+            </div>
+            <div class="gui-form-group">
+                <label>任务数:{{numbers}}</label>&nbsp;&nbsp;
+                <label>上报数:{{sampleFinishNum}}</label>&nbsp;&nbsp;
+                <label>抽样上报截至时间:{{deadline}}</label>
+            </div>
+            <div class="gui-actions">
+                <span class="gui-btn pull-right" ng-click="exportExcel()" data-toggle="tooltip" data-placement="top" title="导出信息"><i class="gui-icon icon-export"></i>导出</span></span>
+            </div>
+            <div class="mt15 tb NewsSize col-lg-12 col-xs-12 col-sm-12 col-md-12">
+                <table id="grid" class="gui-table mt15" style="width: 100%">
+                </table>
+            </div>
+        </div>
+

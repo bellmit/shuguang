@@ -1,0 +1,183 @@
+    <style>
+        .gui-select {
+             width: 30%;
+        }
+        .Sup_contain_section_contain_head span {
+             margin-right: 0px;
+            display: table;
+        }
+        .input-group-btn:last-child>.btn {
+            /*width: 100%;*/
+            /*height: 30px;*/
+            /*color: white;*/
+            /*margin-left: 10px;*/
+            /*border-radius: 4px;*/
+            /*background-color: #218D4A!important;*/
+            /*border: 1px solid white;*/
+        }
+    </style>
+
+    <div class="gui-breadcrumbs">
+        <a href="javascript:void(0)">监管系统</a>&gt;
+        <a ui-sref="index.content.asms/check/routineMonitor">监测任务</a>&gt;
+        <a ui-sref="index.content.asms/check/routineMonitor">例行监测</a>&gt;
+        <span id="OprTitle">操作</span>
+    </div>
+<div class="gui-section clearfix gov-h">
+    <h4 class="mt15 mb25" style="text-align: center">例行监测</h4>
+    <div class="">
+        <!--***************************-->
+        <form id="attributeForm"  class="form-horizontal"
+              data-bv-excluded>
+
+            <div class="form-group">
+                <label class="col-lg-3 col-md-3 col-sm-3 control-label">任务名称&nbsp;<span style="color: red">*</span>：</label>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <input type="text" name="rmName" class="form-control gui-input" ng-model="routineMonitor.rmName" data-bv-notempty="true"
+                           data-bv-notempty-message="请填写任务名称" maxlength="40" placeholder="最长40字符"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-3 col-md-3 col-sm-3 control-label">任务优先级&nbsp;<span style="color: red">*</span>：</label>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <select name="rmPriority" class="form-control gui-input" ng-model="routineMonitor.rmPriority" data-bv-notempty="true"
+                            data-bv-notempty-message="请选择任务优先级">
+                        <option value='' disabled selected style='display:none;'>请选择</option>
+                        <option value="3">一般</option>
+                        <option value="2">紧急</option>
+                        <option value="1">特急</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-3 col-md-3 col-sm-3 control-label">年&nbsp;&nbsp;度&nbsp;<span style="color: red">*</span>：</label>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <input name="rmYear" onChange="SdDateValid.DataValid(this)" class="form-control gui-input" ng-model="routineMonitor.rmYear" onfocus="WdatePicker({isShowToday:false,skin:'default',dateFmt:'yyyy', minDate:'%y'})" class="Wdate"/>
+                    <!--<input name="rmYear" style="width: 100%" class="Wdate gui-input" ng-model="routineMonitor.rmYear" data-date-fmt="yyyy" data-min-date="%y" data-bv-notempty="true" data-bv-notempty-message="年度不能为空" />-->
+                    <div class="DataValidTip" style="font-size: 12px;margin-top: 5px;color: #a94442;display: none">
+                        年度不能为空
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-3 col-md-3 col-sm-3 control-label">批&nbsp;&nbsp;次&nbsp;<span style="color: red">*</span>：</label>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <select name="rmBatch" class="form-control gui-input" ng-model="routineMonitor.rmBatch" data-bv-notempty="true"
+                            data-bv-notempty-message="请选择批次">
+                        <!--<option ></option>-->
+                        <option value='' disabled selected style='display:none;'></option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-3 col-md-3 col-sm-3 control-label">任务时间&nbsp;<span style="color: red">*</span>：</label>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <input name="rmDateBegin" onChange="SdDateValid.DataValid(this)" class="Wdate form-control gui-input" id="rmDateBegin" style="cursor: pointer" type="text" onFocus="var endDate=$dp.$('rmDateEnd');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'rmDateEnd\')}', minDate:'%y-1-1', onpicked:pickedFunc, oncleared:clearedFunc})"/>
+                    <!--<input name="rmDateBegin" style="width:100%"  class="Wdate gui-input" data-min-date="%y-%M-%d" readonly="readonly"  id="rmDateBegin"  ng-model="routineMonitor.rmDateBegin" type="text"/>-->
+                    <div class="DataValidTip" style="font-size: 12px;margin-top: 5px;color: #a94442;display: none">
+                        开始时间不能为空
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <input name="rmDateEnd" onChange="SdDateValid.DataValid(this)" id="rmDateEnd" class="Wdate form-control gui-input" style="cursor: pointer" type="text" onfocus="endDatePickerRule(this)" />
+                    <!--<input name="rmDateEnd" style="width:100%"  class="Wdate gui-input" data-min-date="%y-%M-%d" readonly="readonly"  id="rmDateEnd"  ng-model="routineMonitor.rmDateEnd" type="text"-->
+                            <!--data-bv-notempty="true" data-bv-notempty-message="结束时间不能为空"/>-->
+                    <div class="DataValidTip" style="font-size: 12px;margin-top: 5px;color: #a94442;display: none">
+                        结束时间不能为空
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-3 col-md-3 col-sm-3 control-label">发布单位<span style="color:red;">*</span>&nbsp;&nbsp;&nbsp;：</label>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <input type="text" name="rmReleaseUnit" readonly class="form-control gui-input" data-bv-notempty="true"
+                           data-bv-notempty-message="请选择发布单位">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-3 col-md-3 col-sm-3 control-label">牵头单位&nbsp;<span style="color: red">*</span>：</label>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <input type="text" onChange="SdDateValid.DataValid(this)" readonly name="qtName"class="form-control gui-input" ng-click="selectPerson()">
+                    <div class="DataValidTip" style="font-size: 12px;margin-top: 5px;color: #a94442;display: none">
+                        牵头单位不能为空
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 col-md-3 col-sm-3 control-label">文件号&nbsp;<span style="color: red">*</span>：</label>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <input type='text' name='rmFileNum'  class="form-control gui-input" ng-model="routineMonitor.rmFileNum" data-bv-notempty="true"
+                           data-bv-notempty-message="请输入文件号" maxlength="30"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-3 col-md-3 col-sm-3 control-label">备&nbsp;&nbsp;注&nbsp;&nbsp;&nbsp;：</label>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <textarea type="text" name="rmRemark"class="form-control gui-input" ng-model="routineMonitor.rmRemark" maxlength="300" placeholder="最长300字符"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 col-md-3 col-sm-3 control-label">附&nbsp;&nbsp;件&nbsp;&nbsp;&nbsp;<span style="color: red">*</span>：</label>
+                <div file-upload options="vm.uploadOptions" files="vm.files"></div>
+            </div>
+        </form>
+        <!--***************************-->
+        <div align="center">
+            <button class="gui-btn" ng-click="infoSave()" >保存</button>
+            <button class="gui-btn" ui-sref="index.content.asms/check/routineMonitor" ng-click="cleanCookie()">取消</button>
+        </div>
+    </div>
+</div>
+
+
+<!--personSelectList-->
+<div class="modal fade"  id="selectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid" style="width: 60%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">
+                    <span id="modalTitle">机构选择</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <div class="gui-select">
+                    <select id="selectQueryShen" >
+                        <option value="">--省--</option>
+                    </select>
+                </div>
+                <div class="gui-select">
+                    <select id="selectQueryShi" >
+                        <option value="">--市--</option>
+                    </select>
+                </div>
+                <div class="gui-select">
+                    <select id="selectQueryXian" >
+                        <option value="">--县--</option>
+                    </select>
+                </div>
+                <input class="gui-input mt15" type="text" name="selectQueryName" placeholder="请输入名称">
+                <button class="gui-btn mt15" ng-disabled="!!btnDisabled" id="selectTocheck" data-toggle="tooltip" data-placement="right" title="根据输入条件检索列表">查询</button>
+                <button class="gui-btn mt15" ng-disabled="!!btnReloadDisabled" data-toggle="tooltip" data-placement="right" ng-click="cleanSelectModelQuery()">重置</button>
+                <button class="gui-btn mt15" ng-disabled="!!btnClearDisabled" data-toggle="tooltip" data-placement="right" ng-click="cleanSelected()">清空已选择</button>
+                <!--list-->
+                <table id="selectGrid" style="width: 100%;"class="gui-table mt15">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn mt15" type="button" ng-click="selectModalQdButt()">提交</button>
+            </div>
+        </div>
+    </div>
+</div>

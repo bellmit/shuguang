@@ -1,0 +1,281 @@
+<link rel="stylesheet" href="assets/css/asms/check/cheJobmanage.css"/>
+<div class="gui-breadcrumbs">
+    <a href="">查询系统</a>&gt;
+    <a href="">质量安全检测信息查询</a>&gt;
+    <span>复检任务</span>
+</div>
+<div class="gui-TabCut">
+    <ul class="clearfix gov-h">
+        <li class="fl gp-r" ui-sref="index.content.qry/monitorTask/qryRoutineMonitor">例行监测</li>
+        <li class="fl gp-r" ui-sref="index.content.qry/monitorTask/qrySpecialMonitor">专项监测</li>
+        <li class="fl gp-r" ui-sref="index.content.qry/monitorTask/qryCheckTask">监督抽查</li>
+        <li class="fl gp-r gui-TabCheck">复检任务</li>
+    </ul>
+    <div class="gui-botLine"></div>
+</div>
+<div class="gui-section">
+    <form class="gui-form-group" id="queryForm">
+        <span>年度</span>
+        <input style="width: 50px" name="queryYear" onfocus="WdatePicker({skin:'default',dateFmt:'yyyy'})"
+               class="Wdate gui-input" placeholder="--年份--"/>
+        <span>任务状态</span>
+        <div class="gui-select">
+            <select name="state">
+                <option value="">全部</option>
+                <option value="0">未发布</option>
+                <option value="1">已发布</option>
+                <option value="2">已废止</option>
+                <option value="3">执行中</option>
+                <option value="4">已结束,未完成</option>
+                <option value="5">已结束,已完成</option>
+            </select>
+        </div>
+        <span>任务时间</span>
+        <input id="datebegin" name="datebegin" style="width: 120px;cursor: pointer;margin-right: 0px"
+                class="Wdate gui-input" type="text"
+               onFocus="var endDate=$dp.$('dateend');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateend\')}'})"/>
+        <span style="margin: 0px 10px">--</span>
+        <input id="dateend" class="Wdate gui-input" name="dateend" style="width: 120px;cursor: pointer;"
+                type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'datebegin\')}'})"/>
+        <div class="mt15">
+            <span>任务名称</span>
+            <input style="width: 150px" class="gui-input" type="text" name="recheckTaskName" placeholder="请输入任务名称"
+                   maxlength="30"/>
+            <span>任务创建时间</span>
+            <input id="dateCreateBegin" name="dateCreateBegin" style="cursor: pointer;width: 120px;"  class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('dateCreateEnd');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateCreateEnd\')}'})"/>--
+            <input id="dateCreateEnd" name="dateCreateEnd" class="Wdate gui-input" style="cursor: pointer;width: 120px;margin-left: 10px;"  type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'dateCreateBegin\')}'})"/>
+
+            <div class="condition-item condition-custom" data-control="text" ng-show="visibleinitTaskName">
+                <span>初检任务名称</span>
+                <input class="gui-input" ng-model="initTaskName" maxlength="80" type="text" placeholder="请输入初检任务名称" name="initTaskName" />
+            </div>
+            <div class="condition-item condition-custom" data-control="text" ng-show="visibleinitTaskType">
+                <span>初检任务类型</span>
+                <span style="margin-right: 30px;">
+                    <!-- <select id="monitorClass">
+                        <option value="不限">不限</option>
+                        <option value="例行监测">例行监测</option>
+                        <option value="专项监测">专项监测</option> 
+                        <option value="监督抽查">监督抽查</option>
+                        <option value="受托检测">受托检测</option>
+                        <option value="复检任务">复检任务</option>
+                    </select> -->
+                    <input type="checkbox" value="" name="initTaskTypeLimit" class="initTaskType" ng-click="limitCheckBoxAll('initTaskType','initTaskTypeLimit')" checked><span class="checkedIndustryTypeText">不限</span>
+                    <input type="checkbox" value="1" name="initTaskType" class="initTaskType" ng-click="limitCheckBox('initTaskTypeLimit','initTaskType')"><span class="checkedIndustryTypeText">例行监测</span>
+                    <input type="checkbox" value="3" name="initTaskType" class="initTaskType" ng-click="limitCheckBox('initTaskTypeLimit','initTaskType')"><span class="checkedIndustryTypeText">监督抽查</span>
+                    <input type="checkbox" value="2" name="initTaskType" class="initTaskType" ng-click="limitCheckBox('initTaskTypeLimit','initTaskType')"><span class="checkedIndustryTypeText">专项检测</span>
+                </span>
+            </div>
+                    
+            <div class="condition-item condition-custom" data-control="text" ng-show="visiblecreateOrgName">
+                <span>任务发布单位</span>
+                <input class="gui-input" ng-model="createOrgName" maxlength="80" type="text" placeholder="请输入任务发布单位" name="createOrgName" />
+            </div>
+            <div class="condition-item condition-custom" data-control="text" ng-show="visiblerecheckUnitName">
+                <span>复检单位</span>
+                <input class="gui-input" ng-model="recheckUnitName" maxlength="80" type="text" placeholder="请输入复检单位" name="recheckUnitName" />
+            </div>
+            <div style="padding-top: 15px;">
+                <button id="ToCheck" ng-disabled="!!btnDisabled" class="gui-btn">查询</button>
+                <button class="gui-btn"  ng-click="cleanQueryPar($event)">重置</button>
+            </div>
+        </div>
+        <span href="#modalCondition" data-toggle="modal" class="custom-condition">自定义条件</span>
+    </form>
+    <!--<div class="gui-table-panel clearfix">-->
+        <!--<p class="table-total">符合条件的数据总计: {{tableTotal}} 项</p>-->
+        <!--<button  ng-click="exportData()" class="fr gui-btn fr ml15">导出</button>-->
+    <!--</div>-->
+    <!--<table id="grid" class="gui-table table-nowrap mt15 " style="width: 100%">-->
+    <!--</table>-->
+    <!-- 图表面板 -->
+    <div class="gui-table-panel clearfix">
+        <p class="table-total" ng-show="isListView">符合条件的数据总计: {{tableTotal}} 项</p>
+        <!-- 切换视图展示 -->
+        <div class="view-type">展示方式
+            <i class="gui-icon icon-list highlight" ng-class="{'highlight': isListView}" ng-click="toggleView(true)" title="以列表视图展示"></i>
+            <i class="gui-icon icon-chart" ng-class="{'highlight': !isListView }" ng-click="toggleView(false)" title="以图形视图展示"></i>
+        </div>
+        <button class="gui-btn" ng-show="isListView" ng-click="exportData()">导出</button>
+    </div>
+    <!-- 图表区域 -->
+    <div class="gui-content-slide">
+        <div ng-style="{'transform': viewX}" class="content-wrap">
+            <div class="content-block">
+                <table id="grid" class="gui-table table-nowrap mt15" style="width: 100%">
+                </table>
+            </div>
+            <div class="content-block">
+                <div sg-chart options="vm.chartOptions" update="vm.chart"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--infoModel-->
+<div class="modal fade" id="TaskInfoModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>查看</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <form class="mb25 " role="">
+                    <div class="" style="line-height: 30px">
+                        <ul>
+                            <li class="" style="border-bottom: 1px solid #e5e5e5;font-size: 16px;font-weight: 700">
+                                基本信息
+                            </li>
+                        </ul>
+                        <div class=" ">
+                            <div class="col-lg-12 col-md-12 col-sm-12 clearfix gov-h mt15">
+                                <label class="col-lg-5 col-md-5 col-sm-5" style="text-align: right;padding-right: 10px">初检任务类型：</label>
+                                <span class="col-lg-6 col-md-6 col-sm-6" ng-bind="reCheckTask.initTaskType"></span>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 clearfix gov-h mt15">
+                                <label class="col-lg-5 col-md-5 col-sm-5" style="text-align: right;padding-right: 10px">初检任务名称：</label>
+                                <span class="col-lg-6 col-md-6 col-sm-6" ng-bind="reCheckTask.initTaskName"></span>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 clearfix gov-h mt15">
+                                <label class="col-lg-5 col-md-5 col-sm-5" style="text-align: right;padding-right: 10px">复检任务名称：</label>
+                                <span class="col-lg-6 col-md-6 col-sm-6" ng-bind="reCheckTask.recheckTaskName"></span>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 clearfix gov-h mt15">
+                                <label class="col-lg-5 col-md-5 col-sm-5" style="text-align: right;padding-right: 10px">复检单位：</label>
+                                <span class="col-lg-6 col-md-6 col-sm-6" ng-bind="reCheckTask.recheckUnitName"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 clearfix gov-h mt15">
+                            <label class="col-lg-5 col-md-5 col-sm-5"
+                                   style="text-align: right;padding-right: 10px">年度：</label>
+                            <span class="col-lg-6 col-md-6 col-sm-6" ng-bind="reCheckTask.recheckTaskYear"></span>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 clearfix gov-h mt15">
+                            <label class="col-lg-5 col-md-5 col-sm-5" style="text-align: right;padding-right: 10px">任务时间：</label>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <span ng-bind="reCheckTask.recheckTaskBegin"></span>&nbsp;&nbsp;至&nbsp;&nbsp;
+                                <span ng-bind="reCheckTask.recheckTaskEnd"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    </table>
+                    <div class="tab-pane fade in active">
+                        <table id="Fjtable" class="gui-table mt15" style="width: 100%">
+                            <caption class="Bor_line"
+                                     style="border-bottom: 1px solid #e5e5e5;font-size: 16px;font-weight: 700">
+                                复检对象
+                            </caption>
+                            <thead>
+                            <tr>
+                                <th>复检样品</th>
+                                <th>复检样品编码</th>
+                                <th>复检企业名称</th>
+                            </tr>
+                            </thead>
+                            <tbody class="diy-input-nobody">
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="gui-btn" data-dismiss="modal">返回</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalCondition" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">请选择自定义条件</h4>
+            </div>
+            <div class="modal-body">
+                <form novalidate="novalidate">
+                <div class="list-head">
+                    <label>
+                        <input type="checkbox" class="condition-checked-all" />全选
+                    </label>
+                </div>
+                <ul class="gui-list list-condition">
+                    <li class="disabled">
+                        <label>
+                            <input type="checkbox" checked disabled />年度
+                        </label>
+
+                    </li>
+                    <li class="disabled">
+                        <label>
+                            <input type="checkbox" checked disabled>任务状态
+                        </label>
+                    </li>
+                    <li class="disabled">
+                        <label>
+                            <input type="checkbox" checked disabled>任务创建时间
+                        </label>
+                    </li>
+                    <li class="disabled">
+                        <label>
+                            <input type="checkbox" checked disabled>复检任务名称
+                        </label>
+                    </li>
+                    <li class="disabled">
+                        <label>
+                            <input type="checkbox" checked disabled>任务时间
+                        </label>
+                    </li>
+                    <li data-key="initTaskName">
+                        <label>
+                            <input type="checkbox">初检任务名称
+                        </label>
+                    </li>
+                    <li data-key="initTaskType">
+                        <label>
+                            <input type="checkbox">初检任务类型
+                        </label>
+                    </li>
+                    <!-- <li data-key="leadUnitId">
+                        <label>
+                            <input type="checkbox">检测对象
+                        </label>
+                    </li>
+                    <li data-key="rmFileNum">
+                        <label>
+                            <input type="checkbox">检测项目
+                        </label>
+                    </li>
+                    <li data-key="rmFileNum">
+                        <label>
+                            <input type="checkbox">样品编码
+                        </label>
+                    </li> -->
+                    <li data-key="createOrgName">
+                        <label>
+                            <input type="checkbox">任务发布单位
+                        </label>
+                    </li>
+                    <li data-key="recheckUnitName">
+                        <label>
+                            <input type="checkbox">复检单位
+                        </label>
+                    </li>
+                </ul>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="gui-btn" ng-click="confirmCondition()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>

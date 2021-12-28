@@ -1,0 +1,188 @@
+<link rel="stylesheet" href="/assets/css/dgap/resource/dgapResourceApplication.css">
+<script src="assets/js/dgap/common.js"></script>
+<div class="gui-breadcrumbs">
+    <a href="">数据共享系统</a>&gt;
+    <a href="">安全管理</a>&gt;
+    <span>数据订阅管理</span>
+</div>
+<div class="gui-section">
+    <form novalidate name="myForm">
+        <div class="gui-form-group">
+            <span>资源类型</span>
+            <span class="gui-select">
+      <select name="resourceType">
+          <option value="">--请选择资源类型--</option>
+          <option ng-repeat="x in ResourceType" value="{{x.id}}">{{x.name}}</option>
+      </select>
+        </span>
+            <span>资源名称</span>
+            <input type="text" class="gui-input" placeholder="请输入资源名称" name="resourceName" ng-model="resourceName"
+                   ng-maxlength="60">
+            <!--<span class="gui-btn ml15" id="ToCheck">查询</span>-->
+            <button  class="gui-btn submit-btn" ng-disabled="myForm.$invalid" disabled="disabled" ng-click="search()">
+                查询
+            </button>
+            <button class="gui-btn ml15 submit-btn" ng-click="cleanData()">重置</button>
+        </div>
+    </form>
+    <div class="gui-actions">
+        <span class="gui-btn fr" ng-click="downSurface()"><i class="gui-icon icon-publish"></i>下载开发包</span>
+        <span class="gui-btn fr" ng-click="deleteResourceApply()"><i class="gui-icon icon-remove"></i>批量删除</span>
+        <span class="gui-btn fr mr15" data-toggle="modal" ng-click="addApply()"><i
+                class="gui-icon icon-add"></i>新增</span>
+
+    </div>
+
+    <table id="resourceApply" class="gui-table">
+    </table>
+</div>
+
+<!-- 模态框（新增申请） -->
+<div class="modal fade" id="resourceApplyAdd" tabindex="-1" role="dialog" aria-labelledby="resDirAdd1Label"
+     aria-hidden="true" style="color: black" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="resDirAdd1Label">
+                    数据订阅
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" style="margin-right: 150px;overflow: hidden">
+                    <div id="attributeForm" class="form-horizontal" style="text-align: center">
+                        <div class="form-item form-group" style="overflow: hidden;">
+                            <label>资源名称<i class="gui-colorRed">*</i></label>
+                            <span class="gui-select">
+                            <select class="form-control" ng-model="resName" name="resName" style="width: 193px;"
+                                    data-bv-notempty="true" data-bv-notempty-message="资源名称不能为空">
+                                <option value="">-请选择资源名称-</option>
+                                <option ng-repeat="x in tdgpResourceApplication" value="{{x.id}}">{{x.name}}
+                                </option>
+                            </select>
+                                </span>
+                        </div>
+                        <div class="form-item form-group">
+                            <label>生效时间<i class="gui-colorRed">*</i></label>
+                            <input id="beginDate" name="EFFECTIVE_DATE" ng-model="effDate" style="cursor: pointer"
+                                   readonly="readonly" class="Wdate gui-input form-control" type="text"
+                                   onfocus="var endDate=$dp.$('lessDate');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'lessDate\')}'})">
+                            <!--<input id="beginDate" name="EFFECTIVE_DATE" ng-model="effDate" style="cursor: pointer"-->
+                            <!--class="Wdate" type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd '}) "-->
+                            <!--class="form-control" data-bv-notempty="true"/>-->
+                        </div>
+                        <div class="form-item form-group">
+                            <label>失效时间</label>
+                            <input id="lessDate" name="EXPIRE_DATE" class="Wdate form-control gui-input"
+                                   style="cursor: pointer" readonly="readonly" type="text"
+                                   onfocus="WdatePicker({minDate:'#F{$dp.$D(\'beginDate\')}'})">
+                            <!--<input id="lessDate" class="Wdate" name="EXPIRE_DATE" style="cursor: pointer" type="text"-->
+                            <!--onfocus="WdatePicker({dateFmt:'yyyy-MM-dd '}) " class="gui-input form-control"-->
+                            <!--data-bv-lessDate="true"-->
+                            <!--data-bv-lessDate-message="失效时间不能为空" />-->
+                        </div>
+                        <div class="form-item form-group">
+                            <label>申请缘由<i class="gui-colorRed">*</i></label>
+                            <textarea name="reason" class="gui-textarea form-control" data-bv-notempty="true"
+                                      data-bv-notempty-message="申请缘由不能为空"
+                                      data-bv-stringlength="true"
+                                      data-bv-stringlength-max="100"
+                                      data-bv-stringlength-message="申请缘由不能超过100个汉字或字符"
+
+                                    ></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <span type="button" data-dismiss="modal" class="gui-btn">取消
+                    </span>
+                    <span class="gui-btn addRes" ng-click="addResourceApply()">
+                        保存
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+<!--修改摸态框-->
+<div class="modal fade" id="resourceApplyUpdate" tabindex="-1" role="dialog" aria-labelledby="resDirAdd1Label"
+     aria-hidden="true" style="color: black" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title">
+                    数据订阅修改
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" style="margin-right: 150px;overflow: hidden">
+                    <div style="text-align: center" id="updateAttributeForm" class="form-horizontal"
+                         data-bv-message="不能为空" data-bv-excluded="">
+                        <div class="form-item form-group" style="overflow: hidden;">
+                            <label>资源名称<i class="gui-colorRed">*</i></label>
+                            <span class="gui-select">
+                                <input type="hidden" data-bv-notempty="true" data-bv-notempty-message="资源名称已被禁用"
+                                       ng-model="updateResItem.id">
+                             <select id="aa" name="updateResId"   ng-model="updateResId" class="form-control">
+                                 <option value="{{tdgpResourceApplication.id}}"
+                                         ng-selected="{{tdgpResourceApplication.selected}}"
+                                         ng-disabled="{{tdgpResourceApplication.disabled}}"
+                                         ng-repeat="tdgpResourceApplication in tdgpResourceApplications">
+                                     {{tdgpResourceApplication.name}}
+                                 </option>
+                             </select>
+                                </span>
+                        </div>
+                        <div class="form-item form-group">
+                            <label>生效时间</label>
+
+                            <input id="u_beginDate" name="update_EFFECTIVE_DATE" ng-model="update_EFFECTIVE_DATE"
+                                   style="cursor: pointer" readonly="readonly" class="Wdate gui-input form-control"
+                                   type="text"
+                                   onfocus="var endDate=$dp.$('u_lessDate');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'u_lessDate\')}'})">
+
+                            <!--<input ng-model="update_EFFECTIVE_DATE" name="update_EFFECTIVE_DATE" style="cursor: pointer"-->
+                            <!--class="Wdate" type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd '}) "/>-->
+                        </div>
+                        <div class="form-item form-group">
+                            <label>失效时间</label>
+                            <input id="u_lessDate" name="update_EXPIRE_DATE" ng-model="update_EXPIRE_DATE"
+                                   class="Wdate form-control gui-input" style="cursor: pointer" readonly="readonly"
+                                   type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'u_beginDate\')}'})">
+
+                            <!--<input class="Wdate" ng-model="update_EXPIRE_DATE" name="update_EXPIRE_DATE"-->
+                            <!--style="cursor: pointer" type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd '}) "/>-->
+                        </div>
+                        <div class="form-item form-group">
+                            <label>申请缘由<i class="gui-colorRed">*</i></label>
+                            <textarea type="textarea" ng-model="update_REASON" name="update_REASON"
+                                      class="gui-textarea form-control" data-bv-stringlength="true"
+                                      data-bv-notempty-message="申请缘由不能为空"
+                                      data-bv-stringlength="true"
+                                      data-bv-stringlength-max="100"
+                                      data-bv-stringlength-message="申请缘由不能超过100个汉字或字符">
+
+                            </textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <span type="button" data-dismiss="modal" class="gui-btn">取消
+                    </span>
+                    <span class="gui-btn updateRes" ng-click="updateResourceApply()">
+                        保存
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>

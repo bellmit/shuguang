@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.AuditProcessMapper" >
+    <resultMap id="baseResultMap" type="com.sofn.fdpi.model.AuditProcess">
+        <id column="ID" property="id" jdbcType="VARCHAR"></id>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"></result>
+        <result column="ADVICE" property="advice" jdbcType="VARCHAR"></result>
+        <result column="PERSON_NAME" property="personName" jdbcType="VARCHAR"></result>
+        <result column="CON_TIME" property="conTime" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <resultMap id="SpeedResultMap" type="com.sofn.fdpi.vo.PapersProcessVo">
+    <id column="ID" property="id" jdbcType="VARCHAR"></id>
+    <id column="PAPERS_ID" property="papersId" jdbcType="VARCHAR"></id>
+        <id column="APPLY_NUM" property="applyNum" jdbcType="VARCHAR"></id>
+    <result column="PAPERS_NUMBER" property="papersNumber" jdbcType="VARCHAR"></result>
+    <result column="ISSUE_SPE" property="issueSpe" jdbcType="VARCHAR"></result>
+    <result column="CREATE_TIME" property="applyTime" jdbcType="VARCHAR"></result>
+    <result column="PAR_STATUS_NAME" property="parStatusName" jdbcType="VARCHAR"></result>
+    <result column="ADVICE" property="advice" jdbcType="VARCHAR"></result>
+    <result column="PERSON_NAME" property="personName" jdbcType="VARCHAR"></result>
+    <result column="CON_TIME" property="operationTime" jdbcType="VARCHAR"></result>
+</resultMap>
+    <resultMap id="listFroProcessResultMap" type="com.sofn.fdpi.vo.AuditProcessVo">
+        <result column="CON_TIME" property="operationTime" jdbcType="VARCHAR"></result>
+        <result column="PERSON_NAME" property="personName" jdbcType="VARCHAR"></result>
+        <result column="STATUS" property="parStatus" jdbcType="VARCHAR"></result>
+        <result column="STATUS_NAME" property="parStatusName" jdbcType="VARCHAR"></result>
+        <result column="ADVICE" property="advice" jdbcType="VARCHAR"></result>
+    </resultMap>
+    <select id="listForCondition" parameterType="java.util.Map" resultMap="SpeedResultMap">
+        select B.ID,A.ID AS PAPERS_ID,A.PAPERS_NUMBER,A.APPLY_NUM
+                ,C.SPE_NAMES AS ISSUE_SPE
+                ,A.CREATE_TIME
+                ,(CASE B.STATUS WHEN '1' THEN '未上报'
+                                WHEN '2' THEN '上报'
+                                WHEN '3' THEN '审核退回'
+                                WHEN '4' THEN '审核通过'
+                                WHEN '5' THEN '复审退回'
+                                WHEN '6' THEN '复审通过'
+                                WHEN '7' THEN '撤回'
+                END) PAR_STATUS_NAME
+                ,B.ADVICE,B.PERSON_NAME,B.CON_TIME
+        from Audit_process B
+        LEFT JOIN PAPERS A ON A.ID=B.PAPERS_ID
+        LEFT JOIN (SELECT C.PAPERS_ID,replace(wmsys.wm_concat(D.SPE_NAME),',','、') SPE_NAMES
+                   FROM PAPERS_SPEC C LEFT JOIN TB_SPECIES D ON C.SPEC_ID=D.ID GROUP BY C.PAPERS_ID
+                 ) C on A.ID=C.PAPERS_ID
+        <where>
+            and A.DEL_FLAG='N'
+            <if test="startTime!=null and startTime !=''">
+                and A.CREATE_TIME &gt;=to_timestamp(#{startTime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and A.CREATE_TIME &lt;=to_timestamp(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="status!=null and status!=''">
+                and B.STATUS =#{status}
+            </if>
+            <if test="compId!=null and compId!=''">
+                and A.COMP_ID =#{compId}
+            </if>
+        </where>
+        ORDER BY B.CON_TIME DESC
+    </select>
+    <select id="getObj" resultMap="baseResultMap">
+        select B.ID,B.STATUS,B.ADVICE,B.PERSON_NAME,B.CON_TIME
+        from Audit_process B
+        where B.PAPERS_ID =#{papersId}
+           and B.STATUS =#{status}
+           LIMIT 1 OFFSET 0
+    </select>
+
+    <update id="updatePersonId" parameterType="java.util.Map">
+        update Audit_process set PERSON=#{newPersonId}
+        where PERSON=#{oldPersonId}
+    </update>
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into Audit_process(ID,PAPERS_ID,PERSON,STATUS,ADVICE,CON_TIME,PERSON_NAME) values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (        #{item.id},
+                     #{item.papersId},
+                     #{item.person},
+                     #{item.status},
+                     #{item.advice},
+                     #{item.conTime},
+                     #{item.personName}
+            )
+        </foreach>
+    </insert>
+    <select id="listForAuditProcessByPapersId" parameterType="java.lang.String" resultMap="listFroProcessResultMap">
+        select CON_TIME
+            ,PERSON_NAME
+            ,STATUS
+            ,(CASE STATUS WHEN '1' THEN '未上报'
+                            WHEN '2' THEN '上报'
+                            WHEN '3' THEN '审核退回'
+                            WHEN '4' THEN '审核通过'
+                            WHEN '5' THEN '复审退回'
+                            WHEN '6' THEN '复审通过'
+             END) STATUS_NAME
+            ,ADVICE
+        from Audit_process
+        where PAPERS_ID=#{papersId}
+        order by CON_TIME desc
+    </select>
+
+
+    <select id="listForConditionByInfo" parameterType="java.util.Map" resultMap="SpeedResultMap">
+        select B.ID AS PAPERS_ID, B.PAPERS_NUMBER, B.APPLY_NUM, C.SPE_NAMES AS ISSUE_SPE, B.CREATE_TIME AS CREATE_TIME
+        from TB_COMP a LEFT JOIN PAPERS b ON a.ID = b.COMP_ID
+        LEFT JOIN (SELECT C.PAPERS_ID,string_agg(D.SPE_NAME,'、') SPE_NAMES
+                   FROM PAPERS_SPEC C LEFT JOIN TB_SPECIES D ON C.SPEC_ID=D.ID GROUP BY C.PAPERS_ID
+                 ) C on B.ID=C.PAPERS_ID
+        <where>
+            <if test="startTime!=null and startTime !=''">
+                and B.CREATE_TIME &gt;=to_timestamp(#{startTime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and B.CREATE_TIME &lt;=to_timestamp(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="compId!=null and compId!=''">
+                and A.ID =#{compId}
+            </if>
+        </where>
+    </select>
+</mapper>

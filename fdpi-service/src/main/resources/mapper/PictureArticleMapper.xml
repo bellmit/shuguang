@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.PictureArticleMapper" >
+
+        <resultMap id="BaseResult" type="com.sofn.fdpi.model.PictureArticle">
+            <id property="id" column="id"/>
+            <result property="cName" column="C_NAME"/>
+            <result property="essaytitle" column="ESSAYTITLE"/>
+            <result property="essayauthor" column="ESSAYAUTHOR"/>
+            <result property="essaycontent" column="ESSAYCONTENT"/>
+            <result property="essaydatetime" column="ESSAYDATETIME"/>
+            <result property="essaycount" column="ESSAYCOUNT"/>
+            <result property="essaystatus" column="ESSAYSTATUS"/>
+            <result property="fileId" column="FIlE_ID"/>
+            <result property="fileName" column="FIlE_NAME"/>
+            <result property="filePath" column="FIlE_PATH"/>
+        </resultMap>
+
+
+    <sql id="pic">
+          ID,C_NAME,ESSAYTITLE,ESSAYAUTHOR,ESSAYCONTENT,ESSAYDATETIME,ESSAYCOUNT,ESSAYSTATUS,FIlE_ID,FIlE_NAME,FIlE_PATH
+    </sql>
+        <select id="getArticlesList" resultMap="BaseResult">
+            select
+            <include refid="pic"/>
+            from PICTURE_ARTICLE
+            <where>
+                DEL_FLAG = 'N'
+
+                <if test="essaystatus != null and essaystatus != ''">
+                    and ESSAYSTATUS = #{essaystatus}
+                </if>
+
+                <if test="startTime!=null">
+                    and ESSAYDATETIME &gt;= to_timestamp(#{startTime},'yyyy-MM-dd HH24:MI:SS')
+                </if>
+                <if test="endTime!=null">
+                    and ESSAYDATETIME  &lt;= to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+                </if>
+                <if test="essaytitle != null and essaytitle != ''">
+                    and ESSAYTITLE like '%' || #{essaytitle} || '%'
+                </if>
+            </where>
+            order by CREATE_TIME desc
+        </select>
+<select id="getSize" resultType="com.sofn.fdpi.model.PictureArticle">
+    select ID from PICTURE_ARTICLE where ESSAYSTATUS = '1' and DEL_FLAG='N'
+</select>
+    <update id="deleteArticles">
+        update  PICTURE_ARTICLE  set DEL_FLAG='Y' where id=#{id}
+    </update>
+    <update id="updateStatus" >
+         update  PICTURE_ARTICLE set ESSAYSTATUS =#{status}  where id=#{id}
+    </update>
+    <update id="updatecount">
+        update PICTURE_ARTICLE
+        set
+        ESSAYCOUNT = #{count}
+        where ID=#{id}
+    </update>
+    <resultMap id="FileID" type="com.sofn.fdpi.model.PictureArticle">
+
+    </resultMap>
+    <select id="getLubBo" resultMap="FileID">
+        select ID,ESSAYTITLE,FILE_ID,FIlE_NAME,FIlE_PATH from PICTURE_ARTICLE where DEL_FLAG='N' and ESSAYSTATUS='1'
+    </select>
+    <select id="getOne" resultMap="BaseResult">
+         select * from PICTURE_ARTICLE where id=#{id}
+    </select>
+    <select id="getOne1" resultMap="BaseResult">
+         select * from PICTURE_ARTICLE where ESSAYTITLE=#{essaytitle} and DEL_FLAG='N'
+    </select>
+
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysRoleResourceMapper" >
+    <resultMap id="customResultMap" type="com.sofn.sys.model.SysRoleResource">
+        <result column="ID" property="id"></result>
+        <result column="ROLE_ID" property="roleId"></result>
+        <result column="RESOURCE_ID" property="resourceId"></result>
+    </resultMap>
+    <insert id="batchSaveSysRoleResource" parameterType="java.util.Map">
+        INSERT INTO SYS_ROLE_RESOURCE (
+        ID,
+        ROLE_ID,
+        RESOURCE_ID )VALUES
+        <foreach collection="sysRoleResources" separator=","  item="sysRoleResource">
+            (#{sysRoleResource.id},
+            #{sysRoleResource.roleId},
+            #{sysRoleResource.resourceId})
+        </foreach>
+    </insert>
+
+    <delete id="dropRoleResourcesByRoleId" parameterType="java.lang.String">
+        delete from SYS_ROLE_RESOURCE where role_id = #{roleId}
+    </delete>
+    <delete id="dropByResourceId" parameterType="java.lang.String">
+        delete from SYS_ROLE_RESOURCE where resource_id = #{resourceId}
+    </delete>
+
+    <select id="findPermissionForRole" parameterType="java.lang.String" resultMap="customResultMap">
+        select role_id,resource_id from SYS_ROLE_RESOURCE where role_id=#{roleId}
+    </select>
+
+    <select id="findRoleIdByResourceId" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT DISTINCT ROLE_ID FROM SYS_ROLE_RESOURCE WHERE RESOURCE_ID=#{resourceId}
+    </select>
+
+    <delete id="batchDeleteByResourceIds" parameterType="java.util.List">
+        delete from SYS_ROLE_RESOURCE where resource_id IN
+        <foreach collection="resourceIds" item="resourceId" separator="," open="(" close=")">
+            #{resourceId,jdbcType=VARCHAR}
+        </foreach>
+    </delete>
+
+</mapper>

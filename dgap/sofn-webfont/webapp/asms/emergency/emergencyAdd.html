@@ -1,0 +1,242 @@
+<link rel="stylesheet" href="assets/css/asms/emergency/emergency.css"/>
+<style type="text/css">
+	.Sup_contain_section_contain ul{ width:100%;margin-top:50px;}
+	.Sup_contain_section_contain li{ width:50%; height:40px;float:left; display:block;}
+</style>
+
+<div class="gui-breadcrumbs">
+	<a href="javascript:void(0)">监管系统</a>&gt;
+	<a ui-sref="index.content.asms/emergency/emergencyList">应急管理</a>&gt;
+	<span id="breadcrumb">新增</span>
+</div>
+<div class="gui-section" id="printContent" >
+	<form class="" id="produceAdminPunishForm" name="produceAdminPunishForm" >
+		<table class="col-lg-12 col-xs-12 col-sm-12 col-md-12">
+			<tr style="margin-top: 10px">
+				<td style="text-align: right">任务名称<span style="color: red"> *</span>：</td>
+				<td class="form-group">
+					<input style="width: 70%" class="gui-input" id="taskName" name="taskName" type="text"  ng-model="asmsEmergencyTask.taskName"
+						   data-bv-notempty="true"
+						   data-bv-notempty-message="请写任务名称"
+						   data-bv-stringlength="true"
+						   data-bv-stringlength-max="30"
+						   data-bv-stringlength-message="任务名称不能超过30个汉字或60个字符"
+						/></td>
+			</tr>
+			<tr >
+				<td style="text-align: right"> 任务类型：</td>
+				<td class="form-group">
+					<input  style="width: 70%" class="gui-input" id="taskType" name="taskType" type="text"  ng-model="asmsEmergencyTask.taskType" readonly="readonly"/></td>
+			</tr>
+			<tr>
+				<td style="text-align: right">区域<span style="color: red"> *</span>： </td>
+				<td class="form-group">
+					<div class="gui-select " style="width: 70%;">
+						<select id="sheng" name="ObjShen">
+							<option value="">--请选择省份--</option>
+						</select>
+					</div>
+					<div class="gui-select mt15" style="width: 70%;">
+						<select id="shi" name="ObjShi">
+							<option value="">--请选择城市--</option>
+						</select>
+					</div>
+					<div class="gui-select mt15" style="width: 70%;">
+						<select id="xian" name="ObjXian" >
+							<option value="">--请选择区/县--</option>
+						</select>
+					</div>
+					</td>
+			</tr>
+			<tr>
+				<td style="text-align: right">任务时间<span style="color: red"> *</span>：</td>
+				<td class="form-group">
+					<input id="taskBegin"onblur="clearValidate()" name="taskBegin" style="width: 30%;margin-right: 0px;cursor: pointer" readonly="readonly" class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('taskBegin');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'taskEnd\')}'})"
+						   class="form-control"
+						   data-bv-notempty="true"
+						   data-bv-notempty-message="任务开始时间不能为空"/>
+					<span style="width: 8%;display: inline-block;text-align: center">--</span>
+					<input id="taskEnd" onblur="clearValidate()" class="Wdate gui-input" name="taskEnd"style="width: 30%;cursor: pointer;margin-right: 0px;" readonly="readonly" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'taskBegin\')}'})"
+						   class="form-control"
+						   data-bv-notempty="true"
+						   data-bv-notempty-message="任务截止时间不能为空"/>
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: right">发布单位：</td>
+				<td class="form-group">
+					<input class="gui-input" style="width: 70%;" id="releaseUnit" name="releaseUnit" type="text"  ng-model="asmsEmergencyTask.releaseUnit" readonly/>
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: right">发布单位级别：</td>
+				<td class="form-group">
+						<input class="gui-input" name="releaseUnitLevel" id="releaseUnitLevelName" style="width:70%;" ng-model="releaseUnitLevelName.name" readonly="readonly"/>
+						<input name="releaseUnitLevel"hidden="true" id="releaseUnitLevel"  ng-model="asmsEmergencyTask.releaseUnitLevel"/>
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: right">是否有承担单位<span style="color: red"> *</span>：</td>
+				<td>
+					<input name="isBearUnit" class="youBearUnit" type="radio" value="1" ng-click="emergencyTaskIsBearUnit()"/>是
+					<input name="isBearUnit" class="meiYouBearUnit"type="radio" value="0" ng-click="emergencyTaskIsBearUnit()"/>否
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: right;display: block;width: 334px;" class="bearUnit">承担单位：</td>
+				<td class="form-group">
+					<input class="gui-input bearUnit" style="width: 70%;display: block" id="bearUnit" name="bearUnit" type="text"  ng-model="asmsEmergencyTask.bearUnit"placeholder="请选择承担单位"ng-click="selectBearUnit()" readonly="readonly"
+							/>
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: right;vertical-align: top">附件<span style="color: red"> *</span>：</td>
+				<td style="vertical-align: middle">
+					<div file-upload options="vm.uploadOptions" files="vm.files"></div>
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: right">文件号<span style="color: red"> *</span>：</td>
+				<td class="form-group">
+					<input class="gui-input" style="width: 70%;" id="fileCode" name="fileCode" type="text"  ng-model="asmsEmergencyTask.fileCode"
+						   data-bv-notempty="true"
+						   data-bv-notempty-message="请输入文件号"
+						   data-bv-stringlength="true"
+						   data-bv-stringlength-max="30"
+						   data-bv-stringlength-message="文件号不能超过60个字符"
+							/>
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: right">专家资源：</td>
+				<td>
+					<textarea class="gui-input" style="min-width: 70%" name="expertName" id="expertName"  cols=30 rows=4  readonly="readonly"></textarea>
+					<input class="cursor_pointer" id="expertId" hidden="true" name="expertId" type="text"  ng-model="asmsEmergencyTask.expertId"/>
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: right">备注：</td>
+				<td class="form-group">
+					<textarea class="gui-input" style="min-width: 70%" name="remark" id="remark"  cols=30 rows=4 ng-model="asmsEmergencyTask.remark"
+							  data-bv-stringlength="true"
+							  data-bv-stringlength-max="300"
+							  data-bv-stringlength-message="备注不能超过300个字符"></textarea>
+				</td>
+			</tr>
+		</table>
+		<input type="text"  style="display: none"  value="" name="HiddenID"/>
+	</form>
+	<div align="center" class="mb25 mt15">
+		<button class="gui-btn" type="button" style="margin-right:100px;" ng-click="Go_back()"  id="back" value="xxxx">发布</button>
+		<button class="gui-btn" type="button" ng-click="quxiao()">取消</button>
+
+	</div>
+
+</div>
+<!-- 专家资源模态框（Modal）添加 -->
+<div class="modal fade " id="sysResource_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-stylemid" style="width: 1000px;">
+		<div class="modal-content" >
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">专家资源</h4>
+			</div>
+			<div class="modal-body clearfix gov-h" style="padding: 10px 10px">
+				<p>
+					<div class="gui-select">
+						<select name="professionalfiled" placeholder="专业领域选择" style="">
+							<option value="">专业领域</option>
+							<option value="1">检测</option>
+							<option value="2">农药</option>
+							<option value="3">检测检疫</option>
+						</select>
+					</div>
+					<div class="gui-select">
+						<select id="expertSheng"name="location" placeholder="所在地选择" style="">
+							<option value="">--请选择省份--</option>
+						</select>
+					</div>
+					 <input class="gui-input" type="text" id="queryCon" name="queryCon"style="width: 150px;" placeholder="请输入查找内容"  maxlength="30"/>
+					<button ng-disabled="!!btnSysResourceDisabled" class="gui-btn" id="ToCheck">查询</button>
+					<button ng-disabled="!!btnSysResourceReloadDisabled" class="gui-btn" ng-click="cleanSysResource()">重置</button>
+					<button ng-disabled="!!btnSysResourceClearDisabled"  class="gui-btn" ng-click="cleanselectSysResource()">清空</button>
+				</p>
+				<div class="">
+					<form id="enterprise_form" class="default_w_h">
+						<input class="gui-input" name="enterprise" id="enterprise" type="hidden">
+						<input class="gui-input" name="crop_audit_state" id="crop_audit_state" value="0" type="hidden">
+					</form>
+					<table id="sysResGrid" style="width: 100%;" class="gui-table mt15">
+					</table>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+				<button type="button" id="save" class="gui-btn" ng-click="SubMain()">提交</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal -->
+	<input type="hidden" name="enterpriseId"/>
+</div>
+<!--承担单位模态框-->
+<div class="modal fade"  id="selectModal" tabindex="-1" role="dialog" aria-labelledby="myModal" aria-hidden="true">
+	<div class="modal-dialog modal-stylemid" >
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="myModal">
+					<span id="modalTitle">承担单位选择</span>
+				</h4>
+			</div>
+			<div class="modal-body clearfix gov-h">
+				<div class="gui-select">
+					<select id="selectQueryShen" >
+						<option value="">省</option>
+					</select>
+				</div>
+				<div class="gui-select">
+					<select id="selectQueryShi" >
+						<option value="">市</option>
+					</select>
+				</div>
+				<div class="gui-select">
+					<select id="selectQueryXian" >
+						<option value="">县</option>
+					</select>
+				</div>
+				<div class="gui-select">
+					<select class="form-control"id="orgchange" name="orgchange">
+						<!--<option value="0">&#45;&#45;机构类型&#45;&#45;</option>-->
+						<option value="1">监管机构</option>
+						<option value="2">执法机构</option>
+						<option value="3">监测机构</option>
+					</select>
+				</div>
+
+				<div class="mt15">
+					<input class="gui-input" type="text" name="selectQueryName" placeholder="请输入名称"  maxlength="30">
+					<button ng-disabled="!!btnBearUnitDisabled" id="selectTocheck" class="gui-btn">查询</button>
+					<button ng-disabled="!!btnBearUnitReloadDisabled" class="gui-btn" ng-click="cleanSelectModelQuerys()">重置</button>
+					<button ng-disabled="!!btnBearUnitClearDisabled"  class="gui-btn" ng-click="cleanSelecteds()">清空</button>
+				</div>
+				<!--监管列表-->
+				<table id="selectGrid1" style="width: 100%;" class="gui-table mt15">
+				</table>
+				<!--执法列表-->
+				<table id="selectGrid2" style="width: 100%;" class="gui-table mt15">
+				</table>
+				<!--检测列表-->
+				<table id="selectGrid3" style="width: 100%;" class="gui-table mt15">
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button class="gui-btn mt15" type="button" ng-click="selectModalQdButt()">确定</button>
+				<button class="gui-btn mt15" type="button" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+

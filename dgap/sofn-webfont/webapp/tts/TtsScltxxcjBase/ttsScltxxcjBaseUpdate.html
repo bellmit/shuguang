@@ -1,0 +1,141 @@
+<div class="gui-breadcrumbs">
+    <a href="">内部管理</a>&gt;
+    <a href="">基地信息管理</a>&gt;
+    <span>修改基地</span>
+</div>
+<div class="gui-section">
+    <form id="attributeForm" class="form-horizontal" data-bv-excluded="" data-bv-message="不能为空">
+        <div class="ovh">
+            <ul class="gui-list clearfix">
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title control-label">基地名称</label>
+                        <input type="text" ng-model="ttsScltxxcjBase.name" name="name" placeholder="请输入基地名称" class="gui-input form-control" data-bv-notempty="true" data-bv-notempty-message="内容不能是空" data-bv-stringlength="true" data-bv-stringlength-min="1" data-bv-stringlength-max="30" data-bv-stringlength-message="基地名称必须超过1，不超过30个字符">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title control-label">所属区域</label>
+                        <div class="text-field">
+                            <div class="gui-select" style="width:auto;">
+                                <select id="sheng">
+                                    <option value="">--请选择省份--</option>
+                                    <!--<option ng-repeat="x in provinces" value="{{x.id}}">{{x.site}}</option>-->
+                                </select>
+                            </div>
+                            <div class="gui-select" style="width:auto;">
+                                <select id="shi">
+                                    <option value="">--请选择市份--</option>
+                                    <!--<option ng-repeat="x in citys" value="{{x.id}}">{{x.site}}</option>-->
+                                </select>
+                            </div>
+                            <div class="gui-select" style="width:auto;">
+                                <select id="xian">
+                                    <option value="">--请选择区县--</option>
+                                    <!--<option ng-repeat="x in areas" value="{{x.id}}">{{x.site}}</option>-->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title control-label"></label>
+                        <input type="text" ng-model="ttsScltxxcjBase.address" name="address" placeholder="请输入基地详细地址" class="gui-input form-control" data-bv-notempty="true" data-bv-notempty-message="内容不能是空" data-bv-stringlength="true" data-bv-stringlength-min="1" data-bv-stringlength-max="100" data-bv-stringlength-message="基地详细地址必须超过1，不超过32个字">
+                    </div>
+                </li>
+<!--                <li>
+                    <div class="form-item form-group">
+                        <label class="title control-label">经纬度</label>
+                        <input type="text" class="gui-input form-control" style="width:auto;" id="lonLatName" ng-model="lonLatName" name="lonLatName" placeholder="请输入经纬度名称" readonly onclick="gis()">
+                        <input type="text" class="gui-input form-control" style="width:auto;" id="lon" ng-model="ttsScltxxcjBase.longitude" name="lon" placeholder="请输入经度" readonly onclick="gis()">
+                        <input type="text" class="gui-input form-control" style="width:auto;" id="lat" ng-model="ttsScltxxcjBase.latitude" name="lat" placeholder="请输入纬度" readonly onclick="gis()">
+                    </div>
+                </li>-->
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title control-label">基地面积</label>
+                        <input type="text" ng-model="ttsScltxxcjBase.area" name="area" placeholder="请输入基地面积" class="gui-input form-control" data-bv-notempty="true" data-bv-notempty-message="不能是空" data-bv-integer="true" data-bv-min="0" data-bv-integer-message="请输入整数">&nbsp;亩
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title control-label">基地负责人</label>
+                        <input type="text" ng-model="ttsScltxxcjBase.manager" name="manager" placeholder="请输入基地负责人姓名" class="gui-input form-control" data-bv-notempty="true" data-bv-notempty-message="不能是空" data-bv-regexp="true" data-bv-regexp-regexp="[\u4e00-\u9fa5]" data-bv-regexp-message="基地负责人只能由汉字组成" data-bv-stringlength="true" data-bv-stringlength-min="2" data-bv-stringlength-max="10" data-bv-stringlength-message="基地负责人姓名必须超过2，不超过10个字符">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title control-label">联系方式</label>
+                        <input type="text" ng-model="ttsScltxxcjBase.phone" name="phone" placeholder="请输入基地联系方式" class="gui-input form-control" data-bv-notempty="true" data-bv-notempty-message="不能是空" data-bv-isphone="true" data-bv-isphone-message="请输入有效的手机号码">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title control-label">基地状态</label>
+                        <div class="gui-select">
+                            <select name="status">
+                                <option value="">请选择</option>
+                                <option selected="selected" value="Y">启用</option>
+                                <option value="N">停用</option>
+                            </select>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title control-label">基地图片</label>
+                        <div class="text-field">
+                            <img id="yulan-1" ng-click="showUpload1()" alt="点击上传图片" ng-model="ttsScltxxcjBase.picture" class="mr15" name="picture" src="../../../images/baseImage/noDelete.jpg" height="100" width="100">
+                            <img id="yulan-2" ng-click="showUpload2()" alt="点击上传图片" src="../../../images/baseImage/noDelete.jpg" ng-model="ttsScltxxcjBase.pictureTwo" name="pictureTwo" height="100" width="100">
+                        </div>
+                    </div></li>
+            </ul>
+        </div>
+    </form></div>
+    <div class="text-center">
+        <button class="gui-btn mr15" ui-sref="index.content.tts/TtsScltxxcjBase/TtsScltxxcjBaselist">取消</button>
+        <button class="gui-btn" ng-disabled="myform.JGname.$dirty&&myform.JGname.$invalid" ng-click="updateTtsScltxxcjBase()">提交</button>
+    </div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel1">基地图片上传</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <form enctype="multipart/form-data">
+                        <input style="display: inline;width: 225px" id="file-1" multiple="true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="1" type="file">
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel2">基地图片上传</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <form enctype="multipart/form-data">
+                        <input class="gui-input" id="file-2" multiple="true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="1" type="file">
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>

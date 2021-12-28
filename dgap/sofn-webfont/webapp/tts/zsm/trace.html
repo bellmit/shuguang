@@ -1,0 +1,382 @@
+<link rel="stylesheet" href="assets/css/tts/base/baseInfoList.css">
+<link rel="stylesheet" href="assets/css/tts/base/baseAdd.css">
+<div class="gui-breadcrumbs">
+    <a href="">信息查询</a>&gt;
+    <span>信息查询</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group">
+        <input name="zsm" id="zsm" class="gui-input" type="text" placeholder="请输入追溯码或批次码查询" onkeyup="this.value=this.value.replace(/\s+/g," ")"="">
+        <input type="hidden" id="pc" name="pc">
+        <input type="hidden" id="status" name="status">
+        <input type="hidden" id="billstatus" name="billstatus">
+        <button class="gui-btn" id="ToCheck">查询</button>
+        <button class="gui-btn" id="ToClean">清空</button>
+    </div><div class="gui-actions"></div>
+    <!-- 接口测试 -->
+    <!-- <div class="Sup_contain_section_selectNews col-lg-12 col-xs-12 col-sm-12 col-md-12">
+            <input name="zsm" id="code" type="text" placeholder="码"/>
+            <input name="zsm" id="userType" type="text" placeholder="用户类型"/>
+            <button id="ToCheck1">查询</button>
+        </div>-->
+    <!-- 上游追溯信息-->
+    <div id="cgup" class="Sup_contain_section_contain_01" style="display: none">
+        <div>
+            <div class="gui-page-head">
+                <h3>上游追溯信息</h3>
+            </div>
+            <table id="zs_up_grid" class="gui-table">
+                <tr>
+                    <td>主体身份码</td>
+                    <td>
+                        <span id="u_entityIdcode"></span>
+                    </td>
+                    <td>主体用户码</td>
+                    <td>
+                        <span id="u_userIdcode"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>单位名称</td>
+                    <td>
+                        <span id="u_ztmc"></span>
+                    </td>
+                    <td>联系人</td>
+                    <td>
+                        <span id="u_lxr"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>主体地址</td>
+                    <td>
+                        <span id="u_ztdz"></span>
+                    </td>
+                    <td>联系电话</td>
+                    <td>
+                        <span id="u_lxdh"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        产品名称
+                    </td>
+                    <td>
+                        <span id="u_product_name"></span>
+                    </td>
+                    <td>
+                        产品种类
+                    </td>
+                    <td>
+                        <span id="u_product_sort"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        数量
+                    </td>
+                    <td>
+                        <span id="u_sl"></span>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <!-- 本级追溯信息-->
+    <div id="cgbase" class="Sup_contain_section_contain_01" style="display: none">
+        <div class="gui-page-head">
+            <h3>本级追溯信息</h3>
+        </div>
+        <div>
+            <table id="zs_base_grid" class="gui-table">
+                <tr>
+                    <td>主体身份码</td>
+                    <td>
+                        <span id="zs_entityIdcode"></span>
+                    </td>
+                    <td>主体用户码</td>
+                    <td>
+                        <span id="zs_userIdcode"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>单位名称</td>
+                    <td>
+                        <span id="zs_ztmc"></span>
+                    </td>
+                    <td>联系人</td>
+                    <td>
+                        <span id="zs_lxr"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>主体地址</td>
+                    <td>
+                        <span id="zs_ztdz"></span>
+                    </td>
+                    <td>联系电话</td>
+                    <td>
+                        <span id="zs_lxdh"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        产品名称
+                    </td>
+                    <td>
+                        <span id="zs_product_name"></span>
+                    </td>
+                    <td>
+                        产品种类
+                    </td>
+                    <td>
+                        <span id="zs_product_sort"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        数量
+                    </td>
+                    <td>
+                        <span id="zs_sl"></span>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <!-- 下游追溯信息-->
+    <div id="cgdown" class="Sup_contain_section_contain_01" style="display: none">
+        <span style="color: red; font-weight: bold;">下游追溯信息</span>
+        <div>
+            <table id="zs_grid" class="gui-table">
+            </table>
+        </div>
+    </div>
+    <!-- 上游追溯信息-->
+    <div class="Sup_contain_section_contain_01" style="display: none" id="xsup">
+        <span style="color: red;">上游追溯信息</span>
+        <div>
+            <table id="upgrid" class="gui-table">
+            </table>
+        </div>
+    </div>
+    <!-- 本级追溯信息-->
+    <div class="Sup_contain_section_contain_01" style="display: none" id="xsbase">
+        <span style="color: red;">本级追溯信息</span>
+        <div>
+            <table id="basegrid" class="gui-table">
+            </table>
+        </div>
+    </div>
+    <!-- 下游追溯信息-->
+    <div class="Sup_contain_section_contain_01" style="display: none" id="xsdown">
+        <span style="color: red;">下游追溯信息</span>
+        <div>
+            <table id="xs_grid" class="gui-table">
+                <tr>
+                    <td>主体身份码</td>
+                    <td>
+                        <span id="d_entityIdcode"></span>
+                    </td>
+                    <td>主体用户码</td>
+                    <td>
+                        <span id="d_userIdcode"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>单位名称</td>
+                    <td>
+                        <span id="d_ztmc"></span>
+                    </td>
+                    <td>联系人</td>
+                    <td>
+                        <span id="d_lxr"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>主体地址</td>
+                    <td>
+                        <span id="d_ztdz"></span>
+                    </td>
+                    <td>联系电话</td>
+                    <td>
+                        <span id="d_lxdh"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        产品名称
+                    </td>
+                    <td>
+                        <span id="d_product_name"></span>
+                    </td>
+                    <td>
+                        产品种类
+                    </td>
+                    <td>
+                        <span id="d_product_sort"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        数量
+                    </td>
+                    <td>
+                        <span id="d_sl"></span>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- 批次码部分 -->
+    <!--来源追溯信息-->
+    <div class="Sup_contain_section_contain_01" id="sourcePc">
+        <span style="color: red; font-weight: bold;"> 来源追溯信息</span>
+        <div>
+            <table id="up_grid" class="gui-table">
+            </table>
+        </div>
+    </div>
+    <!--end  来源信息追溯-->
+    <!-- 本级追溯信息-->
+    <div class="Sup_contain_section_contain_01" id="basePc">
+        <span style="color: red; font-weight: bold;">本级追溯信息</span>
+        <div>
+            <table id="base_grid" class="gui-table">
+                <tr>
+                    <td>主体身份码</td>
+                    <td>
+                        <span id="b_entityIdcode"></span>
+                    </td>
+                    <td>主体用户码</td>
+                    <td>
+                        <span id="b_userIdcode"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>单位名称</td>
+                    <td>
+                        <span id="b_ztmc"></span>
+                    </td>
+                    <td>联系人</td>
+                    <td>
+                        <span id="b_lxr"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>地址</td>
+                    <td>
+                        <span id="b_ztdz"></span>
+                    </td>
+                    <td>联系电话</td>
+                    <td>
+                        <span id="b_lxdh"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        产品名称
+                    </td>
+                    <td>
+                        <span id="b_product_name"></span>
+                    </td>
+                    <td>
+                        产品种类
+                    </td>
+                    <td>
+                        <span id="b_product_sort"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        数量
+                    </td>
+                    <td>
+                        <span id="b_sl"></span>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <!--end 本级追溯信息-->
+    <!-- 下游追溯信息-->
+    <div class="Sup_contain_section_contain_01" id="downPc">
+        <span style="color: red; font-weight: bold;">下游追溯信息</span>
+        <div>
+            <table id="grid" class="gui-table">
+            </table>
+        </div>
+    </div>
+    <!--end 下游追溯信息-->
+    <!-- 合成后产品批次码追溯信息-->
+    <div class="Sup_contain_section_contain_01" id="hchdiv" style="display: none;">
+        <div>
+            <span style="color: red; font-weight: bold;">批次合成后信息</span>
+            <table id="hch_grid" class="table table-bordered data-table col-lg-12 col-xs-12 col-sm-12 col-md-12">
+                <tr>
+                    <td>主体身份码</td>
+                    <td>
+                        <span id="h_entityIdcode"></span>
+                    </td>
+                    <td>新批次码</td>
+                    <td>
+                        <span id="h_product_pc_new"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>单位名称</td>
+                    <td>
+                        <span id="h_ztmc"></span>
+                    </td>
+                    <td>联系人</td>
+                    <td>
+                        <span id="h_lxr"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>地址</td>
+                    <td>
+                        <span id="h_ztdz"></span>
+                    </td>
+                    <td>联系电话</td>
+                    <td>
+                        <span id="h_lxdh"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        产品名称
+                    </td>
+                    <td>
+                        <span id="h_product_name"></span>
+                    </td>
+                    <td>
+                        产品种类
+                    </td>
+                    <td>
+                        <span id="h_product_sort"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        合成数量
+                    </td>
+                    <td>
+                        <span id="h_sl"></span>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <!--end 合成后产品批次码追溯信息-->
+</div>

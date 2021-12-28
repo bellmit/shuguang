@@ -1,0 +1,190 @@
+
+<style>
+    .type-warp-maxheight{
+        max-height:106px;
+    }
+</style>
+<div class="gui-breadcrumbs">
+    <a href="">系统管理</a>&gt;
+    <a href="">基础数据管理</a>&gt;
+    <span>字典管理</span>
+</div>
+
+<div class="gui-section">
+    <form class="form-horizontal" role="form" id="dictTypeView">
+        <div class="gui-form-group clearfix form-group">
+            字典名称:<input type="text" class="gui-input" id="keyWord" name="keyWord" ng-model="keyWord" ng-keyup="onInputChanged($event)"  placeholder="请输入查询关键字" data-bv-stringlength="true" data-bv-stringlength-max="30" data-bv-stringlength-message="不能超过30个字符长度">
+            <button class="gui-btn" ng-click="queryList();">查询</button>
+        </div>
+    </form>
+    <div class="gui-actions"><button class="gui-btn fr ml15" ng-click="updateNewModal();" ng-if="menuAuthority == readWriteAuthority"><i class="gui-icon icon-edit"></i>修改</button><button class="gui-btn fr" ng-click="addModal();" ng-if="menuAuthority == readWriteAuthority"><i class="gui-icon icon-add"></i>新增字典</button></div>
+    <div>
+        <ul id="grid" class="mt15">
+            <li ng-repeat="dictType in vm.dictType">
+                <span ng-bind="dictType.name"></span>
+                <span class="fr" ng-click="showMore($event)">更多</span>
+                <div style="border-top: 1px solid grey; padding: 15px 0;overflow: hidden;" class="type-warp-maxheight" id="Type-warp">
+                    <p style="display: inline-block" ng-repeat="dictTypeSub in dictType.sysDictType">
+                        <button class="gui-btn" onclick="goToDictDataView(this)" name="{{dictTypeSub.id}}" style="margin: 0 30px 15px" ng-bind="dictTypeSub.name"></button>
+                    </p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- 模态框 -->
+<div class="modal fade" id="add_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">新增字典</h4>
+            </div>
+            <form class="form-horizontal" id="attributeForm" novalidate="novalidate">
+            <div class="modal-body">
+                <div class="form-item form-group">
+                    <label class="required">字典类别</label>
+                    <div class="gui-select">
+                    <select name="typeId" id="typeId" style="max-width:100%;min-width:100%;">
+                        <option value="">无</option>
+                        <option value="{{dictType.id}}" ng-repeat="dictType in dictTypes">{{dictType.name}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-item form-group">
+                    <label class="required">字典名称</label>
+                    <input type="text" class="gui-input form-control" ng-model="sysDictType.name" name="name" placeholder="请输入字典名称" data-bv-notempty="true" data-bv-notempty-message="字典名称不能为空">
+                </div>
+                <div class="form-item form-group">
+                    <label class="required">代码</label>
+                    <input type="text"  name="code" placeholder="请输入代码" class="gui-input form-control" data-bv-notempty="true" data-bv-notempty-message="代码不能为空">
+                </div>
+                <div class="form-item form-group">
+                    <label class="required">字典状态</label>
+                    <div class="gui-select">
+                    <select name="enable" style="max-width:100%;min-width:100%;">
+                        <option value="Y">有效</option>
+                        <option value="N">无效</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-item form-group">
+                    <label class="required">备注</label>
+                    <input type="text" ng-model="sysDictType.remark" name="remark" placeholder="请输入备注" class="gui-input">
+                </div>
+            </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="gui-btn" ng-click="addDictData()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 编辑模态框 -->
+<!--<div class="modal fade" id="update_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">-->
+<!--<div class="modal-dialog modal-style">-->
+<!--<div class="modal-content">-->
+<!--<div class="modal-header">-->
+<!--<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span-->
+<!--class="sr-only">Close</span></button>-->
+<!--<h4 class="modal-title" id="myModalLabel2">编辑</h4>-->
+<!--</div>-->
+<!--<div class="modal-body">-->
+<!--<div class="Sup_contain_section col-lg-12 col-xs-12 col-sm-12 col-md-12">-->
+<!--<p class="col-lg-1 col-xs-0 col-sm-1 col-md-1"></p>-->
+<!--<div class="Sup_contain_section_contain_head col-lg-10 col-xs-12 col-sm-10 col-md-10">-->
+<!--<ul>-->
+<!--<li>-->
+<!--<span class="important">字典类别<span class="this-after">*</span></span>-->
+<!--&lt;!&ndash;下拉列表&ndash;&gt;-->
+<!--<select name="pid" ng-model="sysDictNewType.pid" id="pid">-->
+<!--<option value="">无</option>-->
+<!--<option value="bcf062df2aa94c308a55d6a1acec941eda6cb4b29bcc4615a9cb73c230a3c2a1">公共字典</option>-->
+<!--<option value="bcf062df2aa94c308a55d6a1acec941eda6cb4b29bcc4615a9cb73c230a3c2a2">追溯字典</option>-->
+<!--<option value="bcf062df2aa94c308a55d6a1acec941eda6cb4b29bcc4615a9cb73c230a3c2a3">监管字典</option>-->
+<!--<option value="bcf062df2aa94c308a55d6a1acec941eda6cb4b29bcc4615a9cb73c230a3c2a4">监测字典</option>-->
+<!--<option value="bcf062df2aa94c308a55d6a1acec941eda6cb4b29bcc4615a9cb73c230a3c2a5">执法字典</option>-->
+<!--</select>-->
+<!--</li>-->
+<!--<li>-->
+<!--<span class="important">字典名称<span class="this-after">*</span></span>-->
+<!--<input type="text" ng-model="sysDictNewType.name" name="name" placeholder=""-->
+<!--class="Sup_contain_section_contain_input" id="name"/>-->
+<!--</li>-->
+<!--<li>-->
+<!--<span class="important">代码<span class="this-after">*</span></span>-->
+<!--<input type="text" ng-model="sysDictNewType.code" name="code" placeholder=""-->
+<!--class="Sup_contain_section_contain_input" id="code"/>-->
+<!--</li>-->
+<!--<li>-->
+<!--<span class="important">字典状态<span class="this-after">*</span></span>-->
+<!--&lt;!&ndash;下拉列表&ndash;&gt;-->
+<!--<select ng-model="sysDictNewType.enable" name="newEnable" id="newEnable">-->
+<!--<option value="Y">有效</option>-->
+<!--<option value="N">无效</option>-->
+<!--</select>-->
+<!--</li>-->
+<!--<li>-->
+<!--<span class="important">备注<span class="this-after">*</span></span>-->
+<!--<input type="text" ng-model="sysDictNewType.remark" name="remark"-->
+<!--placeholder="请输入备注" class="Sup_contain_section_contain_input" id="remark"/>-->
+<!--</li>-->
+<!--</ul>-->
+<!--&lt;!&ndash;<button class="Sup_contain_section_contain_head_button"&ndash;&gt;-->
+<!--&lt;!&ndash;ui-sref="index.content.sys/sysDictData/list">取消&ndash;&gt;-->
+<!--&lt;!&ndash;</button>&ndash;&gt;-->
+<!--&lt;!&ndash;<button class="Sup_contain_section_contain_head_button"&ndash;&gt;-->
+<!--&lt;!&ndash;ng-disabled="myform.JGname.$dirty&&myform.JGname.$invalid" ng-click="addSysDictData()">&ndash;&gt;-->
+<!--&lt;!&ndash;提交&ndash;&gt;-->
+<!--&lt;!&ndash;</button>&ndash;&gt;-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="modal-footer">-->
+<!--<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>-->
+<!--<button type="button" class="btn btn-primary" ng-click="updateDictType()">保存</button>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+
+<!-- 编辑模态框 -->
+<div class="modal fade" id="updateType" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-style modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="updateType2">编辑字典</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-item">
+                    <label>字典类别</label>
+                    <span class="gui-select">
+                      <select name="pid" id="pid" ng-model="updateType.pid" ng-change="changeDictType(this)" style="max-width:100%;min-width:100%;">
+                           <option value="">无</option>
+                           <option value="{{dictType.id}}" ng-repeat="dictType in dictTypes">{{dictType.name}}</option>
+                      </select>
+                    </span>
+                </div>
+
+                <!--<div class="form-item">-->
+                    <!--<label>编辑状态</label>-->
+                    <!--<span class="gui-select">-->
+                      <!--<select ng-model="updateType.enable" name="newEnable" id="newEnable">-->
+                          <!--<option value="Y">有效</option>-->
+                          <!--<option value="N">无效</option>-->
+                      <!--</select>-->
+                    <!--</span>-->
+                <!--</div>-->
+                <div style="padding: 15px" id="checkInput">
+                    <table id="resource" class="gui-table"/>
+                </div>
+            </div>
+        <div class="modal-footer">
+            <button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+        </div>
+    </div>
+</div>
+</div>

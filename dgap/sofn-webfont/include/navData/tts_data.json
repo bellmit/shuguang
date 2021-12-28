@@ -1,0 +1,207 @@
+[
+  {
+    "id": 11,
+    "text": "国家追溯平台",
+    "children": [
+      {
+        "id": 49,
+        "text": "用户主体管理",
+        "state": "closed",
+        "children": [
+          {
+            "id": 50,
+            "text": "管理员账号信息",
+            "menuUrl": "index.content.tts/register/accountInfo/managerInfo"
+          },
+          {
+            "id": 51,
+            "text": "主体身份码",
+            "menuUrl": "index.content.tts/register/accountInfo/entityIdCode"
+          },
+          {
+            "id": 52,
+            "text": "个人中心(非管理员)",
+            "menuUrl": "index.content.tts/register/accountInfo/noManagerInfo"
+          },
+          {
+            "id": 53,
+            "text": "个人中心(个人)",
+            "menuUrl":"index.content.tts/register/accountInfo/singleDetails"
+          },
+          {
+            "id": 54,
+            "text": "个人中心(家庭农场)",
+            "menuUrl":"index.content.tts/register/accountInfo/familyDetails"
+          },
+          {
+            "id": 55,
+            "text": "个人中心(企业、合作社)",
+            "menuUrl":"index.content.tts/register/accountInfo/recordDetails"
+          },
+          {
+            "id": 56,
+            "text": "备案注销申请",
+            "menuUrl": "index.content.tts/register/recordLogout/recordLogout"
+          },
+          {
+            "id": 57,
+            "text": "备案变更申请",
+            "menuUrl": "index.content.tts/register/recordUpdateApply/recordUpdateApply"
+          },
+          {
+            "id": 58,
+            "text": "备案变更(企业、合作社)",
+            "menuUrl": "index.content.tts/register/recordUpdateFirm/recordUpdateFirm"
+          },
+          {
+            "id": 59,
+            "text": "备案变更(个人、家庭农场)",
+            "menuUrl": "index.content.tts/register/recordUpdateSingle/recordUpdateSingle"
+          },
+          {
+            "id": 60,
+            "text": "追溯凭证",
+            "menuUrl": "index.content.tts/base/baseAdd"
+          }
+        ]
+      },
+      {
+        "id": 14,
+        "text": "生产管理",
+        "state": "closed",
+        "children": [
+          {
+            "id": 141,
+            "text": "产品登记",
+            "menuUrl": "index.content.tts/TtsScltxxcjScgl/cppcdj"
+          },
+          {
+            "id": 142,
+            "text": "产品合成",
+            "menuUrl": "index.content.tts/TtsScltxxcjScgl/cppchc"
+          },
+          {
+            "id": 143,
+            "text": "产品批次管理",
+            "menuUrl": "index.content.tts/TtsScltxxcjScgl/cppcgl"
+          }
+        ]
+      },
+      {
+        "id": 15,
+        "text": "销售管理",
+        "state": "closed",
+        "children": [
+          {
+            "id": 151,
+            "text": "流通销售",
+            "menuUrl": "index.content.tts/TtsScltxxcjXsdj/ltxs"
+          },
+          {
+            "id": 152,
+            "text": "入市销售",
+            "menuUrl": "index.content.tts/TtsScltxxcjXsdj/rsxs"
+          },
+          {
+            "id": 153,
+            "text": "销售历史",
+            "menuUrl": "index.content.tts/TtsScltxxcjXsdj/xsls"
+          }
+        ]
+      },
+      {
+        "id": 16,
+        "text": "采购管理",
+        "state": "closed",
+        "children": [
+          {
+            "id": 1601,
+            "text": "采购待确认",
+            "menuUrl": "index.content.tts/TtsScltxxcjXsdj/cgqr"
+          },
+          {
+            "id": 1602,
+            "text": "采购管理",
+            "menuUrl": "index.content.tts/TtsScltxxcjXsdj/cggl"
+          }
+        ]
+      },
+      {
+        "id": 17,
+        "text": "内部管理",
+        "state": "closed",
+        "children": [
+          {
+            "id": 171,
+            "text": "产品管理",
+            "menuUrl": "index.content.tts/TtsScltxxcjProduct/TtsScltxxcjProductlist"
+          },
+          {
+            "id": 172,
+            "text": "客户管理",
+            "menuUrl": "index.content.tts/TtsScltxxcjCustomer/TtsScltxxcjCustomerlist"
+          },
+          {
+            "id": 173,
+            "text": "基地管理",
+            "menuUrl": "index.content.tts/TtsScltxxcjBase/TtsScltxxcjBaselist"
+          },
+          {
+            "id": 174,
+            "text": "账号管理",
+            "menuUrl": "index.content.tts/register/registerlist"
+          }
+        ]
+      },
+      {
+        "id": 180001,
+        "text": "追溯查询",
+        "menuUrl": "index.content.tts/zsm/findZsm"
+      },
+      {
+        "id": 180002,
+        "text": "批次码查询",
+        "menuUrl": "index.content.tts/zsm/pcZsm"
+      },
+      {
+        "id": 18,
+        "text": "投诉举报",
+        "menuUrl": "index.content.tts/TtsScltxxcjComplain/ttsScltxxcjComplainAdd"
+      },
+      {
+        "id": 19,
+        "text": "平台优化",
+        "menuUrl": "index.content.tts/TtsScltxxcjProposal/ttsScltxxcjProposalAdd"
+      },
+      {
+        "id": 20,
+        "text": "通知消息",
+        "menuUrl": "index.content.tts/TtsScltxxcjNotification/TtsScltxxcjNotificationlist"
+      },
+      {
+        "id": 22,
+        "text": "屠宰管理",
+        "state": "closed",
+        "children": [
+          {
+            "id": 221,
+            "text": "屠宰登记",
+            "menuUrl": "index.content.tts/slaughter/slaughterAdd"
+          },
+          {
+            "id": 222,
+            "text": "屠宰记录",
+            "menuUrl": "index.content.tts/slaughter/slaughterList"
+          }
+        ]
+      }
+    ]
+  }
+]
+
+
+
+
+
+
+

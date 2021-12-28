@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agzirdd.mapper.MonitorCompanionSpeciesMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.agzirdd.model.MonitorCompanionSpecies" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="SPECIES_MONITOR_ID" property="speciesMonitorId" jdbcType="VARCHAR" />
+    <result column="SPECIES_NAME" property="speciesName" jdbcType="VARCHAR" />
+    <result column="AMOUNT" property="amount" jdbcType="VARCHAR" />
+    <result column="COVER_RATIO" property="coverRatio" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="ORDER_NUMBER" property="orderNumber" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID,ORDER_NUMBER,SPECIES_MONITOR_ID, SPECIES_NAME, AMOUNT, COVER_RATIO, REMARK, CREATE_TIME
+  </sql>
+
+  <select id="getMonitorCompanionSpeciesByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM MONITOR_COMPANION_SPECIES
+    <where>
+      1=1
+      <if test="speciesMonitorId != null and speciesMonitorId != ''">
+        and SPECIES_MONITOR_ID = #{speciesMonitorId}
+      </if>
+    </where>
+    ORDER BY CREATE_TIME desc
+  </select>
+
+  <delete id="deleteMonitorCompanionSpecies" parameterType="java.lang.String">
+    delete
+    from MONITOR_COMPANION_SPECIES
+    where
+    SPECIES_MONITOR_ID = #{speciesMonitorId}
+  </delete>
+
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+<!-- The factory bean, which contains a method called
+     createInstance 
+     <bean id="coreImage"
+	      class="com.cvicse.workflow.core.image.impl.WfMonitorImageUtilImpl" >
+	    <property name="imageRepository">
+			<value>D:\CVICSE\InforFlow02.09\service01.17\icons</value>
+		</property>
+	</bean> -->
+     
+	<bean id="localImageClient"
+	     class="com.cvicse.workflow.api.image.LocalImageClient" >
+<!--	     <property name="coreImage">
+			<ref bean="coreImage"/>
+		</property> -->
+	</bean>
+
+	<bean id="rmiImageClient"
+	    class="com.cvicse.workflow.api.image.WfMonitorImageRMIClient"  init-method="init" lazy-init="true">
+		<property name="hostUrl">
+			<value>localhost</value>
+		</property>
+		<property name="hostPort">
+			<value>5501</value>
+		</property>
+		<property name="serviceName">
+			<value>InforFlowImageProvider</value>
+		</property>
+	</bean>
+	
+	<bean id="InforFlowClient" parent="localImageClient">	
+	<!--bean id="InforFlowClient" parent="rmiImageClient"-->	
+	</bean>
+	
+</beans>

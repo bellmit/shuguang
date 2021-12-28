@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<select id="sheng" >
+    <option value="">--请选择省份--</option>
+</select>
+<select id="shi">
+    <option value="">--请选择城市--</option>
+</select>
+<select id="xian">
+    <option value="">--请选择区/县--</option>
+</select>
+<h1>demo说明：</h1>
+<p>使用时直接调用: <h3>$.fn.mycity("省（id）","市(id)","县区(id)",行政区域编码)</h3>这个方法；后面三个参数可以不添加；</p>
+<p style="color: blue">
+    行政编码全部采用的是6位数行政区域编码，例如：北京朝阳区：110105；设置默认显示的时候，省编码参数为编码的前两位：11；市编码为$_$4位：1101；县区编码位全部编码：110105；其余区域都按照这个格式传值，不传值显示 <span style="color: red">“请选择”</span>字样
+</p>
+<p>
+    根据行政区域编码自动获取地域字符串:alert($.fn.Cityname(输入完整的行政区域编码))；详细例子看js部分
+</p>
+<p>可以动态添加禁用属性disabled；例如 :   $("#city").attr("disabled",true)
+</p>
+
+<script src="../jquery/jquery-2.0.3.min.js" type="text/javascript"></script>
+<script src="CityJson.js" type="text/javascript"></script>
+<script src="ProJson.js" type="text/javascript"></script>
+<script src="DistrictJson.js" type="text/javascript"></script>
+<script src="fn.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $.fn.mycity("sheng","shi","xian",510100)
+//    ===========根据行政区域编码自动获取地域字符串=======
+    alert($.fn.Cityname(510722));
+</script>
+</body>
+</html>

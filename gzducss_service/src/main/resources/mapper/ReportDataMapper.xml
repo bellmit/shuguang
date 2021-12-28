@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.ReportDataMapper">
+
+    <select id="getTheoryResourceByStrawType" resultType="com.sofn.ducss.model.StrawUtilizeSum">
+        SELECT
+        su.area_id as areaId,
+        straw_type as straw_type,
+        main_fertilising as main_fertilising,
+        main_forage as main_forage,
+        main_fuel as main_fuel,
+        main_base as main_base,
+        main_material as main_material,
+        main_total as main_total,
+        main_total_other as main_total_other,
+        disperse_fertilising as disperse_fertilising,
+        disperse_forage as disperse_forage,
+        disperse_fuel as disperse_fuel,
+        disperse_base as disperse_base,
+        disperse_material as disperse_material,
+        disperse_total as disperse_total,
+        pro_still_field as pro_still_field,
+        pro_straw_utilize as pro_straw_utilize,
+        collect_resource as collect_resource,
+        theory_resource as theory_resource,
+        export_yield_total as yield_all_export,
+        grain_yield as grainYield,
+        case collect_resource when 0 then 0
+        else
+        ROUND(((pro_straw_utilize-main_total_other+export_yield_total)*100/collect_resource),10) end as comprehensive
+        FROM
+        straw_utilize_sum su
+        LEFT JOIN collect_flow cf ON cf.area_id = su.area_id and su.year = cf.year
+        <where>
+            <if test="status != null and status.size() > 0">
+                and cf.status in
+                <foreach collection="status" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="year != null and year != ''">
+                and su.year= #{year}
+            </if>
+            <if test="areaCodes != null and areaCodes.size() > 0">
+                and su.area_id in
+                <foreach collection="areaCodes" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="strawType != null and strawType != ''">
+                and su.straw_type= #{strawType}
+            </if>
+        </where>
+        order by ${dataType} desc
+    </select>
+
+
+    <select id="getSumTheoryResourceByStrawType" resultType="com.sofn.ducss.model.StrawUtilizeSum">
+        SELECT
+        sum(main_fertilising) as main_fertilising,
+        sum(main_forage) as main_forage,
+        sum(main_fuel) as main_fuel,
+        sum(main_base) as main_base,
+        sum(main_material) as main_material,
+        sum(main_total) as main_total,
+        sum(main_total_other) as main_total_other,
+        sum(disperse_fertilising) as disperse_fertilising,
+        sum(disperse_forage) as disperse_forage,
+        sum(disperse_fuel) as disperse_fuel,
+        sum(disperse_base) as disperse_base,
+        sum(disperse_material) as disperse_material,
+        sum(disperse_total) as disperse_total,
+        sum(pro_still_field) as pro_still_field,
+        sum(pro_straw_utilize) as pro_straw_utilize,
+        sum(collect_resource) as collect_resource,
+        sum(theory_resource) as theory_resource,
+        sum(export_yield_total) as yield_all_export,
+        sum(grain_yield) as grainYield,
+        sum(export_yield_total) as exportYieldTotal,
+        case sum (collect_resource) when 0 then 0
+        else
+        ROUND((sum(pro_straw_utilize-main_total_other+export_yield_total)*100/sum(collect_resource)),10) end as comprehensive
+        FROM
+        straw_utilize_sum su
+        LEFT JOIN collect_flow cf ON cf.area_id = su.area_id and su.year = cf.year
+        <where>
+            <if test="status != null and status.size() > 0">
+                and cf.status in
+                <foreach collection="status" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="year != null and year != ''">
+                and su.year= #{year}
+            </if>
+            <if test="areaCodes != null and areaCodes.size() > 0">
+                and su.area_id in
+                <foreach collection="areaCodes" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="strawType != null and strawType != ''">
+                and su.straw_type= #{strawType}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="getSumStrawUtilizeByAreaCode" resultType="com.sofn.ducss.vo.StrawUtilizeSumResVo">
+        SELECT
+        sum( main_fertilising ) AS main_fertilising,
+        sum( main_forage ) AS main_forage,
+        sum( main_fuel ) AS main_fuel,
+        sum( main_base ) AS main_base,
+        sum( main_material ) AS main_material,
+        sum( main_total ) AS main_total,
+        sum( main_total_other ) AS main_total_other,
+        sum( disperse_fertilising ) AS disperse_fertilising,
+        sum( disperse_forage ) AS disperse_forage,
+        sum( disperse_fuel ) AS disperse_fuel,
+        sum( disperse_base ) AS disperse_base,
+        sum( disperse_material ) AS disperse_material,
+        sum( disperse_total ) AS disperse_total,
+        sum( pro_straw_utilize ) AS pro_straw_utilize,
+        sum( collect_resource ) AS collect_resource,
+        sum( theory_resource ) AS theory_resource,
+        sum( return_resource ) AS return_resource,
+        sum( fertilising ) AS fertilising,
+        sum( forage ) AS forage,
+        sum( fuel ) AS fuel,
+        sum( base ) AS base,
+        sum( material ) material,
+        sum( export_yield_total ) as exportYieldTotal,
+        case SUM (collect_resource) when 0 then 0
+        else
+        ROUND(
+        (
+        SUM (pro_straw_utilize) / SUM (collect_resource)
+        ),
+        10
+        ) end AS comprehensiveIndex,
+        case SUM (collect_resource) when 0 then 0
+        else
+        ROUND(
+        (
+        SUM (main_total) / SUM (collect_resource)
+        ),
+        10
+        ) end AS industrializationIndex
+        FROM
+        straw_utilize_sum_total sut LEFT JOIN
+        collect_flow cf on cf.area_id = sut.area_id AND cf.year = sut.year
+        <where>
+            <if test="year != null and year != ''">
+                sut.year= #{year}
+            </if>
+            <if test="areaCodes != null and areaCodes.size() > 0">
+                and sut.area_id in
+                <foreach collection="areaCodes" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="status != null and status.size() > 0">
+                and cf.status in
+                <foreach collection="status" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="getSumGroupByStrawType" resultType="com.sofn.ducss.model.StrawUtilizeSum">
+        SELECT
+        su.straw_type,
+        sum(main_fertilising) as main_fertilising,
+        sum(main_forage) as main_forage,
+        sum(main_fuel) as main_fuel,
+        sum(main_base) as main_base,
+        sum(main_material) as main_material,
+        sum(main_total) as main_total,
+        sum(main_total_other) as main_total_other,
+        sum(disperse_fertilising) as disperse_fertilising,
+        sum(disperse_forage) as disperse_forage,
+        sum(disperse_fuel) as disperse_fuel,
+        sum(disperse_base) as disperse_base,
+        sum(disperse_material) as disperse_material,
+        sum(disperse_total) as disperse_total,
+        sum(pro_still_field) as pro_still_field,
+        sum(pro_straw_utilize) as pro_straw_utilize,
+        sum(collect_resource) as collect_resource,
+        sum(theory_resource) as theory_resource,
+        sum(export_yield_total) as yield_all_export,
+        sum(grain_yield) as grainYield,
+        sum(export_yield_total) as exportYieldTotal,
+        case sum (collect_resource) when 0 then 0
+        else
+        ROUND((sum(pro_straw_utilize-main_total_other+export_yield_total)*100/sum(collect_resource)),10) end as comprehensive
+        FROM
+        straw_utilize_sum su
+        LEFT JOIN collect_flow cf ON cf.area_id = su.area_id and su.year = cf.year
+        <where>
+            <if test="status != null and status.size() > 0">
+                and cf.status in
+                <foreach collection="status" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="year != null and year != ''">
+                and su.year= #{year}
+            </if>
+            <if test="areaCodes != null and areaCodes.size() > 0">
+                and su.area_id in
+                <foreach collection="areaCodes" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            group by su.straw_type
+        </where>
+        order by ${dataType} desc
+    </select>
+
+</mapper>

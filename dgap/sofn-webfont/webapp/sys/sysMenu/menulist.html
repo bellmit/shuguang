@@ -1,0 +1,141 @@
+<div class="gui-breadcrumbs">
+    <a href="">系统管理</a>&gt;
+    <span>菜单管理</span>
+</div>
+<div class="gui-section">
+    <div class="gui-tree-sidebar">
+        <div class="easyui-panel  easyui-Owndirevtive">
+            <ul id="easyUi" class="" url="/sofn-sys-web/sysMenu/queryMenu"></ul>
+        </div>
+    </div>
+    <div class="gui-tree-content">
+        <form id="sectionForm" novalidate="novalidate">
+        <div class="gui-form-group form-group clearfix">
+            菜单名单：<input class="gui-input" data-bv-stringlength="true" data-bv-stringlength-max="20" data-bv-stringlength-message="不能超过20个字符长度" type="text" name="menuName0" ng-model="menuName0" ng-keyup="onInputChanged($event)" placeholder="请输入查询菜单名">
+            <button class="gui-btn" ng-click="queryList()">查询</button>
+            
+        </div><div class="gui-actions"><button class="gui-btn fr" ng-click="listAdd()" ng-if="menuAuthority == readWriteAuthority"><i class="gui-icon icon-add"></i>新增</button></div>
+        </form>
+        <div class="clearfix gov-h">
+            <table id="grid" class="gui-table"></table>
+        </div>
+    </div>
+</div>
+<!--add Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title text-left" id="myModalLabel">新增菜单信息</h4>
+            </div>
+            <form id="addSysMenuForm" class="form-horizontal" data-bv-message="不能为空"  novalidate>
+                <div class="modal-body">
+                    <div class="form-item form-group">
+                        <label>菜单名称</label>
+                        <input type="text" class="gui-input" data-bv-stringlength="true" data-bv-stringlength-max="20" data-bv-stringlength-message="不能超过20个字符长度"
+                               ng-model="sysMenu.menuName" name="menuName" placeholder="请输入菜单名称">
+                    </div>
+                    <div class="form-item form-group">
+                        <label>序号</label>
+                        <input type="text" class="gui-input" ng-model="sysMenu.numbers" name="numbers" placeholder="请输入序号">
+                    </div>
+                    <div class="form-item form-group">
+                        <label>父级菜单</label>
+                        <span class="gui-select">
+                        <select ng-model="sysMenu.parentId" name="parentId" style="max-width: 100%;min-width: 100%;">
+                            <option ng-repeat="o in menusJson" name="menuiD" value="{{o.id}}" ng-selected="o.id == sysMenu.parentId">{{o.menuName}}</option>
+                        </select>
+                      </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>菜单描述</label>
+                        <input type="text" class="gui-input" ng-model="sysMenu.describes" name="describes" placeholder="请输入菜单描述">
+                    </div>
+                    <div class="form-item form-group">
+                        <label>url</label>
+                        <input type="text" class="gui-input" ng-model="sysMenu.url" name="url" placeholder="请输入url">
+                    </div>
+                    <div class="form-item  form-group">
+                        <label>菜单类型</label>
+                        <span class="gui-select">
+                        <select name="menuType" ng-model="sysMenu.menuType" style="max-width: 100%;min-width: 100%;">
+                            <option value="0">系统</option>
+                            <option value="1">菜单</option>
+                            <option value="2">操作</option>
+                        </select>
+                      </span>
+                    </div>
+                    <div class="form-item  form-group">
+                        <label>菜&nbsp;单&nbsp;值</label>
+                        <input type="text" class="gui-input" ng-model="sysMenu.menuValue" name="menuValue" placeholder="请输入菜单值">
+                        <p></p>
+                    </div>
+                    </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="gui-btn" ng-disabled="myform.JGname.$dirty&&myform.JGname.$invalid" ng-click="addSysMenu()">保存</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+<!--update Modal -->
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel3">修改菜单信息</h4>
+            </div>
+            <form id="updateMenuForm" class="form-horizontal" novalidate>
+                <div class="modal-body" style="text-align: center">
+                    <div class="form-item form-group">
+                        <label>菜单名称</label>
+                        <input class="gui-input" type="text" data-bv-notempty="true" data-bv-stringlength-max="20" data-bv-stringlength-message="不能超过20个字符长度" ng-model="sysMenu2.menuName" name="menuName1" placeholder="请输入菜单名称">
+                    </div>
+                    <div class="form-item form-group">
+                        <label>序号</label>
+                        <input class="gui-input" type="text" ng-model="sysMenu2.numbers" name="numbers1" placeholder="请输入序号">
+                    </div>
+                    <div class="form-item form-group">
+                        <label>父级菜单</label>
+                        <span class="gui-select">
+                            <select ng-model="sysMenu2.parentId" name="parentId1" style="max-width: 100%;min-width: 100%;">
+                                <option ng-repeat="o in menusJson" name="menuiD" value="{{o.id}}" ng-selected="o.id == sysMenu2.parentId">{{o.menuName}}</option>
+                            </select>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>菜单描述</label>
+                        <input class="gui-input" type="text" ng-model="sysMenu2.describes" name="describes1" placeholder="请输入菜单描述">
+                    </div>
+                    <div class="form-item form-group">
+                        <label>url</label>
+                        <input class="gui-input" type="text" ng-model="sysMenu2.url" name="url1" placeholder="请输入url">
+                    </div>
+                    <div class="form-item form-group">
+                        <label>菜单类型</label>
+                        <span class="gui-select">
+                            <select name="menuType1" ng-model="sysMenu2.menuType" style="max-width: 100%;min-width: 100%;">
+                                <option value="0">系统</option>
+                                <option value="1">菜单</option>
+                                <option value="2">操作</option>
+                            </select>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>菜单值</label>
+                        <input class="gui-input" type="text" ng-model="sysMenu2.menuValue" name="menuValue1" placeholder="请输入菜单值">
+                    </div>
+                    <input name="oid" value="" type="hidden">
+                </div>
+            </form>
+            <div class="modal-footer">
+              <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+              <button type="button" class="gui-btn" ng-click="updateMenu()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>

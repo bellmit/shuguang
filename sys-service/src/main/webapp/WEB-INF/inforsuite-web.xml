@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inforsuite-web-app>
+  <class-loader delegate="false"/>
+  <!--<property name="allowLinking" value="true"></property>-->
+  <!--<property name="alternatedocroot_1" value="from=/static/* dir=/apps/static_content/" />-->
+  <!--<session-config>
+        <cookie-properties>
+            <property name="cookieHttpOnly" value="false" />
+        </cookie-properties>
+     </session-config> -->
+  <locale-charset-info>
+    <parameter-encoding default-charset="UTF-8" />
+  </locale-charset-info>
+</inforsuite-web-app>

@@ -1,0 +1,97 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css">
+<div class="gui-breadcrumbs">
+    <a ui-sref="index.content.sys/checkItem/adsModelCheckItemList">系统管理</a>&gt;
+    <a ui-sref="index.content.sys/checkItem/adsModelCheckItemList">基础数据管理</a>&gt;
+    <a ui-sref="index.content.sys/checkItem/adsModelCheckItemList">检测基本配置</a>&gt;
+    <span>检测项目</span></div>
+
+<div class="gui-section">
+    <form id="sectionForm">
+  <div class="gui-form-group form-group clearfix">
+    <input data-bv-stringlength="true" data-bv-stringlength-max="30" data-bv-stringlength-message="不能超过30个字符长度"  type="text" class="gui-input" name="item" ng-keyup="onInputChanged($event)" placeholder="请输入检测项目名称">
+    <button class="gui-btn" id="search">查询</button>
+    
+    
+  </div><div class="gui-actions"><button class="gui-btn fr ml15" ng-click="batchDelete()"><i class="gui-icon icon-remove"></i>删除</button><button class="gui-btn fr" ng-click="showAddModal()"><i class="gui-icon icon-add"></i>新增</button></div>
+  <div>
+      <table id="grid" class="gui-table" style="width: 100%"></table>
+  </div>
+  </form>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="dModal" tabindex="-1" style="z-index: 10000;" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="modalTitle">新增检测项目</h4>
+            </div>
+            <div class="modal-body" style="min-height: 100px;">
+                <form class="form-horizontal" role="form" id="addAdsModelCheckItemList">
+                    <div class="form-item form-group">
+                        <label class="required">检测项目</label>
+                        <input class="gui-input" type="text" name="name" placeholder="请输入检测项目名称" data-bv-stringlength="true" data-bv-stringlength-max="60" data-bv-stringlength-message="不能超过60个字符长度">
+                    </div>
+                    <div class="form-item form-group">
+                        <label  class="required">检测标准</label>
+                        <input type="hidden" name="standardId">
+                        <input class="gui-input" type="text" name="standardName" readonly="readonly" placeholder="请选择检测标准" ng-click="showSelectStandModal('S')">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer mgt-15">
+                <span class="gui-btn" data-dismiss="modal">关闭</span>
+                <button class="gui-btn" type="button" onclick="addCheckItem()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 选择检测标准 -->
+<div class="modal fade" id="sModal" tabindex="-1" style="z-index: 10001;" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">选择检测标准</h4>
+            </div>
+            <div class="modal-body">
+              <table id="s_grid" class="gui-table"></table>
+            </div>
+            <div class="modal-footer mgt-15 clearfix">
+                <span class="gui-btn" data-dismiss="modal">关闭</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="uModal" tabindex="-1" style="z-index: 10000;" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">修改检测项目</h4>
+            </div>
+            <div class="modal-body" style="min-height: 100px;">
+                <form class="form-horizontal" role="form" id="updateAdsModelCheckItemList">
+                    <div class="form-item form-group">
+                        <label class="col-sm-3 control-label required">检测项目</label>
+                        <input type="hidden" id="u_id">
+                        <input class="gui-input" type="text" id="u_name" name="u_name" placeholder="请输入检测项目名称" data-bv-stringlength="true" data-bv-stringlength-max="60" data-bv-stringlength-message="不能超过60个字符长度">
+                    </div>
+                    <div class="form-item form-group">
+                        <label class="required">检测标准</label>
+                        <input type="hidden" id="u_standardId">
+                        <input class="gui-input" type="text" id="u_standardName" readonly="readonly" placeholder="请选择检测标准" ng-click="showSelectStandModal('U')">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer mgt-15">
+                <span class="gui-btn" data-dismiss="modal">关闭</span>
+                <button class="gui-btn" type="button" onclick="updateCheckItem()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>

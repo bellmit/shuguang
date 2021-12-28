@@ -1,0 +1,52 @@
+  spring:
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@192.168.21.68:1521:orcl
+    username: AGPJYZ_TEST
+    password: TcH4P2AadnOi6x3HGE50SCmQwpu5640jSWVjOAeSawZglUDNc+AYDXtV3qQHli6XqSnyWDqIkFtLKcn7Ab5I0g==
+    publicKey: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAItqdfGG8XYAkX59PE6R9PxFG5igPqs4xxj19VMd0jeeXPojJveMxoPLLKR1CONKRaNOxcu93P0PgY19FUCUEkcCAwEAAQ==
+
+#    driver-class-name: oracle.jdbc.driver.OracleDriver
+#    username: eep
+#    password: eep
+#    url: jdbc:oracle:thin:@192.168.0.219:1521:orcl
+
+    druid:
+      async-init: true
+      initial-size: 15
+      max-active: 30
+      min-idle: 10
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      validation-query: SELECT 1 FROM DUAL
+      connection-properties: config.decrypt=true;config.decrypt.key=${spring.datasource.publicKey}
+      filter:
+        config:
+          enabled: true
+
+  redis:
+    cluster:
+      nodes: 192.168.21.70:7001,192.168.21.70:7002,192.168.21.70:7003,192.168.21.70:7004,192.168.21.70:7005,192.168.21.70:7006
+    timeout: 6000ms
+    lettuce:
+      pool:
+        max-active: 100
+        max-wait: -1ms
+        max-idle: 10
+    database: 0
+    #password: gjzspt@sofn
+
+eureka:
+  instance:
+    hostname: ${spring.cloud.client.ip-address}
+    instance-id: ${eureka.instance.hostname}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://192.168.21.81:8880/eureka/
+

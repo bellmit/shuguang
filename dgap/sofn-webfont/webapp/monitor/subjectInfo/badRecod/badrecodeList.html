@@ -1,0 +1,103 @@
+    <link rel="stylesheet" href="assets/css/asms/badrecode/badrecodeList.css"/>
+    <div class="gui-breadcrumbs">
+        <a href="javascript:void(0)">监测系统</a>&gt;
+        <a ui-sref="index.content.ales/subjectInfo/badrecod/badrecodeList">监测信息</a>&gt;
+        <span>不良记录</span>
+    </div>
+        <div class="gui-section   ">
+        <div class="clearfix gov-h gui-form-group">
+            <div class="gui-mediaInline">
+                <span>区域</span>
+                <div class="gui-select">
+                    <select id="sheng" name="ObjShen" class=" ">
+                        <option value="">省</option>
+                    </select>
+                </div>
+                <div class="gui-select">
+                    <select id="shi" name="ObjShi"class=" ">
+                        <option value="">市</option>
+                    </select>
+                </div>
+                <div class="gui-select">
+                    <select id="xian" name="ObjXian" class=" ">
+                        <option value="">区/县</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mt15 gui-mediaInline ">
+                <span>主体类别</span>
+                <div class="gui-select">
+                    <select name="entityType" ng-model="entityType" placeholder="主体类别" class="mr15 mb25">
+                        <option value="">全部</option>
+                        <option ng-selected="{{x.id == $scope.badrecodeListQueryParams.entityType }}" ng-repeat="x in subjType" value="{{x.id}}">{{x.dictName}}</option>
+                    </select>
+                </div>
+                <span>所属行业</span>
+                <div class="gui-select">
+                    <select name="entityIndustry"  placeholder="所属行业" class=" ">
+                        <option value="">全部</option>
+                        <option ng-selected="{{x.id == $scope.badrecodeListQueryParams.entityIndustry }}"  ng-repeat="x in industryType" value="{{x.id}}">{{x.dictName}}</option>
+                    </select>
+                </div>
+                <span>关键字</span>
+                <input type="text" id="queryCon" name="queryCon" class="  gui-input" style="width: 122px;" placeholder="请输入查找内容" maxlength="30"/>
+                <button class="gui-btn" id="ToCheck">查询</button>
+                <button class="gui-btn " ng-click="cleanSelectModelQuery()">重置</button>
+
+            </div>
+        </div>
+            <table id="grid"
+                   class="gui-table mt15" style="width: 100%">
+            </table>
+        </div>
+
+    <!--不良记录查看  模态框-->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog removeBor">
+            <div class="modal-content">
+                <div class="modal-header ">
+                    <button ng-click="removeXXX()" type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel" style="text-align: center">不良记录信息</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="bs-example bs-example-form" role="form">
+                        <div class="row">
+                            <ul>
+                                <li class="Bor_line">基本信息</li>
+                            </ul>
+                            <div class="col-lg-10 col-xs-10 col-sm-10 col-md-10 ml25pr30">
+                                <!--主体名称-->
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label">主体名称：</label>
+                                    <a onclick="huoQuEnterprise()"><span ng-bind="enterprise.enterpriseName"></span></a>
+                                </div>
+                                <!--企业注册号-->
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label">企业注册号：</label>
+                                    <span ng-bind="enterprise.code"></span>
+                                </div>
+                                <br/>
+                                <br/>
+                                <!--所属区域-->
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label">所属区域：</label>
+                                    <span ng-bind="area"></span>
+                                </div>
+                                <div style="margin-left:-15px">
+                                    不良记录
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-xs-12 col-sm-12 col-md-12 tb NewsSize">
+                                <table id="badRecordGrid"
+                                       class="table table-bordered data-table" style="width: 100%">
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="modal-footer">
+                        <button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+                    </div>
+             </div>
+        </div>
+    </div>
+</div>

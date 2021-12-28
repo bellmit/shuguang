@@ -1,0 +1,49 @@
+<div class="gui-breadcrumbs">
+    <a href="">投诉举报</a>&gt;
+    <span>查看</span>
+</div>
+<div class="gui-section">
+	<div>
+	    <table id="grid" class="gui-table">
+	    	<thead>
+	    	    <tr>
+	    	        <th>被投诉主体</th>
+	    	        <th>投诉时间</th>
+	    	        <th>问题类型</th>
+	    	        <th>投诉地区</th>
+	    	    </tr>
+	    	</thead>
+	    	<tbody>
+	    	    <tr>
+	    	        <td id="complaintEntName"></td>
+	    	        <td id="accTime"></td>
+	    	        <td id="type"></td>
+	    	        <td id="areaId"></td>
+	    	    </tr>
+	    	</tbody>
+	    </table>
+	</div> 
+	<form id="attributeForm" method="post" class="form-horizontal" data-bv-message="This value is not valid" data-bv-feedbackicons-valid="glyphicon glyphicon-ok" data-bv-feedbackicons-invalid="glyphicon glyphicon-remove" data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+	<div class="ovh">
+		<ul class="gui-list clearfix">
+			<li>
+				<div class="form-item">
+					<label>问题描述</label>
+					<textarea class="gui-textarea form-control" ng-model="content" id="content" name="content" rows="8" readonly></textarea>
+				</div>
+			</li>
+			<li>
+				<div class="form-item">
+					<label>受理意见</label>
+					<textarea class="gui-textarea form-control" ng-model="acceptance" id="acceptance" name="acceptance" rows="8" readonly></textarea>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<div class="text-center">
+		<button class="gui-btn" ui-sref="index.content.tts/TtsScltxxcjComplain/TtsScltxxcjComplainlist">关闭</button>
+	</div>
+	</form>
+</div>
+
+

@@ -1,0 +1,20 @@
+
+.ApplyTable{
+    width: 100%;
+}
+.ApplyTable tbody tr td:nth-of-type(1){
+    width: 20%;
+}
+.ApplyTable tbody tr:nth-child(even){
+    background-color: #f6f6f6;
+}
+.Sup_contain_section_contain_head_photo img{
+    margin-left: 50px;
+}
+.accessory_img td{
+    padding: 5px 0px;
+}
+.accessory_img td img{
+    width: 50px;
+    height: 50px;
+}

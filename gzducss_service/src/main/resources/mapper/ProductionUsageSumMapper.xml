@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.ProductionUsageSumMapper" >
+
+    <resultMap id="BaseResultMap" type="com.sofn.ducss.model.ProductionUsageSum" >
+        <result column="id" property="id" />
+        <result column="year" property="year" />
+        <result column="area_id" property="areaId" />
+        <result column="produce" property="produce" />
+        <result column="collect" property="collect" />
+        <result column="straw_usage" property="strawUsage" />
+        <result column="comprehensive_rate" property="comprehensiveRate" />
+        <result column="all_total" property="allTotal" />
+        <result column="fertilizer" property="fertilizer" />
+        <result column="fuel" property="fuel" />
+        <result column="basic" property="basic" />
+        <result column="raw_material" property="rawMaterial" />
+        <result column="feed" property="feed" />
+        <result column="comprehensive_index" property="comprehensiveIndex" />
+        <result column="industrialization_index" property="industrializationIndex" />
+        <result column="main_total" property="mainTotal" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                year,
+                area_id,
+                produce,
+                collect,
+                straw_usage,
+                comprehensive_rate,
+                all_total,
+                fertilizer,
+                fuel,
+                basic,
+                raw_material,
+                feed,
+                comprehensive_index,
+                industrialization_index,
+                main_total
+
+    </sql>
+
+
+    <insert id="insertProductionUsageSum" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.sofn.ducss.model.ProductionUsageSum">
+        INSERT INTO production_usage_sum
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id,
+            <if test ='null != year'>
+                year,
+            </if>
+            <if test ='null != areaId'>
+                area_id,
+            </if>
+            <if test ='null != produce'>
+                produce,
+            </if>
+            <if test ='null != collect'>
+                collect,
+            </if>
+            <if test ='null != strawUsage'>
+                straw_usage,
+            </if>
+            <if test ='null != comprehensiveRate'>
+                comprehensive_rate,
+            </if>
+            <if test ='null != allTotal'>
+                all_total,
+            </if>
+            <if test ='null != fertilizer'>
+                fertilizer,
+            </if>
+            <if test ='null != fuel'>
+                fuel,
+            </if>
+            <if test ='null != basic'>
+                basic,
+            </if>
+            <if test ='null != rawMaterial'>
+                raw_material,
+            </if>
+            <if test ='null != comprehensiveIndex'>
+                comprehensive_index,
+            </if>
+            <if test ='null != industrializationIndex'>
+                industrialization_index,
+            </if>
+            <if test ='null != feed'>
+                feed,
+            </if>
+            <if test ='null != mainTotal'>
+                main_total
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{id},
+            <if test ='null != year'>
+                #{year},
+            </if>
+            <if test ='null != areaId'>
+                #{areaId},
+            </if>
+            <if test ='null != produce'>
+                #{produce},
+            </if>
+            <if test ='null != collect'>
+                #{collect},
+            </if>
+            <if test ='null != strawUsage'>
+                #{strawUsage},
+            </if>
+            <if test ='null != comprehensiveRate'>
+                #{comprehensiveRate},
+            </if>
+            <if test ='null != allTotal'>
+                #{allTotal},
+            </if>
+            <if test ='null != fertilizer'>
+                #{fertilizer},
+            </if>
+            <if test ='null != fuel'>
+                #{fuel},
+            </if>
+            <if test ='null != basic'>
+                #{basic},
+            </if>
+            <if test ='null != rawMaterial'>
+                #{rawMaterial},
+            </if>
+            <if test ='null != comprehensiveIndex'>
+                #{comprehensiveIndex},
+            </if>
+            <if test ='null != industrializationIndex'>
+                #{industrializationIndex},
+            </if>
+            <if test ='null != feed'>
+                #{feed},
+            </if>
+            <if test ='null != mainTotal'>
+                #{mainTotal}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteByYearandArea" parameterType="com.sofn.ducss.model.StrawUtilizeSum">
+        delete from production_usage_sum where year =#{year} and area_id= #{areaId};
+    </delete>
+
+    <select id="selectProductionUsageSum" resultType="com.sofn.ducss.model.ProductionUsageSum">
+        SELECT
+            a.year,
+            a.area_id,
+            a.produce,
+            a.collect,
+            a.straw_usage,
+            a.all_total,
+            a.fertilizer,
+            a.fuel,
+            a.basic,
+            a.raw_material,
+            a.feed,
+            a.main_total,
+                case COLLECT when 0 then 0
+                else
+                ROUND(
+                (straw_usage * 100 / COLLECT),
+                10
+                ) end AS comprehensive_rate,
+
+            case COLLECT when 0 then 0
+            else
+            ROUND(
+            (all_total / COLLECT),
+            10
+            ) end AS comprehensive_index,
+
+            case COLLECT when 0 then 0
+            else
+            ROUND(
+            (main_total / COLLECT),
+            10
+            ) end AS industrialization_index
+
+        FROM
+            production_usage_sum a,
+            collect_flow b
+        WHERE
+            a.area_id IN
+            <foreach collection="childrenIds" item="areaId" open="(" close=")" separator=",">
+                #{areaId}
+            </foreach>
+            AND a.YEAR = b.YEAR
+            AND a.area_id = b.area_id
+            AND a.YEAR = #{year}
+            AND b.STATUS in
+            <foreach collection="statusList" item="status" open="(" separator="," close=")">
+                #{status}
+            </foreach>
+
+    </select>
+
+
+</mapper>

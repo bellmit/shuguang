@@ -1,0 +1,43 @@
+<link rel="stylesheet" href="assets/css/tts/base/baseAdd.css">
+<div class="gui-breadcrumbs">
+    <a href="">内部管理</a>&gt;
+    <a href="">账号信息管理</a>&gt;
+    <span>新增</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group ovh">
+      <form id="attributeForm" class="form-horizontal" data-bv-excluded="" data-bv-message="不能为空">
+        <ul class="gui-list">
+            <li>
+                <div class="form-item form-group">
+                    <label>姓名</label>
+                    <input type="text" ng-model="ttsScltxxcjUser.name" name="name" placeholder="请输入姓名" class="gui-input form-control" data-bv-notempty="true" data-bv-notempty-message="内容不能是空" data-bv-stringlength="true" data-bv-stringlength-min="2" data-bv-stringlength-max="10" data-bv-stringlength-message="姓名必须超过1，不超过10个字符">
+                </div>
+            </li>
+            <li>
+                <div class="form-item form-group">
+                    <label>身份证号</label>
+                    <input type="text" onchange="javascript:changeIdCard()" ng-model="ttsScltxxcjUser.idCard" name="idCard" placeholder="请输入身份证号" class="form-control" data-bv-notempty="true" data-bv-notempty-message="身份证号不能是空" data-bv-idderactive="true" data-bv-idderactive-message="身份证号不正确">
+                </div>
+            </li>
+            <li>
+                <div class="form-item form-group">
+                    <label>联系电话</label>
+                    <input type="text" ng-model="ttsScltxxcjUser.phone" name="phone" placeholder="请输入联系电话" class="form-control" data-bv-notempty="true" data-bv-notempty-message="联系电话不能是空" data-bv-isphone="true" data-bv-isphone-message="请输入有效的手机号码">
+                </div>
+            </li>
+            <li>
+                <div class="form-item form-group">
+                    <label>邮箱地址</label>
+                    <input type="text" ng-model="ttsScltxxcjUser.email" name="email" placeholder="请输入邮箱" class="form-control" data-bv-notempty="true" data-bv-notempty-message="邮箱地址不能是空" data-bv-emailaddress="true" data-bv-emailaddress-message="请输入有效的邮箱地址">
+                </div>
+                <input type="hidden" ng-model="ttsScltxxcjUser.delFlag" name="delFlag" value="N">
+            </li>
+        </ul>
+        <div class="text-center">
+            <button class="gui-btn" ui-sref="index.content.tts/register/registerlist">取消</button>
+            <button class="gui-btn ml15" ng-disabled="myform.JGname.$dirty&&myform.JGname.$invalid" ng-click="addTtsScltxxcjUser()">提交</button>
+        </div>
+        </form>
+    </div><div class="gui-actions"></div>
+</div>

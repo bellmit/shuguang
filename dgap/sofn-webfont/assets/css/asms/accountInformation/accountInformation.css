@@ -1,0 +1,7 @@
+.baChange-table table tbody tr td{
+    width: 50%;
+    padding: 5px 0px;
+}
+.gui-select select {
+    width: 189px;
+}

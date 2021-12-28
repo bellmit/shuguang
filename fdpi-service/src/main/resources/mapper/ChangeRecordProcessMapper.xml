@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.ChangeRecordProcessMapper" >
+    <resultMap id="changeRecordProcess" type="com.sofn.fdpi.vo.ChangeRecordProcessVo">
+        <result column="spe_name" property="speName"></result>
+        <result column="CHANGE_DATE" property="changeDate"></result>
+        <result column="CHANGE_REASON" property="changeReason"></result>
+        <result column="CONTENT" property="content"></result>
+        <result column="ADVICE" property="advice"></result>
+        <result column="OP_USER_ID" property="opUserId"></result>
+        <result column="OP_TIME" property="opTime"></result>
+        <result column="APPLY_CODE" property="applyCode"></result>
+    </resultMap>
+
+    <insert id="saveChangeRecordProcess">
+        INSERT INTO
+        CHANGE_RECORD_PROCESS (
+        ID,
+        CHANGE_RECORD_ID,
+        OP_USER_ID,
+        CONTENT,
+        APPLY_CODE,
+        STATUS,
+        ADVICE,
+        OP_TIME
+        )VALUES
+        (#{ id },
+         #{ changeRecordId },
+         #{ opUserId },
+         #{ content },
+         #{ applyCode },
+         #{ status },
+         #{ advice },
+         #{ conTime }
+        )
+    </insert>
+    <update id="changeCompanySpecies">
+        UPDATE COMP_SPE_STOCK
+            SET SPE_NUM = SPE_NUM +#{ changeNum },
+            LAST_CHANGE_TIME =#{ changeDate },
+            LAST_CHANGE_USER_ID =#{ createUserId }
+        WHERE
+            COMP_ID =#{ companyId }
+        AND SPECIES_ID =#{ speciesId }
+    </update>
+
+
+    <insert id="insertCompanySpecies">
+        INSERT INTO  COMP_SPE_STOCK A(
+        COMP_ID,
+        SPECIES_ID,
+        SPE_NUM,
+        ID,
+        LAST_CHANGE_TIME,
+        LAST_CHANGE_USER_ID
+        )VALUES(
+        #{companyId},
+        #{speciesId},
+        #{changeNum},
+        #{uuid},
+        #{changeDate},
+        #{lastChangeUserId}
+        )
+    </insert>
+
+    <insert id="saveCompanySpeciesProcess">
+        insert into COMP_SPE_STOCKFLOW(
+            ID,
+            COMP_ID,
+            SPECIES_ID,
+            SPE_NUM,
+            BILL_TYPE,
+            IMPORT_MARK,
+            BEFORE_NUM,
+            CH_NUM,
+            AFTER_NUM,
+            CH_TIME,
+            <if test="otherComName!=null">
+            OTHER_COM_NAME,
+            </if>
+            LAST_CHANGE_USER_ID
+        )VALUES(
+            #{id},
+            #{companyId},
+            #{speciesId},
+            #{speNum},
+            #{billType},
+            #{importMark},
+            #{beforeNum},
+            #{changeNum},
+            #{afterNum},
+            #{changeDate},
+            <if test="otherComName!=null">
+            #{otherComName},
+            </if>
+            #{lastChangeUserId}
+        )
+
+    </insert>
+
+    <select id="listProcess" resultMap="changeRecordProcess">
+        SELECT
+        c.spe_name,
+        b.CHANGE_DATE,
+        b.CHANGE_REASON,
+        a.CONTENT,
+        a.APPLY_CODE,
+        a.ADVICE,
+        a.OP_USER_ID,
+        a.OP_TIME
+        FROM
+        CHANGE_RECORD_PROCESS a,
+        CHANGE_REC b ,
+        TB_SPECIES C
+        WHERE
+        a.CHANGE_RECORD_ID = b.id
+        AND b.species_id=c.id
+        AND b.CHANGE_COMPANY=#{curCompanyId}
+        <if test="changeDateStart!=null and changeDateStart!=''">
+            AND b.CHANGE_DATE &gt;= to_timestamp( #{changeDateStart}, 'yyyy-MM-dd HH24:MI:SS' )
+        </if>
+        <if test="changeDateEnd!=null and changeDateEnd!=''">
+            AND b.CHANGE_DATE &lt;= to_timestamp(#{changeDateEnd}, 'yyyy-MM-dd HH24:MI:SS' )
+        </if>
+        <if test="changeStatus!=null and changeStatus!=''">
+            AND b.CHANGE_STATUS =#{changeStatus}
+        </if>
+        order by A.OP_TIME  DESC
+    </select>
+
+    <select id="getProcess" resultMap="changeRecordProcess">
+        SELECT
+        a.CONTENT,
+        a.ADVICE,
+        a.OP_USER_ID,
+        a.OP_TIME
+        FROM
+        CHANGE_RECORD_PROCESS a
+        WHERE
+       1=1
+        <if test="changeRecordId!=null and changeRecordId!=''">
+            AND a.CHANGE_RECORD_ID = #{changeRecordId}
+        </if>
+        ORDER BY a.OP_TIME DESC
+    </select>
+</mapper>

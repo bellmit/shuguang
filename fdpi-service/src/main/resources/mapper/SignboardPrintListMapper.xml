@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.SignboardPrintListMapper">
+
+
+    <sql id="alias_Column_List_spl">
+      spl.ID, spl.SIGNBOARD_ID
+    </sql>
+    <sql id="alias_Column_List_s">
+      s.CODE
+    </sql>
+    <sql id="alias_Column_List_ts">
+      ts.SPE_NAME
+    </sql>
+    <select id="listByParams" resultType="com.sofn.fdpi.model.SignboardPrintList">
+        select
+        <include refid="alias_Column_List_spl"/>,<include refid="alias_Column_List_s"/>,
+        <include refid="alias_Column_List_ts"/>
+        from SIGNBOARD_PRINT_LIST spl
+        left join SIGNBOARD s on s.ID = spl.SIGNBOARD_ID
+        left join TB_SPECIES ts on ts.ID = s.SPE_ID
+        where spl.PRINT_ID =#{printId}
+        order by s.CODE
+    </select>
+
+</mapper>

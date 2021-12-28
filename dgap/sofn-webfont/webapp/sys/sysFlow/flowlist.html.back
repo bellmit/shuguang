@@ -1,0 +1,36 @@
+<link rel="stylesheet" href="assets/css/tts/base/baseInfoList.css"/>
+    <div class="Sup_contain_section col-lg-12 col-xs-12 col-sm-12 col-md-12">
+        <div class="Sup_contain_section_head col-lg-12 col-xs-12 col-sm-12 col-md-12">
+            <h2 id="Sup_contain_section_head_h2">
+            <a href=""><span >追溯系统  > </span></a>  
+            <a href=""><span >内部管理  > </span></a>
+            <span >流程管理  </span>
+            </h2>
+        </div>
+        <!-- 检测机构主体信息-->
+        <div class="Sup_contain_section_contain col-lg-12 col-xs-12 col-sm-12 col-md-12 ml25pr30">
+            <div class="Sup_contain_section_selectNews col-lg-12 col-xs-12 col-sm-12 col-md-12">
+            	<!--自定义条件分页查询，结合controller 自己写，不生成
+                <input name="in_name" type="text" placeholder="姓名"/>
+                <input name="in_tel" type="text" placeholder="电话号码"/>
+                -->
+                流程名称：<input name="flowName" type="text" placeholder="流程名称"/>
+                	状态： <select name="status">
+                            <option value="">全部</option>
+							<option value="0">可用</option>
+							<option value="1">禁用</option>
+							<option value="2">注销</option>
+                			</select>
+                <button id="ToCheck">查询</button>
+                
+                <button ui-sref="index.content.sys/sysFlow/addSysFlow">新增</button>
+            </div>
+            <!-- 模板管理主体信息-->
+            <div class="Sup_contain_section_contain_01">
+            <div  class=" tb NewsSize col-lg-12 col-xs-12 col-sm-12 col-md-12" >
+                <table id="grid" class="table table-bordered data-table tablewrap" style="width: 100%">
+                </table>
+            </div>
+            </div>
+        </div>
+    </div>

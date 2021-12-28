@@ -1,0 +1,18 @@
+spring:
+  redis:
+      database: 0
+      host: 10.0.50.101
+      port: 6379
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.21.129:3306/report?characterEncoding=UTF-8&useUnicode=true&useSSL=false&autoReconnect=true&failOverReadOnly=false
+    username: root
+    password: 123456
+
+eureka:
+  instance:
+    hostname: ${spring.cloud.client.ip-address}
+    instance-id: ${eureka.instance.hostname}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://10.0.50.101:8880/eureka/

@@ -1,0 +1,13 @@
+{
+  "chineseName": "字段xxx",
+  "englishName": "xxx",
+  "type": "varchar",
+  "id": "98fca04f50cd45baafcd40afb79d50858e0d996e592e42b5bb4c2981b03a5c5e",
+  "len": 3
+}
+{
+  "data": "修改成功",
+  "httpCode": 200,
+  "msg": "OK",
+  "timestamp": 1481780597836
+}

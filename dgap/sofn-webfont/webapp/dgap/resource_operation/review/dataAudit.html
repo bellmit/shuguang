@@ -1,0 +1,81 @@
+<link rel="stylesheet" href="assets/css/dgap/resource/resourceDataAudit.css">
+<style>
+    /*#reDir_wrapper{*/
+        /*overflow: scroll;*/
+    /*}*/
+    .gui-table td, .gui-table th{
+        word-break: normal;
+        white-space: nowrap;
+        overflow: visible;
+    }
+</style>
+<div class="gui-breadcrumbs">
+    <a href="">数据共享系统</a>&gt;
+    <a href="">资源管理</a>&gt;
+    <span>资源目录</span>
+</div>
+<div class="gui-section">
+    <form>
+        <div class="gui-form-group">
+            <label>审核状态</label>
+            <span class="gui-select">
+                <select name="resourceTypeSelct">
+                    <option value="">--全部--</option>
+                    <option value="U">未审核</option>
+                    <option value="A">自动导入</option>
+                    <option value="Y">人工审核通过</option>
+                    <option value="N">人工审核不通过</option>
+                </select>
+            </span>
+            <button class="gui-btn ml15 submit-btn" ng-click="resourceDirs()">查询</button>
+            <button class="gui-btn ml15 submit-btn" ng-click="cleanData()">重置</button>
+        </div>
+    </form>
+    <div class="gui-actions">
+        <span class="gui-btn fr" ng-click="updateData()"><i class="gui-icon"></i>批量审核</span>
+    </div>
+        <table id="reDir" class="gui-table" >
+        </table>
+</div>
+
+<div class="modal fade" id="auditModal" tabindex="-1" role="dialog" aria-labelledby="resDirAddLabel" aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="resDirAddLabel">
+                 批量审核
+                </h4>
+            </div>
+            <div class="modal-body ">
+                    <span type="button" class="gui-btn" data-dismiss="modal" ng-click="passAudit()">审核通过</span>
+                    <span type="button" class="gui-btn addRes" data-dismiss="modal" ng-click="noPassAudit()">审核不通过
+                    </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--//查看详情-->
+<div class="modal fade" id="checkDiv"  role="dialog" aria-labelledby="resDirAddLabel" aria-hidden="false">
+    <div class="modal-dialog" style="width: 50%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" >
+                    查看详情
+                </h4>
+            </div>
+        <table id="checkTable" class="gui-table">
+        </table>
+            <div class="modal-footer">
+                <span type="button" class="gui-btn" data-dismiss="modal">关闭</span>
+            </div>
+        </div>
+    </div>
+</div>
+

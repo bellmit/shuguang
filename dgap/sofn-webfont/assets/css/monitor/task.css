@@ -1,0 +1,126 @@
+.jc-item{
+    border: 1px solid silver;height: 150px;width: 50%;margin: auto;margin-top: 20px;line-height: 35px;cursor: pointer;
+}
+
+.pd-5{
+    padding: 5px;
+}
+.cc-item{
+    border: 1px solid silver;height: 200px;width: 80%;margin: auto;margin-top: 20px;line-height: 35px;cursor: pointer;
+}
+.pdr-p25{
+    padding-right: 25%;
+}
+
+.textr-silver{
+    color: silver;
+}
+.table-cc
+{
+    width:100%;
+}
+.cc-new
+{
+    text-align:right;
+}
+.th-cc
+{
+    text-align:left;
+}
+.td-cc
+{
+    text-align:center;
+}
+.pd-20{
+    padding: 20px;
+}.jc-item{
+    border: 1px solid silver;height: 150px;width: 50%;margin: auto;margin-top: 20px;line-height: 35px;cursor: pointer;
+}
+
+.pd-5{
+    padding: 5px;
+}
+.cc-item{
+    border: 1px solid silver;height: 200px;width: 80%;margin: auto;margin-top: 20px;line-height: 35px;cursor: pointer;
+}
+.pdr-p25{
+    padding-right: 25%;
+}
+
+.textr-silver{
+    color: silver;
+}
+.table-cc
+{
+    width:100%;
+}
+.cc-new
+{
+    text-align:right;
+}
+.th-cc
+{
+    text-align:left;
+}
+.td-cc
+{
+    text-align:center;
+}
+.pd-20{
+    padding: 20px;
+}
+.table-tb
+{
+    height: 30px;
+}
+.table-taskmanage
+  {
+      border: 1px solid silver ;
+      height: 150px;
+      width: 31.33%;
+      margin-bottom: 30px;
+      background-color: white;
+      float: left;
+      margin-right:3% ;
+      padding:15px ;
+  }
+.table-taskmanage:nth-child(3n){
+    margin-right: 0;
+}
+.task-new{
+    display: inline-block;
+    background-color: red;
+    width: 30px;
+    height: 22px;
+    text-align: center;
+    line-height: 22px ;
+    color: white;
+    border-radius: 5px;
+    font-size: 14px;
+}
+#more{
+    position: relative;
+}
+#more:before,#more:after{
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -13px;
+    border: 6px solid #aaa;
+    margin-top: -3px;
+    border-color: #aaa transparent transparent;
+    width: 0;
+    height: 0;
+    font-size: 0;
+}
+#more:after{
+    margin-top: -4px;
+    border-color: #eee transparent transparent;
+}
+
+.table-pecipe
+{
+    border: 1px solid silver ;
+
+}
+

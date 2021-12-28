@@ -1,0 +1,75 @@
+server:
+  port: 8922
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: ahhrm-service
+  profiles:
+    active: test
+    include: filter
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+
+management:
+  server:
+    servlet:
+      context-path: /ahhrm
+    ssl:
+      enabled: false
+
+ribbon:
+  ReadTimeout: 5000
+  ConnectTimeout: 3000
+
+druid:
+  pool:
+    initialSize: 10
+    maxActive: 100
+    minIdle: 10
+
+
+#mybatis-plus
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*Mapper.xml
+  typeAliasesPackage: com.sofn.ahhrm.model
+  global-config:
+    id-type: 3
+    field-strategy: 2
+    auto-set-db-type: true
+    db-column-underline: false
+    refresh-mapper: true
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+
+eureka:
+  instance:
+    # 心跳时间，即服务续约间隔时间（缺省为30s）
+    lease-renewal-interval-in-seconds: 10
+    # 发呆时间，即服务续约到期时间（缺省为90s）
+    lease-expiration-duration-in-seconds: 20
+    # 使用ip注册
+    prefer-ip-address: true
+  client:
+    healthcheck:
+      # 开启健康检查（依赖spring-boot-starter-actuator）
+      enabled: true
+    fetch-registry: true
+    register-with-eureka: true
+
+logging:
+  config: classpath:logback-spring.xml
+
+# swagger配置
+swagger:
+  # 扫描包
+  base-package: com.sofn.ahhrm.web
+  # 名称
+  name: 地方畜禽遗传资源监测预警子系统
+  # 接口前缀
+  prefix: /ahhrm
+
+

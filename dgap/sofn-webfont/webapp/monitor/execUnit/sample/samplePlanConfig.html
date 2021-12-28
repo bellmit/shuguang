@@ -1,0 +1,562 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css">
+
+<div class="gui-breadcrumbs">
+    <a href="">监测系统</a>&gt;
+    <a href="">承担单位</a>&gt;
+    <a href="">抽样计划</a>&gt;
+    <span>抽样计划配置</span>
+</div>
+
+
+<div class="gui-section">
+    <div class="gui-form-group clearfix">
+        <span class="color-gray">抽样人员</span>
+        <input type="text" id="samplePlanMember" class="gui-input" placeholder="请输入抽样人员"  ng-keyup="enterEvent($event)"/>
+      <!--  <label>状&nbsp;&nbsp;&nbsp;&nbsp;态</label>
+        <span class="gui-select">
+            <select id="status" class="combobox" data-style="btn-info" style="width: 120px">
+                <option value="ALL">全部</option>
+                <option value="0">未发布</option>
+                <option value="1">已发布</option>
+                <option value="2">执行中</option>
+                <option value="3">已结束,已完成</option>
+                <option value="4">已结束,未完成</option>
+                <option value="5">已废止</option>
+            </select>
+        </span>-->
+        <label class="">计划抽样地区:&nbsp&nbsp</label>
+       <!-- <div class="col-sm-3">-->
+            <div class="gui-select">
+                <select id="sheng1" name="ObjShen1" style="width: 122px;height: 27px;">
+                    <option value="">省</option>
+                </select>
+            </div>
+            <div class="gui-select">
+                <select id="shi1" name="ObjShi1" style="width: 122px;height: 27px;">
+                    <option value="">市</option>
+                </select>
+            </div>
+            <div class="gui-select">
+                <select id="xian1" name="ObjXian1" style="width: 122px;height: 27px;">
+                    <option value="">区/县</option>
+                </select>
+            </div>
+      <!--  </div>-->
+    </div>
+
+    <div class="gui-form-group clearfix">
+        <div class="cq2" style="clear:both;display:inline;"><span class="gui-btn" style="margin:10px;" id="clear" ng-click="clear()">重置</span></div>
+        <span class="gui-btn" id="ToCheck" ng-click="toCheck()">查询</span>
+    </div>
+
+    <div class="gui-actions">
+        <span class="gui-btn fr" style="background-color: grey; border-color: grey" ng-if="disabled"><i class="gui-icon icon-remove"></i>删除</span>
+        <span class="gui-btn fr" ng-if="!disabled" onclick="delSamplePlanInfo()"><i class="gui-icon icon-remove"></i>删除</span>
+        <span class="gui-btn fr mr15" style="background-color: grey; border-color: grey" ng-if="disabled" ><i class="gui-icon icon-add"></i>新增</span>
+        <span class="gui-btn fr mr15" ng-if="!disabled" ng-click="addObjectPackage()" id="addButon"><i class="gui-icon icon-add"></i>新增</span>
+    </div>
+    <div class="clearfix gov-h">
+        <table id="grid" class="gui-table mt15">
+        </table>
+    </div>
+</div>
+
+
+<!--新增抽样计划对话框-->
+<div class="modal fade" id="addObjectPackageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content" style="min-width: 800px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" style="text-align: left">新增配置</h4>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" id="addCheckObjectPackage" data-bv-excluded>
+                    <div class="form-group line-20">
+                        <p></p>
+                        <label class="col-sm-4 control-task text-right">计划抽样时间<span class="this-after1">*</span>：&nbsp&nbsp</label>
+                       <!-- <div class="col-sm-3">-->
+                            <div class="input-group">
+                                <input id="datebegin" style="cursor: pointer;" name="datebegin" class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('deadline');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'deadline\')}',minDate:'#F{$dp.$D(\'startTime\')}'})" readonly="readonly"/>至
+                                <input id="dateend" class="Wdate gui-input" name="dateend" style="cursor: pointer;" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'datebegin\')}',maxDate:'#F{$dp.$D(\'deadline\')}'})" readonly="readonly"/>
+                                <input type="hidden" ng-model="startTime" id="startTime">
+                                <input type="hidden" ng-model="deadline" id="deadline">
+                            </div>
+                       <!-- </div>-->
+                    </div>
+
+                    <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">抽样人员<span class="this-after1">*</span>:&nbsp&nbsp</label>
+                       <!-- <div class="col-sm-3">-->
+                            <div class="input-group">
+                                <span>
+                                    <input type="text" id="sampleMember"  class="form-control  text-height-28" ng-click="openChooseUserModal()" ng-model="samplePerson" style="width: 150px;"
+                                           data-bv-notempty="true" data-bv-notempty-message="内容不能是空"  ng-keyup="enterEvent($event)" readonly placeholder="点击选择抽样人员"/>
+                                    <span type="button" class="gui-btn btn-sm" ng-click="selectSampleNum()" style="margin-left: 20px;margin-bottom: 20px;">自动分配</span>
+                                </span>
+                                <input type="hidden" id="userIds">
+                            </div>
+                      <!--  </div>-->
+                    </div>
+
+                    <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">计划抽样地区<span class="this-after1">*</span>:&nbsp&nbsp</label>
+                       <!-- <div class="col-sm-3">-->
+                            <div class="gui-select">
+                                <select id="sheng" name="ObjShen" style="width: 122px;height: 27px;">
+                                    <option value="">省</option>
+                                </select>
+                            </div>
+                            <div class="gui-select">
+                                <select id="shi" name="ObjShi" style="width: 122px;height: 27px;">
+                                    <option value="">市</option>
+                                </select>
+                            </div>
+                            <div class="gui-select">
+                                <select id="xian" name="ObjXian" style="width: 122px;height: 27px;">
+                                    <option value="">区/县</option>
+                                </select>
+                            </div>
+                       <!-- </div>-->
+                    </div>
+
+                    <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">抽样对象及数量<span class="this-after1">*</span>:&nbsp&nbsp</label>
+                      <!--  <div class="col-sm-3">-->
+                            <div class="input-group" style="padding-right: 120px;">
+                                <!--<input type="text" id="sampleObject"  class="form-control  text-height-28"  ng-click="openChooseObjectModal()"
+                                       data-bv-notempty="true" data-bv-notempty-message="内容不能是空"  ng-keyup="enterEvent($event)"/>-->
+                                <textarea id="sampleObject" ng-click = "openChooseObjectModalWindow()" rows="5" cols="450" class="form-control  text-height-28"
+                                          data-bv-notempty="true" data-bv-notempty-message="内容不能是空"/>
+                            </div>
+                       <!-- </div>-->
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" type="button" data-dismiss="modal">取消</span>
+                <span class="gui-btn" type="button" ng-click="saveSamplePlan()">保存</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--修改抽样计划对话框-->
+<div class="modal fade" id="modfyObjectPackageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content" style="min-width: 800px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" style="text-align: left">修改配置</h4>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" id="modfyCheckObjectPackage" data-bv-excluded>
+                    <div class="form-group line-20">
+                        <p></p>
+                        <label class="col-sm-4 control-task text-right">计划抽样时间<span class="this-after1">*</span>：&nbsp&nbsp</label>
+                        <!-- <div class="col-sm-3">-->
+                        <div class="input-group">
+                            <input id="modfydatebegin" style="cursor: pointer;" name="datebegin" class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('deadline');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'deadline\')}',minDate:'#F{$dp.$D(\'startTime\')}'})" readonly="readonly"/>至
+                            <input id="modfydateend" class="Wdate gui-input" name="dateend" style="cursor: pointer;" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'modfydatebegin\')}',maxDate:'#F{$dp.$D(\'deadline\')}'})" readonly="readonly"/>
+                        </div>
+                        <!-- </div>-->
+                    </div>
+
+                    <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">抽样人员<span class="this-after1">*</span>:&nbsp&nbsp</label>
+                        <!-- <div class="col-sm-3">-->
+                        <div class="input-group">
+                                <span>
+                                    <input type="text" id="modfysampleMember"  class="form-control  text-height-28" ng-click="openChooseUserModalModify()" ng-model="modfysampleMember" style="width: 150px;"
+                                           data-bv-notempty="true" data-bv-notempty-message="内容不能是空"  ng-keyup="enterEvent($event)" readonly placeholder="点击选择抽样人员"/>
+                                    <span type="button" class="gui-btn btn-sm" ng-click="selectSampleNum()" style="margin-left: 20px;margin-bottom: 20px;">自动分配</span>
+                                </span>
+                            <input type="hidden" id="modfyuserIds">
+                            <input type="hidden" id="modfyconfigid">
+
+                            <input type="hidden" id="productid">
+                            <input type="hidden" id="objectName">
+                            <input type="hidden" id="objectNum">
+                        </div>
+                        <!--  </div>-->
+                    </div>
+
+                    <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">计划抽样地区<span class="this-after1">*</span>:&nbsp&nbsp</label>
+                        <!-- <div class="col-sm-3">-->
+                        <div class="gui-select">
+                            <select id="modfysheng" name="modfysheng" style="width: 122px;height: 27px;">
+                                <option value="">省</option>
+                            </select>
+                        </div>
+                        <div class="gui-select">
+                            <select id="modfyshi" name="modfyshi" style="width: 122px;height: 27px;">
+                                <option value="">市</option>
+                            </select>
+                        </div>
+                        <div class="gui-select">
+                            <select id="modfyxian" name="modfyxian" style="width: 122px;height: 27px;">
+                                <option value="">区/县</option>
+                            </select>
+                        </div>
+                        <!-- </div>-->
+                    </div>
+
+                    <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">抽样对象及数量<span class="this-after1">*</span>:&nbsp&nbsp</label>
+                        <!--  <div class="col-sm-3">-->
+                        <div class="input-group" style="padding-right: 120px;">
+                            <!--<input type="text" id="sampleObject"  class="form-control  text-height-28"  ng-click="openChooseObjectModal()"
+                                   data-bv-notempty="true" data-bv-notempty-message="内容不能是空"  ng-keyup="enterEvent($event)"/>-->
+                            <textarea id="modfysampleObject" ng-click = "openChooseObjectModalWindow()" rows="5" cols="450" class="form-control  text-height-28"
+                                      data-bv-notempty="true" data-bv-notempty-message="内容不能是空"/>
+                        </div>
+                        <!-- </div>-->
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" type="button" data-dismiss="modal">取消</span>
+                <span class="gui-btn" type="button" ng-click="updateSamplePlanConfig()">保存</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 模态框（Modal）抽样人员选择 -->
+<div class="modal fade " id="sample_person_modal" tabindex="-1" role="dialog" aria-labelledby="testItemsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="testItemsModalLabel">抽样人员选择</h4>
+            </div>
+            <div class="modal-body">
+                <div class="gui-actions">
+                    <button class="gui-btn fr ml15" ng-click="chooseSamplePerson();"><i class="gui-icon icon-edit"></i>选择</button>
+                </div>
+                <div>
+                    <table id="usersGrid" class="gui-table"></table>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+
+<!-- 模态框（Modal）抽样人员选择修改时 -->
+<!--<div class="modal fade " id="samplemodfy_person_modal" tabindex="-1" role="dialog" aria-labelledby="testItemsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="testItemsModalLabelmodfy">抽样人员选择</h4>
+            </div>
+            <div class="modal-body">
+                <div class="gui-actions">
+                    <button class="gui-btn fr ml15" ng-click="chooseSamplePersonmodfy();"><i class="gui-icon icon-edit"></i>选择</button>
+                </div>
+                <div>
+                    <table id="usersGridmodfy" class="gui-table"></table>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+        &lt;!&ndash; /.modal-content &ndash;&gt;
+    </div>
+    &lt;!&ndash; /.modal &ndash;&gt;
+</div>-->
+
+<!-- 模态框（Modal）抽样对象和数量选择框 -->
+<div class="modal fade " id="sample_object_modal" tabindex="-1" role="dialog" aria-labelledby="testItemsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="testItemsModalLabelList">抽样对象和数量选择</h4>
+            </div>
+            <div class="modal-body">
+                <div class="gui-actions">
+                    <button class="gui-btn fr ml15" ng-click="chooseSampleObject();"><i class="gui-icon icon-edit"></i>选择</button>
+                </div>
+                <div>
+                    <table id="sampleObjectGrid" class="gui-table"></table>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+
+
+<!--自动分配弹窗-->
+<div class="modal fade" id="selectSampleNumModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content" style="min-width: 800px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" style="text-align: left">新增配置</h4>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" id="selectSampleNumPackage" data-bv-excluded>
+                    <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">设置自动分配人数:&nbsp&nbsp</label>
+                        <!--  <div class="col-sm-3">-->
+                        <div class="input-group">
+                            <input type="text" id="samplePlanNumber"  class="form-control  text-height-28" onkeyup="this.value=this.value.replace(/[^0-9.]/g,'')"
+                                   data-bv-notempty="true" data-bv-notempty-message="内容不能是空"  ng-keyup="enterEvent($event)"/>
+                        </div>
+                        <!-- </div>-->
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" type="button" data-dismiss="modal">取消</span>
+                <span class="gui-btn" type="button" ng-click="getSamplePlanUser()">确定</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--查看检测对象包对话框-->
+<div class="modal fade" id="showModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content" style="min-width: 700px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: left">查看详情</h4>
+            </div>
+            <div class="modal-body">
+                <form id="showObjectPackage" class="form-horizontal" data-bv-excluded>
+                    <div class="form-group line-20">
+                        <p></p>
+                        <label class="col-sm-4 control-task text-right">计划抽样时间:&nbsp&nbsp</label>
+                        <div class="col-sm-3">
+                            {{dateStart}}
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">抽样人员:&nbsp&nbsp</label>
+                        <div class="col-sm-3">
+                            {{userNmames}}
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">计划抽样地区:&nbsp&nbsp</label>
+                        <div class="col-sm-5">
+                            {{areaId}}
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">抽样对象及数量:&nbsp&nbsp</label>
+                        <div class="col-sm-5">
+                            {{sampleObjectName}}
+                        </div>
+                    </div>
+                   <!-- <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">总计:&nbsp&nbsp</label>
+                        <div class="col-sm-3">
+                            {{count}} 项
+                        </div>
+                    </div>-->
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" type="button" data-dismiss="modal">关闭</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="checkModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-stylesm" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: center">抽样对象和数量</h4>
+              <!--  <h6 style="text-align: left">产品名称：{{productName}}</h6>-->
+            </div>
+            <div class="modal-body" style="max-height: 300px;overflow-y: scroll;">
+                <table id="checkTable" style="width: 560px;table-layout: fixed;">
+                    <tr>
+                        <td style="width: 50px;"><input type="checkbox"></td>
+                        <td style="width: 80px;">抽样对象</td>
+                        <td style="width: 80px;">数量</td>
+                    </tr>
+                    <tr ng-repeat="m in crits" id={{m.id}}>
+                        <td style="width: 50px;word-wrap:break-word;"><input type="checkbox"></td>
+                        <td >
+                            <input ng-click="changeTableValue($event)" value={{m.sampleObjectName}} spperLimit = "spperLimit"/>
+                        </td>
+                        <td>
+                            <input type="text" unit="unit" value="" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <span class="gui-btn"  data-dismiss="modal">关闭</span>
+                <span class="gui-btn" ng-click="saveTableValue()">保存</span>
+            </div>
+        </div>
+    </div>
+</div>
+<!--修改检测对象包对话框-->
+<!--<div class="modal fade" id="modifyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content" style="min-width: 700px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+
+                <h4 class="modal-title" style="text-align: left">修改检测对象包</h4>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" id="modifyObjectPackage" data-bv-excluded>
+                    <input type="hidden" id="packageId" name="packageId" value="{{packageId}}" />
+                    <div class="form-group line-20">
+                        <p></p>
+                        <label class="col-sm-4 control-task text-right">检测对象包名称:&nbsp&nbsp</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input type="text" id="objectPackageName3" ng-model="objectPackageNameu" class="form-control  text-height-28"
+                                       data-bv-notempty="true"
+                                       data-bv-notempty-message="内容不能是空"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">适用行业:&nbsp&nbsp</label>
+                        <div class="col-sm-3">
+                            <select id="industry3" ng-model = "industryu" class="form-control">
+                                <option >{{industryu}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">检测对象:&nbsp&nbsp</label>
+                        <div class="col-sm-5">
+                            <div class="input-group">
+                                <textarea id="checkObjects" ng-model="checkObjectsu" ng-click="selectCheckObjects()" rows="5" cols="500" class="form-control  text-height-28" data-bv-notempty="true"
+                                          data-bv-notempty-message="内容不能是空" />
+                            </div>
+                            <input type="hidden" id="productId3" >
+                            总计：&nbsp;&nbsp;{{countu}} 项
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" type="button" data-dismiss="modal">取消</span>
+                <span class="gui-btn" type="button" ng-click="updateObjectPackage()">保存</span>
+            </div>
+        </div>
+    </div>
+</div>-->
+
+<!--查看检测对象包对话框-->
+<!--<div class="modal fade" id="showModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content" style="min-width: 700px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: left">查看详情</h4>
+            </div>
+            <div class="modal-body">
+                <form id="showObjectPackage" class="form-horizontal" data-bv-excluded>
+                    <div class="form-group line-20">
+                        <p></p>
+                        <label class="col-sm-4 control-task text-right">检测对象包名称:&nbsp&nbsp</label>
+                        <div class="col-sm-3">
+                            {{objectPackageName}}
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">适用行业:&nbsp&nbsp</label>
+                        <div class="col-sm-3">
+                            {{industry}}
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">检测对象:&nbsp&nbsp</label>
+                        <div class="col-sm-5">
+                            {{checkObjects}}
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">总计:&nbsp&nbsp</label>
+                        <div class="col-sm-3">
+                            {{count}} 项
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" type="button" data-dismiss="modal">关闭</span>
+            </div>
+        </div>
+    </div>
+</div>-->
+
+<!--检测对象选择列表对话框-->
+<!--<div class="modal fade" id="selectCheckObjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content" style="min-width: 700px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: left">选择检测对象</h4>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" id="selectCheckObjects" data-bv-excluded>
+                    <div class="form-group" style="margin-left: 10px;">
+                        <input type="text" id="checkObjectName" class="gui-input" placeholder="请输入产品名称精确查询" style="width:175px;"/>
+                        <span class="gui-btn" id="searchCheckObject">查询</span>
+                    </div>
+
+                    <div class="modal-body" style="height: 400px;">
+                        <div id="process" style="padding-top: 100px;text-align: center"><h3>数据加载中，请稍等...</h3></div>
+                        <div class="gui-tree" id="tree">
+                            <div class="easyui-panel  easyui-Owndirevtive" style="width: 600px;border: 0px;overflow-y: scroll;height: 382px;padding-bottom: 20px;">
+                                <ul id="easyUi"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" type="button" data-dismiss="modal">取消</span>
+                &lt;!&ndash;<span class="gui-btn" type="button" ng-click="add()">添加</span>&ndash;&gt;
+                <span class="gui-btn" type="button" ng-click="addCheckObjectsMapping()">确定</span>
+            </div>
+        </div>
+    </div>
+
+</div>-->
+
+
+

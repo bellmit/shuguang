@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.ManageResMapper" >
+    <resultMap id="BaseResultMap" type="com.sofn.fdpi.model.ManageRes">
+        <id property="id" column="ID"/>
+        <result property="asylumDate" column="ASYLUM_DATE"/>
+        <result property="rescueSite" column="RESCUE_SITE"/>
+        <result property="disposalUnit" column="DISPOSAL_UNIT"/>
+        <result property="disposalTime" column="DISPOSAL_TIME"/>
+        <result property="rescueSpe" column="RESCUE_SPE"/>
+        <result property="status" column="STATUS"/>
+        <result property="operation" column="OPERATION"/>
+        <result property="resTime" column="RES_TIME"/>
+        <result property="resProcess" column="RES_PROCESS"/>
+        <result property="resFruit" column="RES_FRUIT"/>
+        <result property="disView" column="DIS_VIEW"/>
+        <result property="disPlan" column="DIS_PLAN"/>
+        <result property="createUserId" column="CREATE_USER_ID"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="updateUserId" column="UPDATE_USER_ID"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="delFlag" column="DEL_FLAG"/>
+        <result property="province" column="province"/>
+        <result property="city" column="city"/>
+        <result property="area" column="area"/>
+
+    </resultMap>
+    <sql id="Base_Column_List">
+ID,RES_TIME,RESCUE_SPE,RESCUE_SITE,DISPOSAL_UNIT,DISPOSAL_TIME,STATUS
+    </sql>
+    <select id="getManageResList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+     from MANAGE_RES
+     <where>
+         DEL_FLAG = 'N'
+         <if test="rescueSpe != null and rescueSpe != ''">
+             and RESCUE_SPE like '%'||#{rescueSpe}||'%'
+         </if>
+         <if test="rescueSite != null and rescueSite != ''">
+             and RESCUE_SITE like '%'||#{rescueSite}||'%'
+         </if>
+         <if test="status != null and status != ''">
+             and STATUS = #{status}
+         </if>
+
+         <choose>
+             <when test="province != null and province != ''">
+                 and province = #{province}
+                 and STATUS >= 2
+             </when>
+             <when test="provinceOrg != null and provinceOrg != ''">
+                 AND ((  province = #{provinceOrg} and STATUS >= 2 )or ORG_ID=#{orgId})
+             </when>
+         </choose>
+         <choose>
+             <when test="city != null and city != ''">
+                 and CITY = #{city}
+                 and STATUS >= 2
+             </when>
+             <when test="cityOrg != null and cityOrg != ''">
+                 AND ((  CITY = #{cityOrg} and STATUS >= 2 )or ORG_ID=#{orgId})
+             </when>
+         </choose>
+         <choose>
+             <when test="area != null and area != ''">
+                 and AREA = #{area}
+                 and STATUS >= 2
+             </when>
+             <when test="areaOrg != null and areaOrg != ''">
+                 AND ((  AREA = #{areaOrg} and STATUS >= 2 )or ORG_ID=#{orgId})
+             </when>
+         </choose>
+         <choose>
+             <!--部级终审权限-->
+             <when test="Min!=null and Min!='' ">
+                 and STATUS >=4
+             </when>
+         </choose>
+     </where>
+        order by CREATE_TIME desc
+    </select>
+    <update id="deleteManageResInfo">
+        update
+        MANAGE_RES
+        set
+        DEL_FLAG = 'Y',
+        UPDATE_TIME = #{updateTime},
+        UPDATE_USER_ID=#{updateUserId}
+        where
+        ID = #{id}
+    </update>
+</mapper>

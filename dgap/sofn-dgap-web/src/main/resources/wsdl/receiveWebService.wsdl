@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://webservice.share.modules.plu.icss.com/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="ReceiveWebServiceImplService" targetNamespace="http://webservice.share.modules.plu.icss.com/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://webservice.share.modules.plu.icss.com/" elementFormDefault="unqualified" targetNamespace="http://webservice.share.modules.plu.icss.com/" version="1.0">
+
+  <xs:element name="getValue" type="tns:getValue"/>
+
+  <xs:element name="getValueResponse" type="tns:getValueResponse"/>
+
+  <xs:complexType name="getValue">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+      <xs:element minOccurs="0" name="arg1" type="xs:string"/>
+      <xs:element minOccurs="0" name="arg2" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getValueResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="getValue">
+    <wsdl:part element="tns:getValue" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getValueResponse">
+    <wsdl:part element="tns:getValueResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ReceiveWebService">
+    <wsdl:operation name="getValue">
+      <wsdl:input message="tns:getValue" name="getValue">
+    </wsdl:input>
+      <wsdl:output message="tns:getValueResponse" name="getValueResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ReceiveWebServiceImplServiceSoapBinding" type="tns:ReceiveWebService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getValue">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getValue">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getValueResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ReceiveWebServiceImplService">
+    <wsdl:port binding="tns:ReceiveWebServiceImplServiceSoapBinding" name="ReceiveWebServiceImplPort">
+      <soap:address location="http://10.1.0.150:8081/mdm/webservice/receiveWebService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,52 @@
+<link rel="stylesheet" href="assets/css/asms/subjSv/subjInt.css"/>
+<div class="gui-mainBc">
+    <div class="gui-breadcrumbs">
+        <a href="javascript:void(0)">监管系统</a>&gt;
+        <a ui-sref="index.content.asms/subjEnt/subjEntList">主体管理</a>&gt;
+        <span>生产经营主体</span>
+    </div>
+    <div class="gui-TabCut " >
+        <ul class="clearfix gov-h" >
+            <li class="fl gp-r subjEntList" ui-sref="index.content.asms/subjEnt/subjEntList">生产经营主体信息</li>
+            <li class="fl subjEntTempList" style="display: none" ui-sref="index.content.asms/subjEnt/subjEntTempList">临时注册主体</li>
+            <li class="fl gp-r subjEntRegisterList" style="display: none" ui-sref="index.content.asms/subjEnt/subjEntRegisterList">注册待审核<span class="news">{{registerToAuditCount}}</span></li>
+            <li class="fl gp-r subjEntChangeList" style="display: none" ui-sref="index.content.asms/subjEnt/subjEntChangeList">注册变更待审核<span class="news">{{changeToAuditCount}}</span></li>
+            <li class="fl gp-r subjEntRevokeList" style="display: none" ui-sref="index.content.asms/subjEnt/subjEntRevokeList">监管申请注销待审核<span class="news">{{revokeToAuditCount}}</span></li>
+            <li class="fl gp-r subjEntCancelList" style="display: none" ui-sref="index.content.asms/subjEnt/subjEntCancelList">主体申请注销待审核<span class="news">{{cancelToAuditCount}}</span></li>
+            <li class="fl gui-TabCheck" ui-sref="index.content.asms/subjEnt/subjEntSPYBList">三品一标主体</li>
+        </ul>
+        <div class="gui-botLine"></div>
+    </div>
+    <div class="gui-section ">
+        <div class="">
+            <form id="queryForm" class=" gui-form-group " style="">
+                <div class="mt15">
+                    <span>认证类型</span>
+                    <div class="gui-select">
+                        <select name="spybLicType">
+                            <option value="">全部</option>
+                            <option ng-selected="{{x.dictValue == subjEntListQueryparams.spybLicType}}" ng-repeat="x in authenticationType" value="{{x.dictValue}}">{{x.dictName}}</option>
+                        </select>
+                    </div>
+                    <span>信息完善情况</span>
+                    <div class="gui-select">
+                        <select name="infoImprovedState">
+                            <option value="">全部</option>
+                            <option ng-selected="{{x.dictValue == subjEntListQueryparams.infoImprovedState}}" ng-repeat="x in infoImprovedStateList" value="{{x.dictValue}}">{{x.dictName}}</option>
+                        </select>
+                    </div>
+                    <span>主体名称</span>
+                    <input class="gui-input" type="text" style="width: 150px;" placeholder="请输入主体名称" name="entName"/>
+                    <button class="gui-btn" ng-click="querySubjEntList()">查询</button>
+                    <button class="gui-btn" ng-click="reloadArea()">
+                        重置</button>
+                </div>
+            </form>
+            <table id="entGrid"
+                   class="gui-table mt15" >
+            </table>
+        </div>
+    </div>
+
+
+</div>

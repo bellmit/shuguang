@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ahhdp.mapper.DirectoriesApplyMapper">
+    <sql id="base_Column_List">
+      ID,CODE,OLD_REGION,NEW_REGION,OLD_NAME, NEW_NAME,CATEGORY,
+      AUDIT_STATUS, OPERATOR, CHANGE_TIME, OPINION, AUDITOR, AUDIT_TIME
+    </sql>
+    <select id="listByParams" resultType="com.sofn.ahhdp.model.DirectoriesApply">
+        select
+          *
+        from DIRECTORIES_APPLY
+        <where>
+            <if test="areaName != null and areaName != ''">
+                and (OLD_NAME like '%'||#{areaName}||'%' or NEW_NAME like '%'||#{areaName}||'%')
+            </if>
+            <if test="company != null and company != ''">
+                and (OLD_REGION like '%'||#{company}||'%' or NEW_REGION like '%'||#{company}||'%')
+            </if>
+            <if test="category != null and category != ''">
+                and CATEGORY like '%'||#{category}||'%'
+            </if>
+            <if test="auditStatus != null and auditStatus != ''">
+                and AUDIT_STATUS = #{auditStatus}
+            </if>
+            <if test="auditStatus2 != null and auditStatus2 != ''">
+                and AUDIT_STATUS is null
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND CHANGE_TIME &lt;= #{endTime}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                AND CHANGE_TIME &gt;= #{startTime}
+            </if>
+        </where>
+        order by CHANGE_TIME desc
+    </select>
+
+</mapper>

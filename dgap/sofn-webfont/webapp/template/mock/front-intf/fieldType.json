@@ -1,0 +1,56 @@
+{}
+{
+  "data": [
+    {
+      "minLength": 1,
+      "name": "文本",
+      "description": "支持中文、字母、数字、“-”“_”的组合",
+      "type": "varchar",
+      "hasLength": true,
+      "maxLength": 4000
+    },
+    {
+      "minLength": 1,
+      "name": "数值",
+      "description": "形如458668",
+      "type": "interger",
+      "hasLength": true,
+      "maxLength": 38
+    },
+    {
+      "minLength": 1,
+      "name": "小数",
+      "description": "包含整数部分和小数部分,形如5.2",
+      "type": "float",
+      "hasLength": true,
+      "maxLength": 38
+    },
+    {
+      "minLength": null,
+      "name": "日期",
+      "description": "包含年月日的信息，形如2016-12-05",
+      "type": "date",
+      "hasLength": false,
+      "maxLength": null
+    },
+    {
+      "minLength": null,
+      "name": "时间",
+      "description": "包含时分秒的信息，形如2016-12-05 13:10:10 ",
+      "type": "time",
+      "hasLength": false,
+      "maxLength": null
+    },
+    {
+      "minLength": null,
+      "name": "时间戳",
+      "description": "1481011781227",
+      "type": "timestamp",
+      "hasLength": false,
+      "maxLength": null
+    }
+  ],
+  "httpCode": 200,
+  "msg": "OK",
+  "timestamp": 1481779178469
+}

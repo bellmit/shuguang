@@ -1,0 +1,91 @@
+.Sup_contain-section_contain{
+   margin-top: 20px;
+}
+.Fleft_center{
+    float: none;
+    text-align: right;
+}
+.Sup_contain-section_contain>table{
+}
+/*按钮*/
+.Sup_contain-section_contain_button>button{
+    padding: 0px 10px;
+
+}
+.Sup_contain-section_contain_button>button:nth-child(2) {
+     margin-left: 50px;
+     margin-right: 20px;
+ }
+.Sup_contain-section_contain_button>button:nth-child(3) {
+    margin-left: 20px;
+}
+.Sup_contain-section_contain_head_button{
+    padding: 5px 20px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    color: white;
+    background-color: #4BA0D6;
+}
+.Sup_contain-section_contain_head_button a{
+    display: inline-block;
+    width: inherit;
+    height: inherit;
+}
+.Sup_contain-section_contain_head_button a:hover{
+    text-decoration: none;
+    color: inherit;
+}
+.Fleft{
+    float: none;
+    text-align: right;
+}
+.Head_title_num{
+    font-size: 30px;
+    text-align: center;
+}
+/*隐藏input边框*/
+.diy-input-nobody>TR>TD>input{
+    border-left:0px;
+    border-top:0px;
+    border-right:0px;
+    border-bottom:1px;
+}
+
+.fleft{
+    float: none;
+    text-align: right;
+}
+
+/**/
+.file-box{ position:relative;width:340px}
+
+.txt{ height:30px; border:0px solid #cdcdcd; width:230px;}
+
+.btn{ background-color:#FAB013; border:1px solid #FAB013;height:30px; width:70px;color: #FFFFFF;}
+
+.file{ position:absolute; top:0; right:80px; height:24px; filter:alpha(opacity:0);opacity: 0;width:260px }
+
+/*格子样式*/
+.div_gz_style{
+    margin: 20px auto;
+    width: 300px;
+    min-height: 150px;
+    padding: 10px;
+    position:relative;
+    background: -webkit-gradient(linear, 0% 20%, 0% 92%, from(#f3f3f3), to(#6aa84f), color-stop(.1,#f3f3f3));
+    border-top: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    -webkit-border-bottom-right-radius: 60px 60px;
+    -webkit-box-shadow: -1px 2px 2px rgba(0, 0, 0, 0.2);
+}
+/*抽样信息新增模态框*/
+.table-bordered{
+
+}
+.table-bordered  tr th,td{
+    border: 1px solid #ddd;
+    font-size:14px;
+    padding:8px;
+    text-align:center;
+}

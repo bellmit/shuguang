@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.sofn</groupId>
+    <artifactId>sofn-eep</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.5.RELEASE</version>
+        <relativePath/>
+    </parent>
+
+    <modules>
+        <module>sofn-common</module>
+        <!--网关-->
+        <module>gateway-service</module>
+        <!--注册中心-->
+        <module>register-service</module>
+        <!--系统支撑服务-->
+        <module>sys-service</module>
+        <!--数据共享服务-->
+        <module>dgap-sys-api</module>
+        <!--地膜系统-->
+        <module>aeem-service</module>
+        <!--国控点土壤信息采集子系统-->
+        <module>pmlcsc-service</module>
+        <!--受污染耕地安全利用信息管理子系统-->
+        <module>pmpps-service</module>
+        <!--农业体系队伍及条件能力状况信息调查子系统-->
+        <module>astcap-service</module>
+        <!--水生野生动物标识及信息管理子系统-->
+        <module>fdpi-service</module>
+        <!--农业野生植物区域分布监测预警子系统-->
+        <module>agpjzb-service</module>
+        <!--重点生物多样性富集区农业野生植物监测预警子系统+农业野生植物利用调查子系统-->
+        <module>agpjyz-service</module>
+        <!--农业野生植物保护项目管理子系统-->
+        <module>agpjpm-service</module>
+        <!--农业野生植物区域分布监测预警子系统-->
+        <module>agpjqf-service</module>
+        <!--外来入侵生物监测点监测预警子系统+外来入侵物种调查子系统-->
+        <module>agzirdd-service</module>
+        <!--全国外来入侵生物监测预警子系统-->
+        <module>agziwj-service</module>
+        <!--外来入侵生物应急指挥子系统-->
+        <module>agzirz-service</module>
+        <!--农业环境污染事故（纠纷）发生及处理状况调查子系统-->
+        <module>aszdd-service</module>
+        <!--农村清洁工程建设状况调查子系统+农业应对气候变化子系统 -->
+        <module>aszdqq-service</module>
+        <!--农业野生植物资源保护状况调查子系统 -->
+        <module>aszdwp-service</module>
+        <!--农业湿地分布点监测预警子系统-->
+        <module>agsjdm-service</module>
+        <!--国家畜禽遗传资源保护名录、保种场区信息发布子系统-->
+        <module>ahhdp-service</module>
+        <!--地方畜禽遗传资源监测预警子系统-->
+        <module>ahhrm-service</module>
+        <!--地方畜禽遗传资源原生境监测预警子系统-->
+        <module>dhhrp-service</module>
+        <!-- 水产养殖业面源污染数据更新调查网子系统 -->
+        <module>pcmsk-service</module>
+        <!--水产养殖业面源污染数据更新调查网子系统 -->
+        <module>fyzdj-service</module>
+        <!--渔业外来物种调查和监测子系统（渔业外来物种信息管理子系统） -->
+        <module>fywxg-service</module>
+        <!--水生生物湿地保护示范区信息子系统 -->
+        <module>fdsbsf-service</module>
+        <!--轻量级分布式任务调度平台-->
+        <module>xxl-job</module>
+        <!-- 外来入侵生物名录管理子系统 -->
+        <module>agziml-service</module>
+        <!--农业环境污染突发事件应急管理信息分系统-->
+        <module>peeb-service</module>
+        <!--水产养殖业面源污染数据更新调查网子系统-->
+        <module>pcafcs-service</module>
+        <!--水产养殖业面源水污染监测子系统-->
+        <module>pcafwm-service</module>
+        <!--种植业化肥农药更新数据调查网子系统-->
+        <module>pccfs-service</module>
+        <!--农业面源空气污染预警子系统-->
+        <module>pcaam-service</module>
+        <!--农业面源水污染预警子系统-->
+        <module>pcaww-service</module>
+        <!--农业湿地示范点信息管理子系统-->
+        <module>agsjsi-service</module>
+        <!--渔业污染事故数据子系统-->
+        <module>fdcad-service</module>
+        <!--典型污染区域农产品产地重金属综合防治修复子系统-->
+        <module>pmcmp-service</module>
+        <!--草原生产、生态保护和监测预警子系统子系统-->
+        <module>ahhpp-service</module>
+        <!--土壤墒情信息子系统子系统-->
+        <module>aggsqi-service</module>
+        <!-- 耕地质量信息子系统 -->
+        <module>aggsqm-service</module>
+        <!-- 增值放流信息子系统 -->
+        <module>fyem-service</module>
+        <!-- 种植业面源土壤污染国控监测网子系统 -->
+        <module>pcpsm-service</module>
+        <!-- 农作物秸秆资源台账子系统 -->
+        <module>ducss-service</module>
+        <!--信息资源目录-->
+        <module>share-service</module>
+        <!--畜禽养殖场面源空气污染国控监测网子系统-->
+        <module>pcddam-service</module>
+        <!--农业大数据平台-->
+        <module>bigdata-service</module>
+        <!--水生生态灾害遥感监测信息子系统-->
+        <module>fdzdr-service</module>
+        <!--农业面源土壤污染预警子系统-->
+        <module>pcscw-service</module>
+        <!--畜禽养殖场面源水污染国控监测网子系统-->
+        <module>pcbbfwm-service</module>
+        <!--畜禽养殖场面源污染数据更新调查网子系统-->
+        <module>pcddus-service</module>
+        <!--畜禽养殖场面源土壤污染国控监测网子系统-->
+        <module>pcddsm-service</module>
+        <!--企业服务平台-->
+        <module>enp-service</module>
+        <!--三方工作流组件-->
+        <!--        <module>flow_code/flowspring</module>-->
+        <!--外来入侵物种防控项目管理子系统-->
+        <module>agzipc-service</module>
+        <!--人工鱼礁建设信息子系统-->
+        <module>fymfb-service</module>
+        <!--现代生态基地监测预警平台子系统-->
+        <module>bmw-service</module>
+        <!--种植业氮磷流失检测子系统-->
+        <module>pcnpl-service</module>
+        <!--典型农区环境空气质量信息采集子系统-->
+        <module>pmnkc-service</module>
+        <!--农区环境空气质量空间分析子系统-->
+        <module>pmai-service</module>
+        <!--农区环境空气质量现状评价子系统-->
+        <module>pmae-service</module>
+        <!--农区环境空气质量趋势分析子系统-->
+        <module>pmat-service</module>
+        <!--重点流域农业用水信息采集子系统-->
+        <module>pmwc-service</module>
+        <!--农产品产地水质量现状评价子系统-->
+        <module>pmwe-service</module>
+        <!--农产品产地水环境质量趋势分析子系统-->
+        <module>pmwt-service</module>
+        <!--农产品产地水环境空间分析子系统-->
+        <module>pmwi-service</module>
+        <!--农产品质量安全现状评价子系统-->
+        <module>pmqse-service</module>
+        <!--农产品质量安全趋势分析子系统-->
+        <module>pmqst-service</module>
+        <!--外来入侵物种事件收集子系统-->
+        <module>agzisj-service</module>
+        <!--水产种质资源保护区信息子系统-->
+        <module>fyrpa-service</module>
+        <!--水生生物自然保护区信息子系统-->
+        <module>fdnpm-service</module>
+        <!--渔业生态环境监测数据子系统-->
+        <module>fdzem-service</module>
+        <!--欧鳗溯源监管系统-->
+        <module>ouman-service</module>
+        <!--生态循环农田示范建设调查系统-->
+        <module>pcces-service</module>
+        <!--农作物秸秆综合利用数据更新调查子系统-->
+        <module>pcstd-service</module>
+        <!--农产品产地环境质量空间分析子系统-->
+        <module>pmqsi-service</module>
+        <!--基于土壤特征的农产品污染分析子系统-->
+        <module>pmsca-service</module>
+        <!--农用地分类管理信息子系统-->
+        <module>pmscm-service</module>
+        <!--农产品产地土壤环境质量现状评价子系统-->
+        <module>pmse-service</module>
+        <!--农产品产地土壤环境空间分析子系统-->
+        <module>pmsi-service</module>
+        <!--农产品产地土壤环境质量趋势分析子系统-->
+        <module>pmst-service</module>
+        <!--报表子系统-->
+        <module>report-service</module>
+    </modules>
+
+    <properties>
+        <skipTests>true</skipTests>
+        <!--docker部署属性-->
+        <docker.image.prefix>sofn</docker.image.prefix>
+        <docker.host>http://10.0.50.101:2375</docker.host>
+        <docker.base.image>sofn/springboot-app-filebeat:0.0.1</docker.base.image>
+
+        <host.gateway>localhost</host.gateway>
+        <port.gateway>7999</port.gateway>
+        <host.register>localhost</host.register>
+        <port.register>8880</port.register>
+        <port.sys>8881</port.sys>
+
+        <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
+        <spring-cloud.version>Greenwich.SR1</spring-cloud.version>
+        <project.build.encoding>UTF-8</project.build.encoding>
+        <java.version>1.8</java.version>
+        <mybatis.spring.boot.version>1.2.0</mybatis.spring.boot.version>
+        <mysql.version>5.1.40</mysql.version>
+        <commons-lang-version>2.6</commons-lang-version>
+        <commons-fileupload-version>1.3.1</commons-fileupload-version>
+        <commons-io-version>2.5</commons-io-version>
+        <commons-codec-version>1.10</commons-codec-version>
+        <commons-configuration-version>1.10</commons-configuration-version>
+        <shiro-version>1.3.2</shiro-version>
+        <lombok.version>1.16.14</lombok.version>
+        <restassured.version>2.3.3</restassured.version>
+        <fastjson.version>1.2.76</fastjson.version>
+        <mybatisplus.version>3.1.0</mybatisplus.version>
+        <jedis.version>2.9.0</jedis.version>
+        <ojdbc.version>6</ojdbc.version>
+        <spring-boot.version>2.1.5.RELEASE</spring-boot.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!--<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>-->
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <scope>${specified.scope}</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+            <scope>${specified.scope}</scope>
+        </dependency>
+
+        <dependency>
+            <artifactId>tomcat-embed-el</artifactId>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <scope>${specified.scope}</scope>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis.spring.boot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>mybatis</artifactId>
+                        <groupId>org.mybatis</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>mybatis-spring</artifactId>
+                        <groupId>org.mybatis</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.kafka</groupId>
+                <artifactId>spring-kafka</artifactId>
+                <version>2.2.6.RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${jedis.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>oracle.ojdbc</groupId>
+                <artifactId>ojdbc</artifactId>
+                <version>${ojdbc.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>1.2.5</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${commons-lang-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-fileupload</groupId>
+                <artifactId>commons-fileupload</artifactId>
+                <version>${commons-fileupload-version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>commons-io</artifactId>
+                        <groupId>commons-io</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-configuration</groupId>
+                <artifactId>commons-configuration</artifactId>
+                <version>${commons-configuration-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-core</artifactId>
+                <version>${shiro-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-spring</artifactId>
+                <version>${shiro-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.jayway.restassured</groupId>
+                <artifactId>rest-assured</artifactId>
+                <version>${restassured.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatisplus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.csource</groupId>
+                <artifactId>fastdfs-client-java</artifactId>
+                <version>1.27-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.ulisesbocchio</groupId>
+                <artifactId>jasypt-spring-boot-starter</artifactId>
+                <version>2.0.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-undertow</artifactId>
+                <version>${spring-boot.version}</version>
+                <scope>${specified.scope}</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-tomcat</artifactId>
+                <version>${spring-boot.version}</version>
+                <scope>${specified.scope}</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- 阿里云maven仓库 -->
+    <repositories>
+        <repository>
+            <id>public</id>
+            <name>aliyun nexus</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>public</id>
+            <name>aliyun nexus</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <profiles>
+        <profile>
+            <!--打jar包配置, 通过运行jar包时指定参数确定使用哪个环境的配置文件-->
+            <id>package2jar</id>
+            <properties>
+                <packaging.type>jar</packaging.type>
+                <specified.scope>compile</specified.scope>
+                <active.profile>local</active.profile>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <!--北京部署环境打war包配置-->
+            <id>package2war</id>
+            <properties>
+                <packaging.type>war</packaging.type>
+                <specified.scope>provided</specified.scope>
+                <active.profile>beijing</active.profile>
+            </properties>
+        </profile>
+        <profile>
+            <!--成都部署环境打war包配置，用于验证war包的正确性-->
+            <id>package2war_chengdu</id>
+            <properties>
+                <packaging.type>war</packaging.type>
+                <specified.scope>provided</specified.scope>
+                <active.profile>chengdu</active.profile>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.encoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <encoding>${project.build.encoding}</encoding>
+                    <!--排除不做过滤处理的二进制文件，如果不排除会造成文件损坏！-->
+                    <nonFilteredFileExtensions>
+                        <nonFilteredFileExtension>xlsx</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>xls</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>doc</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>docx</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>pdf</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>jpg</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>gif</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>png</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>pptx</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>ppt</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>ttc</nonFilteredFileExtension>
+                    </nonFilteredFileExtensions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,35 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css" />
+<div class="gui-breadcrumbs">
+    <a href="">监测系统</a>&gt;
+    <a href="">牵头单位</a>&gt;
+    <a id="jiance" href=""></a>&gt;
+    <span>待发布任务</span>
+</div>
+<div class="gui-section">
+    <ul class="gui-tab" role="tablist">
+        <!--<li role="presentation" class="pointer"><a id="newTask" role="tab" data-toggle="tab">新任务</a></li>-->
+        <li role="presentation" class="pointer"><a id="supTask" role="tab" data-toggle="tab">已接受任务</a></li>
+        <li role="presentation" class="active"><a id="bePubTask" role="tab" data-toggle="tab">待发布任务</a></li>
+        <li role="presentation" class="pointer"><a id="historyTask" role="tab" data-toggle="tab">历史任务</a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="gui-form-group">
+        <div class="text-left  mg-auto">
+            <form class="form-inline well-sm">
+                <div class="form-group">
+                    <input type="text" class="gui-input" name="taskName" onblur="check(this)" placeholder="请输入任务名称" ng-keyup="enterEvent($event)">
+                </div>
+                <span id="seachTask" class="gui-btn">查询</span>
+                <div class="gui-actions">
+                    <span class="pull-right gui-btn" ng-click="exportExcel()"><i class="gui-icon icon-export"></i>导出</span>
+                    <span class="pull-right gui-btn  mr15" style="background-color: grey" ng-if="disabled" ><i class="gui-icon icon-publish"></i>发布</span>
+                    <span class="pull-right gui-btn  mr15" ng-click="publicTask()" ng-if="!disabled" id="publishTask"><i class="gui-icon icon-publish"></i>发布</span>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="clearfix gov-h">
+        <table id="grid" class="gui-table mt15">
+        </table>
+    </div>
+</div>

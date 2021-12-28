@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.sofn</groupId>
+        <artifactId>sofn-eep</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <artifactId>report-service</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>report-service</name>
+    <description>report</description>
+    <packaging>war</packaging>
+
+    <dependencies>
+        <!-- 打war包所需依赖包 start -->
+        <!-- 打war包覆盖自带Tomcat -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- 打war包所需依赖包 end -->
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-zuul</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sofn</groupId>
+            <artifactId>sofn-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.alibaba</groupId>
+                    <artifactId>druid-spring-boot-starter</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+      <dependency>
+        <groupId>de.codecentric</groupId>
+        <artifactId>spring-boot-admin-starter-client</artifactId>
+        <version>2.1.5</version>
+      </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.1.22</version>
+        </dependency>
+
+        <dependency>
+            <groupId>fine-accumulator</groupId>
+            <artifactId>fine-accumulator</artifactId>
+            <version>10.0</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/main/webapp/WEB-INF/lib/fine-accumulator-10.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>fine-activator</groupId>
+            <artifactId>fine-activator</artifactId>
+            <version>10.0</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/main/webapp/WEB-INF/lib/fine-activator-10.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>fine-core</groupId>
+            <artifactId>fine-core</artifactId>
+            <version>10.0</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/main/webapp/WEB-INF/lib/fine-core-10.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>fine-datasource</groupId>
+            <artifactId>fine-datasource</artifactId>
+            <version>10.0</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/main/webapp/WEB-INF/lib/fine-datasource-10.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>fine-decision</groupId>
+            <artifactId>fine-decision</artifactId>
+            <version>10.0</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/main/webapp/WEB-INF/lib/fine-decision-10.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>fine-decision-report</groupId>
+            <artifactId>fine-decision-report</artifactId>
+            <version>10.0</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/main/webapp/WEB-INF/lib/fine-decision-report-10.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>fine-report-engine</groupId>
+            <artifactId>fine-report-engine</artifactId>
+            <version>10.0</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/main/webapp/WEB-INF/lib/fine-report-engine-10.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>fine-schedule</groupId>
+            <artifactId>fine-schedule</artifactId>
+            <version>10.0</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/main/webapp/WEB-INF/lib/fine-schedule-10.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>fine-schedule-report</groupId>
+            <artifactId>fine-schedule-report</artifactId>
+            <version>10.0</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/main/webapp/WEB-INF/lib/fine-schedule-report-10.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>fine-swift-log-adaptor</groupId>
+            <artifactId>fine-swift-log-adaptor</artifactId>
+            <version>10.0</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/main/webapp/WEB-INF/lib/fine-swift-log-adaptor-10.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>fine-third</groupId>
+            <artifactId>fine-third</artifactId>
+            <version>10.0</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/main/webapp/WEB-INF/lib/fine-third-10.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>fine-webui</groupId>
+            <artifactId>fine-webui</artifactId>
+            <version>10.0</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/main/webapp/WEB-INF/lib/fine-webui-10.0.jar</systemPath>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.sofn.report.ReportServiceApplication</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- docker 插件 begin -->
+            <plugin>
+              <groupId>com.spotify</groupId>
+              <artifactId>docker-maven-plugin</artifactId>
+              <version>1.0.0</version>
+              <!--docker镜像相关的配置信息-->
+              <configuration>
+                <dockerHost>${docker.host}</dockerHost>
+                <!--镜像名-->
+                <imageName>${docker.image.prefix}/${project.artifactId}:${project.version}</imageName>
+                <!--TAG,这里用工程版本号-->
+                <imageTags>
+                  <!--<imageTag>${project.version}</imageTag>-->
+                  <imageTag>latest</imageTag>
+                </imageTags>
+                <baseImage>java:8</baseImage>
+                <!--该镜像的容器启动后，直接运行spring boot工程-->
+                <entryPoint>["java","-jar","-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=7015","-Dspring.profiles.active=dev","/${project.build.finalName}.jar"]</entryPoint>
+                <!--<dockerDirectory>src/main/docker</dockerDirectory>-->
+                <!--构建镜像的配置信息-->
+                <resources>
+                  <resource>
+                    <targetPath>/</targetPath>
+                    <directory>${project.build.directory}</directory>
+                    <include>${project.build.finalName}.jar</include>
+                  </resource>
+                </resources>
+              </configuration>
+            </plugin>
+            <!-- docker-maven 插件 end -->
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,68 @@
+<link rel="stylesheet"  href="assets/css/asms/subjSv/subjSvList.css"/>
+<div class="gui-mainBc">
+    <div class="gui-breadcrumbs">
+        <a href="">查询系统</a>&gt;
+        <a href="">主体信息查询</a>&gt;
+        <span>三品一标主体</span>
+    </div>
+    <div class="gui-TabCut " >
+        <ul class="clearfix gov-h" >
+            <li class="fl gp-r qrySubjSvList" style="display: none" ui-sref="index.content.qry/subject/qrySubjSvList">监管机构主体</li>
+            <li class="fl gp-r qrySubjDtList"style="display: none" ui-sref="index.content.qry/subject/qrySubjDtList">检测机构主体</li>
+            <li class="fl gp-r qrySubjElList" style="display: none" ui-sref="index.content.qry/subject/qrySubjElList">执法机构主体</li>
+            <li class="fl gp-r qrySubjEntList" style="display: none" ui-sref="index.content.qry/subject/qrySubjEntList">生产经营主体</li>
+            <li class="fl gp-r gui-TabCheck">三品一标主体</li>
+        </ul>
+        <div class="gui-botLine"></div>
+    </div>
+    <div class="gui-section ">
+        <div class="">
+            <form id="queryForm" class=" gui-form-group " style="">
+                <div class="mt15">
+                    <span>认证类型</span>
+                    <div class="gui-select">
+                        <select name="spybLicType">
+                            <option value="">全部</option>
+                            <option ng-selected="{{x.dictValue == subjEntListQueryparams.spybLicType}}" ng-repeat="x in authenticationType" value="{{x.dictValue}}">{{x.dictName}}</option>
+                        </select>
+                    </div>
+                    <span>信息完善情况</span>
+                    <div class="gui-select">
+                        <select name="infoImprovedState">
+                            <option value="">全部</option>
+                            <option ng-selected="{{x.dictValue == subjEntListQueryparams.infoImprovedState}}" ng-repeat="x in infoImprovedStateList" value="{{x.dictValue}}">{{x.dictName}}</option>
+                        </select>
+                    </div>
+                    <span>主体名称</span>
+                    <input class="gui-input" type="text" style="width: 150px;" placeholder="请输入主体名称" name="entName"/>
+                    <button class="gui-btn"  ng-disabled="!!btnDisabled" ng-click="querySubjEntList()">查询</button>
+                    <button class="gui-btn" ng-click="reloadArea()">
+                        重置</button>
+                </div>
+            </form>
+            <!-- 图表面板 -->
+            <div class="gui-table-panel clearfix">
+                <!-- 切换视图展示 -->
+                <div class="view-type">展示方式
+                    <i class="gui-icon icon-list highlight" ng-class="{'highlight': isListView}" ng-click="toggleView(true)" title="以列表视图展示"></i>
+                    <i class="gui-icon icon-chart" ng-class="{'highlight': !isListView }" ng-click="toggleView(false)" title="以图形视图展示"></i>
+                </div>
+            </div>
+            <!-- 图表区域 -->
+            <div class="gui-content-slide">
+                <div ng-style="{'transform': viewX}" class="content-wrap">
+                    <div class="content-block">
+                        <table id="entGrid" class="gui-table table-nowrap mt15" style="width: 100%">
+                        </table>
+                    </div>
+                    <div class="content-block">
+                        <div sg-chart options="vm.chartOptions" update="vm.chart"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>

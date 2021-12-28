@@ -1,0 +1,86 @@
+.Sup_contain_section_contain_head{
+    width: 100%;
+    text-align: center;
+    margin: auto;
+    overflow: hidden;
+}
+.Sup_contain_section_contain_head div:first-child{
+    width: 1150px;
+    margin: auto;
+}
+.Sup_contain_section_contain_head p{
+    font-size: 25px;
+    margin:20px 0px 30px 20px;
+}
+.Sup_contain_section_contain_head ul li{
+
+}
+.Sup_contain_section_contain_head ul li{
+    font-size: 16px;
+    clear: both;
+    margin-bottom: 25px;
+}
+.Sup_contain_section_contain_head span{
+    margin-right: 50px;
+    display: inline-block;
+    width: 150px;
+    text-align: right;
+}
+.Sup_contain_section_contain_head select{
+    width: 145px;
+    outline: none;
+    cursor: pointer;
+}
+.Sup_contain_section_contain_input{
+    width: 450px;
+    outline: none;
+    /*height: 30px;*/
+}
+.Sup_contain_section_contain_radio{
+    width: 10px;
+    outline: none;
+    /*height: 30px;*/
+}
+.Sup_contain_section_contain_head_button{
+    width: 120px;
+    height: 30px;
+    font-size: 20px;
+    background: #4BA0D6;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    outline: none;
+    margin: 0px 60px 0px 150px;
+
+}
+/*添加星号*/
+.important{
+    position: relative;
+}
+.this-after{
+    position: absolute;
+    right: -70px;
+    top: -3px;
+    color: red;
+    font-size: 20px;
+    font-family: xinhao;
+}
+/*验证码*/
+#vcode{
+    height:35px;
+    width:40%;
+    font-size:15pt;
+    margin-left:15%;
+    border-radius:5px;
+    border:0;
+    padding-left:8px;
+}
+#code{
+    color:#ffffff;/*字体颜色白色*/
+    background-color:#000000;
+    font-size:20pt;
+    font-family:"华康娃娃体W5";
+    padding:5px 35px 10px 35px;
+    margin-left:5%;
+    cursor:pointer;
+}

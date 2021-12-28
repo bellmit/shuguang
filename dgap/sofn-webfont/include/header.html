@@ -1,0 +1,87 @@
+<link rel="stylesheet" href="../assets/css/common/help.css">
+<header class="gui-header clearfix">
+    <div class="section-logo" ui-sref="login/applications">
+        <img src="/assets/imgs/icon/logo.png" alt="国家农产品质量安全追溯管理信息平台（政务办公）" class="logo">
+        <h1>国家农产品质量安全追溯管理信息平台<em></em></h1>
+    </div>
+    <div class="section-menu">
+        <ul class="clearfix">
+            <li ng-show="!!systems.ASMS" ui-sref-active="active">
+                <a ng-click="sysName('asms')">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADOElEQVR42qyXX0hTURzHd+famFQOS4noj1H4VCIFUphU+JAsIfv3kkWBBUUFlQ/1YI+9hMH2UGFkEZgRGU1cYUVkUBAVKOvBlygwMEgdzgenuHb7HvrOjpd777l36wcfdnfO7/z+nHvO756j6brucSleUAuawCG2PQYx8B5kXVkTATjAB+rBLTCq/5Us+AiS+j8ZpU49xyht23UGQCPolJz8Bm/AObCSeotAA7gNfknBJDm2kbYcBVAMDoBukKKhOfASnALlioyKmP0NaaZ02npI28VmATSDJyDNAbPgGWgBpQ5fkxEvqAMRMCIFk6avZjkAITMgBo6CEhODdczQyuEysNaiTwNbQTv4JgWzIICYjfFa6ohMyix0LlOnQzEzO+UAfA42itCJ8vkT2MPnEAiwLwNOs/07OM7nJaAIDIMXdtvQagY0rm47CYE2hU7EagbsAhDroId9g/x/hf+FkSCoBPu5PcXrWUo9sdD6mUCIuqYBeG2m/iTYx+kLgxToY6XbDS6ABF9RF/WnqNcPNoMVYBKkVZXQ6hU0GHaEV6oFuUwGTMaJ3eAvdBFeBWccLNIdzNJOqsCI1Qq3kjlQAu6CL5785CxYD2bstpiqT7z3d2C7C8fjHNPEAAL5BPCKhkT2leCpiwAGwC7QBpaDiXwCeEtyBcXDonNe4XySO8HDWVBWOTdyEFQrdBaDoFODcgBOBo2BIYWO6P9q0x80C2CWi0UlgyDiMLlSkDRpr5B8zheiBAtDpUXxqNbdS8TCVpz9CbkQ9YJN4BJosckqDjoVmZeDDpGbRUEKSz7nA7gJLvIz2g1eF7AGVvE3ZWj3gztAA9P0ueBM2MqpGQMb/8MraDd81rukvlazQ6kmfX5/gi1S3za2P2AwdoQNa8BvcN5DX6anYqHcS8VpcILtIX7FNrg8mK4DHyTnMeNX0upoHZUG9YEKl459vDtMSXaiZodaOyPipDMhnZiv8+Srcr4XDEuOx2nL9c3IwxPwPV7DdGYkFtcak4wPg8+S4yzHluV7NZOpkgpI7or2HBwB17hoZYlzTEF3QzNqwCOQMdl2GfbVuLGp5XE9F7IaHCNC7pMfbg39EWAAGxvF4F0j5OIAAAAASUVORK5CYII=" alt="监管系统"><span>监管系统</span>
+                </a>
+            </li>
+            <li ng-show="!!systems.ADS" ui-sref-active="active">
+                <a ui-sref="index.content.monitor/welcome/welcome" ng-click="sysName('ads')"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACzklEQVR42uzXSWgTURzH8aR1a9zBgkqsF1G0gsW1eqqKoAX1Ii6gpSdFvRTxkFNUpHU5qEhwQyxWbQUPenCBXhQUC4J1QYUaEatShVZb96Wm8fvsLzCOmcmMDebig88hedt/3sz835tgMpkM5LLk+Ww/HE0SykoEZgU8KsYDJOQGxvjon5aXRuNxEN14g3KswRf9rkJBNgMYhOnYjEb8kFoUWtpNxrVkb2nHMSxFkd8AzuAm7uKZljdVnmCPVsFpkDKcxUdLv3d4iGZcVWBp+weTva9BK+6hCy9xH82I+3icCjATJSjGSIzAQsRQ5fQQmrK9rw+Tiy4ccKrPC+S4/A8g2wFUYlGuAoigFmW5CMBMvgv1iP7rAKyTVyBhq29Sjgn4zQMm59/BBJd3PKL+Jpvm2+qGYqCXVOwUwCTleJOOwx4nNzvmaSWfVGlBFMOcAjB5+5RDhDNUbw9ipwY/YZl8ozattziKTdiKi+jRPjM1XQD1msRpueaovkW74W5NfhhBtVml/y5guXbJZZYxZuMF2jDaHsBida50uVel+IyONJMPwWvtqBt0tY+1pVvHmKIzxHF7AEFd3SP0cwliAT4gZpncWK2gVuAbLutMkW6MmIII2Q8kKzXI+r/Y7fahEzt0ahrr0naJ5im174bncAvVKPSZB8ye34kO1KHNpW27pc8fh9ISfNcSBn2sQA2+ejwXph7WaU5nwi1qUOMjgPnqs85D20t6YPPdDqUnNWDEYwBmtW7jFca5tFurcbdlOhX3x3k13p/hzbC+50m96+W2upAyYcJy0A1n+i4wS3REHa5josvkcxHXG/BUfZ7jik7En/RfnW7Xb5k105WZ5PReD9lejLLUFSmpmMTTinkYoKVuUGJq1CrOSpNZfwXh5R6HNWCPAmlQyu1WUjGBDfaZO1JBxP10Mqn0kDqanF7dx29Dk6qjwVx/nv8UYACmIT3gix+odwAAAABJRU5ErkJggg==" alt="监测系统"><span>监测系统</span></a>
+            </li>
+            <li ui-sref-active="active" ng-show="!!systems.ALES">
+                <a ng-click="sysName('ales')"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACvUlEQVR42rTWX2iNYRzA8fccmsNhW/kzaYsboiiUYknRMH8WIq6sKbtYLeVWuWAlIm6QFGUpNwytMIdcuNEu/ImQDbnAdC52mtnWGef1/dXv5Ol0zrvned/jqU97977vnve35/k9z++J+b7vWbRd6MIv/A54L44ZaMcFm45jlgFIu4YsWgPeOYbVaIRf7gAq8Qbn8LnI85k4ieX4atupSwDS1uJgwPNb6HbpcLLn1mQE+rCqxPOkY3/OASzUEThc5NleLP3fAch/Pwv3NCHNJok34BpA3PH9DF5iT8H9BLbjiWsAniShowZ8wwZUYxm6cSNEX6ECEDvxHBm8RQcqwvQVtAynYj3mBAxgQpVqaTzCD9cklGxOYa5xbxwjE8xoBabk9xjkMIbd6HHJgafoRa3DcFbig/+vpZBEF/pccyCHZsf5vGN8/BNm6/0WzZWif1dqGcrw/XRYTLIJNej1mNaEdNR9oMry49PRYWzDj3G5SEJH2oiCgrmCRXr9Efu1ciYKkjPSVpwtcV+ye6tej+I4Bif6qOsIxLTzwjYNJ3QKpD1Ap1EVs+UKIKmdF87jVWPopUi1GJtTyrY02wQwH5uxybjXhC16LavlCIb0921Ygx1RAjCHr15/1hhDf0oTzdMd7qbx/ka8Q3OUAEZ17j3djs/qyTif9Uv0+r0x9Pl8WakH2AVRDyT5pVer/6Vk+7COQE4/VldwAJV7f/S9yAFIm4d9WtEuGhkf1GQn7NWi1BQ1gPM6Hf26xBIWAYzoNMix7RJOhzmWy9HrFdbp8atNs/2ARQAyUot1k3qhI1Jj5JRVOc5oVbutVXHIoTRXaTU8g1ajQjqV44x+VM57abQ7luZ6jKMRD8MEMIA2dOIZ4iHOe0fxHSsw7HomvK5ruUd3tNeee5uEu/iC+5rQ1jlQh36/fO1QqRH4K8AApbatfDYagsYAAAAASUVORK5CYII=" alt="执法系统"><span>执法系统</span></a>
+            </li>
+            <li ui-sref-active="active" ng-show="!!systems.FXJC">
+                <a ng-click="go($event)"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAC8ElEQVR42sSXTUhUURTHZ0SbUhO0BvpaRIWGCtHHoqBNhMJgQi2CItolLloUGhFSbVoULSTaRBHkRmjXpkVRCGUtBqKsgWgTktMHkWHkaFkzPf83/hfOXO579703A1748fR+nPu/H+ecO0nP8xJLWWoi9OsC10AWzACPzIIJcBMcBKlICtQOBFAL+sEHr7z8Az9I0Wj7Bs6BFQ7b/wlq7ACvhOHX4CzYAVKiXx1oByfBuOg/CfbGFdAD5mjoLciEWQ3ZDZ5xbJE7GEmAmvwvDdwwVhuWJBjiUXncnVACOsTKz8eY2OQYKJFulwB14V6KlSeqxCBtfgZNQQL6xZmnYk7WAobBCNgmjuMhbV/1E1AjXC1TwWrvGe6oXbGN96EAmm0CujjoTYXbnaedBX63WMSVeYWOhD38jjriVgZMgS/gqKX9E7/LGDEnRZu23WuLhFmq2+lY4UexxXMMQtJ9VZkGR0C95X6o8t12BDM8o+UOAbqfDr8bWa/GvWddX4gjWmUK8BjXgyZXLvTViPs5kAYX+X+WF9rPhnbzzXEEDLPfI7CJk6vyk4FG7cwuh40XHNNqCigw/Nb5DOzktv8BW1mX5jhP3PwmhwB9TGtMARNsaLcMahVZ7orRNsX63/w2B0xez50q2C7hbZ+kcckILA1G+3Hh85cdq+9mvzGbgENsfGrkhgWRTIo+R7QSrA4RpO5wjkGbgBT914wFebED+Qoi5Frwi/dsvV8y0q70hAlE1e3h+Y/z77gC9OpHgrJhg0hIZ6qYjvXxzoINrgfJfnHmh6swuXqezVPAibBPslMcUAp6SoVc+bzID+koj9IBcfnuG2nVRVq4tScud84mIshQL31fv27vggOg0dJXJaN94BZvu8eA08dJc34iwjyxrgujWowKqc/pHe8YomX7qMiUiSARUbb1NHhsxH+ZB5SgC8bECZeIZMwfp+tAC6gF03whlUKMS4Mx0Mnfk9vjCqikKBEPQCNoWwoBZWVRgAEAZe64STJpRfcAAAAASUVORK5CYII=" alt="分析决策"><span>分析决策</span></a>
+            </li>
+            <li ui-sref-active="active" ng-show="!!systems.QRY">
+                <a ui-sref="index.content.qry/subject/qrySubjSvList" ng-click="sysName('qry')"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACM0lEQVR42sSXzUsbQRjGNx9IIFgbMJcakKptUQRzsIJID15EoQXRY4r0DyhFwXoU1IsfF4N6zKFQ8Fg/CIIHWz0ZeiiaiwetPTQtTShiT1I/1mfkWRiXze6aSdwXfju7M+/OPDs78+67mq7rGkiAE72ydgnSIMQxb/CJA+wEPNTux96AD8aFn6UxuK+CJDlGRFbj1zw2zwUEbdqqQItC3wWQUxHwCHxTECDe+bCKgP9gT0FATvUV/AJxL9dADehW6PsIZFUEPAafvFwDp2BVQUBW9RUcg34v10AUJGzav4M1ngdAJ2iQxO+Cc0cF/CoZpknEbb5sW+ABCIARkLfw+QvGQJD9zbN+WB4n6BDJkhb14qkmWK6DPtYfggzP28EzMAN6wctSZsCJFO8RecSgRfsrUKDPcrEZMPIBXfocG1YH3pv0/gPjfMKvnIUunltZG9dCCLzjWtm+FeLvuAY+s22B10suZmqOvimr9qBDLB+xiG7CnrNccbHTRCwZle5xvQ3FIpwv0haRfJzstynrKktC8odlgwvfRpb5cgr4wvK1C98hljvl3Ib14Iz3JGz8BsAVU/InVj4qcWBMyvenQa3UFgGT4II+s8X6UREgmDL9eByQC9P2PQSxSggQvAAb4NwkZosRMsu6H6CpEgIMwqAZtIJqqT4K9tn/T7OIcgqwowZkJBFPi/0bnpawJdMOeYOcY26CDkbZmBwJ34LFEn9Qwy79xMP1gI9ypTEDntm1AAMAweh1ke3R8V0AAAAASUVORK5CYII=" alt="信息查询"><span>信息查询</span></a>
+            </li>
+            <li ui-sref-active="active" ng-show="!!systems.DGAP">
+                <a  ng-click="sysName('dgap')"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADe0lEQVR42ryXb2hOURzH79ZDT1pIsjTjhfJCrLS0tTeSN1JKXhAlUVrRXlkpJVNCoyhSohUpLRkmtfxJ5G/+juZPXiwWm2HMeDbbnuf6HvvcOk73zp67P6c+z73n3HN+53d+5/f7nfN4vu97w2SZ6PYHynexIJvx3ggo0Ck+i72iV7wfSwUmiozYQf2O6BkLBdaIZ0xuSkpcEmnROFoKzBF1TGbKB7FbNFuKmFIxHAXWinvirJgikmIXkwUrPYcypv95HLBe9InH4qdIxFFgkzVJBsFpeCpWO4Or+FYm7ouvooC2U3EUaGKlHk5lykExIWTgSpQsp94iXvN+lG+zs1XgISFlPPskChiHKnQGzcXcJ6y2X+IK77nkg6ZsFSgV/ZYz9aOQMWkNgo1yP8QDR5BZ8WGrvgIZ67J1wjIGVvM0TnmIFRvnaoPx1phZ9N3oyBqSQ7oNO1mxeX9FiHlERCcTvRPznJzgszW2rCE5pNtwV7TyvhTBC3HGfpzvNSavx0H30y9sgv86pNvwTVy26h8xecbZzw2Y9zcR0B0xwX8d0q4kWUm51RaEY03I4ATmzeAjKyMmGdQhPWdVPp5u6pPxeFNuD7KPrVb0PI8wd6RD2pULTBiYrhnhR1hlfoQCKXKAsUAHfc84kRLpkHalhZRq3q8heBpb08cZEKZABmcL6tX0TzkHU6hD2oLSnG4HeC+xvtUhNOlMHuSAzU672b6rVtgaWdNRwFxanoipgQK5mMaUG3Ra7wjMD1mpxwHlk0XDrFPMVvr4QJqUnw5yTOAgRngXHW+FeLtZ6UvCbRvXL3MWvGDMPU7Mt2zlZxJXCssFpRaZtUHuyPn763m7RJV4L2aItMiFqJIROdAteqGHekp0ii6eq3ivFAfERDEuoR+jwHwaJiHwkWgUHaJdfBJt4rgYL2aiRBPjCgdRtFjUmclEnqhB+a1/v8oAp/1/yyeeN4kC9wpuymLq7Zg/bP/zRAP9WzjoPK7tSTcKlot9ooh6BWe8STDHnQTSZqXWnojDZjtp+jc+E+tSmsDR0iizhfYtrKqIZ6VznAf3xwasMOxbcT6pODDlIkIq8O43ZLrrVp+S0biWl5JUgtuSCcmLWMgfirlH6o9JORPuoX4dJfLi/MnJGUgDWZcOwvcY4fRFFMQRFPev2RIc0+cEXRj3/2VcC4xY+SPAAMU6qPQWJ/6AAAAAAElFTkSuQmCC" alt="数据共享"><span>数据共享</span></a>
+            </li>
+            <li ui-sref-active="active" ng-show="!!systems.SYS">
+                <a ui-sref="index.content.sys/role/roleList" ng-click="sysName('sys')"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACtElEQVR42sSXTUhUURTH34w6pmmNpCQmuHMqCsQKi4SQsE0E2SYiijZRC7FNUNBKWwetWxRUC7NVOgRhC7E2QVFBCX1B2peWln1Moaav/7H/0Gl89707zhu88OM83rnn3v+bd+ae8xzXdZ0cKAMdYBCk3L/jM7gJDoPCoDVy2XwfGHX9x3OwLR8CTqlN7oMjoA7EwXr639I/DdrCFrASJMBOEDXMKQfdFPELbAj7FdgQAb0UcWOxAoqYUEkwrhLtNjgKigPiE4z5sRgBzeBFQKKN8FWY1oiruVkJ2M8EkvEBnAYbueBacAK8on8WHAxTQAOYYtB1sMIwbxm4qLK9MSwBSQb0MpGCEq2H85NhCfjJgHrLbE8nWsrDV6le04LYqOM9Smg/OnZjjLbUw1dNO+4VGHXyP7bSPlsqAbtpB5ZCQD3Yw+vubATM0RZZblRA66p7y8Fl+vrAUDYC0klVaylgNe2EuiebNoFJ0G4KNAl4QrvDUkAj7UvaVaCF18fASLYC+mn3WgrYRXuXVp56mNdXwDmKWjgMB0sN+M0DZHvAIVTDei9ji7ovh1i/OgUn2aiU2BajCwyUalhlmBNTmwwY5rSCR0rIG3ZQ0SABFeA1gx6CAo85V9URvM5nLdnsEBhWQh6DTUFnfKsKSHj4Z+nrsKwZUj1Pgi+MmzBNlAJyXvUDowzOnHeP/jlwCayxFFJrKo+l4Az4qp78lk9VrFaNp8sqepbfC5klO66oyxRQyP7uvVrsQUCrpZHsv6Nix8Bx9WEiAq55tHNT4twMnqqb0mYdsGhEvGjjx0h6DIEmJfK/zeXXdtjhyvjEZIrl2IrLU7dzvfT/3/iJFpl/D//O/XchVsJy8I3XFTwdfY/iVMil+LvNpMh8IjhOLI89wQwoA9OmX6DL5AxhyLqdfuv/EWAAv6hKlHdtZeAAAAAASUVORK5CYII=" alt="系统管理"><span>系统管理</span></a>
+            </li>
+        </ul>
+    </div>
+    <div class="section-nav">
+        <span class="gui-dropdown">
+      <span class="current">
+        <img src="../assets/imgs/icon/img_11.png" alt=""/>
+        <span class="text" title={{userName}}>{{userName}}</span>
+        </span>
+        <ul id="userListForAll" class="dropdown-list clearfix">
+            <li><a name="个人中心">个人中心</a></li>
+            <li><a name="帮助中心">帮助中心</a></li>
+            <li><a name="退出登录">退出登录</a></li>
+        </ul>
+        </span>
+    </div>
+
+</header>
+
+<!--查看模态框-->
+<div class="modal fade help" id="helpList" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-style" style="width: 700px;height: 500px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                <h2 class="modal-title">帮助中心</h2>
+            </div>
+            <div class="modal-body">
+                <ul class="message-list clearfix">
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <span type="button" class="gui-btn" data-dismiss="modal">关闭</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--查看模态框-->
+<div class="modal fade help" id="helpListInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-style" style="width: 1100px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                <h2 class="modal-title">帮助中心</h2>
+            </div>
+            <div class="modal-body">
+                <h4 align="center" class="mt15" style="margin-bottom: 13px" id="helpListTitile2"></h4>
+                <article style="margin-bottom: 10px;" id="myInfo">
+                </article>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>

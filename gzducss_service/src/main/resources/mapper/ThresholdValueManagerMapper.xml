@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.ThresholdValueManagerMapper" >
+
+    <insert id="batchSaveThresholdValue" parameterType="java.util.Map">
+        insert into threshold_value_manager (id, year, table_type, target_type,
+        value1, operate1, value2, operate2, computer_type)
+        VALUES
+
+        <foreach collection="thresholdValueManagers" item="value" separator=",">
+            (
+            #{value.id},
+            #{value.year},
+            #{value.tableType},
+            #{value.targetType},
+            #{value.value1},
+            #{value.operate1},
+            #{value.value2},
+            #{value.operate2},
+            #{value.computerType}
+            )
+        </foreach>
+
+
+
+    </insert>
+
+</mapper>

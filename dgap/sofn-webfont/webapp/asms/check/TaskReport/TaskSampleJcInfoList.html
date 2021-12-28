@@ -1,0 +1,97 @@
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">监管系统</a>&gt;
+    <a href="" ng-click="backTaskList()">监测任务</a>&gt;
+    <a href="" ng-click="backReportList()">报告列表</a>&gt;
+    <span>样品及检测信息</span>
+</div>
+<div class="gui-section">
+    <!--<div class="gui-form-group">-->
+    <!--<span>年份</span>-->
+    <!--<input name="years"  onfocus="WdatePicker({skin:'default',dateFmt:'yyyy'})" class="Wdate gui-input" placeholder="&#45;&#45;请选择年份&#45;&#45;"/>-->
+    <!--任务名称-->
+    <!--<input class="gui-input" type="text" placeholder="请输入查找内容" name="monitorTask"/>-->
+    <!--<button class="gui-btn" id="ToCheck">查询</button>-->
+    <!--</div>-->
+    <div class="gui-actions">
+        <button id="backSample" class="gui-btn fr mr15 mr15" ng-click="backSampleList()">
+            <i class="gui-icon icon-back"></i>退回</button>
+        <button class="gui-btn fr mr15 mr15" ng-click="backTaskList()">
+            <i class="gui-icon icon-back"></i>返回任务列表</button>
+    </div>
+    <table id="grid" class="gui-table "
+           style="width: 100%">
+    </table>
+    <div class="modal fade" id="product_info2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-style" style="width: 800px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span
+                            aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                    <h4 class="modal-title" id="myModalLabel1">查看检测信息详情</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <table id="asmsProductList" class="gui-table">
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <span type="button" class="gui-btn" data-dismiss="modal">返回</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--抽样单退回模态框-->
+<div class="modal fade" id="sampleBackModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-style" style="width: 50%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                <h4 class="modal-title">回执单</h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <div class="table-responsive">
+                    <table class="mt15">
+                        <tr>
+                            <td class="mt15" style="text-align: right;padding-left: 50px;font-weight: bold;height: 30px;padding-right: 10px;">
+                                任务名称 :
+                            </td>
+                            <td>
+                                <span ng-bind="taskName"></span>
+                            </td>
+                        </tr>
+                        <!--暂时隐藏-->
+                        <!--<tr>-->
+                        <!--<td style="text-align: right;padding-left: 50px;font-weight: bold;height: 30px;padding-right: 10px">-->
+                        <!--牵头单位 :-->
+                        <!--</td>-->
+                        <!--<td>-->
+                        <!--<span ng-bind="sampleDeparment"></span>-->
+                        <!--</td>-->
+                        <!--</tr>-->
+                    </table>
+                    <table id="sampleTable" class="mt15">
+                        <tr>
+                            <td class="mt15" style="text-align: right;padding-left: 50px;font-weight: bold;height: 30px;padding-right: 10px;">样品名称 :</td><td width="120px"><span>样品名称</span></td>
+                            <td><label>样品编号 :</label></td><td width="200px"><span>样品编号</span></td>
+                        </tr>
+                    </table>
+                    <table class="mt15">
+                        <tr>
+                            <td style="text-align: right;padding-left: 50px;font-weight: bold;height: 30px;padding-right: 10px;">退回原因&nbsp;:&nbsp;&nbsp;&nbsp;</td>
+                            <td width="300px" colspan="3"><textarea class="form-control" maxlength="300" placeholder="退回原因最多300字符" style="height: 60px;" name="reason"></textarea></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer  mt15">
+                <span type="button" class="gui-btn" data-dismiss="modal">返回</span>
+                <span type="button" class="gui-btn" ng-click="submitSampleBack($event)">确定</span>
+            </div>
+        </div>
+    </div>
+</div>
+

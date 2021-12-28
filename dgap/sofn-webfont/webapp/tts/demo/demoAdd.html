@@ -1,0 +1,33 @@
+<link rel="stylesheet" href="assets/css/tts/base/baseAdd.css">
+
+<div class="Sup_contain_section col-lg-12 col-xs-12 col-sm-12 col-md-12">
+    <div class="Sup_contain_section_head col-lg-12 col-xs-12 col-sm-12 col-md-12 " style="background-color: white">
+         <h2 id="Sup_contain_section_head_h2">
+            <a href=""><span>追溯系统  > </span></a>  
+            <a href=""><span>内部管理  > </span></a>
+            <a href=""><span>测试信息管理 > </span></a>
+            <span>  新增</span>
+         </h2>
+    </div>
+    <p class="col-lg-1 col-xs-0 col-sm-1 col-md-1"></p>
+    <div class="Sup_contain_section_contain_head col-lg-10 col-xs-12 col-sm-10 col-md-10">
+        <p>新增测试数据</p>
+        <ul>
+            <li>
+            <span class="important">姓名<span class="this-after">*</span></span>
+            <input type="text" ng-model="demo.name" name="name" placeholder="请输入姓名" class="Sup_contain_section_contain_input" required>
+            </li>
+            <li>
+            <span class="important">联系电话<span class="this-after">*</span></span>
+            <input type="text" ng-model="demo.tel" name="tel" class="Sup_contain_section_contain_input">
+            </li>
+            <li>
+                <span class="important">加入时间<span class="this-after">*</span></span>
+                <input type="text" ng-model="demo.cjrq" name="cjrq" class="Sup_contain_section_contain_input" style="width: 130px;" readonly="readonly" onclick="SelectDate(this)">
+            </li>
+        </ul>
+        <button class="Sup_contain_section_contain_head_button" ui-sref="index.content.tts/base/baseInfoList">取消</button>
+        <button class="Sup_contain_section_contain_head_button" ng-disabled="myform.JGname.$dirty&&myform.JGname.$invalid" ng-click="addDemoInfo()">提交</button>
+
+    </div>
+</div>

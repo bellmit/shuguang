@@ -1,0 +1,41 @@
+.gui-tree-sidebar{
+	width: 220px;
+}
+.gui-tree-content{
+	margin-left: 225px;
+}
+.section-blocks  .blocks{
+	list-style: none;
+	padding-top: 25px;
+	margin-left: -15px;
+}
+.section-blocks  .blocks > li {
+	float: left;
+	width: 25%;
+	padding: 0;
+	margin-bottom: 25px;
+}
+.section-blocks  .blocks > li div{
+	margin-left: 15px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	height: 390px;
+	overflow: auto;
+}
+.section-blocks  .blocks > li h3{
+	line-height: 2.0;
+	padding: 5px 10px;
+	font-size: 14px;
+	color: #20944d;
+	text-align: center;
+	background-color: #f1f1f1;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+.section-blocks  .blocks  ul li{
+	float: left;
+	width: 100%;
+	border-top: 1px solid #ccc;
+	padding: 8px 12px;
+	font-size: 12px;
+}

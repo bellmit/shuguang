@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta
+            name="viewport"
+            content="user-scalable=0, width=device-width, initial-scale=1.0,  minimum-scale=1.0, maximum-scale=1.0"
+        />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta name="renderer" content="webkit" />
+    <title>国家农产品质量安全追溯管理信息平台</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="libs/bootstrap/bootstrap-3.3.5-dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="libs/dataTable/css/dataTables.bootstrap.css" />
+    <link rel="stylesheet" href="libs/easyui/bootstrap/easyui.css" />
+    <link rel="stylesheet" href="libs/bootstrap/bootstrap-3.3.5-dist/css/bootstrapValidator.css" />
+    <link rel="stylesheet" href="libs/bootstrap-fileinput-master/css/fileinput.css" />
+    <link rel="stylesheet" href="libs/bootstrap/bootstrap-3.3.5-dist/css/bootstrap-switch.css" />
+    <link rel="stylesheet" href="assets/css/dgap/resource/combo.select.css">
+    <link rel="stylesheet" href="assets/scripts/jquery.fileupload/css/jquery.fileupload.css">
+    <!-- <link rel="stylesheet" href="assets/css/common/common.css"/> -->
+    <!-- <link rel="stylesheet" href="assets/styles/vendor/vendor.css" /> -->
+    <link rel="stylesheet" href="assets/styles/common/common.css" />
+    <link rel="stylesheet" href="assets/css/common/help.css" />
+    <link rel="stylesheet" href="assets/styles/login_common.css" />
+    <link rel="stylesheet" href="assets/styles/dashboard_common.css" />
+
+    <!--为ie9 单独引入下拉框css 兼容性-->
+    <!--[if IE 9]>
+    <link rel="stylesheet" href="assets/styles/common/IE9select.css" />
+    <![endif]-->
+        <!--uuid-->
+        <script src="libs/UUID.js"></script>
+        <!-- RSA加密 -->
+        <script src="libs/rsa/security.js"></script>
+        <!-- DES加密 -->
+        <!-- <script src="libs/rsa/tripledes.js"></script> -->
+        <script src="libs/rsa/tripledes.js"></script>
+        
+        <script src="libs/rsa/mode-ecb.js"></script>
+</head>
+
+<body>
+    <div class="gui-upgrade gui-hide">
+        <div class="wrap clearfix"><div class="upgrade-content"></div><span class="btn-close"></span></div>
+    </div>
+    <div data-ui-view="header"></div>
+    <div data-ui-view="appcx"></div>
+    <div data-ui-view="login" class="loginPageView"></div>
+    <div data-ui-view="mid" class="gui-mid-wrapper"></div>
+    <div data-ui-view="footer"></div>
+    <!--jqurey-->
+    <script src="assets/scripts/jquery-1.12.4.min.js"></script>
+   
+    <!-- <script src="assets/scripts/jquery-2.2.4.min.js"></script> -->
+    <script src="assets/scripts/underscore/underscore-min.js"></script>
+    <!-- <script src="assets/scripts/swf/swfupload.js"></script> -->
+    <!-- <script src="assets/scripts/jquery/jquery.min.js"></script> -->
+    <!-- <script src="assets/scripts/jBox/jBox.min.js"></script> -->
+    <!-- alert&confirm -->
+    <link rel="stylesheet" href="assets/scripts/sweetalert/sweetalert.css" />
+    <script src="assets/scripts/sweetalert/sweetalert.min.js"></script>
+    <script src="assets/scripts/alertBridge.js"></script>
+    <script src="assets/scripts/area.js"></script>
+    <!-- fancybox -->
+    <link href="assets/scripts/fancybox/jquery.fancybox.min.css" rel="stylesheet">
+    <script src="assets/scripts/fancybox/jquery.fancybox.min.js"></script>
+    <!-- <script src="libs/jquery/jquery-2.0.3.min.js"></script> -->
+    <!-- <script src="libs/jquery/jquery-migrate-1.2.1.js"></script> -->
+    <script src="libs/jquery/jquery.combo.select.js"></script>
+    <script src="libs/jquery/jquery.cookie-1.4.1.min.js"></script>
+    <!--bootstrap-->
+    <script src="libs/bootstrap/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
+    <!--BT表单验证-->
+    <script src="libs/bootstrap/bootstrap-3.3.5-dist/js/bootstrapValidator.js"></script>
+    <!-- 开关 -->
+    <script src="libs/bootstrap/bootstrap-3.3.5-dist/js/bootstrap-switch.js"></script>
+    <script src="assets/js/diretiveValide.js"></script>
+    <!--angularjs-->
+    <!-- <script src="libs/angular/angular.js"></script> -->
+    <script src="assets/scripts/angular.min.js"></script>
+    <script src="libs/angular/angular-cookies.min.js"></script>
+    <script src="libs/angular/angular-messages.min.js"></script>
+    <script src="libs/angular/angular-ui-router.js"></script>
+    <script src="libs/angular/ocLazyLoad.min.js"></script>
+    <!-- angular1.7.0 -->
+    <!--     <script src="assets/scripts/angular-1.7.0/angular.min.js"></script>
+    <script src="assets/scripts/angular-1.7.0/angular-cookies.min.js"></script>
+    <script src="assets/scripts/angular-1.7.0/angular-messages.min.js"></script>
+    <script src="assets/scripts/angular-1.7.0/ocLazyLoad.min.js"></script>
+    <script src="assets/scripts/angular-ui-router/angular-ui-router.js"></script> -->
+    <link rel="stylesheet" href="assets/scripts/angular-tooltips/angular-tooltips.min.css">
+    <script src="assets/scripts/angular-tooltips/angular-tooltips.min.js"></script>
+    <!--打印-->
+    <script src="assets/scripts/jquery.printarea.js"></script>
+    <!--datatable-->
+    <script src="libs/dataTable/js/jquery.dataTables.min.js"></script>
+    <script src="libs/dataTable/js/dataTables.bootstrap.min.js"></script>
+    <script src="assets/scripts/dataTable.config.js"></script>
+    <!--Data-->
+    <script src="libs/My97DatePicker/WdatePicker.js"></script>
+    <script src="libs/jquery/Date/Mydate.js"></script>
+    <!--ui-router-->
+    <script src="config_router/index_router.js"></script>
+    <script src="assets/scripts/directives.js"></script>
+
+    <!--easyui-->
+    <!-- <script src="libs/easyui/jquery.easyui.min.js"></script> -->
+    <script src="assets/scripts/jquery.easyui.min.js"></script>
+    <script src="libs/pccs.js"></script>
+    <!--imguplode-->
+    <script src="libs/bootstrap-fileinput-master/js/fileinput.min.js"></script>
+    <script src="libs/bootstrap-fileinput-master/js/fileinput_locale_zh.js"></script>
+    <!-- echarts -->
+    <script src="assets/scripts/echarts/echarts.custom.min.js"></script>
+    <script>
+    window.FileAPI = {
+        staticPath: 'assets/scripts/FileAPI/dist/'
+    };
+    </script>
+    <script src="assets/scripts/FileAPI/dist/FileAPI.min.js"></script>
+    <!--jq.qrcode-->
+    <script src="libs/jquery/jquery.qrcode.min.js"></script>
+    <!--cityselect-->
+    
+    <script src="assets/js/Commen.js" ></script>
+    <script src="assets/scripts/httpInterceptor.js"></script>
+    <script src="assets/scripts/app.js"></script>
+    <!--天地图-->
+    <script src="//api.tianditu.gov.cn/api?v=4.0&tk=0d56544309dd3a7c45f892a1b3d8c9d6"></script>
+    <!-- 超图 -->
+    <link href="assets/scripts/map/ol.css" rel="stylesheet" />
+    <script src="assets/scripts/map/ol.js"></script>
+    <script src="assets/scripts/map/iclient9-openlayers.min.js"></script>
+    <!-- G6 -->
+    <script src="assets/scripts/antv/g6.js"></script>
+    <script src="assets/scripts/antv/plugins.js"></script>
+</body>
+
+</html>

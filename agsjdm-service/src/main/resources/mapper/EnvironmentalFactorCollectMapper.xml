@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agsjdm.mapper.EnvironmentalFactorCollectMapper">
+
+    <select id="listByParams" parameterType="java.util.Map" resultType="com.sofn.agsjdm.model.EnvironmentalFactor">
+        select
+        *
+        from ENVIRONMENTAL_FACTOR
+        <where>
+            1 = 1
+            <if test="wetlandId != null and wetlandId != ''">
+                and WETLAND_ID = #{wetlandId}
+            </if>
+            <if test="airTem != null and airTem != '' or airTem==0">
+                and AIR_TEM::text like '%' || #{airTem} || '%'
+            </if>
+            <if test="accTem != null and accTem != '' or accTem==0">
+                and ACC_TEM::text like '%' || #{accTem} || '%'
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND OPERATOR_TIME &lt;= #{endTime}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                AND OPERATOR_TIME &gt;= #{startTime}
+            </if>
+            <if test="province != null and province != ''">
+                and PROVINCE = #{province}
+            </if>
+            <if test="city != null and city != ''">
+                and CITY = #{city}
+            </if>
+            <if test="county != null and county != ''">
+                and COUNTY = #{county}
+            </if>
+        </where>
+        order by OPERATOR_TIME desc
+    </select>
+
+</mapper>

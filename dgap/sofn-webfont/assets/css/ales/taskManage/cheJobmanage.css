@@ -1,0 +1,72 @@
+#bc_change{
+    background-color: #9d9d9d;
+    color: white;
+}
+.Sup_contain_section_contain{
+    margin: 20px auto;
+    font-size: 14px;
+}
+.Sup_contain_section_contain p{
+    margin-top: 20px;
+}
+.Sup_contain_section_contain select{
+    margin-right: 5px;
+    margin-left: 5px;
+    width: 100px;
+    font-size: 14px;
+}
+.Sup_contain_section_contain>input{
+    width: 140px;
+    vertical-align: bottom;
+}
+.Sup_contain_section_contain_01{
+    margin: 20px auto;
+
+}
+.Sup_contain_section_contain_01>p{
+    width: inherit;
+    text-align: right;
+}
+.Sup_contain_section_contain_01 table{
+    width: inherit;
+    font-size: 14px;
+}
+.Sup_contain_section_contain_01 table td,th{
+    text-align: left;
+    padding: 10px 0px;
+    border: 1px solid #9d9d9d;
+}
+.Sup_contain_section_contain_01 table td a{
+    margin: 0px 10px;
+}
+.Sup_contain_section_contain_01 table input{
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+.pagination-sm>li>a, .pagination-sm>li>span {
+    padding: 5px 20px;
+    font-size: 25px;
+    line-height: 1.5;
+}
+.Sup_contain_section_contain_head_button{
+    padding: 5px 20px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    color: white;
+    background-color: #4BA0D6;
+}
+.Sup_contain_section_contain_head_button a{
+    display: inline-block;
+    width: inherit;
+    height: inherit;
+}
+.Sup_contain_section_contain_head_button a:hover{
+    text-decoration: none;
+    color: inherit;
+}
+.fleft{
+    float: none;
+    text-align: right;
+}

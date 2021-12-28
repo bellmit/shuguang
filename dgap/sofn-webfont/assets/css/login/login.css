@@ -1,0 +1,138 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    overflow: hidden;
+}
+.login_text>img{
+    width: 1000px;
+}
+.login_bg{
+    text-align: center;
+    background-image: url("../../imgs/login/login_bg.png");
+    background-size: 100% 100%;
+}
+.login_box{
+    width: 1000px;
+    height: 500px;
+    background-size: 100% 100%;
+    background-image: url("../../imgs/login/login_bgbox.png");
+    /*background:rgba(255,255,255,0.1);*/
+    /*box-shadow:-1px 0 1px gray, /!*左边阴影*!/*/
+                /*1px 0 1px gray, /!*右边阴影*!/*/
+                /*0 -1px 1px gray, /!*顶部阴影*!/*/
+                /*0 1px 1px gray; /!*底边阴影*!/;*/
+    margin: auto;
+}
+.login_box .left>ul>li{
+    padding: 10px 5px;
+}
+.login_box .left{
+    width: 580px;
+    height: 500px;
+    /*margin-left: 40px;*/
+    text-align: center;
+}
+.login_box .left ul li:nth-of-type(1) img:nth-of-type(1){
+    width: 550px;
+    height:312px;
+    border-right: 1px solid grey;
+}
+.login_box .left ul li:nth-of-type(2) img:nth-of-type(1){
+    width: 450px;
+    height: 21px;
+    border-right: 1px solid grey;
+}
+.login_box .left ul li:nth-of-type(3) img:nth-of-type(1){
+    width: 560px;
+    height: 107px;
+    border-right: 1px solid grey;
+}
+.login_box .right{
+    width: 420px;
+    padding: 0px 20px;
+    position: relative;
+    color: white;
+    text-align: left;
+}
+.login_box .right>ul>li>ul>li{
+    width: 50%;
+    text-align: center;
+    padding:  0px 20px ;
+    /*margin: 0px 20px;*/
+    cursor: pointer;
+    border-bottom: 1px solid white;
+}
+.right_cut{
+    display: block;
+    height: 60px;
+    line-height: 60px;
+}
+.right_cut:hover{
+    border-bottom: 2px solid #FCB018;
+}
+.login_box .right{
+    /*padding: 0px 2px;*/
+}
+.login_box .right>ul>li>ul>li:nth-of-type(2){
+    /*margin-right: 4px;*/
+}
+.right_input{
+    position: absolute;
+    width: inherit;
+    top: 100px;
+    right: 0px;
+    padding: 0px 50px;
+}
+input{
+    border: none;
+    background-color: transparent;
+}
+.right_input p:nth-of-type(1){
+    /*width: 230px;*/
+    border: 1px solid white;
+    padding: 3px 25px;
+}
+.right_input p:nth-of-type(1) input,.right_input p:nth-of-type(2) input{
+    padding-left: 10px;
+}
+.right_input p:nth-of-type(2){
+    /*width: 230px;*/
+    border: 1px solid white;
+    padding: 3px 25px;
+    margin: 50px 0px;
+}
+.right_input p:nth-of-type(3) input{
+    border: 1px solid white;
+    width: 207px;
+    height: 30px;
+    padding-left: 5px;
+    border-radius: 0px;
+}
+.right_img{
+    cursor: pointer;
+    padding: 10px 0px;
+}
+.right_rem{
+    margin:0px 0px 50px 0px;
+    padding: 10px 10px;
+}
+.right_rem>span>input{
+    cursor: pointer;
+    width: 12px;
+    height: 12px;
+}
+.right_img>img{
+    width: 308px;
+}
+.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+    position: relative;
+    min-height: 1px;
+    padding-right: 0px;
+    padding-left: 0px;
+}
+/*系统选择*/
+.sysCheck a{
+
+}

@@ -1,0 +1,52 @@
+.Sup_contain_section_contain{
+    width: 1150px;
+    text-align: center;
+    font-size: 25px;
+    margin: 150px auto;
+}
+.Sup_contain_section_contain_ul{
+    width: inherit;
+    margin: auto;
+}
+.Sup_contain_section_contain_ul li{
+    margin-bottom: 20px;
+}
+.Sup_contain_section_contain_ul>li>ul>li:first-child{
+    width: 20%;
+    text-align: right;
+}
+.Sup_contain_section_contain_ul>li>ul>li:last-child{
+    width: 80%;
+    text-align: left;
+    padding-left: 40px;
+}
+.Sup_contain_section_contain_ul>li>ul>li:last-child input,select{
+    width: 60%;
+}
+#eare select{
+    width: 15%;
+
+}
+#eare select:nth-of-type(2){
+    margin: 0px 6%;
+}
+#accessory input{
+    width: 30%;
+}
+#accessory button{
+    width: 80px;
+    height: 39px;
+    line-height: 39px;
+    font-size: 20px;
+}
+.Sup_contain_section_contain>button{
+    width: 150px;
+    font-size: 20px;
+    height: 39px;
+    line-height: 39px;
+    margin: 0px 250px 0px 50px;
+}
+.Sup_contain_section p:nth-of-type(1){
+    font-size: 25px;
+    margin: 80px 0px 0px  50px;
+}

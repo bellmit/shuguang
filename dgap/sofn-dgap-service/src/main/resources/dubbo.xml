@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:idubbo="http://code.alibabatech.com/schema/idubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	http://code.alibabatech.com/schema/idubbo
+	http://code.alibabatech.com/schema/idubbo/idubbo.xsd"
+	default-lazy-init="false">
+	<!-- 提供方应用名称信息，这个相当于起一个名字，我们dubbo管理页面比较清晰是哪个应用暴露出来的 -->
+	<idubbo:application name="${dubbo.application.name}" logger="slf4j" />
+	<!-- 使用zookeeper注册中心暴露服务地址 -->
+	<idubbo:registry address="${dubbo.registry.address}" check="false"/>
+					 <!--file="${dubbo.cache.dir}/dubbo-${dubbo.application.name}.cache"/>-->
+	<!-- 用dubbo协议在xxxxx端口暴露服务 -->
+	<idubbo:protocol name="dubbo" port="${dubbo.protocol.port}" threads="${dubbo.protocol.threads}" serialization="kryo"/>
+	<!-- 服务端要暴露的服务接口,注解@com.alibaba.dubbo.config.annotation.Service -->
+	<idubbo:annotation package="com.sofn" />
+	<!-- 服务消费端配置 5000-->
+	<idubbo:consumer timeout="50000" loadbalance="leastactive" check="false" />
+	<idubbo:provider wait="60000" payload="104857600"/>
+</beans>

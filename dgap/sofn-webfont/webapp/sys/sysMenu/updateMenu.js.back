@@ -1,0 +1,83 @@
+//    angularjs数据传输
+var myapp=angular.module("myapp",[]);
+var mytype="";
+var myend="";
+    myapp.controller("updateMenu",function($scope,$http,$state){
+		$scope.id=window.localStorage.getItem("sys_sysMenu_id");
+		$http({
+			url:"/sofn-sys-web/sysMenu/findMenuById",
+			method:"post",
+			data:{
+				id:$scope.id
+			}
+		}).success(function(data){
+	     
+	     $("input[name='menuName']").val(data.sysMenu.menuName);
+    	 $("input[name='numbers']").val(data.sysMenu.numbers);
+    	 $("input[name='parentId']").val(data.sysMenu.parentId);
+    	 $("input[name='describes']").val(data.sysMenu.describes);
+    	 $("input[name='url']").val(data.sysMenu.url);
+    	 $("input[name='menuType']").val(data.sysMenu.menuType);
+    	 
+    	 $("input[name='menuValue']").val(data.sysMenu.menuValue);
+    	 $("input[name='image']").val(data.sysMenu.image);
+    	 $("input[name='reservedField1']").val(data.sysMenu.reservedField1);
+    	 $("input[name='status']").val(data.sysMenu.status);
+	     
+	     
+	     
+	      $("input[name='delFlag']").val(data.sysMenu.delFlag);
+	      $("input[name='createBy']").val(data.sysMenu.createBy);
+	     $("input[name='createTime']").val(data.sysMenu.createTime);
+	     
+	     $("input[name='id']").val(data.sysMenu.id);
+	     
+    	 
+		});
+		//
+        $scope.updateMenu = function(){
+        $scope.sysMenu.reservedField1 = $("input[name='reservedField1']").val();
+    	 		
+         $scope.sysMenu.menuName=$("input[name='menuName']").val();
+    	 $scope.sysMenu.numbers=$("input[name='numbers']").val();
+    	 $scope.sysMenu.parentId=$("input[name='parentId']").val();
+    	 $scope.sysMenu.describes=$("input[name='describes']").val();
+    	 $scope.sysMenu.url=$("input[name='url']").val();
+    	 $scope.sysMenu.menuType=$("input[name='menuType']").val();
+    	 
+    	 $scope.sysMenu.menuValue=$("input[name='menuValue']").val();
+    	 $scope.sysMenu.image=$("input[name='image']").val();
+    	 $scope.sysMenu.reservedField1=$("input[name='reservedField1']").val();
+    	 $scope.sysMenu.status=$("input[name='status']").val();
+	     
+	     
+	     
+	      $scope.sysMenu.delFlag=$("input[name='delFlag']").val();
+	      $scope.sysMenu.createBy=$("input[name='createBy']").val();
+	     $scope.sysMenu.createTime=$("input[name='createTime']").val();
+	     
+	     $scope.sysMenu.id=$("input[name='id']").val();
+        	
+            $http({
+                    url:"/sofn-sys-web/sysMenu/updateMenu",
+                    data:$scope.sysMenu,
+                    method:"post",
+                    //post传输方式   头信息
+                    headers: {
+                        post: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    }
+                }).success(function(data){
+                alert("修改成功");
+                $state.go("index.content.sys/sysMenu/list");
+            }).
+            error(function(){
+				alert("修改失败");
+            })
+        };
+		//清楚缓存
+		$scope.RemoveLocal=function(){
+			window.localStorage.removeItem("id");
+		};
+    });
+
+

@@ -1,0 +1,203 @@
+<link rel="stylesheet" href="assets/css/asms/subjSv/subjSvList.css"/>
+<div class="gui-mainBc">
+    <div class="gui-breadcrumbs">
+        <a href="">系统管理</a>&gt;
+        <a href="">用户管理</a>&gt;
+        <span>机构用户管理</span>
+    </div>
+    <div class="gui-section ">
+        <ul class="gui-tab ng-scope">
+            <li class="active"><a ui-sref="index.content.sys/user/sysSubjEntList">生产经营主体</a></li>
+            <li><a ui-sref="index.content.sys/user/sysSubjSvList">监管机构</a></li>
+            <li><a ui-sref="index.content.sys/user/sysSubjDtList">检测机构</a></li>
+            <li><a ui-sref="index.content.sys/user/sysSubjElList">执法机构</a></li>
+            <!--<li><a ui-sref="index.content.sys/user/sysSubjSPYBList">三品一标</a></li>-->
+        </ul>
+        <div class="">
+            <form id="queryForm" class=" gui-form-group " style="">
+                <span>组织形式</span>
+                <div class="gui-select">
+                    <select name="entityScale">
+                        <option value="">全部</option>
+                        <option ng-repeat="x in orgMode" value="{{x.id}}">{{x.dictName}}</option>
+                    </select>
+                </div>
+                <span>主体类别</span>
+                <div class="gui-select">
+                    <select name="entityType">
+                        <option value="">全部</option>
+                        <option ng-repeat="x in subjType" value="{{x.id}}">{{x.dictName}}</option>
+                    </select>
+                </div>
+                <span>账号来源</span>
+                <div class="gui-select">
+                    <select name="accountResource">
+                        <option value="">全部</option>
+                        <option ng-repeat="x in accountResource" value="{{x.dictValue}}">{{x.dictName}}</option>
+                    </select>
+                </div>
+                <div class="mt15">
+                    <span id="AnyArea">所属区域</span>
+                    <div class="gui-select">
+                        <select id="sheng" >
+                            <option value="">省</option>
+                        </select>
+                    </div>
+                    <div class="gui-select">
+                        <select id="shi" >
+                            <option value="">市</option>
+                        </select>
+                    </div>
+                    <div class="gui-select">
+                        <select id="xian" >
+                            <option value="">区/县</option>
+                        </select>
+                    </div>
+                    <span>认证类型</span>
+                    <div class="gui-select">
+                        <select name="spybLicType" ng-model="spybLicType">
+                            <option value="">全部</option>
+                            <option  ng-selected="{{x.dictValue == subjEntListQueryparams.entityType}}" ng-repeat="x in authenticationType" value="{{x.dictValue}}">{{x.dictName}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mt15">
+                    <span>所属行业</span>
+                    <div class="gui-select">
+                        <select name="entityIndustry">
+                            <option value="">全部</option>
+                            <option ng-repeat="x in industryType" value="{{x.id}}">{{x.dictName}}</option>
+                        </select>
+                    </div>
+                    <span>不良记录</span>
+                    <div class="gui-select">
+                        <select name="badRecord">
+                            <option value="">全部</option>
+                            <option value="0">无</option>
+                            <option value="1">有</option>
+                        </select>
+                    </div>
+                    <span>主体名称</span>
+                    <input class="gui-input" type="text" style="width: 150px;" placeholder="请输入主体名称" name="entName" maxlength="30"/>
+                    <button class="gui-btn" ng-click="querySubjEntList()">查询</button>
+                    <button class="gui-btn" ng-click="reloadArea()">
+                       重置</button>
+                </div>
+            </form>
+            <div class="gui-actions">
+                <button class="fr ml15 gui-btn intoSubjSv" id="importSubEnt">
+                    <i class="gui-icon icon-import"></i>批量导入</button>
+                <button class="fr ml15 gui-btn intoSubjSv"  ng-click="exportSubjEnt()">
+                    <i class="gui-icon icon-export"></i>批量导出</button>
+                <button class="fr ml15 gui-btn intoSubjSv" id="spybImportSubEnt" ng-click="openSpybImportModal()">
+                    <i class="gui-icon icon-import"></i>三品一标导入
+                </button>
+            </div>
+            <table id="entGrid"
+                   class="gui-table mt15" >
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade " id="importModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">批量导入生产经营主体</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div style="width: 500px">
+                        <form enctype="multipart/form-data">
+                            <input id="file-1"  type="file" name="file"  multiple=" true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="5">
+                            <br>
+                        </form>
+                        <a href="webapp\asms\subjEnt\subjEnt.xlsx" style="color:#0000FF;">生产经营主体-全部</a>  <br/>
+                        <a href="webapp\asms\subjEnt\subjEnt_personal.xlsx" style="color:#0000FF;">生产经营主体-个人</a>  <br/>
+                        <a href="webapp\asms\subjEnt\subjEnt_Cooperative.xlsx" style="color:#0000FF;">生产经营主体-合作社</a>  <br/>
+                        <a href="webapp\asms\subjEnt\subjEnt_familyForm.xlsx" style="color:#0000FF;">生产经营主体-家庭农场</a>  <br/>
+                        <a href="webapp\asms\subjEnt\subjEnt_enterprise.xlsx" style="color:#0000FF;">生产经营主体-企业</a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" data-dismiss="modal">关闭</button>
+                <button class="gui-btn" type="button" id="save" ng-click="importSubEnt()">提交</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+<!-- 模态框（Modal）三品一标导入-->
+<div class="modal fade " id="spybImportModal" tabindex="-1" role="dialog" aria-labelledby="spybModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid" style="margin-top: 80px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="spybModalTitle">三品一标数据导入</h4>
+            </div>
+            <div class="modal-body">
+                <form class="default_w_h modal-form form-horizontal" id="spybImportForm" name="spybImportForm" style="text-align: center" novalidate>
+                    <div class="form-item form-group">
+                        <label class="required" style="width: 150px;">共享系统访问地址</label>
+                        <input type="text" id="spybImportUrl" name="spybImportUrl" ng-model="spybImportParam.wsdl" class="gui-input form-control" style="width:90%" placeholder="请输入共享系统WebService接口地址" required>
+                        <span style="color:red;margin-left: 60px;" ng-show="spybImportForm.spybImportUrl.$invalid && submittingValidate">
+                            <span ng-show="spybImportForm.spybImportUrl.$error.required">共享系统访问地址不能为空</span>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label class="required" style="width: 150px;">有机认证访问令牌</label>
+                        <input type="text" id="organicCertificationToken"  ng-model="spybImportParam.organicCertificationToken" class="gui-input form-control" name="organicCertificationToken" style="width:90%" placeholder="请输入有机认证访问token" required>
+                        <span style="color:red;margin-left: 60px;" ng-show="spybImportForm.organicCertificationToken.$invalid && submittingValidate">
+                            <span ng-show="spybImportForm.organicCertificationToken.$error.required">有机认证访问令牌不能为空</span>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label class="required" style="width: 150px;">绿色认证访问令牌</label>
+                        <input type="text" id="greenCertificationToken"  ng-model="spybImportParam.greenCertificationToken" class="gui-input form-control" name="greenCertificationToken" style="width:90%" placeholder="请输入绿色认证访问token" required>
+                        <span style="color:red;margin-left: 60px;" ng-show="spybImportForm.greenCertificationToken.$invalid && submittingValidate">
+                            <span ng-show="spybImportForm.greenCertificationToken.$error.required">绿色认证访问令牌不能为空</span>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label class="required" style="width: 150px;">无公害认证访问令牌</label>
+                        <input type="text" id="nuisancelessCertificationToken"  ng-model="spybImportParam.nuisancelessCertificationToken" class="gui-input form-control" name="nuisancelessCertificationToken" style="width:90%" placeholder="请输入无公害认证访问token" required>
+                        <span style="color:red;margin-left: 60px;" ng-show="spybImportForm.nuisancelessCertificationToken.$invalid && submittingValidate">
+                            <span ng-show="spybImportForm.nuisancelessCertificationToken.$error.required">无公害认证访问令牌不能为空</span>
+                        </span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                <button type="button" id="spybimportBtn" class="gui-btn" ng-click="spybImport(spybImportForm.$valid)">导入</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+
+<!-- 模态框（Modal）三品一标导入状态弹框-->
+<div class="modal fade" id="spybImportStatusModal" tabindex="-1" role="dialog" aria-labelledby="spybLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-stylesm" style="padding-top:80px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="spybLabel">{{spybImportStatusModalTitle}}</h4>
+            </div>
+            <div class="modal-body" ng-bind-html="spybImportStatusModalContent | toTrustHtml">
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-show="spybImportStatusModalCancelButtonIsShow" class="gui-btn" ng-click="cancelSpybImportEventHandler()">取消</button>
+                <button type="button" ng-show="!spybImportStatusModalCancelButtonIsShow" class="gui-btn" ng-click="closeSpybImportEventHandler()">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+</div>

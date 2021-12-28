@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.DucssOperateLogMapper" >
+    
+    <select id="getLogList" parameterType="java.util.Map" resultType="com.sofn.ducss.model.DucssOperateLog">
+        select
+            id,
+            operate_type,
+            operate_detail,
+            operate_user_id,
+            operate_user_name,
+            operate_time,
+            level,
+            area_id
+        from ducss_operate_log
+        where area_id = #{areaId}
+        <if test="startDate != null and startDate != ''">
+            AND operate_time >=  DATE_FORMAT(#{startDate},'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="endDate != null and endDate != ''">
+            AND operate_time &lt; DATE_FORMAT(concat(#{endDate},' 23:59:59'),'%Y-%m-%d %H:%i:%S')
+        </if>
+        <if test="operateDetail != null and operateDetail != ''">
+            and operate_detail like concat('%',#{operateDetail},'%')
+        </if>
+        <if test="operateType != null and operateType != ''">
+            AND operate_type = #{operateType}
+        </if>
+        order by operate_time desc
+    </select>
+
+
+</mapper>

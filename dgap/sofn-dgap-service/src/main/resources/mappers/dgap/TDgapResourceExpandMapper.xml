@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.dao.dgap.TDgapResourceExpandMapper">
+    <resultMap id="BaseResultMap" type="com.sofn.model.generator.TDgapResource">
+        <id column="ID" property="id" jdbcType="VARCHAR"/>
+        <result column="NAME" property="name" jdbcType="VARCHAR"/>
+        <result column="TYPE" property="type" jdbcType="VARCHAR"/>
+        <result column="DIRECTORY_ID" property="directoryId" jdbcType="VARCHAR"/>
+        <result column="DESCRIPTION" property="description" jdbcType="VARCHAR"/>
+        <result column="WSDL_URL" property="wsdlUrl" jdbcType="VARCHAR"/>
+        <result column="FLAG" property="flag" jdbcType="VARCHAR"/>
+        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="DEL_FLAG" property="delFlag" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD1" property="reservedField1" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD2" property="reservedField2" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD3" property="reservedField3" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD4" property="reservedField4" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD5" property="reservedField5" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD6" property="reservedField6" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD7" property="reservedField7" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD8" property="reservedField8" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD9" property="reservedField9" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD10" property="reservedField10" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD11" property="reservedField11" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD12" property="reservedField12" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD13" property="reservedField13" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD14" property="reservedField14" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD15" property="reservedField15" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD16" property="reservedField16" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD17" property="reservedField17" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD18" property="reservedField18" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD19" property="reservedField19" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD20" property="reservedField20" jdbcType="VARCHAR"/>
+        <result column="DATA_NOTIFIER" property="dataNotifier" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <!--资源列表-->
+    <select id="getPageCount" resultType="java.lang.Long">
+        SELECT
+        COUNT (*)
+        FROM T_DGAP_RESOURCE T
+        LEFT JOIN T_DGAP_RESOURCE_DIRECTORY TD
+        ON T.DIRECTORY_ID=TD.ID
+        WHERE 1=1 AND T.DEL_FLAG='N'
+        <if test="resourcename !=null and resourcename !=''">
+            AND T.NAME LIKE '%' || #{resourcename} || '%'
+        </if>
+        <if test="type !=null and type!=''">
+            AND T.TYPE LIKE '%' || #{type} || '%'
+        </if>
+        <if test="directoryId !=null and directoryId!=''">
+            AND T.DIRECTORY_ID LIKE '%' || #{directoryId} || '%'
+        </if>
+    </select>
+    <!--通过资源名字级联查询-->
+    <select id="getResourceNameList" resultType="com.sofn.model.generator.TDgapResource">
+        SELECT
+        T.ID,
+        T.NAME,
+        T.UPDATE_TIME
+        FROM T_DGAP_RESOURCE T
+        LEFT JOIN T_DGAP_RESOURCE_DIRECTORY TD
+        ON T.DIRECTORY_ID=TD.ID
+        WHERE 1=1 AND T.DEL_FLAG='N' AND T.FLAG='A'
+        <if test="resourcename !=null and resourcename !=''">
+            AND T.NAME LIKE '%' || #{resourcename} || '%'
+        </if>
+        ORDER BY T.UPDATE_TIME DESC
+    </select>
+    <select id="getPagesList" resultType="java.util.Map">
+        SELECT * FROM(SELECT M.*,ROWNUM AS rn FROM (
+        SELECT
+        T.ID ,
+        T.NAME ,
+        T.TYPE ,
+        T.DIRECTORY_ID ,
+        TD.NAME TDNAME,
+        T.DESCRIPTION ,
+        T.WSDL_URL ,
+        T.CREATE_BY ,
+        T.FLAG,
+        T.CREATE_TIME,
+        T.UPDATE_TIME,
+        T.FILE_PATH,
+        TT.STATUS AS TABLE_STATUS
+        FROM T_DGAP_RESOURCE T
+        LEFT JOIN T_DGAP_RESOURCE_DIRECTORY TD
+        ON T.DIRECTORY_ID=TD.ID
+        LEFT JOIN T_DGAP_DATA_IMPORT_TABLE TT
+        ON T.ID = TT.RESOURCE_ID
+        WHERE 1=1 AND T.DEL_FLAG='N'
+        <if test="resourcename !=null and resourcename !=''">
+            AND T.NAME LIKE '%' || #{resourcename} || '%'
+        </if>
+        <if test="type !=null and type!=''">
+            AND T.TYPE LIKE '%' || #{type} || '%'
+        </if>
+        <if test="directoryId !=null and directoryId!=''">
+            AND T.DIRECTORY_ID LIKE '%' || #{directoryId} || '%'
+        </if>
+        ORDER BY T.UPDATE_TIME DESC
+        )M)
+        WHERE rn BETWEEN 1+#{pageSize}*(#{pageNum}-1) AND #{pageSize}*#{pageNum}
+
+    </select>
+    <!--资源管理修改数据回显-->
+    <select id="getResourceData" parameterType="string" resultType="map">
+        SELECT
+        T.ID ,
+        T.NAME ,
+        T.TYPE ,
+        T.DIRECTORY_ID ,
+        TD.NAME TDNAME,
+        T.DESCRIPTION ,
+        T.WSDL_URL ,
+        T.CREATE_BY ,
+        T.CREATE_TIME,
+        T.FLAG,
+        T.UPDATE_TIME,
+        T.FILE_PATH,
+        T.DATA_NOTIFIER,
+        ROWNUM AS rn
+        FROM T_DGAP_RESOURCE T
+        LEFT JOIN T_DGAP_RESOURCE_DIRECTORY TD
+        ON T.DIRECTORY_ID=TD.ID
+        WHERE 1=1 AND T.DEL_FLAG='N'
+       AND T.ID = #{id,jdbcType=VARCHAR}
+
+    </select>
+
+    <select id="selectRes" resultType="com.sofn.model.generator.TDgapResource">
+        SELECT * FROM T_DGAP_RESOURCE T WHERE 1=1 AND T.DEL_FLAG='N'
+    </select>
+
+    <select id="pagetest" resultType="com.sofn.model.generator.TDgapResource">
+        SELECT * FROM T_DGAP_RESOURCE T WHERE 1=1
+    </select>
+
+    <update id="batchDelete" parameterType="string">
+        update T_DGAP_RESOURCE set DEL_FLAG='Y'
+        where id in
+        <foreach collection="ids" index="index" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="getResourceByDirId" parameterType="string" resultType="com.sofn.model.generator.TDgapResource">
+          SELECT * FROM T_DGAP_RESOURCE WHERE DEL_FLAG ='N' AND DIRECTORY_ID = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getResourceDelFlagByResourceId" parameterType="string"
+            resultType="com.sofn.model.generator.TDgapResource">
+       SELECT DEL_FLAG FROM T_DGAP_RESOURCE WHERE ID=#{resourceId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getResourceByName" parameterType="java.lang.String" resultType="com.sofn.model.generator.TDgapResource">
+        SELECT T.ID,T.NAME FROM T_DGAP_RESOURCE T
+        <if test="resourceName !=null and resourceName!=''">
+            WHERE T.NAME LIKE '%' || #{resourceName,jdbcType=VARCHAR} || '%'
+        </if>
+    </select>
+
+    <select id="getResourceList" resultType="com.sofn.model.generator.TDgapResource">
+        SELECT
+        T.ID,
+        T.NAME,
+        T.UPDATE_TIME,
+        T.TYPE
+        FROM T_DGAP_RESOURCE T
+        LEFT JOIN T_DGAP_RESOURCE_DIRECTORY TD
+        ON T.DIRECTORY_ID=TD.ID
+        WHERE 1=1 AND T.DEL_FLAG='N' AND T.FLAG='A' AND T.ID not in (
+            SELECT TS.RESOURCE_ID FROM T_DGAP_TRANS TS WHERE TS.FLAG ='N'
+        )
+    </select>
+
+    <select id="getResourceByFilePath" parameterType="string" resultType="com.sofn.model.generator.TDgapResource">
+        SELECT * FROM T_DGAP_RESOURCE WHERE DEL_FLAG ='N' AND FILE_PATH = #{filepath,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getResourceByType" parameterType="string" resultType="com.sofn.model.generator.TDgapResource">
+        SELECT * FROM T_DGAP_RESOURCE WHERE DEL_FLAG ='N' AND TYPE = #{type,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getAllPath"  resultType="java.lang.String">
+        SELECT FILE_PATH FROM T_DGAP_RESOURCE WHERE DEL_FLAG ='N'
+    </select>
+
+    <select id="getAllPathsById" parameterType="string"  resultType="java.lang.String">
+        SELECT FILE_PATH FROM T_DGAP_RESOURCE WHERE DEL_FLAG ='N'AND ID != #{id,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

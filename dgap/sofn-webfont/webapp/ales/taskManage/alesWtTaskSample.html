@@ -1,0 +1,62 @@
+<link rel="stylesheet" href="assets/css/ales/taskManage/alesEntrustDetectionAdd.css"/>
+<div class="gui-breadcrumbs">
+    <a ui-sref="index.content.ales/taskManage/alesEntrustDetection">执法系统</a>&gt;
+    <a ui-sref="index.content.ales/taskManage/alesEntrustDetection">日常执法管理</a>&gt;
+    <a ui-sref="index.content.ales/taskManage/alesEntrustDetection">委托检测任务</a>&gt;
+    <a ui-sref="index.content.ales/taskManage/alesEntrustDetectionObject/alesEntrustDetectionObject">委托检测对象</a>&gt;
+    <span>抽样单列表</span>
+</div>
+<div class="gui-section">
+    <div id="myTabContent" class="tab-content  ">
+        <div class="tab-pane fade in active" id="YP_XX">
+            <ul>
+                <li class="gui-actions" style="height: 32px;line-height: 32px">
+                    样品信息
+                    <button ng-click="returnTaskList()" class=" fr gui-btn ml15">
+                        <i class="gui-icon icon-return"></i>返回任务列表
+                    </button>
+                    <button id="delete" ng-click="del()" class="fr gui-btn ml15">
+                        <i class="gui-icon icon-remove"></i>删除
+                    </button>
+                    <button id="update" ng-click="upd()" class=" fr gui-btn ml15">
+                        <i class="gui-icon icon-edit"></i>修改
+                    </button>
+                    <button id="insert" ng-click="addLine()" class=" fr gui-btn ml15">
+                        <i class="gui-icon icon-add"></i>新增
+                    </button>
+                </li>
+            </ul>
+            <!--<p>-->
+            <!--样品名称:<input type="text" name="productName" placeholder="请输入样品名称">&nbsp;&nbsp;&nbsp;&nbsp;-->
+            <!--产品编码:<input type="text" name="productCode" placeholder="请输入产品编码">&nbsp;&nbsp;&nbsp;&nbsp;-->
+            <!--样品编码:<input type="text" name="sampleCode" placeholder="请输入样品编码">&nbsp;&nbsp;&nbsp;&nbsp;-->
+            <!--关&nbsp;键&nbsp;字:<input type="text" name="queryCon" placeholder="请输入关键字">-->
+            <!--<button id="ToCheck" style="margin-left: 218px;">查询</button>-->
+            <!--<button  ng-click="cleanSelectModelQuery()">重置</button>-->
+            <!--</p>-->
+            <table id="grid"
+                   class="gui-table mt15" style="width:100%">
+            </table>
+        </div>
+    </div>
+</div>
+<!--查看模态框-->
+<div class="modal fade" id="product_info2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-style" style="width: 800px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                <h4 class="modal-title" id="myModalLabel1">查看检测信息详情</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <table id="productList" class="gui-table">
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span type="button" class="gui-btn" data-dismiss="modal">返回</span>
+            </div>
+        </div>
+    </div>
+</div>

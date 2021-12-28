@@ -1,0 +1,76 @@
+<link rel="stylesheet" href="assets/css/asms/check/cheRoutine.css"/>
+<div class="gui-breadcrumbs">
+    <a href="">信息查询</a>&gt;
+    <a href="">检测信息查询</a>&gt;
+    <span>检测任务查询</span>
+</div>
+<div class="gui-section">
+    <form class="gui-form-group">
+        <div class="clearfix gov-h">
+            <div class="mt15">
+
+                <div class="gui-mediaInline">
+
+                    <span>任务年度：</span>
+                    <input id="year" name="queryYear" style="width:180px" onfocus="WdatePicker({skin:'default',dateFmt:'yyyy'})" class="Wdate gui-input" placeholder="选择年份"/>
+
+                    <span>创建时间：</span>
+                    <input id="cdatebegin" style="cursor: pointer;width: 120px;" name="cstartTime" readonly="readonly" class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('cdateend');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'cdateend\')}'})"/>
+                    至
+                    <input id="cdateend" class="Wdate gui-input" name="cendTime" style="cursor: pointer;width: 120px;" readonly="readonly" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'cdatebegin\')}'})"/>
+
+
+                    <span>发布时间：</span>
+                    <input id="datebegin" style="cursor: pointer;width: 120px;" name="startTime" readonly="readonly" class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('dateend');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateend\')}'})"/>
+                    至
+                    <input id="dateend" class="Wdate gui-input" name="endTime" style="cursor: pointer;width: 120px;" readonly="readonly" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'datebegin\')}'})"/>
+
+                </div>
+
+                <div class="gui-mediaInline mt15">
+
+                    <span>任务类型：</span>
+                    <div class="gui-select" STYLE="width: 180px;">
+                        <select id="monitorClass" name="rmState">
+                            <option value="">不限</option>
+                            <option value="">例行监测</option>
+                            <option value="">专项监测</option>
+                            <option value="">监督抽查</option>
+                            <option value="">受托检测</option>
+                            <option value="">复检任务</option>
+                        </select>
+                    </div>
+
+                    <span>监测行业：</span>
+                    <div class="gui-select" STYLE="width: 180px;">
+                        <select id="industry" name="rmState">
+                            <option value="">不限</option>
+                        </select>
+                    </div>
+
+                    <span>发布机构：</span>
+                    <div class="gui-select" STYLE="width: 180px;">
+                        <select id="ReleaseUnit" name="rmState">
+                            <option value="">不限</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="gui-mediaInline mt15">
+                    <span>任务名称：</span>
+                    <input class="gui-input " maxlength="50"  type="text" name="taskName" id="taskName" placeholder="请输入任务名称..." style="width: 300px"/>
+                </div>
+                <div class="gui-mediaInline mt15" style="text-align: center">
+                    <span class="gui-btn" id="toCheck">查询</span>&nbsp;
+                    <span class="gui-btn" ng-click="resetTask()">重置</span>
+                </div>
+
+            </div>
+        </div>
+    </form>
+    <div class="Sup_contain_section_contain col-lg-12 col-xs-12 col-sm-12 col-md-12 ml25pr30" >
+        <table id="grid" class="gui-table mt15" style="width: 100%">
+        </table>
+    </div>
+</div>
+

@@ -1,0 +1,74 @@
+//    angularjs数据传输
+var myapp=angular.module("myapp",[]);
+var mytype="";
+var myend="";
+    myapp.controller("updateSysDept",function($scope,$http,$state){
+		$scope.id=window.localStorage.getItem("sys_sysDept_id");
+		$http({
+			url:"/sofn-sys-web/sysDept/findDeptById",
+			method:"post",
+			data:{
+				id:$scope.id
+			}
+		}).success(function(data){
+	     
+	      $("input[name='reservedField1']").val(data.sysDept.reservedField1);
+    	  $("input[name='deptLevel']").val(data.sysDept.deptLevel);
+    	  $("input[name='deptType']").val(data.sysDept.deptType);
+    	  $("input[name='regionId']").val(data.sysDept.regionId);
+    	  $("input[name='deptName']").val(data.sysDept.deptName);
+    	  $("input[name='deptManager']").val(data.sysDept.deptManager);
+    	  $("input[name='phone']").val(data.sysDept.phone);
+    	  $("input[name='status']").val(data.sysDept.status);
+	     
+	      $("input[name='delFlag']").val(data.sysDept.delFlag);
+	      $("input[name='createBy']").val(data.sysDept.createBy);
+	     $("input[name='createTime']").val(data.sysDept.createTime);
+	     
+	     $("input[name='isSubitem']").val(data.sysDept.isSubitem);
+	     $("input[name='parentId']").val(data.sysDept.parentId);
+	     $("input[name='id']").val(data.sysDept.id);
+	     
+    	 
+		});
+		//
+        $scope.updateSysDept = function(){
+        	$scope.sysDept.reservedField1 = $("input[name='reservedField1']").val();
+    	 	$scope.sysDept.deptLevel = $("input[name='deptLevel']").val();
+    	 	$scope.sysDept.deptType = $("input[name='deptType']").val();
+    	 	$scope.sysDept.regionId = $("input[name='regionId']").val();
+    	 	$scope.sysDept.deptName = $("input[name='deptName']").val();
+    	 	$scope.sysDept.deptManager = $("input[name='deptManager']").val();
+    	 	$scope.sysDept.phone = $("input[name='phone']").val();
+    	 	$scope.sysDept.status = $("input[name='status']").val();
+	    	
+	    	 $scope.sysDept.delFlag = $("input[name='delFlag']").val();
+	    	 $scope.sysDept.createBy = $("input[name='createBy']").val();
+	    	 $scope.sysDept.createTime = $("input[name='createTime']").val();
+	    	 
+	    	 $scope.sysDept.isSubitem = $("input[name='isSubitem']").val();
+	     	 $scope.sysDept.parentId = $("input[name='parentId']").val();
+	    	 $scope.sysDept.id = $("input[name='id']").val();
+            $http({
+                    url:"/sofn-sys-web/sysDept/updateSysDept",
+                    data:$scope.sysDept,
+                    method:"post",
+                    //post传输方式   头信息
+                    headers: {
+                        post: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    }
+                }).success(function(data){
+                alert("修改成功");
+                $state.go("index.content.sys/sysDept/list");
+            }).
+            error(function(){
+				alert("修改失败");
+            })
+        };
+		//清楚缓存
+		$scope.RemoveLocal=function(){
+			window.localStorage.removeItem("id");
+		};
+    });
+
+

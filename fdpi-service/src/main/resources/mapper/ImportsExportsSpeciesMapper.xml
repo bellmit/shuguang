@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.ImportsExportsSpeciesMapper" >
+    <insert id="addList" parameterType="java.util.List" useGeneratedKeys="false">
+      INSERT
+         INTO IMPORTS_EXPORTS_SPECIES
+           (ID,EXPORTS_ID,SPE_NAME,PRO_LEVEL,AMOUNT,SOURCE,PORT)
+        VALUES
+        <foreach item="item" index="index" collection="list" separator=",">
+       (#{item.id},#{item.exportsId},#{item.speName},#{item.proLevel},#{item.amount},#{item.source},#{item.port})
+        </foreach>
+       </insert>
+    <update id="updateImportsExportsSpecies">
+        update IMPORTS_EXPORTS_SPECIES
+        <set>
+            <if test="speName != null and speName!= ''">
+                SPE_NAME=#{speName},
+            </if>
+            <if test="proLevel != null and proLevel != ''">
+                PRO_LEVEL=#{proLevel},
+            </if>
+            <if test="amount != null and amount != ''">
+                AMOUNT=#{amount},
+            </if>
+            <if test="source != null and source != ''">
+                SOURCE=#{source},
+            </if>
+            <if test="port != null and amount != ''">
+                PORT=#{port},
+            </if>
+        </set>
+        where ID=#{id}
+    </update>
+    <insert id="insert1" parameterType="com.sofn.fdpi.model.ImportsExportsSpecies">
+        insert into IMPORTS_EXPORTS_SPECIES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="exportsId != null">EXPORTS_ID,</if>
+            <if test="speName != null">SPE_NAME,</if>
+            <if test="proLevel != null">PRO_LEVEL,</if>
+            <if test="amount != null">AMOUNT,</if>
+            <if test="source != null">SOURCE,</if>
+            <if test="port != null">PORT,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="exportsId != null">#{exportsId},</if>
+            <if test="speName != null">#{speName},</if>
+            <if test="proLevel != null">#{proLevel},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="source != null">#{source},</if>
+            <if test="port != null">#{port},</if>
+        </trim>
+    </insert>
+    <delete id="del">
+        delete from imports_exports_species where exports_id=#{id}
+    </delete>
+    <sql id="base">
+       ID,EXPORTS_ID,SPE_NAME,PRO_LEVEL,AMOUNT,SOURCE,PORT
+    </sql>
+    <insert id="insetBatch">
+        INSERT   INTO IMPORTS_EXPORTS_SPECIES
+        (ID,EXPORTS_ID,SPE_NAME,PRO_LEVEL,AMOUNT,SOURCE,PORT)
+        values
+        <foreach item="item" index="index" collection="list" separator=",">
+           (#{item.id},#{item.exportsId},#{item.speName},#{item.proLevel},#{item.amount},#{item.source},#{item.port})
+        </foreach>
+    </insert>
+    <select id="check" resultType="com.sofn.fdpi.vo.ImportExportCheck">
+SELECT
+	i.id,
+	i.IMP_AUFORM,
+	ies.SPE_NAME
+FROM
+	IMPORTS_EXPORTS i
+	, IMPORTS_EXPORTS_SPECIES ies where i.id = ies.EXPORTS_ID
+AND
+	i.IMP_AUFORM=#{impAuform}
+	and
+	ies.SPE_NAME=#{speName}
+
+    </select>
+</mapper>

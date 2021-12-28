@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.CustomsMapper" >
+    <resultMap id="rs1" type="com.sofn.fdpi.model.Customs">
+        <id column="ID" property="id"></id>
+        <result column="CUSTOMS_NUMBER" property="customsNumber"></result>
+        <result column="SPECIES_NAME" property="speciesNames"></result>
+        <result column="UNIT" property="units"></result>
+    </resultMap>
+    <select id="listParam" resultMap="rs1">
+        SELECT
+        P . ID,
+        P .CUSTOMS_NUMBER,
+        D .SPECIES_NAME,
+        D .UNIT
+        FROM
+        CUSTOMS P,
+        (
+        SELECT
+        c.CUSTOMS_ID,
+        REPLACE (wmsys.wm_concat (C.SPECIES_NAME),',','、') SPECIES_NAME,
+        REPLACE (wmsys.wm_concat (C.UNIT),',','、') UNIT
+        FROM
+        CUSTOMS_SPEC c
+        GROUP BY
+        CUSTOMS_ID
+        ) D
+        WHERE
+        P . ID = D .CUSTOMS_ID
+        <if test="customsNumber!=null and customsNumber!=''">
+            and    P .CUSTOMS_NUMBER like '%' || #{customsNumber} || '%'
+        </if>
+        <if test="speciesName!=null and speciesName!=''">
+            and  D.SPECIES_NAME like '%' || #{speciesName} || '%'
+        </if>
+        order by P .CREATE_TIME desc
+
+    </select>
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fyrpa.mapper.TargetOneManagerMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.fyrpa.model.TargetOneManager" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="target_type" property="targetType" jdbcType="VARCHAR" />
+    <result column="target_name" property="targetName" jdbcType="VARCHAR" />
+    <result column="add_person" property="addPerson" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="DATE" />
+    <result column="is_del" property="isDel" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, target_type, target_name, add_person,create_time, is_del,status,update_time
+  </sql>
+
+  <select id="selectTargetOneManagerById" resultType="com.sofn.fyrpa.model.TargetOneManager">
+    select <include refid="Base_Column_List"/>
+    from target_one_manager where id=#{id}
+    and is_del='N' and status='-1'
+  </select>
+
+  <select id="selectTargetOneManagerByName" resultType="com.sofn.fyrpa.model.TargetOneManager">
+    select <include refid="Base_Column_List"/>
+    from target_one_manager where target_name=#{isTargetName}
+    and is_del='N'
+  </select>
+
+  <select id="selectTargetOneManagerDatailsById" resultType="com.sofn.fyrpa.model.TargetOneManager">
+    select <include refid="Base_Column_List"/>
+    from target_one_manager where id=#{id}
+    and is_del='N'
+  </select>
+
+  <select id="selectTargetOneManagerList" resultType="com.sofn.fyrpa.model.TargetOneManager">
+    select <include refid="Base_Column_List"/>
+    from target_one_manager where  is_del='N' and status='1'
+  </select>
+
+  <select id="selectTargetOneManagerByNameList" resultType="com.sofn.fyrpa.model.TargetOneManager">
+    select <include refid="Base_Column_List"/>
+    from target_one_manager where target_name=#{targetName}
+    and is_del='N'
+  </select>
+
+
+</mapper>

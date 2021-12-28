@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysUserGroupMapper" >
+
+    <resultMap id="customResultMap" type="com.sofn.sys.model.SysUserGroup" >
+        <id column="ID" property="id" jdbcType="VARCHAR" />
+        <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+        <result column="GROUP_ID" property="groupId" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <insert id="batchSaveSysUserGroup" parameterType="java.util.Map">
+        INSERT INTO SYS_USER_GROUP (
+        ID,
+        USER_ID,
+        GROUP_ID )
+        values
+        <foreach collection="sysUserGroups" separator="," item="sysUserGroup">
+            (
+            #{sysUserGroup.id},
+            #{sysUserGroup.userId},
+            #{sysUserGroup.groupId}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="dropUserGroupsByUserId" parameterType="java.lang.String">
+        delete from SYS_USER_GROUP where user_id = #{userId}
+    </delete>
+    <select id="getUserGroupsByUserId" parameterType="java.lang.String" resultMap="customResultMap">
+        SELECT ID,
+            USER_ID,
+            GROUP_ID  from SYS_USER_GROUP
+        where USER_ID = #{userId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getCountOfGroupId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT count(*) from SYS_USER_GROUP
+        where GROUP_ID = #{groupId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteGroupRoleTable"  parameterType="java.lang.String">
+            delete from SYS_ROLE_GROUP a where a.GROUP_ID =  #{groupId}
+    </delete>
+
+
+    <select id="getRoleGroupHaveUserId" parameterType="java.util.Map" resultMap="customResultMap">
+        SELECT sug.ID,
+        sug.USER_ID,
+        sug.GROUP_ID
+        from SYS_USER_GROUP sug
+        left join sys_user  su on su.id = SUG.USER_ID
+        where sug.group_id = #{groupId}
+        and SU.ORGANIZATION_ID in (
+        <include refid="com.sofn.sys.mapper.CommonMapper.getOrgCanShowOrgIds">
+            <property name="appIds" value="#{appIds}"/>
+            <property name="carryProxyOrg" value="#{carryProxyOrg}"/>
+            <property name="carryChildren" value="#{carryChildren}"/>
+            <property name="orgId" value="#{orgId}"/>
+        </include>
+        )
+
+        <if test="userId != null and userId != ''">
+            OR  su.create_user_id = #{userId}
+
+        </if>
+
+    </select>
+</mapper>

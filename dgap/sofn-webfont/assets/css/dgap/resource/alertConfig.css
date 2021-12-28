@@ -1,0 +1,9 @@
+
+#attributeForm .form-item label{
+    width: 130px;
+    margin-left: -130px;
+}
+
+#attributeForm .form-item{
+	padding-left: 130px;
+}

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sofn.ducss.mapper.StoredProcedureMapper">
+  <resultMap id="BaseResultMap" type="com.sofn.ducss.model.StoredProcedure">
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="straw_type_data" jdbcType="VARCHAR" property="strawTypeData" />
+    <result column="year_data" jdbcType="VARCHAR" property="yearData" />
+    <result column="area_id_data" jdbcType="VARCHAR" property="areaIdData" />
+  </resultMap>
+  <insert id="insert" parameterType="com.sofn.ducss.model.StoredProcedure">
+    INSERT INTO stored_procedure
+    VALUES
+	(
+		#{storedProcedure.id},
+		#{storedProcedure.strawTypeData},
+	#{storedProcedure.yearData},
+	#{storedProcedure.areaIdData})
+  </insert>
+  <delete id="deleteById">
+    delete from stored_procedure where id = #{id}
+  </delete>
+  <select id="queryList" resultType="com.sofn.ducss.model.StoredProcedure">
+    SELECT
+	*
+    FROM
+	stored_procedure limit 1
+  </select>
+
+ <insert id="insertBatch">
+    INSERT INTO stored_procedure
+    VALUES
+    <foreach collection="list" item="item" separator=",">
+        (
+          #{item.id},
+          #{item.strawTypeData},
+          #{item.yearData},
+          #{item.areaIdData}
+        )
+    </foreach>
+ </insert>
+
+</mapper>

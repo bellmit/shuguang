@@ -1,0 +1,216 @@
+<link rel="stylesheet" href="assets/css/ales/taskManage/checkTaskInfo.css"/>
+<div class="gui-breadcrumbs">
+    <a href="">执法系统</a>&gt;
+    <a href="">日常执法管理</a>&gt;
+    <a href="">承担任务</a>&gt;
+    <span>查看详情</span>
+</div>
+    <div class=" gui-section gui-section-wid " >
+        <p class="Head_title_num mt15"><span name="OprTitle">操作</span> 监督抽查任务</p>
+        <!--info-->
+        <form class="bs-example bs-example-form " role="form" style="line-height: 30px">
+            <div class="">
+                <div class="">
+                    <div class="clearfix gov-h mt15">
+                        <span class="col-sm-3 col-lg-3 col-md-3" style="text-align: right;padding-right: 10px" style="text-align: right;padding-right: 10px">任务名称&nbsp;</span>
+                        <input  type="text" name="taskName"class="col-sm-6 col-lg-6 col-md-6 gui-input" placeholder="输入名称">
+                    </div>
+                    <div class="clearfix gov-h mt15">
+                        <span class="col-sm-3 col-lg-3 col-md-3" style="text-align: right;padding-right: 10px">年&nbsp;&nbsp;度&nbsp;</span>
+                        <input type="text" name="taskYear"class="col-sm-6 col-lg-6 col-md-6 gui-input" placeholder="输入年度">
+                    </div>
+                    <div class="clearfix gov-h mt15">
+                        <span class="col-sm-3 col-lg-3 col-md-3" style="text-align: right;padding-right: 10px">受检区域&nbsp;</span>
+                        <div class="col-sm-6 col-lg-6 col-md-6">
+                            <div class="gui-select" style="width: 100%;">
+                                <select name="taskAreaIds" class="col-sm-6 col-lg-6 col-md-6">
+                                    <option value="">省</option>
+                                    <option value="四川省">四川省</option>
+                                    <option value="福建省">福建省</option>
+                                    <option value="浙江省">浙江省</option>
+                                </select>
+                            </div>
+                            <div class="gui-select mt15" style="width: 100%;">
+                                <select name="taskAreaIdss" class="col-sm-6 col-lg-6 col-md-6">
+                                    <option value="">市</option>
+                                    <option value="成都市">成都市</option>
+                                    <option value="湖州市">湖州市</option>
+                                    <option value="南充市">南充市</option>
+                                </select>
+                            </div>
+                            <div class="gui-select mt15" style="width: 100%;">
+                                <select name="taskAreaIdx" class="col-sm-6 col-lg-6 col-md-6">
+                                    <option value="">县/区</option>
+                                    <option value="高新区">高新区</option>
+                                    <option value="武侯区">武侯区</option>
+                                    <option value="华阳区">华阳区</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="clearfix gov-h mt15">
+                        <span class="col-sm-3 col-lg-3 col-md-3" style="text-align: right;padding-right: 10px">任务时间&nbsp;</span>
+                        <input id="taskBeginTime" name="taskBeginTime" style="cursor: pointer;margin-right: 0px;" readonly="readonly" class="col-sm-3 col-lg-3 col-md-3 gui-input" type="text" onFocus="var endDate=$dp.$('taskEndTime');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'taskEndTime\')}'})"/>
+                        <!--<input  name="taskBeginTime" class="col-sm-3 col-lg-3 col-md-3 gui-input" readonly="readonly" id="taskBeginTime" onclick="SelectDate(this)" />-->
+                        <input id="taskEndTime" name="taskEndTime" class="col-sm-3 col-lg-3 col-md-3 gui-input" style="cursor: pointer" readonly="readonly" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'taskBeginTime\')}'})"/>
+                        <!--<input  name="taskEndTime" class="col-sm-3 col-lg-3 col-md-3 gui-input" readonly="readonly" id="taskEndTime" onclick="SelectDate(this)" />-->
+                    </div>
+                    <div class="clearfix gov-h mt15">
+                        <span class="col-sm-3 col-lg-3 col-md-3" style="text-align: right;padding-right: 10px">是否分离&nbsp;</span>
+                        <div class="gui-select col-sm-6 col-lg-6 col-md-6">
+                            <select name="taskIsSeparate" >
+                                <option value="1">是</option>
+                                <option value="0">否</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="clearfix gov-h mt15">
+                        <span class="col-sm-3 col-lg-3 col-md-3" style="text-align: right;padding-right: 10px">发布单位&nbsp;</span>
+                        <input type="text" name="taskReleaseUnit"class="col-sm-6 col-lg-6 col-md-6 gui-input">
+                    </div>
+                    <div class="clearfix gov-h mt15">
+                        <span class="col-sm-3 col-lg-3 col-md-3" style="text-align: right;padding-right: 10px">抽样信息上报截止时间&nbsp;</span>
+                        <input id="taskSampleDeadline" name="birthday" name="taskSampleDeadline" type="text" size="15" class="gui-input col-sm-6 col-lg-6 col-md-6"  onfocus = "WdatePicker({dateFmt:'yyyy-MM-dd '}) "/>
+                        <!--<input  name="taskSampleDeadline" class="col-sm-6 col-lg-6 col-md-6 gui-input" readonly="readonly" id="taskSampleDeadline" onclick="SelectDate(this)" />-->
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--btn-->
+        <p class="clearfix gov-h mt15" style="line-height: 30px;border-top: 1px solid #9d9d9d;padding-top: 10px;">
+            <span>抽查对象</span>
+            <button ng-click="addLine()" class="gui-btn fr">添加</button>
+            <button ng-click="updLine()" class="gui-btn fr ml15 mr15">修改</button>
+            <button ng-click="delLine()" class="gui-btn fr">删除</button>
+            &nbsp;&nbsp;&nbsp;
+            <button ui-sref="index.content.asms/check/checkTask" ng-click="infoSave()" class="gui-btn fr ml15 mr15">保存</button>
+            <button ui-sref="index.content.asms/check/checkTask" ng-click="cleanCookie()" class="gui-btn fr">取消</button>
+        </p>
+        <!--table-->
+        <div>
+            <form id="fjObj" >
+                <table class="gui-table mt15" id="Fjtable" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="allCkb"></th>
+                            <!--<th>序号</th>-->
+                            <th>产品种类</th>
+                            <th>产品名称</th>
+                            <th>抽样数量</th>
+                            <th>抽样单位</th>
+                            <th>检测单位</th>
+                            <th>开始时间</th>
+                            <th>结束时间</th>
+                            <th>检测标准</th>
+                            <th>判定标准</th>
+                        </tr>
+                    </thead>
+                    <tbody class="diy-input-nobody">
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+<!--model-->
+<div class="modal fade" id="bModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    <span id="modalTitle">title</span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form class="bs-example bs-example-form mb25" role="form">
+                    <div class="row" >
+                        <div class="">
+                            <div class="clearfix gov-h mt15">
+                                <span class="col-sm-3 col-lg-3 col-md-3" style="text-align: right;padding-right: 10px">产品种类</span>
+                                <div class="gui-select col-sm-6 col-lg-6 col-md-6">
+                                    <select class="" name="productType">
+                                        <option value="蔬菜">蔬菜</option>
+                                        <option value="水果">水果</option>
+                                        <option value="肉类">肉类</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="clearfix gov-h mt15">
+                                <span class="col-sm-3 col-lg-3 col-md-3" style="text-align: right;padding-right: 10px">产品名称</span>
+                                <div class="gui-select col-sm-6 col-lg-6 col-md-6">
+                                    <select class="" name="productName">
+                                        <option value="白菜">白菜</option>
+                                        <option value="苹果">苹果</option>
+                                        <option value="猪肉">猪肉</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="clearfix gov-h mt15">
+                                <span class="col-sm-3 col-lg-3 col-md-3" style="text-align: right;padding-right: 10px">任务时间&nbsp;</span>
+                                <input id="beginDate" name="taskBeginTime" style="cursor: pointer;margin-right: 0px;" readonly="readonly" class="col-sm-3 col-lg-3 col-md-3 gui-input" type="text" onFocus="var endDate=$dp.$('lessDate');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'lessDate\')}'})"/>
+                                <!--<input type="text" name="taskBeginTime"class="col-sm-3 col-lg-3 col-md-3 gui-input"  placeholder="任务时间起" onclick="SelectDate(this)">-->
+                                <input id="lessDate" name="taskEndTime" class="col-sm-3 col-lg-3 col-md-3 gui-input" style="cursor: pointer;margin-right: 0px;" readonly="readonly" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'beginDate\')}'})"/>
+                                <!--<input type="text" name="taskEndTime" class="col-sm-3 col-lg-3 col-md-3 gui-input" placeholder="任务时间止" onclick="SelectDate(this)">-->
+                            </div>
+                            <br/>
+                            <div class="clearfix gov-h mt15">
+                                <span class="col-sm-3 col-lg-3 col-md-3" style="text-align: right;padding-right: 10px">抽样单位</span>
+                                <div class="gui-select col-sm-6 col-lg-6 col-md-6">
+                                    <select class="" name="sampleUnitId">
+                                        <option value="北京市抽样中心">北京市抽样中心</option>
+                                        <option value="成都市抽样中心">成都市抽样中心</option>
+                                        <option value="绵阳市抽样中心">绵阳市抽样中心</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="clearfix gov-h mt15">
+                                <span class="col-sm-3 col-lg-3 col-md-3" style="text-align: right;padding-right: 10px">抽样数量&nbsp;</span>
+                                <input type="text" name="monitorNum"class="col-sm-6 col-lg-6 col-md-6 gui-input">
+                            </div>
+                            <br/>
+                            <div class="clearfix gov-h mt15">
+                                <span class="col-sm-3 col-lg-3 col-md-3" style="text-align: right;padding-right: 10px">监测单位</span>
+                                <div class="gui-select col-sm-6 col-lg-6 col-md-6">
+                                    <select class="" name="detectionUnitId">
+                                        <option value="北京市监测中心">北京市监测中心</option>
+                                        <option value="成都市监测中心">成都市监测中心</option>
+                                        <option value="绵阳市监测中心">绵阳市监测中心</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="clearfix gov-h mt15">
+                                <span class="col-sm-3 col-lg-3 col-md-3" style="text-align: right;padding-right: 10px">检测标准</span>
+                                <div class="gui-select col-sm-6 col-lg-6 col-md-6">
+                                    <select class="" name="detectionStandard">
+                                        <option value="GB/T 20769-2008">GB/T 20769-2008</option>
+                                        <option value="GB/T 20769-2006">GB/T 20769-2006</option>
+                                        <option value="GB/T 20769-2005">GB/T 20769-2005</option>
+                                        <option value="SN/T 2114-2008">SN/T 2114-2008</option>
+                                        <option value="GB 2763-2014">GB 2763-2014</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="clearfix gov-h mt15">
+                                <span class="col-sm-3 col-lg-3 col-md-3" style="text-align: right;padding-right: 10px">判定标准</span>
+                                <div class="gui-select col-sm-6 col-lg-6 col-md-6">
+                                    <select class="" name="judgeStandard">
+                                        <option value="北京市质检中心">北京市质检中心</option>
+                                        <option value="成都市质检中心">成都市质检中心</option>
+                                        <option value="绵阳市质检中心">绵阳市质检中心</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" ng-click="addObjLine()">保存</button>
+                <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>

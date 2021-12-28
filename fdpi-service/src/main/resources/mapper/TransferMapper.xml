@@ -1,0 +1,1791 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.TransferMapper" >
+
+    <resultMap id="signBoardMap" type="com.sofn.fdpi.vo.CompanySignVO">
+        <result column="SIGNBOARD_ID" property="signBoardId"></result>
+        <result column="CODE" property="code"></result>
+        <result column="SPECIES_ID" property="speciesId"></result>
+        <result column="SPECIES_NAME" property="speciesName"></result>
+    </resultMap>
+
+    <resultMap id="listTransfer" type="com.sofn.fdpi.vo.TransferVO">
+        <id column="ID" property="id"></id>
+        <result property="id" column="ID"></result>
+        <result property="transferStatus" column="TRANSFER_STATUS"></result>
+        <result property="opnion" column="OPNION"></result>
+        <result property="delFlag" column="DEL_FLAG"></result>
+        <result property="applyCode" column="APPLY_CODE"></result>
+        <result property="addContractName" column="ADD_CONTRACT_NAME"></result>
+        <result property="addContractId" column="ADD_CONTRACT_ID"></result>
+        <result property="addContractPath"  column="ADD_CONTRACT_PATH"></result>
+        <result property="reduceContractName" column="REDUCE_CONTRACT_NAME"></result>
+        <result property="reduceContractId" column="REDUCE_CONTRACT_ID"></result>
+        <result property="reduceContractPath" column="REDUCE_CONTRACT_PATH"></result>
+        <result property="assessmentName" column="ASSESSMENT_NAME"></result>
+        <result property="assessmentId" column="ASSESSMENT_ID"></result>
+        <result property="assessmentPath" column="ASSESSMENT_PATH"></result>
+        <result column="add_company_id" property="addCompanyVO.companyId"></result>
+        <result column="add_comp_name" property="addCompanyVO.compName"></result>
+        <result column="add_comp_type" property="addCompanyVO.compType"></result>
+        <result column="add_comp_province" property="addCompanyVO.compProvince"></result>
+        <result column="add_comp_city" property="addCompanyVO.compCity"></result>
+        <result column="add_comp_district" property="addCompanyVO.compDistrict"></result>
+        <result column="add_contact_address" property="addCompanyVO.contactAddress"></result>
+        <result column="add_post_address" property="addCompanyVO.postAddress"></result>
+        <result column="add_legal" property="addCompanyVO.legal"></result>
+        <result column="add_linkman" property="addCompanyVO.linkman"></result>
+        <result column="add_phone" property="addCompanyVO.phone"></result>
+        <result column="add_email" property="addCompanyVO.email"></result>
+        <result column="add_direcly_id" property="addCompanyVO.direclyId"></result>
+        <result column="add_provincial_id" property="addCompanyVO.provincialId"></result>
+        <result column="add_direct_org_level" property="addCompanyVO.directOrgLevel"></result>
+        <result column="reduce_company_id" property="reduceCompanyVO.companyId"></result>
+        <result column="reduce_comp_name" property="reduceCompanyVO.compName"></result>
+        <result column="reduce_comp_type" property="reduceCompanyVO.compType"></result>
+        <result column="reduce_comp_province" property="reduceCompanyVO.compProvince"></result>
+        <result column="reduce_comp_city" property="reduceCompanyVO.compCity"></result>
+        <result column="reduce_comp_district" property="reduceCompanyVO.compDistrict"></result>
+        <result column="reduce_contact_address" property="reduceCompanyVO.contactAddress"></result>
+        <result column="reduce_post_address" property="reduceCompanyVO.postAddress"></result>
+        <result column="reduce_legal" property="reduceCompanyVO.legal"></result>
+        <result column="reduce_linkman" property="reduceCompanyVO.linkman"></result>
+        <result column="reduce_phone" property="reduceCompanyVO.phone"></result>
+        <result column="reduce_email" property="reduceCompanyVO.email"></result>
+        <result column="reduce_direcly_id" property="reduceCompanyVO.direclyId"></result>
+        <result column="reduce_provincial_id" property="reduceCompanyVO.provincialId"></result>
+        <result column="reduce_direct_org_level" property="reduceCompanyVO.directOrgLevel"></result>
+        <result column="CREATE_TIME" property="createTime"></result>
+        <result column="CREATE_USER_ID" property="createUserId"></result>
+        <result column="REDUCE_USER_ID" property="reduceUserId"></result>
+        <result column="OP" property="op"></result>
+        <result column="IS_HAVE_PAPER" property="isHavePaper"></result>
+        <result column="SPE_NAME" property="speName"></result>
+        <result column="SPE_NUM" property="speNum"></result>
+        <collection column="id" property="speciesSelectList" ofType="com.sofn.fdpi.vo.SpeciesSelect" select="listSpeciesSelect">
+        </collection>
+    </resultMap>
+
+
+    <resultMap id="speciesMap" type="com.sofn.fdpi.vo.SpeciesSelect">
+        <result property="speciesId" column="SPE_ID"></result>
+        <result property="speciesName" column="SPE_NAME"></result>
+        <result property="speciesNum" column="SPE_NUM"></result>
+    </resultMap>
+
+
+    <resultMap id="companySpeciesMap" type="com.sofn.fdpi.vo.SpeciesSelect">
+        <result property="speciesId" column="SPECIES_ID"></result>
+        <result property="speciesName" column="COMP_ID"></result>
+        <result property="speciesNum" column="SPE_NUM"></result>
+    </resultMap>
+
+    <select id="listSpeciesSelect" resultMap="speciesMap">
+       SELECT
+            A.SPE_NAME,
+            A.SPE_NUM,
+            A.SPE_ID
+        FROM TRANSFER_SPE A
+        WHERE A.TRANSFER_ID=#{id}
+    </select>
+
+    <select id="getSpeciesSelect" resultMap="companySpeciesMap">
+       SELECT
+            A.COMP_ID,
+            A.SPE_NUM,
+            A.SPECIES_ID
+        FROM COMP_SPE_STOCK A
+        WHERE
+        1=1
+        AND A.COMP_ID=#{companyId}
+        AND A.SPECIES_ID=#{speciesId}
+    </select>
+
+
+
+    <select id="listSignByCompanyId" resultMap="signBoardMap">
+        SELECT
+            A.ID SIGNBOARD_ID,
+            A.CODE CODE,
+            B.ID SPECIES_ID,
+            B.SPE_NAME SPECIES_NAME
+        FROM
+            SIGNBOARD A
+            LEFT JOIN TB_SPECIES B ON A.SPE_ID = B.ID
+        WHERE
+            A.COMP_ID = #{companyId}
+            and (A.status='2' or  A.status='4')
+            ORDER BY A.SPE_ID
+    </select>
+
+    <select id="getTransferVO" resultMap="listTransfer">
+    SELECT
+    A.ID,
+    A.TRANSFER_STATUS,
+    A.APPLY_CODE,
+    A.OPNION,
+    A.DEL_FLAG,
+    A.ADD_CONTRACT_NAME,
+    A.ADD_CONTRACT_ID,
+    A.ADD_CONTRACT_PATH,
+    A.REDUCE_CONTRACT_NAME,
+    A.REDUCE_CONTRACT_ID,
+    A.REDUCE_CONTRACT_PATH,
+    A.ASSESSMENT_NAME,
+    A.ASSESSMENT_ID,
+    A.ASSESSMENT_PATH,
+    A.CREATE_TIME,
+    A.CREATE_USER_ID,
+    A.REDUCE_USER_ID,
+    A.IS_HAVE_PAPER,
+    B.id add_company_id,
+    B.comp_name add_comp_name,
+    B.comp_type add_comp_type,
+    B.comp_province add_comp_province,
+    B.comp_city add_comp_city,
+    B.comp_district add_comp_district,
+    B.contact_address add_contact_address,
+    B.post_address add_post_address,
+    B.legal add_legal,
+    B.linkman add_linkman,
+    B.phone add_phone,
+    B.email add_email,
+    B.direcly_id add_direcly_id,
+    B.provincial_id add_provincial_id,
+    B.DIRECT_ORG_LEVEL add_direct_org_level,
+    C.id reduce_company_id,
+    C.comp_name reduce_comp_name,
+    C.comp_type reduce_comp_type,
+    C.comp_province reduce_comp_province,
+    C.comp_city reduce_comp_city,
+    C.comp_district reduce_comp_district,
+    C.contact_address reduce_contact_address,
+    C.post_address reduce_post_address,
+    C.legal reduce_legal,
+    C.linkman reduce_linkman,
+    C.phone reduce_phone,
+    C.email reduce_email,
+    C.direcly_id reduce_direcly_id,
+    C.provincial_id reduce_provincial_id,
+    C.DIRECT_ORG_LEVEL reduce_direct_org_level,
+    'UNDO' OP
+    FROM
+    TRANSFER A
+    LEFT JOIN TB_COMP B ON A.ADD_COMPANY_ID = B.ID
+    LEFT JOIN TB_COMP C ON A.REDUCE_COMPANY_ID = C.ID
+    LEFT JOIN TRANSFER_SPE D ON A.ID = D.TRANSFER_ID
+    LEFT JOIN TB_SPECIES E ON E.ID = D.SPE_ID
+    WHERE
+    1=1
+    AND A.DEL_FLAG='N'
+    AND A.ID=#{transferId}
+    GROUP BY
+	A.ID,
+	A.TRANSFER_STATUS,
+	A.APPLY_CODE,
+	A.OPNION,
+	A.DEL_FLAG,
+	A.ADD_CONTRACT_NAME,
+	A.ADD_CONTRACT_ID,
+	A.ADD_CONTRACT_PATH,
+	A.ASSESSMENT_NAME,
+    A.ASSESSMENT_ID,
+    A.ASSESSMENT_PATH,
+	A.REDUCE_CONTRACT_NAME,
+	A.REDUCE_CONTRACT_ID,
+	A.REDUCE_CONTRACT_PATH,
+	A.CREATE_TIME,
+	A.CREATE_USER_ID,
+	A.REDUCE_USER_ID,
+	A.IS_HAVE_PAPER,
+	B.id,
+	B.comp_name,
+	B.comp_type,
+	B.comp_province,
+	B.comp_city,
+	B.comp_district,
+	B.contact_address,
+	B.post_address,
+	B.legal,
+	B.linkman,
+	B.phone,
+	B.email,
+	B.direcly_id,
+	B.provincial_id,
+	B.DIRECT_ORG_LEVEL,
+	C.id,
+	C.comp_name,
+	C.comp_type,
+	C.comp_province,
+	C.comp_city,
+	C.comp_district,
+	C.contact_address,
+	C.post_address,
+	C.legal,
+	C.linkman,
+	C.phone,
+	C.email,
+	C.direcly_id,
+	C.provincial_id,
+	C.DIRECT_ORG_LEVEL
+    </select>
+
+    <select id="listTransferVO" resultMap="listTransfer">
+        SELECT
+            A.ID,
+            A.TRANSFER_STATUS,
+            A.APPLY_CODE,
+            A.OPNION,
+            A.DEL_FLAG,
+            A.ADD_CONTRACT_NAME,
+            A.ADD_CONTRACT_ID,
+            A.ADD_CONTRACT_PATH,
+            A.REDUCE_CONTRACT_NAME,
+            A.REDUCE_CONTRACT_ID,
+            A.REDUCE_CONTRACT_PATH,
+            A.CREATE_TIME,
+            A.CREATE_USER_ID,
+            A.REDUCE_USER_ID,
+            A.ASSESSMENT_NAME,
+            A.ASSESSMENT_ID,
+            A.ASSESSMENT_PATH,
+            A.IS_HAVE_PAPER,
+            B.id add_company_id,
+            B.COMP_TYPE add_comp_type,
+            B.comp_name add_comp_name,
+            B.comp_province add_comp_province,
+            B.comp_city add_comp_city,
+            B.comp_district add_comp_district,
+            B.contact_address add_contact_address,
+            B.post_address add_post_address,
+            B.legal add_legal,
+            B.linkman add_linkman,
+            B.phone add_phone,
+            B.email add_email,
+            B.direcly_id add_direcly_id,
+            B.provincial_id add_provincial_id,
+            B.DIRECT_ORG_LEVEL add_direct_org_level,
+            C.id reduce_company_id,
+            C.comp_type reduce_comp_type,
+            C.comp_name reduce_comp_name,
+            C.comp_province reduce_comp_province,
+            C.comp_city reduce_comp_city,
+            C.comp_district reduce_comp_district,
+            C.contact_address reduce_contact_address,
+            C.post_address reduce_post_address,
+            C.legal reduce_legal,
+            C.linkman reduce_linkman,
+            C.phone reduce_phone,
+            C.email reduce_email,
+            C.direcly_id reduce_direcly_id,
+            C.provincial_id reduce_provincial_id,
+            C.DIRECT_ORG_LEVEL reduce_direct_org_level,
+            CASE WHEN A.TRANSFER_STATUS='5' AND C.DIRECLY_ID=#{curCompanyId} THEN 'JSQYSH'
+            WHEN A.TRANSFER_STATUS='1' AND B.DIRECLY_ID=#{curCompanyId} THEN 'ZJQYSH'
+            ELSE 'UNDO'
+            END OP,
+            ts.SPE_NAME,
+            ts.SPE_NUM
+        FROM
+        TRANSFER A
+        LEFT JOIN TB_COMP B ON A.ADD_COMPANY_ID = B.ID
+        LEFT JOIN TB_COMP C ON A.REDUCE_COMPANY_ID = C.ID
+        LEFT JOIN TRANSFER_SPE D ON A.ID = D.TRANSFER_ID
+        LEFT JOIN TB_SPECIES E ON E.ID = D.SPE_ID
+        LEFT JOIN (
+        SELECT C
+        .TRANSFER_ID,
+        REPLACE ( to_char(wmsys.wm_concat (  c.SPE_NUM )), ',', '、' ) SPE_NUM,
+        REPLACE ( to_char(wmsys.wm_concat ( D.SPE_NAME )), ',', '、' ) SPE_NAME
+        FROM
+        TRANSFER_SPE
+        C LEFT JOIN TB_SPECIES D ON C.SPE_ID = D.ID
+        AND D.DEL_FLAG = 'N'
+        GROUP BY
+        C.TRANSFER_ID) ts ON A.ID= ts.TRANSFER_ID
+        WHERE
+        1=1
+        AND A.DEL_FLAG='N'
+        <if test="queryType=='1'.toString()">
+            <if test="companyName!=null">
+                AND C.COMP_NAME LIKE #{companyName}
+            </if>
+            AND A.ADD_COMPANY_ID=#{curCompanyId}
+            AND (A.TRANSFER_STATUS>='0')
+        </if>
+        <if test="queryType=='2'.toString()">
+            <if test="companyName!=null">
+                AND B.COMP_NAME LIKE #{companyName}
+            </if>
+            AND A.REDUCE_COMPANY_ID=#{curCompanyId}
+            AND (A.TRANSFER_STATUS>='3')
+        </if>
+        <if test="queryType=='3'.toString()">
+            AND (
+            (C.DIRECLY_ID=#{curCompanyId} AND A.TRANSFER_STATUS>='5'
+            <if test="companyName!=null">
+                AND C.COMP_NAME LIKE #{companyName}
+            </if>
+            )
+            OR (
+            B.DIRECLY_ID=#{curCompanyId} AND A.TRANSFER_STATUS>='1'
+            <if test="companyName!=null">
+                AND B.COMP_NAME LIKE #{companyName}
+            </if>
+            )
+            )
+        </if>
+        <if test="ignore!=null and ignore!=''">
+            AND A.TRANSFER_STATUS!=#{ignore}
+        </if>
+        <if test="speciesId!=null">
+            AND D.SPE_ID = #{speciesId}
+        </if>
+        <if test="status!=null">
+            AND A.TRANSFER_STATUS =#{status}
+        </if>
+        <if test="transferId!=null">
+            AND A.ID=#{transferId}
+        </if>
+        <if test="createTimeStart!=null">
+            AND A.CREATE_TIME &gt;= to_timestamp(#{createTimeStart},'yyyy-MM-dd HH24:MI:SS')
+        </if>
+        <if test="createTimeEnd!=null">
+            AND F.CREATE_TIME &lt;= to_timestamp(#{createTimeEnd},'yyyy-MM-dd HH24:MI:SS')
+        </if>
+        <if test="isHavePaper!=null">
+            AND A.IS_HAVE_PAPER = #{isHavePaper}
+        </if>
+        GROUP BY
+        A.ID,
+        A.TRANSFER_STATUS,
+        A.APPLY_CODE,
+        A.OPNION,
+        A.DEL_FLAG,
+        A.ADD_CONTRACT_NAME,
+        A.ADD_CONTRACT_ID,
+        A.ADD_CONTRACT_PATH,
+        A.REDUCE_CONTRACT_NAME,
+        A.REDUCE_CONTRACT_ID,
+        A.REDUCE_CONTRACT_PATH,
+        A.CREATE_TIME,
+        A.CREATE_USER_ID,
+        A.REDUCE_USER_ID,
+        A.ASSESSMENT_NAME,
+        A.ASSESSMENT_ID,
+        A.ASSESSMENT_PATH,
+        A.IS_HAVE_PAPER,
+        B.id,
+        B.COMP_TYPE,
+        B.comp_name,
+        B.comp_province,
+        B.comp_city,
+        B.comp_district,
+        B.contact_address,
+        B.post_address,
+        B.legal,
+        B.linkman,
+        B.phone,
+        B.email,
+        B.direcly_id,
+        B.provincial_id,
+        B.DIRECT_ORG_LEVEL,
+        C.id,
+        C.comp_type,
+        C.comp_name,
+        C.comp_province,
+        C.comp_city,
+        C.comp_district,
+        C.contact_address,
+        C.post_address,
+        C.legal,
+        C.linkman,
+        C.phone,
+        C.email,
+        C.direcly_id,
+        C.provincial_id,
+        C.DIRECT_ORG_LEVEL,
+        ts.SPE_NAME,
+        ts.SPE_NUM
+        order by A.CREATE_TIME desc
+    </select>
+    <select id="listTransferVO2" resultMap="listTransfer">
+        SELECT
+        A.ID,
+        A.TRANSFER_STATUS,
+        A.APPLY_CODE,
+        A.OPNION,
+        A.DEL_FLAG,
+        A.ADD_CONTRACT_NAME,
+        A.ADD_CONTRACT_ID,
+        A.ADD_CONTRACT_PATH,
+        A.REDUCE_CONTRACT_NAME,
+        A.REDUCE_CONTRACT_ID,
+        A.REDUCE_CONTRACT_PATH,
+        A.CREATE_TIME,
+        A.CREATE_USER_ID,
+        A.REDUCE_USER_ID,
+        A.ASSESSMENT_NAME,
+        A.ASSESSMENT_ID,
+        A.ASSESSMENT_PATH,
+        A.IS_HAVE_PAPER,
+        B.id add_company_id,
+        B.COMP_TYPE add_comp_type,
+        B.comp_name add_comp_name,
+        B.comp_province add_comp_province,
+        B.comp_city add_comp_city,
+        B.comp_district add_comp_district,
+        B.contact_address add_contact_address,
+        B.post_address add_post_address,
+        B.legal add_legal,
+        B.linkman add_linkman,
+        B.phone add_phone,
+        B.email add_email,
+        B.direcly_id add_direcly_id,
+        B.provincial_id add_provincial_id,
+        B.DIRECT_ORG_LEVEL add_direct_org_level,
+        C.id reduce_company_id,
+        C.comp_type reduce_comp_type,
+        C.comp_name reduce_comp_name,
+        C.comp_province reduce_comp_province,
+        C.comp_city reduce_comp_city,
+        C.comp_district reduce_comp_district,
+        C.contact_address reduce_contact_address,
+        C.post_address reduce_post_address,
+        C.legal reduce_legal,
+        C.linkman reduce_linkman,
+        C.phone reduce_phone,
+        C.email reduce_email,
+        C.direcly_id reduce_direcly_id,
+        C.provincial_id reduce_provincial_id,
+        C.DIRECT_ORG_LEVEL reduce_direct_org_level,
+        CASE WHEN A.TRANSFER_STATUS='5' AND C.DIRECLY_ID=#{curCompanyId} THEN 'JSQYSH'
+        WHEN A.TRANSFER_STATUS='1' AND B.DIRECLY_ID=#{curCompanyId} THEN 'ZJQYSH'
+        ELSE 'UNDO'
+        END OP,
+        ts.SPE_NAME,
+        ts.SPE_NUM
+        FROM
+        TRANSFER A
+        LEFT JOIN TB_COMP B ON A.ADD_COMPANY_ID = B.ID
+        LEFT JOIN TB_COMP C ON A.REDUCE_COMPANY_ID = C.ID
+        LEFT JOIN TRANSFER_SPE D ON A.ID = D.TRANSFER_ID
+        LEFT JOIN TB_SPECIES E ON E.ID = D.SPE_ID
+        LEFT JOIN (
+        SELECT C
+        .TRANSFER_ID,
+        REPLACE ( to_char(wmsys.wm_concat (  c.SPE_NUM )), ',', '、' ) SPE_NUM,
+        REPLACE ( to_char(wmsys.wm_concat ( D.SPE_NAME )), ',', '、' ) SPE_NAME
+        FROM
+        TRANSFER_SPE
+        C LEFT JOIN TB_SPECIES D ON C.SPE_ID = D.ID
+        AND D.DEL_FLAG = 'N'
+        GROUP BY
+        C.TRANSFER_ID) ts ON A.ID= ts.TRANSFER_ID
+        WHERE
+        1=1
+        AND A.DEL_FLAG='N'
+        <if test="queryType=='1'.toString()">
+            <if test="companyName!=null">
+                AND C.COMP_NAME LIKE #{companyName}
+            </if>
+            AND A.ADD_COMPANY_ID=#{compId}
+            AND (A.TRANSFER_STATUS>='0')
+        </if>
+        <if test="queryType=='2'.toString()">
+            <if test="companyName!=null">
+                AND B.COMP_NAME LIKE #{companyName}
+            </if>
+            AND A.REDUCE_COMPANY_ID=#{compId}
+            AND (A.TRANSFER_STATUS>='3')
+        </if>
+        <if test="queryType=='3'.toString()">
+            <choose>
+                <!--区级初审权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.fdpi.constants.Constants@REGION_TYPE_COUNTY">
+                    and ((A.TRANSFER_STATUS >= '1' and B.COMP_DISTRICT = #{regionLastCode}) or (A.TRANSFER_STATUS >= '5' and C.COMP_DISTRICT = #{regionLastCode}))
+                    and A.TRANSFER_STATUS !='8'
+                </when>
+                <!--市级初审权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.fdpi.constants.Constants@REGION_TYPE_CITY">
+                    and ((A.TRANSFER_STATUS >= '1' and B.COMP_CITY = #{regionLastCode}) or (A.TRANSFER_STATUS >= '5' and C.COMP_CITY = #{regionLastCode}))
+                    and A.TRANSFER_STATUS !='8'
+                </when>
+                <!--省级有初审和复审权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.fdpi.constants.Constants@REGION_TYPE_PROVINCE">
+                    and ((A.TRANSFER_STATUS >= '1' and B.COMP_PROVINCE = #{regionLastCode}) or (A.TRANSFER_STATUS >= '5' and C.COMP_PROVINCE = #{regionLastCode}))
+                    and A.TRANSFER_STATUS !='8'
+                </when>
+            </choose>
+        </if>
+        <if test="ignore!=null and ignore!=''">
+            AND A.TRANSFER_STATUS!=#{ignore}
+        </if>
+        <if test="speciesId!=null">
+            AND D.SPE_ID = #{speciesId}
+        </if>
+        <if test="status!=null">
+            AND A.TRANSFER_STATUS =#{status}
+        </if>
+        <if test="transferId!=null">
+            AND A.ID=#{transferId}
+        </if>
+        <if test="createTimeStart!=null">
+            AND A.CREATE_TIME &gt;= to_timestamp(#{createTimeStart},'yyyy-MM-dd HH24:MI:SS')
+        </if>
+        <if test="createTimeEnd!=null">
+            AND F.CREATE_TIME &lt;= to_timestamp(#{createTimeEnd},'yyyy-MM-dd HH24:MI:SS')
+        </if>
+        <if test="isHavePaper!=null">
+            AND A.IS_HAVE_PAPER = #{isHavePaper}
+        </if>
+        GROUP BY
+        A.ID,
+        A.TRANSFER_STATUS,
+        A.APPLY_CODE,
+        A.OPNION,
+        A.DEL_FLAG,
+        A.ADD_CONTRACT_NAME,
+        A.ADD_CONTRACT_ID,
+        A.ADD_CONTRACT_PATH,
+        A.REDUCE_CONTRACT_NAME,
+        A.REDUCE_CONTRACT_ID,
+        A.REDUCE_CONTRACT_PATH,
+        A.CREATE_TIME,
+        A.CREATE_USER_ID,
+        A.REDUCE_USER_ID,
+        A.ASSESSMENT_NAME,
+        A.ASSESSMENT_ID,
+        A.ASSESSMENT_PATH,
+        A.IS_HAVE_PAPER,
+        B.id,
+        B.COMP_TYPE,
+        B.comp_name,
+        B.comp_province,
+        B.comp_city,
+        B.comp_district,
+        B.contact_address,
+        B.post_address,
+        B.legal,
+        B.linkman,
+        B.phone,
+        B.email,
+        B.direcly_id,
+        B.provincial_id,
+        B.DIRECT_ORG_LEVEL,
+        C.id,
+        C.comp_type,
+        C.comp_name,
+        C.comp_province,
+        C.comp_city,
+        C.comp_district,
+        C.contact_address,
+        C.post_address,
+        C.legal,
+        C.linkman,
+        C.phone,
+        C.email,
+        C.direcly_id,
+        C.provincial_id,
+        C.DIRECT_ORG_LEVEL,
+        ts.SPE_NAME,
+        ts.SPE_NUM
+        order by A.CREATE_TIME desc
+    </select>
+    <insert id="saveTransferProcess">
+        INSERT INTO
+        TRANSFER_PROCESS (
+        ID,
+        TRANSFER_ID,
+        OP_USER_ID,
+        CONTENT,
+        STATUS,
+        ADVICE,
+        OP_TIME
+        )VALUES
+        (#{ id },
+         #{ changeRecordId },
+         #{ opUserId },
+         #{ content },
+         #{ status },
+         #{ advice },
+         #{ conTime }
+        )
+    </insert>
+
+    <insert id="saveTransfer" parameterType="com.sofn.fdpi.vo.TransferVO">
+        insert into transfer(
+            ID,
+            ADD_COMPANY_ID,
+            TRANSFER_STATUS,
+            REDUCE_COMPANY_ID,
+            CREATE_USER_ID,
+            CREATE_TIME,
+            DEL_FLAG,
+            APPLY_CODE,
+            ADD_CONTRACT_NAME,
+            ADD_CONTRACT_ID,
+            ADD_CONTRACT_PATH,
+            IS_HAVE_PAPER,
+            IS_REPORT
+        )VALUES(
+            #{id,jdbcType=VARCHAR},
+            #{addCompanyVO.companyId,jdbcType=VARCHAR},
+            #{transferStatus,jdbcType=VARCHAR},
+            #{reduceCompanyVO.companyId,jdbcType=VARCHAR},
+            #{createUserId,jdbcType=VARCHAR},
+            #{createTime},
+            #{delFlag,jdbcType=VARCHAR},
+            #{applyCode,jdbcType=VARCHAR},
+            #{addContractName,jdbcType=VARCHAR},
+            #{addContractId,jdbcType=VARCHAR},
+            #{addContractPath,jdbcType=VARCHAR},
+            #{isHavePaper,jdbcType=VARCHAR},
+            #{isReport,jdbcType=VARCHAR}
+        )
+    </insert>
+
+
+    <insert id="saveTransferSpecies">
+        insert into transfer_spe (
+            ID,
+            TRANSFER_ID,
+            SPE_NAME,
+            SPE_NUM,
+            SPE_ID
+        ) values (
+            #{id},
+            #{transferId},
+            #{speName},
+            #{speNum},
+            #{speId}
+        )
+    </insert>
+
+
+    <delete id="deleteTransferSpecies">
+        delete from transfer_spe  a
+        where a.transfer_id=#{transferId}
+    </delete>
+
+    <update id="updateTransfer">
+        update transfer
+        <set>
+            <if test="addCompanyVO!=null">ADD_COMPANY_ID=#{addCompanyVO.companyId},</if>
+            <if test="transferStatus!=null and transferStatus!=''">TRANSFER_STATUS=#{transferStatus},</if>
+            <if test="reduceCompanyVO!=null">REDUCE_COMPANY_ID=#{reduceCompanyVO.companyId},</if>
+            <if test="createUserId!=null and createUserId!=''">CREATE_USER_ID=#{createUserId},</if>
+            <if test="createTime!=null">CREATE_TIME=#{createTime},</if>
+            <if test="updateUserId!=null and updateUserId!=''">UPDATE_USER_ID=#{updateUserId},</if>
+            <if test="updateTime!=null">UPDATE_TIME=#{updateTime},</if>
+            <if test="opnion!=null and opnion!=''">OPNION=#{opnion},</if>
+            <if test="applyCode!=null and applyCode!=''">APPLY_CODE=#{applyCode},</if>
+            <if test="delFlag!=null and delFlag!=''">DEL_FLAG=#{delFlag},</if>
+            <if test="addContractName!=null and addContractName!=''">ADD_CONTRACT_NAME=#{addContractName},</if>
+            <if test="addContractId!=null and addContractId!=''">ADD_CONTRACT_ID=#{addContractId},</if>
+            <if test="addContractPath!=null and addContractPath!=''">ADD_CONTRACT_PATH=#{addContractPath},</if>
+            <if test="reduceUserId!=null and reduceUserId!=''">REDUCE_USER_ID=#{reduceUserId},</if>
+            <if test="reduceContractName!=null and reduceContractName!=''">REDUCE_CONTRACT_NAME=#{reduceContractName},</if>
+            <if test="reduceContractId!=null and reduceContractId!=''">REDUCE_CONTRACT_ID=#{reduceContractId},</if>
+            <if test="reduceContractPath!=null and reduceContractPath!=''">REDUCE_CONTRACT_PATH=#{reduceContractPath},</if>
+            <if test="assessmentName!=null and assessmentName!=''">ASSESSMENT_NAME=#{assessmentName},</if>
+            <if test="assessmentId!=null and assessmentId!=''">ASSESSMENT_ID=#{assessmentId},</if>
+            <if test="assessmentPath!=null and assessmentPath!=''">ASSESSMENT_PATH=#{assessmentPath},</if>
+            <if test="isReport!=null">
+                IS_REPORT=#{isReport},
+            </if>
+        </set>
+        WHERE ID=#{id}
+    </update>
+    <update id="updateSign">
+        update signboard  set COMP_ID=#{companyId},TRANSFER_STATUS=#{signboardStatus} where code=#{code}
+    </update>
+
+
+
+    <resultMap id="transferProcess" type="com.sofn.fdpi.vo.TransferProcessVO">
+        <result column="SPE_ID" property="speId"></result>
+        <result column="SPE_NAME" property="speName"></result>
+        <result column="ADD_COMPANY_ID" property="addCompanyId"></result>
+        <result column="APPLY_CODE" property="applyCode"></result>
+        <result column="ADD_COMPANY_NAME" property="addCompanyName"></result>
+        <result column="REDUCE_COMPANY_ID" property="reduceCompanyId"></result>
+        <result column="REDUCE_COMPANY_NAME" property="reduceCompanyName"></result>
+        <result column="SPE_NUM" property="speNum"></result>
+        <result column="CREATE_TIME" property="createTime"></result>
+        <result column="CONTENT" property="opContent"></result>
+        <result column="ADVICE" property="advice"></result>
+        <result column="OP_USER_ID" property="opUserName"></result>
+        <result column="OP_TIME" property="opTime"></result>
+    </resultMap>
+    <select id="listTransferProcessVO" resultMap="transferProcess">
+        SELECT
+            A.SPE_ID,
+            B.APPLY_CODE,
+            A.SPE_NAME,
+            B.ADD_COMPANY_ID,
+            D.COMP_NAME ADD_COMPANY_NAME,
+            B.REDUCE_COMPANY_ID,
+            E.COMP_NAME REDUCE_COMPANY_NAME,
+            A.SPE_NUM,
+            B.CREATE_TIME,
+            C.CONTENT,
+            C.ADVICE,
+            C.OP_USER_ID,
+            C.OP_TIME
+        FROM
+            TRANSFER_SPE A,
+            TRANSFER B,
+            TRANSFER_PROCESS C,
+            TB_COMP D,
+            TB_COMP E
+        WHERE
+            A.TRANSFER_ID = B.ID
+            AND B.ID = C.TRANSFER_ID
+            AND B.ADD_COMPANY_ID = D.ID
+            AND B.REDUCE_COMPANY_ID = E.ID
+            AND (B.ADD_COMPANY_ID=#{companyId} or B.REDUCE_COMPANY_ID=#{companyId})
+        <if test="createTimeStart!=null">
+            AND B.CREATE_TIME &gt;= to_timestamp(#{createTimeStart},'yyyy-MM-dd HH24:MI:SS')
+        </if>
+        <if test="createTimeEnd!=null">
+            AND B.CREATE_TIME &lt;= to_timestamp(#{createTimeEnd},'yyyy-MM-dd HH24:MI:SS')
+        </if>
+        <if test="transferStatus!=null">
+            AND B.TRANSFER_STATUS=#{transferStatus}
+        </if>
+        <if test="isHavePaper!=null">
+            AND B.IS_HAVE_PAPER=#{isHavePaper}
+        </if>
+            ORDER BY C.OP_TIME DESC
+    </select>
+
+
+
+    <select id="getTransferProcessVO" resultMap="transferProcess">
+        SELECT
+        C.CONTENT,
+        C.ADVICE,
+        C.OP_USER_ID,
+        C.OP_TIME
+        FROM
+        TRANSFER_PROCESS C
+        WHERE
+        1=1
+        <if test="transferId!=null">
+            AND C.TRANSFER_ID=#{transferId}
+        </if>
+        ORDER BY C.OP_TIME DESC
+    </select>
+
+
+    <resultMap id="papersFilesInfoResultMap" type="com.sofn.fdpi.vo.FileManageVo">
+        <result column="ID" property="id" jdbcType="VARCHAR"></result>
+        <result column="FILE_NAME" property="fileName" jdbcType="VARCHAR"></result>
+        <result column="FILE_PATH" property="filePath" jdbcType="VARCHAR"></result>
+        <result column="FILE_TYPE" property="fileType" jdbcType="VARCHAR"></result>
+        <result column="FILE_SIZE" property="fileSize" jdbcType="VARCHAR"></result>
+    </resultMap>
+    <select id="listPapersFilesInfo" resultMap="papersFilesInfoResultMap">
+        select A.ID,
+            A.FILE_NAME,
+            A.FILE_PATH,
+            A.FILE_TYPE,
+            A.FILE_SIZE
+        FROM FILE_MANAGE A
+        left join PAPERS B on A.FILE_SOURCE_ID=B.ID
+        where B.COMP_ID=#{companyId}
+        AND B.IS_ENABLE='1'
+    </select>
+
+    <select id="listSignboardApplyListVo" resultType="com.sofn.fdpi.model.Signboard">
+        select
+        s.ID, s.SPE_ID, s.COMP_ID, s.CODE, s.IS_PEDIGREE, s.PRINT_STATUS, s.STATUS, s.SPE_UTILIZE_TYPE,
+        s.CREATE_USER_ID, s.CREATE_TIME, s.UPDATE_USER_ID, s.UPDATE_TIME, s.DEL_FLAG, s.ES_GEN,ts.SPE_NAME, ts.PEDIGREE,
+        tc.COMP_NAME, tc.REGION_IN_CH areaName, tc.CONTACT_ADDRESS
+        from SIGNBOARD s left join TB_SPECIES ts on s.SPE_ID = ts.ID left join TB_COMP tc on s.COMP_ID = tc.ID
+        <where>
+            1 = 1
+            <if test="signboardCodesString != null and signboardCodesString != ''">
+                and s.CODE IN  (${signboardCodesString})
+            </if>
+        </where>
+
+    </select>
+
+    <resultMap id="speciesCountResultMap" type="com.sofn.fdpi.vo.SpeciesCountVO">
+        <result column="ID" property="id" ></result>
+        <result column="REGION_NAME" property="regionName" ></result>
+        <result column="SPECIES_NAME" property="speciesName" ></result>
+        <result column="ADDNUMBER" property="addNumber" ></result>
+        <result column="REDUCENUMBER" property="reduceNumber" ></result>
+        <result column="CURNUMBER" property="curNumber"></result>
+    </resultMap>
+
+    <select id="listSpeciesCountVOProvince" resultMap="speciesCountResultMap">
+        SELECT
+        A.ID,
+        REPLACE ( SUBSTR( A.PARENT_NAMES, 7 ) || A.REGION_NAME, '/', '' ) REGION_NAME,
+        ( SELECT H.SPE_NAME FROM TB_SPECIES H WHERE H.ID = #{speciesId} ) AS SPECIES_NAME,
+        CASE WHEN SUM( G.ADDNUMBER ) IS NULL THEN 0 ELSE SUM( G.ADDNUMBER ) END  ADDNUMBER,
+	CASE WHEN SUM( G.REDUCENUMBER ) IS NULL THEN 0 ELSE ABS(SUM( G.REDUCENUMBER )) END  REDUCENUMBER,
+	CASE WHEN SUM( G.CURNUMBER ) IS NULL THEN 0 ELSE SUM( G.CURNUMBER ) END  CURNUMBER
+        FROM
+        SYS_REGION A
+        LEFT JOIN (
+        SELECT
+        A.COMP_ID,
+        E.COMP_NAME,
+        E.COMP_PROVINCE,
+        E.COMP_CITY,
+        E.COMP_DISTRICT,
+        CASE
+
+        WHEN C.CH_NUM IS NULL THEN
+        0 ELSE C.CH_NUM
+        END REDUCENUMBER,
+        CASE
+
+        WHEN D.CH_NUM IS NULL THEN
+        0 ELSE D.CH_NUM
+        END ADDNUMBER,
+        SUM( A.CH_NUM ) CURNUMBER
+        FROM
+        COMP_SPE_STOCKFLOW A
+        LEFT JOIN (
+        SELECT
+        B.COMP_ID,
+        B.SPECIES_ID,
+        SUM( B.CH_NUM ) CH_NUM
+        FROM
+        COMP_SPE_STOCKFLOW B
+        WHERE
+        B.CH_TIME >= to_timestamp( #{startTime}, 'YYYY-MM-DD HH24:mi:ss' )
+        AND B.CH_TIME &lt;=to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+        AND B.SPECIES_ID = #{speciesId}
+        AND B.IMPORT_MARK = '出库'
+        GROUP BY
+        B.COMP_ID,
+        B.SPECIES_ID
+        ) C ON A.COMP_ID = C.COMP_ID
+        AND A.SPECIES_ID = C.SPECIES_ID
+        LEFT JOIN (
+        SELECT
+        B.COMP_ID,
+        B.SPECIES_ID,
+        SUM( B.CH_NUM ) CH_NUM
+        FROM
+        COMP_SPE_STOCKFLOW B
+        WHERE
+        B.CH_TIME >= to_timestamp( #{startTime}, 'YYYY-MM-DD HH24:mi:ss' )
+        AND B.CH_TIME &lt;=to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+        AND B.SPECIES_ID = #{speciesId}
+        AND B.IMPORT_MARK = '入库'
+        GROUP BY
+        B.COMP_ID,
+        B.SPECIES_ID
+        ) D ON A.COMP_ID = D.COMP_ID
+        AND A.SPECIES_ID = D.SPECIES_ID
+        LEFT JOIN TB_COMP E ON A.COMP_ID = E.ID
+        WHERE
+        A.SPECIES_ID = #{speciesId}
+        GROUP BY
+        A.COMP_ID,
+        E.COMP_NAME,
+        E.COMP_PROVINCE,
+        E.COMP_CITY,
+        E.COMP_DISTRICT,
+        C.CH_NUM,
+        D.CH_NUM
+        ) G ON G.COMP_PROVINCE = A.ID
+        WHERE
+        A.REGION_TYPE = '1'
+        <if test="province!=null">
+            AND A.ID=#{province}
+        </if>
+        GROUP BY
+        A.ID,
+        REPLACE ( SUBSTR( A.PARENT_NAMES, 7 ) || A.REGION_NAME, '/', '' )
+        ORDER BY ${order}  ${orderSign}
+    </select>
+
+    <select id="sumSpeciesCountVOProvince" resultMap="speciesCountResultMap">
+        SELECT
+        CASE WHEN SUM( G.ADDNUMBER ) IS NULL THEN 0 ELSE SUM( G.ADDNUMBER ) END  ADDNUMBER,
+	CASE WHEN SUM( G.REDUCENUMBER ) IS NULL THEN 0 ELSE ABS(SUM( G.REDUCENUMBER )) END  REDUCENUMBER,
+	CASE WHEN SUM( G.CURNUMBER ) IS NULL THEN 0 ELSE SUM( G.CURNUMBER ) END  CURNUMBER
+        FROM
+        SYS_REGION A
+        LEFT JOIN (
+        SELECT
+        A.COMP_ID,
+        E.COMP_NAME,
+        E.COMP_PROVINCE,
+        E.COMP_CITY,
+        E.COMP_DISTRICT,
+        CASE
+
+        WHEN C.CH_NUM IS NULL THEN
+        0 ELSE C.CH_NUM
+        END REDUCENUMBER,
+        CASE
+
+        WHEN D.CH_NUM IS NULL THEN
+        0 ELSE D.CH_NUM
+        END ADDNUMBER,
+        SUM( A.CH_NUM ) CURNUMBER
+        FROM
+        COMP_SPE_STOCKFLOW A
+        LEFT JOIN (
+        SELECT
+        B.COMP_ID,
+        B.SPECIES_ID,
+        SUM( B.CH_NUM ) CH_NUM
+        FROM
+        COMP_SPE_STOCKFLOW B
+        WHERE
+        B.CH_TIME >= to_timestamp( #{startTime}, 'YYYY-MM-DD HH24:mi:ss' )
+        AND B.CH_TIME &lt;=to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+        AND B.SPECIES_ID = #{speciesId}
+        AND B.IMPORT_MARK = '出库'
+        GROUP BY
+        B.COMP_ID,
+        B.SPECIES_ID
+        ) C ON A.COMP_ID = C.COMP_ID
+        AND A.SPECIES_ID = C.SPECIES_ID
+        LEFT JOIN (
+        SELECT
+        B.COMP_ID,
+        B.SPECIES_ID,
+        SUM( B.CH_NUM ) CH_NUM
+        FROM
+        COMP_SPE_STOCKFLOW B
+        WHERE
+        B.CH_TIME >= to_timestamp( #{startTime}, 'YYYY-MM-DD HH24:mi:ss' )
+        AND B.CH_TIME &lt;=to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+        AND B.SPECIES_ID = #{speciesId}
+        AND B.IMPORT_MARK = '入库'
+        GROUP BY
+        B.COMP_ID,
+        B.SPECIES_ID
+        ) D ON A.COMP_ID = D.COMP_ID
+        AND A.SPECIES_ID = D.SPECIES_ID
+        LEFT JOIN TB_COMP E ON A.COMP_ID = E.ID
+        WHERE
+        A.SPECIES_ID = #{speciesId}
+        GROUP BY
+        A.COMP_ID,
+        E.COMP_NAME,
+        E.COMP_PROVINCE,
+        E.COMP_CITY,
+        E.COMP_DISTRICT,
+        C.CH_NUM,
+        D.CH_NUM
+        ) G ON G.COMP_PROVINCE = A.ID
+        WHERE
+        A.REGION_TYPE = '1'
+        <if test="province!=null">
+            AND A.ID=#{province}
+        </if>
+    </select>
+
+    <select id="listSpeciesCountVOCity" resultMap="speciesCountResultMap">
+         SELECT
+        A.ID,
+        REPLACE ( SUBSTR( A.PARENT_NAMES, 7 ) || A.REGION_NAME, '/', '' ) REGION_NAME,
+        ( SELECT H.SPE_NAME FROM TB_SPECIES H WHERE H.ID = #{speciesId} ) AS SPECIES_NAME,
+        CASE WHEN SUM( G.ADDNUMBER ) IS NULL THEN 0 ELSE SUM( G.ADDNUMBER ) END  ADDNUMBER,
+	CASE WHEN SUM( G.REDUCENUMBER ) IS NULL THEN 0 ELSE ABS(SUM( G.REDUCENUMBER )) END  REDUCENUMBER,
+	CASE WHEN SUM( G.CURNUMBER ) IS NULL THEN 0 ELSE SUM( G.CURNUMBER ) END  CURNUMBER
+        FROM
+        SYS_REGION A
+        LEFT JOIN (
+        SELECT
+        A.COMP_ID,
+        E.COMP_NAME,
+        E.COMP_PROVINCE,
+        E.COMP_CITY,
+        E.COMP_DISTRICT,
+        CASE
+
+        WHEN C.CH_NUM IS NULL THEN
+        0 ELSE C.CH_NUM
+        END REDUCENUMBER,
+        CASE
+
+        WHEN D.CH_NUM IS NULL THEN
+        0 ELSE D.CH_NUM
+        END ADDNUMBER,
+        SUM( A.CH_NUM ) CURNUMBER
+        FROM
+        COMP_SPE_STOCKFLOW A
+        LEFT JOIN (
+        SELECT
+        B.COMP_ID,
+        B.SPECIES_ID,
+        SUM( B.CH_NUM ) CH_NUM
+        FROM
+        COMP_SPE_STOCKFLOW B
+        WHERE
+        B.CH_TIME >= to_timestamp( #{startTime}, 'YYYY-MM-DD HH24:mi:ss' )
+        AND B.CH_TIME &lt;=to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+        AND B.SPECIES_ID = #{speciesId}
+        AND B.IMPORT_MARK = '出库'
+        GROUP BY
+        B.COMP_ID,
+        B.SPECIES_ID
+        ) C ON A.COMP_ID = C.COMP_ID
+        AND A.SPECIES_ID = C.SPECIES_ID
+        LEFT JOIN (
+        SELECT
+        B.COMP_ID,
+        B.SPECIES_ID,
+        SUM( B.CH_NUM ) CH_NUM
+        FROM
+        COMP_SPE_STOCKFLOW B
+        WHERE
+        B.CH_TIME >= to_timestamp( #{startTime}, 'YYYY-MM-DD HH24:mi:ss' )
+        AND B.CH_TIME &lt;=to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+        AND B.SPECIES_ID = #{speciesId}
+        AND B.IMPORT_MARK = '入库'
+        GROUP BY
+        B.COMP_ID,
+        B.SPECIES_ID
+        ) D ON A.COMP_ID = D.COMP_ID
+        AND A.SPECIES_ID = D.SPECIES_ID
+        LEFT JOIN TB_COMP E ON A.COMP_ID = E.ID
+        WHERE
+        A.SPECIES_ID = #{speciesId}
+        GROUP BY
+        A.COMP_ID,
+        E.COMP_NAME,
+        E.COMP_PROVINCE,
+        E.COMP_CITY,
+        E.COMP_DISTRICT,
+        C.CH_NUM,
+        D.CH_NUM
+        ) G ON G.COMP_CITY = A.ID
+        WHERE
+        A.REGION_TYPE = '2'
+        <if test="province!=null">
+            AND A.PARENT_ID=#{province}
+        </if>
+        GROUP BY
+        A.ID,
+        REPLACE ( SUBSTR( A.PARENT_NAMES, 7 ) || A.REGION_NAME, '/', '' )
+ORDER BY ${order}  ${orderSign}
+    </select>
+
+    <select id="sumSpeciesCountVOCity" resultMap="speciesCountResultMap">
+         SELECT
+        CASE WHEN SUM( G.ADDNUMBER ) IS NULL THEN 0 ELSE SUM( G.ADDNUMBER ) END  ADDNUMBER,
+	CASE WHEN SUM( G.REDUCENUMBER ) IS NULL THEN 0 ELSE ABS(SUM( G.REDUCENUMBER )) END  REDUCENUMBER,
+	CASE WHEN SUM( G.CURNUMBER ) IS NULL THEN 0 ELSE SUM( G.CURNUMBER ) END  CURNUMBER
+        FROM
+        SYS_REGION A
+        LEFT JOIN (
+        SELECT
+        A.COMP_ID,
+        E.COMP_NAME,
+        E.COMP_PROVINCE,
+        E.COMP_CITY,
+        E.COMP_DISTRICT,
+        CASE
+
+        WHEN C.CH_NUM IS NULL THEN
+        0 ELSE C.CH_NUM
+        END REDUCENUMBER,
+        CASE
+
+        WHEN D.CH_NUM IS NULL THEN
+        0 ELSE D.CH_NUM
+        END ADDNUMBER,
+        SUM( A.CH_NUM ) CURNUMBER
+        FROM
+        COMP_SPE_STOCKFLOW A
+        LEFT JOIN (
+        SELECT
+        B.COMP_ID,
+        B.SPECIES_ID,
+        SUM( B.CH_NUM ) CH_NUM
+        FROM
+        COMP_SPE_STOCKFLOW B
+        WHERE
+        B.CH_TIME >= to_timestamp( #{startTime}, 'YYYY-MM-DD HH24:mi:ss' )
+        AND B.CH_TIME &lt;=to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+        AND B.SPECIES_ID = #{speciesId}
+        AND B.IMPORT_MARK = '出库'
+        GROUP BY
+        B.COMP_ID,
+        B.SPECIES_ID
+        ) C ON A.COMP_ID = C.COMP_ID
+        AND A.SPECIES_ID = C.SPECIES_ID
+        LEFT JOIN (
+        SELECT
+        B.COMP_ID,
+        B.SPECIES_ID,
+        SUM( B.CH_NUM ) CH_NUM
+        FROM
+        COMP_SPE_STOCKFLOW B
+        WHERE
+        B.CH_TIME >= to_timestamp( #{startTime}, 'YYYY-MM-DD HH24:mi:ss' )
+        AND B.CH_TIME &lt;=to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+        AND B.SPECIES_ID = #{speciesId}
+        AND B.IMPORT_MARK = '入库'
+        GROUP BY
+        B.COMP_ID,
+        B.SPECIES_ID
+        ) D ON A.COMP_ID = D.COMP_ID
+        AND A.SPECIES_ID = D.SPECIES_ID
+        LEFT JOIN TB_COMP E ON A.COMP_ID = E.ID
+        WHERE
+        A.SPECIES_ID = #{speciesId}
+        GROUP BY
+        A.COMP_ID,
+        E.COMP_NAME,
+        E.COMP_PROVINCE,
+        E.COMP_CITY,
+        E.COMP_DISTRICT,
+        C.CH_NUM,
+        D.CH_NUM
+        ) G ON G.COMP_CITY = A.ID
+        WHERE
+        A.REGION_TYPE = '2'
+        <if test="province!=null">
+            AND A.PARENT_ID=#{province}
+        </if>
+    </select>
+
+
+
+    <select id="listSpeciesCountVOCountry" resultMap="speciesCountResultMap">
+         SELECT
+        A.ID,
+        REPLACE ( SUBSTR( A.PARENT_NAMES, 7 ) || A.REGION_NAME, '/', '' ) REGION_NAME,
+        ( SELECT H.SPE_NAME FROM TB_SPECIES H WHERE H.ID = #{speciesId} ) AS SPECIES_NAME,
+        CASE WHEN SUM( G.ADDNUMBER ) IS NULL THEN 0 ELSE SUM( G.ADDNUMBER ) END  ADDNUMBER,
+	CASE WHEN SUM( G.REDUCENUMBER ) IS NULL THEN 0 ELSE ABS(SUM( G.REDUCENUMBER )) END  REDUCENUMBER,
+	CASE WHEN SUM( G.CURNUMBER ) IS NULL THEN 0 ELSE SUM( G.CURNUMBER ) END  CURNUMBER
+        FROM
+        SYS_REGION A
+        LEFT JOIN (
+        SELECT
+        A.COMP_ID,
+        E.COMP_NAME,
+        E.COMP_PROVINCE,
+        E.COMP_CITY,
+        E.COMP_DISTRICT,
+        CASE
+
+        WHEN C.CH_NUM IS NULL THEN
+        0 ELSE C.CH_NUM
+        END REDUCENUMBER,
+        CASE
+
+        WHEN D.CH_NUM IS NULL THEN
+        0 ELSE D.CH_NUM
+        END ADDNUMBER,
+        SUM( A.CH_NUM ) CURNUMBER
+        FROM
+        COMP_SPE_STOCKFLOW A
+        LEFT JOIN (
+        SELECT
+        B.COMP_ID,
+        B.SPECIES_ID,
+        SUM( B.CH_NUM ) CH_NUM
+        FROM
+        COMP_SPE_STOCKFLOW B
+        WHERE
+        B.CH_TIME >= to_timestamp( #{startTime}, 'YYYY-MM-DD HH24:mi:ss' )
+        AND B.CH_TIME &lt;=to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+        AND B.SPECIES_ID = #{speciesId}
+        AND B.IMPORT_MARK = '出库'
+        GROUP BY
+        B.COMP_ID,
+        B.SPECIES_ID
+        ) C ON A.COMP_ID = C.COMP_ID
+        AND A.SPECIES_ID = C.SPECIES_ID
+        LEFT JOIN (
+        SELECT
+        B.COMP_ID,
+        B.SPECIES_ID,
+        SUM( B.CH_NUM ) CH_NUM
+        FROM
+        COMP_SPE_STOCKFLOW B
+        WHERE
+        B.CH_TIME >= to_timestamp( #{startTime}, 'YYYY-MM-DD HH24:mi:ss' )
+        AND B.CH_TIME &lt;=to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+        AND B.SPECIES_ID = #{speciesId}
+        AND B.IMPORT_MARK = '入库'
+        GROUP BY
+        B.COMP_ID,
+        B.SPECIES_ID
+        ) D ON A.COMP_ID = D.COMP_ID
+        AND A.SPECIES_ID = D.SPECIES_ID
+        LEFT JOIN TB_COMP E ON A.COMP_ID = E.ID
+        WHERE
+        A.SPECIES_ID = #{speciesId}
+        GROUP BY
+        A.COMP_ID,
+        E.COMP_NAME,
+        E.COMP_PROVINCE,
+        E.COMP_CITY,
+        E.COMP_DISTRICT,
+        C.CH_NUM,
+        D.CH_NUM
+        ) G ON G.COMP_DISTRICT = A.ID
+        WHERE
+        A.REGION_TYPE = '3'
+        <if test="province!=null">
+            AND A.PARENT_ID like #{province}
+        </if>
+        GROUP BY
+        A.ID,
+        REPLACE ( SUBSTR( A.PARENT_NAMES, 7 ) || A.REGION_NAME, '/', '' )
+ORDER BY ${order}  ${orderSign}
+    </select>
+
+    <select id="sumSpeciesCountVOCountry" resultMap="speciesCountResultMap">
+         SELECT
+        CASE WHEN SUM( G.ADDNUMBER ) IS NULL THEN 0 ELSE SUM( G.ADDNUMBER ) END  ADDNUMBER,
+	CASE WHEN SUM( G.REDUCENUMBER ) IS NULL THEN 0 ELSE ABS(SUM( G.REDUCENUMBER )) END  REDUCENUMBER,
+	CASE WHEN SUM( G.CURNUMBER ) IS NULL THEN 0 ELSE SUM( G.CURNUMBER ) END  CURNUMBER
+        FROM
+        SYS_REGION A
+        LEFT JOIN (
+        SELECT
+        A.COMP_ID,
+        E.COMP_NAME,
+        E.COMP_PROVINCE,
+        E.COMP_CITY,
+        E.COMP_DISTRICT,
+        CASE
+
+        WHEN C.CH_NUM IS NULL THEN
+        0 ELSE C.CH_NUM
+        END REDUCENUMBER,
+        CASE
+
+        WHEN D.CH_NUM IS NULL THEN
+        0 ELSE D.CH_NUM
+        END ADDNUMBER,
+        SUM( A.CH_NUM ) CURNUMBER
+        FROM
+        COMP_SPE_STOCKFLOW A
+        LEFT JOIN (
+        SELECT
+        B.COMP_ID,
+        B.SPECIES_ID,
+        SUM( B.CH_NUM ) CH_NUM
+        FROM
+        COMP_SPE_STOCKFLOW B
+        WHERE
+        B.CH_TIME >= to_timestamp( #{startTime}, 'YYYY-MM-DD HH24:mi:ss' )
+        AND B.CH_TIME &lt;=to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+        AND B.SPECIES_ID = #{speciesId}
+        AND B.IMPORT_MARK = '出库'
+        GROUP BY
+        B.COMP_ID,
+        B.SPECIES_ID
+        ) C ON A.COMP_ID = C.COMP_ID
+        AND A.SPECIES_ID = C.SPECIES_ID
+        LEFT JOIN (
+        SELECT
+        B.COMP_ID,
+        B.SPECIES_ID,
+        SUM( B.CH_NUM ) CH_NUM
+        FROM
+        COMP_SPE_STOCKFLOW B
+        WHERE
+        B.CH_TIME >= to_timestamp( #{startTime}, 'YYYY-MM-DD HH24:mi:ss' )
+        AND B.CH_TIME &lt;=to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+        AND B.SPECIES_ID = #{speciesId}
+        AND B.IMPORT_MARK = '入库'
+        GROUP BY
+        B.COMP_ID,
+        B.SPECIES_ID
+        ) D ON A.COMP_ID = D.COMP_ID
+        AND A.SPECIES_ID = D.SPECIES_ID
+        LEFT JOIN TB_COMP E ON A.COMP_ID = E.ID
+        WHERE
+        A.SPECIES_ID = #{speciesId}
+        GROUP BY
+        A.COMP_ID,
+        E.COMP_NAME,
+        E.COMP_PROVINCE,
+        E.COMP_CITY,
+        E.COMP_DISTRICT,
+        C.CH_NUM,
+        D.CH_NUM
+        ) G ON G.COMP_DISTRICT = A.ID
+        WHERE
+        A.REGION_TYPE = '3'
+        <if test="province!=null">
+            AND A.PARENT_ID like #{province}
+        </if>
+    </select>
+
+    <select id="listSpeciesCountVORegiones" resultMap="speciesCountResultMap">
+        SELECT
+        A.ID,
+        REPLACE ( SUBSTR( A.PARENT_NAMES, 7 ) || A.REGION_NAME, '/', '' ) REGION_NAME,
+        ( SELECT H.SPE_NAME FROM TB_SPECIES H WHERE H.ID = #{speciesId} ) AS SPECIES_NAME,
+        CASE WHEN SUM( G.ADDNUMBER ) IS NULL THEN 0 ELSE SUM( G.ADDNUMBER ) END  ADDNUMBER,
+	CASE WHEN SUM( G.REDUCENUMBER ) IS NULL THEN 0 ELSE ABS(SUM( G.REDUCENUMBER )) END  REDUCENUMBER,
+	CASE WHEN SUM( G.CURNUMBER ) IS NULL THEN 0 ELSE SUM( G.CURNUMBER ) END  CURNUMBER
+        FROM
+        SYS_REGION A
+        LEFT JOIN (
+        SELECT
+        A.COMP_ID,
+        E.COMP_NAME,
+        E.COMP_PROVINCE,
+        E.COMP_CITY,
+        E.COMP_DISTRICT,
+        CASE
+
+        WHEN C.CH_NUM IS NULL THEN
+        0 ELSE C.CH_NUM
+        END REDUCENUMBER,
+        CASE
+
+        WHEN D.CH_NUM IS NULL THEN
+        0 ELSE D.CH_NUM
+        END ADDNUMBER,
+        SUM( A.CH_NUM ) CURNUMBER
+        FROM
+        COMP_SPE_STOCKFLOW A
+        LEFT JOIN (
+        SELECT
+        B.COMP_ID,
+        B.SPECIES_ID,
+        SUM( B.CH_NUM ) CH_NUM
+        FROM
+        COMP_SPE_STOCKFLOW B
+        WHERE
+        B.CH_TIME >= to_timestamp( #{startTime}, 'YYYY-MM-DD HH24:mi:ss' )
+        AND B.CH_TIME &lt;=to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+        AND B.SPECIES_ID = #{speciesId}
+        AND B.IMPORT_MARK = '出库'
+        GROUP BY
+        B.COMP_ID,
+        B.SPECIES_ID
+        ) C ON A.COMP_ID = C.COMP_ID
+        AND A.SPECIES_ID = C.SPECIES_ID
+        LEFT JOIN (
+        SELECT
+        B.COMP_ID,
+        B.SPECIES_ID,
+        SUM( B.CH_NUM ) CH_NUM
+        FROM
+        COMP_SPE_STOCKFLOW B
+        WHERE
+        B.CH_TIME >= to_timestamp( #{startTime}, 'YYYY-MM-DD HH24:mi:ss' )
+        AND B.CH_TIME &lt;=to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+        AND B.SPECIES_ID = #{speciesId}
+        AND B.IMPORT_MARK = '入库'
+        GROUP BY
+        B.COMP_ID,
+        B.SPECIES_ID
+        ) D ON A.COMP_ID = D.COMP_ID
+        AND A.SPECIES_ID = D.SPECIES_ID
+        LEFT JOIN TB_COMP E ON A.COMP_ID = E.ID
+        WHERE
+        A.SPECIES_ID = #{speciesId}
+        GROUP BY
+        A.COMP_ID,
+        E.COMP_NAME,
+        E.COMP_PROVINCE,
+        E.COMP_CITY,
+        E.COMP_DISTRICT,
+        C.CH_NUM,
+        D.CH_NUM
+        ) G ON G.COMP_PROVINCE = A.ID OR G.COMP_CITY = A.ID  OR G.COMP_DISTRICT = A.ID
+        WHERE
+        A.ID IN ( ${regiones} )
+        GROUP BY
+        A.ID,
+        REPLACE ( SUBSTR( A.PARENT_NAMES, 7 ) || A.REGION_NAME, '/', '' )
+ORDER BY ${order}  ${orderSign}
+    </select>
+
+    <select id="sumSpeciesCountVORegiones" resultMap="speciesCountResultMap">
+        SELECT
+        CASE WHEN SUM( G.ADDNUMBER ) IS NULL THEN 0 ELSE SUM( G.ADDNUMBER ) END  ADDNUMBER,
+	CASE WHEN SUM( G.REDUCENUMBER ) IS NULL THEN 0 ELSE ABS(SUM( G.REDUCENUMBER )) END  REDUCENUMBER,
+	CASE WHEN SUM( G.CURNUMBER ) IS NULL THEN 0 ELSE SUM( G.CURNUMBER ) END  CURNUMBER
+        FROM
+        SYS_REGION A
+        LEFT JOIN (
+        SELECT
+        A.COMP_ID,
+        E.COMP_NAME,
+        E.COMP_PROVINCE,
+        E.COMP_CITY,
+        E.COMP_DISTRICT,
+        CASE
+
+        WHEN C.CH_NUM IS NULL THEN
+        0 ELSE C.CH_NUM
+        END REDUCENUMBER,
+        CASE
+
+        WHEN D.CH_NUM IS NULL THEN
+        0 ELSE D.CH_NUM
+        END ADDNUMBER,
+        SUM( A.CH_NUM ) CURNUMBER
+        FROM
+        COMP_SPE_STOCKFLOW A
+        LEFT JOIN (
+        SELECT
+        B.COMP_ID,
+        B.SPECIES_ID,
+        SUM( B.CH_NUM ) CH_NUM
+        FROM
+        COMP_SPE_STOCKFLOW B
+        WHERE
+        B.CH_TIME >= to_timestamp( #{startTime}, 'YYYY-MM-DD HH24:mi:ss' )
+        AND B.CH_TIME &lt;=to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+        AND B.SPECIES_ID = #{speciesId}
+        AND B.IMPORT_MARK = '出库'
+        GROUP BY
+        B.COMP_ID,
+        B.SPECIES_ID
+        ) C ON A.COMP_ID = C.COMP_ID
+        AND A.SPECIES_ID = C.SPECIES_ID
+        LEFT JOIN (
+        SELECT
+        B.COMP_ID,
+        B.SPECIES_ID,
+        SUM( B.CH_NUM ) CH_NUM
+        FROM
+        COMP_SPE_STOCKFLOW B
+        WHERE
+        B.CH_TIME >= to_timestamp( #{startTime}, 'YYYY-MM-DD HH24:mi:ss' )
+        AND B.CH_TIME &lt;=to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+        AND B.SPECIES_ID = #{speciesId}
+        AND B.IMPORT_MARK = '入库'
+        GROUP BY
+        B.COMP_ID,
+        B.SPECIES_ID
+        ) D ON A.COMP_ID = D.COMP_ID
+        AND A.SPECIES_ID = D.SPECIES_ID
+        LEFT JOIN TB_COMP E ON A.COMP_ID = E.ID
+        WHERE
+        A.SPECIES_ID = #{speciesId}
+        GROUP BY
+        A.COMP_ID,
+        E.COMP_NAME,
+        E.COMP_PROVINCE,
+        E.COMP_CITY,
+        E.COMP_DISTRICT,
+        C.CH_NUM,
+        D.CH_NUM
+        ) G ON G.COMP_PROVINCE = A.ID OR G.COMP_CITY = A.ID  OR G.COMP_DISTRICT = A.ID
+        WHERE
+        A.ID IN ( ${regiones} )
+    </select>
+
+
+    <resultMap id="compCountResultMap" type="com.sofn.fdpi.vo.CompCountVO">
+        <result column="ID" property="compId" ></result>
+        <result column="COMP_NAME" property="compName" ></result>
+        <result column="REGION_NAME" property="regionName" ></result>
+        <result column="SPE_NAME" property="speName" ></result>
+        <result column="SPE_NUM" property="speNumber" ></result>
+        <result column="ALLSIGNCOUNT" property="allsigncount" ></result>
+        <result column="LINESIGNCOUNT" property="linesigncount"></result>
+    </resultMap>
+    <select id="listCompanyCount" resultMap="compCountResultMap">
+    SELECT REPLACE
+        ( SUBSTR( D.PARENT_NAMES, 7 ) || D.REGION_NAME, '/', '' ) REGION_NAME,
+        A.ID,
+        A.COMP_NAME,
+        C.SPE_NAME,
+        B.SPE_NUM,
+        E.ALLSIGNCOUNT,
+        F.LINESIGNCOUNT
+    FROM
+        TB_COMP A
+        LEFT JOIN COMP_SPE_STOCK B ON A.ID = B.COMP_ID
+        LEFT JOIN TB_SPECIES C ON B.SPECIES_ID = C.ID
+        LEFT JOIN SYS_REGION D ON A.COMP_DISTRICT = D.ID
+        LEFT JOIN ( SELECT SPE_ID, COMP_ID, COUNT( * ) ALLSIGNCOUNT FROM SIGNBOARD WHERE STATUS = '1' OR STATUS = '2' OR STATUS = '4' GROUP BY SPE_ID, COMP_ID ) E ON E.SPE_ID = C.ID
+        AND E.COMP_ID = A.ID
+        LEFT JOIN ( SELECT SPE_ID, COMP_ID, COUNT( * ) LINESIGNCOUNT FROM SIGNBOARD WHERE STATUS = '2' OR STATUS = '4' GROUP BY SPE_ID, COMP_ID ) F ON F.SPE_ID = C.ID
+        AND F.COMP_ID = A.ID
+    WHERE C.ID=#{speciesId}
+        <if test="province!=null">
+            AND A.COMP_PROVINCE=#{province}
+        </if>
+        <if test="city!=null">
+            AND A.COMP_CITY=#{city}
+        </if>
+        <if test="country!=null">
+            AND A.COMP_DISTRICT=#{country}
+        </if>
+    ORDER BY ${order}  ${orderSign}
+    </select>
+    <select id="sumCompanyCount" resultMap="compCountResultMap">
+    SELECT
+        SUM(B.SPE_NUM) SPE_NUM,
+        SUM(E.ALLSIGNCOUNT) ALLSIGNCOUNT,
+        SUM(F.LINESIGNCOUNT) LINESIGNCOUNT
+    FROM
+        TB_COMP A
+        LEFT JOIN COMP_SPE_STOCK B ON A.ID = B.COMP_ID
+        LEFT JOIN TB_SPECIES C ON B.SPECIES_ID = C.ID
+        LEFT JOIN SYS_REGION D ON A.COMP_DISTRICT = D.ID
+        LEFT JOIN ( SELECT SPE_ID, COMP_ID, COUNT( * ) ALLSIGNCOUNT FROM SIGNBOARD WHERE STATUS = '1' OR STATUS = '2' OR STATUS = '4' GROUP BY SPE_ID, COMP_ID ) E ON E.SPE_ID = C.ID
+        AND E.COMP_ID = A.ID
+        LEFT JOIN ( SELECT SPE_ID, COMP_ID, COUNT( * ) LINESIGNCOUNT FROM SIGNBOARD WHERE STATUS = '2' OR STATUS = '4' GROUP BY SPE_ID, COMP_ID ) F ON F.SPE_ID = C.ID
+        AND F.COMP_ID = A.ID
+        WHERE C.ID=#{speciesId}
+        <if test="province!=null">
+            AND A.COMP_PROVINCE=#{province}
+        </if>
+        <if test="city!=null">
+            AND A.COMP_CITY=#{city}
+        </if>
+        <if test="country!=null">
+            AND A.COMP_DISTRICT=#{country}
+        </if>
+--     ORDER BY
+--         REGION_NAME,
+--         COMP_NAME,
+--         SPE_NAME
+
+    </select>
+
+    <insert id="saveTransferSign">
+        insert into transfer_sign(transfer_id,sign_code) values (
+        #{transferId},#{signCode}
+        )
+    </insert>
+    <delete id="deleteTransferSign">
+        delete from  transfer_sign where transfer_id=#{transferId}
+    </delete>
+    <resultMap id="transfersignMap" type="com.sofn.fdpi.model.TransferSign">
+        <result property="transferId" column="transfer_id"></result>
+        <result property="signCode" column="sign_code"></result>
+    </resultMap>
+
+    <select id="listTransferSign" resultMap="transfersignMap">
+        select * from transfer_sign where transfer_id=#{transferId}
+    </select>
+    <select id="checkOnProcess" resultType="com.sofn.fdpi.vo.CheckVo">
+    SELECT
+	ID
+FROM
+	CHANGE_REC
+WHERE
+	CHANGE_COMPANY = #{compId}
+	AND DEL_FLAG = 'N'
+	AND CHANGE_STATUS = '1'
+	AND SPECIES_ID=#{speId}
+</select>
+    <select id="getAssemblyId" resultMap="listTransfer">
+SELECT
+            A.ID,
+            B.comp_name add_comp_name,
+            C.comp_name reduce_comp_name,
+            ts.SPE_NAME,
+            ts.SPE_NUM,
+            A.APPLY_CODE,
+            A.CREATE_TIME
+        FROM
+        TRANSFER A
+        LEFT JOIN TB_COMP B ON A.ADD_COMPANY_ID = B.ID
+        LEFT JOIN TB_COMP C ON A.REDUCE_COMPANY_ID = C.ID
+        LEFT JOIN TRANSFER_SPE D ON A.ID = D.TRANSFER_ID
+        LEFT JOIN TB_SPECIES E ON E.ID = D.SPE_ID
+        LEFT JOIN (
+        SELECT
+        C
+        .TRANSFER_ID,
+        string_agg ( cast(C.SPE_NUM as char(100)) , '、' ) as SPE_NUM,
+        string_agg ( D.SPE_NAME , '、' ) as SPE_NAME
+        FROM
+        TRANSFER_SPE C
+        LEFT JOIN TB_SPECIES D ON C.SPE_ID = D.ID
+        AND D.DEL_FLAG = 'N'
+        GROUP BY
+        C.TRANSFER_ID) ts ON A.ID= ts.TRANSFER_ID
+        WHERE
+        1=1
+
+        AND A.DEL_FLAG='N'
+		and  A.ADD_COMPANY_ID =#{companyId}
+		and  a.TRANSFER_STATUS!='0'
+        <if test="createTimeStart!=null">
+            AND A.CREATE_TIME &gt;= to_timestamp(#{createTimeStart},'yyyy-MM-dd HH24:MI:SS')
+        </if>
+        <if test="createTimeEnd!=null">
+            AND A.CREATE_TIME &lt;= to_timestamp(#{createTimeEnd},'yyyy-MM-dd HH24:MI:SS'))
+        </if>
+		GROUP BY
+						A.ID,
+            B.comp_name,
+            C.comp_name,
+            ts.SPE_NAME,
+            ts.SPE_NUM,
+            A.APPLY_CODE,
+			A.CREATE_TIME
+    </select>
+    <select id="getInAssemblyId" resultType="com.sofn.fdpi.vo.TransferVO">
+        SELECT id from TRANSFER where DEL_FLAG='N'  and IS_REPORT='Y' and id=#{id}
+    </select>
+
+    <select id="getTodayMaxApplyNum" resultType="java.lang.String">
+        SELECT max(apply_code) FROM transfer WHERE apply_code like #{todayStr}||'%'
+    </select>
+    <select id="getAddCompIdById" resultType="java.lang.String">
+        SELECT add_company_id FROM transfer WHERE ID = #{id}
+    </select>
+
+
+    <select id="listSpeciesCountVORegionesNew" resultType="com.sofn.fdpi.vo.SpeciesCountVO">
+
+        select replace ( substr( sr.parent_names, 7 ) || sr.region_name, '/', '' ) region_name,
+        (select spe_name from tb_species where id =#{speciesId}) as species_name,
+        (select case when sum(css.spe_num) is null then 0 else sum(css.spe_num) end FROM tb_comp tc left join comp_spe_stock css on tc.id = css.comp_id
+        <where>
+            tc.comp_status = '1' and css.species_id = #{speciesId}
+            <choose>
+                <when test='regionType=="1"'>
+                    and tc.comp_province = sr.region_code
+                </when>
+                <when test='regionType=="2"'>
+                    and tc.comp_city = sr.region_code
+                </when>
+                <when test='regionType=="3"'>
+                    and tc.comp_district = sr.region_code
+                </when>
+                <when test='regionType=="4"'>
+                    and (tc.comp_province = sr.region_code or tc.comp_city = sr.region_code or tc.comp_district = sr.region_code)
+                </when>
+            </choose>
+        </where>
+        ) as stock,
+        (select case when sum(cssf.ch_num) is null then 0 else sum(cssf.ch_num) end FROM tb_comp tc left join comp_spe_stockflow cssf on tc.id = cssf.comp_id
+        <where>
+            tc.comp_status = '1' and cssf.species_id = #{speciesId}
+            and cssf.ch_time >= to_timestamp(#{startTime}, 'YYYY-MM-DD HH24:mi:ss')
+            and cssf.ch_time &lt;= to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+            <choose>
+                <when test='regionType=="1"'>
+                    and tc.comp_province = sr.region_code
+                </when>
+                <when test='regionType=="2"'>
+                    and tc.comp_city = sr.region_code
+                </when>
+                <when test='regionType=="3"'>
+                    and tc.comp_district = sr.region_code
+                </when>
+                <when test='regionType=="4"'>
+                    and (tc.comp_province = sr.region_code or tc.comp_city = sr.region_code or tc.comp_district = sr.region_code)
+                </when>
+            </choose>
+        </where>
+        ) as change,
+        (select count(1) FROM tb_comp tc left join signboard_apply sa on tc.id = sa.comp_id left join signboard_apply_list sal on sa.id = sal.apply_id
+        <where>
+            sa.process_status = '9' and tc.comp_status = '1' and sa.del_flag = 'N' and sa.spe_id = #{speciesId}
+            and sa.apply_time >= to_timestamp(#{startTime}, 'YYYY-MM-DD HH24:mi:ss')
+            and sa.apply_time &lt;= to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+            <choose>
+                <when test='regionType=="1"'>
+                    and tc.comp_province = sr.region_code
+                </when>
+                <when test='regionType=="2"'>
+                    and tc.comp_city = sr.region_code
+                </when>
+                <when test='regionType=="3"'>
+                    and tc.comp_district = sr.region_code
+                </when>
+                <when test='regionType=="4"'>
+                    and (tc.comp_province = sr.region_code or tc.comp_city = sr.region_code or tc.comp_district = sr.region_code)
+                </when>
+            </choose>
+        </where>
+        ) applyNum,
+        (select count(1) FROM tb_comp tc left join signboard_apply sa on tc.id = sa.comp_id left join signboard_apply_list sal on sa.id = sal.apply_id left join signboard s on s.id = sal.signboard_id
+        <where>
+            sa.process_status = '9' and tc.comp_status = '1' and (s.status = '2' or s.status = '4 ')and sa.del_flag = 'N' and sa.spe_id = #{speciesId}
+            and s.create_time >= to_timestamp(#{startTime}, 'YYYY-MM-DD HH24:mi:ss' )
+            and s.create_time &lt;=to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+            <choose>
+                <when test='regionType=="1"'>
+                    and  tc.comp_province = sr.region_code
+                </when>
+                <when test='regionType=="2"'>
+                    and tc.comp_city = sr.region_code
+                </when>
+                <when test='regionType=="3"'>
+                    and  tc.comp_district = sr.region_code
+                </when>
+                <when test='regionType=="4"'>
+                    and (tc.comp_province = sr.region_code or tc.comp_city = sr.region_code or tc.comp_district = sr.region_code)
+                </when>
+            </choose>
+        </where>
+        ) useNum,
+        (select count(1) FROM tb_comp tc left join papers p on tc.id = p.comp_id left join papers_spec ps on p.id = ps.papers_id
+        <where>
+            ps.spec_id = #{speciesId} and papers_type = '3' and p.par_status = '4' and ps.del_flag = 'N'
+            and p.update_time >= to_timestamp(#{startTime}, 'YYYY-MM-DD HH24:mi:ss')
+            and p.update_time &lt;= to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+            <choose>
+                <when test='regionType=="1"'>
+                    and  tc.comp_province = sr.region_code
+                </when>
+                <when test='regionType=="2"'>
+                    and  tc.comp_city = sr.region_code
+                </when>
+                <when test='regionType=="3"'>
+                    and  tc.comp_district = sr.region_code
+                </when>
+                <when test='regionType=="4"'>
+                    and (tc.comp_province = sr.region_code or tc.comp_city = sr.region_code or tc.comp_district = sr.region_code)
+                </when>
+            </choose>
+        </where>
+        ) bizNum,
+        (select count(1) FROM tb_comp tc left join papers p on tc.id = p.comp_id left join papers_spec ps on p.id = ps.papers_id
+        <where>
+            ps.spec_id = #{speciesId} and papers_type = '1' and p.par_status = '4' and ps.del_flag = 'N'
+            and p.update_time >= to_timestamp(#{startTime}, 'YYYY-MM-DD HH24:mi:ss')
+            and p.update_time &lt;= to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+            <choose>
+                <when test='regionType=="1"'>
+                    and  tc.comp_province = sr.region_code
+                </when>
+                <when test='regionType=="2"'>
+                    and tc.comp_city = sr.region_code
+                </when>
+                <when test='regionType=="3"'>
+                    and tc.comp_district = sr.region_code
+                </when>
+                <when test='regionType=="4"'>
+                    and (tc.comp_province = sr.region_code or tc.comp_city = sr.region_code or tc.comp_district = sr.region_code)
+                </when>
+            </choose>
+        </where>
+        ) breedNum
+        FROM sys_region sr
+        <where>
+            <if test="regionType == 1 or regionType == 2 or regionType == 3">
+               and sr.region_type = #{regionType}
+            </if>
+            <if test="regionCodes!=null">
+                and sr.region_code in
+                <foreach collection="regionCodes" index="index" item="item" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="regionCode_ != null and regionCode_!=''">
+                and  sr.region_code like #{regionCode_}
+            </if>
+        </where>
+    </select>
+</mapper>

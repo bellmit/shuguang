@@ -1,0 +1,54 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/pcstd_test
+    username: root
+    password: Wrlk4Rufp4uRtrXsj+yRP11S0TUVw9I5aqznV5ZekRp5gZergh0pS8iLTmkghX8hrm2Nm6czeye7n6UKGiTGUw==
+    publicKey: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBANcfx/ueRBAT/KCi7baD2YOQJ34OQjpuw0HBHaI8zQUizDl41NBEL2XUQP3CqhGPW/B9vp5aXqX+hZhpkKjW5MUCAwEAAQ==
+
+#    driver-class-name: oracle.jdbc.driver.OracleDriver
+#    username: eep
+#    password: eep
+#    url: jdbc:oracle:thin:@192.168.0.219:1521:orcl
+
+    druid:
+      async-init: true
+      initial-size: 15
+      max-active: 30
+      min-idle: 10
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      validation-query: SELECT 1 FROM DUAL
+      connection-properties: config.decrypt=true;config.decrypt.key=${spring.datasource.publicKey}
+      filter:
+        config:
+          enabled: true
+
+  redis:
+    cluster:
+      nodes: 10.0.50.103:7000,10.0.50.103:7001,10.0.50.103:7002,10.0.50.103:7003,10.0.50.103:7004,10.0.50.103:7005
+    timeout: 6000ms
+    lettuce:
+      pool:
+        max-active: 100
+        max-wait: -1ms
+        max-idle: 10
+    database: 0
+
+#sofn:
+#  excel:
+#    create-excel-path: C:\Users\zhouqingchun\Desktop\
+
+eureka:
+  instance:
+    hostname: ${spring.cloud.client.ip-address}
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://10.0.50.103:8880/eureka/

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="../../assets/css/monitor/base.css" />
+<div class="gui-breadcrumbs">
+    <span>样品信息</span>
+</div>
+<div class="gui-section">
+    <ul class="gui-tab" role="tablist">
+        <li role="presentation" class="pointer"><a id="newTask" role="tab" data-toggle="tab">抽样信息</a></li>
+        <li role="presentation" class="active"><a id="bePubTask" role="tab" data-toggle="tab">检测信息</a></li>
+    </ul>
+    <h2 id="Sup_contain_section_head_h1" class="text-center">
+            <span id="lixing" >
+                 农业农村部 农产品质量安全 {{monitorClass}} 检测信息
+               </span>
+        </h2>
+    <div class="form-group has-success has-feedback">
+        <div>
+            <form class="form-inline" role="form">
+                <table border="0" style="margin-left: 100px;width: 100px;height: 20%;float: left">
+                    <tr>
+                        <td rowspan="2">
+                            <div id="code1"></div>
+                        </td>
+                        <td ng-bind="">2016年例行监测--蔬菜第二次</td>
+                    </tr>
+                    <tr>
+                        <td ng-bind="">2016-07-31</td>
+                    </tr>
+                </table>
+                <table border="0" style="width: 100%;line-height: 100%;margin-top: 20px">
+                    <tr>
+                        <td height="35px" style="width: 50%" align="left"><span>产品编码</span>
+                            <input class="gui-input" type="text" ng-model="productTraceabilityCode" readonly="readonly">
+                        </td>
+                       <!-- <td rowspan="3">
+                            <div id="code" style="margin-left: 30px"></div>
+                        </td>-->
+                    </tr>
+                    <tr>
+                        <td height="35px" style="width: 50%" align="left"><span>样品编码</span>
+                            <input class="gui-input" type="text" ng-model="sampleCode" readonly="readonly">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="35px" align="left"><span>产品编码：追溯码、产品批次码、入市追溯凭证之一</span></td>
+                    </tr>
+                    <tr>
+                        <td height="35px" align="left" colspan="2"><span>样品编码规则:20位以内的大写字母、小写字母、数字及其组合</span></td>
+                    </tr>
+                </table>
+            </form>
+            <div class="Sup_contain_section_contain_01">
+                <div class="gui-actions">
+                    <span>样品名称：<input class="gui-input" ng-model="sampleName" ></span>
+                    <span class="gui-btn pull-right" ng-click="goBack()">返回</span>
+                    <span class="gui-btn pull-right mr15" ng-click="exportExcel()" id="export1"><i class="gui-icon icon-export"></i>导出</span>
+                </div>
+                <table id="grid" class="gui-table mt15" style="width: 100%">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

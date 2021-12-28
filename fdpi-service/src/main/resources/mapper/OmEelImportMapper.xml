@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.OmEelImportMapper" >
+    <select id="getOmHistogram" resultType="com.sofn.fdpi.vo.OmHistogram">
+        select sum(quantity) as quantity,sum(remaining_qty) as remainingQty,to_char(import_date,'YYYY-MM') as month
+        from om_import_form
+        where del_flag='N'
+        <if test="im!=null and im!=''">
+            and import_man=#{im}
+        </if>
+        <if test="cr!=null and cr!=''">
+            and credential like '%' || #{cr} || '%'
+        </if>
+        <if test="st!=null and en!=null">
+            and import_date BETWEEN #{st} and #{en}
+        </if>
+        group by to_char(import_date, 'YYYY-MM')
+        order by month
+    </select>
+
+
+    <select id="getImportList" resultType="com.sofn.fdpi.vo.SelectVo">
+        select import_man as key,(select comp_name from om_comp where om_comp.id=import_man) as val
+        from om_import_form
+        where del_flag='N'
+        group by import_man
+        having sum(remaining_qty)!=0
+    </select>
+
+    <select id="getOmEelImportFromByMap" parameterType="java.util.Map" resultType="com.sofn.fdpi.vo.OmImportFromVo">
+        select id as id,credential as credential,import_country as importCountry,
+        (select comp_name from om_comp where id=import_man) as importMan,
+        customs_list as customsList,import_date as importDate,size as size,
+        quantity as quantity,remaining_qty as remainingQty,
+        operator as operator,create_time as createTime,
+        (CASE WHEN size = '1' THEN quantity*600
+        WHEN size = '0' THEN quantity*900
+        ELSE 0 END) AS obversion,
+        (CASE WHEN size = '1' THEN remaining_qty*600
+        WHEN size = '0' THEN remaining_qty*900
+        ELSE 0 END) AS remaining_qty_convert
+        from om_import_form
+        <where>
+            del_flag='N'
+            <if test="importCountry!= null and importCountry!=''">
+                and import_country=#{importCountry}
+            </if>
+            <if test="importMan!=null and importMan!=''">
+                and import_man=#{importMan}
+            </if>
+            <if test="importDate!=null">
+                and import_date=#{importDate}
+            </if>
+            <if test="level!=null and level!=''">
+                <!-- 此处是第三方进口企业的情况 -->
+                <if test="level=='T'.toString()">
+                    and create_user_id=#{param}
+                </if>
+                <!-- 此处是省级用户的情况-->
+                <if test="level=='P'.toString()">
+                    and province=#{param}
+                </if>
+                <!-- 部级用户的话就不需要加其他什么限制了-->
+            </if>
+            <if test="credential!=null and credential!=''">
+                and credential like '%' || #{credential} || '%'
+            </if>
+            <!--接口已经有了默认参数,所以不考虑非空的情况-->
+        </where>
+        order by ${field} ${order}
+    </select>
+
+    <select id="getImportQuotaListByMap" resultType="com.sofn.fdpi.vo.QuotaListVo">
+        select oi.id as id,oi.import_man as compId,oi.credential as credential,
+        oi.import_date as dealDate,oi.size as importSize,oi.quantity as importNum,
+        oi.remaining_qty as residueNum,(select comp_name from om_comp where id=oi.import_man) as compName,
+        (select tame_allow_ton from om_comp where id=oi.import_man) as tameAllowTon,
+        (CASE WHEN size = '1' THEN quantity*600
+        WHEN size = '0' THEN quantity*900
+        ELSE 0 END) AS obversion,
+        (CASE WHEN size = '1' THEN remaining_qty*600
+        WHEN size = '0' THEN remaining_qty*900
+        ELSE 0 END) AS residueConvert
+        from om_import_form as oi
+        <where>
+            del_flag='N'
+            <if test="regionCode!=null and regionCode!=''">
+                and province=#{regionCode}
+            </if>
+            <if test="compName!=null and compName!=''">
+                and import_man=#{compName}
+            </if>
+            <if test="credential!=null and credential!=''">
+                and credential like '%' || #{credential} || '%'
+            </if>
+            <if test="dealDate!=null">
+                and import_date=#{dealDate}
+            </if>
+        </where>
+        <if test="field!=null and order!=null">
+            order by ${field} ${order}
+        </if>
+    </select>
+</mapper>

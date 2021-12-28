@@ -1,0 +1,175 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css" />
+<div class="gui-breadcrumbs">
+    <a href="">监测系统</a>&gt;
+    <a href="">牵头单位</a>&gt;
+    <a id="jiance" href="">例行监测</a>&gt;
+    <a id="pubTask" href="">待发布任务</a>&gt;
+    <span>机构与地域</span>
+</div>
+<div class="gui-section">
+    <ul class="gui-tab" role="tablist">
+        <li role="presentation" class="pointer"><a role="tab" data-toggle="tab" ng-click="goAdsMonitorTaskInfo()">基本信息</a></li>
+        <li role="presentation" class="active"><a role="tab" data-toggle="tab">机构与地域</a></li>
+        <li role="presentation" class="pointer"><a role="tab" data-toggle="tab" ng-click="goTaskOverView()">总览</a></li>
+    </ul>
+    <div class="gui-form-group">
+        <h4 style="text-align: center;" class="mt15">{{adsMonitorTask.taskName}}<span id="pubStatus" class="label mgl-15"></span></h4>
+    </div>
+    <div class="gui-form-group">
+        <span id="showAddForm" class="btn btn-link hide mgl-15" onclick="showOrgTaskAddForm()">添加机构任务</span>
+        <div id="addOrgTaskForm" class="col-lg-10 col-xs-12 col-sm-10 col-md-10 mgt-20">
+            <form id="addForm" class="form-horizontal" data-bv-message="不能为空" data-bv-feedbackicons-valid="glyphicon glyphicon-ok" data-bv-feedbackicons-invalid="glyphicon glyphicon-remove" data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+                <div class="gui-form-group">
+                    <input type="hidden" class="gui-input reset" name="sampleOrganId">
+                    <input type="hidden" class="gui-input reset" name="detectionOrganId">
+                    <span id="div-sample">
+                            <label id="lb-sample">抽样机构</label>
+                            <input type="text" class="reset gui-input" name="sampleOrgName" readonly="readonly" placeholder="点击选择抽样机构" title="选择抽样机构" ng-click="selectOrgan('S')"/>
+                        </span>
+                    <span id="div-detection">
+                            <label >检测机构</label>
+                            <input type="text" class="reset gui-input" name="deteOrgName" readonly="readonly" placeholder="点击选择检测机构" title="选择检测机构" ng-click="selectOrgan('D')"/>
+                        </span>
+                </div>
+                <div class="gui-form-group">
+                    <label>抽样数量</label>
+                    <input type="text" class="reset gui-input" name="numbers" placeholder="请填写抽样数量" data-bv-notempty="true" data-bv-notempty-message="内容不能是空" data-bv-regexp-regexp="/^[1-9]\d*$/" data-bv-regexp-message="抽样数量格式为正整数" />
+                    <label>报告上传单位</label>
+                    <span class="gui-select">
+                        <select name="deparment" class="reset">
+                                <!--data-bv-notempty="true"
+                                data-bv-notempty-message="请先选择抽样和检测机构，再选择报告上传单位"-->
+                        </select>
+                    </span>
+                </div>
+                <div class="gui-form-group">
+                    <label>抽样地区</label>
+                    <span class="gui-select">
+                        <select id="sheng10" class="reset gui-select" onchange="regionChanged(this)">
+                            <option value="0">--请选择省份--</option>
+                        </select>
+                    </span>
+                    <span class="gui-select">
+                        <select id="shi10" class="reset gui-select" onchange="regionChanged(this)">
+                            <option value="0">--请选择城市--</option>
+                        </select>
+                    </span>
+                    <span class="gui-select" style="display:none">
+                        <select id="xian10" class="reset gui-select">
+                            <option value="0">--请选择区/县--</option>
+                        </select>
+                    </span>
+                </div>
+                <div class="gui-form-group">
+                    <label>报告上传时间</label>
+                    <input type="text" id="uploadDate" class="gui-input reset Wdate" name="uploadTime"  onfocus="WdatePicker({dateFmt:'yyyy-MM-dd '}) " />
+                    <!-- data-bv-notempty="true"
+                             data-bv-notempty-message="请选择报告上传时间"-->
+                    <label>
+                        <button class="gui-btn" style="padding: 5px 5px" id="btnAddTask">保存</button>
+                    </label>
+                    <label>
+                        <button class="gui-btn" style="padding: 5px 5px" ng-click="resetBtn()">重置</button>
+                    </label>
+                    <label>
+                        <button class="gui-btn" style="padding: 5px 5px" ng-click="goAdsMonitorTaskInfo()">上一步</button>
+                    </label>
+                    <label>
+                        <button class="gui-btn" style="padding: 5px 5px" ng-click="nextBtn()">下一步</button>
+                    </label>
+                    <label><span class="btn-link " style="padding: 5px 5px" onclick="hideOrgTaskAddForm()">收起保存</span></label>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="gui-form-group">
+        <input type="text" class="gui-input" name="sampleOrgan" placeholder="请输入抽样机构名称">
+        <input type="text" class="gui-input" name="detectionOrgan" placeholder="请输入检测机构名称">
+        <button class="gui-btn" id="seachTask">查询</button>
+    </div>
+    <div class="gui-actions">
+        <span id="brtchDelete" class="gui-btn fr" onclick="delAdsOrganTask()"><i class="gui-icon icon-remove"></i>删除</span>
+    </div>
+    <div class="clearfix gov-h">
+        <table id="grid" class="gui-table mt15">
+        </table>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="dModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-style" style="width: 870px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="modalTitle">选择抽样机构</h4>
+            </div>
+            <div class="modal-body" style="min-height: 650px;" >
+                <form class="form-inline well-sm">
+                    <div class="form-group">
+                        <input type="text" class="gui-input form-control" name="orgName" placeholder="请输入机构名称">
+                    </div>
+                    <span class="gui-btn" id="seachSampleOrgan">查询</span>
+                    <div class="col-md-12 mgt-15 mgb-15">
+                        <!--<div class="col-md-2">
+                            <h4>行政区划</h4>
+                            <div class="list-group" id="reg-group">
+                                <a class="region list-group-item pointer mgr-10 active" id="regAll" onclick="changeAllRegion()">全部</a>
+                            </div>
+                        </div>-->
+                        <div class="col-md-12 ">
+                            <h4 id="organTitle">抽样机构</h4>
+                            <table id="sampleOrganGrid" class="gui-table table table-striped table-hover data-table">
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--<div class="modal-footer mgt-15">-->
+                <span class="gui-btn" data-dismiss="modal" style="margin-left: 785px;margin-bottom: 10px;">关闭</span>
+                <!--&lt;!&ndash;<button type="button" >保存</button>&ndash;&gt;-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+<!-- Modal view -->
+<div class="modal fade" id="vModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">查看机构任务</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">抽样机构</label>
+                        <label class="col-sm-5 control-label" id="v_sampleOrgan"></label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">检测机构</label>
+                        <label class="col-sm-5 control-label" id="v_detectionOrgan"></label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">抽样地区</label>
+                        <label class="col-sm-5 control-label" id="v_citycode"></label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">抽样数量</label>
+                        <label class="col-sm-5 control-label" id="v_numbers"></label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">报告上传单位</label>
+                        <label class="col-sm-5 control-label" id="v_deparment"></label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">报告上传截止时间</label>
+                        <label class="col-sm-5 control-label" id="v_uploadTime"></label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <span class="gui-btn btn btn-link" data-dismiss="modal">关闭</span>
+            </div>
+        </div>
+    </div>
+</div>

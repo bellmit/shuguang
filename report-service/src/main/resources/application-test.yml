@@ -1,0 +1,19 @@
+spring:
+  redis:
+      cluster:
+        nodes: 10.0.50.103:7000,10.0.50.103:7001,10.0.50.103:7002,10.0.50.103:7003,10.0.50.103:7004,10.0.50.103:7005
+      timeout: 6000ms
+      lettuce:
+        pool:
+          max-active: 100
+          max-wait: -1ms
+          max-idle: 10
+      database: 0
+
+eureka:
+  instance:
+    hostname: ${spring.cloud.client.ip-address}
+    instance-id: ${eureka.instance.hostname}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://10.0.50.103:8880/eureka/

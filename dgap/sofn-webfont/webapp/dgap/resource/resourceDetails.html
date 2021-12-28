@@ -1,0 +1,130 @@
+<link rel="stylesheet" href="/assets/css/dgap/resource/alertConfig.css">
+<div class="gui-breadcrumbs">
+    <a href="">数据共享系统</a>&gt;
+    <a href="">安全管理</a>&gt;
+    <span>资源审核详情</span>
+</div>
+<div class="gui-section">
+    <form novalidate name="myForm">
+        <div class="gui-form-group">
+            <lable>资源名称</lable>
+            <input type="text" class="gui-input" name="resourceName" ng-model="resourceName" placeholder="资源名称"
+                   ng-maxlength="60"/>
+            <lable>资源类型</lable>
+            <span class="gui-select">
+      <select name="resourType">
+          <option value="">全部</option>
+          <option ng-repeat="x in resourceType" value="{{x.id}}">{{x.name}}</option>
+      </select>
+    </span>
+            <lable>申请用户</lable>
+            <input type="text" class="gui-input" name="username" ng-model="username" placeholder="申请用户"
+                   ng-maxlength="60">
+            <button class="gui-btn submit-btn" ng-disabled="myForm.$invalid" disabled="disabled" ng-click="search()">
+                查询
+            </button>
+            <button class="gui-btn ml15 submit-btn" ng-click="cleanData()">重置</button>
+        </div>
+    </form>
+    <div class="gui-actions"></div>
+    <table id="resource" class="gui-table"></table>
+</div>
+
+<!-- 资源审批-->
+<!--<div class="modal fade" id="details" tabindex="-1" role="dialog" aria-labelledby="myapplication" aria-hidden="true">-->
+    <!--<div class="modal-dialog">-->
+        <!--<div class="modal-content">-->
+            <!--<div class="modal-header">-->
+                <!--<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span-->
+                        <!--class="sr-only">Close</span></button>-->
+                <!--<h4 class="modal-title" id="myapplication">资源详情</h4>-->
+            <!--</div>-->
+            <!--<div class="modal-body" id="attributeForm" style="text-align: center"-->
+                 <!--data-bv-message="This value is not valid" data-bv-feedbackicons-valid="glyphicon glyphicon-ok"-->
+                 <!--data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"-->
+                 <!--data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">-->
+                <!--<p align="center">-->
+                    <!--审批意见: <span class="form-group">-->
+                    <!--<textarea class="form-control" name="approval" data-bv-notempty="true"-->
+                              <!--data-bv-notempty-message="审批意见不能为空"-->
+                              <!--data-bv-stringlength="true"-->
+                              <!--data-bv-stringlength-max="25"-->
+                              <!--data-bv-stringlength-message="审批意见不能超过25个汉字或字符"-->
+                              <!--style="width: 340px;height: 150px"></textarea></span>-->
+                <!--</p>-->
+
+                <!--<p align="center">-->
+                    <!--<span class="pass gui-btn" ng-click="applicationUpdata()" data-dismiss="modal">通过</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+                    <!--<span class="not gui-btn" ng-click="applicationNoUpdata()" data-dismiss="modal">退回</span>-->
+                <!--</p>-->
+
+                <!--<div style="height: 30px"></div>-->
+            <!--</div>-->
+
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<!-- 资源详情-->
+<div class="modal fade" id="details" tabindex="-1" role="dialog" aria-labelledby="myapplication"
+     aria-hidden="true" style="color: black" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myapplication">资源详情</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" style="margin-right: 150px;overflow: hidden">
+                    <div style="text-align: center" id="updateAttributeForm" class="form-horizontal"
+                         data-bv-message="不能为空" data-bv-excluded="">
+                        <div class="form-item form-group">
+                            <label>资源名称<i class="gui-colorRed">*</i></label>
+                            <input ng-model="resourceName" name="resourceName" type="text" class="gui-input form-control" >
+                        </div>
+                        <div class="form-item form-group">
+                            <label>资源类型<i class="gui-colorRed">*</i></label>
+                            <span class="gui-select">
+                            <select name="resourceTypeC"    class="gui-select form-control" data-bv-notempty="true" >
+                                <option style="display: none" value="{{resourceTypeU}}">{{resourceTypeUName}}</option>
+                            </select>
+                        </span>
+                        </div>
+                        <div class="form-item form-group">
+                            <label>申请时间</label>
+                            <input id="appliyDate" name="appliyDate" ng-model="appliyDate"
+                                   style="cursor: pointer" readonly="readonly" class="Wdate gui-input form-control"
+                                   type="text">
+                        </div>
+                        <div class="form-item form-group">
+                            <label>生效时间</label>
+                            <input id="u_beginDate" name="EFFECTIVE_DATE" ng-model="EFFECTIVE_DATE"
+                                   style="cursor: pointer" readonly="readonly" class="Wdate gui-input form-control"
+                                   type="text">
+                        </div>
+                        <div class="form-item form-group">
+                            <label>失效时间</label>
+                            <input id="u_lessDate" name="EXPIRE_DATE" ng-model="EXPIRE_DATE"
+                                   class="Wdate form-control gui-input" style="cursor: pointer" readonly="readonly" type="text">
+                        </div>
+                        <div class="form-item form-group">
+                            <label>审批意见<i class="gui-colorRed">*</i></label>
+                            <textarea type="textarea" ng-model="APPROVAL" name="REASON"
+                                      class="gui-textarea form-control" data-bv-stringlength="true">
+                            </textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <span type="button" data-dismiss="modal" class="gui-btn">关闭
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+
+
+

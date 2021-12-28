@@ -1,0 +1,84 @@
+.Sup_contain_section_contain_head{
+    width: 100%;
+    text-align: center;
+    margin: auto;
+    overflow: hidden;
+}
+.Sup_contain_section_contain_head div:first-child{
+    width: 1150px;
+    margin: auto;
+}
+.Sup_contain_section_contain_head p{
+    font-size: 25px;
+    margin:20px 0px 30px 20px;
+}
+.Sup_contain_section_contain_head ul li{
+
+}
+.Sup_contain_section_contain_head ul li{
+    font-size: 16px;
+    clear: both;
+    margin-bottom: 25px;
+}
+.Sup_contain_section_contain_head span{
+    margin-right: 50px;
+    display: inline-block;
+    width: 150px;
+    text-align: right;
+}
+.Sup_contain_section_contain_head select{
+    width: 145px;
+    outline: none;
+    cursor: pointer;
+}
+.Sup_contain_section_contain_input{
+    width: 450px;
+    outline: none;
+    /*height: 30px;*/
+}
+.Sup_contain_section_contain_radio{
+    width: 10px;
+    outline: none;
+    /*height: 30px;*/
+}
+.Sup_contain_section_contain_head_button{
+    width: 80px;
+    margin: 0px 60px 0px 150px;
+
+}
+/*����Ǻ�*/
+.important{
+    position: relative;
+}
+.this-after{
+    position: absolute;
+    right: -70px;
+    top: -3px;
+    color: red;
+    font-size: 20px;
+    font-family: xinhao;
+}
+/*��֤��*/
+#vcode{
+    height:35px;
+    width:40%;
+    font-size:15pt;
+    margin-left:15%;
+    border-radius:5px;
+    border:0;
+    padding-left:8px;
+}
+#code{
+    color:#ffffff;/*������ɫ��ɫ*/
+    background-color:#000000;
+    font-size:20pt;
+    font-family:"����������W5";
+    padding:5px 35px 10px 35px;
+    margin-left:5%;
+    cursor:pointer;
+}
+/*修改表单验证样式样式*/
+.form-horizontal .form-group {
+    margin-right: 0px;
+    margin-left: 0px;
+}

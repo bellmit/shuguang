@@ -1,0 +1,54 @@
+server:
+  port: 8070
+spring:
+  application:
+    name: workflow-service
+  profiles:
+    active: local
+
+
+eureka:
+  instance:
+    # 心跳时间，即服务续约间隔时间（缺省为30s）
+    lease-renewal-interval-in-seconds: 10
+    # 发呆时间，即服务续约到期时间（缺省为90s）
+    lease-expiration-duration-in-seconds: 20
+    prefer-ip-address: true
+  client:
+    healthcheck:
+      # 开启健康检查（依赖spring-boot-starter-actuator）
+      enabled: true
+    fetch-registry: true
+    register-with-eureka: true
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*Mapper.xml
+  typeAliasesPackage: com.sofn.flow.model
+  global-config:
+    id-type: 3
+    field-strategy: 2
+    auto-set-db-type: true
+    db-column-underline: false
+    refresh-mapper: true
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    log-prefix: mybatis.sql.
+    default-fetch-size: 1000
+
+logging:
+  config: classpath:logback-spring.xml
+
+swagger:
+  # 扫描包
+  base-package: com.sofn.flow.controller
+  # 名称
+  name: 流程管理
+  # 接口前缀
+  prefix: /workflow
+
+workflow:
+  model-url: http://192.168.21.132:8082/ProcessModeler/
+  other-url: http://192.168.21.132:8082/ProcessMonitor/
+

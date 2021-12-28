@@ -1,0 +1,55 @@
+<link rel="stylesheet" href="assets/css/tts/base/baseAdd.css" />
+
+<div class="Sup_contain_section col-lg-12 col-xs-12 col-sm-12 col-md-12">
+    <div class="Sup_contain_section_head col-lg-12 col-xs-12 col-sm-12 col-md-12 " style="background-color: white">
+        <h2 id="Sup_contain_section_head_h2">
+            <a href=""><span >追溯系统  > </span></a>
+            <a href=""><span >内部管理  > </span></a>
+            <a href=""><span >部门管理 > </span></a>
+            <span>新增</span>
+         </h2>
+    </div>
+
+
+
+    <p class="col-lg-1 col-xs-0 col-sm-1 col-md-1"></p>
+    <div class="Sup_contain_section_contain_head col-lg-10 col-xs-12 col-sm-10 col-md-10">
+        <p>新增部门管理信息</p>
+        <ul>
+            <li>
+                <span class="important">机构名称<span class="this-after">*</span></span>
+                <input type="text" ng-model="sysDept.reservedField1" name="reservedField1" placeholder="请输入机构名称" class="Sup_contain_section_contain_input" />
+            </li>
+            <li>
+                <span class="important">机构类别<span class="this-after">*</span></span>
+                <input type="text" ng-model="sysDept.deptType" name="deptType" placeholder="请输入机构名称" class="Sup_contain_section_contain_input" />
+            </li>
+            <li>
+                <span class="important">机构级别<span class="this-after">*</span></span>
+                <input type="text" ng-model="sysDept.deptLevel" name="deptLevel" placeholder="请输入机构级别" class="Sup_contain_section_contain_input" />
+            </li>
+            <li>
+                <span class="important">所属区域<span class="this-after">*</span></span>
+                <input type="text" ng-model="sysDept.regionId" name="regionId" placeholder="请输入所属区域" class="Sup_contain_section_contain_input" />
+            </li>
+            <li>
+                <span class="important">部门名称<span class="this-after">*</span></span>
+                <input type="text" ng-model="sysDept.deptName" name="deptName" placeholder="部门名称" class="Sup_contain_section_contain_input" />
+            </li>
+            <li>
+                <span class="important">部门负责人<span class="this-after">*</span></span>
+                <input type="text" ng-model="sysDept.deptManager" name="deptManager" placeholder="部门负责人" class="Sup_contain_section_contain_input" />
+            </li>
+            <li>
+                <span class="important">联系电话<span class="this-after">*</span></span>
+                <input type="text" ng-model="sysDept.phone" name="phone" placeholder="请输入联系电话" class="Sup_contain_section_contain_input" />
+            </li>
+            <li>
+                <span class="important">状       态<span class="this-after">*</span></span>
+                <input type="text" ng-model="sysDept.status" name="status" placeholder="请输入状态" class="Sup_contain_section_contain_input" />
+            </li>
+        </ul>
+        <button class="Sup_contain_section_contain_head_button" ui-sref="index.content.sys/sysDept/list">取消</button>
+        <button class="Sup_contain_section_contain_head_button" ng-disabled="myform.JGname.$dirty&&myform.JGname.$invalid" ng-click="addSysDept()">提交</button>
+    </div>
+</div>

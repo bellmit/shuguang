@@ -1,0 +1,37 @@
+clusterServersConfig:
+  idleConnectionTimeout: 10000
+  connectTimeout: 10000
+  timeout: 6000
+  retryAttempts: 3
+  retryInterval: 1500
+  failedSlaveReconnectionInterval: 3000
+  failedSlaveCheckInterval: 60000
+  #password: sofn!@#123
+  password: ENC(zE52KgtonIfHtz0s9qmBQoKZV64zsMtT)
+  subscriptionsPerConnection: 5
+  clientName: null
+  loadBalancer: !<org.redisson.connection.balancer.RoundRobinLoadBalancer> {}
+  subscriptionConnectionMinimumIdleSize: 1
+  subscriptionConnectionPoolSize: 50
+  slaveConnectionMinimumIdleSize: 10
+  slaveConnectionPoolSize: 64
+  masterConnectionMinimumIdleSize: 10
+  masterConnectionPoolSize: 64
+  readMode: "SLAVE"
+  subscriptionMode: "SLAVE"
+  nodeAddresses:
+    - "redis://192.168.21.208:6377"
+    - "redis://192.168.21.26:6377"
+    - "redis://192.168.21.37:6377"
+    - "redis://192.168.21.28:6377"
+    - "redis://192.168.21.35:6377"
+    - "redis://192.168.21.36:6377"
+  scanInterval: 1000
+  pingConnectionInterval: 15000
+  keepAlive: false
+  tcpNoDelay: false
+# 线程池数量,默认值: 当前处理核数量 * 2
+#threads: 16
+#nettyThreads: 32
+codec: !<org.redisson.codec.MarshallingCodec> {}
+transportMode: "NIO"

@@ -1,0 +1,45 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+    <div class="gui-breadcrumbs">
+        <a href="">监测系统</a>&gt;
+        <a href="">牵头单位</a>&gt;
+        <a id="jiance" href=""></a>&gt;
+        <span>历史任务</span>
+    </div>
+    <div class="gui-section">
+        <ul class="gui-tab" role="tablist">
+            <!--<li role="presentation" class="pointer"><a id="newTask" role="tab" data-toggle="tab">新任务</a></li>-->
+            <li role="presentation" class="pointer"><a id="supTask" role="tab" data-toggle="tab">已接受任务</a></li>
+            <li role="presentation" class="pointer"><a id="bePubTask" role="tab" data-toggle="tab">待发布任务</a></li>
+            <li role="presentation" class="active"><a id="historyTask" role="tab" data-toggle="tab">历史任务</a></li>
+        </ul>
+        <div class="gui-form-group " id="allmonitorClass" >
+
+            <label>年份:</label>
+            <span class="gui-select">
+                <select id="year" name="year" >
+                    <option value="">全部</option>
+                    <option ng-repeat="x in year">{{x}}</option>
+                </select>
+            </span>
+
+           <!--<label>监测类型:</label>-->
+            <!--<span class="gui-select">-->
+                <!--<select id="monitorClass" name="monitorClass" >-->
+                    <!--<option value="">全部</option>-->
+                    <!--<option ng-repeat="x in monitorClass">{{x}}</option>-->
+                <!--</select>-->
+            <!--</span>-->
+        </div>
+        <div class="gui-form-group ">
+            <label>任务名称:</label>
+            <input type="text" class="gui-input" name="taskName" onblur="check(this)" placeholder="请输入任务名称"  ng-keyup="enterEvent($event)" />
+            <span class="gui-btn" id="seachTask">查询</span>
+        </div>
+        <div class="gui-actions">
+            <span class="gui-btn fr" ng-click="exportExcel()"><i class="gui-icon icon-export"></i>导出Excel</span>
+        </div>
+       <div class="clearfix gov-h">
+           <table id="grid" class="gui-table mt15" >
+           </table>
+       </div>
+    </div>

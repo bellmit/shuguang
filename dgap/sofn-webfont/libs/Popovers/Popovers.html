@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../jbox/Skins/jbox.css"/>
+</head>
+<body ng-app="myapp" ng-controller="jbox">
+<button ng-click="update()">弹出框</button>
+<button ng-click="tip()">提示按钮</button>
+<script src="../angular/angular.min.js"></script>
+<script src="../jquery/jquery-2.0.3.min.js"></script>
+<script src="../jquery/jquery-migrate-1.2.1.js"></script>
+<script src="../jbox/jbox.js"></script>
+<script src="../jbox/jquery.jBox-zh-CN.js"></script>
+<script>
+    var myapp=angular.module("myapp",[]);
+    myapp.controller("jbox",function($scope){
+//        弹出框
+        $scope.update=function() {
+            var submit = function (v, h, f) {
+                if (v == true)
+                    swal('', "修改成功", 'success');
+
+                else
+                    swal('', "取消成功", 'success');
+                return true;
+            };
+            // 自定义按钮
+            $.jBox.confirm("确认修改吗？", "修改提示", submit, { buttons: { '确认': true, '取消': false} });
+        };
+//        小提示
+        $scope.tip=function(){
+            $.jBox.tip("修改成功");
+
+        }
+    })
+
+
+</script>
+</body>
+</html>

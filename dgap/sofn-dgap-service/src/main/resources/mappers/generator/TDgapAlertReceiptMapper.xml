@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.dao.generator.TDgapAlertReceiptMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.model.generator.TDgapAlertReceipt" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="ALERT_ID" property="alertId" jdbcType="VARCHAR" />
+    <result column="RECEIPT_BY" property="receiptBy" jdbcType="VARCHAR" />
+    <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="DEL_FLAG" property="delFlag" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD1" property="reservedField1" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD2" property="reservedField2" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD3" property="reservedField3" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD4" property="reservedField4" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD5" property="reservedField5" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD6" property="reservedField6" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD7" property="reservedField7" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD8" property="reservedField8" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD9" property="reservedField9" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD10" property="reservedField10" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD11" property="reservedField11" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD12" property="reservedField12" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD13" property="reservedField13" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD14" property="reservedField14" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD15" property="reservedField15" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD16" property="reservedField16" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD17" property="reservedField17" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD18" property="reservedField18" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD19" property="reservedField19" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD20" property="reservedField20" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from T_DGAP_ALERT_RECEIPT
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.sofn.model.generator.TDgapAlertReceipt" >
+    insert into T_DGAP_ALERT_RECEIPT (ID, ALERT_ID, RECEIPT_BY, 
+      CREATE_BY, CREATE_TIME, UPDATE_BY, 
+      UPDATE_TIME, DEL_FLAG, RESERVED_FIELD1, 
+      RESERVED_FIELD2, RESERVED_FIELD3, RESERVED_FIELD4, 
+      RESERVED_FIELD5, RESERVED_FIELD6, RESERVED_FIELD7, 
+      RESERVED_FIELD8, RESERVED_FIELD9, RESERVED_FIELD10, 
+      RESERVED_FIELD11, RESERVED_FIELD12, RESERVED_FIELD13, 
+      RESERVED_FIELD14, RESERVED_FIELD15, RESERVED_FIELD16, 
+      RESERVED_FIELD17, RESERVED_FIELD18, RESERVED_FIELD19, 
+      RESERVED_FIELD20)
+    values (#{id,jdbcType=VARCHAR}, #{alertId,jdbcType=VARCHAR}, #{receiptBy,jdbcType=VARCHAR}, 
+      #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=VARCHAR}, #{reservedField1,jdbcType=VARCHAR}, 
+      #{reservedField2,jdbcType=VARCHAR}, #{reservedField3,jdbcType=VARCHAR}, #{reservedField4,jdbcType=VARCHAR}, 
+      #{reservedField5,jdbcType=VARCHAR}, #{reservedField6,jdbcType=VARCHAR}, #{reservedField7,jdbcType=VARCHAR}, 
+      #{reservedField8,jdbcType=VARCHAR}, #{reservedField9,jdbcType=VARCHAR}, #{reservedField10,jdbcType=VARCHAR}, 
+      #{reservedField11,jdbcType=VARCHAR}, #{reservedField12,jdbcType=VARCHAR}, #{reservedField13,jdbcType=VARCHAR}, 
+      #{reservedField14,jdbcType=VARCHAR}, #{reservedField15,jdbcType=VARCHAR}, #{reservedField16,jdbcType=VARCHAR}, 
+      #{reservedField17,jdbcType=VARCHAR}, #{reservedField18,jdbcType=VARCHAR}, #{reservedField19,jdbcType=VARCHAR}, 
+      #{reservedField20,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sofn.model.generator.TDgapAlertReceipt" >
+    update T_DGAP_ALERT_RECEIPT
+    set ALERT_ID = #{alertId,jdbcType=VARCHAR},
+      RECEIPT_BY = #{receiptBy,jdbcType=VARCHAR},
+      CREATE_BY = #{createBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_BY = #{updateBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      DEL_FLAG = #{delFlag,jdbcType=VARCHAR},
+      RESERVED_FIELD1 = #{reservedField1,jdbcType=VARCHAR},
+      RESERVED_FIELD2 = #{reservedField2,jdbcType=VARCHAR},
+      RESERVED_FIELD3 = #{reservedField3,jdbcType=VARCHAR},
+      RESERVED_FIELD4 = #{reservedField4,jdbcType=VARCHAR},
+      RESERVED_FIELD5 = #{reservedField5,jdbcType=VARCHAR},
+      RESERVED_FIELD6 = #{reservedField6,jdbcType=VARCHAR},
+      RESERVED_FIELD7 = #{reservedField7,jdbcType=VARCHAR},
+      RESERVED_FIELD8 = #{reservedField8,jdbcType=VARCHAR},
+      RESERVED_FIELD9 = #{reservedField9,jdbcType=VARCHAR},
+      RESERVED_FIELD10 = #{reservedField10,jdbcType=VARCHAR},
+      RESERVED_FIELD11 = #{reservedField11,jdbcType=VARCHAR},
+      RESERVED_FIELD12 = #{reservedField12,jdbcType=VARCHAR},
+      RESERVED_FIELD13 = #{reservedField13,jdbcType=VARCHAR},
+      RESERVED_FIELD14 = #{reservedField14,jdbcType=VARCHAR},
+      RESERVED_FIELD15 = #{reservedField15,jdbcType=VARCHAR},
+      RESERVED_FIELD16 = #{reservedField16,jdbcType=VARCHAR},
+      RESERVED_FIELD17 = #{reservedField17,jdbcType=VARCHAR},
+      RESERVED_FIELD18 = #{reservedField18,jdbcType=VARCHAR},
+      RESERVED_FIELD19 = #{reservedField19,jdbcType=VARCHAR},
+      RESERVED_FIELD20 = #{reservedField20,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select ID, ALERT_ID, RECEIPT_BY, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
+    DEL_FLAG, RESERVED_FIELD1, RESERVED_FIELD2, RESERVED_FIELD3, RESERVED_FIELD4, RESERVED_FIELD5, 
+    RESERVED_FIELD6, RESERVED_FIELD7, RESERVED_FIELD8, RESERVED_FIELD9, RESERVED_FIELD10, 
+    RESERVED_FIELD11, RESERVED_FIELD12, RESERVED_FIELD13, RESERVED_FIELD14, RESERVED_FIELD15, 
+    RESERVED_FIELD16, RESERVED_FIELD17, RESERVED_FIELD18, RESERVED_FIELD19, RESERVED_FIELD20
+    from T_DGAP_ALERT_RECEIPT
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select ID, ALERT_ID, RECEIPT_BY, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
+    DEL_FLAG, RESERVED_FIELD1, RESERVED_FIELD2, RESERVED_FIELD3, RESERVED_FIELD4, RESERVED_FIELD5, 
+    RESERVED_FIELD6, RESERVED_FIELD7, RESERVED_FIELD8, RESERVED_FIELD9, RESERVED_FIELD10, 
+    RESERVED_FIELD11, RESERVED_FIELD12, RESERVED_FIELD13, RESERVED_FIELD14, RESERVED_FIELD15, 
+    RESERVED_FIELD16, RESERVED_FIELD17, RESERVED_FIELD18, RESERVED_FIELD19, RESERVED_FIELD20
+    from T_DGAP_ALERT_RECEIPT
+  </select>
+</mapper>

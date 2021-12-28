@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agzirdd.mapper.InvestigatContentMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.agzirdd.model.InvestigatContent" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="SPECIES_INVESTIGATION_ID" property="speciesInvestigationId" jdbcType="VARCHAR" />
+    <result column="SPECIES_TYPE" property="speciesType" jdbcType="VARCHAR" />
+    <result column="SPECIES_TYPE_NAME" property="speciesTypeName" jdbcType="VARCHAR" />
+    <result column="SPECIES_ID" property="speciesId" jdbcType="VARCHAR" />
+    <result column="SPECIES_NAME" property="speciesName" jdbcType="VARCHAR" />
+    <result column="LATIN_NAME" property="latinName" jdbcType="VARCHAR" />
+    <result column="CONTENT" property="content" jdbcType="VARCHAR" />
+    <result column="NEW_SPECIES" property="newSpecies" jdbcType="VARCHAR" />
+    <result column="SPECIES_REMARK" property="speciesRemark" jdbcType="VARCHAR" />
+    <result column="GPS" property="gps" jdbcType="VARCHAR" />
+    <result column="AREA" property="area" jdbcType="VARCHAR" />
+    <result column="AMOUNT" property="amount" jdbcType="VARCHAR" />
+    <result column="COVER_RATIO" property="coverRatio" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+    <result column="TYPE_NAME" property="typeName" jdbcType="VARCHAR" />
+    <result column="HAS_HARM" property="hasHarm" jdbcType="VARCHAR" />
+    <result column="HARM_OBJECT" property="harmObject" jdbcType="VARCHAR" />
+    <result column="HARM_METHOD" property="harmMethod" jdbcType="VARCHAR" />
+    <result column="DAMAGE_DEGREE" property="damageDegree" jdbcType="VARCHAR" />
+    <result column="ECONOMIC_LOSS" property="economicLoss" jdbcType="VARCHAR" />
+    <result column="HAS_MEASURES" property="hasMeasures" jdbcType="VARCHAR" />
+    <result column="DESCRIBE" property="describe" jdbcType="VARCHAR" />
+    <result column="PREVENTION_AREA" property="preventionArea" jdbcType="NUMERIC" />
+    <result column="PREVENTION_COST" property="preventionCost" jdbcType="NUMERIC" />
+    <result column="RESULT" property="result" jdbcType="VARCHAR" />
+    <result column="RESULT_IMG" property="resultImg" jdbcType="VARCHAR" />
+    <result column="HAS_UTILIZE" property="hasUtilize" jdbcType="VARCHAR" />
+    <result column="UTILIZE_DESCRIBE" property="utilizeDescribe" jdbcType="VARCHAR" />
+    <result column="UTILIZE_IMG" property="utilizeImg" jdbcType="VARCHAR" />
+    <result column="UTILIZE_WAY" property="utilizeWay" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="SPECIES_IMG" property="speciesImg" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID,SPECIES_INVESTIGATION_ID,SPECIES_TYPE,SPECIES_TYPE_NAME,SPECIES_ID,SPECIES_NAME,LATIN_NAME,CONTENT,NEW_SPECIES,SPECIES_REMARK,GPS,AREA,AMOUNT,COVER_RATIO
+    ,TYPE,TYPE_NAME,HAS_HARM,HARM_OBJECT,HARM_METHOD,DAMAGE_DEGREE,ECONOMIC_LOSS,HAS_MEASURES,DESCRIBE
+    ,PREVENTION_AREA,PREVENTION_COST,RESULT,RESULT_IMG,HAS_UTILIZE,UTILIZE_DESCRIBE,UTILIZE_IMG
+    ,UTILIZE_WAY,CREATE_TIME,SPECIES_IMG
+  </sql>
+
+  <select id="getInvestigatContentByQuery" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM INVESTIGAT_CONTENT
+    <where>
+      1=1
+      <if test="speciesInvestigationId != null and speciesInvestigationId != ''">
+        and SPECIES_INVESTIGATION_ID = #{speciesInvestigationId}
+      </if>
+      <if test="speciesId != null and speciesId != ''">
+        and SPECIES_ID = #{speciesId}
+      </if>
+      <if test="speciesName != null and speciesName != ''">
+        and SPECIES_NAME = #{speciesName}
+      </if>
+    </where>
+    ORDER BY CREATE_TIME desc
+  </select>
+
+  <select id="getInvestigatContentBySpeciesInvestigationId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from INVESTIGAT_CONTENT
+    <where>
+      1=1
+      <if test="speciesInvestigationId != null and speciesInvestigationId != ''">
+        AND SPECIES_INVESTIGATION_ID = #{speciesInvestigationId}
+      </if>
+    </where>
+  </select>
+
+  <delete id="deleteInvestigatContent" parameterType="java.lang.String">
+    delete
+    from INVESTIGAT_CONTENT
+    where
+    SPECIES_INVESTIGATION_ID = #{speciesInvestigationId}
+  </delete>
+
+</mapper>

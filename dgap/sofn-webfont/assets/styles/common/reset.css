@@ -1,0 +1,155 @@
+html {
+  height: 100%;
+}
+abbr,
+address,
+article,
+aside,
+audio,
+b,
+blockquote,
+body,
+canvas,
+caption,
+cite,
+code,
+dd,
+del,
+details,
+dfn,
+div,
+dl,
+dt,
+em,
+fieldset,
+figcaption,
+figure,
+footer,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+header,
+html,
+i,
+iframe,
+img,
+ins,
+kbd,
+label,
+legend,
+li,
+mark,
+menu,
+nav,
+object,
+ol,
+p,
+pre,
+q,
+samp,
+section,
+small,
+span,
+strong,
+sub,
+summary,
+sup,
+table,
+tbody,
+td,
+tfoot,
+th,
+thead,
+time,
+tr,
+ul,
+var,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  vertical-align: baseline;
+  background: transparent;
+}
+* {
+  -moz-tap-highlight-color: rgba(0, 0, 0, 0);
+  -o-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+body {
+  color: #333;
+  font: 14px/1.5 tahoma, arial, 'Hiragino Sans GB', '\5b8b\4f53', sans-serif;
+  min-width: 980px;
+  background-color: #FFF;
+  position: relative;
+  min-height: 100%;
+  font-family: "Hiragino Sans GB", "open sans", "sans-serif", "Helvetica", "STHeiti", "Arial", "Microsoft YaHei", "simsun";
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+menu,
+nav,
+section {
+  display: block;
+}
+ul {
+  list-style: none;
+}
+li {
+  list-style: none;
+}
+em {
+  font-style: normal;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+input,
+select {
+  vertical-align: middle;
+  color: #333;
+}
+button:focus,
+input:focus {
+  outline: none;
+}
+a {
+  color: #5db9f8;
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+  vertical-align: baseline;
+  background: transparent;
+}
+a:hover {
+  text-decoration: none;
+  color: #5db9f8;
+}
+a:active,
+a:visited {
+  color: #162e1f;
+}
+img {
+  border: 0;
+  vertical-align: middle;
+}
+input {
+  vertical-align: middle;
+}
+a,
+input,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}

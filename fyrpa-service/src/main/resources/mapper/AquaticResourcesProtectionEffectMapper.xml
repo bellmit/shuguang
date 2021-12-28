@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fyrpa.model.AquaticResourcesProtectionEffect" >
+  <resultMap id="BaseResultMap" type="com.sofn.fyrpa.model.AquaticResourcesProtectionEffect" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="protect_object_appear_rate" property="protectObjectAppearRate" jdbcType="VARCHAR" />
+    <result column="dominance_exponent" property="dominanceExponent" jdbcType="VARCHAR" />
+    <result column="species_abundance" property="speciesAbundance" jdbcType="VARCHAR" />
+    <result column="variety" property="variety" jdbcType="VARCHAR" />
+    <result column="homogeneous_degree" property="homogeneousDegree" jdbcType="VARCHAR" />
+    <result column="kind_correlation" property="kindCorrelation" jdbcType="VARCHAR" />
+    <result column="community_similarity" property="communitySimilarity" jdbcType="VARCHAR" />
+    <result column="dissolved_oxygen" property="dissolvedOxygen" jdbcType="VARCHAR" />
+    <result column="debiochemical_oxygen_demand" property="debiochemicalOxygenDemand" jdbcType="VARCHAR" />
+    <result column="chemical_oxygen_demand" property="chemicalOxygenDemand" jdbcType="VARCHAR" />
+    <result column="total_organic_carbon" property="totalOrganicCarbon" jdbcType="VARCHAR" />
+    <result column="total_oxygen_demand" property="totalOxygenDemand" jdbcType="VARCHAR" />
+    <result column="composite_index" property="compositeIndex" jdbcType="VARCHAR" />
+    <result column="tnb" property="tnb" jdbcType="VARCHAR" />
+    <result column="total_phosphorus" property="totalPhosphorus" jdbcType="VARCHAR" />
+    <result column="chlorophyll" property="chlorophyll" jdbcType="VARCHAR" />
+    <result column="vegetative_state" property="vegetativeState" jdbcType="VARCHAR" />
+    <result column="phytoplankton" property="phytoplankton" jdbcType="VARCHAR" />
+    <result column="zooplankton" property="zooplankton" jdbcType="VARCHAR" />
+    <result column="benthon" property="benthon" jdbcType="VARCHAR" />
+    <result column="food_biological_level" property="foodBiologicalLevel" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="DATE" />
+    <result column="is_del" property="isDel" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, protect_object_appear_rate, dominance_exponent, species_abundance, variety, homogeneous_degree, 
+    kind_correlation, community_similarity, dissolved_oxygen, debiochemical_oxygen_demand, 
+    chemical_oxygen_demand, total_organic_carbon, total_oxygen_demand, composite_index, 
+    tnb, total_phosphorus, chlorophyll, vegetative_state, phytoplankton, zooplankton, 
+    benthon, food_biological_level, status, create_time, is_del
+  </sql>
+
+</mapper>

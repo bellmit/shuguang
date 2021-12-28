@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	  <property name="host"><value>192.168.2.21</value></property>
+	</bean>
+	
+	<bean id="mailMessage" class="org.springframework.mail.SimpleMailMessage">
+	  <property name="from"><value>system@cvicse.com</value></property>
+	  <property name="subject"><value>新的工作项</value></property>
+	</bean>
+	
+	<bean id="taskManager" class="com.cvicse.workflow.examples.mail.WorkItemManagerImpl">
+	  <property name="mailSender"><ref bean="mailSender"/></property>
+	  <property name="message"><ref bean="mailMessage"/></property>
+	</bean>
+</beans>

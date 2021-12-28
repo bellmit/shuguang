@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.SysDictionaryMapper" >
+
+    <!-- 目的：为dao接口方法提供sql语句配置 -->
+    <select id="getAllSysDictionaries"  parameterType="java.lang.String" resultType="com.sofn.ducss.model.SysDictionary">
+        <!-- 具体的sql -->
+        <!--SELECT
+        *
+        FROM
+        sys_dictionary
+        WHERE dict_type=#{dictType}
+        order by order_no-->
+        select
+        b.typevalue as dictType,
+        a.dictcode as dictKey,
+        a.dictname as dictValue,
+        a.sort as orderNo
+        from
+        sys_dict a
+        left join sys_dict_type b on b.id = a.dicttypeid
+        where a.enable = 'Y' and b.typevalue in ('other','straw_type') and a.dictcode != 'other' and a.del_flag = 'Y'
+        order by a.dicttypeid desc, a.sort asc
+    </select>
+
+    <select id="getOtherDictionaries"  parameterType="java.lang.String" resultType="com.sofn.ducss.model.SysDictionary">
+        select
+        b.typevalue as dictType,
+        a.dictcode as dictKey,
+        a.dictname as dictValue,
+        a.sort as orderNo
+        from
+        sys_dict a
+        left join sys_dict_type b on b.id = a.dicttypeid
+        where b.typevalue = 'other'
+        <if test="codes != null and codes.size()>0">
+            and a.dictcode in
+            <foreach collection="codes" item="code" open="(" close=")" separator=",">
+                #{code}
+            </foreach>
+        </if>
+        order by a.create_time desc, a.sort asc
+    </select>
+
+    <select id="getDictKeyList" resultType="java.lang.String">
+        SELECT
+        dict_value
+        FROM
+        sys_dictionary
+        WHERE dict_type= 'straw_type'
+		  AND dict_key IN (
+          <foreach collection="list" item="item" separator=",">
+           #{item}
+          </foreach>
+		  )
+        order by order_no
+    </select>
+
+    <select id="getDictKeyListBy" resultType="java.lang.String">
+        SELECT
+        dictcode
+        FROM
+        sys_dict a
+        LEFT JOIN sys_dict_type b ON b.id = a.dicttypeid
+        WHERE
+        a.ENABLE = 'Y' and a.del_flag = 'Y'
+        AND b.typevalue IN ( 'other', 'straw_type' )
+        AND a.dictcode != 'other' AND a.dictcode IN (
+            <foreach collection="list" item="item" separator=",">
+                #{item}
+            </foreach>
+        )
+        ORDER BY
+        a.dicttypeid DESC,
+        a.sort ASC
+    </select>
+
+    <select id="getDictionariesByKey" resultType="com.sofn.ducss.model.SysDictionary">
+        <!-- 具体的sql -->
+        SELECT
+        *
+        FROM
+        sys_dictionary
+        WHERE dict_type=#{dictType} and dict_key=#{dictKey}
+        order by order_no
+    </select>
+
+    <update id = "updateValueByTypeKey">
+		update sys_dictionary set
+			dict_value=#{value,jdbcType=VARCHAR}
+		where
+			dict_type = #{type,jdbcType = VARCHAR}
+			and dict_key=#{key,jdbcType = VARCHAR}
+	</update>
+
+    <select id="getSysDictionaryListByKey" resultType="com.sofn.ducss.model.SysDictionary">
+        SELECT
+            "id",
+            dict_key,
+            dict_value
+        FROM
+            sys_dictionary
+        <where>
+            <if test="dictType != null and dictType != ''">
+                dict_type = #{dictType}
+            </if>
+            <if test="dictKey != null and dictKey !=''">
+                AND dict_key = #{dictKey}
+            </if>
+        </where>
+    </select>
+
+    <select id="getDictValue" resultType="java.lang.String">
+        SELECT
+         dictname
+        FROM
+            sys_dict a
+            LEFT JOIN sys_dict_type b ON b.id = a.dicttypeid
+        WHERE
+            a.ENABLE = 'Y' and a.del_flag = 'Y'
+            AND b.typevalue IN ( 'other', 'straw_type' )
+            AND a.dictcode = #{dictKey}
+    </select>
+</mapper>

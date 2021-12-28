@@ -1,0 +1,211 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+<div class="Sup_contain_section col-lg-12 col-xs-12 col-sm-12 col-md-12">
+    <div class="col-md-2" style="width: 15%">
+        <div class="panel-group list-group-panel">
+            <div class="panel panel-default">
+                <div class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="list-group" style="margin-bottom:0px;">
+                            <a href="#" ng-click="taskDetail()" class="list-group-item line-15">任务详情</a>
+                            <a href="#" ng-click="sampelPrint()" class="list-group-item line-15">抽样</a>
+                            <a href="#" ng-click="test()" class="list-group-item line-15">检测结果录入</a>
+                            <a href="#" ng-click="import()" class="list-group-item line-15">检测结果导入</a>
+                            <a href="#" ng-click="routineMonitorList()" class="list-group-item line-15">检测信息汇总</a>
+                            <a href="#" ng-click="historyTaskList()" class="list-group-item line-15">报告上传</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="gui-breadcrumbs">
+            <a href="">专项监测</a>&gt;
+            <span>检测信息汇总</span>
+        </div>
+        <p class="col-lg-1 col-xs-0 col-sm-1 col-md-1"></p>
+            <!-- <ul class="nav nav-tabs" role="tablist">
+                 <li role="presentation" class="active"><a id="newTask" role="tab" data-toggle="tab">例行监测</a></li>
+                 <li role="presentation" class="pointer"><a id="bePubTask" role="tab" data-toggle="tab">专项监测</a></li>
+             </ul>-->
+
+            <div id="abc"></div>
+
+            <div class="Sup_contain_section_contain col-lg-10 col-xs-12 col-sm-10 col-md-10 mgt-15">
+                <form class="form-inline" role="form" id="addForm" name="addForm" >
+                    <div class="gui-form-group has-success has-feedback ">
+                        <label >年份</label>
+                        <span class="gui-select">
+                            <select name="year"id="year">
+                                <option value="" >年度</option>
+                                <option   ng-repeat="x in year"  >{{x}}</option>
+                            </select>
+                        </span>
+                        <label >任务名称</label>
+                        <span class="gui-select">
+                            <select name="taskName"id="taskName">
+                            <option value="" >全部</option>
+                            <option ng-repeat="x in taskName"  >{{x.taskName}}</option>
+                        </select>
+                        </span>
+                    </div>
+                </form>
+                <form class="form-inline" role="form">
+                    <div class="gui-form-group">
+                        <label>产品编码</label>
+                        <input type="text" class="gui-input" name="productCode" id="productCode" >
+                        <label >样品编码</label>
+                        <input type="text" class="gui-input" name="sampleCode" id="sampleCode" >
+                    </div>
+                </form>
+                <form class="form-inline" role="form">
+                    <div class="form-group has-success has-feedback gui-form-group">
+                        <label >所属区域</label>
+                        <span class="gui-select">
+                            <select id="sheng1">
+                                <option value="" >--请选择省份--</option>
+                            </select>
+                        </span>
+                        <span class="gui-select">
+                        <select id="shi1">
+                            <option value="" >--请选择城市--</option>
+                        </select>
+                        </span>
+                        <span class="gui-select">
+                            <select id="xian1">
+                            <option value="" style="">--请选择区/县--</option>
+                        </select>
+                        </span>
+                    </div>
+                </form>
+                <form class="form-inline" role="form">
+                    <div class="form-group has-success has-feedback gui-form-group">
+                        <label >样品名称</label>
+                        <span class="gui-select">
+                            <select name="sampleName" id="sampleName" ng-click="selectOrgan('S')" >
+                                <option value="" >全部</option>
+                                <option ng-repeat="x in sampleName" style="width: 152px" >{{x.sampleName}}</option>
+                            </select>
+                        </span>
+                        <label >判定结果</label>
+                        <span class="gui-select">
+                            <select name="result"id="result">
+                                <option value="" >所有</option>
+                                <option value="1" >合格</option>
+                                <option value="0" >不合格</option>
+                                <option value="-1" >检测未上报</option>
+                                <!--<option ng-repeat="x in result" style="width: 152px" >{{x}}</option>-->
+                            </select>
+                        </span>
+                    </div>
+                </form>
+                <form class="form-inline" role="form ">
+                    <div class="form-group has-success has-feedback gui-form-group">
+                        <label >产&nbsp;&nbsp;地</label>
+                        <span class="gui-select">
+                        <select id="sheng">
+                            <option value="" >--请选择省份--</option>
+                        </select>
+                        </span>
+                        <span class="gui-select">
+                        <select id="shi">
+                            <option value="" >--请选择城市--</option>
+                        </select>
+                        </span>
+                        <span class="gui-select">
+                        <select id="xian">
+                            <option value="" >--请选择区/县--</option>
+                        </select>
+                        </span>
+                    </div>
+                </form>
+                <form class="form-inline" role="form">
+                    <div class="form-group has-success has-feedback gui-form-group">
+                        <label >抽样单位</label>
+                        <span class="gui-select">
+                        <select name="sampleDeparment" id="sampleDeparment">
+                            <option value="" >全部</option>
+                            <option  ng-repeat="x in sampleDeparment"  >{{x.sampleDeparment}}</option>
+                        </select>
+                            </span>
+                        <label >检测环节</label>
+                        <span class="gui-select">
+                        <select name="checkLink" id="checkLink" class="" style="width: 205px" >
+                            <option value="" >全部</option>
+                            <option  ng-repeat="x in checkLink"  >{{x.checkLink}}</option>
+                        </select>
+                        </span>
+                    </div>
+                </form>
+                <form class="form-inline" role="form">
+                    <div class="form-group has-success has-feedback gui-form-group">
+                        <label >检测单位</label>
+                        <span class="gui-select">
+                        <select name="checkOrgan" id="checkOrgan" >
+                            <option value="" >全部</option>
+                            <option    ng-repeat="x in checkOrgan"  >{{x.checkOrgan}}</option>
+                        </select>
+                        </span>
+                        <label >受检单位</label>
+                        <span class="gui-select">
+                        <select name="testedDeparment" id="testedDeparment" style="width: 205px">
+                            <option value="" >全部</option>
+                            <option   ng-repeat="x in testedDeparment" >{{x.testedDeparment}}</option>
+                        </select>
+                        </span>
+                    </div>
+                </form>
+                <form class="form-inline" role="form">
+                    <div class="form-group has-success has-feedback gui-form-group">
+                        <label >抽样时间</label>
+                        <input type="text" id="startTime" class="gui-input"  name="startTime" readonly="readonly" onclick="SelectDate(this)">---
+                        <input type="text" id="endTime" class="gui-input" name="endTime" readonly="readonly" onclick="SelectDate(this)">
+                    </div>
+                </form>
+                <form class="form-inline" role="form">
+                    <div class="form-group has-success has-feedback gui-form-group">
+                        <label >
+                            <span class="gui-btn"  id="seachTask">查询</span>
+                        </label>
+                    </div>
+                    <div class="gui-actions">
+                        <span class="gui-btn" ng-click="exportExcel('s') " id="export1"><i class="gui-icon icon-export"></i>导出汇总</span>
+                        <span class="gui-btn" id="export2" ng-click="exportExcel('a')"><i class="gui-icon icon-export"></i>导出详细</span>
+
+                    </div>
+                </form>
+              <!--  <form class="form-inline" role="form">
+                    <h3 id="Sup_contain_section_head_h3" style='float:left'>
+                        <span>例行监测</span>
+                        >
+                    </h3>
+
+                    <span>
+                        <div class="setslist" style="float:left;display:inline;">
+                            <ul>
+                                &lt;!&ndash;<li name="trade">监测行业：蔬菜 <button type="button"><span class="glyphicon glyphicon-remove"></span></button>&ndash;&gt;
+                                &lt;!&ndash;</li>&ndash;&gt;
+                            </ul>
+                        </div>
+                        <div class="cq2" style="clear:both;display:inline;"><button id="clear">清除筛选</button></div>
+                    </span>
+
+                    &lt;!&ndash; 检测机构主体信息&ndash;&gt;
+
+                </form>-->
+                <div class=" tb NewsSize" id="adminTable" style="margin-top: 20px">
+                    <table id="grid" class="gui-table table table-striped  data-table">
+
+                    </table>
+
+                </div>
+                <div class=" tb NewsSize" id="adminTables" style="display: none">
+                    <table id="grids" class="gui-table table table-striped data-table col-lg-12 col-xs-12 col-sm-12 col-md-12">
+
+                    </table>
+
+                </div>
+            </div>
+
+
+
+</div>

@@ -1,0 +1,298 @@
+<style>
+.gui-section .gui-list .form-item .radio-item {
+    margin: 0 15px 0 0;
+    width: auto;
+    display: inline-block;
+    cursor: pointer;
+}
+</style>
+<div class="gui-breadcrumbs">
+    <a href="">用户主体管理</a>&gt;
+    <span>备案变更申请</span>
+</div>
+<div class="gui-section">
+    <form id="attributeForm" method="post" class="form-horizontal" data-bv-message="This value is not valid" data-bv-feedbackicons-valid="glyphicon glyphicon-ok" data-bv-feedbackicons-invalid="glyphicon glyphicon-remove" data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+        <ul class="gui-list ovh">
+            <li>
+                <div class="gui-page-head">
+                    <h3>变更信息</h3>
+                </div>
+            </li>
+            <li>
+                <div class="form-item form-group">
+                    <label>主体名称</label>
+                    <input type="text" class="gui-input" id="enterpriseName" ng-model="enterpriseName" name="enterpriseName" placeholder="请输入主体名称" data-bv-notempty="true" data-bv-notempty-message="请填写主体名称" data-bv-stringlength="true" data-bv-stringlength-min="6" data-bv-stringlength-max="18" data-bv-stringlength-message="主体名称必须超过6，不超过18个字符">
+                </div>
+            </li>
+            <li>
+                <div class="form-item form-group">
+                    <label>所属区域</label>
+                    <div class="gui-col-4 fl mr15">
+                        <span class="gui-select">
+                          <select id="selectedSiteProvince" class="form-control">
+                              <option value="">--请选择省份--</option>
+                              <!--<option ng-repeat="x in provinces" value="{{x.id}}">{{x.site}}</option>-->
+                          </select>
+                        </span>
+                    </div>
+                    <div class="gui-col-4 fl mr15">
+                        <span class="gui-select">
+                    <select id="selectedSiteCity" class="form-control">
+                        <option value="">--请选择市份--</option>
+                        <!--<option ng-repeat="x in citys" value="{{x.id}}">{{x.site}}</option>-->
+                    </select>
+                    </span>
+                    </div>
+                    <div class="gui-col-4 fl">
+                        <span class="gui-select">
+                    <select id="selectedSiteArea" class="form-control">
+                        <option value="">--请选择区县--</option>
+                        <!--<option ng-repeat="x in areas" value="{{x.id}}">{{x.site}}</option>-->
+                    </select>
+                    </span>
+                    </div>
+                </div>
+            </li>
+            </ul>
+             <ul class="gui-list ovh" id="isEnt">
+                <li>
+                    <div class="form-item form-group">
+                        <span class="title">证件类型</span>
+                        <div class="text-field">
+                            <label class="radio-item">
+                                <input type="radio" id="independent" name="cardType" ng-click="getRadio()" value="三证合一营业执照（无独立组织机构代码证）" checked><span>三证合一营业执照（无独立组织机构代码证）</span>
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" id="noindependent" name="cardType" ng-click="getRadio()" value="普通营业执照（有独立组织机构代码证）"><span>普通营业执照（有独立组织机构代码证）</span>
+                            </label>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <span class="title">组织机构代码</span>
+                        <input type="text" class="gui-input form-control" id="ZZJGDMZ" ng-model="ZZJGDMZ" name="ZZJGDMZ" placeholder="请输入组织机构代码" onblur="queryByCreditCode2()">
+                        <div style="color:#a94442;margin-top: 5px;font-size: 12px;display: none" id="msg"></div>
+                    </div>
+                </li>
+            </ul>
+            <!--<li>-->
+            <!--<div class="form-item form-group">-->
+            <!--<label>组织机构代码</label>-->
+            <!--<input type="text" class="gui-input form-control" ng-model="ZZJGDMZ" name="ZZJGDMZ"-->
+            <!--placeholder="请输入组织机构代码"-->
+            <!--data-bv-notempty="true"-->
+            <!--data-bv-notempty-message="请填写组织机构代码"-->
+            <!--data-bv-stringlength="true"-->
+            <!--data-bv-stringlength-min="18"-->
+            <!--data-bv-stringlength-max="18"-->
+            <!--data-bv-stringlength-message="组织机构代码必须是18位" />-->
+            <!--</div>-->
+            <!--</li>-->
+            <!--     <li>
+                <div class="form-item form-group">
+                    <label>主体账号</label>
+                    <input type="text" class="gui-input form-control" ng-model="accounts" name="accounts" placeholder="请输入主体账号" data-bv-notempty="true" data-bv-notempty-message="请填写主体账号" data-bv-stringlength="true" data-bv-stringlength-min="4" data-bv-stringlength-max="20" data-bv-stringlength-message="主体账号必须超过6，不超过20个字符" />
+                </div>
+            </li>-->
+            <ul class="gui-list ovh">
+            <li>
+                <div class="form-item form-group">
+                    <label>主体地址</label>
+                    <input type="text" class="gui-input form-control" ng-model="address" name="address" placeholder="请输入主体地址" data-bv-notempty="true" data-bv-notempty-message="请填写主体地址" data-bv-stringlength="true" data-bv-stringlength-min="10" data-bv-stringlength-max="50" data-bv-stringlength-message="主体地址必须超过6，不超过20个字符">
+                </div>
+            </li>
+            <li>
+                <div class="form-item form-group">
+                    <label>法人(负责人)姓名</label>
+                    <input type="text" class="gui-input form-control" ng-model="contactName" name="contactName" placeholder="请输入负责人姓名" data-bv-notempty="true" data-bv-notempty-message="请填写负责人姓名" data-bv-stringlength="true" data-bv-stringlength-min="2" data-bv-stringlength-max="10" data-bv-stringlength-message="负责人姓名必须超过2，不超过10个字符">
+                </div>
+            </li>
+            <li>
+                <div class="form-item form-group">
+                    <label>法人(负责人)联系方式</label>
+                    <input type="text" class="gui-input form-control" ng-model="contactPhone" name="contactPhone" placeholder="请输入负责人联系方式" data-bv-notempty="true" data-bv-notempty-message="请填写负责人姓名" data-bv-stringlength="true" data-bv-stringlength-min="11" data-bv-stringlength-max="11" data-bv-stringlength-message="手机号码必须11">
+                </div>
+            </li>
+            <li>
+                <div class="gui-page-head">
+                    <h3>变更原因</h3>
+                </div>
+            </li>
+            <li>
+                <div class="form-item form-group">
+                    <label></label>
+                    <textarea class="gui-textarea" id="recordLogout" name="recordLogout" placeholder="变更原因（500字）" rows="6" onblur="repeatCheck()" data-bv-notempty="true" data-bv-notempty-message="请输入变更原因" data-bv-stringlength="true" data-bv-stringlength-min="10" data-bv-stringlength-max="500" data-bv-stringlength-message="10-500"></textarea>
+                </div>
+                <div class="col-lg-5">
+                    <span ng-show="flag" style="color: red">已发起过变更未经监管审核不能再次发起变更!</span>
+                </div>
+            </li>
+            <div id="entprise">
+                <li>
+                    <div class="gui-page-head">
+                        <h3>生产经营主体企业证照上传 (照片或电子扫描文档)</h3>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <div class="field-text">
+                            <div class="fl mr15" style="width:200px;">
+                                <img src="images/register/add.jpg" class="mr15" isupload="N" id="img61" width="200" height="120" ng-click="myModal61()">
+                                <div class="text-center" style="width:200px;" id="img21Text">营业执照</div>
+                            </div>
+                            <div class="fl mr15" style="width:200px;" id="img22div">
+                                <img src="images/register/add.jpg" isupload="N" id="img62" width="200" height="120" ng-click="myModal62()">
+                                <div class="text-center" style="width:200px;">组织机构代码证</div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </div>
+            <li>
+                <div class="gui-page-head">
+                    <h3>个人证照上传 (照片或电子扫描文档)</h3>
+                </div>
+            </li>
+            <li>
+                <div class="form-item form-group">
+                    <div class="field-text">
+                        <div class="fl mr15" style="width:200px;">
+                            <img ng-src="{{img23}}" src="images/register/add.jpg" isupload="N" class="mr15" id="img23" width="200" height="120" ng-click="myModal23()">
+                            <div class="text-center" style="width:200px;">身份证正面</div>
+                        </div>
+                        <div class="fl mr15" style="width:200px;">
+                            <img ng-src="{{img24}}" src="images/register/add.jpg" isupload="N" class="mr15" id="img24" width="200" height="120" ng-click="myModal24()">
+                            <div class="text-center" style="width:200px;">身份证反面</div>
+                        </div>
+                        <div class="fl mr15" style="width:200px;">
+                            <img ng-src="{{img25}}" src="images/register/add.jpg" isupload="N" class="mr15" id="img25" width="200" height="120" ng-click="myModal25()">
+                            <div class="text-center" style="width:200px;">手持身份证</div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="text-center" style="margin-bottom:50px;">
+                    <button class="gui-btn" ui-sref="index.content.tts/register/accountInfo/recordDetails">返回</button>
+                    <button ng-click="addTtsScltxxcjChangeRecordApply()" class="gui-btn ml15">提交申请</button>
+                </div>
+            </li>
+        </ul>
+    </form>
+</div>
+<div class="modal fade" id="myModal61" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel61">营业执照</h4>
+            </div>
+            <div class="modal-body">
+                <p>营业执照</p>
+                <div>
+                    <p>{{imgsrc}}</p>
+                    <form enctype="multipart/form-data">
+                        <input id="file6-1" type="file" name="file" multiple=" true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="1">
+                        <br>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal62" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel62">组织机构代码证</h4>
+            </div>
+            <div class="modal-body">
+                <p>组织机构代码证</p>
+                <div>
+                    <p>{{imgsrc}}</p>
+                    <form enctype="multipart/form-data">
+                        <input id="file6-2" type="file" name="file" multiple=" true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="1">
+                        <br>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal23" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel23">身份证正面</h4>
+            </div>
+            <div class="modal-body">
+                <p>身份证正面</p>
+                <div>
+                    <p>{{imgsrc}}</p>
+                    <form enctype="multipart/form-data">
+                        <input id="file2-3" type="file" name="file" multiple=" true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="1">
+                        <br>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="gui-btn">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal24" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel24">身份证反面</h4>
+            </div>
+            <div class="modal-body">
+                <p>身份证反面</p>
+                <div>
+                    <p>{{imgsrc}}</p>
+                    <form enctype="multipart/form-data">
+                        <input id="file2-4" type="file" name="file" multiple=" true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="1">
+                        <br>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="gui-btn">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal25" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel25">手持身份证</h4>
+            </div>
+            <div class="modal-body">
+                <p>手持身份证</p>
+                <div>
+                    <p>{{imgsrc}}</p>
+                    <form enctype="multipart/form-data">
+                        <input id="file2-5" type="file" name="file" multiple=" true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="1">
+                        <br>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="gui-btn">保存</button>
+            </div>
+        </div>
+    </div>
+</div>

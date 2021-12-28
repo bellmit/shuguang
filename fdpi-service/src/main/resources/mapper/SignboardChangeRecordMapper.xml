@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.SignboardChangeRecordMapper">
+
+    <sql id="alias_Column_List_scr">
+      scr.ID, scr.REMARK, scr.CHANGE_TIME, scr.STATUS, scr.CODE
+    </sql>
+    <sql id="alias_Column_List_s">
+      s.ID signboardId
+    </sql>
+    <sql id="alias_Column_List_ts">
+      ts.SPE_NAME
+    </sql>
+    <sql id="alias_Column_List_tc">
+      tc.COMP_NAME
+    </sql>
+    <select id="listByParams" resultType="com.sofn.fdpi.model.SignboardChangeRecord">
+        select
+        <include refid="alias_Column_List_scr"/>,
+        <include refid="alias_Column_List_s"/>,
+        <include refid="alias_Column_List_ts"/>,
+        <include refid="alias_Column_List_tc"/>
+        from SIGNBOARD s
+        left join SIGNBOARD_CHANGE_RECORD scr ON scr.SIGNBOARD_ID = s.ID
+        left join TB_SPECIES ts on scr.SPE_ID = ts.ID
+        left join TB_COMP tc on scr.COMP_ID = tc.ID
+        <where>
+            1 = 1
+            <if test="signboardId != null and signboardId != ''">
+                and scr.SIGNBOARD_ID = #{signboardId}
+            </if>
+        </where>
+        order by scr.CHANGE_TIME desc
+    </select>
+
+</mapper>

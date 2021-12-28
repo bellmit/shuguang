@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.SignboardMapper">
+
+    <sql id="base_Column_List">
+      ID, SPE_ID, COMP_ID, CODE, STATUS, IS_PEDIGREE, PRINT_STATUS,
+      CREATE_USER_ID, CREATE_TIME, UPDATE_USER_ID, UPDATE_TIME, DEL_FLAG
+    </sql>
+    <sql id="alias_Column_List_s">
+      s.ID, s.SPE_ID, s.COMP_ID, s.CODE, s.IS_PEDIGREE, s.PRINT_STATUS, s.STATUS, s.SPE_UTILIZE_TYPE, s.SIGNBOARD_TYPE,
+      s.CREATE_USER_ID, s.CREATE_TIME, s.UPDATE_USER_ID, s.UPDATE_TIME, s.DEL_FLAG, s.ES_GEN,s.TRANSFER_STATUS,
+      s.CHIP_ABROAD, s.CHIP_DOMESTIC
+    </sql>
+    <sql id="alias_Column_List_ts">
+      ts.SPE_NAME, ts.PEDIGREE, ts.LATIN_NAME, ts.CITES, ts.PRO_LEVEL, ts.INTRO, ts.HABIT as HABIT,
+      ts.PEDIGREE as esGen
+    </sql>
+    <sql id="alias_Column_List_sa">
+      sa.APPLY_CODE
+    </sql>
+    <sql id="alias_Column_List_tc">
+      tc.COMP_NAME, tc.COMP_TYPE, tc.REGION_IN_CH areaName, tc.CONTACT_ADDRESS
+    </sql>
+    <select id="listByParams" resultType="com.sofn.fdpi.model.Signboard">
+        select
+        <include refid="alias_Column_List_s"/>,<include refid="alias_Column_List_ts"/>,
+        <include refid="alias_Column_List_tc"/>,<include refid="alias_Column_List_sa"/>
+        from SIGNBOARD s left join TB_SPECIES ts on s.SPE_ID = ts.ID
+        left join TB_COMP tc on s.COMP_ID = tc.ID left join SIGNBOARD_APPLY sa on sa.id = s.apply_id
+        <where>
+            <if test="delFlag != null and delFlag != ''">
+                and s.DEL_FLAG = #{delFlag}
+            </if>
+            <if test="transferStatus != null">
+            and (s.TRANSFER_STATUS = #{transferStatus} or s.TRANSFER_STATUS ='N')
+            </if>
+            <if test="transferStatus == null and transferStatus == ''">
+                and (s.TRANSFER_STATUS = 'N' )
+            </if>
+            <if test="withInTransfer != null and withInTransfer != ''">
+                and s.STATUS = '2'
+            </if>
+            <if test="printId != null and printId != ''">
+                and s.PRINT_ID = #{printId}
+            </if>
+            <if test="province != null and province != ''">
+                and tc.COMP_PROVINCE = #{province}
+            </if>
+            <if test="city != null and city != ''">
+                and tc.COMP_CITY = #{city}
+            </if>
+            <if test="district != null and district != ''">
+                and tc.COMP_DISTRICT = #{district}
+            </if>
+            <if test="compId != null and compId != ''">
+                and s.COMP_ID = #{compId}
+            </if>
+            <if test="withoutSignboardStatus != null and withoutSignboardStatus != ''">
+                and s.STATUS != '1' and s.STATUS != '3'
+            </if>
+            <if test="status != null and status != ''">
+                and s.STATUS = #{status}
+            </if>
+            <if test="speSource != null and speSource != ''">
+                and s.SPE_SOURCE = #{speSource}
+            </if>
+            <if test="speUtilizeType != null and speUtilizeType != ''">
+                and s.SPE_UTILIZE_TYPE = #{speUtilizeType}
+            </if>
+            <if test="speId != null and speId != ''">
+                and s.SPE_ID = #{speId}
+            </if>
+            <if test="completeCode != null and completeCode != ''">
+                and s.CODE = #{completeCode}
+            </if>
+            <if test="isPedigree != null and isPedigree != ''">
+                and s.IS_PEDIGREE = #{isPedigree}
+            </if>
+            <if test="code != null and code != ''">
+                and s.CODE like '%' || #{code} || '%'
+            </if>
+            <if test="applyCode != null and applyCode != ''">
+                and sa.APPLY_CODE like '%' || #{applyCode} || '%'
+            </if>
+            <if test="speName != null and speName != ''">
+                and ts.SPE_NAME like '%' || #{speName} || '%'
+            </if>
+            <if test="compName != null and compName != ''">
+                and tc.COMP_NAME like '%' || #{compName} || '%'
+            </if>
+        </where>
+        order by s.CREATE_TIME desc, s.code
+    </select>
+
+    <select id="listSpeSourceDistinct" resultType="java.lang.String">
+        select distinct SPE_SOURCE from SIGNBOARD
+        where DEL_FLAG = 'N' and SPE_ID = #{speId} and COMP_ID = #{compId}
+    </select>
+
+    <select id="listUtilizeTypeDistinct" resultType="java.lang.String">
+        select distinct SPE_UTILIZE_TYPE from SIGNBOARD
+        where DEL_FLAG = 'N' and SPE_ID = #{speId} and COMP_ID = #{compId}
+    </select>
+
+    <resultMap id="listForSignboardResultMap" type="com.sofn.fdpi.vo.SignboardVoForInspect">
+        <result column="ID" property="id" jdbcType="VARCHAR"></result>
+        <result column="CODE" property="code" jdbcType="VARCHAR"></result>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"></result>
+        <result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <select id="listForSignboard" parameterType="java.util.Map" resultMap="listForSignboardResultMap">
+        select ID,CODE,STATUS,SIGNBOARD_TYPE
+        -- 标识状态 1 未激活 2 在养 3 已注销
+        ,(CASE STATUS WHEN '1' THEN '未激活' WHEN '2' THEN '在养' WHEN '3' THEN '已注销' WHEN '4' THEN '销售' END) STATUS_NAME
+        from SIGNBOARD
+        <where>
+            DEL_FLAG = 'N'
+            <if test="withOutStatus!=null and withOutStatus!=''">
+                and STATUS!='3'
+            </if>
+            <if test="compId!=null and compId!=''">
+                and COMP_ID=#{compId}
+            </if>
+            <if test="speciesId!=null and speciesId!=''">
+                and SPE_ID=#{speciesId}
+            </if>
+            <if test="signboardType!=null and signboardType!=''">
+                and SIGNBOARD_TYPE=#{signboardType}
+            </if>
+            <if test="signboardCode!=null and signboardCode!=''">
+                and CODE like '%'||#{signboardCode}||'%'
+            </if>
+            <if test="endTime!=null">
+                and CREATE_TIME &lt;=to_timestamp(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+        </where>
+    </select>
+
+    <select id="getSignboard" resultType="com.sofn.fdpi.model.Signboard">
+        select s.*, <include refid="alias_Column_List_ts"/>,
+        <include refid="alias_Column_List_tc"/>
+        from SIGNBOARD s left join TB_SPECIES ts on s.SPE_ID = ts.ID left join TB_COMP tc on s.COMP_ID = tc.ID
+        where s.ID = #{id}
+    </select>
+
+    <select id="listSignboardByCode" resultType="com.sofn.fdpi.model.Signboard">
+        select<include refid="alias_Column_List_ts"/>, s.*,
+        <include refid="alias_Column_List_tc"/>
+        from SIGNBOARD s left join TB_SPECIES ts on s.SPE_ID = ts.ID left join TB_COMP tc on s.COMP_ID = tc.ID
+        where s.CODE = #{code} or s.OLD_CODE = #{code} or s.CHIP_ABROAD = #{code} or s.CHIP_DOMESTIC = #{code}
+    </select>
+
+    <insert id="recordAllotment" >
+        INSERT INTO SIGNBOARD_CHANGE_RECORD (ID,SPE_ID,COMP_ID,CODE,STATUS,CHANGE_TIME,SIGNBOARD_ID)
+        SELECT ID,SPE_ID,COMP_ID,CODE,STATUS,CREATE_TIME,ID
+        FROM SIGNBOARD where CRT_TIME = #{createTime}
+    </insert>
+
+    <insert id="recordApplyList" >
+        INSERT INTO
+        SIGNBOARD_APPLY_LIST (ID,APPLY_ID,SIGNBOARD_ID,CREATE_USER_ID,CREATE_TIME,UPDATE_USER_ID,UPDATE_TIME,DEL_FLAG)
+        SELECT ID,#{applyId},ID,CREATE_USER_ID,CREATE_TIME,UPDATE_USER_ID,UPDATE_TIME,DEL_FLAG
+        FROM SIGNBOARD where CRT_TIME = #{createTime}
+    </insert>
+
+    <resultMap id="listForSignboardInspectHistoryResultMap" type="com.sofn.fdpi.model.PapersYearInspectHistory">
+        <result column="CODE" property="code" jdbcType="VARCHAR"></result>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"></result>
+        <result column="SPE_ID" property="speId" jdbcType="VARCHAR"></result>
+        <result column="COMP_ID" property="compId" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <select id="listForInspectHistory" parameterType="java.util.Map" resultMap="listForSignboardInspectHistoryResultMap">
+        select CODE,STATUS,SPE_ID,COMP_ID,SIGNBOARD_TYPE
+        from SIGNBOARD
+        <where>
+            DEL_FLAG = 'N'
+            <if test="withOutStatus!=null and withOutStatus!=''">
+                and STATUS!='3'
+            </if>
+            <if test="compId!=null and compId!=''">
+                and COMP_ID=#{compId}
+            </if>
+        </where>
+    </select>
+
+    <select id="listForSignboardInspectHistory" parameterType="java.util.Map" resultMap="listForSignboardResultMap">
+            select ID,CODE,STATUS
+            ,(CASE STATUS WHEN '1' THEN '未激活' WHEN '2' THEN '在养' WHEN '3' THEN '已注销' WHEN '4' THEN '销售' END) STATUS_NAME
+            from PAPERS_YEAR_INSPECT_HISTORY
+            <where>
+                DEL_FLAG = 'N'
+                <if test="yearInspectId != null and yearInspectId != ''">
+                    and YEAR_INSPECT_ID = #{yearInspectId}
+                </if>
+                <if test="compId!=null and compId!=''">
+                    and COMP_ID=#{compId}
+                </if>
+                <if test="speciesId!=null and speciesId!=''">
+                    and SPE_ID=#{speciesId}
+                </if>
+                <if test="signboardCode!=null and signboardCode!=''">
+                    and CODE like '%'||#{signboardCode}||'%'
+                </if>
+            </where>
+    </select>
+
+    <select id="countTotal" resultType="Long">
+        select count(0)
+        from SIGNBOARD s left join TB_SPECIES ts on s.SPE_ID = ts.ID
+        left join TB_COMP tc on s.COMP_ID = tc.ID left join SIGNBOARD_APPLY sa on sa.id = s.apply_id
+        <where>
+            <if test="delFlag != null and delFlag != ''">
+                and s.DEL_FLAG = #{delFlag}
+            </if>
+            <if test="transferStatus != null">
+                and (s.TRANSFER_STATUS = #{transferStatus} or s.TRANSFER_STATUS ='N')
+            </if>
+            <if test="transferStatus == null and transferStatus == ''">
+                and (s.TRANSFER_STATUS = 'N' )
+            </if>
+            <if test="withInTransfer != null and withInTransfer != ''">
+                and s.STATUS = '2'
+            </if>
+            <if test="printId != null and printId != ''">
+                and s.PRINT_ID = #{printId}
+            </if>
+            <if test="province != null and province != ''">
+                and tc.COMP_PROVINCE = #{province}
+            </if>
+            <if test="city != null and city != ''">
+                and tc.COMP_CITY = #{city}
+            </if>
+            <if test="district != null and district != ''">
+                and tc.COMP_DISTRICT = #{district}
+            </if>
+            <if test="compId != null and compId != ''">
+                and s.COMP_ID = #{compId}
+            </if>
+            <if test="withoutSignboardStatus != null and withoutSignboardStatus != ''">
+                and s.STATUS != '1' and s.STATUS != '3'
+            </if>
+            <if test="status != null and status != ''">
+                and s.STATUS = #{status}
+            </if>
+            <if test="speSource != null and speSource != ''">
+                and s.SPE_SOURCE = #{speSource}
+            </if>
+            <if test="speUtilizeType != null and speUtilizeType != ''">
+                and s.SPE_UTILIZE_TYPE = #{speUtilizeType}
+            </if>
+            <if test="speId != null and speId != ''">
+                and s.SPE_ID = #{speId}
+            </if>
+            <if test="completeCode != null and completeCode != ''">
+                and s.CODE = #{completeCode}
+            </if>
+            <if test="isPedigree != null and isPedigree != ''">
+                and s.IS_PEDIGREE = #{isPedigree}
+            </if>
+            <if test="code != null and code != ''">
+                and s.CODE like '%' || #{code} || '%'
+            </if>
+            <if test="applyCode != null and applyCode != ''">
+                and sa.APPLY_CODE like '%' || #{applyCode} || '%'
+            </if>
+            <if test="speName != null and speName != ''">
+                and ts.SPE_NAME like '%' || #{speName} || '%'
+            </if>
+            <if test="compName != null and compName != ''">
+                and tc.COMP_NAME like '%' || #{compName} || '%'
+            </if>
+        </where>
+    </select>
+    <select id="listPage" resultType="com.sofn.fdpi.model.Signboard">
+        select sa.apply_code, ts.pedigree, ts.pedigree AS esGen, tc.comp_name, tc.comp_type, tc.region_in_ch areaName,
+        tc.contact_address, ts.spe_name, signboard.* from ( select t1.id, t2.rid, t1.spe_id, t1.comp_id, t1.code,
+        t1.is_pedigree, t1.print_status, t1.status, t1.spe_utilize_type, t1.signboard_type, t1.create_user_id,
+        t1.create_time, t1.apply_id, t1.update_user_id, t1.update_time, t1.del_flag, t1.transfer_status, t1.chip_abroad,
+        t1.chip_domestic from signboard T1, (select rid from (select rownum rn, t.rid from
+        ( select s.rowid rid from signboard s left join tb_species ts on s.spe_id = ts.id
+        left join tb_comp tc on s.comp_id = tc.id left join signboard_apply sa on sa.id = s.apply_id
+        <where>
+            <if test="delFlag != null and delFlag != ''">
+                and s.DEL_FLAG = #{delFlag}
+            </if>
+            <if test="transferStatus != null">
+                and (s.TRANSFER_STATUS = #{transferStatus} or s.TRANSFER_STATUS ='N')
+            </if>
+            <if test="transferStatus == null and transferStatus == ''">
+                and (s.TRANSFER_STATUS = 'N' )
+            </if>
+            <if test="withInTransfer != null and withInTransfer != ''">
+                and s.STATUS = '2'
+            </if>
+            <if test="printId != null and printId != ''">
+                and s.PRINT_ID = #{printId}
+            </if>
+            <if test="compId != null and compId != ''">
+                and s.COMP_ID = #{compId}
+            </if>
+            <if test="withoutSignboardStatus != null and withoutSignboardStatus != ''">
+                and s.STATUS != '1' and s.STATUS != '3'
+            </if>
+            <if test="status != null and status != ''">
+                and s.STATUS = #{status}
+            </if>
+            <if test="speSource != null and speSource != ''">
+                and s.SPE_SOURCE = #{speSource}
+            </if>
+            <if test="speUtilizeType != null and speUtilizeType != ''">
+                and s.SPE_UTILIZE_TYPE = #{speUtilizeType}
+            </if>
+            <if test="speId != null and speId != ''">
+                and s.SPE_ID = #{speId}
+            </if>
+            <if test="completeCode != null and completeCode != ''">
+                and s.CODE = #{completeCode}
+            </if>
+            <if test="isPedigree != null and isPedigree != ''">
+                and s.IS_PEDIGREE = #{isPedigree}
+            </if>
+            <if test="code != null and code != ''">
+                and s.CODE like '%' || #{code} || '%'
+            </if>
+            <if test="applyCode != null and applyCode != ''">
+                and sa.APPLY_CODE like '%' || #{applyCode} || '%'
+            </if>
+            <if test="province != null and province != ''">
+                and tc.COMP_PROVINCE = #{province}
+            </if>
+            <if test="city != null and city != ''">
+                and tc.COMP_CITY = #{city}
+            </if>
+            <if test="district != null and district != ''">
+                and tc.COMP_DISTRICT = #{district}
+            </if>
+            <if test="compName != null and compName != ''">
+                and tc.COMP_NAME like '%' || #{compName} || '%'
+            </if>
+            <if test="speName != null and speName != ''">
+                and ts.SPE_NAME like '%' || #{speName} || '%'
+            </if>
+        </where>
+        order by s.rowid desc) t
+        where rownum &lt;= #{pageSize} ) where rn > #{pageNo} ) t2
+        where t1.rowid = t2.rid) signboard left join tb_species ts on ts.id = signboard.spe_id
+        left join tb_comp tc on signboard.comp_id = tc. id
+        left join signboard_apply sa on sa.id = signboard.apply_id
+    </select>
+</mapper>

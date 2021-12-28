@@ -1,0 +1,146 @@
+<style type="text/css">
+    .combo-panel {
+        max-height: 200px;
+    }
+    
+    #add_modal select {
+        width: 100%;
+        max-width: 100%;
+        min-width: 100%;
+    }
+</style>
+<div class="gui-breadcrumbs">
+    <a href="">系统管理</a>&gt;
+    <a href="">用户管理</a>&gt;
+    <span>内部用户管理</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group form-group" id="userQueryForm">
+        <span class="color-gray">用户姓名</span>
+        <input class="gui-input form_input" data-bv-stringlength="true" data-bv-stringlength-max="20" data-bv-stringlength-message="不能超过20个字符长度" name="keyWord" type="text" id="keyWord" maxlength="50" ng-model="keyWord" placeholder="请输入查询关键字">
+        <span class="color-gray">状态</span>
+        <span class="gui-select">
+          <select id="queryStatus" calss="form_select">
+            <!--<option value="">全部</option>
+            <option value="0">限制</option>-->
+            <option value="">全部</option>
+            <option value="1">正常</option>
+            <option value="2">禁用</option>
+            <!--<option value="3">注销</option>-->
+          </select>
+      </span>
+        <button type="button" class=" gui-btn" ng-click="queryList()">查询</button>
+
+
+
+    </div>
+    <div class="gui-actions">
+        <button class="gui-btn fr authority" ng-click="delete();" ng-if="menuAuthority == readWriteAuthority"><i class="gui-icon icon-remove"></i>删除</button>
+        <button class="gui-btn fr mr15 " ng-click="addModal();" ng-if="menuAuthority == readWriteAuthority"><i class="gui-icon icon-add"></i>新增</button>
+        <div class="b-button js-fileapi-wrapper gui-btn btn-upload fr mr15" ng-if="menuAuthority == readWriteAuthority">
+            <div class="b-button__text" ng-click="openImport()"><i class="gui-icon icon-import"></i>批量导入</div>
+        </div>
+    </div>
+    <div>
+        <table id="grid" class="gui-table">
+        </table>
+    </div>
+</div>
+<!-- 模态框（Modal）添加 新增-->
+<div class="modal fade " id="add_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm" style="padding-top:15px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">{{title}}</h4>
+            </div>
+            <div class="modal-body">
+                <form class="default_w_h modal-form form-horizontal" id="modalForm" method="post" action="/sofn-sys-web/region/add" novalidate="novalidate">
+                    <div class="form-item form-group">
+                        <input type="hidden" id="userId" name="id">
+                        <input type="hidden" id="organizationId" name="organizationId">
+                        <input type="hidden" id="orgType" name="orgType">
+                        <label class="required">所属机构</label>
+                        <span class="field-text" id="orgName"></span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label class="required">用户姓名</label>
+                        <input class="gui-input form-control" type="text" id="userName" name="userName" data-bv-notempty="true" data-bv-notempty-message="用户姓名不能是空" data-bv-stringlength="true" data-bv-stringlength-min="1" data-bv-stringlength-max="30" data-bv-stringlength-message="用户名长度大于1，小于30 ">
+                    </div>
+                    <div class="form-item form-group">
+                        <label class="required">职务</label>
+                        <span class="gui-select ">
+                      <select name="postId" id="postId"></select>
+                    </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label class="required">角色</label>
+                        <span class="field-text">
+                        <input type="text"  class="gui-input easyui-combobox" name="roleId" id="roleId"  data-bv-notempty="true" data-bv-notempty-message="角色不能是空" data-options="data:[],valueField:'id',multiple:true,textField:'text',textField:'roleName',panelHeight:'auto', editable:false"><br/><small class="color-red" style="display: none">角色不能是空</small>
+                    </span>
+                    </div>
+                    <div class="form-item form-group" id="pwd">
+                        <label>初始密码</label>
+                        <span class="field-text">
+                        <span></span>
+                        <input disabled="disabled" class="gui-input easyui-combobox" name="reservedField2" readonly="readonly" id="reservedField2">
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label class="required">电话</label>
+                        <input class="gui-input form-control" type="tel" id="phone" name="phone" maxlength="18" data-bv-notempty="true" data-bv-notempty-message="电话不能是空" pattern="(^[0-9]{11}$)|(^(([0-9]{7,8})|([0-9]{4}|[0-9]{3})-([0-9]{7,8})|([0-9]{4}|[0-9]{3})-([0-9]{7,8})-([0-9]{4}|[0-9]{3}|[0-9]{2}|[0-9]{1})|([0-9]{7,8})-([0-9]{4}|[0-9]{3}|[0-9]{2}|[0-9]{1}))$)" data-bv-regexp-message="请输入有效的电话号码">
+                    </div>
+                    <div class="form-item form-group">
+                        <label>邮箱</label>
+                        <input class="gui-input form-control" type="email" id="email" name="email" maxlength="50" data-bv-emailaddress-message="电子邮件地址格式有误">
+                    </div>
+                    <div class="form-item form-group">
+                        <label>状态</label>
+                        <span class="gui-select">
+                      <select name="status" id="status">
+                        <!--<option value="0">限制</option>-->
+                        <option value="1">正常</option>
+                        <option value="2">禁用</option>
+                        <!--<option value="3">注销</option>-->
+                      </select>
+                    </span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" ng-click="cancelMain()">取消</button>
+                <button type="button" id="save" class="gui-btn" ng-click="saveUser()">保存</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+<!-- 模态框（Modal）导入-->
+<div class="modal fade " id="import_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="importModalLabel">批量导入内部用户</h4>
+            </div>
+            <div class="modal-body">
+                <form class="default_w_h modal-form" id="importModalForm" method="post" action="">
+                    <div class="col-md-2"></div>
+                    <div>
+                        <label>选择导入文件(.xls/.xlsx)：</label>
+                        <input type="text" width="400" readonly="true" id="filePath" style="display: none;">
+                        <input id="file-1" name="file" type="file" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+                    </div>
+                    <div style="margin-top: 8px;">
+                        <label>导入模板下载：</label>
+                        <a href="/webapp/sys/user/org_user_import_template.xlsx">机构内部用户导入.xlsx</a>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" ng-click="cancelMainImport()">取消</button>
+            </div>
+        </div>
+    </div>
+</div>

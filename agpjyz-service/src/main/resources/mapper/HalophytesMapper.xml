@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agpjyz.mapper.HalophytesMapper" >
+
+    <insert id="insertHalophytes" parameterType="com.sofn.agpjyz.model.Halophytes">
+        insert into HALOPHYTES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="protectId != null">PROTECT_ID,</if>
+            <if test="protectValue != null">PROTECT_VALUE,</if>
+            <if test="associated != null">ASSOCIATED,</if>
+            <if test="amount != null">AMOUNT,</if>
+            <if test="growth != null">GROWTH,</if>
+            <if test="richness != null">RICHNESS,</if>
+            <if test="inputer != null">INPUTER,</if>
+            <if test="inputerTime != null">INPUTER_TIME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="protectId != null">#{protectId},</if>
+            <if test="protectValue != null">#{protectValue},</if>
+            <if test="associated != null">#{associated},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="growth != null">#{growth},</if>
+            <if test="richness != null">#{richness},</if>
+            <if test="inputer != null">#{inputer},</if>
+            <if test="inputerTime != null">#{inputerTime},</if>
+        </trim>
+    </insert>
+    <sql id="Base_Column_List">
+    ID,PROTECT_ID,PROTECT_VALUE,
+    ASSOCIATED,AMOUNT,GROWTH,RICHNESS,INPUTER,
+    INPUTER_TIME
+    </sql>
+    <select id="get" resultType="com.sofn.agpjyz.model.Halophytes">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        HALOPHYTES
+        where id=#{id}
+    </select>
+    <delete id="delHalophytes">
+        DELETE FROM HALOPHYTES where ID=#{id}
+    </delete>
+    <update id="updateHalophytes" parameterType="com.sofn.agpjyz.model.Halophytes">
+        update HALOPHYTES
+         <set>
+        <if test="protectId!= null and protectId != ''">
+            PROTECT_ID=#{protectId},
+        </if>
+        <if test="protectValue != null and protectValue!= ''">
+            PROTECT_VALUE=#{protectValue},
+        </if>
+        <if test="associated != null and associated != ''">
+            ASSOCIATED=#{associated},
+        </if>
+        <if test="amount != null and amount != ''">
+            AMOUNT=#{amount},
+        </if>
+        <if test="growth != null and growth!=''">
+            GROWTH=#{growth},
+        </if>
+        <if test="richness != null  and richness!=''">
+            RICHNESS=#{richness},
+        </if>
+        <if test="inputerTime != null ">
+            INPUTER_TIME=#{inputerTime},
+        </if>
+        <if test="inputer != null and inputer!=''">
+            INPUTER=#{inputer},
+        </if>
+    </set>
+        where  ID=#{id}
+    </update>
+
+    <select id="getHalophytes" resultType="com.sofn.agpjyz.model.Halophytes">
+    select
+    <include refid="Base_Column_List"/>
+    from
+    HALOPHYTES
+        <where>
+        <if test="protectId != null and protectId != ''">
+            and PROTECT_ID = #{protectId}
+        </if>
+        <if test="associated != null and associated != ''">
+            and ASSOCIATED = #{associated}
+        </if>
+
+        <if test="selectDateS!=null">
+            and INPUTER_TIME &gt;= #{selectDateS}
+        </if>
+        <if test="selectDateE!=null">
+            and INPUTER_TIME &lt;= #{selectDateE}
+        </if>
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.PopupMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.ducss.model.Popup" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaId" jdbcType="VARCHAR" />
+    <result column="year" property="year" jdbcType="VARCHAR" />
+    <result column="pro_still_popup" property="proStillPopup" jdbcType="VARCHAR" />
+    <result column="disperse_utilize_popup" property="disperseUtilizePopup" jdbcType="VARCHAR" />
+    <result column="straw_utilize_popup" property="strawUtilizePopup" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="selectPopupByAreaIdAndYear" parameterType="java.util.Map" resultType="com.sofn.ducss.model.Popup">
+    SELECT * FROM popup WHERE area_id = #{areaId} AND year = #{year} LIMIT 1
+  </select>
+
+</mapper>

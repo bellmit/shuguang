@@ -1,0 +1,182 @@
+<link rel="stylesheet" href="../../assets/css/monitor/task.css"/>
+<link rel="stylesheet" href="../../assets/css/monitor/subjSvList.css"/>
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+<style type="text/css">
+    /*<!--检测标准弹框样式-->*/
+select.input-sm{
+    height: 20px;
+    line-height: 20px;
+    padding: 0 10px;
+}
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus{
+    z-index: 2;
+    color: #fff;
+    cursor: default;
+    background-color: #20944d;
+    border-color: #1b8243;
+}
+</style>
+<script type="text/javascript" src="../../../../libs/eCharts/echarts.min.js"></script>
+<div class="gui-breadcrumbs">
+    <a href="#" id="title" ng-click="backHome()">{{monitorClass}}</a>&gt;
+    <span>任务详情</span>
+</div>
+<div class="gui-section">
+    <ul class="gui-tab">
+        <li role="presentation" class="active"><a ng-click="taskDetail()">任务详情</a></li>
+        <li role="presentation" class="pointer"><a ng-click="sampleMessage()">抽样</a></li>
+        <li role="presentation" class="pointer"><a ng-click="test()">检测</a></li>
+        <li role="presentation" class="pointer"><a ng-click="routineMonitorList()">检测信息汇总</a></li>
+        <li role="presentation" class="pointer"><a ng-click="routineReportUpload()">报告上传</a></li>
+    </ul>
+</div>
+<div class="gui-section">
+    <h4 style="margin-bottom: 30px">任务名称:{{taskName}}</h4>
+        <h5>任务详情</h5>
+        <table class="gui-table mt15" style="width: 100%">
+            <tr>
+                <td style="width: 20%">发布单位</td>
+                <td ng-bind="detail.releaseUnit" style="width: 30%"></td>
+                <td style="width: 30%">年度</td>
+                <td ng-bind="detail.year" style="width: 20%"></td>
+            </tr>
+            <tr>
+                <td>任务开始时间及结束时间</td>
+                <td>{{detail.startTime}}/{{detail.endTime}}</td>
+                <td>抽样结果上报截止时间</td>
+                <td ng-bind="detail.deadline"></td>
+            </tr>
+            <tr>
+                <td>工作类型</td>
+                <td ng-bind="detail.monitorClass"></td>
+                <td>行业</td>
+                <td ng-bind="detail.industry"></td>
+            </tr>
+            <tr>
+                <td>抽检分离</td>
+                <td ng-if="detail.separation==0">否</td>
+                <td ng-if="detail.separation==1">是</td>
+                <td>检测标准</td>
+                <td>
+                    <a ng-click="showCheckObjectModal()" style="cursor: pointer;">查看</a>
+                    <input type="hidden" value="{{detail.checkProject}}" id="checkProjectDetail">
+                </td>
+            </tr>
+            <tr>
+                <td>附件</td>
+                <td>
+              <span ng-if="detail.attachmentAddress.length >0">
+              <a class="color " style="cursor: pointer" class="Check-report" ng-click="downloadFile()"  title="下载附件">下载附件</a>
+               </span>
+                </td>
+                <td>文件号</td>
+                <td ng-bind="detail.attachmentcode"></td>
+            </tr>
+            <tr>
+                <!--<td>备注</td>
+                <td ng-bind="detail.comment"></td>
+                <td>任务优先级</td>
+                <td ng-bind="detail.comment"></td>-->
+                <td style="width: 20%">备注</td>
+                <td ng-bind="detail.comment" style="width: 30%"></td>
+                <td style="width: 30%">任务优先级</td>
+                <td style="width: 20%">{{priority}}</td>
+            </tr>
+            <tr>
+                <td style="line-height: 70px">检测对象</td>
+                <td colspan="3" >
+                    <span id="v_checkObject" ng-bind="detail.checkObject"></span>
+                </td>
+            </tr>
+            <tr>
+                <td style="line-height: 70px">检测项目</td>
+                <td colspan="3">
+                    <span id="v_checkProject" ng-bind="detail.checkProject"></span>
+                </td>
+            </tr>
+        </table>
+        <table class="gui-table mt15" style="width: 100%" >
+            <tr >
+                <td>抽样机构</td>
+                <td>检测机构</td>
+                <td>地区与数量</td>
+            </tr>
+            <tr ng-repeat="x in organList">
+                <td>
+                    {{x.sampleOrgan}}
+                    <span ng-if="x.deparmentId == x.sampleOrganId" class="glyphicon glyphicon-ok text-info"></span>
+                </td>
+                <td>
+                    {{x.detectionOrgan}}
+                    <span ng-if="x.deparmentId == x.detectionOrganId" class="glyphicon glyphicon-ok text-info"></span>
+                </td>
+                <td>{{x.cityCode}}（{{x.numbers}}）</td>
+            </tr>
+        </table>
+        <span class="pull-left">注：以上标<span class="glyphicon glyphicon-ok text-info"></span>的机构负责上传总结报告</span>
+        <span class=" gui-btn mt15 col-md-2 col-md-offset-2" type="button"  ng-if="disabled" style="background-color: grey">填报抽样单</span>
+        <span class=" gui-btn mt15 col-md-2 col-md-offset-2" type="button" ng-if="!disabled"  ng-click="writeSample()" ng-show="writeSampleEnabled">填报抽样单</span>
+        <span class="gui-btn  mt15 col-md-2 col-md-offset-2" type="button"  ng-click="return()">返回</span>
+
+</div>
+
+<div class="modal fade" id="selectPackage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-style" style="width: 800px" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                <h4 class="modal-title" id="myModalLabel">查看检测项</h4>
+            </div>
+            <input type="hidden" id="productCode" name="productCode"/>
+            <input type="hidden" id="productName" name="name"/>
+            <input type="hidden" id ="modelId1" name="modelId"/>
+            <input type="hidden" id ="isEnable" name="isEnable"/>
+            <div class="gui-section">
+                <ul class="gui-tab" role="tablist">
+                    <li role="presentation" class="active"><a href="#" role="tab" data-toggle="tab" ng-click="chooseCheckItem($event)" >查看检测项</a></li>
+                    <!--<li role="presentation" class="pointer" ><a href="#choosePackage" role="tab" data-toggle="tab" ng-click="choosePackage($event)">选择检测项目包</a></li>-->
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="chooseCheckItem" style="margin-top: 20px;">
+                        <form class="form-horizontal" id="selectCheckItems" data-bv-excluded>
+                            <div class="form-group" style="margin-left: 10px;">
+                                <input type="text"id="checkNames" name="checkNames" class="gui-input" placeholder="请输入检测项目名称" >
+                                <span class="gui-btn" id="seachTask1">查询</span>
+                            </div>
+                            <div class="modal-body" style="min-height: 100px;">
+                                <table id="itemGrid" class="gui-table table table-striped table-hover data-table">
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span class="gui-btn" data-dismiss="modal">关闭</span>
+                <!--<span type="button" class="gui-btn" ng-click="addModelConfig()">保存</span>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 模态框（Modal）查看监测对象、检测项目 -->
+<div class="modal fade" id="xModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-stylesm" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h6 class="modal-title" id="x_title"></h6>
+            </div>
+            <div class="modal-body" style="min-height: 100px;">
+                <span id="x_content"></span>
+            </div>
+            <div class="modal-footer">
+                <span class="gui-btn"  data-dismiss="modal">关闭</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

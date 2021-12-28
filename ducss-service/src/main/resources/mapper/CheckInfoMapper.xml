@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.CheckInfoMapper" >
+
+    <select id="getCheckInfoCity" parameterType="java.util.Map" resultType="com.sofn.ducss.model.CheckInfo">
+        SELECT
+            id id,
+            YEAR as year,
+            area_id areaId,
+            STATUS  status,
+            sum(theory_num ) theoryNumSum,
+            sum(collect_num) collectNumSum,
+            sum(main_num) mainNumSum ,
+            sum(farmer_split_num) farmerSplitNumSum,
+            sum(direct_return_num) directReturnNumSum,
+            sum(straw_utilize_num) strawUtilizeNumSum,
+            sum(syn_utilize_num) synUtilizeNumSum,
+            sum(main_num) + sum(farmer_split_num) leavingUtilization
+        FROM
+            collect_flow a
+        WHERE
+            a.year = #{year}
+            and a.city_id = ' ' || #{cityId}
+            GROUP BY area_id
+            ORDER BY area_id
+    </select>
+    
+    
+    <select id="getCheckInfoProvince" parameterType="java.util.Map" resultType="com.sofn.ducss.model.CheckInfo">
+        SELECT
+            id id,
+            YEAR as year,
+            city_id areaId,
+            STATUS  status,
+            sum(theory_num ) theoryNumSum,
+            sum(collect_num) collectNumSum,
+            sum(main_num) mainNumSum ,
+            sum(farmer_split_num) farmerSplitNumSum,
+            sum(direct_return_num) directReturnNumSum,
+            sum(straw_utilize_num) strawUtilizeNumSum,
+            sum(syn_utilize_num) synUtilizeNumSum,
+            sum(main_num) + sum(farmer_split_num) leavingUtilization
+        FROM
+            collect_flow a
+        WHERE
+            a.year = #{year}
+            and a.province_id =  #{provinceId}
+            and a.level >= '4'  -- 审核等级大于等于市级的
+            and a.status = '5'  -- 审核状态为通过的
+            and a.city_id  != ''  -- 市ID不为空的
+            GROUP BY city_id
+            ORDER BY city_id
+    </select>
+
+
+    <select id="getCheckInfoChina" parameterType="java.util.Map" resultType="com.sofn.ducss.model.CheckInfo">
+        SELECT
+            id id,
+            YEAR as year,
+            province_id areaId,
+            STATUS  status,
+            sum(theory_num ) theoryNumSum,
+            sum(collect_num) collectNumSum,
+            sum(main_num) mainNumSum ,
+            sum(farmer_split_num) farmerSplitNumSum,
+            sum(direct_return_num) directReturnNumSum,
+            sum(straw_utilize_num) strawUtilizeNumSum,
+            sum(syn_utilize_num) synUtilizeNumSum,
+            sum(main_num) + sum(farmer_split_num) leavingUtilization
+        FROM
+            collect_flow a
+        WHERE
+            a.year = #{year}
+            and a.level >= '5'  -- 审核等级大于等于省级的
+            and a.status = '5'  -- 审核状态为通过的
+            and a.province_id  != ''  -- 市ID不为空的
+            GROUP BY province_id
+            ORDER BY province_id
+    </select>
+    
+    <select id="getCheckInfoByLevel" parameterType="java.util.Map" resultType="com.sofn.ducss.model.CheckInfo">
+
+        select
+        id,
+        "year",
+        areaId,
+        areaName,
+        status,
+        theoryNumSum,
+        collectNumSum,
+        mainNumSum,
+        farmerSplitNumSum,
+        directReturnNumSum,
+        strawUtilizeNumSum,
+        synUtilizeNumSum,
+        leavingUtilization
+        from (
+        SELECT
+        a.id id,
+        #{year} as year,
+        dr.region_code areaId,
+        dr.region_name areaName,
+        COALESCE(a.STATUS, '0') status,
+        a.theory_num theoryNumSum,
+        a.collect_num collectNumSum,
+        a.main_num mainNumSum ,
+        a.farmer_split_num farmerSplitNumSum,
+        a.direct_return_num directReturnNumSum,
+        a.straw_utilize_num strawUtilizeNumSum,
+        a.syn_utilize_num synUtilizeNumSum,
+        a.main_num + a.farmer_split_num leavingUtilization
+        FROM
+        ducss_region_copy_sys dr
+        left join collect_flow a on a.area_id = dr.region_code and a.year = #{year}
+        where dr.year = #{regionYear}
+        and dr.parent_id = #{areaId}
+        ) k
+        <where>
+            <if test="status != null and status != ''">
+                and k.status = #{status}
+            </if>
+        </where>
+
+        order by areaId
+    </select>
+
+    <select id="getCheckInfoByLevelV2" resultType="com.sofn.ducss.model.CheckInfo">
+        SELECT
+        a.id id,
+        #{year} as year,
+        a.area_id areaId,
+<!--        dr.region_code areaId,-->
+<!--        dr.region_name areaName,-->
+
+        COALESCE(a.STATUS, '0') status,
+        a.theory_num theoryNumSum,
+        a.collect_num collectNumSum,
+        a.main_num mainNumSum ,
+        a.farmer_split_num farmerSplitNumSum,
+        a.direct_return_num directReturnNumSum,
+        a.straw_utilize_num strawUtilizeNumSum,
+        a.syn_utilize_num synUtilizeNumSum,
+        a.main_num + a.farmer_split_num leavingUtilization,
+        a.collect_resource_v2 as "collectResourceV2",
+        a.straw_utilization_v2 as "strawUtilizationV2"
+        FROM
+            collect_flow a
+        <where>
+            a.year = #{year}
+            <if test="status != null and status != ''">
+                and a.status = #{status}
+            </if>
+            <if test="areaIds != null and areaIds.size()>0">
+                and a.area_id in
+                <foreach collection="areaIds" item="areaId" open="(" separator="," close=")">
+                    #{areaId}
+                </foreach>
+            </if>
+        </where>
+        order by areaId
+    </select>
+    
+    
+    <select id="getScatteredHouseNumByCityId" parameterType="java.util.Map" resultType="java.util.Map">
+       	select du.area_id AREAID, count(DISTINCT fill_no) COUNTNUM from disperse_utilize du
+				inner join collect_flow cf on du.area_id = cf.area_id
+				inner join ducss_region_copy_sys dr on du.area_id = dr.region_code and dr.year = #{regionYear}
+				where du.YEAR = #{year} and cf.year = #{year}
+				and cf.status in ('1','5')
+				and du.city_id =#{cityId}
+				GROUP BY du.area_id
+    </select>
+
+    <select id="getScatteredHouseNumByProvinceId" parameterType="java.util.Map" resultType="java.util.Map">
+        select du.city_id AREAID, count(DISTINCT fill_no) COUNTNUM from disperse_utilize du
+				inner join collect_flow cf on du.area_id = cf.area_id
+				inner join ducss_region_copy_sys dr on du.area_id = dr.region_code and dr.year = #{regionYear}
+				where du.YEAR = #{year} and cf.year =#{year}
+				and cf.status in ('1','5')
+				and du.province_id = #{provinceId}
+				GROUP BY du.city_id
+    </select>
+    
+    <select id="getScatteredHouseNumByChina" parameterType="java.util.Map" resultType="java.util.Map">
+        select du.province_id AREAID, count(DISTINCT fill_no) COUNTNUM from disperse_utilize du
+        inner join collect_flow cf on du.area_id = cf.area_id
+        inner join ducss_region_copy_sys dr on du.area_id = dr.region_code and dr.year = #{regionYear}
+        where du.YEAR =  #{year} and cf.year = #{year}
+        and cf.status in ('1','5')
+        GROUP BY du.province_id
+    </select>
+
+    <select id="getScatteredHouseNum"  parameterType="java.util.Map" resultType="java.util.Map">
+        select ${columnName} AREAID, count(fill_no) COUNTNUM from disperse_utilize a where a.year = #{year} and a.area_id in
+        <foreach collection="areaIds" item="areaId" open="(" close=")" separator=",">
+            #{areaId}
+        </foreach>
+        group by ${columnName}
+
+    </select>
+
+
+    <select id="getMainBodyNumByCityId" parameterType="java.util.Map" resultType="java.util.Map">
+        select su.area_id AREAID,count(DISTINCT su.fill_no) COUNTNUM from straw_utilize su
+        inner join collect_flow cf  on su.area_id = cf.area_id
+        inner join ducss_region_copy_sys dr on dr.region_code = cf.area_id
+        where su.year = #{year}
+        and cf.year =  #{year}
+        and dr.year =   #{regionYear}
+        and cf.status in ('1', '5')
+        and su.city_Id in
+        <foreach collection="cityIds" item="city" open="(" close=")" separator=",">
+            #{city}
+        </foreach>
+        group by su.area_id
+    </select>
+    
+    <select id="getMainBodyNumByProvinceId" parameterType="java.util.Map" resultType="java.util.Map">
+
+        select su.city_id AREAID,count(DISTINCT su.fill_no) COUNTNUM from straw_utilize su
+        inner join collect_flow cf  on su.area_id = cf.area_id
+        inner join ducss_region_copy_sys dr on dr.region_code = cf.area_id
+        where su.year =  #{year}
+        and cf.year =   #{year}
+        and dr.year =  #{regionYear}
+        and cf.status in ('1', '5')
+        and su.province_id = #{provinceId}
+        group by su.city_id
+    </select>
+
+    
+    <select id="getMainBodyNumByChina" parameterType="java.util.Map" resultType="java.util.Map">
+        select su.province_id AREAID,count(DISTINCT su.fill_no) COUNTNUM from straw_utilize su
+        inner join collect_flow cf  on su.area_id = cf.area_id
+        inner join ducss_region_copy_sys dr on dr.region_code = cf.area_id
+        where su.year = #{year}
+        and cf.year =   #{year}
+        and dr.year =#{regionYear}
+        and cf.status in ('1', '5')
+        group by su.province_id
+    </select>
+
+
+    <select id="getMainBody" parameterType="java.util.Map" resultType="java.util.Map">
+        select su.${columnName} AREAID , count(su.fill_no) COUNTNUM  from straw_utilize su where su.year = #{year} and su.area_id in
+        <foreach collection="areaIds" item="areaId" open="(" close=")" separator=",">
+             #{areaId}
+        </foreach>
+        group by su.${columnName}
+
+    </select>
+    
+    <select id="getStrawTypeList" resultType="java.lang.String">
+        select dict_key from sys_dictionary   a where a.dict_type = 'straw_type' order by a.order_no
+    </select>
+
+
+
+</mapper>

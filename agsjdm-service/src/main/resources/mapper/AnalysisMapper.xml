@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agsjdm.mapper.AnalysisMapper">
+    <select id="pollute" resultType="com.sofn.agsjdm.vo.TholdResult">
+        SELECT
+        th.ID,
+        th.CASE1,
+        th.CASE1_VALUE,
+        th.CASE2,
+        th.CASE2_VALUE,
+        th.color_mark
+        FROM
+        monitoring_warning mw,
+        threshold th
+        WHERE
+        mw.ID=th.WARNING_ID
+        <if test="wetlandId != null and wetlandId != ''">
+            and mw.WETLAND_ID= #{wetlandId}
+        </if>
+        <if test="indexId != null and indexId != ''">
+            and mw.INDEX_ID =#{indexId}
+        </if>
+        <if test="testType != null and testType != ''">
+            and mw.TEST_TYPE=#{testType}
+        </if>
+        <if test="chineseName != null and chineseName != ''">
+            and mw.CHINESE_NAME = #{chineseName}
+        </if>
+    </select>
+    <resultMap id="rs1" type="com.sofn.agsjdm.vo.TholdDeatilResult">
+        <result column="COLOR_MARK" property="colorMark"></result>
+        <result column="RISK_LEVEL" property="riskLevel"></result>
+    </resultMap>
+    <select id="warning" resultMap="rs1">
+        SELECT
+        a.COLOR_MARK,
+        a.RISK_LEVEL
+        from (
+        SELECT
+        a.ID,
+        a.COLOR_MARK,
+        a.RISK_LEVEL,
+        b.POLLUTE,
+        b.OPERATOR_TIME
+        FROM
+        (
+        SELECT
+        mw.INDEX_ID,
+        mw.TEST_TYPE,
+        mw.WETLAND_ID,
+        th.ID,
+        th.CASE1,
+        th.CASE1_VALUE,
+        th.CASE2,
+        th.CASE2_VALUE,
+        th.COLOR_MARK,
+        th.RISK_LEVEL
+        FROM
+        monitoring_warning mw,
+        threshold th
+        WHERE
+        mw.ID = th.WARNING_ID
+        ) a,
+        (
+        SELECT
+        WETLAND_ID,
+        POLLUTE,
+        OPERATOR_TIME
+        FROM
+        threat_factor
+
+        ) b
+        where a.WETLAND_ID=b.WETLAND_ID and a.WETLAND_ID= #{wetlandId} and a.INDEX_ID =#{indexId} and
+        a.TEST_TYPE=#{testType} and to_char(b.OPERATOR_TIME,'YYYY')=#{year}
+        ) a
+        where 1=1
+        <if test="th!=null">
+            and
+            <foreach collection="th" item="item" index="i" separator="or" open="(" close=")">
+                <if test="item.case2!=''">
+                    a.id=#{item.id} and a.POLLUTE ${item.case1} to_char(${item.case1Value},'999999.99')
+                    and a.POLLUTE ${item.case2} to_char(${item.case2Value},'999999.99')
+                </if>
+                <if test="item.case2==''">
+                    a.id=#{item.id} and a.POLLUTE ${item.case1} to_char(${item.case1Value},'999999.99')
+                </if>
+            </foreach>
+        </if>
+        order by RISK_LEVEL desc
+    </select>
+    <select id="warningNumber" resultMap="rs1">
+        SELECT
+        COLOR_MARK,
+        RISK_LEVEL
+        from
+        (
+        SELECT
+        a.ID,
+        a.COLOR_MARK,
+        a.RISK_LEVEL,
+        a.CASE1,
+        a.CASE1_VALUE,
+        a.CASE2,
+        a.CASE2_VALUE,
+        b.POPULATION_SIZE
+        FROM
+        (
+        SELECT
+        mw.INDEX_ID,
+        mw.TEST_TYPE,
+        mw.CHINESE_NAME,
+        mw.WETLAND_ID,
+        th.ID,
+        th.CASE1,
+        th.CASE1_VALUE,
+        th.CASE2,
+        th.CASE2_VALUE,
+        th.COLOR_MARK,
+        th.RISK_LEVEL
+        FROM
+        monitoring_warning mw,
+        threshold th
+        WHERE
+        mw.ID = th.WARNING_ID
+        ) a,
+        (
+        SELECT
+        WETLAND_ID,
+        OPERATOR_TIME,
+        POPULATION_SIZE,
+        CHINESE_NAME
+        FROM
+        biomonitoring
+        ) b
+        WHERE
+        a.WETLAND_ID = b.WETLAND_ID
+        AND a.WETLAND_ID = #{wetlandId}
+        AND a.INDEX_ID = #{indexId}
+        AND a.TEST_TYPE = #{testType}
+        AND to_char(b.OPERATOR_TIME,'YYYY')=#{year}
+        and a.CHINESE_NAME=b.CHINESE_NAME and b.CHINESE_NAME=#{chineseName}) a
+        where 1=1
+        <if test="th!=null">
+            and
+            <foreach collection="th" item="item" index="i" separator="or" open="(" close=")">
+                <if test="item.case2!=''">
+                    a.id=#{item.id} and a.POPULATION_SIZE ${item.case1} ${item.case1Value}
+                    and a.POPULATION_SIZE ${item.case2} ${item.case2Value}
+                </if>
+                <if test="item.case2==''">
+                    a.id=#{item.id} and a.POPULATION_SIZE ${item.case1} ${item.case1Value}
+                </if>
+            </foreach>
+        </if>
+        ORDER BY RISK_LEVEL desc
+
+    </select>
+    <select id="param" resultType="com.sofn.agsjdm.model.Biomonitoring">
+	SELECT
+	*
+		FROM
+		biomonitoring
+		where
+		WETLAND_ID= #{wetlandId}
+		and
+		CHINESE_NAME=#{chineseName}
+		and
+		to_char(OPERATOR_TIME,'YYYY') =#{year}
+	</select>
+    <select id="param1" resultType="com.sofn.agsjdm.model.ThreatFactor">
+		  select * from THREAT_FACTOR where WETLAND_ID = #{wetlandId} and to_char(OPERATOR_TIME,'YYYY') =#{year}
+	</select>
+</mapper>

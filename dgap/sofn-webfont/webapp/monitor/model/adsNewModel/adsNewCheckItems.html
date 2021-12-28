@@ -1,0 +1,113 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+<div class="gui-breadcrumbs">
+    <a href="">监测系统</a>&gt;
+    <a href="">监测模型</a>&gt;
+    <span>新模型配置</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group clearfix">
+        <input type="text"id="itemNames" name="itemNames" class="gui-input" placeholder="请输入检测项目名称" >
+        <span class="gui-btn" id="seachTask">查询</span>
+    </div>
+    <!--<div class="gui-actions">-->
+        <!--<span class="gui-btn fr" onclick="delAdsCheckModel()"><i class="gui-icon icon-remove"></i>删除</span>-->
+        <!--<span class="gui-btn fr mr15" ng-click="addAdsModel()" ><i class="gui-icon icon-add"></i>新增</span>-->
+        <!--<span class="gui-btn fr mr15" ng-click="addAdsExcelData()" ><i class="gui-icon icon-add"></i>检测项目导入</span>-->
+    <!--</div>-->
+    <div class="clearfix gov-h">
+        <table id="grid" class="gui-table mt15" >
+        </table>
+    </div>
+</div>
+
+
+<!-- 新增检测项目model -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: center">新增检测项目</h4>
+            </div>
+            <div class="modal-body" style="min-height: 60px;">
+                <form class="form-horizontal" id="addCheckModel" data-bv-excluded>
+                    <div class="form-group line-20">
+                        <p></p>
+                        <label class="col-sm-5 control-task text-right">检测项目名称:&nbsp&nbsp</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" id="checkName" name="checkName" class="form-control gui-input text-height-28"
+                                       data-bv-notempty="true"
+                                       data-bv-notempty-message="内容不能是空"/>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" type="button" data-dismiss="modal">取消</span>
+                <span class="gui-btn" type="button" ng-click="addAdsCheckModel()">保存</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 检测项目Excel导入模态框 -->
+<div class="modal fade" id="addExcelData" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content" style="width:620px;height:200px;">
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: center">检测项目Excel导入</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div style="width: 600px;margin-left:10px;">
+                        <form method="post" enctype="multipart/form-data" >
+                            <input style="display: inline;width: 225px" id="file-1"  multiple="true" data-overwrite-initial="true" data-min-file-count="1" data-max-file-count="1" type="file" />
+                        </form>
+                        <br/>
+                        <p> 备注：只能导入 “.xsl，.xlsl” 格式的Excel <button class="gui-btn  mr15" id="download" ng-click="download()">模板下载</button></p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 修改检测项目model -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: center">修改检测项目</h4>
+            </div>
+            <input type="hidden" id="checkId" value="{{checkId}}">
+            <div class="modal-body" style="min-height: 60px;">
+                <form class="form-horizontal" id="updateCheckItem" data-bv-excluded>
+                    <div class="form-group line-20">
+                        <p></p>
+                        <label class="col-sm-5 control-task text-right">检测项目名称:&nbsp&nbsp</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" id="checkNameu" name="checkNameu" ng-model="checkNameu" class="form-control gui-input text-height-28"
+                                       data-bv-notempty="true"
+                                       data-bv-notempty-message="内容不能是空"/>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" type="button" data-dismiss="modal">取消</span>
+                <span class="gui-btn" type="button" ng-click="saveCheckItem()">保存</span>
+            </div>
+        </div>
+    </div>
+</div>

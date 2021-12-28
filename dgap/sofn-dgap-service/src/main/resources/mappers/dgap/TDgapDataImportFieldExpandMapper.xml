@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.dao.dgap.TDgapDataImportFieldExpandMapper" >
+
+  <select id="selectChineseName" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT  F.CHINESE_NAME FROM  T_DGAP_DATA_IMPORT_FIELD F LEFT JOIN T_DGAP_DATA_IMPORT_TABLE T ON T.ID = F.DATA_IMPORT_TABLE_ID WHERE T.ID=(SELECT  T.ID FROM  T_DGAP_DATA_IMPORT_TABLE T LEFT JOIN T_DGAP_RESOURCE R ON R.ID = T.RESOURCE_ID WHERE R.ID  = #{id,jdbcType=VARCHAR})
+  </select>
+  <select id="selectEnglishName" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT  F.ENGLISH_NAME FROM  T_DGAP_DATA_IMPORT_FIELD F LEFT JOIN T_DGAP_DATA_IMPORT_TABLE T ON T.ID = F.DATA_IMPORT_TABLE_ID WHERE T.ID=(SELECT  T.ID FROM  T_DGAP_DATA_IMPORT_TABLE T LEFT JOIN T_DGAP_RESOURCE R ON R.ID = T.RESOURCE_ID WHERE R.ID  = #{id,jdbcType=VARCHAR})
+  </select>
+  <select id="selectType" parameterType="java.lang.String" resultType="java.lang.String">
+     SELECT TYPE FROM  T_DGAP_DATA_IMPORT_FIELD F LEFT JOIN T_DGAP_DATA_IMPORT_TABLE T ON T.ID = f.DATA_IMPORT_TABLE_ID WHERE T.ID=(SELECT  T.ID FROM  T_DGAP_DATA_IMPORT_TABLE T LEFT JOIN T_DGAP_RESOURCE R ON R.ID = T.RESOURCE_ID WHERE R.ID  = #{id,jdbcType=VARCHAR})
+  </select>
+  <select id="selectLen" parameterType="java.lang.String" resultType="java.lang.String">
+     SELECT  LEN FROM  T_DGAP_DATA_IMPORT_FIELD F LEFT JOIN T_DGAP_DATA_IMPORT_TABLE T ON T.ID = f.DATA_IMPORT_TABLE_ID WHERE T.ID=(SELECT  T.ID FROM  T_DGAP_DATA_IMPORT_TABLE T LEFT JOIN T_DGAP_RESOURCE R ON R.ID = T.RESOURCE_ID WHERE R.ID = #{id,jdbcType=VARCHAR})
+  </select>
+
+    <select id="getFieldsByTable" resultType="com.sofn.model.generator.TDgapDataImportField" parameterType="string">
+        select * from T_DGAP_DATA_IMPORT_FIELD where DATA_IMPORT_TABLE_ID = #{tableId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getByFieldNames" resultType="com.sofn.model.generator.TDgapDataImportField" parameterType="string">
+        select * from T_DGAP_DATA_IMPORT_FIELD where ENGLISH_NAME in
+        <foreach collection="fieldNames" index="index" item="fieldName" open="(" close=")" separator=",">
+            #{fieldName}
+        </foreach>
+    </select>
+    <select id="getByFieldName" resultType="com.sofn.model.generator.TDgapDataImportField" parameterType="string">
+        select * from T_DGAP_DATA_IMPORT_FIELD where ID in
+        <foreach collection="fieldIds" index="index" item="fieldId" open="(" close=")" separator=",">
+            #{fieldId}
+        </foreach>
+    </select>
+    <select id="selectAllField" parameterType="java.lang.String" resultType="com.sofn.model.dgap.TDgapDataImportFieldDto">
+     SELECT  F.ID,F.CHINESE_NAME,F.ENGLISH_NAME,F.TYPE,F.LEN,F.STATUS FROM  T_DGAP_DATA_IMPORT_FIELD F LEFT JOIN T_DGAP_DATA_IMPORT_TABLE T ON F.DATA_IMPORT_TABLE_ID =T.ID WHERE F.DEL_FLAG = 'N' AND T.ID =#{id,jdbcType=VARCHAR}
+    </select>
+    <select id="getAllField" parameterType="java.lang.String" resultType="com.sofn.model.generator.TDgapDataImportField">
+        SELECT  * FROM  T_DGAP_DATA_IMPORT_FIELD F LEFT JOIN T_DGAP_DATA_IMPORT_TABLE T ON F.DATA_IMPORT_TABLE_ID =T.ID WHERE F.DEL_FLAG = 'N' AND F.STATUS='NE' AND T.ID =#{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getField" parameterType="java.lang.String" resultType="com.sofn.model.generator.TDgapDataImportField">
+        SELECT  * FROM  T_DGAP_DATA_IMPORT_FIELD F LEFT JOIN T_DGAP_DATA_IMPORT_TABLE T ON F.DATA_IMPORT_TABLE_ID =T.ID WHERE F.DEL_FLAG = 'N'  AND T.ID =#{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getAllEnglishName" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT F.ENGLISH_NAME FROM  T_DGAP_DATA_IMPORT_FIELD F LEFT JOIN T_DGAP_DATA_IMPORT_TABLE T ON F.DATA_IMPORT_TABLE_ID =T.ID WHERE F.DEL_FLAG = 'N' AND T.ID =#{id,jdbcType=VARCHAR}
+    </select>
+</mapper>

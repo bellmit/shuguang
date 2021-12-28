@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agzirdd.mapper.SpeciesInvestigationMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.agzirdd.model.SpeciesInvestigation" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="BELONG_YEAR" property="belongYear" jdbcType="VARCHAR" />
+    <result column="INVESTIGATION_TIME" property="investigationTime" jdbcType="TIMESTAMP" />
+    <result column="FORM_NUMBER" property="formNumber" jdbcType="VARCHAR" />
+    <result column="PROVINCE_ID" property="provinceId" jdbcType="VARCHAR" />
+    <result column="CITY_ID" property="cityId" jdbcType="VARCHAR" />
+    <result column="COUNTY_ID" property="countyId" jdbcType="VARCHAR" />
+    <result column="TOWN" property="town" jdbcType="VARCHAR" />
+    <result column="LONGITUDE" property="longitude" jdbcType="VARCHAR" />
+    <result column="LATITUDE" property="latitude" jdbcType="VARCHAR" />
+    <result column="ALTITUDE" property="altitude" jdbcType="VARCHAR" />
+    <result column="INVESTIGATOR" property="investigator" jdbcType="VARCHAR" />
+    <result column="INVESTIGATOR_TELEPHONE" property="investigatorTelephone" jdbcType="VARCHAR" />
+    <result column="RESPONDENTS" property="respondents" jdbcType="VARCHAR" />
+    <result column="RESPONDENTS_TELEPHONE" property="respondentsTelephone" jdbcType="VARCHAR" />
+    <result column="RESPONDENTS_COMPANY" property="respondentsCompany" jdbcType="VARCHAR" />
+    <result column="INVESTIGATOR_COMPANY" property="investigatorCompany" jdbcType="VARCHAR" />
+    <result column="HAS_ALIEN_SPECIES" property="hasAlienSpecies" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="CREATE_USER_ID" property="createUserId" jdbcType="VARCHAR" />
+    <result column="CREATE_USER_NAME" property="createUserName" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="ROLE_CODE" property="roleCode" jdbcType="VARCHAR" />
+    <result column="is_new" property="isNew" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <resultMap id="testTable" type="com.sofn.agzirdd.vo.SpeciesInvestigationForm">
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="belongYear" property="belongYear" jdbcType="VARCHAR" />
+    <result column="investigationTime" property="investigationTime" jdbcType="TIMESTAMP" />
+    <result column="formNumber" property="formNumber" jdbcType="VARCHAR" />
+    <result column="provinceId" property="provinceId" jdbcType="VARCHAR" />
+    <result column="cityId" property="cityId" jdbcType="VARCHAR" />
+    <result column="countyId" property="countyId" jdbcType="VARCHAR" />
+    <result column="town" property="town" jdbcType="VARCHAR" />
+    <result column="longitude" property="longitude" jdbcType="VARCHAR" />
+    <result column="latitude" property="latitude" jdbcType="VARCHAR" />
+    <result column="altitude" property="altitude" jdbcType="VARCHAR" />
+    <result column="investigator" property="investigator" jdbcType="VARCHAR" />
+    <result column="investigatorTelephone" property="investigatorTelephone" jdbcType="VARCHAR" />
+    <result column="respondents" property="respondents" jdbcType="VARCHAR" />
+    <result column="respondentsTelephone" property="respondentsTelephone" jdbcType="VARCHAR" />
+    <result column="respondentsCompany" property="respondentsCompany" jdbcType="VARCHAR" />
+    <result column="investigatorCompany" property="investigatorCompany" jdbcType="VARCHAR" />
+    <result column="hasAlienSpecies" property="hasAlienSpecies" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="areaName" property="areaName" jdbcType="VARCHAR" />
+    <result column="hasAlienSpeciesName" property="hasAlienSpeciesName" jdbcType="VARCHAR" />
+    <result column="speciesId" property="speciesId" jdbcType="VARCHAR" />
+    <result column="speciesName" property="speciesName" jdbcType="VARCHAR" />
+    <result column="latinName" property="latinName" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ID,BELONG_YEAR,INVESTIGATION_TIME,FORM_NUMBER,PROVINCE_ID,CITY_ID,COUNTY_ID,TOWN,LONGITUDE,LATITUDE,ALTITUDE
+    ,INVESTIGATOR,INVESTIGATOR_TELEPHONE,INVESTIGATOR_COMPANY,RESPONDENTS,RESPONDENTS_TELEPHONE,RESPONDENTS_COMPANY,HAS_ALIEN_SPECIES
+    ,STATUS,CREATE_USER_ID,CREATE_USER_NAME,CREATE_TIME,ROLE_CODE,IS_NEW,PROVINCE_NAME,CITY_NAME,COUNTY_NAME
+  </sql>
+
+  <select id="getSpeciesInvestigationByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM SPECIES_INVESTIGATION
+    <where>
+      1=1
+      <if test="formNumber != null and formNumber != ''">
+        and FORM_NUMBER like '%'||#{formNumber}||'%'
+      </if>
+      <if test="investigator != null and investigator != ''">
+        and INVESTIGATOR like '%'||#{investigator}||'%'
+      </if>
+      <if test="provinceId != null and provinceId != ''">
+        and PROVINCE_ID = #{provinceId}
+      </if>
+      <if test="cityId != null and cityId != ''">
+        and CITY_ID = #{cityId}
+      </if>
+      <if test="countyId != null and countyId != ''">
+        and COUNTY_ID = #{countyId}
+      </if>
+      <if test="inStatus!=null and inStatus!=''">
+        and status in (${inStatus})
+      </if>
+      <if test="status != null and status != ''">
+        and STATUS = #{status}
+      </if>
+      <if test="beginDate != null and beginDate != ''">
+        AND INVESTIGATION_TIME &gt;=to_date(#{beginDate},'yyyy-MM-dd')
+      </if>
+      <if test="endDate != null and endDate != ''">
+        AND INVESTIGATION_TIME &lt;(to_date(#{endDate},'yyyy-MM-dd'))+1
+      </if>
+      <if test="createUserId != null and createUserId != ''">
+        AND CREATE_USER_ID = #{createUserId}
+      </if>
+      <if test="roleCode != null and roleCode != ''">
+        AND ROLE_CODE = #{roleCode}
+      </if>
+    </where>
+    ORDER BY CREATE_TIME desc
+  </select>
+
+  <select id="getSpeciesInvestigationByParam" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM SPECIES_INVESTIGATION
+    <where>
+      1=1
+      <if test="formNumber != null and formNumber != ''">
+        and FORM_NUMBER = #{formNumber}
+      </if>
+      <if test="investigator != null and investigator != ''">
+        and INVESTIGATOR = #{investigator}
+      </if>
+      <if test="provinceId != null and provinceId != ''">
+        and PROVINCE_ID = #{provinceId}
+      </if>
+      <if test="cityId != null and cityId != ''">
+        and CITY_ID = #{cityId}
+      </if>
+      <if test="countyId != null and countyId != ''">
+        and COUNTY_ID = #{countyId}
+      </if>
+      <if test="status != null and status != ''">
+        and STATUS = #{status}
+      </if>
+      <if test="createUserId != null and createUserId != ''">
+        AND CREATE_USER_ID = #{createUserId}
+      </if>
+      <if test="roleCode != null and roleCode != ''">
+        AND ROLE_CODE = #{roleCode}
+      </if>
+    </where>
+    ORDER BY CREATE_TIME desc
+  </select>
+
+
+  <select id="getSpeciesInvestigationForm" parameterType="java.util.Map" resultMap="testTable">
+    SELECT
+    a.ID as id,
+    a.BELONG_YEAR as belongYear,
+    a.INVESTIGATION_TIME as investigationTime,
+    a.FORM_NUMBER as formNumber,
+    a.PROVINCE_ID as provinceId,
+    a.PROVINCE_NAME as provinceName,
+    a.CITY_ID as cityId,
+    a.CITY_NAME as cityName,
+    a.COUNTY_ID as countyId,
+    a.COUNTY_NAME as countyName,
+    a.TOWN as town,
+    a.LONGITUDE as longitude,
+    a.LATITUDE as latitude,
+    a.ALTITUDE as altitude,
+    a.INVESTIGATOR as investigator,
+    a.INVESTIGATOR_TELEPHONE as investigatorTelephone,
+    a.INVESTIGATOR_COMPANY as investigatorCompany,
+    a.RESPONDENTS as respondents,
+    a.RESPONDENTS_TELEPHONE as respondentsTelephone,
+    a.RESPONDENTS_COMPANY as respondentsCompany,
+    a.HAS_ALIEN_SPECIES as hasAlienSpecies,
+    a.STATUS as status,
+    '' as areaName,
+    '' as hasAlienSpeciesName,
+    b.SPECIES_ID as speciesId,
+    b.SPECIES_NAME as speciesName,
+    b.LATIN_NAME as latinName
+    FROM SPECIES_INVESTIGATION a
+    left join INVESTIGAT_CONTENT b
+    on a.ID = b.SPECIES_INVESTIGATION_ID
+    <where>
+      1=1
+      <if test="formNumber != null and formNumber != ''">
+        and a.FORM_NUMBER like '%'||#{formNumber}||'%'
+      </if>
+      <if test="investigator != null and investigator != ''">
+        and a.INVESTIGATOR like '%'||#{investigator}||'%'
+      </if>
+      <if test="provinceId != null and provinceId != ''">
+        and a.PROVINCE_ID = #{provinceId}
+      </if>
+      <if test="cityId != null and cityId != ''">
+        and a.CITY_ID = #{cityId}
+      </if>
+      <if test="countyId != null and countyId != ''">
+        and a.COUNTY_ID = #{countyId}
+      </if>
+      <if test="inStatus!=null and inStatus!=''">
+        and a.status in (${inStatus})
+      </if>
+      <if test="status != null and status != ''">
+        and a.STATUS = #{status}
+      </if>
+      <if test="beginDate != null and beginDate != ''">
+        AND a.INVESTIGATION_TIME &gt;=to_date(#{beginDate},'yyyy-MM-dd')
+      </if>
+      <if test="endDate != null and endDate != ''">
+        AND a.INVESTIGATION_TIME &lt;(to_date(#{endDate},'yyyy-MM-dd'))+1
+      </if>
+      <if test="speciesId != null and speciesId != ''">
+        AND b.SPECIES_ID = #{speciesId}
+      </if>
+      <if test="roleCode != null and roleCode != ''">
+        AND a.ROLE_CODE = #{roleCode}
+      </if>
+      <if test="createUserId != null and createUserId != ''">
+        AND a.CREATE_USER_ID = #{createUserId}
+      </if>
+    </where>
+    ORDER BY a.CREATE_TIME desc
+  </select>
+
+  <select id="getSpeciesInvestigationById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from SPECIES_INVESTIGATION
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getWelcomeMapInfo" resultType="com.sofn.agzirdd.vo.WelcomeMapVo">
+    select ${orderByAreaIdColumn} areaId,ic.species_type speciesType ,ic.species_name speciesName
+    from species_investigation si
+    left join investigat_content ic on ic.species_investigation_id=si.id
+    <where>
+      si.status = '7' and si.belong_year = #{belongYear} and ic.species_type is not null
+      <if test="speciesName!=null and speciesName!=''">
+        and ic.species_name = #{speciesName}
+      </if>
+      <if test="whereAreaIdColumn!=null">
+        and ${whereAreaIdColumn} = #{whereAreaIdVal}
+      </if>
+      <if test="isNew!=null">
+        and si.is_new = #{isNew}
+      </if>
+    </where>
+    group by ${orderByAreaIdColumn},ic.species_type,ic.species_name
+  </select>
+    <select id="selectDCFSMJInfo" resultType="com.sofn.agzirdd.vo.WelcomeTableDBVo">
+      select sm.belong_year dataYear,sum(to_number(wm.area,'99999999999999999D9999')) dataVal
+      <if test="groupCol!=''">,sm.${groupCol} areaId</if>
+      from species_investigation sm
+      left join investigat_content wm on wm.species_investigation_id=sm.id
+      <where>
+        sm.status = '7' and sm.belong_year &gt; #{startYear} and sm.belong_year &lt;= #{endYear}
+        <if test="speciesName!=null and speciesName!=''">
+          and wm.species_name = #{speciesName}
+        </if>
+        <if test="provinceId!=null and provinceId!=''">
+          and sm.province_id = #{provinceId}
+        </if>
+        <if test="cityId!=null and cityId!=''">
+          and sm.city_id = #{cityId}
+        </if>
+        <if test="countyId!=null and countyId!=''">
+          and sm.county_id=#{countyId}
+        </if>
+
+      </where>
+      group by sm.belong_year <if test="groupCol!=null and groupCol!=''">,sm.${groupCol}</if>
+
+    </select>
+  <select id="selectDCZQSLInfo" resultType="com.sofn.agzirdd.vo.WelcomeTableDBVo">
+    select sm.belong_year dataYear,sum(to_number(wm.amount,'99999999999999999D9999')) dataVal
+    <if test="groupCol!=''">,sm.${groupCol} areaId</if>
+    from species_investigation sm
+    left join investigat_content wm on wm.species_investigation_id=sm.id
+    <where>
+      sm.status = '7' and sm.belong_year &gt; #{startYear} and sm.belong_year &lt;= #{endYear}
+      <if test="speciesName!=null and speciesName!=''">
+        and wm.species_name = #{speciesName}
+      </if>
+      <if test="provinceId!=null and provinceId!=''">
+        and sm.province_id = #{provinceId}
+      </if>
+      <if test="cityId!=null and cityId!=''">
+        and sm.city_id = #{cityId}
+      </if>
+      <if test="countyId!=null and countyId!=''">
+        and sm.county_id=#{countyId}
+      </if>
+
+    </where>
+    group by sm.belong_year <if test="groupCol!=null and groupCol!=''">,sm.${groupCol}</if>
+  </select>
+  <select id="getDefaultFSMJSpName" resultType="java.lang.String">
+    select wm.species_name
+    from species_investigation sm
+    left join investigat_content wm on wm.species_investigation_id=sm.id
+    where sm.status = '7' and sm.belong_year = #{year}
+    order by to_number(wm.area,'99999999999999999D9999') desc
+    limit 1
+  </select>
+  <select id="getDefaultZQSLSpName" resultType="java.lang.String">
+    select wm.species_name
+    from species_investigation sm
+    left join investigat_content wm on wm.species_investigation_id=sm.id
+    where sm.status = '7' and sm.belong_year = #{year}
+    order by to_number(wm.amount,'99999999999999999D9999') desc
+    limit 1
+  </select>
+
+  <!--修改监测点基本信息状态-->
+  <update id="updateStatus" parameterType="java.util.Map">
+    update SPECIES_INVESTIGATION
+    <set >
+      <if test=" status != null and  status != '' " >
+        STATUS = #{status}
+      </if>
+    </set>
+    where
+    ID = #{id}
+  </update>
+  <update id="updateStatusToOld">
+    update species_investigation
+    set is_new = '0'
+    where province_id = #{provinceId} and city_id = #{cityId} and county_id=#{countyId} and BELONG_YEAR = #{belongYear}
+        and is_new = '1'
+    <if test="roleCode!=null and roleCode!=''">
+      and role_code= #{roleCode}
+    </if>
+  </update>
+  <update id="updateStatusToNew">
+    update species_investigation
+    set is_new='1'
+    where id = (
+      select id from species_investigation
+      where province_id = #{provinceId} and city_id = #{cityId} and county_id=#{countyId} and BELONG_YEAR = #{belongYear}
+      and status = '7'
+      <if test="roleCode!=null and roleCode!=''">
+        and role_code= #{roleCode}
+      </if>
+      order by investigation_time desc,create_time desc
+      limit 1
+    )
+  </update>
+
+</mapper>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.CollectFlowLogMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.ducss.model.CollectFlowLog" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="year" property="year" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaId" jdbcType="VARCHAR" />
+    <result column="area_name" property="areaName" jdbcType="VARCHAR" />
+    <result column="operation" property="operation" jdbcType="VARCHAR" />
+    <result column="minhour" property="minhour" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="create_user_id" property="createUserId" jdbcType="VARCHAR" />
+    <result column="create_user_name" property="createUserName" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="report_time" property="reportTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, year, area_id, area_name, operation, minhour, remark, create_user_id, create_user_name, create_time，report_time
+  </sql>
+
+  <!--<select id="getCollectFlowLogByPage" parameterType="java.util.Map" resultType="com.sofn.ducss.model.CollectFlowLog">-->
+    <!--SELECT-->
+    <!--t1.*,-->
+    <!--t2.create_date AS report_date-->
+    <!--FROM-->
+    <!--collect_flow_log t1-->
+    <!--LEFT JOIN collect_flow t2 ON t1.area_id = t2.area_id-->
+    <!--AND t1.year = t2.year-->
+    <!--<where> 1=1 AND t1.area_id = #{countyId}-->
+    <!--<if test="year!=null and year!=''">-->
+      <!--and t1.year=#{year}-->
+    <!--</if>-->
+    <!--</where>-->
+    <!--order by year,create_time desc-->
+  <!--</select>-->
+
+  <select id="getCollectFlowLogList" parameterType="java.util.Map" resultType="com.sofn.ducss.model.CollectFlowLog">
+    SELECT t1.*,
+    t2.create_date AS report_time
+    FROM
+    collect_flow_log t1
+    LEFT JOIN collect_flow t2 ON t1.area_id = t2.area_id
+    AND t1.year = t2.year
+    <where> 1=1 AND t1.area_id = #{countyId}
+      <if test="year!=null and year!=''">
+        and t1.year=#{year}
+      </if>
+    </where>
+    ORDER BY year,create_time desc
+  </select>
+
+
+  <insert id="insertFlowLog" parameterType="com.sofn.ducss.model.CollectFlowLog">
+    insert into collect_flow_log (id,year, area_id,
+    area_name, operation, minhour, remark,
+    create_user_name, create_user_id,create_time)
+    values
+    (#{id,jdbcType=VARCHAR},#{year,jdbcType=VARCHAR}, #{areaId,jdbcType=VARCHAR},
+    #{areaName,jdbcType=VARCHAR},
+    #{operation,jdbcType=VARCHAR},#{minhour,jdbcType=VARCHAR},
+    #{remark,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR},#{createUserId,jdbcType=VARCHAR},
+    #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <select id="selectCollectFlowLogPage" parameterType="java.util.Map" resultType="com.sofn.ducss.model.CollectFlowLog">
+    SELECT
+    t1.*,
+    t2.create_date AS report_date
+    FROM
+    collect_flow_log t1
+    LEFT JOIN collect_flow t2 ON t1.area_id = t2.area_id
+    AND t1.year = t2.year
+    where t1.area_id = #{areaId}
+    <if test="year!=null and year!=''">
+      and t1.year=#{year}
+    </if>
+    <if test="status!=null and status!=''">
+      and t1.operation=#{status}
+    </if>
+    order by year,create_time desc
+  </select>
+
+</mapper>

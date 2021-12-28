@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.SturgeonMapper">
+
+
+    <sql id="alias_Column_List_s">
+      s.ID, s.CREDENTIALS, s.TRADE, s.APPLY_TIME, s.STATUS, s.LABEL_SUM, s.OPINION, s.APPLY_CODE, s.APPLY_TYPE
+    </sql>
+    <sql id="alias_Column_List_sp">
+      sp.PERSON as auditer
+    </sql>
+    <sql id="alias_Column_List_tc">
+      tc.COMP_NAME, tc.COMP_TYPE, tc.COMP_PROVINCE, tc.COMP_CITY, tc.COMP_DISTRICT
+    </sql>
+
+    <select id="listByParams" resultType="com.sofn.fdpi.model.Sturgeon">
+        select * from(
+        select (SELECT wmsys.wm_concat ( distinct variety) from sturgeon_sub where del_flag = 'N' and sturgeon_id =
+        s.id) variety,
+        <include refid="alias_Column_List_tc"/>,
+        <include refid="alias_Column_List_s"/>,
+        <include refid="alias_Column_List_sp"/>
+        from STURGEON s join TB_COMP tc on s.COMP_ID = tc.ID left join STURGEON_PROCESS sp on sp.APPLY_ID = s.ID
+        and sp.CON_TIME = (select max(CON_TIME) from STURGEON_PROCESS where STATUS = '4' and APPLY_ID = s.ID)
+        <where>
+            s.DEL_FLAG = 'N' and tc.DEL_FLAG = 'N'
+            <if test="isMinistry1 != null and isMinistry1 != ''">
+                and s.STATUS > '1' and s.STATUS !='5'
+            </if>
+            <if test="isMinistry2 != null and isMinistry2 != ''">
+                and s.STATUS > '3'
+            </if>
+            <if test="direclyId != null and direclyId != ''">
+                and tc.DIRECLY_ID = #{direclyId} and s.STATUS > '1'
+            </if>
+            <if test="auditer != null and auditer != ''">
+                and sp.PERSON like '%' || #{auditer} || '%'
+            </if>
+            <choose>
+                <!--区级初审权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.fdpi.constants.Constants@REGION_TYPE_COUNTY">
+                    and s.STATUS > '1' and tc.COMP_DISTRICT = #{regionLastCode}
+                </when>
+                <!--市级初审权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.fdpi.constants.Constants@REGION_TYPE_CITY">
+                    and s.STATUS > '1' and tc.COMP_CITY = #{regionLastCode}
+                </when>
+                <!--省级有初审和复审权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.fdpi.constants.Constants@REGION_TYPE_PROVINCE">
+                    and s.STATUS > '1' and tc.COMP_PROVINCE = #{regionLastCode}
+                </when>
+            </choose>
+            <if test="status != null and status != ''">
+                and s.STATUS = #{status}
+            </if>
+            <if test="applyType != null and applyType != ''">
+                and s.APPLY_TYPE = #{applyType}
+            </if>
+            <if test="compId != null and compId != ''">
+                and s.COMP_ID = #{compId}
+            </if>
+            <if test="trade != null and trade != ''">
+                and s.TRADE = #{trade}
+            </if>
+            <if test="credentials != null and credentials != ''">
+                and s.CREDENTIALS like '%' || #{credentials} || '%'
+            </if>
+            <if test="compName != null and compName != ''">
+                and tc.COMP_NAME like '%' || #{compName} || '%'
+            </if>
+            <if test="applyDateS!=null">
+                and s.APPLY_TIME &gt;= to_timestamp(#{applyDateS},'yyyy-MM-dd HH24:MI:SS')
+            </if>
+            <if test="applyDateE!=null">
+                and s.APPLY_TIME &lt;= to_timestamp(#{applyDateE},'yyyy-MM-dd HH24:MI:SS')
+            </if>
+        </where>
+        order by s.APPLY_TIME desc)
+        <where>
+            <if test="variety != null and variety != ''">
+                and variety like '%' ||#{variety}|| '%'
+            </if>
+        </where>
+
+    </select>
+
+    <select id="listCredentials" resultType="com.sofn.fdpi.vo.SelectVo">
+        select ID as key , CREDENTIALS as val from STURGEON
+        <where>
+            DEL_FLAG = 'N' and STATUS = '4'
+            <if test="compId != null and compId != ''">
+                and COMP_ID = #{compId}
+            </if>
+        </where>
+        order by CREDENTIALS asc
+    </select>
+
+    <select id="getTodayMaxApplyNum" resultType="java.lang.String">
+        SELECT max(apply_code) FROM STURGEON WHERE apply_code like #{todayStr}||'%'
+    </select>
+</mapper>

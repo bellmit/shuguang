@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agzirdd.mapper.CollectionExaminaRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.agzirdd.model.CollectionExaminaRecord" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+
+    <result column="SPECIMEN_COLLECTION_ID" property="specimenCollectionId" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="AUDITOR" property="auditor" jdbcType="VARCHAR" />
+    <result column="OPINION" property="opinion" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ID, SPECIMEN_COLLECTION_ID, STATUS, AUDITOR, OPINION, CREATE_TIME
+  </sql>
+
+
+  <select id="getCollectionExaminaRecordByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM COLLECTION_EXAMINA_RECORD
+    <where>
+      1=1
+      <if test="specimenCollectionId != null and specimenCollectionId != ''">
+        AND SPECIMEN_COLLECTION_ID = #{specimenCollectionId}
+      </if>
+    </where>
+    ORDER BY CREATE_TIME desc
+  </select>
+
+  <delete id="deleteCollectionExaminaRecord" parameterType="java.lang.String">
+    delete
+    from COLLECTION_EXAMINA_RECORD
+    where
+    SPECIMEN_COLLECTION_ID = #{specimenCollectionId}
+  </delete>
+</mapper>

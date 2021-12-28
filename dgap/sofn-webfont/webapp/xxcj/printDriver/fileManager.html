@@ -1,0 +1,189 @@
+<link rel="stylesheet" href="assets/css/sys/sysBase/baseInfoList.css">
+<style>
+    .file-preview {
+        display: none;
+    }
+    .noWrappingLines {
+        display: block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 250px;
+    }
+    .noWrappingLines-max {
+        display: block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 250px;
+    }
+</style>
+<div class="gui-breadcrumbs">
+    <a href="">信息采集组件</a>&gt;<span>打印驱动上传</span>
+</div>
+<!-- 开发人员只需要在跟换下面这个div里面内容即可   begin-->
+<div class="gui-section">
+    <div class="gui-actions"><button class="gui-btn fr" ng-click="listAdd()" ng-if="menuAuthority == readWriteAuthority"><i class="gui-icon icon-add"></i>新增</button>
+        <!--<button class="gui-btn fr ml15 mr15" ng-click="deleteTemp()"><i class="gui-icon icon-remove"></i>删除</button><!--></div>
+    <table id="grid" class="gui-table mt15">
+    </table>
+</div>
+
+
+<!--add Modal -->
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">新增驱动</h4>
+            </div>
+            <div class="modal-body">
+                <form id="attributeForm" name="addFileForm" novalidate>
+                    <div class="form-item form-group">
+                        <label>文件名称<span class="color-red">*</span></label>
+                        <input type="text" class="gui-input form-control" ng-model="sysTemplate.templateName" name="templateName" placeholder="请输入资料名称" maxlength="100" required readonly>
+                        <span style="color:red" ng-show="addFileForm.templateName.$invalid && (addFileForm.templateName.$dirty || addFileSubmitting)">
+                            <span ng-show="addFileForm.templateName.$error.required">请填写资料名称</span>
+                        </span>
+                    </div>
+                    <div class="form-item form-group" style="display: none">
+                        <label>适用平台<span class="color-red">*</span></label>
+                        <span class="gui-select">
+                            <select name= "platform" class="gui-select form-control" ng-model="sysTemplate.platform" ng-change="platformTypeOnChange('add')" style="max-width: 100%;min-width: 100%;" required>
+                                <option value="">选择平台</option>
+                                <option ng-repeat="o in platformTypeOptions" value="{{o.dictValue}}">{{o.dictName}}</option>
+                            </select>
+                        </span>
+                        <span style="color:red" ng-show="addFileForm.platform.$invalid && (addFileForm.platform.$dirty || addFileSubmitting)">
+                            <span ng-show="addFileForm.platform.$error.required">请选择适用平台</span>
+                        </span>
+                    </div>
+                    <div class="form-item form-group" style="display: none">
+                        <label>适用系统<span class="color-red">*</span></label>
+                        <span class="gui-select">
+                            <select name="system" class="gui-select form-control" ng-model="sysTemplate.flags" style="max-width: 100%;min-width: 100%;" required>
+                                <option value="">选择系统</option>
+                                <option ng-repeat="(k, v) in applySystemOptions" value="{{k}}">{{v}}</option>
+                            </select>
+                        </span>
+                        <span style="color:red" ng-show="addFileForm.system.$invalid && (addFileForm.system.$dirty || addFileSubmitting)">
+                            <span ng-show="addFileForm.system.$error.required">请选择适用系统</span>
+                        </span>
+                    </div>
+                    <div class="form-item form-group" style="display: none">
+                        <label>文件分类<span class="color-red">*</span></label>
+                        <span class="gui-select">
+                            <select name="category" class="gui-select form-control" ng-model="sysTemplate.category" style="max-width: 100%;min-width: 100%;" required>
+                                <option value="">选择分类</option>
+                                <option ng-repeat="o in fileCategoryOptions" value="{{o.dictName}}">{{o.dictName}}</option>
+                            </select>
+                        </span>
+                        <span style="color:red" ng-show="addFileForm.category.$invalid && (addFileForm.category.$dirty || addFileSubmitting)">
+                            <span ng-show="addFileForm.category.$error.required">请选择文件分类</span>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>备注</label>
+                        <textarea class="gui-textarea form-control" ng-model="sysTemplate.remark" name="remark" placeholder="请输入备注" maxlength="150"></textarea>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>文件<span class="color-red">*</span></label>
+                        <div class="field-text">
+                            <form enctype="multipart/form-data" id="attributeFormFile">
+                                <div file-upload options="vm.uploadOptions" files="vm.files"></div>
+                            </form>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="gui-btn templateSave" ng-click="addSysTemplate()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--update Modal -->
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel2">修改资料</h4>
+            </div>
+            <div class="modal-body">
+                <form id="attributeForm2" name="updateFileForm" novalidate>
+                    <div class="form-item form-group">
+                        <label>资料名称<span class="color-red">*</span></label>
+                        <input type="text" class="gui-input form-control" ng-model="sysTemplate.templateName" name="templateName" placeholder="请输入门户资料名称" maxlength="100" required>
+                        <span style="color:red" ng-show="updateFileForm.templateName.$invalid && updateFileSubmitting">
+                            <span ng-show="updateFileForm.templateName.$error.required">请填写资料名称</span>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>适用平台<span class="color-red">*</span></label>
+                        <span class="gui-select">
+                            <select name="platform" class="gui-select form-control" ng-model="sysTemplate.platform" ng-change="platformTypeOnChange('update')" style="max-width: 100%;min-width: 100%;" required>
+                                <option value="">选择平台</option>
+                                <option ng-repeat="o in platformTypeOptions" value="{{o.dictValue}}">{{o.dictName}}</option>
+                            </select>
+                        </span>
+                        <span style="color:red" ng-show="updateFileForm.platform.$invalid && updateFileSubmitting">
+                            <span ng-show="updateFileForm.platform.$error.required">请选择适用平台</span>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>适用系统<span class="color-red">*</span></label>
+                        <span class="gui-select">
+                            <select name="system" class="gui-select form-control" ng-model="sysTemplate.flags" style="max-width: 100%;min-width: 100%;" required>
+                                <option value="">选择系统</option>
+                                <option ng-repeat="(k, v) in applySystemOptionsUpdate" value="{{k}}">{{v}}</option>
+                            </select>
+                        </span>
+                        <span style="color:red" ng-show="updateFileForm.system.$invalid && updateFileSubmitting">
+                            <span ng-show="updateFileForm.system.$error.required">请选择适用系统</span>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>文件分类<span class="color-red">*</span></label>
+                        <span class="gui-select">
+                            <select name="category" class="gui-select form-control" ng-model="sysTemplate.category" style="max-width: 100%;min-width: 100%;" required>
+                                <option value="">选择分类</option>
+                                <option ng-repeat="o in fileCategoryOptions" value="{{o.dictName}}">{{o.dictName}}</option>
+                            </select>
+                        </span>
+                        <span style="color:red" ng-show="updateFileForm.category.$invalid && updateFileSubmitting">
+                            <span ng-show="updateFileForm.category.$error.required">请选择文件分类</span>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>备注<span class="color-red">*</span></label>
+                        <textarea class="gui-textarea form-control" ng-model="sysTemplate.remark" name="remark" placeholder="请输入备注" maxlength="150" required></textarea>
+                        <span style="color:red" ng-show="updateFileForm.remark.$invalid && updateFileSubmitting">
+                            <span ng-show="updateFileForm.remark.$error.required">请填写备注</span>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>文件<span class="color-red">*</span></label>
+                        <div class="field-text">
+                            <form enctype="multipart/form-data">
+                                <div file-upload options="vm.uploadOptions2" files="vm.files2"></div>
+                            </form>
+                            <!--<form enctype="multipart/form-data" id="attributeFormFile2">
+                                <input id="tempFile2" type="file" name="tempFile" multiple=" true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="5">
+                                <p class="help-block">支持png、jpg、jpeg、bmp格式，大小不超过5M，支持rar、zip、doc、docx、xls、xlsx、pdf格式，大小不超过50M</p>
+                            </form>-->
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="gui-btn templateUpdate" ng-click="updateSysTemplate()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>

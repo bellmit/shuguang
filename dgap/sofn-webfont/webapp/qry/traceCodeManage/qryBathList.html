@@ -1,0 +1,72 @@
+<link rel="stylesheet" href="assets/css/asms/subjSv/subjSvList.css"/>
+<div class="gui-mainBc">
+    <div class="gui-breadcrumbs">
+        <a href="">查询系统</a>&gt;
+        <a href="">监管信息查询</a>&gt;
+        <span>追溯码查询</span>
+    </div>
+    <div class="gui-section ">
+        <div class="">
+            <form id="queryForm" class=" gui-form-group " style="">
+                <div class="mt15">
+                    <span id="AnyArea">所属区域</span>
+                    <div class="gui-select">
+                        <select id="sheng" >
+                            <option value="">省</option>
+                        </select>
+                    </div>
+                    <div class="gui-select">
+                        <select id="shi">
+                            <option value="">市</option>
+                        </select>
+                    </div>
+                    <div class="gui-select">
+                        <select id="xian">
+                            <option value="">区/县</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mt15">
+                    <span>主体名称</span>
+                    <input class="gui-input" maxlength="30" type="text" style="width: 150px;" placeholder="请输入主体名称" name="enterpriseName"/>
+                    <span>统计时间</span>
+                    <input id="dateBegin" name="dateBegin" style="cursor: pointer;min-width: 120px;" class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('dateEnd');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateEnd\')}'})" /> -- <input id="dateEnd" name="dateEnd" class="Wdate gui-input" style="cursor: pointer;min-width: 120px;margin-left:10px" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'dateBegin\')}'})" />
+                    <button class="gui-btn" ng-disabled="!!btnDisabled" ng-click="querySubjEntAndBathList()">查询</button>
+                    <button class="gui-btn" ng-click="reloadArea()">重置</button>
+                </div>
+                
+            </form>
+            
+            <div class="gui-table-panel clearfix">
+                <p class="table-total">符合条件的数据总计: {{tableTotal}} 项</p>
+                <button class="gui-btn" ng-click="exportData()">导出</button>
+            </div>
+            <table id="entGrid"
+                   class="gui-table mt15" >
+            </table>
+        </div>
+    </div>
+    <!--产品详情-->
+    <div class="modal fade" id="bathList" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-stylesm" style="width: 1200px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">
+                        <span>产品列表</span>
+                    </h4>
+                </div>
+                <div class="modal-body clearfix gov-h">
+                    <table id="qryBathGrid"
+                           class="gui-table mt15">
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="gui-btn" type="button" data-dismiss="modal">返回</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

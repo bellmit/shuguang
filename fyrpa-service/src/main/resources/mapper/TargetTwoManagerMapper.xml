@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fyrpa.mapper.TargetTwoManagerMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.fyrpa.model.TargetTwoManager" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="target_type" property="targetType" jdbcType="VARCHAR" />
+    <result column="target_name" property="targetName" jdbcType="VARCHAR" />
+    <result column="add_person" property="addPerson" jdbcType="VARCHAR" />
+    <result column="reference_value" property="referenceValue" jdbcType="VARCHAR" />
+    <result column="score_value" property="scoreValue" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="DATE" />
+    <result column="is_del" property="isDel" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="target_one_manager_id" property="targetOneManagerId" jdbcType="VARCHAR" />
+    <result column="is_target_name" property="isTargetName" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, target_type, target_name,add_person, reference_value,
+    score_value, create_time,is_del,status,target_one_manager_id,is_target_name,update_time
+  </sql>
+
+  <select id="selectTargetTwoManagerById" resultType="com.sofn.fyrpa.model.TargetTwoManager">
+    select <include refid="Base_Column_List"/>
+         from target_two_manager where id=#{id}
+         and is_del='N' and status='-1'
+  </select>
+
+  <select id="selectListData" resultType="com.sofn.fyrpa.vo.TargetManagerListVo">
+      select one.id as id,one.target_name as targetName,
+          one.target_type as targetType,one.add_person as addPerson,
+          one.create_time as createTime,'-' as scoreValue,'-' as referenceValue,'-' isTargetName,
+          one.status as status,one.is_del as isDel
+          from target_one_manager one
+      <where>
+          one.is_del='N'
+          <if test="targetName!=null and targetName!=''">
+              and one.target_name  like '%' || #{targetName} || '%'
+          </if>
+
+          <if test="targetType!=null and targetType!=''">
+              and one.target_type=#{targetType}
+          </if>
+
+          <if test="startTime != null and startTime != ''">
+              <![CDATA[ and one.create_time  >=  #{startTime}  ]]>
+          </if>
+
+          <if test="endTime != null and endTime != ''">
+              <![CDATA[ and one.create_time  <=  #{endTime}  ]]>
+          </if>
+
+      </where>
+          union all
+          select two.id as id,two.target_name as targetName,
+              two.target_type as targetType,two.add_person as addPerson,
+              two.create_time as createTime,two.score_value as scoreValue,
+              two.reference_value as referenceValue,two.is_target_name as isTargetName,
+              two.status as status,two.is_del as isDel
+              from target_two_manager two
+              <where>
+                  two.is_del='N'
+                  <if test="targetName!=null and targetName!=''">
+                     and two.target_name  like '%' || #{targetName} || '%'
+                  </if>
+
+                  <if test="targetType!=null and targetType!=''">
+                      and two.target_type=#{targetType}
+                  </if>
+
+                  <if test="startTime != null and startTime != ''">
+                      <![CDATA[ and two.create_time  >=  #{startTime}  ]]>
+                  </if>
+
+                  <if test="endTime != null and endTime != ''">
+                      <![CDATA[ and two.create_time  <=  #{endTime}  ]]>
+                  </if>
+
+              </where>
+
+
+  </select>
+
+    <select id="selectTargetTwoList" resultType="com.sofn.fyrpa.model.TargetTwoManager">
+        select <include refid="Base_Column_List"/>
+        from target_two_manager where is_del='N'
+    </select>
+
+
+    <select id="selectTargetTwoListByOneId" resultType="com.sofn.fyrpa.model.TargetTwoManager">
+        select <include refid="Base_Column_List"/>
+        from target_two_manager where is_del='N' and status='1'
+        and target_one_manager_id=#{targetOneManagerId}
+    </select>
+
+    <select id="selectTargetTwoManagerByName" resultType="com.sofn.fyrpa.model.TargetTwoManager">
+        select <include refid="Base_Column_List"/>
+        from target_two_manager where target_name=#{targetName}
+        and is_del='N'
+    </select>
+
+</mapper>

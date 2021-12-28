@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.FileManageMapper">
+<insert id="add">
+    insert into FILE_MANAGE
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+    <if test="id != null">ID,</if>
+    <if test="fileSourceId != null">FILE_SOURCE_ID,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+    <if test="id != null">#{id},</if>
+    <if test="fileSourceId != null">#{fileSourceId},</if>
+    </trim>
+</insert>
+<delete id="del">
+    delete FILE_MANAGE where FILE_SOURCE_ID=#{id}
+</delete>
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="false">
+        insert into FILE_MANAGE(ID,FILE_NAME,FILE_PATH,FILE_TYPE,FILE_SIZE,FILE_SOURCE,FILE_SOURCE_ID,FILE_STATUS)
+        values
+        <foreach collection="list" index="index" item="item" separator="union all">
+            (    #{item.id}
+                ,#{item.fileName}
+                ,#{item.filePath}
+                ,#{item.fileType}
+                ,#{item.fileSize}
+                ,#{item.fileSource}
+                ,#{item.fileSourceId}
+                ,#{item.fileStatus}
+            )
+        </foreach>
+    </insert>
+    <delete id="delBySourceId" parameterType="java.lang.String">
+        delete from FILE_MANAGE where FILE_SOURCE_ID=#{sourceId}
+    </delete>
+    <update id="updateFileStatusForDelete" parameterType="java.lang.String">
+        update FILE_MANAGE set FILE_STATUS='0' where FILE_SOURCE_ID=#{fileSourceId}
+    </update>
+</mapper>

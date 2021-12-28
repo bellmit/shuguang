@@ -1,0 +1,897 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fyrpa.mapper.AquaticResourcesProtectionInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.fyrpa.model.AquaticResourcesProtectionInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="region_code" property="regionCode" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="department_manager" property="departmentManager" jdbcType="VARCHAR" />
+    <result column="approve_time" property="approveTime" jdbcType="DATE" />
+    <result column="approve_doc_number" property="approveDocNumber" jdbcType="VARCHAR" />
+    <result column="is_adjust" property="isAdjust" jdbcType="VARCHAR" />
+    <result column="adjust_time" property="adjustTime" jdbcType="DATE" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="DATE" />
+    <result column="is_del" property="isDel" jdbcType="VARCHAR" />
+    <result column="manager_org_id" property="managerOrgId" jdbcType="VARCHAR" />
+    <result column="environment_resources_id" property="environmentResourcesId" jdbcType="VARCHAR" />
+    <result column="file_ids" property="fileIds" jdbcType="VARCHAR" />
+    <result column="submit_time" property="submitTime" jdbcType="VARCHAR" />
+    <result column="submit_unit" property="submitUnit" jdbcType="VARCHAR" />
+      <result column="total_score" property="totalScore" jdbcType="DOUBLE" />
+      <result column="is_flag" property="isFlag" jdbcType="VARCHAR" />
+      <result column="create_user_id" property="createUserId" jdbcType="VARCHAR" />
+      <result column="area_name" property="areaName" jdbcType="VARCHAR" />
+  </resultMap>
+
+    <resultMap id="regionMap" type="com.sofn.fyrpa.model.AquaticResourcesProtectionInfo" >
+        <result column="region_code" property="regionCode" jdbcType="VARCHAR" />
+    </resultMap>
+  <sql id="Base_Column_List" >
+    distinct id, region_code, name, department_manager, approve_time, approve_doc_number, is_adjust,
+    adjust_time, status, create_time, is_del, manager_org_id, environment_resources_id,file_ids,
+    submit_time,submit_unit,total_score,is_flag,create_user_id,area_name
+  </sql>
+
+  <select id="selectList" resultType="com.sofn.fyrpa.vo.AquaticResourcesProtectionInfoVoList">
+               select ai.id as id,ai.name as name,er.longitude as longitude,er.latitude as latitude,
+               ai.submit_time as submitTime,report_time,
+               er.current_protection_area as currentProtectionArea,
+               er.major_protect_object as majorProtectObject,
+               ai.approve_time as approveTime,ai.approve_doc_number as approveDocNumber,
+               mo.manager_org_name as managerOrgName,ai.submit_unit as submitUnit,ai.status as status
+                from aquatic_resources_protection_info ai
+                inner join environment_resources er on ai.environment_resources_id=er.id
+                inner join manager_org mo on ai.manager_org_id = mo.id
+               <where>
+                   ai.is_del='N' and create_user_id=#{createUserId}
+                   <if test="submitTime!=null and submitTime!=''">
+                      and  ai.submit_time=#{submitTime}
+                   </if>
+
+                   <if test="keyword!=null and keyword!=''">
+                       and (
+                       position (#{keyword} in ai.NAME) > 0
+                       OR position ( #{keyword} in er.longitude) > 0
+                       OR position ( #{keyword} in er.latitude) > 0
+                       OR position ( #{keyword} in er.major_protect_object) > 0
+                       OR position ( #{keyword} in ai.approve_doc_number) > 0
+                       OR position ( #{keyword} in mo.manager_org_name) > 0
+                       OR position ( #{keyword} in ai.submit_unit) > 0
+                       OR position ( #{keyword} in ai.status) > 0
+                       )
+                   </if>
+                   order by ai.report_time desc
+               </where>
+  </select>
+
+    <select id="selectListByUserIds" resultType="com.sofn.fyrpa.vo.AquaticResourcesProtectionInfoVoList">
+        select ai.id as id,ai.name as name,er.longitude as longitude,er.latitude as latitude,
+        ai.submit_time as submitTime,report_time,
+        er.current_protection_area as currentProtectionArea,
+        er.major_protect_object as majorProtectObject,
+        ai.approve_time as approveTime,ai.approve_doc_number as approveDocNumber,
+        mo.manager_org_name as managerOrgName,ai.submit_unit as submitUnit,ai.status as status
+        from aquatic_resources_protection_info ai
+        inner join environment_resources er on ai.environment_resources_id=er.id
+        inner join manager_org mo on ai.manager_org_id = mo.id
+        <where>
+            ai.is_del='N'
+            <if test="userIds != null and userIds.size()>0">
+                and create_user_id in
+                <foreach item="item" index="index" collection="userIds"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="submitTime!=null and submitTime!=''">
+                and  ai.submit_time=#{submitTime}
+            </if>
+
+            <if test="keyword!=null and keyword!=''">
+                and (
+                position (#{keyword} in ai.NAME) > 0
+                OR position ( #{keyword} in er.longitude) > 0
+                OR position ( #{keyword} in er.latitude) > 0
+                OR position ( #{keyword} in er.major_protect_object) > 0
+                OR position ( #{keyword} in ai.approve_doc_number) > 0
+                OR position ( #{keyword} in mo.manager_org_name) > 0
+                OR position ( #{keyword} in ai.submit_unit) > 0
+                OR position ( #{keyword} in ai.status) > 0
+                )
+            </if>
+        </where>
+        order by ai.create_time desc
+    </select>
+    <select id="selectList2" resultType="com.sofn.fyrpa.vo.AquaticResourcesProtectionInfoVoList">
+        select ai.id as id,ai.name as name,er.longitude as longitude,er.latitude as latitude,
+        ai.submit_time as submitTime,
+        er.current_protection_area as currentProtectionArea,
+        er.major_protect_object as majorProtectObject,
+        ai.approve_time as approveTime,ai.approve_doc_number as approveDocNumber,
+        mo.manager_org_name as managerOrgName,ai.submit_unit as submitUnit,ai.status as status,
+        create_user_id as createUserId,area_name as areaName
+        from aquatic_resources_protection_info ai
+        inner join environment_resources er on ai.environment_resources_id=er.id
+        inner join manager_org mo on ai.manager_org_id = mo.id
+        <where>
+            ai.is_del='N'
+            and ai.region_code like '%' ||  #{areaName} || '%'
+            <if test="submitTime!=null and submitTime!=''">
+                and  ai.submit_time=#{submitTime}
+            </if>
+
+            <if test="regionCode!=null and regionCode!=''">
+                and ai.region_code like '%' || #{regionCode} || '%'
+            </if>
+
+            <if test="keyword!=null and keyword!=''">
+                and (
+                position (#{keyword} in ai.NAME) > 0
+                OR position ( #{keyword} in er.longitude) > 0
+                OR position ( #{keyword} in er.latitude) > 0
+                OR position ( #{keyword} in er.major_protect_object) > 0
+                OR position ( #{keyword} in ai.approve_doc_number) > 0
+                OR position ( #{keyword} in mo.manager_org_name) > 0
+                OR position ( #{keyword} in ai.submit_unit) > 0
+                OR position ( #{keyword} in ai.status) > 0
+                )
+            </if>
+            and ai.status not in('未上报')
+            order by ai.report_time desc
+        </where>
+    </select>
+
+    <select id="selectList3" resultType="com.sofn.fyrpa.vo.AquaticResourcesProtectionInfoVoList">
+        select * from ((select ai.id as id,ai.name as name,er.longitude as longitude,er.latitude as latitude,
+        ai.submit_time as submitTime,ai.report_time as reportTime,
+        er.current_protection_area as currentProtectionArea,
+        er.major_protect_object as majorProtectObject,
+        ai.approve_time as approveTime,ai.approve_doc_number as approveDocNumber,
+        mo.manager_org_name as managerOrgName,ai.submit_unit as submitUnit,ai.status as status
+        from aquatic_resources_protection_info ai
+        inner join environment_resources er on ai.environment_resources_id=er.id
+        inner join manager_org mo on ai.manager_org_id = mo.id
+        inner join information_audit au on ai.id=au.protection_info_id
+        <where>
+            ai.is_del='N'
+            <if test="submitTime!=null and submitTime!=''">
+                and ai.submit_time=#{submitTime}
+            </if>
+
+            <if test="regionCode!=null and regionCode!=''">
+                and ai.region_code like '%' || #{regionCode} || '%'
+            </if>
+
+            <if test="keyword!=null and keyword!=''">
+                and (
+                position (#{keyword} in ai.NAME) > 0
+                OR position ( #{keyword} in er.longitude) > 0
+                OR position ( #{keyword} in er.latitude) > 0
+                OR position ( #{keyword} in er.major_protect_object) > 0
+                OR position ( #{keyword} in ai.approve_doc_number) > 0
+                OR position ( #{keyword} in mo.manager_org_name) > 0
+                OR position ( #{keyword} in ai.submit_unit) > 0
+                OR position ( #{keyword} in ai.status) > 0
+                )
+            </if>
+            and ai.status not in('待审(未经专家)','未上报')
+            and au.checker=#{checker}
+        </where>)
+        union
+        (select DISTINCT ai.id as id,ai.name as name,er.longitude as longitude,er.latitude as latitude,
+        ai.submit_time as submitTime,ai.report_time as reportTime,
+        er.current_protection_area as currentProtectionArea,
+        er.major_protect_object as majorProtectObject,
+        ai.approve_time as approveTime,ai.approve_doc_number as approveDocNumber,
+        mo.manager_org_name as managerOrgName,ai.submit_unit as submitUnit,ai.status as status
+        from aquatic_resources_protection_info ai
+        inner join environment_resources er on ai.environment_resources_id=er.id
+        inner join manager_org mo on ai.manager_org_id = mo.id
+        inner join information_audit au on ai.id=au.protection_info_id
+        <where>
+            ai.is_del='N'and  ai.status  in('专家审批')
+            <if test="submitTime!=null and submitTime!=''">
+                and ai.submit_time=#{submitTime}
+            </if>
+
+            <if test="regionCode!=null and regionCode!=''">
+                and ai.region_code like '%' || #{regionCode} || '%'
+            </if>
+
+            <if test="keyword!=null and keyword!=''">
+                and (
+                position (#{keyword} in ai.NAME) > 0
+                OR position ( #{keyword} in er.longitude) > 0
+                OR position ( #{keyword} in er.latitude) > 0
+                OR position ( #{keyword} in er.major_protect_object) > 0
+                OR position ( #{keyword} in ai.approve_doc_number) > 0
+                OR position ( #{keyword} in mo.manager_org_name) > 0
+                OR position ( #{keyword} in ai.submit_unit) > 0
+                OR position ( #{keyword} in ai.status) > 0
+                )
+            </if>
+        </where> )) aa order by aa.reportTime desc
+    </select>
+
+
+    <select id="selectGatherListByCondition" resultType="com.sofn.fyrpa.vo.AquaticResourcesProtectionInfoVoList">
+        select ai.id as id,ai.name as name,er.longitude as longitude,er.latitude as latitude,
+        ai.submit_time as submitTime,
+        er.current_protection_area as currentProtectionArea,
+        er.major_protect_object as majorProtectObject,
+        ai.approve_time as approveTime,ai.approve_doc_number as approveDocNumber,
+        mo.manager_org_name as managerOrgName,ai.submit_unit as submitUnit,ai.status as status
+        from aquatic_resources_protection_info ai
+        inner join environment_resources er on ai.environment_resources_id=er.id
+        inner join manager_org mo on ai.manager_org_id = mo.id
+        <where>
+            ai.is_del='N'  and ai.status ='已通过'
+
+            <if test="submitTime!=null and submitTime!=''">
+                and  ai.submit_time=#{submitTime}
+            </if>
+
+            <if test="regionCode!=null and regionCode!=''">
+                and  ai.region_code like '%' || #{regionCode} || '%'
+            </if>
+
+            <if test="basinOrSeaArea!=null and basinOrSeaArea!=''">
+                and  er.basin_or_sea_area=#{basinOrSeaArea}
+            </if>
+
+            <if test="riverOrMaritimeSpace!=null and riverOrMaritimeSpace!=''">
+                and  er.river_or_maritime_space=#{riverOrMaritimeSpace}
+            </if>
+
+            <if test="name!=null and name!=''">
+                and ai.name like '%' || #{name} || '%'
+            </if>
+
+            <if test="majorProtectObject!=null and majorProtectObject!=''">
+                and er.major_protect_object like '%' || #{majorProtectObject} || '%'
+            </if>
+
+            <if test="keyword!=null and keyword!=''">
+                and (
+                position (#{keyword} in ai.NAME) > 0
+                OR position ( #{keyword} in er.longitude) > 0
+                OR position ( #{keyword} in er.latitude) > 0
+                OR position ( #{keyword} in er.major_protect_object) > 0
+                OR position ( #{keyword} in ai.approve_doc_number) > 0
+                OR position ( #{keyword} in mo.manager_org_name) > 0
+                OR position ( #{keyword} in ai.submit_unit) > 0
+                OR position ( #{keyword} in ai.status) > 0
+                )
+            </if>
+            order by ai.report_time desc
+        </where>
+    </select>
+
+    <!--按面积倒序排列-->
+    <select id="selectGatherListByAreasDesc" resultType="com.sofn.fyrpa.vo.AquaticResourcesProtectionInfoVoList">
+        select ai.id as id,ai.name as name,er.longitude as longitude,er.latitude as latitude,
+        ai.submit_time as submitTime,
+        er.current_protection_area as currentProtectionArea,
+        er.major_protect_object as majorProtectObject,
+        ai.approve_time as approveTime,ai.approve_doc_number as approveDocNumber,
+        mo.manager_org_name as managerOrgName,ai.submit_unit as submitUnit,ai.status as status
+        from aquatic_resources_protection_info ai
+        inner join environment_resources er on ai.environment_resources_id=er.id
+        inner join manager_org mo on ai.manager_org_id = mo.id
+        <where>
+            ai.is_del='N'  and ai.status ='已通过'
+            <if test="submitTime!=null and submitTime!=''">
+                and  ai.submit_time=#{submitTime}
+            </if>
+
+            <if test="regionCode!=null and regionCode!=''">
+                and ai.region_code like '%' || #{regionCode} || '%'
+            </if>
+
+            <if test="basinOrSeaArea!=null and basinOrSeaArea!=''">
+                and  er.basin_or_sea_area=#{basinOrSeaArea}
+            </if>
+
+            <if test="riverOrMaritimeSpace!=null and riverOrMaritimeSpace!=''">
+                and  er.river_or_maritime_space=#{riverOrMaritimeSpace}
+            </if>
+
+            <if test="name!=null and name!=''">
+                and ai.name like '%' || #{name} || '%'
+            </if>
+
+            <if test="majorProtectObject!=null and majorProtectObject!=''">
+                and er.major_protect_object like '%' || #{majorProtectObject} || '%'
+            </if>
+
+            <if test="keyword!=null and keyword!=''">
+                and (
+                position (#{keyword} in ai.NAME) > 0
+                OR position ( #{keyword} in er.longitude) > 0
+                OR position ( #{keyword} in er.latitude) > 0
+                OR position ( #{keyword} in er.major_protect_object) > 0
+                OR position ( #{keyword} in ai.approve_doc_number) > 0
+                OR position ( #{keyword} in mo.manager_org_name) > 0
+                OR position ( #{keyword} in ai.submit_unit) > 0
+                OR position ( #{keyword} in ai.status) > 0
+                )
+            </if>
+            order by er.current_protection_area desc
+        </where>
+    </select>
+
+    <!--按面积升序排列-->
+    <select id="selectGatherListByAreasAsc" resultType="com.sofn.fyrpa.vo.AquaticResourcesProtectionInfoVoList">
+        select ai.id as id,ai.name as name,er.longitude as longitude,er.latitude as latitude,
+        ai.submit_time as submitTime,
+        er.current_protection_area as currentProtectionArea,
+        er.major_protect_object as majorProtectObject,
+        ai.approve_time as approveTime,ai.approve_doc_number as approveDocNumber,
+        mo.manager_org_name as managerOrgName,ai.submit_unit as submitUnit,ai.status as status
+        from aquatic_resources_protection_info ai
+        inner join environment_resources er on ai.environment_resources_id=er.id
+        inner join manager_org mo on ai.manager_org_id = mo.id
+        <where>
+            ai.is_del='N'  and ai.status ='已通过'
+            <if test="submitTime!=null and submitTime!=''">
+                and  ai.submit_time=#{submitTime}
+            </if>
+
+            <if test="regionCode!=null and regionCode!=''">
+                and ai.region_code like '%' || #{regionCode} || '%'
+            </if>
+
+            <if test="basinOrSeaArea!=null and basinOrSeaArea!=''">
+                and  er.basin_or_sea_area=#{basinOrSeaArea}
+            </if>
+
+            <if test="riverOrMaritimeSpace!=null and riverOrMaritimeSpace!=''">
+                and  er.river_or_maritime_space=#{riverOrMaritimeSpace}
+            </if>
+
+            <if test="name!=null and name!=''">
+                and ai.name like '%' || #{name} || '%'
+            </if>
+
+            <if test="majorProtectObject!=null and majorProtectObject!=''">
+                and er.major_protect_object like '%' || #{majorProtectObject} || '%'
+            </if>
+
+            <if test="keyword!=null and keyword!=''">
+                and (
+                position (#{keyword} in ai.NAME) > 0
+                OR position ( #{keyword} in er.longitude) > 0
+                OR position ( #{keyword} in er.latitude) > 0
+                OR position ( #{keyword} in er.major_protect_object) > 0
+                OR position ( #{keyword} in ai.approve_doc_number) > 0
+                OR position ( #{keyword} in mo.manager_org_name) > 0
+                OR position ( #{keyword} in ai.submit_unit) > 0
+                OR position ( #{keyword} in ai.status) > 0
+                )
+            </if>
+            order by er.current_protection_area asc
+
+        </where>
+    </select>
+
+    <!--按批准时间降序排列-->
+    <select id="selectGatherListByTimesDesc" resultType="com.sofn.fyrpa.vo.AquaticResourcesProtectionInfoVoList">
+        select ai.id as id,ai.name as name,er.longitude as longitude,er.latitude as latitude,
+        ai.submit_time as submitTime,
+        er.current_protection_area as currentProtectionArea,
+        er.major_protect_object as majorProtectObject,
+        ai.approve_time as approveTime,ai.approve_doc_number as approveDocNumber,
+        mo.manager_org_name as managerOrgName,ai.submit_unit as submitUnit,ai.status as status
+        from aquatic_resources_protection_info ai
+        inner join environment_resources er on ai.environment_resources_id=er.id
+        inner join manager_org mo on ai.manager_org_id = mo.id
+        <where>
+            ai.is_del='N'  and ai.status ='已通过'
+            <if test="submitTime!=null and submitTime!=''">
+                and  ai.submit_time=#{submitTime}
+            </if>
+
+            <if test="regionCode!=null and regionCode!=''">
+               and ai.region_code like '%' || #{regionCode} || '%'
+            </if>
+
+            <if test="basinOrSeaArea!=null and basinOrSeaArea!=''">
+                and  er.basin_or_sea_area=#{basinOrSeaArea}
+            </if>
+
+            <if test="riverOrMaritimeSpace!=null and riverOrMaritimeSpace!=''">
+                and  er.river_or_maritime_space=#{riverOrMaritimeSpace}
+            </if>
+
+            <if test="name!=null and name!=''">
+                and ai.name like '%' || #{name} || '%'
+            </if>
+
+            <if test="majorProtectObject!=null and majorProtectObject!=''">
+                and er.major_protect_object like '%' || #{majorProtectObject} || '%'
+            </if>
+
+            <if test="keyword!=null and keyword!=''">
+                and (
+                position (#{keyword} in ai.NAME) > 0
+                OR position ( #{keyword} in er.longitude) > 0
+                OR position ( #{keyword} in er.latitude) > 0
+                OR position ( #{keyword} in er.major_protect_object) > 0
+                OR position ( #{keyword} in ai.approve_doc_number) > 0
+                OR position ( #{keyword} in mo.manager_org_name) > 0
+                OR position ( #{keyword} in ai.submit_unit) > 0
+                OR position ( #{keyword} in ai.status) > 0
+                )
+            </if>
+            order by ai.approve_time desc
+        </where>
+    </select>
+
+
+    <!--按批准时间升序排列-->
+    <select id="selectGatherListByTimesAsc" resultType="com.sofn.fyrpa.vo.AquaticResourcesProtectionInfoVoList">
+        select ai.id as id,ai.name as name,er.longitude as longitude,er.latitude as latitude,
+        ai.submit_time as submitTime,
+        er.current_protection_area as currentProtectionArea,
+        er.major_protect_object as majorProtectObject,
+        ai.approve_time as approveTime,ai.approve_doc_number as approveDocNumber,
+        mo.manager_org_name as managerOrgName,ai.submit_unit as submitUnit,ai.status as status
+        from aquatic_resources_protection_info ai
+        inner join environment_resources er on ai.environment_resources_id=er.id
+        inner join manager_org mo on ai.manager_org_id = mo.id
+        <where>
+            ai.is_del='N'  and ai.status ='已通过'
+            <if test="submitTime!=null and submitTime!=''">
+                and  ai.submit_time=#{submitTime}
+            </if>
+
+            <if test="regionCode!=null and regionCode!=''">
+                and ai.region_code like '%' || #{regionCode} || '%'
+            </if>
+
+            <if test="basinOrSeaArea!=null and basinOrSeaArea!=''">
+                and  er.basin_or_sea_area=#{basinOrSeaArea}
+            </if>
+
+            <if test="riverOrMaritimeSpace!=null and riverOrMaritimeSpace!=''">
+                and  er.river_or_maritime_space=#{riverOrMaritimeSpace}
+            </if>
+
+            <if test="name!=null and name!=''">
+                and ai.name like '%' || #{name} || '%'
+            </if>
+
+            <if test="majorProtectObject!=null and majorProtectObject!=''">
+                and er.major_protect_object like '%' || #{majorProtectObject} || '%'
+            </if>
+
+            <if test="keyword!=null and keyword!=''">
+                and (
+                position (#{keyword} in ai.NAME) > 0
+                OR position ( #{keyword} in er.longitude) > 0
+                OR position ( #{keyword} in er.latitude) > 0
+                OR position ( #{keyword} in er.major_protect_object) > 0
+                OR position ( #{keyword} in ai.approve_doc_number) > 0
+                OR position ( #{keyword} in mo.manager_org_name) > 0
+                OR position ( #{keyword} in ai.submit_unit) > 0
+                OR position ( #{keyword} in ai.status) > 0
+                )
+            </if>
+            order by ai.approve_time asc
+        </where>
+    </select>
+
+    <select id="selectSpatialAnalystByCondition" resultType="com.sofn.fyrpa.vo.SpatialAnalystResourcesVoList">
+
+        select er.longitude as longitude,er.latitude as latitude,
+        er.current_protection_area as currentProtectionArea,
+        er.core_region_area as coreRegionArea,
+        er.basin_or_sea_area as basinOrSeaArea,
+        er.river_or_maritime_space as riverOrMaritimeSpace,
+        er.major_protect_object as majorProtectObject,
+        er.experiment_region_area as experimentRegionArea,
+        ai.name as name,
+        ai.region_code as regionCode
+        from aquatic_resources_protection_info ai
+        inner join environment_resources er on ai.environment_resources_id=er.id
+        <where>
+            ai.is_del='N'  and ai.status ='已通过'
+            <if test="submitTime!=null and submitTime!=''">
+                and  ai.submit_time=#{submitTime}
+            </if>
+
+            <if test="name!=null and name!=''">
+                and ai.name like '%' || #{name} || '%'
+            </if>
+
+        </where>
+    </select>
+
+    <select id="selectCounts" resultType="java.lang.Integer">
+        select count(DISTINCT name) from aquatic_resources_protection_info ai
+        inner join environment_resources er on ai.environment_resources_id=er.id
+        <where>
+            ai.is_del='N'  and ai.status ='已通过'
+            <if test="submitTime!=null and submitTime!=''">
+                and  ai.submit_time=#{submitTime}
+            </if>
+
+            <if test="regionCode!=null and regionCode!=''">
+               and ai.region_code like '%' || #{regionCode} || '%'
+            </if>
+
+        </where>
+    </select>
+
+    <select id="selectSums" resultType="com.sofn.fyrpa.vo.AreasVo">
+        select sum(er.current_protection_area) as currentProtectionAreas,
+        sum(er.core_region_area) as coreRegionAreas
+        from aquatic_resources_protection_info ai
+        inner join environment_resources er on ai.environment_resources_id=er.id
+        <where>
+            ai.is_del='N'  and ai.status ='已通过'
+            <if test="submitTime!=null and submitTime!=''">
+                and  ai.submit_time=#{submitTime}
+            </if>
+
+            <if test="regionCode!=null and regionCode!=''">
+                and ai.region_code like '%' || #{regionCode} || '%'
+            </if>
+        </where>
+    </select>
+
+
+    <select id="selectResourceAnalyseList" resultType="com.sofn.fyrpa.vo.ResourceAppraiseAnalyseVoList">
+        select ai.id as id,ai.submit_time as submitTime,
+        ai.name as name,er.basin_or_sea_area as basinOrSeaArea,
+        ai.approve_time as approveTime,
+        er.major_protect_object as majorProtectObject,
+        mo.manager_org_name as managerOrgName,
+        ai.total_score as totalScore,
+        ai.is_flag as isFlag
+        from aquatic_resources_protection_info ai
+        inner join environment_resources er on ai.environment_resources_id=er.id
+        inner join manager_org mo on ai.manager_org_id = mo.id
+        <where>
+            ai.is_del='N'and ai.status='已通过'
+            <if test="name!=null and name!=''">
+                and ai.name like '%' || #{name} || '%'
+            </if>
+
+            <if test="submitTime!=null and submitTime!=''">
+                and  ai.submit_time=#{submitTime}
+            </if>
+
+            <if test="startTotalScore!=null">
+                and  ai.total_score>=#{startTotalScore}
+            </if>
+
+            <if test="endTotalScore!=null ">
+                and (#{endTotalScore})>= ai.total_score
+            </if>
+
+            <if test="basinOrSeaArea!=null and basinOrSeaArea!=''">
+                and  er.basin_or_sea_area =#{basinOrSeaArea}
+            </if>
+            order by ai.approve_time desc
+        </where>
+    </select>
+
+    <select id="selectListByTimeDesc" resultType="com.sofn.fyrpa.vo.ResourceAppraiseAnalyseVoList">
+        select ai.id as id,ai.submit_time as submitTime,
+        ai.name as name,er.basin_or_sea_area as basinOrSeaArea,
+        ai.approve_time as approveTime,
+        er.major_protect_object as majorProtectObject,
+        mo.manager_org_name as managerOrgName,
+        ai.total_score as totalScore,
+        ai.is_flag as isFlag
+        from aquatic_resources_protection_info ai
+        inner join environment_resources er on ai.environment_resources_id=er.id
+        inner join manager_org mo on ai.manager_org_id = mo.id
+        <where>
+            ai.is_del='N'and ai.status='已通过'
+            <if test="name!=null and name!=''">
+                and ai.name like '%' || #{name} || '%'
+            </if>
+
+            <if test="submitTime!=null and submitTime!=''">
+                and  ai.submit_time=#{submitTime}
+            </if>
+
+            <if test="startTotalScore!=null">
+                and  ai.total_score>=#{startTotalScore}
+            </if>
+
+            <if test="endTotalScore!=null ">
+                and (#{endTotalScore})>= ai.total_score
+            </if>
+
+            <if test="basinOrSeaArea!=null and basinOrSeaArea!=''">
+                and  er.basin_or_sea_area =#{basinOrSeaArea}
+            </if>
+            order by ai.approve_time desc
+        </where>
+    </select>
+
+    <select id="selectListByTimeAsc" resultType="com.sofn.fyrpa.vo.ResourceAppraiseAnalyseVoList">
+        select ai.id as id,ai.submit_time as submitTime,
+        ai.name as name,er.basin_or_sea_area as basinOrSeaArea,
+        ai.approve_time as approveTime,
+        er.major_protect_object as majorProtectObject,
+        mo.manager_org_name as managerOrgName,
+        ai.total_score as totalScore,
+        ai.is_flag as isFlag
+        from aquatic_resources_protection_info ai
+        inner join environment_resources er on ai.environment_resources_id=er.id
+        inner join manager_org mo on ai.manager_org_id = mo.id
+        <where>
+            ai.is_del='N'and ai.status='已通过'
+            <if test="name!=null and name!=''">
+                and ai.name like '%' || #{name} || '%'
+            </if>
+
+            <if test="submitTime!=null and submitTime!=''">
+                and  ai.submit_time=#{submitTime}
+            </if>
+
+            <if test="startTotalScore!=null">
+                and  ai.total_score>=#{startTotalScore}
+            </if>
+
+            <if test="endTotalScore!=null ">
+                and (#{endTotalScore})>= ai.total_score
+            </if>
+
+            <if test="basinOrSeaArea!=null and basinOrSeaArea!=''">
+                and  er.basin_or_sea_area =#{basinOrSeaArea}
+            </if>
+            order by ai.approve_time asc
+        </where>
+    </select>
+
+    <select id="selectListByScoreDesc" resultType="com.sofn.fyrpa.vo.ResourceAppraiseAnalyseVoList">
+        select ai.id as id,ai.submit_time as submitTime,
+        ai.name as name,er.basin_or_sea_area as basinOrSeaArea,
+        ai.approve_time as approveTime,
+        er.major_protect_object as majorProtectObject,
+        mo.manager_org_name as managerOrgName,
+        ai.total_score as totalScore,
+        ai.is_flag as isFlag
+        from aquatic_resources_protection_info ai
+        inner join environment_resources er on ai.environment_resources_id=er.id
+        inner join manager_org mo on ai.manager_org_id = mo.id
+        <where>
+            ai.is_del='N'and ai.status='已通过'
+            <if test="name!=null and name!=''">
+                and ai.name like '%' || #{name} || '%'
+            </if>
+
+            <if test="submitTime!=null and submitTime!=''">
+                and  ai.submit_time=#{submitTime}
+            </if>
+
+            <if test="startTotalScore!=null">
+                and  ai.total_score>=#{startTotalScore}
+            </if>
+
+            <if test="endTotalScore!=null ">
+                and (#{endTotalScore})>= ai.total_score
+            </if>
+
+            <if test="basinOrSeaArea!=null and basinOrSeaArea!=''">
+                and  er.basin_or_sea_area =#{basinOrSeaArea}
+            </if>
+            order by ai.total_score desc
+        </where>
+    </select>
+
+    <select id="selectListByScoreAsc" resultType="com.sofn.fyrpa.vo.ResourceAppraiseAnalyseVoList">
+        select ai.id as id,ai.submit_time as submitTime,
+        ai.name as name,er.basin_or_sea_area as basinOrSeaArea,
+        ai.approve_time as approveTime,
+        er.major_protect_object as majorProtectObject,
+        mo.manager_org_name as managerOrgName,
+        ai.total_score as totalScore,
+        ai.is_flag as isFlag
+        from aquatic_resources_protection_info ai
+        inner join environment_resources er on ai.environment_resources_id=er.id
+        inner join manager_org mo on ai.manager_org_id = mo.id
+        <where>
+            ai.is_del='N'and ai.status='已通过'
+            <if test="name!=null and name!=''">
+                and ai.name like '%' || #{name} || '%'
+            </if>
+
+            <if test="submitTime!=null and submitTime!=''">
+                and  ai.submit_time=#{submitTime}
+            </if>
+
+            <if test="startTotalScore!=null">
+                and  ai.total_score>=#{startTotalScore}
+            </if>
+
+            <if test="endTotalScore!=null ">
+                and (#{endTotalScore})>= ai.total_score
+            </if>
+
+            <if test="basinOrSeaArea!=null and basinOrSeaArea!=''">
+                and  er.basin_or_sea_area =#{basinOrSeaArea}
+            </if>
+            order by ai.total_score asc
+        </where>
+    </select>
+
+
+    <select id="selectLastYearScore" resultType="java.lang.Integer">
+       select total_score from aquatic_resources_protection_info where
+       submit_time=#{submitTime} and name=#{name} and is_del='N'
+    </select>
+
+    <select id="selectByName" resultType="com.sofn.fyrpa.model.AquaticResourcesProtectionInfo">
+        select <include refid="Base_Column_List" />
+        from aquatic_resources_protection_info
+        where name=#{name} and submit_time=#{submitTime} and is_del='N'
+    </select>
+
+
+    <select id="selectListIsPass" resultType="com.sofn.fyrpa.vo.AquaticResourcesProtectionInfoVoList">
+        select ai.id as id,ai.name as name,er.longitude as longitude,er.latitude as latitude,
+        ai.submit_time as submitTime,
+        er.current_protection_area as currentProtectionArea,
+        er.major_protect_object as majorProtectObject,
+        ai.approve_time as approveTime,ai.approve_doc_number as approveDocNumber,
+        mo.manager_org_name as managerOrgName,ai.submit_unit as submitUnit,ai.status as status,
+        create_user_id as createUserId,area_name as areaName
+        from aquatic_resources_protection_info ai
+        inner join environment_resources er on ai.environment_resources_id=er.id
+        inner join manager_org mo on ai.manager_org_id = mo.id
+        <where>
+            ai.is_del='N' and ai.area_name=#{areaName}
+            <if test="submitTime!=null and submitTime!=''">
+                and  ai.submit_time=#{submitTime}
+            </if>
+
+            <if test="regionCode!=null and regionCode!=''">
+                and ai.region_code like '%' || #{regionCode} || '%'
+            </if>
+
+            <if test="keyword!=null and keyword!=''">
+                and (
+                position (#{keyword} in ai.NAME) > 0
+                OR position ( #{keyword} in er.longitude) > 0
+                OR position ( #{keyword} in er.latitude) > 0
+                OR position ( #{keyword} in er.major_protect_object) > 0
+                OR position ( #{keyword} in ai.approve_doc_number) > 0
+                OR position ( #{keyword} in mo.manager_org_name) > 0
+                OR position ( #{keyword} in ai.submit_unit) > 0
+                OR position ( #{keyword} in ai.status) > 0
+                )
+            </if>
+            and ai.status ='已通过'
+            order by ai.submit_time desc
+        </where>
+    </select>
+
+    <!--省级查询-->
+    <select id="selectProvinceProtectionList" resultType="com.sofn.fyrpa.vo.ProvinceVo">
+        select ai.name as name,
+        er.current_protection_area as currentProtectionArea,
+        er.core_region_area as coreRegionArea,
+        er.experiment_region_area as experimentRegionArea,
+        er.major_protect_object as majorProtectObject
+        from aquatic_resources_protection_info ai
+        inner join environment_resources er on ai.environment_resources_id=er.id
+        <where>
+        ai.is_del='N' and er.is_del='N'
+        <if test="submitTime!=null and submitTime!=''">
+            and  ai.submit_time=#{submitTime}
+        </if>
+
+         <if test="name!=null and name!=''">
+             and ai.name like '%' || #{name} || '%'
+         </if>
+        </where>
+        and ai.region_code like '%' || #{regionCode} || '%'
+        and ai.status ='已通过'
+        order by ai.submit_time desc
+    </select>
+
+    <!--市级查询-->
+    <select id="selectCityProtectionList" resultType="com.sofn.fyrpa.vo.CityVo">
+        select ai.name as name,
+        er.current_protection_area as currentProtectionArea,
+        er.core_region_area as coreRegionArea,
+        er.experiment_region_area as experimentRegionArea,
+        er.major_protect_object as majorProtectObject
+        from aquatic_resources_protection_info ai
+        inner join environment_resources er on ai.environment_resources_id=er.id
+        <where>
+            ai.is_del='N' and er.is_del='N'
+            <if test="submitTime!=null and submitTime!=''">
+                and  ai.submit_time=#{submitTime}
+            </if>
+
+            <if test="name!=null and name!=''">
+                and ai.name like '%' || #{name} || '%'
+            </if>
+        </where>
+        and ai.region_code like '%' || #{regionCode} || '%'
+        and ai.status ='已通过'
+        order by ai.submit_time desc
+    </select>
+
+    <!--县区级查询-->
+    <select id="selectCountyProtectionList" resultType="com.sofn.fyrpa.vo.CountyVo">
+        select ai.name as name,
+        er.current_protection_area as currentProtectionArea,
+        er.core_region_area as coreRegionArea,
+        er.experiment_region_area as experimentRegionArea,
+        er.major_protect_object as majorProtectObject
+        from aquatic_resources_protection_info ai
+        inner join environment_resources er on ai.environment_resources_id=er.id
+        <where>
+            ai.is_del='N' and er.is_del='N'
+            <if test="submitTime!=null and submitTime!=''">
+                and  ai.submit_time=#{submitTime}
+            </if>
+
+            <if test="name!=null and name!=''">
+                and ai.name like '%' || #{name} || '%'
+            </if>
+        </where>
+        and ai.region_code like '%' || #{regionCode} || '%'
+        and ai.status ='已通过'
+        order by ai.submit_time desc
+    </select>
+
+
+    <select id="selectOneRegionCodeList" resultType="com.sofn.fyrpa.model.AquaticResourcesProtectionInfo">
+           select distinct substring(region_code from 1 for 6) as regionCode
+<!--        distinct left(region_code, LOCATE(',',region_code)-1) as regionCode-->
+                   from aquatic_resources_protection_info ai
+                   <where> ai.is_del='N' and ai.status='已通过'
+
+                       <if test="submitTime!=null and submitTime!=''">
+                           and  ai.submit_time=#{submitTime}
+                       </if>
+
+                       <if test="name!=null and name!=''">
+                           and ai.name like '%' || #{name} || '%'
+                       </if>
+                   </where>
+    </select>
+
+    <select id="selectTwoRegionCodeList" resultType="com.sofn.fyrpa.model.AquaticResourcesProtectionInfo">
+           select distinct SUBSTRING(region_code,8,6) as regionCode
+                  from aquatic_resources_protection_info ai
+                    <where> ai.is_del='N' and ai.status='已通过'
+
+                        <if test="submitTime!=null and submitTime!=''">
+                            and  ai.submit_time=#{submitTime}
+                        </if>
+
+                        <if test="name!=null and name!=''">
+                            and ai.name like '%' || #{name} || '%'
+                        </if>
+                    </where>
+
+    </select>
+
+    <select id="selectThreeRegionCodeList" resultType="com.sofn.fyrpa.model.AquaticResourcesProtectionInfo">
+           select  distinct RIGHT(region_code, position(',' in region_code)-1) as regionCode
+                    from aquatic_resources_protection_info ai
+                    <where> ai.is_del='N' and ai.status='已通过'
+
+                        <if test="submitTime!=null and submitTime!=''">
+                            and  ai.submit_time=#{submitTime}
+                        </if>
+
+                        <if test="name!=null and name!=''">
+                            and ai.name like '%' || #{name} || '%'
+                        </if>
+                    </where>
+
+    </select>
+
+</mapper>

@@ -1,0 +1,68 @@
+body {
+  background-color: #eeeeee;
+}
+.tab-content {
+  width: 780px;
+  margin: 50px auto 10px;
+  border-radius: 4px;
+  background-color: #FFF;
+  border: 1px solid #e0e0e0;
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+.tab-register {
+  margin: 0;
+  padding: 0;
+  background-color: #dedede;
+  overflow: visible;
+  margin-bottom: 15px;
+}
+.tab-register li {
+  width: 50%;
+  text-align: center;
+  font-size: 16px;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+}
+.tab-register li a {
+  color: #333;
+}
+.tab-register .active {
+  background-color: #47b995;
+  position: relative;
+}
+.tab-register .active:after {
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  margin-left: -6px;
+  content: '';
+  display: block;
+  border: 6px solid red;
+  border-color: #47b995 transparent transparent;
+  height: 0;
+  width: 0;
+}
+.tab-register .active a {
+  color: #FFF;
+}
+.gui-section .gui-list {
+  max-width: 650px;
+}
+.gui-list .form-item {
+  padding-left: 160px;
+}
+.gui-list .form-item .title,
+.gui-list .form-item label {
+  margin-left: -160px;
+  width: 160px;
+}
+.gui-mid-wrapper {
+  overflow: hidden;
+  height: 0;
+  width: 0;
+  padding: 0;
+  margin: 0;
+  font-size: 0;
+}

@@ -1,0 +1,111 @@
+package com.sofn.agpjyz.web;
+
+import com.sofn.agpjyz.model.EnvironmentalFactor;
+import com.sofn.agpjyz.service.EnvironmentalFactorCollectService;
+import com.sofn.common.model.Result;
+import com.sofn.common.utils.PageUtils;
+import com.sofn.common.web.BaseController;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
+
+@Api(tags = "环境因子监测信息采集模块接口")
+@RestController
+@RequestMapping("/efc")
+public class EnvironmentalFactorCollectController extends BaseController {
+
+    @Autowired
+    private EnvironmentalFactorCollectService efcService;
+
+    @ApiOperation(value = "新增")
+    @PostMapping("/save")
+    @RequiresPermissions("agpjyz:efc:create")
+    public Result<EnvironmentalFactor> save(
+            @Validated @RequestBody EnvironmentalFactor environmentalFactor, BindingResult result) {
+        if (result.hasErrors()) {
+            return Result.error(getErrMsg(result));
+        }
+        return Result.ok(efcService.save(environmentalFactor));
+    }
+
+    @ApiOperation(value = "删除")
+    @DeleteMapping("/delete")
+    @RequiresPermissions("agpjyz:efc:delete")
+    public Result delete(
+            @ApiParam(value = "主键id", required = true) @RequestParam() String id) {
+        efcService.delete(id);
+        return Result.ok();
+    }
+
+    @ApiOperation(value = "详情")
+    @GetMapping("/get")
+    @RequiresPermissions("agpjyz:efc:view")
+    public Result<EnvironmentalFactor> get(
+            @ApiParam(value = "主键id", required = true) @RequestParam() String id) {
+        return Result.ok(efcService.get(id));
+    }
+
+    @ApiOperation(value = "修改")
+    @PutMapping("/update")
+    @RequiresPermissions("agpjyz:efc:update")
+    public Result insertSignboardProcess(
+            @Validated @RequestBody EnvironmentalFactor environmentalFactor, BindingResult result) {
+        if (result.hasErrors()) {
+            return Result.error(getErrMsg(result));
+        }
+        efcService.update(environmentalFactor);
+        return Result.ok();
+    }
+
+    @ApiOperation(value = "分页查询")
+    @GetMapping("/listPage")
+//    @RequiresPermissions("agpjyz:efc:menu")
+    public Result<PageUtils<EnvironmentalFactor>> listPage(
+            @ApiParam("保护点ID") @RequestParam(required = false) String protectId,
+            @ApiParam("土壤温度") @RequestParam(required = false) String soilTemperature,
+            @ApiParam("土壤湿度") @RequestParam(required = false) String soilMoisture,
+            @ApiParam("开始时间(yyyy-MM-dd)") @RequestParam(required = false) String startTime,
+            @ApiParam("结束时间(yyyy-MM-dd)") @RequestParam(required = false) String endTime,
+            @ApiParam(value = "pageNo", required = true) @RequestParam() Integer pageNo,
+            @ApiParam(value = "pageSize", required = true) @RequestParam() Integer pageSize) {
+        return Result.ok(efcService.listPage(
+                this.getQueryMap(protectId, soilTemperature, soilMoisture, startTime, endTime), pageNo, pageSize));
+    }
+
+    private Map<String, Object> getQueryMap(String protectId, String soilTemperature, String soilMoisture
+            , String startTime, String endTime) {
+        Map map = new HashMap<String, Object>(5);
+        map.put("protectId", protectId);
+        map.put("soilTemperature", soilTemperature);
+        map.put("soilMoisture", soilMoisture);
+        map.put("startTime", startTime);
+        if (StringUtils.hasText(endTime)) {
+            map.put("endTime", endTime + " 23:59:59");
+        }
+        return map;
+    }
+
+    @GetMapping(value = "/export", produces = "application/octet-stream")
+    @ApiOperation(value = "导出", produces = "application/octet-stream")
+    @RequiresPermissions("agpjyz:efc:export")
+    public void export(
+            @ApiParam("保护点ID") @RequestParam(required = false) String protectId,
+            @ApiParam("土壤温度") @RequestParam(required = false) String soilTemperature,
+            @ApiParam("土壤湿度") @RequestParam(required = false) String soilMoisture,
+            @ApiParam("开始时间(yyyy-MM-dd)") @RequestParam(required = false) String startTime,
+            @ApiParam("结束时间(yyyy-MM-dd)") @RequestParam(required = false) String endTime,
+            HttpServletResponse response) {
+        efcService.export(this.getQueryMap(protectId, soilTemperature, soilMoisture, startTime, endTime), response);
+    }
+
+}

@@ -1,0 +1,98 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+    <div class="gui-breadcrumbs">
+        <a href="">监测系统</a>&gt;
+        <a href="">牵头单位</a>&gt;
+        <a href="">监测信息汇总</a>&gt;
+        <span>例行监测</span>
+    </div>
+    <div class="gui-section">
+        <ul class="gui-tab" role="tablist" >
+            <li role="presentation" class="active"><a id="routine" role="tab" data-toggle="tab">例行监测</a></li>
+            <li role="presentation" class="pointer"><a id="special" role="tab" data-toggle="tab">专项监测</a></li>
+        </ul>
+        <div class="gui-form-group clearfix">
+            <label>检测时间</label>
+                <input type="text" id="startTime" class="gui-input Wdate"  name="startTime" onfocus = "WdatePicker({dateFmt:'yyyy-MM-dd '}) "   ng-keyup="enterEvent($event)">---
+                <input type="text" id="endTime" class="gui-input Wdate" name="endTime" onfocus = "WdatePicker({dateFmt:'yyyy-MM-dd '}) "  ng-keyup="enterEvent($event)">
+        </div>
+        <div class="gui-form-group clearfix">
+            <label>年份</label>
+            <span class="gui-select" >
+                <select name="year"id="year" class="gui-select">
+                    <option value="" >年度</option>
+                    <option   ng-repeat="x in year"  >{{x}}</option>
+                </select>
+            </span>
+            <label>样品名称</label>
+            <input name="sampleName" id="sampleName" onblur="check(this)" class="gui-input"  ng-keyup="enterEvent($event)"/>
+        </div>
+        <div class="gui-form-group clearfix">
+            <label>任务名称</label>
+            <span class="gui-select" >
+                <select name="taskName"id="taskName" class="gui-select">
+                    <option value="">全部</option>
+                </select>
+            </span>
+            <label>判定结果</label>
+            <span class="gui-select" >
+                <select name="result"id="result" class="gui-select">
+                    <option value="" >所有</option>
+                    <option value="1" >合格</option>
+                    <option value="0" >不合格</option>
+                    <option value="-1" >暂未检测</option>
+                </select>
+            </span>
+        </div>
+        <div class="gui-form-group clearfix">
+            <label>产品编码</label>
+            <input name="productCode" id="productCode" placeholder="产品编码" class="gui-input"  ng-keyup="enterEvent($event)"/>
+            <label>样品编码</label>
+            <input name="sampleCode" id="sampleCode" placeholder="样品编码" class="gui-input"  ng-keyup="enterEvent($event)"/>
+            <label id="show" class="hide"><span class="btn btn-link" ng-click="showInput()">更多>></span></label>
+        </div>
+        <div class="gui-form-group more clearfix">
+            <label class="more">抽样单位</label>
+            <input  name="sampleDeparment" id="sampleDeparment" class="more gui-input"  ng-keyup="enterEvent($event)"/>
+            <label class="more">检测单位</label>
+            <input  name="checkOrgan" id="checkOrgan" class="more gui-input"  ng-keyup="enterEvent($event)"/>
+        </div>
+        <div class="gui-form-group more clearfix">
+            <label class="more">受检单位</label>
+            <input  name="testedDeparment" id="testedDeparment" class="more gui-input" ng-keyup="enterEvent($event)" />
+            <label class="more">抽样场所</label>
+            <span class="more gui-select">
+                <select name="checkLink" id="checkLink" class="gui-select" ng-keyup="enterEvent($event)">
+                <option value="" >全部</option>
+                <option value="生产基地/企业" >生产基地/企业</option>
+                <option value="屠宰场" >屠宰场</option>
+                <option value="农贸市场" >农贸市场</option>
+                <option value="批发市场" >批发市场</option>
+                <option value="超市" >超市</option>
+                <option value="其他" >其他</option>
+                <!--<option  ng-repeat="x in checkLink"  >{{x.checkLink}}</option>-->
+            </select>
+            </span>
+        </div>
+    <div class="gui-form-group clearfix">
+        <label ><span class="gui-btn" ng-click="resetInput()">重置</span></label>
+        <label ><span class="gui-btn seachTask">查询</span></label>
+        <!--<label ><button class="gui-btn" ng-click="exportExcel('a')">导出详细</button></label>-->
+    </div>
+        <div class="gui-actions">
+            <span class="gui-btn fr" ng-click="exportExcel('s') "><i class="gui-icon icon-export"></i>导出</span>
+
+        </div>
+        <div id="taskStatusStatus" style="display: none;">
+            <span class="color-gray">任务状态:</span>
+            <span class="color-red" id="taskStatusValue"></span>
+        </div>
+        <div class="clearfix gov-h">
+            <table id="grid" class="gui-table" >
+            </table>
+        </div>
+    </div><!--gui-section-->
+
+
+
+
+

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+<link rel="stylesheet" href="../../assets/css/monitor/subjSvList.css"/>
+<div class="gui-breadcrumbs">
+    <a href="">{{monitorClass}}</a>&gt;
+    <a href="" ng-click="backBtn()">检测信息汇总</a>&gt;
+    <span>检测信息</span>
+</div>
+<!--<div class="Sup_contain_section_head_nav bcgreypl25 mb25 col-lg-12 col-xs-12 col-sm-12 col-md-12">-->
+            <!--<ul>-->
+                <!--<li class="fl"  href="#" ng-click="taskDetail()">任务详情</li>-->
+                <!--<li class="fl"  href="#" ng-click="sampleMessage()">抽样</li>-->
+                <!--<li class="fl"  href="#" ng-click="test()">检测</li>-->
+                <!--<li class="fl" style="background-color: silver;"  href="#" ng-click="routineMonitorList()">检测信息汇总</li>-->
+                <!--<li class="fl"  href="#" ng-click="routineReportUpload()">报告上传</li>-->
+            <!--</ul>-->
+<!--</div>-->
+<div class="gui-section">
+    <ul class="gui-tab" role="tablist">
+        <li role="presentation" class="pointer"><a id="newTask" role="tab" data-toggle="tab">抽样信息</a></li>
+        <li role="presentation" class="active"><a id="bePubTask" role="tab" data-toggle="tab">检测信息</a></li>
+    </ul>
+
+    <div class="col-md-10" style="margin-left: 10%">
+        <h2 id="Sup_contain_section_head_h1" class="text-center">
+            <span  >
+                 农业农村部 农产品质量安全 {{monitorClass}} 检测信息
+               </span>
+        </h2>
+        <form class="form-inline" role="form">
+            <table border="0" style="margin-left: 100px;width: 100px;height: 20%;float: left" >
+                <tr>
+                    <td rowspan="2">
+                        <div id="code1"></div>
+                    </td>
+                    <td ng-bind="">2016年例行监测--蔬菜第二次</td>
+                </tr>
+                <tr>
+                    <td ng-bind="">2016-07-31</td>
+                </tr>
+            </table>
+            <div class="form-group has-success has-feedback" style="margin-top: 30px">
+                <div>
+                   <table border="0" style="width: 100%;line-height: 100%" >
+                <tr>
+                    <td height="35px" style="width: 50%" align="left"><span>产品追溯码</span>
+                        <input class="gui-input" type="text" ng-model="productTraceabilityCode" readonly="readonly"></td>
+                   <!-- <td height="35px" rowspan="3" ><div id="code" style="margin-left: 30px"></div></td>-->
+                </tr>
+                <tr>
+                    <td height="35px" style="width: 50%" align="left"><span>样品编码</span>
+                        <input class="gui-input" type="text" ng-model="sampleCode" readonly="readonly" style="margin-left: 14px;"></td>
+                </tr>
+                <tr>
+                    <td height="35px" align="left"><span>产品编码：追溯码、产品批次码、入市追溯凭证之一</span></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="left"><span>样品编码规则:20位以内的大写字母、小写字母、数字及其组合</span></td>
+                </tr>
+            </table>
+                </div>
+            </div>
+        </form>
+            <div class="gui-form-group">
+                <div class="gui-actions">
+                <span style="font-size: large">样品名称：<input class="gui-input" ng-model="sampleName"></span>
+               <!-- <span class="gui-btn pull-right" ng-click="exportExcel()" id="export1"><i class="gui-icon icon-export"></i>导出</span>-->
+                    <span class="gui-btn" ng-click="backBtn()" id="export1" style="color: #fff;background-color: #47b995;border-color:#47b995">返回</span>
+                </div>
+            </div>
+            <table id="grid" class="gui-table" style="width: 100%">
+            </table>
+    </div>
+</div>
+
+
+<!--<script type="text/javascript">
+    $(function(){
+        $("#export").click(function(){
+            var divid="adminTable";
+            var tableid="grid";
+            toExcel(divid,tableid);
+        });
+    });
+    function toExcel(divid,tableid) {
+        if (/msie/.test(navigator.userAgent.toLowerCase()))
+        {
+            var inStr=getData(tableid);
+            var newwindow = window.open("","_blank");
+            newwindow.document.write(inStr);
+            newwindow.document.close();
+            newwindow.document.execCommand('saveas',true,'order.csv');
+            newwindow.close();
+        } else {
+            window.open('data:application/vnd.ms-excel,'
+                    + encodeURIComponent($("#"+divid).html()));
+            e.preventDefault();
+        }
+    }
+
+    function getData(inTbl)
+    {
+        var curTbl = document.getElementById(inTbl);
+        if (curTbl.rows.length > 65000) {
+            alert('源行数不能大于65000行');
+            return false;
+        }
+        if (curTbl.rows.length <= 1) {
+            alert('数据源没有数据');
+            return false;
+        }
+        var outStr = "订单编号下单时间"+"\t"+"已预订用户"+"\t"+"活动名称"+"\t"+"预订场次"+"\t";
+        outStr=outStr+"预订数量"+"\t"+"付款金额"+"\t"+"订单状态"+"\t"+"发货状态"+"\t"+"结算状态"+"\t";
+
+        $("#"+inTbl+" tr").each(function(){
+            var tdArry=$(this).children("td");
+            var tdlen=tdArry.length -1;
+            for (var j=0;j<tdlen;j++)
+            {
+                var d=tdArry.eq(j).text();
+                outStr =outStr + d + "\t";
+            }
+            outStr=outStr+"\r\n";
+        });
+
+        return outStr;
+    }
+</script>-->

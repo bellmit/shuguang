@@ -1,0 +1,81 @@
+<!-- 登录页面 -->
+<div class="container"><br/>
+    <div class="body-bg"></div>
+    <div class="login">
+        <div class="login-screen">
+            <div class="login-icon">
+                <img src="" title="Welcome to sofn" />
+                <img src="" title="Welcome to sofn" />
+                <h4>
+                    Welcome to <small>&nbsp;&nbsp;&nbsp;sofn</small>
+                </h4>
+            </div>
+            <div class="chknumber">
+
+     </div>
+
+            <form class="login-form" ng-submit="login()">
+                <div class="form-group">
+                    <input type="text" id="account" class="form-control login-field" ng-model="user.account" name="account"
+                        placeholder="Enter your account" ng-maxlength="20" autofocus="autofocus" required />
+                    <label class="login-field-icon fui-user" for="account"></label>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" class="form-control login-field" ng-model="user.password"
+                        name="password" placeholder="Password" ng-maxlength="20" required />
+                    <label class="login-field-icon fui-lock" for="password"></label>
+                </div>
+
+                <div class="form-group">
+                <button class="btn btn-primary btn-lg btn-block" id="btn-login" type="submit">Log in</button>
+                <a class="login-link" href="#">Lost your password?</a>
+                <div class="has-error center"><label class="control-label">{{msg}}</label></div>
+                <label>验证码：
+
+                <input type="text" id="kaptcha" class="form-control login-field" ng-model="user.kaptcha"
+                        name="kaptcha" placeholder="kaptcha" ng-maxlength="4" required />
+                    </label>
+                <img src="http://192.168.1.105:8040/sys-web/generatorImage" width="150" height="60" id="kaptchaImage"  style="margin-bottom: -3px"/>
+                </div>
+                <script type="text/javascript">
+var prev="";
+                function getCookie(cookie_name)
+                {
+                    var allcookies = document.cookie;
+                    var cookie_pos = allcookies.indexOf(cookie_name);   //索引的长度
+
+                    // 如果找到了索引，就代表cookie存在，
+                    // 反之，就说明不存在。
+                    if (cookie_pos != -1)
+                    {
+                    // 把cookie_pos放在值的开始，只要给值加1即可。
+                    cookie_pos += cookie_name.length + 1;      //这里容易出问题，所以请大家参考的时候自己好好研究一下
+                    var cookie_end = allcookies.indexOf(";", cookie_pos);
+
+                    if (cookie_end == -1)
+                    {
+                        cookie_end = allcookies.length;
+                    }
+
+                    var value = unescape(allcookies.substring(cookie_pos, cookie_end));         //这里就可以得到你想要的cookie的值了。。。
+                    }
+                    return value;
+                }
+
+                 $(function(){
+                    $('#kaptchaImage').click(function () {//生成验证码
+                var curr=Math.floor(Math.random()*100);
+                    $(this).hide().attr('src', 'http://192.168.1.105:8040/sys-web/getUUID?prev='+prev+'&curr='+curr ).fadeIn();
+                prev=curr;
+                })
+                //prev=curr;
+
+                  });
+
+       </script>
+            </form>
+        </div>
+    </div>
+
+</div>
+<footer class="footer" data-ng-include=" 'src/tpl/footer.html' "></footer>

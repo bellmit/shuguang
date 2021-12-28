@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.EssaycolumnMapper" >
+    <resultMap id="BaseResultMap" type="com.sofn.fdpi.model.Essaycolumn">
+        <id property="id" column="ID"/>
+        <result property="columnName" column="COLUMN_NAME"/>
+        <result property="status" column="STATUS"/>
+        <result property="createUserId" column="CREATE_USER_ID"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="updateUserId" column="UPDATE_USER_ID"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="delFlag" column="DEL_FLAG"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        COLUMN_NAME
+    </sql>
+    <select id="getcolumnName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+     from ESSAYCOLUMN
+     <where>
+         DEL_FLAG = 'N'
+         <if test="status != null and status != ''">
+           and  STATUS = #{status}
+         </if>
+     </where>
+         order by ID desc
+    </select>
+    <update id="deleteEssaycolumnInfo">
+        update ESSAYCOLUMN
+        set
+         DEL_FLAG = 'Y',
+         STATUS = #{status},
+        UPDATE_TIME = #{updateTime},
+        UPDATE_USER_ID=#{updateUserId}
+        where
+        ID=#{id}
+    </update>
+    <select id="getcolumn" resultMap="BaseResultMap">
+        select *
+        from ESSAYCOLUMN
+        <where>
+            DEL_FLAG = 'N'
+            <if test="name != null and name != ''">
+                and  COLUMN_NAME = #{name}
+            </if>
+        </where>
+        order by ID desc
+    </select>
+
+</mapper>

@@ -1,0 +1,111 @@
+#放行路径
+filter:
+  uris:
+    comm:
+      - /zuul/sys/fileManage/**
+    sys:
+      - /user/login
+      - /app/user/login
+      - /user/captcha
+      - /appPackageManage/getTheLatestVersion
+      - /user/checkUserNameExist
+      - /sysOrganization/checkOrgNameIsExits
+      - /sysRegion/getSysRegionTree
+      - /dict/getDictListByType
+      - /fileManage/**
+      - /sofn-sys-web/**
+      - /sysSubsystem/getSysSubsystemOne
+      - /sysSubsystem/getSysSubsystemOneByAppId
+      - /sysSubsystem/getSysSubsystemTree
+      - /sysInterface/getOne
+      - /sysInterface/showReqParams
+      - /user/getUserInfoByIds
+      - /user/replaceToken
+      - /sysSubsystem/getSubsystemByType/**
+      - /sysOrganization/getOrgInfoById
+      - /IntegrationUser/**
+    enp:
+      - /classify/pass/**
+      - /consult/pass/**
+      - /enpmap/pass/**
+      - /intlCultivate/pass/**
+      - /intlMeet/pass/**
+      - /intlPartner/pass/**
+      - /linkManage/pass/**
+      - /news/pass/**
+      - /picManage/pass/**
+      - /policy/pass/**
+      - /technology/pass/**
+      - /search/pass/**
+    fdsbsf:
+      - /standardDeclareListing/**                  #标准申报下拉列表所有接口
+      - /standard/listPagePublished                 #门户获取发布状态的相关标准信息
+      - /buildDeclare/insert                        #门户新增建设上报
+      - /evaluation/getById                          #门户获取标准信息库详情
+      - /evaluation/insert                          #门户新增审批上报
+      - /expert/listExpertChineseNames              #门户专家列表
+      - /expert/getById                          #门户专家详情
+      - /identi/listPublishedUnitName           #门户获取鉴定单位列表的单位名称id
+      - /identi/getById                          #门户鉴定单位详情查看
+      - /species/listPublishedSpecies               #门中获取发布物种
+      - /species/getById                         #门户物种详情查看接口
+      - /standardManage/listIdNameCreateTime     #门户中标准信息库获取审批上报通过的id名称和创建时间
+      - /standardDeclareListing/**                  #门户建设申报和审批上报页面的下拉接口
+      - /standard/getById                        #门户标准发布公告详情接口
+      - /checkCode/getByEmail                    #获取邮箱验证码
+    bigdata:
+      - /test
+      - /marshInfo/marshInfos/toHdfs
+    fdpi:
+      - /enterprise/register
+      - /enterprise/listPapersForSelect
+      - /enterprise/getPapersById
+      - /enterprise/getCompByCompName
+      - /papers/paperInfo
+      - /signboardManage/getByCode
+      - /question/save
+      - /TbArticles/get
+      - /TbArticles/list
+      - /TbArticles/count
+      - /TbArticles/listNews
+      - /TbArticles/getAllList
+      - /PictureArticle/list
+      - /PictureArticle/getInfo
+      - /PictureArticle/updateCount
+      - /PictureArticle/rotationSeeding
+      - /app/Feedback/savePublic
+    share:
+      - /shareApplyUser/captcha
+      - /shareApplyUser/register
+      - /shareApplyUser/login
+      - /shareApplyUser/sendMail
+      - /shareApplyUser/resetPassword
+      - /shareApplyUser/updatePassword
+      - /infomationPortal/infomationPageQuery
+      - /infomationPortal/showProvider
+      - /infomationResourcesType/tree
+      - /tokenVerify/user
+      - /transit/getShareData
+      - /transit/getTransitInterface
+      - /shareInterfaceManage/getOne
+      - /shareInterfaceManage/showReqParams
+    fywxg:
+      - /portal/**
+    aggsqm:
+      - /test/**
+    aeem:
+      - /monitorOperation/getMonitorOperationList
+    bmw:
+      - /baseInfo/getBaseInfoList
+      - /baseInfo/get
+      - /historyRecord/**
+      - /newMmg/getList
+      - /newMmg/getOne/**
+      - /th/getTsForBase/**
+      - /baseInfo/select
+      - /th/getList
+    ducss:
+      - /callback/callbackSave
+
+
+

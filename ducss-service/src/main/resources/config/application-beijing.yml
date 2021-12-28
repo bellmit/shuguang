@@ -1,0 +1,57 @@
+spring:
+  datasource:
+    driver-class-name: com.uxsino.uxdb.Driver
+    url: jdbc:uxdb://10.10.45.236:5432/ducss_test?stringtype=unspecified
+    username: uxdb
+    #    password: uxdb
+    password: Sofn!@#236
+
+    druid:
+      async-init: true
+      initial-size: 5
+      max-active: 64
+      min-idle: 5
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      timeBetweenEvictionRunsMillis: 5000
+      minEvictableIdleTimeMillis: 60000
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      validation-query: SELECT 1
+      filter:
+        config:
+          enabled: true
+        stat:
+          log-slow-sql: true
+          slow-sql-millis: 2000
+          merge-sql: true
+      keep-alive: true
+      remove-abandoned: true
+      remove-abandoned-timeout: 180
+      keep-alive-between-time-millis: 6000
+      log-abandoned: true
+
+  redis:
+    database: 0
+    host: 10.10.45.235
+    port: 6379
+    password: Sofn!@#236
+
+eureka:
+  instance:
+    hostname: ${spring.cloud.client.ip-address}
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8880/eureka/
+
+feign:
+  client:
+    config:
+      remote-service:
+        connectTimeout: 30000
+        readTimeout: 120000
+
+

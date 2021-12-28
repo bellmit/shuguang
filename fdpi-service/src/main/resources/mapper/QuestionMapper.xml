@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.QuestionMapper">
+    <resultMap id="BaseResult" type="com.sofn.fdpi.model.Question">
+        <id property="id" column="ID"/>
+        <result property="quePerson" column="QUE_PERSON"/>
+        <result property="queEmail" column="QUE_EMAIL"/>
+        <result property="queDate" column="QUE_DATE"/>
+        <result property="queDesc" column="QUE_DESC"/>
+        <result property="queAdjunct" column="QUE_ADJUNCT"/>
+        <result property="queFileName" column="QUE_FILE_NAME"/>
+        <result property="answer" column="ANSWER"/>
+        <result property="anPerson" column="AN_PERSON"/>
+        <result property="anDate" column="AN_DATE"/>
+        <result property="anAdjunct" column="AN_ADJUNCT"/>
+        <result property="anFileName" column="AN_FILE_NAME"/>
+        <result property="queStatus" column="QUE_STATUS"/>
+        <result property="qFrom" column="Q_FROM"/>
+        <result property="delFlag" column="DEL_FLAG"/>
+    </resultMap>
+    <sql id="Base_List">
+ID,QUE_PERSON,QUE_EMAIL,QUE_DATE,QUE_DESC,QUE_ADJUNCT,ANSWER,AN_PERSON,
+AN_DATE,AN_ADJUNCT,QUE_STATUS </sql>
+    <select id="getQuestionList" resultType="com.sofn.fdpi.model.Question">
+    select
+        *
+    from QUESTION
+<where>
+    DEL_FLAG = 'N'
+    <if test="queStatus != null and queStatus != ''">
+        and QUE_STATUS = #{queStatus}
+    </if>
+    <if test="compId != null and compId != ''">
+        and COMP_ID = #{compId}
+    </if>
+    <if test="orgId != null and orgId != ''">
+        and (DIRECLY_ID = #{orgId} OR Q_FROM='0')
+    </if>
+    <if test="provinceId != null and provinceId != ''">
+        and (PROVINCE_ID = #{provinceId} OR Q_FROM='0')
+    </if>
+    <if test="startTime!=null">
+        and QUE_DATE &gt;= to_timestamp(#{startTime},'yyyy-MM-dd HH24:MI:SS')
+    </if>
+    <if test="endTime!=null">
+        and QUE_DATE  &lt;= to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+    </if>
+</where>
+        order by QUE_DATE desc
+    </select>
+    <update id="answerQuestion">
+    update QUESTION
+        <set>
+            <if test="answer != null and answer!= ''">
+                ANSWER =#{answer},
+            </if>
+            <if test="anPerson != null and anPerson != ''">
+                AN_PERSON  =#{anPerson},
+            </if>
+
+            <if test="anDate != null ">
+                AN_DATE=#{anDate},
+            </if>
+            <if test="fileId != null and fileId!=''">
+                AN_ADJUNCT  =#{fileId},
+            </if>
+            <if test="anFileName != null and anFileName!=''">
+                AN_FILE_NAME  =#{anFileName},
+            </if>
+
+                QUE_STATUS =1,
+        </set>
+        where ID=#{id}
+    </update>
+</mapper>

@@ -1,0 +1,7 @@
+table tr td{
+    padding: 5px 0px ;
+    line-height: 30px;
+}
+.Istable tr td input{
+    margin-right: 0px;
+}

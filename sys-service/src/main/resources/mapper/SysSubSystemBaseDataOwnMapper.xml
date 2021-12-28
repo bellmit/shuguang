@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysSubSystemBaseDataOwnMapper" >
+    <resultMap id="customResultMap" type="com.sofn.sys.model.SysSubSystemBaseDataOwn">
+        <result column="ID" property="id"></result>
+        <result column="BASE_DATA_TYPE_ID" property="baseDataTypeId"></result>
+        <result column="BASE_DATA_ID" property="baseDataId"></result>
+        <result column="APP_ID" property="appId"></result>
+    </resultMap>
+
+    <delete id="deleteByBaseDataIds" parameterType="java.util.List">
+        DELETE FROM SYS_SUBSYSTEM_BASEDATA_OWN where ID in
+        <foreach collection="baseDataIds" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="batchSave" parameterType="java.util.List">
+        insert into SYS_SUBSYSTEM_BASEDATA_OWN (
+        ID,
+        APP_ID,
+        BASE_DATA_TYPE_ID,
+        BASE_DATA_ID
+        )VALUES
+        <foreach collection="sysSubSystemBaseDataOwns" item="own" separator=",">
+            (#{own.id},#{own.appId},#{own.baseDataTypeId},#{own.baseDataId})
+        </foreach>
+
+    </insert>
+
+</mapper>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ahhrm.mapper.BaseinfoMapper">
+
+    <sql id="base_Column_List">
+      id, point_name, province, city, county, longitude, latitude, type, tel, email, status, monitor, monitoring_time
+    </sql>
+    <sql id="alias_Column_List_b">
+      b.id, b.point_name, b.province_name, b.province, b.city, b.city_name, b.county, b.county_name,
+      b.longitude, b.latitude, b.type, b.tel, b.email, b.status, b.monitor, b.monitoring_time
+    </sql>
+
+    <select id="listByParams" parameterType="java.util.Map" resultType="com.sofn.ahhrm.model.Baseinfo">
+        select
+        <include refid="alias_Column_List_b"/>
+        from baseinfo b
+        <where>
+            b.del_flag = 'N'
+            <if test="pointName != null and pointName != ''">
+                and b.point_name like '%'||#{pointName}||'%'
+            </if>
+            <if test="type != null and type != ''">
+                and b.type = #{type}
+            </if>
+            <if test="year != null and year != ''">
+                and to_char(b.monitoring_time,'YYYY') = #{year}
+            </if>
+            <if test="status != null and status != ''">
+                and b.status = #{status}
+            </if>
+            <if test="province != null and province != ''">
+                and b.province = #{province}
+            </if>
+            <if test="city != null and city != ''">
+                and b.city = #{city}
+            </if>
+            <if test="county != null and county != ''">
+                and b.county = #{county}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND b.monitoring_time &lt;= #{endTime}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                AND b.monitoring_time &gt;= #{startTime}
+            </if>
+            <if test="createUserId != null and createUserId != ''">
+                and b.create_user_id = #{createUserId}
+            </if>
+            <choose>
+                <!--市级审核权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.ahhrm.constants.Constants@REGION_TYPE_CITY">
+                    and STATUS > '1'
+                </when>
+                <!--省级审核权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.ahhrm.constants.Constants@REGION_TYPE_PROVINCE">
+                    and STATUS > '3'
+                </when>
+                <!--总站审核权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.ahhrm.constants.Constants@REGION_TYPE_MINISTRY">
+                    and STATUS > '5'
+                </when>
+            </choose>
+        </where>
+        order by b.monitoring_time desc
+    </select>
+
+    <select id="getYears" parameterType="java.util.Map" resultType="String">
+        select distinct to_char(monitoring_time,'YYYY') as mt from baseinfo
+        <where>
+            del_flag = 'N'
+            <if test="createUserId != null and createUserId != ''">
+                and create_user_id = #{createUserId}
+            </if>
+            <if test="province != null and province != ''">
+                and province = #{province}
+            </if>
+            <if test="city != null and city != ''">
+                and city = #{city}
+            </if>
+            <if test="county != null and county != ''">
+                and county = #{county}
+            </if>
+        </where>
+        order by mt desc
+    </select>
+    <select id="getPointNames" parameterType="java.util.Map" resultType="String">
+        select distinct point_name from baseinfo
+        <where>
+            del_flag = 'N'
+            <if test="createUserId != null and createUserId != ''">
+                and create_user_id = #{createUserId}
+            </if>
+            <if test="province != null and province != ''">
+                and province = #{province}
+            </if>
+            <if test="city != null and city != ''">
+                and city = #{city}
+            </if>
+            <if test="county != null and county != ''">
+                and county = #{county}
+            </if>
+        </where>
+        order by point_name
+    </select>
+
+</mapper>

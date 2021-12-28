@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.dao.dgap.TDgapTransExpandMapper">
+
+    <select id="getMetaID" parameterType="java.lang.String" resultType="com.sofn.model.generator.TDgapTrans">
+     select TR.* from T_DGAP_TRANS TR where TR.FLAG ='N'  AND TR.RESOURCE_ID =#{resourceId,jdbcType=VARCHAR} AND TR.TRANSNAME=#{transName,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getByTransNameAndResourceId" resultType="com.sofn.model.generator.TDgapTrans">
+        select TR.* from T_DGAP_TRANS TR WHERE 1=1 AND TR.FLAG ='N'
+        <if test="transName !=null and transName!=''">
+            AND TR.TRANSNAME LIKE '%' || #{transName,jdbcType=VARCHAR} || '%'
+        </if>
+        <if test="resourceId !=null and resourceId!=''">
+            AND TR.RESOURCE_ID LIKE '%' || #{resourceId,jdbcType=VARCHAR} || '%'
+        </if>
+    </select>
+    <select id="getByScheduleStatus" resultType="com.sofn.model.generator.TDgapTrans">
+        SELECT TR.DISPATCHERORNOT,TR.TRANSNAME,TR.RESOURCE_ID FROM  T_DGAP_TRANS TR WHERE TR.DISPATCHERORNOT ='Y' AND TR.FLAG='N'
+    </select>
+
+    <select id="getByTransName" parameterType="java.lang.String" resultType="com.sofn.model.generator.TDgapTrans">
+         select TR.* from T_DGAP_TRANS TR where TR.TRANSNAME  LIKE '%' || #{name,jdbcType=VARCHAR} || '%'
+    </select>
+
+    <select id="getByResourceId" resultType="com.sofn.model.generator.TDgapTrans">
+        select TR.* from T_DGAP_TRANS TR where TR.RESOURCE_ID= #{resourceId,jdbcType=VARCHAR} AND TR.FLAG='N'
+    </select>
+
+    <select id="getAllByResourceId" resultType="com.sofn.model.generator.TDgapTrans">
+        select TR.* from T_DGAP_TRANS TR where TR.RESOURCE_ID= #{resourceId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getAllResourceId" resultType="string">
+        select TR.RESOURCE_ID from T_DGAP_TRANS TR
+    </select>
+
+    <select id="getAllTrans" resultType="com.sofn.model.generator.TDgapTrans">
+         select TR.RESOURCE_ID,TR.TRANSNAME from T_DGAP_TRANS TR WHERE TR.FLAG='N'
+    </select>
+</mapper>

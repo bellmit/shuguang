@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agpjyz.mapper.MonitoringWarningMapper">
+<resultMap id="rs1" type="com.sofn.agpjyz.model.MonitoringWarning">
+    <id property="id" column="ID"/>
+    <result property="testType" column="TEST_TYPE"/>
+    <result property="plantId" column="PLANT_ID"/>
+    <result property="plantValue" column="PLANT_VALUE"/>
+    <result property="protectId" column="PROTECT_ID"/>
+    <result property="protectValue" column="PROTECT_VALUE"/>
+    <result property="email" column="EMAIL"/>
+    <result property="indexId" column="INDEX_ID"></result>
+    <result property="indexValue" column="INDEX_VALUE" ></result>
+    <collection property="thresholdList" ofType="com.sofn.agpjyz.model.Threshold">
+        <id column="exID" property="id"></id>
+        <result column="CASE1" property="case1"></result>
+        <result column="CASE1_VALUE" property="case1Value"></result>
+        <result column="CASE2" property="case2"></result>
+        <result column="CASE2_VALUE" property="case2Value"></result>
+        <result column="RISK_LEVEL" property="riskLevel"></result>
+        <result column="COLOR_MARK" property="colorMark"></result>
+        <result column="WARNING_ID" property="warningId"></result>
+    </collection>
+</resultMap>
+    <sql id="sq2">
+        b.ID as exID,b.CASE1,b.CASE1_VALUE,b.CASE2,b.CASE2_VALUE,b.RISK_LEVEL,b.COLOR_MARK,b.WARNING_ID
+    </sql>
+    <sql id="sq1">
+        a.ID,a.TEST_TYPE,a.PLANT_ID,a.PLANT_VALUE,a.PROTECT_ID,a.PROTECT_VALUE,a.EMAIL,a.INDEX_ID,a.INDEX_VALUE
+    </sql>
+    <select id="listByParams" parameterType="java.util.Map" resultMap="rs1">
+        select
+        <include refid="sq1"/>, <include refid="sq2"/>
+        from MONITORING_WARNING a left join   THRESHOLD b on    a.ID=b.WARNING_ID
+        <where>
+
+            <if test="protectId != null and protectId != ''">
+                and a.PROTECT_ID = #{protectId}
+            </if>
+            <if test="plantId != null and plantId != ''">
+                and a.PLANT_ID = #{plantId}
+            </if>
+            <if test="indexId != null and indexId != ''">
+                and a.INDEX_ID = #{indexId}
+            </if>
+        </where>
+    </select>
+       <select id="listByParamsTwo" parameterType="java.util.Map" resultMap="rs1">
+        select
+        <include refid="sq1"/>
+        from MONITORING_WARNING a
+        where a.PROTECT_ID = #{protectId}
+
+                and a.PLANT_ID = #{plantId}
+
+                and a.INDEX_ID = #{indexId}
+
+                and a.TEST_TYPE = #{testType}
+    </select>
+    <select id="listByParamsThree" parameterType="java.util.Map" resultMap="rs1">
+        select
+        <include refid="sq1"/>
+        from MONITORING_WARNING a
+        where a.PROTECT_ID = #{protectId}
+
+        and a.PLANT_ID = #{plantId}
+
+        and a.INDEX_ID = #{indexId}
+
+        and a.TEST_TYPE = #{testType}
+        and a.ID!=#{id}
+    </select>
+    <select id="list" parameterType="java.util.Map" resultMap="rs1">
+        select
+        <include refid="sq1"/>, <include refid="sq2"/>
+        from MONITORING_WARNING a left join   THRESHOLD b on    a.ID=b.WARNING_ID
+        where a.PROTECT_ID = #{protectId}
+
+        and a.PLANT_ID = #{plantId}
+
+        and a.INDEX_ID = #{indexId}
+
+        and a.TEST_TYPE = #{testType}
+    </select>
+
+</mapper>

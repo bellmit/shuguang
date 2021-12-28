@@ -1,0 +1,116 @@
+.Sup_contain_section_contain p{
+    margin-top: 10px;
+}
+/*�޸ı��*/
+
+.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+    position: relative;
+    min-height: 1px;
+     padding-right: 0px;
+     padding-left: 0px;
+}
+/*隐藏文件上传预览窗口*/
+#fileUpload .file-preview{
+    display: none;
+}
+select.input-sm {
+    height: 20px;
+    line-height: 20px;
+}
+.gui-table thead tr th {
+    background-color: #f6f6f6;
+    border-bottom: none;
+    font-weight: 700;
+    text-align: left;
+}
+.alesTable tr td{
+    width: 40%;
+    padding: 5px 0px;
+    line-height: 30px;
+}
+.alesTable tr td{
+    text-align: left;
+}
+.alesTable tr td:nth-of-type(2){
+    padding-left: 30px;
+}
+.alesTable tr td span:nth-of-type(1){
+    display: inline-block;
+    text-align: left;
+}
+/*修改密码*/
+#changePwdForm ul li:after{
+    clear: both;
+    overflow: hidden;
+    content: "";
+    font-size: 0px;
+    width: 0px;
+    display: block;
+}
+#changePwdForm ul li{
+    line-height: 30px;
+    padding: 5px 50px;
+}
+/*ApplyTable*/
+.ApplyTable tbody tr td {
+    width: 30%;
+    border: 1px solid #e3e3e3;
+    padding: 8px 5px;
+    text-align: left;
+}
+.produceAddUl li ul:after{
+    clear: both;
+    display: table;
+    content: "";
+    font-size: 0px;
+    height: 0px;
+}
+.produceAddUl li{
+    overflow: hidden;
+}
+/*.produceAddUl li ul li:nth-of-type(1){
+    width: 30%;
+    padding-left: 10%;
+    line-height: 30px;
+}*//*修改委托检测-新增界面-布局Css样式 2018年4月16日15:20:45*/
+.produceAddUl li ul li:nth-of-type(1){
+    width: 30%;
+    padding-left: 10%;
+    line-height: 30px;
+    text-align: -webkit-right;
+}
+.produceAddUl li ul li:nth-of-type(2){
+    width: 50%;
+    margin-left: 20px;
+}
+.produceAddUl li ul li input{
+    width: 100%;
+}
+.ApplyTable tbody tr td {
+    width: 40%;
+    border: 1px solid #e3e3e3;
+    padding: 8px 5px;
+    text-align: left;
+}
+.ApplyTable tbody tr td:nth-of-type(1){
+    width: 20%;
+}
+.tab-Report>tbody>tr>td{
+    border-color: white;
+}
+@media (min-width: 1366px) {
+    .mediaInline{
+        display: inline-block;
+        float: left;
+        margin-top: 0px;
+    }
+    .mediaInline:after{
+        content: "";
+        display: table;
+        overflow: hidden;
+        clear: both;
+    }
+}
+.removeBor .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td,.table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td{
+    border:none;
+}

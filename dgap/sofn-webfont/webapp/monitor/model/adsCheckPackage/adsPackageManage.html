@@ -1,0 +1,207 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+<div class="gui-breadcrumbs">
+    <a href="">监测系统</a>&gt;
+    <a href="">监测模型</a>&gt;
+    <span>检测项包配置</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group clearfix">
+        <input type="text"id="packageNames" name="packageName" class="gui-input" placeholder="请输入检测包名称"   ng-keyup="enterEvent($event)"/>
+        <select id="industry_name" name="industry" class="gui-select">
+            <option value="">请选择行业</option>
+            <option ng-repeat="x in IndustryType">{{x.dictName}}</option>
+        </select>
+        <span class="gui-btn" id="seachTask">查询</span>
+    </div>
+    <div class="gui-actions">
+        <span class="gui-btn fr" ng-if="disabled" style="background-color: grey"><i class="gui-icon icon-remove"></i>删除</span>
+        <span class="gui-btn fr" ng-if="!disabled" onclick="delCheckPackage()"><i class="gui-icon icon-remove"></i>删除</span>
+        <span class="gui-btn fr mr15" ng-if="disabled" style="background-color: grey"><i class="gui-icon icon-add"></i>新增</span>
+        <span class="gui-btn fr mr15" ng-if="!disabled" ng-click="addCheckPackage()" ><i class="gui-icon icon-add"></i>新增</span>
+    </div>
+    <div class="clearfix gov-h">
+        <table id="grid" class="gui-table" >
+        </table>
+    </div>
+</div>
+
+
+<!-- 编辑检测包模态框 -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content" style="min-width: 700px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: left">修改检测包</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="editCheckPackage" data-bv-excluded>
+                    <input type="hidden" id="packageId" name="packageId" value="{{packageId}}" />
+                    <div class="form-group line-20">
+                        <p></p>
+                        <label class="col-sm-4 control-task text-right">检测包名称:&nbsp&nbsp</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input type="text" id="packageName" name="packageName" ng-model="packageNameu" class="form-control  text-height-28"
+                                       data-bv-notempty="true"
+                                       data-bv-notempty-message="内容不能是空"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">适用行业:&nbsp&nbsp</label>
+                        <div class="col-sm-3">
+                            <select  id="industry" name="industry" ng-model="industryu" class="form-control">
+                                <option >{{industryu}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">检测项:&nbsp&nbsp</label>
+                        <div class="col-sm-5">
+                            <div class="input-group">
+                                <textarea id="checkItems" name="checkItems" ng-model="checkItemsu" ng-click="selectCheckItems()" rows="5" cols="500" class="form-control  text-height-28"
+                                       data-bv-notempty="true"
+                                       data-bv-notempty-message="内容不能是空"/>
+                            </div>
+                            <input type="hidden" id="checkId" >
+                            总计：&nbsp;&nbsp;{{countu}} 项
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" type="button" data-dismiss="modal">取消</span>
+                <span class="gui-btn" type="button" ng-click="updatePackage()">保存</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 显示检测包模态框 -->
+<div class="modal fade" id="showModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content" style="min-width: 700px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: left">查看详情</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="showCheckPackage" data-bv-excluded>
+                    <div class="form-group line-20">
+                        <p></p>
+                        <label class="col-sm-4 control-task text-right">检测包名称:&nbsp&nbsp</label>
+                        <div class="col-sm-3">
+                            {{packageName}}
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">适用行业:&nbsp&nbsp</label>
+                        <div class="col-sm-3">
+                            {{industry}}
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">检测项:&nbsp&nbsp</label>
+                        <div class="col-sm-5">
+                            {{checkItems}}
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">总计:&nbsp&nbsp</label>
+                        <div class="col-sm-3">
+                            {{count}} 项
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" type="button" data-dismiss="modal">关闭</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 新增检测包模态框 -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content" style="min-width: 700px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: left">新增检测包</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="addCheckPackage" data-bv-excluded>
+                    <div class="form-group line-20">
+                        <p></p>
+                        <label class="col-sm-4 control-task text-right">检测包名称:&nbsp&nbsp</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input type="text" id="packageName2" name="packageName" class="form-control  text-height-28"
+                                       data-bv-notempty="true"
+                                       data-bv-notempty-message="内容不能是空"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">适用行业:&nbsp&nbsp</label>
+                        <div class="col-sm-3">
+                            <select ng-model="selectedIndustry" onchange="changeIndustry()" id="industry2" name="industry" class="form-control text-height-28" data-bv-notempty="true" data-bv-notempty-message="内容不能是空">
+                                <option ng-repeat="x in IndustryType">{{x.dictName}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">检测项:&nbsp&nbsp</label>
+                        <div class="col-sm-5">
+                            <div class="input-group">
+                                <textarea id="checkItems2" name="checkItems" ng-click="selectCheckItems()" rows="5" cols="500" class="form-control  text-height-28"
+                                          data-bv-notempty="true"
+                                          data-bv-notempty-message="内容不能是空"/>
+                            </div>
+                            <input type="hidden" id="checkId2" >
+                            总计：&nbsp;&nbsp;{{count1}} 项
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" type="button" data-dismiss="modal">取消</span>
+                <span class="gui-btn" type="button" ng-click="addCheckPackageModel()">保存</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 选择检测项模态框 -->
+<div class="modal fade" id="selectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content" style="min-width: 700px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: left">选择检测项</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="selectCheckItems" data-bv-excluded>
+                    <div class="form-group" style="margin-left: 10px;">
+                            <input type="text"id="checkNames" name="checkNames" class="gui-input" placeholder="请输入检测项目名称" >
+                            <span class="gui-btn" id="seachTask1">查询</span>
+                    </div>
+                    <div class="modal-body" style="min-height: 100px;">
+                        <table id="itemGrid" class="gui-table table table-striped table-hover data-table">
+                        </table>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" type="button" data-dismiss="modal">取消</span>
+                <!--<span class="gui-btn" type="button" ng-click="add()">添加</span>-->
+                <span class="gui-btn" type="button" ng-click="addCheckItemsMapping()">确定</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

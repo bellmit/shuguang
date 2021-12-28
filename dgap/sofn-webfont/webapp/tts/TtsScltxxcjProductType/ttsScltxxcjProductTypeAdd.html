@@ -1,0 +1,39 @@
+<div class="gui-breadcrumbs">
+    <a href="">追溯系统</a>&gt;
+    <a href="">内部管理</a>&gt;
+    <a href="">产品品种管理管理</a>&gt;
+    <span>新增</span>
+</div>
+<div class="gui-section">
+    <div class="ovh">
+        <ul class="gui-list">
+            <li>
+                <div class="form-item">
+                    <span class="title">品种名称<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjProductType.name" name="name" placeholder="请输入品种名称" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">品种状态<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjProductType.status" name="status" placeholder="请输入品种状态" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <input type="hidden" ng-model="ttsScltxxcjProductType.delFlag" name="delFlag" value="N">
+                </div>
+            </li>
+            <li>
+                <div class="text-center">
+                    <button class="gui-btn" ui-sref="index.content.tts/ttsScltxxcjProductType/TtsScltxxcjProductTypelist">取消</button>
+                    <button class="gui-btn" ng-disabled="myform.JGname.$dirty&&myform.JGname.$invalid" ng-click="addTtsScltxxcjProductType()">提交</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <table id="grid" class="gui-table">
+        </table>
+    </div>
+</div>

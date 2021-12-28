@@ -1,0 +1,135 @@
+<div class="gui-breadcrumbs">
+    <a href="">追溯系统</a>&gt;
+    <a href="">内部管理</a>&gt;
+    <a href="">生产管理管理</a>&gt;
+    <span>查看</span>
+</div>
+<div class="gui-section">
+    <div class="ovh">
+        <ul class="gui-list mt15">
+            <li>
+                <div class="form-item"><span class="title">当前状态</span>
+                    <input ng-model="status" readonly="readonly" type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">单据状态</span>
+                    <input ng-model="billStratrus" readonly="readonly" type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">IP地址</span>
+                    <input ng-model="ip" readonly="readonly" type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">主体身份码</span>
+                    <input ng-model="entityIdcode" readonly="readonly" type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">内部追溯标识</span>
+                    <input ng-model="productInnerKey" readonly="readonly" type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">质检结论</span>
+                    <input ng-model="mediResult" readonly="readonly" type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">产品来源</span>
+                    <input ng-model="productSource" readonly="readonly" type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">收获基地id</span>
+                    <input ng-model="harvestBaseid" readonly="readonly" type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">收获基地名称</span>
+                    <input ng-model="harvestBasename" readonly="readonly" type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">产品名称</span>
+                    <input ng-model="productName" readonly="readonly" type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">产品编号</span>
+                    <input ng-model="productId" readonly="readonly" type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">产品分类</span>
+                    <input ng-model="productSort" readonly="readonly" type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">主体用户码</span>
+                    <input ng-model="userIdcode" readonly="readonly" type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">所属行业</span>
+                    <input ng-model="productIndustry" readonly="readonly" type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">收获数量</span>
+                    <input ng-model="productAmount" readonly="readonly" type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">库存数量</span>
+                    <input ng-model="storeCount" readonly="readonly" type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">冻结数量</span>
+                    <input ng-model="freezeCount" readonly="readonly" type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">收获单位</span>
+                    <input ng-model="harvestUnit" readonly="readonly" type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">收获时间</span>
+                    <input ng-model="harvestTime" readonly="readonly" type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">产品批次</span>
+                    <input ng-model="productPc" readonly="readonly" type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">质检情况</span>
+                    <input ng-model="mediCheck" readonly="readonly" type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">质检照片名称</span>
+                    <input ng-model="checkImagename" readonly="readonly" type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">质检照片路径</span>
+                    <input ng-model="checkImagepath" readonly="readonly" type="text" class="gui-input">
+                </div>
+            </li>
+            <li class="text-center">
+                <button class="gui-btn" ng-click="removeLocalStorage()" ui-sref="index.content.tts/slaughterScgl/slaughterScglList">关闭</button>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <table id="grid" class="gui-table">
+        </table>
+    </div>
+</div>
+

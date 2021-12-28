@@ -1,0 +1,22 @@
+<link rel="stylesheet" href="assets/css/tts/base/baseInfoList.css">
+<div class="gui-breadcrumbs">
+    <a href="">内部管理</a>&gt;
+    <span>账号信息管理</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group">
+        <input id="beginDate" readonly="readonly" class="gui-input Wdate" type="text" onfocus="var endDate=$dp.$('lessDate');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'lessDate\')}'})">
+            <span style="padding-bottom: 20px;">至</span>
+            <input id="lessDate" class="gui-input Wdate" readonly="readonly" type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'beginDate\')}'})">
+            <!--<input type="text" onchange="changeDate(this)" name="createTimeStart" readonly="readonly" placeholder="点击选择开始日期"  onclick="SelectDate(this)"/>
+                <input type="text" onchange="changeDate(this)" name="createTimeEnd" readonly="readonly"placeholder="点击选择结束日期"  onclick="SelectDate(this)"/>-->
+            <input class="gui-input" name="keyWord" type="text" placeholder="输入姓名或账号关键字">
+            <button class="gui-btn" id="ToCheck">查询</button>
+            
+    </div><div class="gui-actions"><button class="gui-btn fr" ui-sref="index.content.tts/register/ttsScltxxcjUserAdd"><i class="gui-icon icon-add"></i>新增</button></div>
+    <div>
+        <table id="grid" class="gui-table">
+        </table>
+    </div>
+</div>
+

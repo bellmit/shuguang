@@ -1,0 +1,420 @@
+<link rel="stylesheet" href="assets/css/ales/ales.css" />
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">查询系统</a>&gt;
+    <a ui-sref="index.content.qry/subject/qrySubjSvList">主体信息查询</a>&gt;
+    <a ui-sref="index.content.qry/subject/qrySubjDtList">检测机构主体</a>&gt;
+    <span>查看</span>
+    <button
+        class="gui-btn fr mr15"
+        ng-click="callBack()"
+        style="margin-top: 4px;"
+    >
+        关闭
+    </button>
+</div>
+<style></style>
+
+    <div class="gui-section">
+        <div
+            style="border-bottom: 1px solid #9d9d9d;line-height: 30px;padding-bottom: 5px"
+            class="clearfix gov-h"
+        >
+            注册信息
+        </div>
+        <div
+            class="table-responsive"
+            style="margin-top:20px;text-align:center;"
+        >
+            <table class="gui-table" style="margin:auto;text-align: left">
+                <tr>
+                    <td width="8%">机构名称：</td>
+                    <td width="42%"><span ng-bind="subjDt.dtName"></span></td>
+                    <td width="8%">机构代码：</td>
+
+                    <td width="42%"><span ng-bind="subjDt.dtCode"></span></td>
+                </tr>
+                <tr>
+                    <td>机构类别：</td>
+                    <td><span ng-bind="subjDt.dtType"></span></td>
+                    <td>机构性质：</td>
+                    <td><span ng-bind="subjDt.dtNature"></span></td>
+                </tr>
+                <tr>
+                    <td>资质：</td>
+                    <td><span ng-bind="subjDt.dtQualifications"></span></td>
+                    <td>依托单位：</td>
+                    <td><span ng-bind="subjDt.dtRelyOnUnit"></span></td>
+                </tr>
+                <tr>
+                    <td>机构级别：</td>
+                    <td><span ng-bind="subjDt.dtLevel"></span></td>
+                    <td>所属区域：</td>
+                    <td><span ng-bind="subjDt.dtArea"></span></td>
+                </tr>
+                <tr>
+                    <td>通讯地址：</td>
+                    <td><span ng-bind="subjDt.dtAddress"></span></td>
+                    <td>法人：</td>
+                    <td><span ng-bind="subjDt.dtLegalMan"></span></td>
+                </tr>
+                <tr>
+                    <td>负责人：</td>
+                    <td><span ng-bind="subjDt.dtLeader"></span></td>
+                    <td>负责人电话：</td>
+                    <td><span ng-bind="subjDt.dtLeaderPhone"></span></td>
+                </tr>
+                <tr>
+                    <td>联系人：</td>
+                    <td><span ng-bind="subjDt.dtContact"></span></td>
+                    <td>联系人电话：</td>
+
+                    <td><span ng-bind="subjDt.dtContactPhone"></span></td>
+                </tr>
+                <tr>
+                    <td>联系人QQ：</td>
+                    <td><span ng-bind="subjDt.dtContactQQ"></span></td>
+                    <td>电子邮箱：</td>
+                    <td><span ng-bind="subjDt.dtContactEmail"></span></td>
+                </tr>
+                <tr>
+                    <td>邮编：</td>
+                    <td><span ng-bind="subjDt.dtPostcode"></span></td>
+                    <td>技术负责人：</td>
+                    <td><span ng-bind="subjDt.dtTechnicalDirector"></span></td>
+                </tr>
+                <tr>
+                    <td>质量负责人：</td>
+                    <td><span ng-bind="subjDt.dtQualityDirector"></span></td>
+                    <td>参数：</td>
+                    <td><span ng-bind="subjDt.dtParameter"></span></td>
+                </tr>
+                <tr>
+                    <td>产品范围：</td>
+                    <td><span ng-bind="subjDt.dtProductRange"></span></td>
+                </tr>
+            </table>
+        </div>
+        <div class="mt15" style="border-bottom: 1px solid #9d9d9d">
+            机构变更历史
+        </div>
+        <table id="grid" class="gui-table mt15" style="width: 100%;"></table>
+    </div>
+
+
+<!-- 模态框（Modal）添加 -->
+<div
+    class="modal fade "
+    id="changeModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myModalLabel"
+    aria-hidden="true"
+>
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-hidden="true"
+                >
+                    &times;
+                </button>
+                <h3 class="modal-title" id="change">机构变更详情</h3>
+            </div>
+            <div class="modal-body">
+                <div class="gui-section gui-section-wid">
+                    <table class="ApplyTable" style="margin:auto;">
+                        <tr style="font-weight: 700">
+                            <td>主体信息</td>
+                            <td>变更前</td>
+                            <td>变更后</td>
+                        </tr>
+                        <tr>
+                            <td>机构名称</td>
+                            <td>
+                                <span ng-bind="before.dtName"></span>
+                                <img
+                                    class="pull-right"
+                                    ng-show="before.dtName!=after.dtName"
+                                    src="../assets/imgs/common/arrow.png"
+                                />
+                            </td>
+                            <td><span ng-bind="after.dtName"></span></td>
+                        </tr>
+                        <tr>
+                            <td>机构代码</td>
+                            <td>
+                                <span ng-bind="before.dtCode"></span>
+                                <img
+                                    class="pull-right"
+                                    ng-show="before.dtCode!=after.dtCode"
+                                    src="../assets/imgs/common/arrow.png"
+                                />
+                            </td>
+                            <td><span ng-bind="after.dtCode"></span></td>
+                        </tr>
+                        <tr>
+                            <td>机构类别</td>
+                            <td>
+                                <span ng-bind="before.dtType"></span>
+                                <img
+                                    class="pull-right"
+                                    ng-show="before.dtType!=after.dtType"
+                                    src="../assets/imgs/common/arrow.png"
+                                />
+                            </td>
+                            <td><span ng-bind="after.dtType"></span></td>
+                        </tr>
+                        <tr>
+                            <td>机构性质</td>
+                            <td>
+                                <span ng-bind="before.dtNature"></span>
+                                <img
+                                    class="pull-right"
+                                    ng-show="before.dtNature!=after.dtNature"
+                                    src="../assets/imgs/common/arrow.png"
+                                />
+                            </td>
+                            <td><span ng-bind="after.dtNature"></span></td>
+                        </tr>
+                        <tr>
+                            <td>资质</td>
+                            <td>
+                                <span ng-bind="before.dtRelyOnUnit"></span>
+                                <img
+                                    class="pull-right"
+                                    ng-show="before.dtRelyOnUnit!=after.dtRelyOnUnit"
+                                    src="../assets/imgs/common/arrow.png"
+                                />
+                            </td>
+                            <td><span ng-bind="after.dtRelyOnUnit"></span></td>
+                        </tr>
+                        <tr>
+                            <td>依托单位</td>
+                            <td>
+                                <span ng-bind="before.dtQualifications"></span>
+                                <img
+                                    class="pull-right"
+                                    ng-show="before.dtQualifications!=after.dtQualifications"
+                                    src="../assets/imgs/common/arrow.png"
+                                />
+                            </td>
+                            <td>
+                                <span ng-bind="after.dtQualifications"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>机构级别</td>
+                            <td>
+                                <span ng-bind="before.dtLevelName"></span>
+                                <img
+                                    class="pull-right"
+                                    ng-show="before.dtLevelName!=after.dtLevelName"
+                                    src="../assets/imgs/common/arrow.png"
+                                />
+                            </td>
+                            <td><span ng-bind="after.dtLevelName"></span></td>
+                        </tr>
+                        <tr>
+                            <td>所属区域</td>
+                            <td>
+                                <span ng-bind="before.dtAreaId"></span>
+                                <img
+                                    class="pull-right"
+                                    ng-show="before.dtAreaId!=after.dtAreaId"
+                                    src="../assets/imgs/common/arrow.png"
+                                />
+                            </td>
+                            <td><span ng-bind="after.dtAreaId"></span></td>
+                        </tr>
+                        <tr>
+                            <td>法人</td>
+                            <td>
+                                <span ng-bind="before.dtLegalMan"></span>
+                                <img
+                                    class="pull-right"
+                                    ng-show="before.dtLegalMan!=after.dtLegalMan"
+                                    src="../assets/imgs/common/arrow.png"
+                                />
+                            </td>
+                            <td><span ng-bind="after.dtLegalMan"></span></td>
+                        </tr>
+                        <tr>
+                            <td>负责人</td>
+                            <td>
+                                <span ng-bind="before.dtLeader"></span>
+                                <img
+                                    class="pull-right"
+                                    ng-show="before.dtLeader!=after.dtLeader"
+                                    src="../assets/imgs/common/arrow.png"
+                                />
+                            </td>
+                            <td><span ng-bind="after.dtLeader"></span></td>
+                        </tr>
+                        <tr>
+                            <td>负责人电话</td>
+                            <td>
+                                <span ng-bind="before.dtLeaderPhone"></span>
+                                <img
+                                    class="pull-right"
+                                    ng-show="before.dtLeaderPhone!=after.dtLeaderPhone"
+                                    src="../assets/imgs/common/arrow.png"
+                                />
+                            </td>
+                            <td><span ng-bind="after.dtLeaderPhone"></span></td>
+                        </tr>
+                        <tr>
+                            <td>联系人</td>
+                            <td>
+                                <span ng-bind="before.dtContact"></span>
+                                <img
+                                    class="pull-right"
+                                    ng-show="before.dtContact!=after.dtContact"
+                                    src="../assets/imgs/common/arrow.png"
+                                />
+                            </td>
+                            <td><span ng-bind="after.dtContact"></span></td>
+                        </tr>
+                        <tr>
+                            <td>联系人电话</td>
+                            <td>
+                                <span ng-bind="before.dtContactPhone"></span>
+                                <img
+                                    class="pull-right"
+                                    ng-show="before.dtContactPhone!=after.dtContactPhone"
+                                    src="../assets/imgs/common/arrow.png"
+                                />
+                            </td>
+                            <td>
+                                <span ng-bind="after.dtContactPhone"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>联系人QQ</td>
+                            <td>
+                                <span ng-bind="before.dtContactQQ"></span>
+                                <img
+                                    class="pull-right"
+                                    ng-show="before.dtContactQQ!=after.dtContactQQ"
+                                    src="../assets/imgs/common/arrow.png"
+                                />
+                            </td>
+                            <td><span ng-bind="after.dtContactQQ"></span></td>
+                        </tr>
+                        <tr>
+                            <td>电子邮箱</td>
+                            <td>
+                                <span ng-bind="before.dtContactEmail"></span>
+                                <img
+                                    class="pull-right"
+                                    ng-show="before.dtContactEmail!=after.dtContactEmail"
+                                    src="../assets/imgs/common/arrow.png"
+                                />
+                            </td>
+                            <td>
+                                <span ng-bind="after.dtContactEmail"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>邮编</td>
+                            <td>
+                                <span ng-bind="before.dtPostcode"></span>
+                                <img
+                                    class="pull-right"
+                                    ng-show="before.dtPostcode!=after.dtPostcode"
+                                    src="../assets/imgs/common/arrow.png"
+                                />
+                            </td>
+                            <td><span ng-bind="after.dtPostcode"></span></td>
+                        </tr>
+                        <tr>
+                            <td>技术负责人</td>
+                            <td>
+                                <span
+                                    ng-bind="before.dtTechnicalDirector"
+                                ></span>
+                                <img
+                                    class="pull-right"
+                                    ng-show="before.dtTechnicalDirector!=after.dtTechnicalDirector"
+                                    src="../assets/imgs/common/arrow.png"
+                                />
+                            </td>
+                            <td>
+                                <span
+                                    ng-bind="after.dtTechnicalDirector"
+                                ></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>质量负责人</td>
+                            <td>
+                                <span ng-bind="before.dtQualityDirector"></span>
+                                <img
+                                    class="pull-right"
+                                    ng-show="before.dtQualityDirector!=after.dtQualityDirector"
+                                    src="../assets/imgs/common/arrow.png"
+                                />
+                            </td>
+                            <td>
+                                <span ng-bind="after.dtQualityDirector"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>参数</td>
+                            <td>
+                                <span ng-bind="before.dtParameter"></span>
+                                <img
+                                    class="pull-right"
+                                    ng-show="before.dtParameter!=after.dtParameter"
+                                    src="../assets/imgs/common/arrow.png"
+                                />
+                            </td>
+                            <td><span ng-bind="after.dtParameter"></span></td>
+                        </tr>
+                        <tr>
+                            <td>产品范围</td>
+                            <td>
+                                <span ng-bind="before.dtProductRange"></span>
+                                <img
+                                    class="pull-right"
+                                    ng-show="before.dtProductRange!=after.dtProductRange"
+                                    src="../assets/imgs/common/arrow.png"
+                                />
+                            </td>
+                            <td>
+                                <span ng-bind="after.dtProductRange"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>变更原因</td>
+                            <td colspan="2">
+                                <span ng-bind="after.applyReason"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>审核状态</td>
+                            <td colspan="2">
+                                <span ng-bind="after.auditState"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>审核意见</td>
+                            <td colspan="2">
+                                <span ng-bind="after.auditSuggestion"></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">
+                    关闭
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>

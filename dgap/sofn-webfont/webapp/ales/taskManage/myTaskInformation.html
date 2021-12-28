@@ -1,0 +1,106 @@
+<div class="gui-breadcrumbs">
+    <a ui-sref="index.content.ales/taskManage/myCheckTask">执法系统</a>&gt;
+    <a ui-sref="index.content.ales/taskManage/myCheckTask">监督抽查管理</a>&gt;
+    <a ui-sref="index.content.ales/taskManage/myCheckTask">监督抽查任务</a>&gt;
+    <span>任务信息</span>
+</div>
+<div class="gui-section clearfix gov-h">
+    <h4>基本信息</h4>
+    <form class="bs-example bs-example-form" role="form">
+        <div class=" ">
+            <div class="">
+                <div class="clearfix gov-h mt15">
+                    <label class="col-lg-5 col-md-5 col-sm-5 "
+                           style="text-align: right;padding-right: 10px;">任务名称：</label>
+                    <span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   "
+                          ng-bind="checkTask.taskName"></span>
+                </div>
+                <div class="clearfix gov-h mt15">
+                    <label class="col-lg-5 col-md-5 col-sm-5 "
+                           style="text-align: right;padding-right: 10px;">监测类型：</label>
+                    <span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   "
+                          ng-bind="checkTask.taskType"></span>
+                </div>
+                <div class="clearfix gov-h mt15">
+                    <label class="col-lg-5 col-md-5 col-sm-5 "
+                           style="text-align: right;padding-right: 10px;">年度：</label>
+                    <span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   "
+                          ng-bind="checkTask.taskYear"></span>
+                </div>
+                <div class="clearfix gov-h mt15">
+                    <label class="col-lg-5 col-md-5 col-sm-5 "
+                           style="text-align: right;padding-right: 10px;">任务时间：</label>
+                    <div class="col-lg-5 col-md-5 col-sm-5">
+
+                        <span ng-bind="checkTask.taskBeginTime"></span>&nbsp;&nbsp;至&nbsp;&nbsp;
+                        <span ng-bind="checkTask.taskEndTime"></span>
+                    </div>
+
+                </div>
+                <div class="clearfix gov-h mt15">
+                    <label class="col-lg-5 col-md-5 col-sm-5 "
+                           style="text-align: right;padding-right: 10px;">抽样组织单位：</label>
+                    <span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   "
+                          ng-bind="checkTask.taskReleaseUnit"></span>
+                </div>
+                <div class="clearfix gov-h mt15" name="cdUnit" style="display: none">
+                    <label class="col-lg-5 col-md-5 col-sm-5 "
+                           style="text-align: right;padding-right: 10px;">承担单位：</label>
+                    <span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   "
+                          ng-bind="checkTask.cdUnits"></span>
+                </div>
+                <div class="clearfix gov-h mt15" name="cyUnit" style="display: none">
+                    <label class="col-lg-5 col-md-5 col-sm-5 "
+                           style="text-align: right;padding-right: 10px;">抽样单位：</label>
+                    <span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   "
+                          ng-bind="checkTask.cyUnitName"></span>
+                </div>
+                <div class="clearfix gov-h mt15">
+                    <label class="col-lg-5 col-md-5 col-sm-5 "
+                           style="text-align: right;padding-right: 10px;">抽样截止时间：</label>
+                    <span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   "
+                          ng-bind="checkTask.taskSampleDeadline "></span>
+                </div>
+                <div class="clearfix gov-h mt15" name="cyUnit" style="display: none">
+                    <label class="col-lg-5 col-md-5 col-sm-5 "
+                           style="text-align: right;padding-right: 10px;">监督执法单位：</label>
+                    <span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   "
+                          ng-bind="checkTask.jdUnitName"></span>
+                </div>
+                <div class="clearfix gov-h mt15" name="jcUnit" style="display: none">
+                    <label class="col-lg-5 col-md-5 col-sm-5 "
+                           style="text-align: right;padding-right: 10px;">检测单位：</label>
+                    <span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   "
+                          ng-bind="checkTask.jcUnitName"></span>
+                </div>
+                <div class="clearfix gov-h mt15" name="jcUnit" style="display: none">
+                    <label class="col-lg-5 col-md-5 col-sm-5 "
+                           style="text-align: right;padding-right: 10px;">文件号：</label>
+                    <span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   "
+                          ng-bind="checkTask.fileNumber"></span>
+                </div>
+                <div class="clearfix gov-h mt15" name="File">
+                    <label class="col-lg-5 col-md-5 col-sm-5 "
+                           style="text-align: right;padding-right: 10px;">附件下载：</label>
+                    <a class="color " style="cursor: pointer" class="Check-report" onclick="downFile()">
+                        <span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   "
+                              ng-bind="checkTask.attachmentName"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </form>
+    <hr/>
+    <div class="gui-section">
+        <!--<h4>监测信息-【{{synType}}】</h4> 隐藏字段 2018年2月28日15:47:59-->
+        <div class="gui-actions">
+            <button ng-click="retrunDiskTop()" class="gui-btn fr mr15 mr15">返回</button>
+            <button ng-click="syncToAds()" class="gui-btn fr mr15 mr15" name="sumSampleBut" id="syncToAdsId">上报抽样单</button>
+            <button class="gui-btn fr mr15 mr15" ng-click="downSample()" id="downSampleId">
+               <a href="webapp\ales\taskManage\sample\JDCMB.docx" >下载抽样单</a>
+            </button>
+        </div>
+        <table id="JC_XX_Grid" class="gui-table" style="width: 100%">
+        </table>
+    </div>
+</div>

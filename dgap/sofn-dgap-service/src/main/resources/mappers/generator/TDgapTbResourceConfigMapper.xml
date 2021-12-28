@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.dao.generator.TDgapTbResourceConfigMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.model.generator.TDgapTbResourceConfig" >
+    <result column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="RESOURCE_ID" property="resourceId" jdbcType="VARCHAR" />
+    <result column="TABLE_NAME" property="tableName" jdbcType="VARCHAR" />
+    <result column="TABLE_CN_NAME" property="tableCnName" jdbcType="VARCHAR" />
+    <result column="FIELD_NAME" property="fieldName" jdbcType="VARCHAR" />
+    <result column="FIELD_CN_NAME" property="fieldCnName" jdbcType="VARCHAR" />
+    <result column="LENGTH" property="length" jdbcType="DECIMAL" />
+    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+    <result column="IS_CONDITION" property="isCondition" jdbcType="CHAR" />
+    <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="DEL_FLAG" property="delFlag" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD1" property="reservedField1" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD2" property="reservedField2" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD3" property="reservedField3" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD4" property="reservedField4" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD5" property="reservedField5" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD6" property="reservedField6" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD7" property="reservedField7" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD8" property="reservedField8" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD9" property="reservedField9" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD10" property="reservedField10" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD11" property="reservedField11" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD12" property="reservedField12" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD13" property="reservedField13" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD14" property="reservedField14" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD15" property="reservedField15" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD16" property="reservedField16" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD17" property="reservedField17" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD18" property="reservedField18" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD19" property="reservedField19" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD20" property="reservedField20" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="com.sofn.model.generator.TDgapTbResourceConfig" >
+    insert into T_DGAP_TB_RESOURCE_CONFIG (ID, RESOURCE_ID, TABLE_NAME, 
+      TABLE_CN_NAME, FIELD_NAME, FIELD_CN_NAME, 
+      LENGTH, TYPE, IS_CONDITION, 
+      CREATE_BY, CREATE_DATE, UPDATE_BY, 
+      UPDATE_TIME, DEL_FLAG, RESERVED_FIELD1, 
+      RESERVED_FIELD2, RESERVED_FIELD3, RESERVED_FIELD4, 
+      RESERVED_FIELD5, RESERVED_FIELD6, RESERVED_FIELD7, 
+      RESERVED_FIELD8, RESERVED_FIELD9, RESERVED_FIELD10, 
+      RESERVED_FIELD11, RESERVED_FIELD12, RESERVED_FIELD13, 
+      RESERVED_FIELD14, RESERVED_FIELD15, RESERVED_FIELD16, 
+      RESERVED_FIELD17, RESERVED_FIELD18, RESERVED_FIELD19, 
+      RESERVED_FIELD20)
+    values (#{id,jdbcType=VARCHAR}, #{resourceId,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}, 
+      #{tableCnName,jdbcType=VARCHAR}, #{fieldName,jdbcType=VARCHAR}, #{fieldCnName,jdbcType=VARCHAR}, 
+      #{length,jdbcType=DECIMAL}, #{type,jdbcType=VARCHAR}, #{isCondition,jdbcType=CHAR}, 
+      #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=VARCHAR}, #{reservedField1,jdbcType=VARCHAR}, 
+      #{reservedField2,jdbcType=VARCHAR}, #{reservedField3,jdbcType=VARCHAR}, #{reservedField4,jdbcType=VARCHAR}, 
+      #{reservedField5,jdbcType=VARCHAR}, #{reservedField6,jdbcType=VARCHAR}, #{reservedField7,jdbcType=VARCHAR}, 
+      #{reservedField8,jdbcType=VARCHAR}, #{reservedField9,jdbcType=VARCHAR}, #{reservedField10,jdbcType=VARCHAR}, 
+      #{reservedField11,jdbcType=VARCHAR}, #{reservedField12,jdbcType=VARCHAR}, #{reservedField13,jdbcType=VARCHAR}, 
+      #{reservedField14,jdbcType=VARCHAR}, #{reservedField15,jdbcType=VARCHAR}, #{reservedField16,jdbcType=VARCHAR}, 
+      #{reservedField17,jdbcType=VARCHAR}, #{reservedField18,jdbcType=VARCHAR}, #{reservedField19,jdbcType=VARCHAR}, 
+      #{reservedField20,jdbcType=VARCHAR})
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select ID, RESOURCE_ID, TABLE_NAME, TABLE_CN_NAME, FIELD_NAME, FIELD_CN_NAME, LENGTH, 
+    TYPE, IS_CONDITION, CREATE_BY, CREATE_DATE, UPDATE_BY, UPDATE_TIME, DEL_FLAG, RESERVED_FIELD1, 
+    RESERVED_FIELD2, RESERVED_FIELD3, RESERVED_FIELD4, RESERVED_FIELD5, RESERVED_FIELD6, 
+    RESERVED_FIELD7, RESERVED_FIELD8, RESERVED_FIELD9, RESERVED_FIELD10, RESERVED_FIELD11, 
+    RESERVED_FIELD12, RESERVED_FIELD13, RESERVED_FIELD14, RESERVED_FIELD15, RESERVED_FIELD16, 
+    RESERVED_FIELD17, RESERVED_FIELD18, RESERVED_FIELD19, RESERVED_FIELD20
+    from T_DGAP_TB_RESOURCE_CONFIG
+  </select>
+</mapper>

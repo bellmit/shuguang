@@ -1,0 +1,97 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css">
+
+<div class="gui-breadcrumbs">
+    <a href="">监测系统</a>&gt;
+    <a href="">承担单位</a>&gt;
+    <span>抽样任务</span>
+</div>
+
+
+<div class="gui-section">
+    <div class="gui-form-group clearfix">
+       <!-- <input type="text" id="objectPackageName" class="gui-input" placeholder="请输入检测对象包名称"  ng-keyup="enterEvent($event)"/>
+        <select id="industry" name="industry_name" class="gui-select">
+            <option value="">请选择行业</option>
+            <option ng-repeat="industry in industries">{{industry.dictName}}</option>
+        </select>
+        <span class="gui-btn" id="searchObjectPackage">查询</span>-->
+        <span class="color-gray">计划名称</span>
+        <input type="text" id="name" class="gui-input" placeholder="请输入计划名称" />
+        <span class="color-gray">任务名称</span>
+        <input type="text" id="taskName" class="gui-input" placeholder="请输入任务名称" />
+        <span class="color-gray">抽样人员</span>
+        <input type="text" id="userName" class="gui-input" placeholder="请输入抽样人员" />
+        <div class="cq2" style="clear:both;display:inline;"><span class="gui-btn" style="margin:10px;" id="clear" ng-click="clear()">重置</span></div>
+        <span class="gui-btn" id="toCheck" ng-click="toCheck()">查询</span>
+    </div>
+
+  <!--  <div class="gui-actions">
+        <span class="gui-btn fr" style="background-color: grey; border-color: grey" ng-if="disabled"><i class="gui-icon icon-remove"></i>删除</span>
+        <span class="gui-btn fr" ng-if="!disabled" onclick="delSamplePlanInfo()"><i class="gui-icon icon-remove"></i>删除</span>
+        <span class="gui-btn fr mr15" style="background-color: grey; border-color: grey" ng-if="disabled" ><i class="gui-icon icon-add"></i>新增</span>
+        <span class="gui-btn fr mr15" ng-if="!disabled" ng-click="addObjectPackage()" ><i class="gui-icon icon-add"></i>新增</span>
+    </div>-->
+    <div class="clearfix gov-h">
+        <table id="grid" class="gui-table mt15">
+        </table>
+    </div>
+</div>
+
+
+<!--查看检测对象包对话框-->
+<div class="modal fade" id="showModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content" style="min-width: 700px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: left">查看详情</h4>
+            </div>
+            <div class="modal-body">
+                <form id="showObjectPackage" class="form-horizontal" data-bv-excluded>
+                    <div class="form-group line-20">
+                        <p></p>
+                        <label class="col-sm-4 control-task text-right">计划抽样时间:&nbsp&nbsp</label>
+                        <div class="col-sm-3">
+                            {{dateStart}}
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">抽样人员:&nbsp&nbsp</label>
+                        <div class="col-sm-3">
+                            {{userNmames}}
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">任务名称:&nbsp&nbsp</label>
+                        <div class="col-sm-5">
+                            {{taskName}}
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">计划名称:&nbsp&nbsp</label>
+                        <div class="col-sm-5">
+                            {{name}}
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-4 control-task text-right">抽样对象及数量:&nbsp&nbsp</label>
+                        <div class="col-sm-5">
+                            {{sampleObjectName}}
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" type="button" data-dismiss="modal">关闭</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+

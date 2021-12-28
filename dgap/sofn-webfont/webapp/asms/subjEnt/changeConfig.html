@@ -1,0 +1,173 @@
+<style>
+    .newCodeRule{
+    	float: right;
+    }
+    .newCodeRule button{
+    	border:1px solid #ccc;
+    	padding: 5px 10px;
+    	border-radius:5px;
+    	background: #fff;
+    	margin-bottom: 10px;
+    	margin-right: 30px;
+    }
+    .codeManage{
+    	margin-top: 20px;
+    }
+    .tac{
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    th,tr>td{
+    	text-align: left;
+        padding: 5px 30px;
+    }
+    td .codeManage_a{
+    	color: blue;
+    }
+    .mt15{
+        margin-bottom: 15px;
+    }
+    .mt15 input{
+        margin-right: 50px;
+    }
+    .mr15{
+        margin-left: -20px;
+        margin-right: 20px;
+    }
+    input{
+        max-width: 150px;
+    }
+    #cloneNode{
+        display: none;
+    }
+    .codeIcon{
+        width: 22px;
+        height: 22px;
+        cursor: pointer;
+    }
+</style>
+<div class="gui-mainBc">
+    <div class="gui-breadcrumbs">
+        <a href="javascript:void(0)">系统管理</a>&gt;
+        <span>编码管理</span>&gt;
+        <span>配置编码</span>
+    </div>
+    <div class="gui-section" style="min-height: 640px;">
+	    <div class="codeManage">
+	    	<p class="tac">配置编码管理</p>
+	    	<div class="CodeRule_main">
+	    		<table class="">
+	    			<thead>
+	    				<tr>
+	    					<th>码段名称</th>
+	    					<th>码段位数</th>
+	    					<th>生成方式</th>
+                            <th>
+                                <span>值/范围</span>
+                                <span style="margin-left: 150px;">含义</span>
+                            </th>
+	    					<th></th>
+	    				</tr>
+	    			</thead>
+	    			<tbody>
+	    				<tr>
+                            <td>
+                                <input disabled type="text" value="生产经营类别代码">
+                            </td>
+                            <td>
+                                <input disabled type="number" value="1">
+                            </td>
+                            <td>
+                                <div class="gui-select">
+                                    <select disabled id="" class="gui-disabled">
+                                        <option value="0">配置固定值</option>
+                                        <option value="1">配置固定值</option>
+                                        <option value="2">获取参数值</option>
+                                        <option value="3">顺序生成</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="mt15" id="cloneNode">
+                                    <input type="text" value="" placeholder="值/范围">
+                                    <input type="text" value="" placeholder="含义">
+                                    <span class="mr15 addConfig"><img class="codeIcon" src="../../../assets/imgs/icon/add.png" alt=""></span>
+                                    <span class="removeConfig"><img class="codeIcon" src="../../../assets/imgs/icon/reduce.png" alt=""></span>
+                                </div>
+                                <div class="mt15">
+                                    <input type="text" value="0">
+                                    <input type="text" value="生产主体">
+                                </div>
+                                <div class="mt15">
+                                    <input type="text" value="1">
+                                    <input type="text" value="生产主体">
+                                </div>
+                                <div class="mt15">
+                                    <input type="text" value="2">
+                                    <input type="text" value="生产主体">
+                                    <span class="mr15 addConfig"><img class="codeIcon" src="../../../assets/imgs/icon/add.png" alt=""></span>
+                                    
+                                </div>
+                                <div class="mt15">
+                                    <input type="text" value="3">
+                                    <input type="text" value="生产主体">
+                                    <span class="mr15 addConfig"><img class="codeIcon" src="../../../assets/imgs/icon/add.png" alt=""></span>
+                                    <span class="removeConfig"><img class="codeIcon" src="../../../assets/imgs/icon/reduce.png" alt=""></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input disabled type="text" value="社会信用代码">
+                            </td>
+                            <td>
+                                <input disabled type="number" value="18">
+                            </td>
+                            <td>
+                                <div class="gui-select">
+                                    <select disabled id="">
+                                        <option value="0">获取参数值</option>
+                                        <option value="1">配置固定值</option>
+                                        <option value="2">获取参数值</option>
+                                        <option value="3">顺序生成</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="mt15">
+                                    <input type="text" value="0">
+                                    <input type="text" value="获取主体社会信用代码">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input disabled type="text" value="顺序码">
+                            </td>
+                            <td>
+                                <input disabled type="number" value="1">
+                            </td>
+                            <td>
+                                <div class="gui-select">
+                                    <select disabled id="">
+                                        <option value="0">顺序生成</option>
+                                        <option value="1">配置固定值</option>
+                                        <option value="2">获取参数值</option>
+                                        <option value="3">顺序生成</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="mt15">
+                                    <input type="text" value="0">
+                                    <input type="text" value="顺序生成">
+                                </div>
+                            </td>
+                        </tr>
+	    			</tbody>
+	    		</table>
+	    	</div>
+	    </div>
+	</div>
+
+</div>

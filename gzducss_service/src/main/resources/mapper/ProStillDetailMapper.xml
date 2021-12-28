@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.ProStillDetailMapper">
+    <resultMap id="BaseResultMap" type="com.sofn.ducss.model.ProStillDetail">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="pro_still_id" property="proStillId" jdbcType="VARCHAR"/>
+        <result column="straw_type" property="strawType" jdbcType="VARCHAR"/>
+        <result column="straw_name" property="strawName" jdbcType="VARCHAR"/>
+        <result column="grain_yield" property="grainYield" jdbcType="DECIMAL"/>
+        <result column="grass_valley_ratio" property="grassValleyRatio" jdbcType="DECIMAL"/>
+        <result column="collection_ratio" property="collectionRatio" jdbcType="DECIMAL"/>
+        <result column="return_ratio" property="returnRatio" jdbcType="DECIMAL"/>
+        <result column="return_area" property="returnArea" jdbcType="DECIMAL"/>
+        <result column="seed_area" property="seedArea" jdbcType="DECIMAL"/>
+        <result column="export_yield" property="exportYield" jdbcType="DECIMAL"/>
+        <result column="theory_resource" property="theoryResource" jdbcType="DECIMAL"/>
+        <result column="collect_resource" property="collectResource" jdbcType="DECIMAL"/>
+        <result column="return_resource" property="returnResource" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <resultMap id="BaseResultMapByMe" type="com.sofn.ducss.vo.DataAnalysis.IndexDataVo">
+        <result column="area_id" property="area_id" jdbcType="VARCHAR"/>
+        <result column="province_id" property="province_id" jdbcType="VARCHAR"/>
+        <result column="city_id" property="city_id" jdbcType="VARCHAR"/>
+        <result column="year" property="year" jdbcType="VARCHAR"/>
+        <result column="straw_name" property="straw_name" jdbcType="VARCHAR"/>
+        <result column="grain_yield" property="grain_yield" jdbcType="DECIMAL"/>
+        <result column="grass_valley_ratio" property="grass_valley_ratio" jdbcType="DECIMAL"/>
+        <result column="collection_ratio" property="collection_ratio" jdbcType="DECIMAL"/>
+        <result column="seed_area" property="seed_area" jdbcType="DECIMAL"/>
+        <result column="return_area" property="return_area" jdbcType="DECIMAL"/>
+        <result column="export_yield" property="export_yield" jdbcType="DECIMAL"/>
+        <result column="theory_resource" property="theory_resource" jdbcType="DECIMAL"/>
+        <result column="collect_resource" property="collect_resource" jdbcType="DECIMAL"/>
+        <result column="return_resource" property="return_resource" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id, pro_still_id, straw_type,straw_name, grain_yield, grass_valley_ratio, collection_ratio,
+    return_ratio, return_area, seed_area, export_yield,theory_resource,collect_resource,return_resource
+  </sql>
+
+    <select id="getProStillDetail" parameterType="java.lang.String" resultType="com.sofn.ducss.model.ProStillDetail">
+    SELECT
+    t1.*
+    FROM
+    pro_still_detail t1
+    where t1.pro_still_id=#{proStillId}
+  </select>
+
+    <insert id="insertList" parameterType="java.util.List">
+        insert into pro_still_detail(id,pro_still_id,straw_type,straw_name,grain_yield, grass_valley_ratio,
+        collection_ratio,return_ratio,return_area,seed_area,export_yield,theory_resource,collect_resource,
+        return_resource,return_type,leaving_type,transport_amount)
+        values
+        <foreach collection="list" item="detail" index="index" separator=",">
+            (
+            #{detail.id},
+            #{detail.proStillId},
+            #{detail.strawType},
+            #{detail.strawName},
+            #{detail.grainYield},
+            #{detail.grassValleyRatio},
+            #{detail.collectionRatio},
+            #{detail.returnRatio},
+            #{detail.returnArea},
+            #{detail.seedArea},
+            #{detail.exportYield},
+            #{detail.theoryResource},
+            #{detail.collectResource},
+            #{detail.returnResource},
+            #{detail.returnType},
+            #{detail.leavingType},
+            #{detail.transportAmount}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateList" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update pro_still_detail
+            <set>
+                grain_yield = #{item.grainYield},
+                grass_valley_ratio = #{item.grassValleyRatio},
+                collection_ratio = #{item.collectionRatio},
+                return_ratio = #{item.returnRatio},
+                return_area = #{item.returnArea},
+                export_yield = #{item.exportYield},
+                seed_area = #{item.seedArea},
+                theory_resource = #{item.theoryResource},
+                collect_resource = #{item.collectResource},
+                return_resource = #{item.returnResource},
+                return_type = #{item.returnType},
+                leaving_type = #{item.leavingType},
+                transport_amount = #{item.transportAmount}
+            </set>
+            where id=#{item.id}
+        </foreach>
+    </update>
+
+    <delete id="deleteByProStillId" parameterType="java.lang.String">
+    delete from pro_still_detail where pro_still_id=#{proStillId}
+  </delete>
+
+    <select id="getProStillDetailListByAreaId" resultType="com.sofn.ducss.model.ProStillDetail">
+        SELECT
+        b.id,
+        b.pro_still_id,
+        b.straw_type,
+        b.straw_name,
+        b.grain_yield,
+        b.grass_valley_ratio,
+        b.collection_ratio,
+        b.return_ratio,
+        a.area_id,
+        b.export_yield,
+        b.seed_area,
+        b.return_area,
+        b.collection_ratio+b.grain_yield+b.grass_valley_ratio+b.return_area+b.return_ratio+b.seed_area+b.export_yield AS assigned,
+        b.return_type,
+        b.leaving_type,
+        b.transport_amount
+        from pro_still a,pro_still_detail b
+        where a.id=b.pro_still_id
+        <if test="year!=null and year!=''">
+            and a.year=#{year}
+        </if>
+        <if test="areaId!=null and areaId!=''">
+            and a.area_id = #{areaId}
+        </if>
+        ORDER BY a.create_time DESC
+    </select>
+
+    <select id="getListByCondition" resultMap="BaseResultMapByMe"
+            parameterType="com.sofn.ducss.vo.DataAnalysisQueryVo">
+        SELECT
+        du.province_id,
+        du.YEAR,
+        dud.straw_name,
+        sum( dud.grain_yield ) AS grain_yield,
+        sum( dud.grass_valley_ratio ) AS grass_valley_ratio,
+        sum( dud.collection_ratio ) AS collection_ratio,
+        sum( dud.seed_area ) AS seed_area,
+        sum( dud.return_area ) AS return_area,
+        sum( dud.export_yield ) AS export_yield,
+        sum( dud.theory_resource ) AS theory_resource,
+        sum( dud.collect_resource ) AS collect_resource,
+        sum( dud.return_resource ) AS return_resource
+        FROM
+        pro_still_detail dud
+        LEFT JOIN pro_still du ON du.id = dud. pro_still_id
+        WHERE
+        du.YEAR IN
+        <foreach collection="dataAnalysisQueryVo.year" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and du.province_id not in("")
+        <if test="dataAnalysisQueryVo.cropType != null and dataAnalysisQueryVo.cropType.size > 0 ">
+            AND dud.straw_type IN
+            <foreach collection="dataAnalysisQueryVo.cropType" item="item" index="index" open="(" separator=","
+                     close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY
+        dud.straw_name,du.province_id,du.year
+    </select>
+
+    <select id="getListByCondition2" resultMap="BaseResultMapByMe"
+            parameterType="com.sofn.ducss.vo.DataAnalysisQueryVo">
+        SELECT
+        du.city_id,
+        du.YEAR,
+        dud.straw_name,
+        sum( dud.grain_yield ) AS grain_yield,
+        sum( dud.grass_valley_ratio ) AS grass_valley_ratio,
+        sum( dud.collection_ratio ) AS collection_ratio,
+        sum( dud.seed_area ) AS seed_area,
+        sum( dud.return_area ) AS return_area,
+        sum( dud.export_yield ) AS export_yield,
+        sum( dud.theory_resource ) AS theory_resource,
+        sum( dud.collect_resource ) AS collect_resource,
+        sum( dud.return_resource ) AS return_resource
+        FROM
+        pro_still_detail dud
+        LEFT JOIN pro_still du ON du.id = dud. pro_still_id
+        WHERE
+        du.YEAR IN
+        <foreach collection="dataAnalysisQueryVo.year" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and du.city_id not in("")
+        <if test="dataAnalysisQueryVo.cropType != null and dataAnalysisQueryVo.cropType.size > 0 ">
+            AND dud.straw_type IN
+            <foreach collection="dataAnalysisQueryVo.cropType" item="item" index="index" open="(" separator=","
+                     close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY
+        dud.straw_name,du.city_id,du.year
+    </select>
+
+    <select id="getListByCondition3" resultMap="BaseResultMapByMe"
+            parameterType="com.sofn.ducss.vo.DataAnalysisQueryVo">
+        SELECT
+        du.area_id,
+        du.YEAR,
+        dud.straw_name,
+        sum( dud.grain_yield ) AS grain_yield,
+        sum( dud.grass_valley_ratio ) AS grass_valley_ratio,
+        sum( dud.collection_ratio ) AS collection_ratio,
+        sum( dud.seed_area ) AS seed_area,
+        sum( dud.return_area ) AS return_area,
+        sum( dud.export_yield ) AS export_yield,
+        sum( dud.theory_resource ) AS theory_resource,
+        sum( dud.collect_resource ) AS collect_resource,
+        sum( dud.return_resource ) AS return_resource
+        FROM
+        pro_still_detail dud
+        LEFT JOIN pro_still du ON du.id = dud. pro_still_id
+        WHERE
+        du.YEAR IN
+        <foreach collection="dataAnalysisQueryVo.year" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and du.area_id not in("")
+        <if test="dataAnalysisQueryVo.cropType != null and dataAnalysisQueryVo.cropType.size > 0 ">
+            AND dud.straw_type IN
+            <foreach collection="dataAnalysisQueryVo.cropType" item="item" index="index" open="(" separator=","
+                     close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY
+        dud.straw_name,du.area_id,du.year
+    </select>
+
+    <select id="getListByCondition4" resultMap="BaseResultMapByMe"
+            parameterType="com.sofn.ducss.vo.DataAnalysisQueryVo">
+        SELECT
+        du.province_id,
+        du.YEAR,
+        dud.straw_name,
+        sum( dud.grain_yield ) AS grain_yield,
+        sum( dud.grass_valley_ratio ) AS grass_valley_ratio,
+        sum( dud.collection_ratio ) AS collection_ratio,
+        sum( dud.seed_area ) AS seed_area,
+        sum( dud.return_area ) AS return_area,
+        sum( dud.export_yield ) AS export_yield,
+        sum( dud.theory_resource ) AS theory_resource,
+        sum( dud.collect_resource ) AS collect_resource,
+        sum( dud.return_resource ) AS return_resource
+        FROM
+        pro_still_detail dud
+        LEFT JOIN pro_still du ON du.id = dud. pro_still_id
+        WHERE
+        du.YEAR IN
+        <foreach collection="dataAnalysisQueryVo.year" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND du.province_id in
+        <foreach collection="dataAnalysisQueryVo.area" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <if test="dataAnalysisQueryVo.cropType != null and dataAnalysisQueryVo.cropType.size > 0 ">
+            AND dud.straw_type IN
+            <foreach collection="dataAnalysisQueryVo.cropType" item="item" index="index" open="(" separator=","
+                     close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY
+        dud.straw_name,du.province_id,du.year
+    </select>
+
+    <select id="getListByCondition5" resultMap="BaseResultMapByMe"
+            parameterType="com.sofn.ducss.vo.DataAnalysisQueryVo">
+     SELECT
+        du.city_id,
+        du.YEAR,
+        dud.straw_name,
+        sum( dud.grain_yield ) AS grain_yield,
+        sum( dud.grass_valley_ratio ) AS grass_valley_ratio,
+        sum( dud.collection_ratio ) AS collection_ratio,
+        sum( dud.seed_area ) AS seed_area,
+        sum( dud.return_area ) AS return_area,
+        sum( dud.export_yield ) AS export_yield,
+        sum( dud.theory_resource ) AS theory_resource,
+        sum( dud.collect_resource ) AS collect_resource,
+        sum( dud.return_resource ) AS return_resource
+        FROM
+        pro_still_detail dud
+        LEFT JOIN pro_still du ON du.id = dud. pro_still_id
+        WHERE
+        du.YEAR IN
+        <foreach collection="dataAnalysisQueryVo.year" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND du.city_id in
+        <foreach collection="dataAnalysisQueryVo.area" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <if test="dataAnalysisQueryVo.cropType != null and dataAnalysisQueryVo.cropType.size > 0 ">
+            AND dud.straw_type IN
+            <foreach collection="dataAnalysisQueryVo.cropType" item="item" index="index" open="(" separator=","
+                     close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY
+        dud.straw_name,du.city_id,du.year
+    </select>
+
+    <select id="getListByCondition6" resultMap="BaseResultMapByMe"
+            parameterType="com.sofn.ducss.vo.DataAnalysisQueryVo">
+    SELECT
+        du.area_id,
+        du.YEAR,
+        dud.straw_name,
+        sum( dud.grain_yield ) AS grain_yield,
+        sum( dud.grass_valley_ratio ) AS grass_valley_ratio,
+        sum( dud.collection_ratio ) AS collection_ratio,
+        sum( dud.seed_area ) AS seed_area,
+        sum( dud.return_area ) AS return_area,
+        sum( dud.export_yield ) AS export_yield,
+        sum( dud.theory_resource ) AS theory_resource,
+        sum( dud.collect_resource ) AS collect_resource,
+        sum( dud.return_resource ) AS return_resource
+        FROM
+        pro_still_detail dud
+        LEFT JOIN pro_still du ON du.id = dud. pro_still_id
+        WHERE
+        du.YEAR IN
+        <foreach collection="dataAnalysisQueryVo.year" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND du.area_id in
+        <foreach collection="dataAnalysisQueryVo.area" item="item" index="index" open="(" separator="," close=")">
+             #{item}
+        </foreach>
+        <if test="dataAnalysisQueryVo.cropType != null and dataAnalysisQueryVo.cropType.size > 0 ">
+            AND dud.straw_type IN
+            <foreach collection="dataAnalysisQueryVo.cropType" item="item" index="index" open="(" separator=","
+                     close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY
+        dud.straw_name,du.area_id,du.year
+    </select>
+    <select id="getPublicTableData" resultType="com.sofn.ducss.model.ProStillDetail">
+        SELECT
+        a.id,
+        a.pro_still_id,
+        a.straw_type,
+        a.straw_name,
+        a.grain_yield,
+        a.grass_valley_ratio,
+        a.collection_ratio,
+        a.return_ratio,
+        a.return_area,
+        a.seed_area,
+        a.export_yield,
+        a.theory_resource,
+        a.collect_resource,
+        a.return_resource
+        FROM
+        pro_still_detail a
+        LEFT JOIN pro_still b ON a.pro_still_id = b.id
+        WHERE
+        b.YEAR = #{year}
+        AND b.area_id = #{areaId}
+    </select>
+    <select id="getProStillDetailListByAreaId2" resultType="com.sofn.ducss.model.ProStillDetail">
+        SELECT
+        b.id,
+        b.pro_still_id,
+        b.straw_type,
+        b.straw_name,
+        b.grain_yield,
+        b.grass_valley_ratio,
+        b.collection_ratio,
+        b.return_ratio,
+        a.area_id,
+        b.export_yield,
+        b.seed_area,
+        b.return_area,
+        b.collection_ratio+b.grain_yield+b.grass_valley_ratio+b.return_area+b.return_ratio+b.seed_area+b.export_yield AS
+        assigned
+        from pro_still a,pro_still_detail b ,collect_flow c
+        where a.id=b.pro_still_id and c.year=a.year and c.area_id=a.area_id
+        <if test="year!=null and year!=''">
+            and a.year=#{year}
+        </if>
+        <if test="areaId!=null and areaId!=''">
+            and a.area_id = #{areaId}
+        </if>
+        <if test="status != null and status.size() > 0">
+            and c.status in
+            <foreach collection="status" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+    </select>
+    <select id="getListByYearAndAreaId" resultType="com.sofn.ducss.model.ProStillDetail">
+        SELECT
+        a.grain_yield,
+        a.grass_valley_ratio,
+        a.collection_ratio
+        FROM
+        pro_still_detail a
+        LEFT JOIN pro_still b ON a.pro_still_id = b.id
+        WHERE
+        b.YEAR = #{year}
+        AND b.area_id = #{areaId}
+        AND a.straw_type=#{earlyRice}
+    </select>
+
+
+    <select id="getProStillDetailListByAreaIdAndStrawType" resultType="com.sofn.ducss.model.ProStillDetail">
+        SELECT
+        CASE SUM ( b.seed_area )
+        WHEN 0 THEN
+        0
+        ELSE
+        SUM ( b.return_area ) / SUM ( b.seed_area ) * 100
+        END returnRatio
+        from pro_still a,pro_still_detail b
+        where a.id=b.pro_still_id
+        <if test="year!=null and year!=''">
+            and a.year=#{year}
+        </if>
+        <if test="areaId!=null and areaId!=''">
+            and a.area_id = #{areaId}
+        </if>
+        <if test="strawType != null and strawType != ''" >
+            and b.straw_type = #{strawType}
+        </if>
+    </select>
+
+    <select id="getProStillDetailListByAreaIdGroupByAreaId" resultType="com.sofn.ducss.model.ProStillDetail">
+        SELECT
+        area_id,
+        CASE SUM ( b.seed_area )
+        WHEN 0 THEN
+        0
+        ELSE
+        SUM ( b.return_area ) / SUM ( b.seed_area ) * 100
+        END returnRatio
+        from pro_still a,pro_still_detail b
+        where a.id=b.pro_still_id
+        <if test="year!=null and year!=''">
+            and a.year=#{year}
+        </if>
+        <if test="areaIds != null and areaIds.size() > 0">
+            and a.area_id in
+            <foreach collection="areaIds" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="strawType != null and strawType != ''" >
+            and b.straw_type = #{strawType}
+        </if>
+        GROUP BY area_id
+    </select>
+    <select id="getProStillDetailListByAreaIdGroupByStrawType" resultType="com.sofn.ducss.model.ProStillDetail">
+        SELECT
+        straw_type,
+        CASE SUM ( b.seed_area )
+        WHEN 0 THEN
+        0
+        ELSE
+        SUM ( b.return_area ) / SUM ( b.seed_area ) * 100
+        END returnRatio
+        from pro_still a,pro_still_detail b
+        where a.id=b.pro_still_id
+        <if test="year!=null and year!=''">
+            and a.year=#{year}
+        </if>
+        <if test="areaId!=null and areaId!=''">
+            and a.area_id = #{areaId}
+        </if>
+        <if test="strawType != null and strawType != ''" >
+            and b.straw_type = #{strawType}
+        </if>
+        GROUP BY straw_type
+    </select>
+</mapper>

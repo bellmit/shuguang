@@ -1,0 +1,122 @@
+<link rel="stylesheet" href="assets/css/asms/complain/comComplain.css"/>
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">监管系统</a>&gt;
+    <span>投诉受理</span>
+</div>
+<div class="gui-section">
+    <!--查询条件-->
+    <div class="gui-form-group">
+        <span>区域</span>
+        <div class="gui-select">
+            <select id="sheng" name="ObjShen">
+                <option value="">省</option>
+            </select>
+        </div>
+        <div class="gui-select">
+            <select id="shi" name="ObjShi">
+                <option value="">市</option>
+            </select>
+        </div>
+        <div class="gui-select">
+            <select id="xian" name="ObjXian">
+                <option value="">区/县</option>
+            </select>
+        </div>
+    </div>
+    <div class="gui-form-group">
+        <!--<span>问题类型</span>-->
+        <!--<div class="gui-select">-->
+        <!--<select id="complaintType" name="type" placeholder="投诉主题" >-->
+        <!--<option value="">全部</option>-->
+        <!--<option ng-repeat="x in comTitle" value="{{x.dictValue}}">{{x.dictName}}</option>-->
+        <!--</select>-->
+        <!--</div>-->
+        <span>受理状态</span>
+        <div class="gui-select">
+            <select name="status" placeholder="受理状态">
+                <option value="">全部</option>
+                <option value="0">未受理</option>
+                <option value="1">已受理</option>
+            </select>
+        </div>
+        <span>主体名称</span>
+        <input class="gui-input" type="text" id="queryCon" name="queryCon" placeholder="请输入主体名称" maxlength="30"/>
+        <button id="ToCheck" ng-disabled="!!btnDisabled" class=" gui-btn">查询</button>
+        <button ng-disabled="!!btnReloadDisabled" ng-click="cleanSelectModelQuery()" class=" gui-btn">重置</button>
+    </div>
+    <!--列表展示 data-table -->
+    <table id="grid"
+           class="gui-table mt15" style="width: 100%;">
+    </table>
+</div>
+<!--查看投诉详细 模态框-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">投诉详情</h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <form class="bs-example bs-example-form" role="form">
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-md-12">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">投诉主体&nbsp;:</label>
+                            <a style="cursor: pointer;" onclick="selectEnterprideInfo()"><span
+                                    class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.enti_name"></span></a>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">被投诉主体&nbsp;:</label>
+                            <a style="cursor: pointer;" onclick="selectEnterprideInfoBe()"><span
+                                    class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.be_enti_name"/></a>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">被投诉主体身份码&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.beEntityIdcode"/>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">被投诉主体区域&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="beAreaId"/>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">投诉时间&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.complaintTime"/>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">投诉主题&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.complaintTitle"/>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">投诉内容&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" style="word-break: break-all;" ng-bind="reCord.content"/>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">附件&nbsp;:</label>
+                            <a onclick="downloadFile()" style="cursor: pointer">
+                                <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.attachmentName"/></a>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">受理人&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.accEntityIdcode"/>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">受理状态&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.status"/>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">受理意见&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" style="word-break: break-all;" ng-bind="reCord.acceptance"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer mt15">
+                <button type="button" class="gui-btn" data-dismiss="modal" onclick="qinchuhuanchun()">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+

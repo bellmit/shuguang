@@ -1,0 +1,132 @@
+{
+  "resourceId": "86865b5992ce4754ac37f70fdcb9b78d9d6cbc1747844334926b8dfffca9563f",
+  "start": 0,
+  "length": 10
+}
+{
+  "data": {
+    "pageNum": 1,
+    "pageSize": 0,
+    "size": 0,
+    "orderBy": null,
+    "startRow": 0,
+    "endRow": 0,
+    "total": 26,
+    "pages": 0,
+    "list": [
+      {
+        "ID": "1",
+        "USERNAME": "张珊",
+        "PASSWORD": "123456",
+        "JOB": "java",
+        "STATUS": "N",
+        "SEX": null,
+        "NAME": "无名氏",
+        "RN": 1
+      },
+      {
+        "ID": "2",
+        "USERNAME": "李四",
+        "PASSWORD": "123456",
+        "JOB": "java",
+        "STATUS": "N",
+        "SEX": null,
+        "NAME": "无名氏",
+        "RN": 2
+      },
+      {
+        "ID": "3",
+        "USERNAME": "王五",
+        "PASSWORD": "456789",
+        "JOB": "php",
+        "STATUS": "Y",
+        "SEX": null,
+        "NAME": "无名氏",
+        "RN": 3
+      },
+      {
+        "ID": "4",
+        "USERNAME": "李柳",
+        "PASSWORD": "32323",
+        "JOB": "Java",
+        "STATUS": "Y",
+        "SEX": null,
+        "NAME": "无名氏",
+        "RN": 4
+      },
+      {
+        "ID": "5",
+        "USERNAME": "fg ",
+        "PASSWORD": "223333",
+        "JOB": "ui",
+        "STATUS": "Y",
+        "SEX": null,
+        "NAME": "无名氏",
+        "RN": 5
+      },
+      {
+        "ID": "6",
+        "USERNAME": "主管",
+        "PASSWORD": "33344",
+        "JOB": "Java",
+        "STATUS": "N",
+        "SEX": null,
+        "NAME": "无名氏",
+        "RN": 6
+      },
+      {
+        "ID": "7",
+        "USERNAME": "李武1",
+        "PASSWORD": "677",
+        "JOB": "java",
+        "STATUS": "N",
+        "SEX": null,
+        "NAME": "无名氏",
+        "RN": 7
+      },
+      {
+        "ID": "8",
+        "USERNAME": "追溯",
+        "PASSWORD": "44444",
+        "JOB": "java",
+        "STATUS": "N",
+        "SEX": null,
+        "NAME": "无名氏",
+        "RN": 8
+      },
+      {
+        "ID": "9",
+        "USERNAME": "王二",
+        "PASSWORD": "44334",
+        "JOB": "java",
+        "STATUS": "N",
+        "SEX": null,
+        "NAME": "无名氏",
+        "RN": 9
+      },
+      {
+        "ID": "10",
+        "USERNAME": "赵伟",
+        "PASSWORD": "4555",
+        "JOB": "psp",
+        "STATUS": "N",
+        "SEX": null,
+        "NAME": "无名氏",
+        "RN": 10
+      }
+    ],
+    "firstPage": 0,
+    "prePage": 0,
+    "nextPage": 0,
+    "lastPage": 0,
+    "isFirstPage": false,
+    "isLastPage": false,
+    "hasPreviousPage": false,
+    "hasNextPage": false,
+    "navigatePages": 0,
+    "navigatepageNums": null
+  },
+  "httpCode": 200,
+  "msg": "OK",
+  "timestamp": 1481783255986
+}

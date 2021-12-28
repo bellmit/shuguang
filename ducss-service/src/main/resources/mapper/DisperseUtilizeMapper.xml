@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.DisperseUtilizeMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.ducss.model.DisperseUtilize" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="fill_no" property="fillNo" jdbcType="VARCHAR" />
+    <result column="year" property="year" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaId" jdbcType="VARCHAR" />
+    <result column="report_area" property="reportArea" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="farmer_no" property="farmerNo" jdbcType="VARCHAR" />
+    <result column="farmer_name" property="farmerName" jdbcType="VARCHAR" />
+    <result column="farmer_phone" property="farmerPhone" jdbcType="VARCHAR" />
+    <result column="create_user_name" property="createUserName" jdbcType="VARCHAR" />
+    <result column="create_user_id" property="createUserId" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="province_id" property="provinceId" jdbcType="VARCHAR" />
+    <result column="city_id" property="cityId" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, fill_no, year, area_id, report_area, address, farmer_no, farmer_name, farmer_phone, 
+    create_user_name, create_user_id, create_date, province_id, city_id
+  </sql>
+  <select id="getDisperseUtilizeByPage" parameterType="java.util.Map" resultType="com.sofn.ducss.model.DisperseUtilize">
+    select t1.*
+    from disperse_utilize t1
+    where 1=1
+    and t1.area_id=#{countyId}
+    <if test="year!=null and year!=''">
+      and t1.year=#{year}
+    </if>
+      <if test="years !=null and years.size()>0">
+          and t1.year in
+          <foreach collection="years" item="year" open="(" close=")" separator=",">
+              #{year}
+          </foreach>
+      </if>
+    <if test="userName!=null and userName!=''">
+      and t1.farmer_name like '%'||#{userName}||'%'
+    </if>
+    <if
+            test="dateBegin!=null and dateBegin!='' and dateEnd!=null and dateEnd!=''">
+      <![CDATA[
+			AND t1.create_date>=#{dateBegin} and t1.create_date<=#{dateEnd}
+			]]>
+    </if>
+    order by t1.create_time desc,t1.id DESC
+  </select>
+
+  <select id="getDisperseUtilize" parameterType="java.util.Map" resultType="com.sofn.ducss.model.DisperseUtilize">
+    select t1.*
+    from disperse_utilize t1
+    where 1=1
+      <if test="countyIds != null and countyIds.size()>0">
+          and t1.area_id in
+          <foreach collection="countyIds" item="countyId" open="(" separator="," close=")">
+              #{countyId}
+          </foreach>
+      </if>
+    <if test="year!=null and year!=''">
+      and t1.year=#{year}
+    </if>
+      <if test="years !=null and years.size()>0">
+          and t1.year in
+          <foreach collection="years" item="year" open="(" separator="," close=")">
+              #{year}
+          </foreach>
+      </if>
+    ORDER BY t1.year desc, t1.create_time DESC,t1.id DESC
+  </select>
+
+  <select id="selectDisperseUtilizeById" parameterType="java.lang.String" resultType="com.sofn.ducss.model.DisperseUtilize">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM disperse_utilize
+    WHERE id = #{id}
+
+  </select>
+
+  <select id="selectFarmerNo" resultType="java.lang.String">
+    select SEQUENCE_NO(#{year},#{areaId},#{type}) from dual
+  </select>
+
+  <insert id="insertDisperseUtilize" parameterType="com.sofn.ducss.model.DisperseUtilize">
+    insert into
+    disperse_utilize(id,fill_no,year,area_id,city_id,province_id,report_area,create_user_name,
+    create_user_id,create_date,address,farmer_no,farmer_name,farmer_phone,create_time) values
+    (#{id,jdbcType=VARCHAR},#{fillNo,jdbcType=VARCHAR},#{year,jdbcType=SMALLINT},
+    #{areaId,jdbcType=INTEGER},#{cityId,jdbcType=INTEGER},#{provinceId,jdbcType=INTEGER},#{reportArea,jdbcType=VARCHAR},
+    #{createUserName,jdbcType=INTEGER},#{createUserId,jdbcType=INTEGER},#{createDate,jdbcType=TIMESTAMP}
+    ,#{address,jdbcType=VARCHAR},#{farmerNo,jdbcType=VARCHAR}
+    ,#{farmerName,jdbcType=VARCHAR},#{farmerPhone,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <update id="updateDisperseUtilize" parameterType="com.sofn.ducss.model.DisperseUtilize">
+    update disperse_utilize set address = #{address},farmer_no=#{farmerNo}
+    ,farmer_name = #{farmerName},farmer_phone = #{farmerPhone},report_area=#{reportArea}
+    where id = #{id}
+  </update>
+
+  <delete id="deleteById" parameterType="java.lang.String">
+    delete from disperse_utilize where id=#{id}
+  </delete>
+
+  <select id="selectDisperseUtilizeIdByYear" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT id FROM disperse_utilize WHERE area_id=#{countyId} and farmer_name = #{farmerName} ORDER BY create_time DESC LIMIT 1
+  </select>
+
+  <select id="getDisperseUtilizeTotalCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(*)
+    from disperse_utilize t1
+    where 1=1
+    and t1.area_id=#{areaId}
+    and t1.year=#{year}
+  </select>
+
+  <select id="getDisperseUtilizeByIdList" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(*)
+    from disperse_utilize
+    <where>
+      <if test="year != null and year != ''">
+        year = #{year}
+      </if>
+      <if test="areaIds != null and areaIds.size() > 0">
+        and area_id in
+        <foreach collection="areaIds" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+      </if>
+    </where>
+  </select>
+
+  <select id="getDisperseUtilizeCountGroupByArea" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(*)
+    from disperse_utilize
+    <where>
+      <if test="year != null and year != ''">
+        year = #{year}
+      </if>
+      <if test="areaIds != null and areaIds.size() > 0">
+        and area_id in
+        <foreach collection="areaIds" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+      </if>
+    </where>
+        group by area_id
+  </select>
+
+  <select id="getFarmerNames" resultType="string">
+    select distinct farmer_name from disperse_utilize
+    <where>
+      area_id = #{countyId}
+    </where>
+  </select>
+
+  <select id="isDisperseExists" resultType="java.lang.Integer">
+    SELECT COUNT("id") FROM disperse_utilize WHERE farmer_name = #{farmerName} AND farmer_phone = #{farmerPhone} AND "year" = #{year} AND area_id = #{areaId}
+  </select>
+
+
+    <select id="listGroupByYearAndAreaId" resultType="com.sofn.ducss.model.DisperseUtilize">
+        select year
+        <if test="groupBy != null and groupBy != ''">
+            ,${groupBy} as "lastCode"
+            <if test="groupBy == 'area_id'">
+                ,id,farmer_name,farmer_phone,create_date,province_id,city_id,area_id
+            </if>
+            <if test="groupBy == 'city_id'">
+                ,province_id,city_id
+            </if>
+        </if>
+        <if test="groupBy == null">
+            ,province_id,province_id as "lastCode"
+        </if>
+        from disperse_utilize
+        <where>
+            <if test="years !=null and years.size()>0">
+                and year in
+                <foreach collection="years" item="year" open="(" separator="," close=")">
+                    #{year}
+                </foreach>
+            </if>
+            <if test="cityIds != null and cityIds.size()>0">
+                and city_id in
+                <foreach collection="cityIds" item="cityId" open="(" separator="," close=")">
+                    #{cityId}
+                </foreach>
+            </if>
+            <if test="provinceIds != null and provinceIds.size()>0">
+                and province_id in
+                <foreach collection="provinceIds" item="provinceId" open="(" separator="," close=")">
+                    #{provinceId}
+                </foreach>
+            </if>
+        </where>
+        group by year
+        <if test="groupBy != null and groupBy != ''">
+            ,${groupBy}
+            <if test="groupBy == 'area_id'">
+                ,id,farmer_name,farmer_phone,create_date,province_id,city_id
+            </if>
+            <if test="groupBy == 'city_id'">
+                ,province_id
+            </if>
+        </if>
+        <if test="groupBy == null">
+            ,province_id
+        </if>
+        ORDER BY year desc
+        <if test="groupBy != null and groupBy != ''">
+            ,${groupBy} asc
+        </if>
+    </select>
+
+    <insert id="insertBatch">
+    INSERT INTO disperse_utilize (
+        ID,
+        fill_no,
+        YEAR,
+        area_id,
+        report_area,
+        address,
+        farmer_no,
+        farmer_name,
+        farmer_phone,
+        create_user_name,
+        create_user_id,
+        create_date,
+        province_id,
+        city_id,
+        create_time
+     )
+    values
+    <foreach collection="list" item="item" index="index" separator="," >
+      (#{item.id},
+       #{item.fillNo},
+       #{item.year},
+       #{item.areaId},
+       #{item.reportArea},
+       #{item.address},
+       #{item.farmerNo},
+       #{item.farmerName},
+       #{item.farmerPhone},
+       #{item.createUserName},
+       #{item.createUserId},
+       #{item.createDate},
+       #{item.provinceId},
+       #{item.cityId},
+       #{item.createTime})
+    </foreach>
+  </insert>
+
+    <update id="updateBatch">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            UPDATE disperse_utilize
+            SET farmer_no= #{item.farmerNo}
+            WHERE id = #{item.id}
+        </foreach>
+    </update>
+</mapper>

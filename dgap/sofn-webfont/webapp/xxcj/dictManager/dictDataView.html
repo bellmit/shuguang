@@ -1,0 +1,154 @@
+<div class="gui-breadcrumbs">
+    <a href="">信息采集组件</a>&gt;
+    <span>基础代码管理</span>
+</div>
+
+<div class="gui-section">
+    <div class="gui-form-group">
+        <form>
+            字典名称:<input class="gui-input form_input" type="text" id="keyWord" ng-model="keyWord" ng-keyup="onInputChanged($event)" placeholder="请输入查询关键字">
+            <button class="gui-btn" ng-click="queryList();">查询</button>
+
+
+        </form>
+    </div>
+    <div class="gui-actions">
+        <button class="gui-btn fr ml15" ng-click="delete();" ng-if="menuAuthority == readWriteAuthority"><i class="gui-icon icon-remove"></i>删除</button>
+        <button class="gui-btn fr" ng-click="addModal();" ng-if="menuAuthority == readWriteAuthority"><i class="gui-icon icon-add"></i>新增</button>
+    </div>
+    <div>
+        <table id="grid" class="gui-table"></table>
+    </div>
+</div>
+<!-- 新增模态框 -->
+<div class="modal fade" id="add_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">新增</h4>
+            </div>
+            <div class="modal-body" style="text-align: center">
+                <form id="addDictDataForm" name="sysDictDataAddForm" novalidate>
+                    <div class="form-item">
+                        <label class="required">项目</label>
+                        <input type="text" ng-model="sysDictData.name" name="name" placeholder="请输入项目名" class="gui-input" required>
+                        <span style="color:red" ng-show="sysDictDataAddForm.name.$invalid && sysDictDataAddForm.name.$dirty || sysDictDataAddForm.name.$invalid && addDictDataValided">
+                            <span ng-show="sysDictDataAddForm.name.$error.required">请输入项目名</span>
+                        </span>
+                    </div>
+                    <div class="form-item">
+                        <label class="required">项目值</label>
+                        <input type="text" ng-model="sysDictData.dataValue" name="dataValue" placeholder="请输入项目值" class="gui-input" required>
+                        <span style="color:red" ng-show="sysDictDataAddForm.dataValue.$invalid && sysDictDataAddForm.dataValue.$dirty || sysDictDataAddForm.dataValue.$invalid && addDictDataValided">
+                            <span ng-show="sysDictDataAddForm.dataValue.$error.required">请输入项目值</span>
+                        </span>
+                    </div>
+                    <div class="form-item">
+                        <label class="required">编码</label>
+                        <input type="text" ng-model="sysDictData.code" name="code" placeholder="请输入编码" class="gui-input" required>
+                        <span style="color:red" ng-show="sysDictDataAddForm.code.$invalid && sysDictDataAddForm.code.$dirty || sysDictDataAddForm.code.$invalid && addDictDataValided">
+                            <span ng-show="sysDictDataAddForm.code.$error.required">请输入编码</span>
+                        </span>
+                    </div>
+                    <div class="form-item">
+                        <label>项目简拼</label>
+                        <input type="text" ng-model="sysDictData.spellName" name="spellName" placeholder="请输入项目简拼" class="gui-input">
+                    </div>
+                    <div class="form-item">
+                        <label class="required">项目状态</label>
+                        <span class="gui-select">
+                            <select name="enable" style="max-width:100%;min-width:100%;" required>
+                                <option value="Y">有效</option>
+                                <option value="N">无效</option>
+                            </select>
+                        </span>
+                        <span style="color:red" ng-show="sysDictDataAddForm.enable.$invalid && sysDictDataAddForm.enable.$dirty || sysDictDataAddForm.enable.$invalid && addDictDataValided">
+                            <span ng-show="sysDictDataAddForm.enable.$error.required">请选择项目状态</span>
+                        </span>
+                    </div>
+                    <div class="form-item">
+                        <label>备注</label>
+                        <input type="text" ng-model="sysDictData.remark" name="remark" placeholder="请输入备注" class="gui-input">
+                    </div>
+                </form>
+                <!--<button class="Sup_contain_section_contain_head_button"-->
+                <!--ui-sref="index.content.sys/sysDictData/list">取消-->
+                <!--</button>-->
+                <!--<button class="Sup_contain_section_contain_head_button"-->
+                <!--ng-disabled="myform.JGname.$dirty&&myform.JGname.$invalid" ng-click="addSysDictData()">-->
+                <!--提交-->
+                <!--</button>-->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="gui-btn" ng-click="addDictData(sysDictDataAddForm.$valid)">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 修改模态框 -->
+<div class="modal fade" id="update_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel2">编辑</h4>
+            </div>
+            <div class="modal-body" style="text-align: center">
+                <form id="updateDictDataForm" name="sysDictDataUpdateForm" novalidate>
+                    <div class="form-item">
+                        <label class="required">项目</label>
+                        <input type="text" ng-model="sysDictNewData.dictName" name="name" placeholder="请输入项目名" class="gui-input" id="name" required>
+                        <span style="color:red" ng-show="sysDictDataUpdateForm.name.$invalid && sysDictDataUpdateForm.name.$dirty || sysDictDataUpdateForm.name.$invalid && updateDictDataValided">
+                            <span ng-show="sysDictDataUpdateForm.name.$error.required">请输入项目名</span>
+                        </span>
+                    </div>
+
+                    <div class="form-item">
+                        <label class="required">项目值</label>
+                        <input type="text" ng-model="sysDictNewData.dictValue" name="dataValue" placeholder="请输入项目值" class="gui-input" id="dataValue" required>
+                        <span style="color:red" ng-show="sysDictDataUpdateForm.dataValue.$invalid && sysDictDataUpdateForm.dataValue.$dirty || sysDictDataUpdateForm.dataValue.$invalid && updateDictDataValided">
+                            <span ng-show="sysDictDataUpdateForm.dataValue.$error.required">请输入项目名</span>
+                        </span>
+                    </div>
+
+                    <div class="form-item">
+                        <label class="required">编码</label>
+                        <input type="text" ng-model="sysDictNewData.dictCode" name="code" placeholder="请输入编码" class="gui-input" id="code" required>
+                        <span style="color:red" ng-show="sysDictDataUpdateForm.code.$invalid && sysDictDataUpdateForm.code.$dirty || sysDictDataUpdateForm.code.$invalid && updateDictDataValided">
+                            <span ng-show="sysDictDataUpdateForm.code.$error.required">请输入项目名</span>
+                        </span>
+                    </div>
+
+                    <div class="form-item">
+                        <label>项目简拼</label>
+                        <input type="text" ng-model="sysDictNewData.spellName" name="spellName" placeholder="请输入项目简拼" class="gui-input" id="spellName">
+                    </div>
+
+                    <div class="form-item">
+                        <label class="required">项目状态</label>
+                        <span class="gui-select">
+                            <select ng-model="sysDictNewData.enable" name="newEnable" id="newEnable" style="max-width:100%;min-width:100%;" required>
+                              <option value="Y">有效</option>
+                              <option value="N">无效</option>
+                            </select>
+                        </span>
+                        <span style="color:red" ng-show="sysDictDataUpdateForm.newEnable.$invalid && sysDictDataUpdateForm.newEnable.$dirty || sysDictDataUpdateForm.newEnable.$invalid && updateDictDataValided">
+                            <span ng-show="sysDictDataUpdateForm.newEnable.$error.required">请输入项目名</span>
+                        </span>
+                    </div>
+
+                    <div class="form-item">
+                        <label>备注</label>
+                        <input type="text" ng-model="sysDictNewData.remark" name="remark" placeholder="请输入备注" class="gui-input" id="remark">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="gui-btn" ng-click="updateDictData(sysDictDataUpdateForm.$valid)">保存</button>
+            </div>
+        </div>
+    </div>
+</div>

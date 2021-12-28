@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sofn.sys.mapper.SysInterfaceManageMapper">
+
+    <resultMap id="BaseResultMap" type="com.sofn.sys.model.SysInterfaceManage" >
+        <result column="id" property="id" />
+        <result column="inter_name" property="interName" />
+        <result column="request_model" property="requestModel" />
+        <result column="request_par" property="requestPar"  javaType = "java.lang.String"/>
+        <result column="s_subsystem" property="sSubsystem" />
+        <result column="return_par" property="returnPar"  javaType = "java.lang.String" />
+        <result column="remark" property="remark" />
+        <result column="create_user_id" property="createUserId" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user_id" property="updateUserId" />
+        <result column="update_time" property="updateTime" />
+        <result column="del_flag" property="delFlag" />
+        <result column="operator" property="operator" />
+        <result column="operate_time" property="operateTime" />
+        <result column="inter_url" property="interUrl" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                inter_name,
+                request_model,
+                s_subsystem,
+                remark,
+                create_user_id,
+                create_time,
+                update_user_id,
+                update_time,
+                del_flag,
+                operator AS OPERATOR,
+                operate_time,
+                inter_url,
+                request_par,
+                return_par
+    </sql>
+    <insert id="saveSysInterfacePar" parameterType="com.sofn.sys.model.SysInterfaceManage">
+        INSERT INTO sys_interface_manage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                id,
+            </if>
+            <if test ='null != interName'>
+                inter_name,
+            </if>
+            <if test ='null != requestModel'>
+                request_model,
+            </if>
+            <if test ='null != sSubsystem'>
+                s_subsystem,
+            </if>
+            <if test ='null != remark'>
+                remark,
+            </if>
+            <if test ='null != createUserId'>
+                create_user_id,
+            </if>
+            <if test ='null != createTime'>
+                create_time,
+            </if>
+            <if test ='null != updateUserId'>
+                update_user_id,
+            </if>
+            <if test ='null != updateTime'>
+                update_time,
+            </if>
+            <if test ='null != delFlag'>
+                del_flag,
+            </if>
+            <if test ='null != operator'>
+                operator,
+            </if>
+            <if test ='null != operateTime'>
+                operate_time,
+            </if>
+            <if test ='null != interUrl'>
+                inter_url,
+            </if>
+            <if test ='null != requestPar'>
+                request_par,
+            </if>
+            <if test ='null != returnPar'>
+                return_par
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+
+            <if test ='null != id'>
+                #{id},
+            </if>
+            <if test ='null != interName'>
+                #{interName},
+            </if>
+            <if test ='null != requestModel'>
+                #{requestModel},
+            </if>
+            <if test ='null != sSubsystem'>
+                #{sSubsystem},
+            </if>
+            <if test ='null != remark'>
+                #{remark},
+            </if>
+            <if test ='null != createUserId'>
+                #{createUserId},
+            </if>
+            <if test ='null != createTime'>
+                #{createTime},
+            </if>
+            <if test ='null != updateUserId'>
+                #{updateUserId},
+            </if>
+            <if test ='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test ='null != delFlag'>
+                #{delFlag},
+            </if>
+            <if test ='null != operator'>
+                #{operator},
+            </if>
+            <if test ='null != operateTime'>
+                #{operateTime},
+            </if>
+            <if test ='null != interUrl'>
+                #{interUrl},
+            </if>
+            <if test ='null != requestPar'>
+                #{requestPar},
+            </if>
+            <if test ='null != returnPar'>
+                #{returnPar}
+            </if>
+        </trim>
+    </insert>
+    <update id="update" parameterType="com.sofn.sys.model.SysInterfaceManage">
+        UPDATE sys_interface_manage
+        <set>
+            <if test ='null != interName'>inter_name = #{interName},</if>
+            <if test ='null != requestModel'>request_model = #{requestModel},</if>
+            <if test ='null != sSubsystem'>s_subsystem = #{sSubsystem},</if>
+            <if test ='null != remark'>remark = #{remark},</if>
+            <if test ='null != createUserId'>create_user_id = #{createUserId},</if>
+            <if test ='null != createTime'>create_time = #{createTime},</if>
+            <if test ='null != updateUserId'>update_user_id = #{updateUserId},</if>
+            <if test ='null != updateTime'>update_time = #{updateTime},</if>
+            <if test ='null != delFlag'>del_flag = #{delFlag},</if>
+            <if test ='null != operator'>operator = #{operator},</if>
+            <if test ='null != operateTime'>operate_time = #{operateTime},</if>
+            <if test ='null != interUrl'>inter_url = #{interUrl},</if>
+            <if test ='null != requestPar'>request_par = #{requestPar,jdbcType=CLOB},</if>
+            <if test ='null != returnPar'>return_par = #{returnPar,jdbcType=CLOB}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <update id="deleteById" >
+        update sys_interface_manage set DEL_FLAG='Y' where id=#{id}
+    </update>
+    <!--批量删除-->
+    <update id="batchDelete" parameterType="java.util.Map">
+        update sys_interface_manage  set del_flag = 'Y',UPDATE_USER_ID= #{updateUserId},UPDATE_TIME = #{updateTime} where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+
+    <select id="findByCondition" resultMap="BaseResultMap" parameterType="map">
+        SELECT <include refid="Base_Column_List" />
+        from sys_interface_manage
+        <where>
+            <if test="delFlag != null and delFlag != ''">
+                and DEL_FLAG= #{delFlag}
+            </if>
+            <if test="type != null and type != ''">
+                and REQUEST_MODEL=#{type}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                and inter_name like '%' || #{keyword} || '%'
+                or INTER_URL  like '%' || #{keyword} || '%'
+            </if><if test="subSystemId != null and subSystemId != ''">
+            and  s_subsystem = #{subSystemId}
+        </if>
+            and DEL_FLAG != 'Y'
+        </where>
+        order by OPERATE_TIME DESC
+    </select>
+    <select id="getOne" resultType="com.sofn.sys.model.SysInterfaceManage">
+        select <include refid="Base_Column_List"></include>
+        from sys_interface_manage where id=#{id} and DEL_FLAG != 'Y'
+    </select>
+    <select id="findStatus" resultType="java.lang.String">
+        SELECT DEL_FLAG FROM SYS_INTERFACE_MANAGE WHERE ID= #{interId}
+    </select>
+
+</mapper>

@@ -1,0 +1,181 @@
+[
+  {
+    "id": 1,
+    "text": "",
+    "children": [
+      {
+        "id":18,
+        "text":"账号信息",
+        "state":"closed",
+        "children":[{
+          "id": 181,
+          "text": "管理员账号",
+          "menuUrl": "index.content.monitor/acctInfo/adminAcct"
+        },{
+          "id": 182,
+          "text": "非管理员账号",
+          "menuUrl": "index.content.monitor/acctInfo/userAcct"
+        }]
+      },{
+        "id": 12,
+        "text": "监测模型",
+        "state": "closed",
+        "children": [
+          {
+            "id": 131,
+            "text": "基础数据配置",
+            "menuUrl": "index.content.monitor/model/adsModelCheckObject/adsModelCheckObject"
+          },
+          {
+            "id": 127,
+            "text": "检测模型配置",
+            "menuUrl": "index.content.monitor/model/adsCheckModel/adsCheckModel"
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "text": "牵头单位",
+        "state": "closed",
+        "children": [
+          {
+            "id": 111,
+            "text": "项目管理",
+            "menuUrl": "index.content.monitor/leadUnit/index",
+            "children": [
+              {
+                "id": 111,
+                "text": "新任务",
+                "menuUrl": "index.content.monitor/leadUnit/AdsMonitorTask/newTaskList"
+              },
+              {
+                "id": 111,
+                "text": "待发布任务",
+                "menuUrl": "index.content.monitor/leadUnit/AdsMonitorTask/pubTaskList"
+              },
+              {
+                "id": 111,
+                "text": "历史任务",
+                "menuUrl": "index.content.monitor/leadUnit/AdsMonitorTask/historyTaskList"
+              },
+              {
+                "id": 111,
+                "text": "监管下发的任务",
+                "menuUrl": "index.content.monitor/leadUnit/AdsMonitorTask/adsRoutineMonitor/adsRoutineMonitor"
+              }
+              ]
+          },
+          {
+            "id": 111,
+            "text": "项目完成情况",
+            "menuUrl": "index.content.monitor/leadUnit/AdsOrganTask/AdsOrganTaskView",
+            "children": [
+              {
+                "id": 111,
+                "text": "监测信息汇总",
+                "menuUrl": "index.content.monitor/leadUnit/AdsMonitorTask/adsCheckInfo/routineMonitorView"
+              },
+              {
+                "id": 116,
+                "text": "报告下载",
+                "menuUrl": "index.content.monitor/leadUnit/reportDownload/ReportDLRoutine"
+              },
+              {
+                "id": 117,
+                "text": "项目总结报告上传",
+                "menuUrl": "index.content.monitor/leadUnit/reportUpload/routineUpload"
+              },
+              {
+                "id": 118,
+                "text": "报告管理",
+                "menuUrl": "index.content.monitor/leadUnit/reportReview/reportReviewRoutine"
+              }
+            ]
+          },{
+            "id": 12,
+            "text": "报表",
+            "state": "closed",
+            "children": [
+              {
+                "id": 117,
+                "text": "抽样环节统计",
+                "menuUrl": "index.content.monitor/report/sampling/reportSamplingLink"
+              },
+              {
+                "id": 117,
+                "text": "抽样地区统计",
+                "menuUrl": "index.content.monitor/report/sampling/reportSamplingArea"
+              },
+              {
+                "id": 117,
+                "text": "抽样机构统计",
+                "menuUrl": "index.content.monitor/report/sampling/reportSamplingOrgan"
+              },
+              {
+                "id": 117,
+                "text": "检测环节统计",
+                "menuUrl": "index.content.monitor/report/detection/reportCheckLink"
+              },
+              {
+                "id": 117,
+                "text": "检测地区统计",
+                "menuUrl": "index.content.monitor/report/detection/reportCheckArea"
+              },
+              {
+                "id": 117,
+                "text": "检测对象统计",
+                "menuUrl": "index.content.monitor/report/detection/reportCheckObject"
+              },
+              {
+                "id": 117,
+                "text": "检测地区对象统计",
+                "menuUrl": "index.content.monitor/report/detection/reportCheckAreaObj"
+              },
+              {
+                "id": 117,
+                "text": "检测机构统计",
+                "menuUrl": "index.content.monitor/report/detection/reportCheckOrgan"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 16,
+        "text": "承担单位",
+        "state": "closed",
+        "children": [
+          {
+            "id": 161,
+            "text": "新任务",
+            "menuUrl": "index.content.monitor/execUnit/AdsOrganTask/taskManage"
+          },
+          {
+            "id": 162,
+            "text": "例行监测",
+            "menuUrl": "index.content.monitor/execUnit/routineMonitor/routineMonitoring"
+          },
+          {
+            "id": 163,
+            "text": "专项监测",
+            "menuUrl": "index.content.monitor/execUnit/specialMonitor/routineMonitoringSpecial"
+          },
+          {
+            "id": 162,
+            "text": "监督抽查",
+            "menuUrl": "index.content.monitor/execUnit/Audit/routineMonitoringAudit"
+          },
+          {
+            "id": 163,
+            "text": "报告汇总",
+            "menuUrl": "index.content.monitor/execUnit/report/reportSummary"
+          },
+          {
+            "id": 164,
+            "text": "问题单据",
+            "menuUrl": "index.content.monitor/execUnit/problemFile/problemFileRoutine"
+          }
+        ]
+      }
+    ]
+  }]

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.PapersSpecMapper">
+    <resultMap id="papersSpecVoResultMap" type="com.sofn.fdpi.vo.PapersSpecVo">
+        <result column="PAPERS_ID" property="papersId" jdbcType="VARCHAR"></result>
+        <result column="SPEC_ID" property="specId" jdbcType="VARCHAR"></result>
+        <result column="SPE_NAME" property="specName" jdbcType="VARCHAR"></result>
+        <result column="LATIN_NAME" property="latinName" jdbcType="VARCHAR"></result>
+        <result column="SOURCE" property="source" jdbcType="VARCHAR"></result>
+        <result column="AMOUNT" property="amount" jdbcType="VARCHAR"></result>
+        <result column="PRO_LEVEL" property="proLevel" jdbcType="VARCHAR"></result>
+        <result column="CITES" property="cites" jdbcType="VARCHAR"></result>
+        <result column="UNIT" property="unit" jdbcType="VARCHAR"></result>
+        <result column="SPE_TYPE" property="speType" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <resultMap id="papersSpecVoResultMapForStock" type="com.sofn.fdpi.vo.PapersSpecVo">
+        <result column="PAPERS_ID" property="papersId" jdbcType="VARCHAR"></result>
+        <result column="SPEC_ID" property="specId" jdbcType="VARCHAR"></result>
+        <result column="SPE_NAME" property="specName" jdbcType="VARCHAR"></result>
+        <result column="AMOUNT" property="amount" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <!--    <update id="delByPapersId">-->
+    <!--        update PAPERS_SPEC set  del_flag='Y' where papers_id=#{papersId}-->
+    <!--    </update>-->
+    <delete id="delByPapersId">
+        delete from PAPERS_SPEC where papers_id = #{papersId}
+    </delete>
+
+    <select id="listForCondition" parameterType="java.lang.String" resultMap="papersSpecVoResultMap">
+        select A.PAPERS_ID,A.SPEC_ID,B.SPE_NAME,B.LATIN_NAME,A.SOURCE,A.AMOUNT,A.UNIT,B.PRO_LEVEL,B.CITES,A.MODE,B.SPE_TYPE
+        from PAPERS_SPEC A
+        LEFT JOIN TB_SPECIES B ON A.SPEC_ID=B.ID
+        WHERE A.PAPERS_ID=#{papersId} and A.DEL_FLAG='N'
+    </select>
+    <select id="listByPapersIds" parameterType="java.util.List" resultMap="papersSpecVoResultMapForStock">
+        select A.SPEC_ID,B.SPE_NAME,max(AMOUNT) AMOUNT
+        from PAPERS_SPEC A
+        LEFT JOIN TB_SPECIES B ON A.SPEC_ID=B.ID
+        WHERE
+        A.PAPERS_ID in
+        <foreach collection="papersIdList" item="item" index="index" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        and A.DEL_FLAG='N'
+        group by A.SPEC_ID,B.SPE_NAME
+    </select>
+    <select id="checkPapersSpe" resultType="com.sofn.fdpi.model.PapersSpec">
+        select  * from  PAPERS_SPEC A where PAPERS_ID=#{papersId} and  SPEC_ID=#{speId} and del_flag='N'
+    </select>
+</mapper>

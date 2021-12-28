@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fyrpa.mapper.AppraiseAnalyseMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.fyrpa.model.AppraiseAnalyse" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="numerical_value" property="numericalValue" jdbcType="DOUBLE"></result>
+    <result column="score" property="score" jdbcType="DOUBLE"></result>
+    <result column="resources_protection_id" property="resourcesProtectionId" jdbcType="VARCHAR"></result>
+    <result column="target_two_manager_id" property="targetTwoManagerId" jdbcType="VARCHAR"></result>
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP"></result>
+    <result column="is_del" property="isDel" jdbcType="VARCHAR"></result>
+      <result column="target_one_manager_id" property="targetOneManagerId" jdbcType="VARCHAR"></result>
+  </resultMap>
+  <sql id="Base_Column_List" >
+     id,numerical_value,score,resources_protection_id,target_two_manager_id,create_time,is_del,target_one_manager_id
+  </sql>
+
+  <select id="selectSum" resultType="java.lang.Integer">
+        select sum(score) from appraise_analyse where
+        resources_protection_id=#{resourcesProtectionId} and is_del='N'
+  </select>
+
+  <select id="selectAppraiseAnalyseDetails" resultType="com.sofn.fyrpa.vo.AppraiseAnalyseDetailsVo">
+     select
+       two.target_name as targetTwoName,
+       two.score_value as scoreValue,
+       two.reference_value as referenceValue,
+       two.id as target_two_id,
+       ap.score as score,ap.numerical_value as numericalValue,
+        ap.create_time as appraise_time, two.update_time as target_update_time
+        from  appraise_analyse ap inner join target_two_manager two
+        on ap.target_two_manager_id=two.id
+        where ap.is_del='N'
+          <!-- and two.status='1' -->
+         and ap.target_one_manager_id=#{targetOneId}
+         and ap.resources_protection_id=#{resourceId}
+  </select>
+
+    <select id="selectAppraiseAnalyseDetails2" resultType="com.sofn.fyrpa.vo.AppraiseAnalyseDetailsVo">
+        select
+          DISTINCT one.id as targetOneId,one.target_name as targetOneName,
+        ap.create_time as appraise_time, one.update_time as target_update_time
+            from appraise_analyse ap inner join  target_one_manager one
+            on one.id= ap.target_one_manager_id
+            where ap.is_del='N' and one.is_del = 'N'
+            <!-- and one.status='1' -->
+            and ap.resources_protection_id=#{resourceId}
+    </select>
+
+</mapper>

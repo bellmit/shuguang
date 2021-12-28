@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysOrganizationMapper">
+    <resultMap id="customResultMap" type="com.sofn.sys.model.SysOrganization">
+        <result column="ID" property="id"></result>
+        <result column="ORGANIZATION_NAME" property="organizationName"></result>
+        <result column="PARENT_IDS" property="parentIds"></result>
+        <result column="PARENT_ID" property="parentId"></result>
+        <result column="DEL_FLAG" property="delFlag"></result>
+        <result column="LEAF" property="leaf"></result>
+        <result column="PRIORITY" property="priority"></result>
+    </resultMap>
+
+    <select id="getSysOrganizationByName" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT count(1) from SYS_ORGANIZATION a where 1 =1 and del_flag != 'N'
+        <if test="orgname != null and orgname != ''">
+            and ORGANIZATION_NAME = #{orgname}
+        </if>
+
+        <if test="id != null and id != ''">
+            and ID != #{id}
+        </if>
+
+    </select>
+
+    <select id="getRootSysOrg" resultType="com.sofn.sys.model.SysOrganization">
+        SELECT a.ID FROM SYS_ORGANIZATION A WHERE A.PARENT_ID = '0' and a.del_flag != 'Y'
+    </select>
+
+    <select id="getOrgTree" resultType="com.sofn.sys.model.SysOrganization">
+        SELECT
+            A .ID,
+            A .ORGANIZATION_NAME,
+            A .PARENT_ID
+        FROM
+            SYS_ORGANIZATION A START
+            WITH A .PARENT_ID = #{sysid}
+            CONNECT BY PRIOR A.ID = A.PARENT_ID
+    </select>
+
+    <select id="getUserOfOrganization" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT count(1) from SYS_ORGANIZATION a where 1 =1 and del_flag != 'Y'
+        <if test="id != null and id != ''">
+            and PARENT_ID = #{id}
+        </if>
+
+    </select>
+
+    <select id="selectOrganizationListByPriority" parameterType="java.lang.String" resultMap="customResultMap">
+        SELECT
+            ID						,
+            ORGANIZATION_NAME       ,
+            PARENT_IDS              ,
+            PARENT_ID               ,
+            DEL_FLAG                ,
+            LEAF                    ,
+            PRIORITY
+        FROM SYS_ORGANIZATION where DEL_FLAG = #{delFlag} order by PRIORITY
+    </select>
+    <update id="updateSalefParentIds" parameterType="java.lang.String">
+    update SYS_ORGANIZATION set PARENT_IDS=concat(#{makeSelfAsParentIds}, substring(PARENT_IDS, length(#{makeSelfAsParentIds}))) where PARENT_IDS like #{makeSelfAsParentIds} + '%'
+  </update>
+
+    <select id="getSysOrganizationByContion" parameterType="java.util.Map" resultMap="customResultMap">
+        SELECT
+        ID ,
+        ORGANIZATION_NAME ,
+        PARENT_IDS ,
+        PARENT_ID ,
+        DEL_FLAG ,
+        LEAF ,
+        PRIORITY
+        FROM SYS_ORGANIZATION
+        <where>
+            <if test="name != null and name != ''">
+                and RESOURCE_NAME like '%' || #{name} || '%'
+            </if>
+            <if test="delFlag != null and delFlag != ''">
+                and DEL_FLAG= #{delFlag}
+            </if>
+
+        </where>
+    </select>
+
+    <select id="getInfoByCondition" parameterType="java.util.Map" resultType="java.util.HashMap">
+        SELECT
+        ID				 ID 		,
+        ORGANIZATION_NAME ORGNAME  ,
+        NVL(ADDRESS,'-') ADDRESS,
+        NVL((
+        select XMLAGG(XMLELEMENT(E, a.REGION_NAME  || ',')).EXTRACT('//text()').getclobval() from SYS_REGION a where a.ID in (
+        select
+        REGEXP_SUBSTR (REPLACE(REPLACE(REPLACE (ADDRESS,'"',''),'[',''),']',''),'[^,]+',1,LEVEL)
+        from dual
+        CONNECT BY LEVEL  <![CDATA[ <= ]]> REGEXP_COUNT(REPLACE(REPLACE(REPLACE (ADDRESS,'"',''),'[',''),']','') , '[^,]+')
+        )),'-') as ADDRESSNAME
+        FROM SYS_ORGANIZATION a where 1=1
+        <if test="orgName != null and orgName!=''">
+            and ORGANIZATION_NAME like '%' ||  #{orgName} || '%'
+        </if>
+        <if test="ids != null and ids.size != 0">
+            and ID in
+            <foreach collection="ids" item="id" separator="," open="(" close=")">
+                #{id}
+            </foreach>
+        </if>
+    </select>
+
+
+    <select id="getTreeVoInfoByCondition" parameterType="java.util.Map" resultType="com.sofn.sys.vo.SysOrganizationTreeVo">
+        select
+        so.ID  AS ID,
+        SO.PARENT_ID AS parentId,
+        SO.PARENT_IDS AS parentIds,
+        SO.SORT AS sort,
+        SO.ORGANIZATION_NAME AS organizationName,
+        SO.THIRD_ORG AS thirdOrg,
+        SO.ORGANIZATION_LEVEL AS organizationLevel,
+        (select sd.DICTNAME from SYS_DICT sd left join SYS_DICT_TYPE sdt on SDT.ID = SD.DICTTYPEID
+        where
+        (sd.DEL_FLAG is null or sd.DEL_FLAG = 'N')
+        and (sd.ENABLE is null or sd.ENABLE = 'Y')
+        and SDT.TYPEVALUE = 'organization_level'
+        and SD.DICTCODE = SO.ORGANIZATION_LEVEL )  organizationLevelName,
+        SO.REGIONCODE regioncode,
+        SO.ADDRESS address,
+        SO.PRINCIPAL principal,
+        SO.PHONE phone,
+        SO.LEAF leaf,
+        SO.org_function orgFunction
+        FROM SYS_ORGANIZATION so
+        <where>
+            and ( so.del_flag is null or so.del_flag = 'N')
+            <if test="ids != null and ids.size > 0">
+                and SO.ID IN
+                <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="parentIdList != null and parentIdList.size > 0" >
+                and SO.PARENT_ID IN
+                <foreach collection="parentIdList" item="parentId" open="(" close=")" separator=",">
+                    #{parentId}
+                </foreach>
+            </if>
+            <if test="parentIds != null and parentIds != ''">
+                and so.PARENT_IDS like #{parentIds} || '%'
+            </if>
+
+            <if test="regionId != null and regionId != ''">
+                and so.REGION_LAST_CODE = #{regionId}
+            </if>
+            <if test="orgName != null and orgName != ''">
+                and ORGANIZATION_NAME like '%'|| #{orgName} ||'%'
+            </if>
+        </where>
+        <if test="loginUserId != null and loginUserId != ''">
+            union
+            select
+            so.ID  AS ID,
+            SO.PARENT_ID AS parentId,
+            SO.PARENT_IDS AS parentIds,
+            SO.SORT AS sort,
+            SO.ORGANIZATION_NAME AS organizationName,
+            SO.THIRD_ORG AS thirdOrg,
+            SO.ORGANIZATION_LEVEL AS organizationLevel,
+            (select sd.DICTNAME from SYS_DICT sd left join SYS_DICT_TYPE sdt on SDT.ID = SD.DICTTYPEID
+            where
+            (sd.DEL_FLAG is null or sd.DEL_FLAG = 'N')
+            and (sd.ENABLE is null or sd.ENABLE = 'Y')
+            and SDT.TYPEVALUE = 'organization_level'
+            and SD.DICTCODE = SO.ORGANIZATION_LEVEL )  organizationLevelName,
+            SO.REGIONCODE regioncode,
+            SO.ADDRESS address,
+            SO.PRINCIPAL principal,
+            SO.PHONE phone,
+            SO.LEAF leaf,
+            SO.org_function orgFunction
+            FROM SYS_ORGANIZATION so
+            where so.CREATE_USER_ID = #{loginUserId} and so.del_flag != 'Y'
+            <if test="regionId != null and regionId != ''">
+                and so.REGION_LAST_CODE = #{regionId}
+            </if>
+            <if test="orgName != null and orgName != ''">
+                and ORGANIZATION_NAME like '%'|| #{orgName} ||'%'
+            </if>
+        </if>
+
+    </select>
+
+    <select id="getBasicTreeVoInfoByCondition" parameterType="java.util.Map" resultType="com.sofn.sys.vo.SysOrganizationTreeVo">
+        select
+        so.ID  AS ID,
+        SO.PARENT_ID AS parentId,
+        SO.PARENT_IDS AS parentIds,
+        SO.SORT AS sort,
+        SO.ORGANIZATION_NAME AS organizationName,
+        SO.THIRD_ORG AS thirdOrg,
+        SO.ORGANIZATION_LEVEL AS organizationLevel,
+        SO.ORGANIZATION_LEVEL AS  organizationLevelName,
+        SO.REGIONCODE regioncode,
+        SO.REGIONCODE  as regioncodeName,
+        SO.ADDRESS address,
+        SO.ADDRESS as addressName,
+        SO.PRINCIPAL principal,
+        SO.PHONE phone,
+        SO.LEAF leaf
+        FROM SYS_ORGANIZATION so
+        <where>
+            and ( so.del_flag is null or so.del_flag = 'N')
+            <if test="ids != null and ids.size > 0">
+                and SO.ID IN
+                <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="parentIdList != null and parentIdList.size > 0" >
+                and SO.PARENT_ID IN
+                <foreach collection="parentIdList" item="parentId" open="(" close=")" separator=",">
+                    #{parentId}
+                </foreach>
+            </if>
+            <if test="parentIds != null and parentIds != ''">
+                and so.PARENT_IDS like #{parentIds} || '%'
+            </if>
+        </where>
+    </select>
+
+    <update id="updateParentIdsByIds" parameterType="java.util.Map" >
+        update SYS_ORGANIZATION set PARENT_IDS= #{parentIds}
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="getProxyOrgByRegionIdAndAppId" parameterType="java.util.Map" resultType="com.sofn.sys.vo.SysOrganizationTreeVo">
+        select
+        so.ID  AS ID,
+        SO.PARENT_ID AS parentId,
+        SO.PARENT_IDS AS parentIds,
+        SO.SORT AS sort,
+        SO.ORGANIZATION_NAME AS organizationName,
+        SO.THIRD_ORG AS thirdOrg,
+        SO.ORGANIZATION_LEVEL AS organizationLevel,
+        SO.ORGANIZATION_LEVEL AS  organizationLevelName,
+        SO.REGIONCODE regioncode,
+        SO.REGIONCODE  as regioncodeName,
+        SO.ADDRESS address,
+        SO.ADDRESS as addressName,
+        SO.PRINCIPAL principal,
+        SO.PHONE phone,
+        SO.LEAF leaf
+        from SYS_ORGANIZATION so where SO.id in (
+        select a.THIRD_ORG_ID from SYS_ORGANIZATION_AGENT a
+        left join SYS_ORGANIZATION b on a.ORG_ID = b.id and b.del_flag != 'Y'
+        left join SYS_SUBSYSTEM ss on a.subsystem_id = ss.id and ss.del_flag != 'Y'
+        where 1 = 1
+        <if test="regionId != null and regionId != ''">
+            and  b.REGION_LAST_CODE = #{regionId}
+        </if>
+        <if test="appId != null and appId != ''">
+            and (a.SUBSYSTEM_ID = #{appId} or ss.app_id = #{appId})
+        </if>
+        <if test="orgId != null and orgId != ''">
+            and a.ORG_ID = #{orgId}
+        </if>
+        )
+
+    </select>
+
+</mapper>
+

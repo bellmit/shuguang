@@ -1,0 +1,141 @@
+<link rel="stylesheet" href="assets/css/dgap/resource/resourceRole.css">
+<div class="gui-breadcrumbs">
+    <a href="">数据共享系统</a>&gt;
+    <a href="">安全管理</a>&gt;
+    <span>资源权限设置</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group">
+        <span>资源目录</span>
+        <span class="gui-select">
+          <select name="resourceDirectoryName">
+              <option value="">--资源目录--</option>
+              <option value="{{names.id}}" ng-repeat="names in resourceDir">{{names.text}}</option>
+          </select>
+        </span>
+    </div>
+    <form>
+        <div class="gui-form-group">
+            <span>角色名称</span>
+            <span class="gui-select">
+      <select name="roleId">
+          <option value="">--角色名称--</option>
+          <option ng-repeat="name in roleList" value="{{name.id}}">{{name.roleName}}</option>
+      </select>
+    </span>
+            <span>资源名称</span>
+            <input type="text" class="gui-input" placeholder="请输入资源名称" name="resourceName" maxlength="30">
+            <button class="gui-btn ml15 submit-btn" ng-click="resourceDirs()">查询</button>
+            <button class="gui-btn ml15 submit-btn" ng-click="cleanData()">重置</button>
+        </div>
+    </form>
+    <div class="gui-actions">
+        <span class="gui-btn fr" ng-click="deleteResourceRole()"><i class="gui-icon icon-remove"></i>批量删除</span>
+        <span class="gui-btn fr mr15" data-toggle="modal" data-target="#resDirAdd"><i
+                class="gui-icon icon-add"></i>新增</span>
+    </div>
+
+    <table id="reRole" class="gui-table">
+    </table>
+</div>
+
+<!-- 模态框（新增） -->
+<div class="modal fade" id="resDirAdd" tabindex="-1" role="dialog" aria-labelledby="resDirAddLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="resDirAddLabel">
+                    资源权限设置新增
+                </h4>
+            </div>
+            <div class="modal-body">
+
+                <div id="resourceRoleAddF" style="text-align: center">
+
+                    <div class="form-item form-group">
+                        <label>资源名称<i class="gui-colorRed">*</i></label>
+                        <span class="gui-select">
+                      <select type="text" name="resourceName" ng-model="resourceName" data-bv-notempty="true"
+                              data-bv-notempty-message="资源名称不能为空！">
+                          <option value="">-请选择资源-</option>
+                          <option ng-repeat="x in resources" value="{{x.id}}">{{x.name}}</option>
+                      </select>
+                    </span>
+                    </div>
+
+                    <div class="form-item form-group">
+                        <label>角色名称<i class="gui-colorRed">*</i></label>
+                        <span class="gui-select">
+                      <select type="text" name="roleId" ng-model="roleIdModel" data-bv-notempty="true"
+                              data-bv-notempty-message="角色名称不能为空！">
+                          <option value="">-请选择角色名称-</option>
+                          <option ng-repeat="x in roleList" value="{{x.id}}">{{x.roleName}}</option>
+                      </select>
+                    </span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span type="button" class="gui-btn" data-dismiss="modal">取消</span>
+                <span type="submit" ng-click="addResRole()" class="gui-btn resourceRoleSaveB">保存</span>
+            </div>
+        </div>
+
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+
+
+<!-- 模态框（修改） -->
+<div class="modal fade" id="resourceRoleUpdate" tabindex="-1" role="dialog" aria-labelledby="resDirAdd1Label"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="resDirAdd1Label">
+                    资源权限设置修改
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="resourceRoleUpdateF" style="text-align: center">
+                    <div class="form-item form-group">
+                        <label>资源名称<i class="gui-colorRed">*</i></label>
+                        <span class="gui-select">
+                            <select type="text" name="resourceId" ng-model="updateResourceName"
+                                    class="gui-select form-control" data-bv-notempty="true"
+                                    data-bv-notempty-message="资源名称不能为空！">
+                                <!--<option value="">-请选择资源-</option>-->
+                                <option ng-repeat="x in resources" value="{{x.id}}">{{x.name}}</option>
+                            </select>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>角色名称<i class="gui-colorRed">*</i></label>
+                        <span class="gui-select">
+                            <select type="text" name="roleId" ng-model="updateRoleName" class="gui-select form-control"
+                                    data-bv-notempty="true" data-bv-notempty-message="角色名称不能为空！">
+                                <option ng-repeat="x in roleList" value="{{x.id}}">{{x.roleName}}</option>
+                            </select>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                    <span type="button" data-dismiss="modal" class="gui-btn">取消
+                        </span>
+                <span ng-click="resourceRoleUpdata()" class="gui-btn resourceRoleB">
+                            保存
+                        </span>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>

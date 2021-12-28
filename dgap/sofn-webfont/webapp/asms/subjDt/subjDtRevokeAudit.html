@@ -1,0 +1,59 @@
+<link rel="stylesheet" href="assets/css/asms/subjSv/subjSvRevokeAudit.css"/>
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">监管系统</a>&gt;
+    <a ui-sref="index.content.asms/subjDt/subjDtRevokeList">主体管理</a>&gt;
+    <a ui-sref="index.content.asms/subjDt/subjDtRevokeList">检测机构</a>&gt;
+    <span>注册撤销审核</span>
+</div>
+    <div class="gui-section gui-section-wid" >
+        <h4 class="mt15 mb25">注册撤销申请审核</h4>
+        <form id="revokeForm" name="revokeForm">
+        <input type="hidden" ng-model="subjDtRevokeId">
+        <input type="hidden" ng-model="subjDtRevoke.applyUserId">
+        <input type="hidden" ng-model="subjDtRevoke.applyTime">
+        <input type="hidden" ng-model="subjDtRevoke.applyDtId">
+        <table class="ApplyTable" style="text-align: left">
+            <tbody>
+            <tr><td>机构名称</td><td><span ng-bind="subjDt.dtName"></span></td></tr>
+            <tr><td>机构代码</td><td><span ng-bind="subjDt.dtCode"></span></td></tr>
+            <tr><td>机构类别</td><td><span ng-bind="subjDt.dtType"></span></td></tr>
+            <tr><td>机构性质</td><td><span ng-bind="subjDt.dtNature"></span></td></tr>
+            <tr><td>资质</td><td><span ng-bind="subjDt.dtQualifications"></span></td></tr>
+            <tr><td>依托单位</td><td><span>{{subjDt.dtRelyOnUnit||'无'}}</span></td></tr>
+            <tr><td>机构级别</td><td><span ng-bind="subjDt.dtLevelName"></span></td></tr>
+            <tr><td>所属区域</td><td><span ng-bind="subjDt.dtArea"></span></td></tr>
+            <tr><td>通讯地址</td><td><span ng-bind="subjDt.dtAddress"></span></td></tr>
+            <tr><td>组织机构代码</td><td><span ng-bind="subjDt.dtCode"></span></td></tr>
+            <tr><td>法人</td><td><span ng-bind="subjDt.dtLegalMan"></span></td></tr>
+            <tr><td>负责人</td><td><span ng-bind="subjDt.dtLeader"></span></td></tr>
+            <tr><td>负责人电话</td><td><span>{{subjDt.dtLeaderPhone||'无'}}</span></td></tr>
+            <tr><td>联系人</td><td><span ng-bind="subjDt.dtContact"></span></td></tr>
+            <tr><td>联系人电话</td><td><span ng-bind="subjDt.dtContactPhone"></span></td></tr>
+            <tr><td>联系人QQ</td><td><span>{{subjDt.dtContactQQ||'无'}}</span></td></tr>
+            <tr><td>电子邮箱</td><td><span>{{subjDt.dtContactEmail||'无'}}</span></td></tr>
+            <tr><td>邮编</td><td><span>{{subjDt.dtPostcode||'无'}}</span></td></tr>
+            <tr><td>技术负责人</td><td><span>{{subjDt.dtTechnicalDirector||'无'}}</span></td></tr>
+            <tr><td>质量负责人</td><td><span>{{subjDt.dtQualityDirector||'无'}}</span></td></tr>
+            <tr><td>参数</td><td><span>{{subjDt.dtParameter||'无'}}</span></td></tr>
+            <tr><td>产品范围</td><td><span>{{subjDt.dtProductRange||'无'}}</span></td></tr>
+            <tr><td>撤销原因</td><td><span>{{subjDtRevoke.applyReason||'无'}}</span></td></tr>
+            <tr class="Sup_contain_section_contain_head_photo">
+                <td style="vertical-align: middle">审核意见<span style="color:red;">*</span></td><td colspan="2" style="text-align: left;" class="form-group">
+                    <textarea   style="max-width: 500px;background-color: #f6f6f6;border: 1px solid #9d9d9d" rows="3" class="form-control" name="auditSuggestion" ng-model="subjDtRevoke.auditSuggestion"
+                              class="form-control gui-textarea"
+                              data-bv-notempty="true"
+                              data-bv-notempty-message="审核意见不能为空"
+                              data-bv-stringlength="true"
+                              data-bv-stringlength-max="300"
+                              data-bv-stringlength-message="审核意见不能超过300个字符"></textarea>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        </form>
+        <div align="center"  class="mt15 mb25">
+            <button id="passBut" style="display: none;" class="gui-btn" ng-click="auditSubjDtRevoke(1)">审核通过</button>
+            <button id="refuseBut" style="display: none;" class="gui-btn" ng-click="auditSubjDtRevoke(2)">审核不通过</button>
+            <button id="closeBut" class="gui-btn" ng-click="removeLocalStorage()">关闭</button>
+        </div>
+    </div>

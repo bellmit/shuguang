@@ -1,0 +1,180 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+
+    <div class="panel panel-default" style="width: 15%;float: left">
+        <div class="panel-collapse collapse in">
+            <div class="panel-body">
+                <div class="list-group" style="margin-bottom:0px;">
+                    <a href="#" ng-click="taskDetail()" class="list-group-item line-15">任务详情</a>
+                    <a href="#" ng-click="sampelPrint()" class="list-group-item line-15">抽样</a>
+                    <a href="#" ng-click="test()" class="list-group-item line-15">检测结果录入</a>
+                    <a href="#" ng-click="import()" class="list-group-item line-15">检测结果导入</a>
+                    <a href="#" ng-click="routineMonitorList()" class="list-group-item line-15">检测信息汇总</a>
+                    <a href="#" ng-click="historyTaskList()" class="list-group-item line-15">报告上传</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="Sup_contain_section_head col-lg-12 col-xs-12 col-sm-12 col-md-12" style="width: 80%">
+        <div class="gui-breadcrumbs">
+            <a href="">委托检测</a>&gt;
+            <span>检测信息汇总</span>
+        </div>
+        <p class="col-lg-1 col-xs-0 col-sm-1 col-md-1"></p>
+        <div class="Sup_contain_section_contain ">
+
+            <div id="abc"></div>
+
+            <div class="Sup_contain_section_contain mgt-15">
+                <form class="form-inline" role="form" id="addForm" name="addForm" >
+                    <div class="has-success has-feedback">
+                        <label class="control-label   for=year " >年&nbsp;&nbsp;份</label>
+                        <select name="year"id="year" class="form-control" style="width: 30%"  >
+                            <option value="" >年度</option>
+                            <option   ng-repeat="x in year"  >{{x}}</option>
+                        </select>
+
+                        <label class="control-label  for=taskName " style="margin-left: 10px">任务名称</label>
+                        <select name="taskName"id="taskName"  class="form-control  " style="width: 30%"  >
+                            <option value="" >全部</option>
+                            <option ng-repeat="x in taskName"  >{{x.taskName}}</option>
+                        </select>
+                    </div>
+                </form>
+                <form class="form-inline" role="form">
+                    <div class="has-success has-feedback">
+                        <label class="control-label for=productCode">产品编码</label>
+                        <input style="width: 30%" type="text" class="form-control" name="productCode" id="productCode">
+                        <label class="control-label for=sampleCode" style="margin-left: 10px" >样品编码</label>
+                        <input style="width: 30%" type="text" class="form-control" name="sampleCode" id="sampleCode">
+                    </div>
+                </form>
+                <form class="form-inline" role="form">
+                    <div class="has-success has-feedback">
+                        <label class="control-label for=province" >所属区域</label>
+                        <select id="sheng1" class="form-control"  style="height: 34px;width:25%" >
+                            <option value="" >--请选择省份--</option>
+                        </select>
+                        <select id="shi1" class="form-control" style="height: 34px;width:25%" >
+                            <option value="" >--请选择城市--</option>
+                        </select>
+                        <select id="xian1" class="form-control" style="height: 34px;width: 25%">
+                            <option value="" style="">--请选择区/县--</option>
+                        </select>
+                    </div>
+                </form>
+                <form class="form-inline" role="form">
+                    <div class="has-success has-feedback">
+                        <label class="control-label  for=taskName  ">样品名称</label>
+                        <select name="sampleName" id="sampleName"  class="form-control " style="width: 30%" >
+                            <option value="" >全部</option>
+                            <option ng-repeat="x in sampleName" style="width: 152px" >{{x.sampleName}}</option>
+                        </select>
+                        <label class="control-label for=result" style="margin-left: 10px">判定结果</label>
+                        <select name="result"id="result" class="form-control" style="width: 30%">
+                            <option value="" >所有</option>
+                            <option value="1" >合格</option>
+                            <option value="0" >不合格</option>
+                            <option value="-1" >检测未上报</option>
+                            <!--<option ng-repeat="x in result" style="width: 152px" >{{x}}</option>-->
+                        </select>
+                    </div>
+                </form>
+                <form class="form-inline" role="form ">
+                    <div class="has-success has-feedback">
+                        <label class="control-label for=province1">产&nbsp;&nbsp;地</label>
+                        <select id="sheng" class="form-control"  style="height: 34px;;width: 25%" >
+                            <option value="" >--请选择省份--</option>
+                        </select>
+                        <select id="shi" class="form-control" style="height: 34px;;width:25%">
+                            <option value="" >--请选择城市--</option>
+                        </select>
+                        <select id="xian" class="form-control" style="height: 34px;;width: 25%">
+                            <option value="" >--请选择区/县--</option>
+                        </select>
+                    </div>
+                </form>
+                <form class="form-inline" role="form">
+                    <div class="has-success has-feedback">
+                        <label class="control-label for=sampleDeparment">抽样单位</label>
+                        <select name="sampleDeparment" id="sampleDeparment" class="form-control" style="width: 30%" >
+                            <option value="" >全部</option>
+                            <option  ng-repeat="x in sampleDeparment"  >{{x.sampleDeparment}}</option>
+                        </select>
+                        <label class="control-label for=ckeckLink" style="margin-left: 10px">检测环节</label>
+                        <input type="text" class="form-control" name="ckeckLink" id="ckeckLink" style="width:30%">
+                    </div>
+                </form>
+                <form class="form-inline" role="form">
+                    <div class="has-success has-feedback">
+                        <label class="control-label for=checkOrgan">检测单位</label>
+                        <select name="checkOrgan" id="checkOrgan" class="form-control"style="width: 30%" >
+                            <option value="" >全部</option>
+                            <option    ng-repeat="x in checkOrgan"  >{{x.checkOrgan}}</option>
+                        </select>
+                        <label class="control-label for=testedDeparment">受检单位</label>
+                        <select name="testedDeparment" class="form-control" id="testedDeparment" style="width: 30%">
+                            <option value="" >全部</option>
+                            <option   ng-repeat="x in testedDeparment" >{{x.testedDeparment}}</option>
+                        </select>
+                    </div>
+                </form>
+                <form class="form-inline" role="form">
+                    <div class="has-success has-feedback">
+                        <label class="control-label for=inputSuccess5">抽样时间</label>
+                        <input type="text" id="startTime" class="form-control"  name="startTime" readonly="readonly" style="width: 25%"
+                               onclick="SelectDate(this)">---
+                        <input type="text" id="endTime" class="form-control" name="endTime" readonly="readonly"
+                               style="width:25%"    onclick="SelectDate(this)">
+                    </div>
+                </form>
+                <form class="form-inline" role="form">
+                    <div class="has-success has-feedback">
+                        <label class="control-label" style="margin-left: 10px">
+                            <span class="gui-btn"  id="seachTask">查询</span>
+                        </label>
+                    </div>
+                    <div class="gui-actions">
+                            <span class="gui-btn fr" ng-click="exportExcel('s') " id="export1"><i class="gui-icon icon-export"></i>导出汇总</span>
+                            <span class="gui-btn fr mr15" id="export2" ng-click="exportExcel('a')"><i class="gui-icon icon-export"></i>导出详细</span>
+                    </div>
+                </form>
+
+                <!--  <form class="form-inline" role="form">
+                      <h3 id="Sup_contain_section_head_h3" style='float:left'>
+                          <span>例行监测</span>
+                          >
+                      </h3>
+
+                      <span>
+                          <div class="setslist" style="float:left;display:inline;">
+                              <ul>
+                                  &lt;!&ndash;<li name="trade">监测行业：蔬菜 <button type="button"><span class="glyphicon glyphicon-remove"></span></button>&ndash;&gt;
+                                  &lt;!&ndash;</li>&ndash;&gt;
+                              </ul>
+                          </div>
+                          <div class="cq2" style="clear:both;display:inline;"><button id="clear">清除筛选</button></div>
+                      </span>
+
+                      &lt;!&ndash; 检测机构主体信息&ndash;&gt;
+
+                  </form>-->
+            </div>
+
+
+            <div class=" tb NewsSize col-lg-12 col-xs-12 col-sm-12 col-md-12" id="adminTable">
+                <table id="grid" class="gui-table table-striped table data-table col-lg-12 col-xs-12 col-sm-12 col-md-12">
+
+                </table>
+
+            </div>
+            <div class=" tb NewsSize col-lg-12 col-xs-12 col-sm-12 col-md-12" id="adminTables" style="display: none">
+                <table id="grids" class="table table-striped table table-bordered data-table col-lg-12 col-xs-12 col-sm-12 col-md-12">
+
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+</div>

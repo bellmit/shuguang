@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agpjyz.mapper.FacilityMaintenanceMapper">
+
+    <select id="listByParams" parameterType="java.util.Map" resultType="com.sofn.agpjyz.model.FacilityMaintenance">
+        select
+        *
+        from FACILITY_MAINTENANCE
+        <where>
+            1 = 1
+            <if test="protectId != null and protectId != ''">
+                and PROTECT_ID = #{protectId}
+            </if>
+            <if test="facilities != null and facilities != ''">
+                and (FACILITIES like '%' || #{facilities} || '%' or FACILITIES_ID like '%' || #{facilities} || '%' )
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND REPAIR_TIME &lt;= #{endTime}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                AND REPAIR_TIME &gt;= #{startTime}
+            </if>
+        </where>
+        order by REPAIR_TIME desc
+    </select>
+
+</mapper>

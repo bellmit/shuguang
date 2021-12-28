@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sofn.fdzem.mapper.PlanktonMonitoringMapper">
+
+
+    <!--分页+条件查询-->
+    <select id="selectListByQuery" resultType="com.sofn.fdzem.model.PlanktonMonitoring" parameterType="java.lang.String">
+        select
+        <include refid="Base_column_list"/>
+        from tb_plankton_monitoring
+        where monitoring_point_id = #{monitoringPointId}
+    </select>
+    <!--删除-->
+    <delete id="removeById" parameterType="java.lang.String">
+        delete from tb_plankton_monitoring where monitoring_point_id = #{monitoringPointId}
+    </delete>
+<!--更新-->
+    <update id="update" parameterType="com.sofn.fdzem.model.PlanktonMonitoring">
+        update tb_plankton_monitoring set
+        chlorophyll = #{chlorophyll},phytoplankton_density = #{phytoplanktonDensity},
+        phytoplankton_species_number = #{phytoplanktonSpeciesNumber},phytoplankton_diversity_index = #{phytoplanktonDiversityIndex},zooplankton_density = #{zooplanktonDensity},
+        zooplankton_biomass = #{zooplanktonBiomass},
+        zooplankton_species_number = #{zooplanktonSpeciesNumber},zooplankton_diversity_index = #{zooplanktonDiversityIndex}
+        where id=#{id}
+    </update>
+
+    <!--添加-->
+    <insert id="insert" parameterType="com.sofn.fdzem.model.PlanktonMonitoring">
+        insert into tb_plankton_monitoring
+        (<include refid="Base_column_list"/>)
+         values
+        (#{id},#{monitoringPointId},#{chlorophyll},#{phytoplanktonDensity},#{phytoplanktonSpeciesNumber},#{phytoplanktonDiversityIndex},#{zooplanktonDensity},#{zooplanktonBiomass},#{zooplanktonSpeciesNumber},#{zooplanktonDiversityIndex})
+    </insert>
+
+    <sql id="Base_column_list">
+        id,monitoring_point_id,chlorophyll,phytoplankton_density,phytoplankton_species_number,phytoplankton_diversity_index,zooplankton_density,zooplankton_biomass,zooplankton_species_number,zooplankton_diversity_index
+    </sql>
+
+
+</mapper>

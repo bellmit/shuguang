@@ -1,0 +1,193 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css" />
+<div class="gui-breadcrumbs">
+    <a href="">监测系统</a>&gt;
+    <a href="">牵头单位</a>&gt;
+    <span>项目完成情况</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group clearfix">
+        <span class="color-gray">监测类型</span>
+        <div class="gui-select">
+            <select id="monitorClass" name="monitorClass">
+                <option value="">全部</option>
+                <option ng-repeat="x in monitorClass">{{x}}</option>
+            </select>
+        </div>
+        <span class="color-gray">年份</span>
+        <div class="gui-select">
+            <select id="year" name="year">
+                <option value="">全部</option>
+                <option ng-repeat="x in year">{{x}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="gui-form-group clearfix">
+        <span class="color-gray">任务名称</span>
+        <input type="text" class="gui-input" id="taskName" name="taskName" readonly="readonly" placeholder="点击选择任务名称" ng-click="selectTaskName()">
+        <span class="gui-btn" ng-click="resetBtn()">重置</span>
+    </div>
+
+    <div id="taskStatusStatus" style="display: none;">
+        <span class="color-gray">任务状态:</span>
+        <span class="color-red" id="TaskStatusValue">已发布</span>
+    </div>
+
+    <div class="clearfix gov-h">
+        <table id="grid" class="gui-table mt15" >
+        </table>
+    </div>
+</div>
+<!--<div class="modal fade" id="dModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-style" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="modalTitle" style="text-align: center">选择回执单类型</h4>
+            </div>
+            <div class="modal-body" style="min-height: 300px;">
+                <form class="form-horizontal" id="addRecipe">
+                    <div class="form-group line-20">
+                        <label class="col-sm-5 control-task">机构名称:</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input type="hidden" id="taskId"/>
+                                <input type="hidden" id="organId"/>
+                                <input type="hidden" id="orgType"/>
+                                &lt;!&ndash;<input type="hidden" id="organName"/>&ndash;&gt;
+                                <div id="organName"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-5 control-task">任务数:</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                &lt;!&ndash;<input type="hidden"id="numbers"/>&ndash;&gt;
+                                <div id="numbers"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label id="myFinishNum" class="col-sm-5 control-task">完成数:</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <div id="finishNum"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label id="myReportTime" class="col-sm-5 control-task">上报时间:</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <div id="reportTime"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label id="myReason" class="col-sm-5 control-task">退回原因:</label>
+                        <textarea rows="6" cols="40" id="reason" name="reason" placeholder="请输入退回原因" class="text_sketch"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <button type="button" data-dismiss="modal">关闭</button>
+                <button type="button" ng-click="addAdsPecipe()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>-->
+<!-- 选择任务名称model -->
+<div class="modal fade" id="taskNameModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: center">选择任务名称</h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <div class="gui-section">
+                    <div class="gui-form-group">
+                        <input type="text" class="gui-input" name="sTaskName" onblur="check(this)" placeholder="请输入任务名称">
+                        <span class="gui-btn" id="seachTaskName">查询</span>
+                    </div>
+                    <table id="taskNameGrid" class="gui-table mt15" style="width: 100%">
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" data-dismiss="modal">关闭</span>
+            </div>
+        </div>
+    </div>
+</div>
+<!--回执单选择-->
+<div class="modal fade" id="dSampleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-style" style="width: 800px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: center">抽样信息</h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <form class="form-horizontal" ng-if="disabled">
+                    <button  class="gui-btn:disabled pull-right">退回</button>
+                </form>
+                <form class="form-horizontal" ng-if="!disabled">
+                    <button ng-click="backModel()" class="gui-btn pull-right">退回</button>
+                </form>
+                <table id="sampleBackGrid" class="gui-table mt15" style="width: 100%">
+                </table>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" data-dismiss="modal" ng-click="clear()">返回</span>
+            </div>
+        </div>
+    </div>
+</div>
+<!--回执单选择-->
+<div class="modal fade" id="dCheckModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-style" style="width: 800px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: center">抽样信息</h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <form class="form-horizontal" ng-if="disabled">
+                    <button  class="gui-btn:disabled pull-right">退回</button>
+                </form>
+                <form class="form-horizontal" ng-if="!disabled">
+                    <button ng-click="backModel()" class="gui-btn pull-right">退回</button>
+                </form>
+                <table id="checkBackGrid" class="gui-table mt15" style="width: 100%">
+                </table>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" data-dismiss="modal" ng-click="clear()">返回</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="backModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" ng-click="backClear()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: center">回执单</h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <form class="form-horizontal">
+                    <div id="backTable"></div>
+                    <div class="form-group line-20">
+                        <label id="myReason" class="col-sm-2 control-task">退回原因:</label>
+                        <textarea rows="3" cols="50" id="reason" name="reason" placeholder="请输入退回原因" class="gui-input text_sketch"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" data-dismiss="modal" ng-click="backClear()">关闭</span>
+                <span class="gui-btn" ng-click="addAdsPecipe()">确定</span>
+            </div>
+        </div>
+    </div>
+</div>

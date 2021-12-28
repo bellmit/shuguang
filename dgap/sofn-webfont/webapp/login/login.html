@@ -1,0 +1,189 @@
+<!-- <link rel="stylesheet" href="assets/styles/login.css" /> -->
+<style>
+    body {
+  min-width: 1000px;
+  background-color: #FFF;
+}
+.gui-wrap {
+  width: 1000px;
+  margin: 0 auto;
+}
+.gui-mid-wrapper {
+  padding: 0;
+  margin: 0;
+  min-height: 0;
+  height: 0;
+  overflow: hidden;
+}
+</style>
+<div class="gui-wrap clearfix">
+    <div class="gui-header header-light clearfix">
+        <div class="section-logo">
+            <img
+                src="/assets/imgs/icon/logo.png"
+                alt="国家农产品质量安全追溯管理信息平台"
+                class="logo"
+            />
+            <h1>国家农产品质量安全追溯管理信息平台<em>{{ptName}}</em></h1>
+        </div>
+    </div>
+</div>
+<div class="content">
+    <div class="content-wrap clearfix">
+        <div class="login-wrap clearfix">
+            <ul class="tab clearfix">
+                <li
+                    ng-class="{active: selectedTabIndex == 0, }"
+                    ng-click="toggleTab(0)"
+                >
+                    普通登录
+                </li>
+                <li
+                    ng-class="{active: selectedTabIndex == 1}"
+                    ng-click="toggleTab(1)"
+                    class="dongtai"
+                    ng-if="{'政务办公': true, '监测系统':true}[ptName]"
+                >
+                    USBKEY登录
+                </li>
+            </ul>
+
+            <div class="sections">
+                <!-- 普通登录 -->
+                <div class="section-wapper clearfix">
+                    <div class="section section-form">
+                        <ul class="clearfix">
+                            <li>
+                                <span class="icon icon-avatar"></span>
+                                <input
+                                    type="text"
+                                    class="gui-input"
+                                    placeholder="用户名"
+                                    ng-model="account"
+                                    spellcheck="false"
+                                />
+                            </li>
+                            <li>
+                                <span class="icon icon-lock"></span>
+                                <input
+                                    type="password"
+                                    class="gui-input"
+                                    placeholder="密码"
+                                    ng-model="password"
+                                />
+                            </li>
+                            <li class="vercode">
+                                <input
+                                    type="text"
+                                    class="gui-input"
+                                    placeholder="验证码"
+                                    maxlength="4"
+                                    ng-model="code"
+                                    ng-input="submit($event)"
+                                    ng-keyup="submit($event)"
+                                    spellcheck="false"
+                                />
+                                <img
+                                    ng-src="{{codeImageSrc}}"
+                                    width="80"
+                                    height="40"
+                                    alt="验证码"
+                                    ng-click="flushValidateCode()"
+                                />
+                            </li>
+                            <li class="remember-pwd clearfix">
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        ng-model="rememberPwd"
+                                        ng-true-value="true"
+                                        ng-false-value="false"
+                                        ng-change="rememberPassword()"
+                                    /><span>记住密码</span>
+                                </label>
+                                <a ui-sref="login/forgetPwd">登录遇到问题？</a>
+                            </li>
+                            <li class="submit-btn">
+                                <button
+                                    type="submit"
+                                    class="gui-btn"
+                                    ng-disabled="disabled"
+                                    ng-click="login()"
+                                >
+                                    登录
+                                </button>
+                                <!--<button type="submit" class="gui-btn" ng-disabled="disabled" ng-click="ukLogin()">UK登录</button>-->
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- 动态口令登录 -->
+                    <div class="section section-form section-code" ng-if="{'政务办公': true, '监测系统':true}[ptName]">
+                        <ul class="clearfix">
+                            <li>
+                                <span class="icon icon-avatar"></span>
+                                <input
+                                    type="text"
+                                    class="gui-input"
+                                    placeholder="用户名"
+                                    ng-model="account"
+                                />
+                            </li>
+                            <li>
+                                <span class="icon icon-lock"></span>
+                                <input
+                                    type="password"
+                                    class="gui-input"
+                                    placeholder="密码"
+                                    ng-model="password"
+                                />
+                            </li>
+                            <li class="vercode">
+                                <input
+                                    type="text"
+                                    class="gui-input"
+                                    placeholder="验证码"
+                                    maxlength="4"
+                                    ng-model="code"
+                                    ng-input="submit($event)"
+                                    ng-keyup="submit($event)"
+                                />
+                                <img
+                                    ng-src="{{codeImageSrc}}"
+                                    width="80"
+                                    height="40"
+                                    alt="验证码"
+                                    ng-click="flushValidateCode()"
+                                />
+                            </li>
+                            <li class="remember-pwd clearfix">
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        ng-model="rememberPwd"
+                                        ng-true-value="true"
+                                        ng-false-value="false"
+                                    /><span>记住密码</span>
+                                </label>
+                                <a ui-sref="login/forgetPwd">登录遇到问题？</a>
+                            </li>
+                            <li class="submit-btn">
+                                <button
+                                    type="submit"
+                                    class="gui-btn"
+                                    ng-disabled="ukdisabled"
+                                    ng-click="ukLogin()"
+                                >
+                                    UK登录
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <p>主办单位&nbsp;：&nbsp;中华人民共和国农业农村部 &nbsp;&nbsp;承办单位&nbsp;：&nbsp;农业农村部农产品质量安全中心 &nbsp;
+<br/>技术支持&nbsp;：&nbsp;成都曙光光纤网络有限责任公司 &nbsp;&nbsp;&nbsp;农业农村部信息中心 <br/>&nbsp;京ICP备05039419号 &nbsp;&nbsp;支持电话&nbsp;：&nbsp;010-59198588</p>
+</div>

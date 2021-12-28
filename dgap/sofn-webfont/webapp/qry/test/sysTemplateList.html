@@ -1,0 +1,21 @@
+<link rel="stylesheet" href="assets/css/sys/sysBase/baseInfoList.css">
+<style>
+    .file-preview {
+        display: none;
+    }
+</style>
+<div class="gui-breadcrumbs">
+    <a href="">查询系统</a>&gt;<span>附件查询</span>
+</div>
+<!-- 开发人员只需要在跟换下面这个div里面内容即可   begin-->
+    <div class="gui-section">
+        <div class="gui-form-group clearfix">
+            <span>附件名称</span>
+            <input type="text" class="gui-input" name="templateName" placeholder="附件名称">
+            <button class="gui-btn" id="ToCheck">查询</button>
+        </div>
+        <button class="gui-btn fr" onclick="exportData()">导出</button>
+        <table id="grid" class="gui-table mt15">
+        </table>
+    </div>
+</div>

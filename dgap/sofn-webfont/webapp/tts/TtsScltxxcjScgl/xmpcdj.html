@@ -1,0 +1,158 @@
+<div class="gui-breadcrumbs">
+    <a href="">生产管理</a>&gt;
+    <a href="">产品登记</a>&gt;
+    <span>畜牧产品批次登记</span>
+</div>
+<div class="gui-section">
+    <ul class="gui-tab">
+        <li id="water"><a ui-sref="index.content.tts/TtsScltxxcjScgl/scpcdj">水产产品批次登记</a></li>
+        <li class="active" id="pasturage"><a ui-sref="index.content.tts/TtsScltxxcjScgl/xmpcdj" data-toggle="tab">畜牧产品批次登记</a></li>
+        <li id="plant"><a ui-sref="index.content.tts/TtsScltxxcjScgl/zzpcdj">种植产品批次登记</a></li>
+    </ul>
+    
+    <div class="ovh mt15">
+        <form action="#" method="post" id="regForm" onsubmit="return false;">
+            <ul class="gui-list">
+                <li>
+                    <div class="form-item">
+                        <span class="title important">产品名称</span>
+                        <!-- 产品id,所属行业,产品类型 隐藏 -->
+                        <input type="hidden" ng-model="ttsScltxxcjScgl.productId" name="productId">
+                        <input type="hidden" ng-model="ttsScltxxcjScgl.productIndustry" name="productIndustry">
+                        <input type="hidden" ng-model="ttsScltxxcjScgl.productSort" name="productSort">
+                        <input type="text" ng-model="ttsScltxxcjScgl.productName" name="productName" placeholder="请输入产品名称" readonly="readonly" ng-click="findProduct()" class="gui-input" id="productName">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item">
+                        <span class="title important">产品来源</span>
+                        <div class="gui-select">
+                            <select id="ToChange" ng-model="ttsScltxxcjScgl.productSource" name="productSource" style="width:450px;">
+                                <option value="">产品来源</option>
+                                <option value="自产">自产</option>
+                                <option value="收购">收购</option>
+                            </select>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item">
+                        <span class="title important" id="time">出栏时间</span>
+                        <input type="text" ng-model="ttsScltxxcjScgl.harvestTime" name="harvestTime" class="gui-input" readonly="readonly" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd '}) ">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item">
+                        <span class="title important" id="amount">出栏数量</span>
+                        <input type="text" ng-model="ttsScltxxcjScgl.productAmount" name="productAmount" placeholder="请输入出栏数量" class="gui-input">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item">
+                        <span class="title important">单位</span>
+                        <div class="gui-select">
+                            <select ng-model="ttsScltxxcjScgl.harvestUnit" name="harvestUnit" style="width:450px;" id="punits">
+                                <option value="">请输入单位</option>
+                            </select>
+                        </div>
+                    </div>
+                </li>
+                <li id="isHarvest">
+                    <div class="form-item">
+                        <span class="title important">出栏圈舍</span>
+                        <input type="hidden" ng-model="ttsScltxxcjScgl.harvestBaseid" name="harvestBaseid">
+                        <input type="text" ng-model="ttsScltxxcjScgl.harvestBasename" name="harvestBasename" class="gui-input" readonly="readonly" ng-click="findBase()" placeholder="出栏圈舍">
+                    </div>
+                </li>
+                <!--  <li>
+                            <span class="title important">内部追溯标识</span>
+                            <input type="text" ng-model="ttsScltxxcjScgl.productInnerKey" name="productInnerKey"  readonly="readonly" placeholder="请输入内部追溯标识" class="gui-input"/>
+                        </li> -->
+                <li>
+                    <div class="form-item">
+                        <span class="title important">质检情况</span>
+                        <div class="gui-select">
+                            <select ng-model="ttsScltxxcjScgl.mediCheck" name="mediCheck" style="width:450px;">
+                                <option value="">质检情况</option>
+                                <option value="自检">自检</option>
+                                <option value="送检">送检</option>
+                            </select>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item">
+                        <span class="title important">质检结论</span>
+                        <div class="gui-select">
+                            <select name="mediResult" style="width:450px;">
+                                <option value="">质检结论</option>
+                                <option value="合格" selected="selected" value = "合格">合格</option>
+                                <option value="不合格">不合格</option>
+                            </select>
+                        </div>
+                    </div>
+                </li>
+                <!-- 默认的删除标记是Y，表示数据是存在的 -->
+                <li>
+                    <input type="hidden" ng-model="ttsScltxxcjScgl.delFlag" name="delFlag" value="N">
+                    <input type="hidden" ng-model="ttsScltxxcjScgl.joinFlag" name="joinFlag" value="2">
+                </li>
+            </ul>
+            <div class="text-center">
+                <button class="gui-btn mr15" ng-disabled="myform.JGname.$dirty&&myform.JGname.$invalid" ng-click="addTtsScltxxcjScgl()">保存</button>
+                <button class="gui-btn" ui-sref="index.content.tts/TtsScltxxcjScgl/printCpdj">下载采集表</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- 选择产品信息  start -->
+<div class="modal fade" id="product_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-style">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel"> 产品信息</h4>
+            </div>
+            <div class="modal-body ">
+                <table id="productList" class="gui-table">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  选择产品信息 end -->
+<!-- 选择基地信息  start -->
+<div class="modal fade" id="base_info" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">
+                  基地信息
+                </h4>
+            </div>
+            <div class="form-group">
+                <div id="search_form" class="form-inline btn-space">
+                    <input id="in_base_name" type="text" class="gui-input form-control" ait="基地名称">
+                    <button type="button" class="gui-btn" id="search_btbaseName">查询</button>
+                </div>
+            </div>
+            <div class=" modal-body">
+                <!-- 表格部分 -->
+                <table id="baseList" class="gui-table">
+                </table>
+            </div>
+            <!-- /.modal-body -->
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal">确定
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+<!--  选择基地信息 end -->

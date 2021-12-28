@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.OmExportMapper">
+    <select id="getOmHistogram" resultType="com.sofn.fdpi.vo.OmHistogram">
+        select sum(export_volume) as quantity,sum(obversion) as remainingQty,to_char(out_of_date,'YYYY-MM') as month
+        from om_export
+        where del_flag='N'
+        <if test="pr!=null and pr!=''">
+            and source_proc=#{pr}
+        </if>
+        <if test="cr!=null and cr!=''">
+            and credential like '%' || #{cr} || '%'
+        </if>
+        <if test="st!=null and en!=null">
+            and out_of_date BETWEEN #{st} and #{en}
+        </if>
+        group by to_char(out_of_date, 'YYYY-MM')
+        order by month
+    </select>
+</mapper>

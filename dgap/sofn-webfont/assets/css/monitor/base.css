@@ -1,0 +1,168 @@
+.text-white {
+    color: white;
+}
+
+.pd-10 {
+    padding: 10px;
+}
+
+.pdl-5 {
+    padding-left: 5px;
+}
+
+.pd-20 {
+    padding: 20px 0;
+}
+
+.pdb-10 {
+    padding-bottom: 10px;
+}
+
+.pdr-20 {
+    padding-right: 20px;
+}
+
+.mg-auto {
+    margin: auto;
+}
+
+.mgb-10 {
+    margin-bottom: 10px;
+}
+
+.mgb-15 {
+    margin-bottom: 15px;
+}
+
+.mgt-20 {
+    margin-top: 20px;
+}
+
+.mgt-15 {
+    margin-top: 15px;
+}
+
+.mgr-10 {
+    margin-right: 10px;
+}
+
+.mgr-100 {
+    margin-right: 100px;
+}
+
+.mgl-30 {
+    margin-left: 30px;
+}
+
+.mgl-15 {
+    margin-left: 15px;
+}
+
+.border-right {
+    border-right: solid 1px silver;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+table tr,
+th {
+    text-align: center;
+}
+
+.form-horizontal .control-task {
+    text-align: right;
+    margin-right: 10px;
+}
+
+.line-20 {
+    line-height: 34px;
+}
+
+.line-15 {
+    line-height: 15px;
+}
+
+.text-height-28 {
+    height: 28px;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.setslist ul li {
+    margin-right: 15px;
+}
+
+#list button {
+    margin: 0px 10px;
+}
+
+.codeline {
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+    border-bottom: 1px solid #000000;
+}
+
+.xinhao {
+    position: absolute;
+    color: red;
+    font-size: 20px;
+    font-family: xinhao;
+}
+
+.this-after1 {
+    right: -70px;
+    top: -3px;
+    color: red;
+    font-family: xinhao;
+}
+
+.input-tb {
+    height: 100%;
+    width: 100%;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+}
+
+.table-bordered {
+    border: 1px solid #ddd
+}
+
+.table-bordered>tbody>tr>td,
+.table-bordered>tbody>tr>th,
+.table-bordered>tfoot>tr>td,
+.table-bordered>tfoot>tr>th,
+.table-bordered>thead>tr>td,
+.table-bordered>thead>tr>th {
+    border: 1px solid #ddd
+}
+
+.table-bordered>thead>tr>td,
+.table-bordered>thead>tr>th {
+    border-bottom-width: 2px
+}
+
+.reportSamp a {
+    padding: 8px 0px;
+}
+
+
+/**/
+
+.list-group-item.active,
+.list-group-item.active:focus,
+.list-group-item.active:hover {
+    z-index: 2;
+    color: #fff;
+    background-color: #20944d;
+    border-color: #337ab7;
+}

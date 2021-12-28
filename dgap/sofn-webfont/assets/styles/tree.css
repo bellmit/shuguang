@@ -1,0 +1,219 @@
+.tree-root {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 400px;
+}
+.tree-hidden {
+  visibility: hidden !important;
+}
+.tree-wrap {
+  text-align: left;
+  float: left;
+  white-space: nowrap;
+  overflow: visible;
+  width: auto;
+  margin: 25px 0 0 150px;
+}
+.tree-wrap .ui-tree {
+  float: left;
+}
+.tree-wrap .ui-tree:first-child {
+  -webkit-transform: scaleX(-1);
+          transform: scaleX(-1);
+  z-index: 2;
+}
+.tree-wrap .ui-tree:first-child .block-inner {
+  position: relative;
+}
+.tree-wrap .ui-tree:first-child .ui-icon,
+.tree-wrap .ui-tree:first-child .block-text {
+  -webkit-transform: scaleX(-1);
+          transform: scaleX(-1);
+}
+.tree-wrap .ui-tree:first-child .list-detail dd {
+  -webkit-transform: scaleX(-1);
+          transform: scaleX(-1);
+}
+.tree-wrap .ui-tree:first-child .list-detail::before,
+.tree-wrap .ui-tree:first-child .list-detail::after {
+  -webkit-transform: scaleX(-1);
+          transform: scaleX(-1);
+}
+.ui-tree {
+  margin: 0;
+  float: left;
+  position: relative;
+}
+.ui-tree:before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  top: -51px;
+  height: 72px;
+  width: 1px;
+  background: #ccc;
+  display: none;
+}
+.ui-tree ul {
+  position: relative;
+}
+.ui-tree .block-inner {
+  text-align: center;
+}
+.ui-tree .block-inner .ui-icon {
+  display: inline-block;
+  float: none !important;
+}
+.ui-tree .root ul {
+  position: relative;
+  margin-left: auto;
+  z-index: 1;
+  display: inline-block;
+  vertical-align: top;
+}
+.ui-tree .root-li {
+  margin-left: 0;
+}
+.ui-tree .root-li:before {
+  display: none;
+}
+.ui-tree li {
+  position: relative;
+  margin-left: 40px;
+}
+.ui-tree li:before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: -156px;
+  top: 58px;
+  width: 200px;
+  height: 1px;
+  padding: 0 50px 0 20px;
+  background: #c9c9c9;
+  overflow: hidden;
+  font-size: 0;
+  line-height: 0;
+  z-index: -1;
+  -webkit-box-sizing: content-box;
+          box-sizing: content-box;
+}
+.ui-tree li:after {
+  content: '';
+  display: block;
+  clear: both;
+  overflow: hidden;
+  font-size: 0;
+}
+.ui-tree li:last-child > .block:after {
+  height: 0;
+  padding-bottom: 0;
+}
+.ui-tree .block {
+  display: inline-block;
+  vertical-align: top;
+  padding-bottom: 10px;
+}
+.ui-tree .block ~ ul:hover {
+  z-index: 9999;
+}
+.ui-tree .block:hover .list-detail {
+  display: block;
+}
+.ui-tree .block:after {
+  content: '';
+  position: absolute;
+  left: -156px;
+  top: 59px;
+  bottom: -59px;
+  width: 100px;
+  background: #FFF;
+  border-right: 1px solid #c9c9c9;
+  -webkit-box-sizing: content-box;
+          box-sizing: content-box;
+}
+.ui-tree .block .block-text {
+  width: 280px;
+  display: inline-block;
+  font-size: 12px;
+  line-height: 18px;
+  padding: 10px 18px;
+  text-align: center;
+  color: #333;
+  font-size: 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  display: block;
+  -ms-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  white-space: nowrap;
+  font-family: inherit;
+  overflow: hidden;
+}
+.ui-tree .block .ui-icon {
+  float: left;
+  margin-top: -1px;
+  background-color: #fff;
+}
+.list-detail {
+  display: none;
+  position: absolute;
+  top: 92px;
+  left: 0;
+  margin-left: 0;
+  width: 400px;
+  text-align: left;
+  background-color: #fff;
+  padding: 0 20px;
+  z-index: 10;
+  border: 1px solid #f1f1f1;
+  -webkit-box-shadow: 2px 2px 25px rgba(0, 0, 0, 0.15);
+          box-shadow: 2px 2px 25px rgba(0, 0, 0, 0.15);
+  margin-bottom: 25px;
+  white-space: normal;
+}
+.list-detail:before,
+.list-detail:after {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  top: -11px;
+  left: 134px;
+  border: 6px solid #fff;
+  border-color: transparent transparent #fff transparent;
+}
+.list-detail:before {
+  border-bottom-color: #f1f1f1;
+  margin-top: -1px;
+}
+.list-detail dd {
+  line-height: 2;
+  border-bottom: 1px solid #f4f4f4;
+  padding: 5px;
+}
+.list-detail dd:last-child {
+  border: none;
+}
+.list-detail dd .title {
+  display: inline-block;
+  vertical-align: top;
+}
+.list-detail dd .text {
+  display: inline-block;
+  max-width: 235px;
+  vertical-align: middle;
+  line-height: 1.5;
+  margin-top: -3px;
+  word-break: break-all;
+}
+.list-detail dd .gui-icon {
+  margin-left: -5px;
+  margin-right: 5px;
+}
+.tree-tips .gui-icon {
+  margin-left: 15px;
+}

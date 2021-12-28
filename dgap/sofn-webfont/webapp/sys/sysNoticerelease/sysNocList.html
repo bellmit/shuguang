@@ -1,0 +1,36 @@
+<link rel="stylesheet" href="assets/css/sys/sysBase/baseInfoList.css">
+<link rel="stylesheet" href="/assets/css/sys/sysCodeRule/sysCodeRule.css">
+<div class="gui-breadcrumbs">
+    <a href="">系统管理</a>&gt;<span>公告信息管理</span>
+</div>
+<!-- 开发人员只需要在跟换下面这个div里面内容即可   begin-->
+<div class="gui-section">
+  <div class="gui-form-group clearfix">
+    <span>类型</span>
+    <span class="gui-select">
+      <select name="noticeType">
+          <option>全部</option>
+          <option>新闻</option>
+          <option>公告</option>
+      </select>
+    </span>&nbsp;&nbsp;&nbsp;&nbsp;
+    <span>标题</span>
+    <input type="text" class="gui-input" name="title" placeholder="标题">
+      &nbsp;&nbsp;&nbsp;&nbsp;
+    <span>发布时间</span>
+      <input  style="background-color: #fff;" name="releaseTime" readonly="true" ng-model="sysNoticerelease.releaseTime" type="text" class="gui-input" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'}) ">
+  </div>
+  <div class="gui-form-group clearfix">
+    <span>发布人</span>
+    <input type="text" name="releasePerson" class="gui-input" placeholder="发布人">
+    <button class="gui-btn" id="ToCheck">查询</button>
+    
+    
+    
+  </div><div class="gui-actions"><button class="gui-btn fr" ng-click="deleteNotice()" ng-if="menuAuthority == readWriteAuthority"><i class="gui-icon icon-remove"></i>删除</button><button class="gui-btn fr ml15 mr15" ng-click="releaseNotice()" ng-if="menuAuthority == readWriteAuthority"><i class="gui-icon icon-publish"></i>发布</button><button ui-sref="index.content.sys/sysNoticerelease/sysNoticereleaseAdd" class="gui-btn fr" ng-if="menuAuthority == readWriteAuthority"><i class="gui-icon icon-add"></i>新增</button></div>
+  <div>
+      <h5 style="margin-bottom: 8px;">新闻公告</h5>
+      <table id="grid" class="gui-table" style="width: 100%">
+      </table>
+  </div>
+</div>

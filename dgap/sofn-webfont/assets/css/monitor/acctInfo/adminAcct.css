@@ -1,0 +1,28 @@
+form>div>label{
+    margin: 5px 0px;
+    text-align: right;
+    padding-right: 30px!important;
+}
+form>div>label>i{
+   font-style: normal;
+}
+
+form>div>span{
+    margin: 5px 0px;
+}
+
+.Sup_contain_section_contain>form>div>span>input{
+    border: none;
+}
+.this-after {
+    position: absolute;
+     right: 15px;
+    top: 0px;
+    color: red;
+    font-size: 16px;
+    font-family: xinhao;
+}
+.modal-body {
+    position: relative;
+     padding: 0px;
+}

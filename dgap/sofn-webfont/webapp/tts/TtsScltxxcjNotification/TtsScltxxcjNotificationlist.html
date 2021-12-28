@@ -1,0 +1,21 @@
+<link rel="stylesheet" href="assets/css/tts/base/baseInfoList.css">
+<div class="gui-breadcrumbs">
+    <a href="">通知消息</a>&gt;
+    <span>通知消息管理</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group">
+        <input type="text" class="gui-input" onchange="changeDate(this)" name="createTimeStart" readonly="readonly" placeholder="点击选择开始日期" onclick="SelectDate(this)">
+        至
+        <input type="text" class="gui-input" onchange="changeDate(this)" name="createTimeEnd" readonly="readonly" placeholder="点击选择结束日期" onclick="SelectDate(this)">
+        <input class="gui-input" name="keyWord" type="text" placeholder="输入标题关键字">
+        <button class="gui-btn" id="ToCheck">查询</button>
+        
+    </div>
+    <div class="gui-actions"><button class="gui-btn fr" id="addnoti" ui-sref="index.content.tts/TtsScltxxcjNotification/ttsScltxxcjNotificationAdd"><i class="gui-icon icon-add"></i>新增</button></div>
+    <div>
+        <table id="grid" class="gui-table">
+        </table>
+    </div>
+</div>
+

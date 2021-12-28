@@ -1,0 +1,29 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+<!--<link rel="stylesheet" href="assets/css/asms/check/cheRoutine.css"/>-->
+        <div class="gui-breadcrumbs">
+            <a href="">监测系统</a>&gt;
+            <a href="">牵头单位</a>&gt;
+            <a href="">例行监测</a>&gt;
+            <span>已接收任务</span>
+        </div>
+        <div class="gui-section">
+            <ul class="gui-tab" role="tablist">
+                <!--<li role="presentation" class="pointer"><a id="newTask" role="tab" data-toggle="tab">新任务</a></li>-->
+                <li role="presentation" class="active"><a id="supTask" role="tab" data-toggle="tab">已接受任务</a></li>
+                <li role="presentation" class="pointer"><a id="bePubTask" role="tab" data-toggle="tab">待发布任务</a></li>
+                <li role="presentation" class="pointer"><a id="historyTask" role="tab" data-toggle="tab">历史任务</a></li>
+            </ul>
+            <div class="gui-form-group">
+                <span>时间</span>
+                <input  name="datebegin" style="cursor: pointer;width: 100px;" class="Wdate gui-input main_ch" id="datebegin" onfocus = "WdatePicker({dateFmt:'yyyy-MM-dd '}) " ng-keyup="enterEvent($event)"/>
+                <span>至</span>
+                <input  name="dateend" style="cursor: pointer;width: 100px;" class="Wdate gui-input main_ch"  id="dateend" onfocus = "WdatePicker({dateFmt:'yyyy-MM-dd '}) "  ng-keyup="enterEvent($event)"/>
+                <input class="gui-input" type="text" name="rmName" style="width: 80px" onblur="check(this)" placeholder="请输入任务名称" ng-keyup="enterEvent($event)"/>
+                <button id="seachModel" data-toggle="tooltip" class="gui-btn" data-placement="right" title="根据输入条件检索列表">查询</button>
+            </div>
+            <div class="clearfix gov-h">
+                <table id="grid" class="gui-table mt15" >
+                </table>
+            </div>
+        </div>
+

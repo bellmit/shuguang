@@ -1,0 +1,280 @@
+<link rel="stylesheet" href="assets/css/asms/subjSv/subjSvAdd.css" />
+<link rel="stylesheet" href="assets/styles/forgotPwd.css">
+<style>
+    .Sup_contain_section_contain_head span{
+        margin-right: 10px;
+    }
+</style>
+<header class="gui-header clearfix">
+    <div class="section-logo" ui-sref="login">
+        <img src="/assets/imgs/icon/logo.png" alt="国家农产品质量安全追溯管理信息平台（政务办公）" class="logo">
+        <h1>国家农产品质量安全追溯管理信息平台<em></em></h1>
+    </div>
+</header>
+
+<div id="myTabContent" class="tab-content">
+    <ul id="myTab" class="gui-tab tab-register clearfix">
+        <li class="active">
+            <a ng-click="changeTab(1)" data-toggle="tab">忘记密码</a>
+        </li>
+        <li>
+            <a ng-click="changeTab(2)" data-toggle="tab">忘记账号</a>
+        </li>
+    </ul>
+    <div class="tab-pane fade in active Sup_contain_section_contain_head" id="pwd">
+        <form id="forgetPwdForm" name="forgetPwdForm">
+            <ul class="gui-list">
+                <li>
+                    <div class="form-group">
+                        <span class="col-lg-3 col-md-3 col-sm-3 control-label">管理员账号<span style="color:red">*</span></span>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <input type="text" ng-model="subj.account" name="account" placeholder="请输入管理员账号" class="form-control gui-input" data-bv-notempty="true" data-bv-notempty-message="账号不能为空" />
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-group">
+                        <span class="col-lg-3 col-md-3 col-sm-3 control-label">机构类别<span style="color:red">*</span></span>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div style="width: 100%" class="gui-select">
+                                <select name="type" ng-model="subj.type" class="form-control" data-bv-notempty="true" data-bv-notempty-message="机构类别不能为空">
+                                    <option value="0">监管机构</option>
+                                    <option value="1">执法机构</option>
+                                    <option value="2">检测机构</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-group">
+                        <span class="col-lg-3 col-md-3 col-sm-3 control-label">机构名称<span style="color:red">*</span></span>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <input type="text" ng-model="subj.name" name="name" placeholder="请输入机构名称" class="form-control gui-input" data-bv-notempty="true" data-bv-notempty-message="机构名称不能为空" />
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-group">
+                        <span class="col-lg-3 col-md-3 col-sm-3 control-label">机构代码<span style="color:red">*</span></span>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <input type="text" ng-model="subj.code" name="code" placeholder="请输入机构代码" class="form-control gui-input" data-bv-notempty="true" data-bv-notempty-message="机构代码不能为空" />
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-group">
+                        <span class="col-lg-3 col-md-3 col-sm-3 control-label">机构级别<span style="color:red">*</span></span>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="gui-select" style="width: 100%">
+                                <select ng-model="subj.level" name="level" class="form-control" data-bv-notempty="true" data-bv-notempty-message="机构级别不能为空">
+                                    <!--<option ng-repeat="x in orgLevel" value="{{x.id}}" dictVal="{{x.dictValue}}">{{x.dictName}}</option>-->
+                                    <option value="0">部级</option>
+                                    <option value="1">省级</option>
+                                    <option value="2">市级</option>
+                                    <option value="3">县级</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-group">
+                        <span class="col-lg-3 col-md-3 col-sm-3 control-label">所属区域<span style="color:red">*</span></span>
+                        <div class="col-lg-6 col-md-6 col-sm-6" style="text-align: left">
+                            <div class="gui-select" style="width: 100%">
+                                <select name="sheng" id="sheng" class="form-control mr15">
+                                    <option value="" >--省--</option>
+                                </select>
+                            </div>
+                            <div class="gui-select mt15" style="width: 100%">
+                                <select name="shi" id="shi" class="form-control mr15 ml15">
+                                    <option value="" >--市--</option>
+                                </select>
+                            </div>
+                            <div class="gui-select mt15" style="width: 100%">
+                                <select name="xian" id="xian" class="form-control ml15"
+                                        data-bv-notempty="true"
+                                        data-bv-notempty-message="省、市、县必须全选">
+                                    <option value="">--区/县--</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-group">
+                        <span class="col-lg-3 col-md-3 col-sm-3 control-label">负责人<span style="color:red">*</span></span>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <input type="text" ng-model="subj.leader" name="leader" placeholder="请输入负责人" class="form-control" data-bv-notempty="true" data-bv-notempty-message="负责人不能为空" />
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </form>
+        <div style="text-align: center" class="mt15 mb25">
+            <button class="gui-btn mr15" ui-sref="login">返回</button>
+            <button class="gui-btn ml15" ng-click="changePwd()">提交</button>
+        </div>
+    </div>
+    <div class="tab-pane fade in Sup_contain_section_contain_head" id="account">
+        <form id="forgetAccountForm" name="forgetAccountForm">
+            <ul class="gui-list">
+                <li>
+                    <div class="form-group">
+                        <span class="col-lg-3 col-md-3 col-sm-3 control-label">机构名称<span style="color:red">*</span></span>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <input type="text" ng-model="subjA.name" name="name" placeholder="请输入机构名称" class="form-control gui-input" data-bv-notempty="true" data-bv-notempty-message="机构名称不能为空" />
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-group">
+                        <span class="col-lg-3 col-md-3 col-sm-3 control-label">机构代码<span style="color:red">*</span></span>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <input type="text" ng-model="subjA.code" name="code" placeholder="请输入机构代码" class="form-control" data-bv-notempty="true" data-bv-notempty-message="机构代码不能为空" />
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-group">
+                        <span class="col-lg-3 col-md-3 col-sm-3 control-label">机构类别<span style="color:red">*</span></span>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div style="width: 100%" class="gui-select">
+                                <select ng-model="subjA.type" name="type" class="form-control" data-bv-notempty="true" data-bv-notempty-message="机构类别不能为空">
+                                    <!--<option ng-repeat="x in orgType" value="{{x.id}}">{{x.dictName}}</option>-->
+                                    <option value="0">监管机构</option>
+                                    <option value="1">执法机构</option>
+                                    <option value="2">检测机构</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-group">
+                        <span class="col-lg-3 col-md-3 col-sm-3 control-label">机构级别<span style="color:red">*</span></span>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="gui-select" style="width: 100%">
+                                <select ng-model="subjA.level" name="level" class="form-control" data-bv-notempty="true" data-bv-notempty-message="机构级别不能为空">
+                                    <!--<option ng-repeat="x in orgLevel" value="{{x.id}}" dictVal="{{x.dictValue}}">{{x.dictName}}</option>-->
+                                    <option value="0">部级</option>
+                                    <option value="1">省级</option>
+                                    <option value="2">市级</option>
+                                    <option value="3">县级</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-group">
+                        <span class="col-lg-3 col-md-3 col-sm-3 control-label">所属区域<span style="color:red">*</span></span>
+                        <div class="col-lg-6 col-md-6 col-sm-6" style="text-align: left">
+                            <div class="gui-select" style="width: 100%">
+                                <select name="sheng" id="sheng1" class="form-control mr15">
+                                    <option value="" >--省--</option>
+                                </select>
+                            </div>
+                            <div class="gui-select mt15" style="width: 100%">
+                                <select name="shi" id="shi1" class="form-control mr15 ml15">
+                                    <option value="" >--市--</option>
+                                </select>
+                            </div>
+                            <div class="gui-select mt15" style="width: 100%">
+                                <select name="xian" id="xian1" class="form-control ml15"
+                                        data-bv-notempty="true"
+                                        data-bv-notempty-message="省、市、县必须全选">
+                                    <option value="">--区/县--</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </form>
+        <div style="text-align: center" class="mt15 mb25">
+            <button class="gui-btn mr15" ui-sref="login">返回</button>
+            <button class="gui-btn ml15" ng-click="showAccount()">提交</button>
+        </div>
+    </div>
+</div>
+<!--模态框的修改密码-->
+<div class="modal fade " id="pwdModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">修改密码，请在1分钟内修改，过期失效</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form id="changePwdForm" name="changePwdForm" data-bv-excluded data-bv-message="不能为空" data-bv-feedbackicons-valid="glyphicon glyphicon-ok" data-bv-feedbackicons-invalid="glyphicon glyphicon-remove" data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+                        <ul>
+                            <li class="clearfix mt15">
+                                <div class="form-group">
+                                    <span class="col-lg-4 control-label ml15" style="text-align: right;padding-right: 25px">新密码</span>
+                                    <div class="col-lg-5">
+                                        <input type="password" ng-model="newPwd" name="newPwd" placeholder="请输入新密码" class="form-control" data-bv-stringlength="true" data-bv-stringlength-min="6" data-bv-stringlength-max="18" data-bv-stringlength-message="请输入6到18位长度的密码" />
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="clearfix mt15">
+                                <div class="form-group">
+                                    <span class="col-lg-4 control-label ml15" style="text-align: right;padding-right: 25px">确认密码</span>
+                                    <div class="col-lg-5">
+                                        <input type="password" ng-model="newPwdC" name="newPwdC" placeholder="请确认新密码" class="form-control" data-bv-notempty="true" data-bv-notempty-message="确认密码不能为空" data-bv-identical="true" data-bv-identical-field="newPwd" data-bv-identical-message="密码和它的确认不一样" />
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" data-dismiss="modal">取消</button>
+                <button class="gui-btn" type="button" ng-click="resetPwd()">保存</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+<!--模态框-显示账号-->
+<div class="modal fade " id="accountModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    请电话联系所属监管机构，找回账号及密码。
+                    <ul ng-repeat="x in superior">
+                        <li class="clearfix mt15">
+                            <div class="form-group">
+                                <span class="col-lg-4 control-label ml15" style="text-align: right;padding-right: 25px">监管机构：</span>
+                                <div class="col-lg-7">
+                                    <span class="col-lg-8 control-label ml15" style="text-align: left;padding-right: 25px">{{x.SV_NAME}}</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="clearfix mt15">
+                            <div class="form-group">
+                                <span class="col-lg-4 control-label ml15" style="text-align: right;padding-right: 25px">联系方式：</span>
+                                <div class="col-lg-7">
+                                    <span class="col-lg-8 control-label ml15" style="text-align: left;padding-right: 25px">{{x.SV_CONTACT_PHONE}}</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" ng-click="closeAccountModal()">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>

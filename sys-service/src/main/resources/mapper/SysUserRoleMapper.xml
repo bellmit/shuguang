@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysUserRoleMapper" >
+
+    <resultMap id="customResultMap" type="com.sofn.sys.model.SysUserRole" >
+        <id column="ID" property="id" jdbcType="VARCHAR" />
+        <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+        <result column="ROLE_ID" property="roleId" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <insert id="batchSaveSysUserRole" parameterType="java.util.Map">
+        INSERT INTO SYS_USER_ROLE (
+        ID,
+        USER_ID,
+        ROLE_ID)
+        values
+        <foreach collection="sysUserRoles" separator="," item="sysUserRole">
+            (
+            #{sysUserRole.id},
+            #{sysUserRole.userId},
+            #{sysUserRole.roleId}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="dropUserRolesByUserId" parameterType="java.lang.String">
+        delete from SYS_USER_ROLE where user_id = #{userId}
+    </delete>
+    <select id="getUserRoleByUserId" parameterType="java.lang.String" resultMap="customResultMap">
+        SELECT sur.ID,sur.USER_ID,sur.ROLE_ID  from SYS_USER_ROLE sur JOIN SYS_ROLE sr on sur.ROLE_ID=sr.ID
+        where sur.USER_ID=#{userId,jdbcType=VARCHAR} and sr.STATUS='1'
+    </select>
+
+    <select id="getUserCountOfRole" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT count(1) from SYS_USER_ROLE
+        where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="dropUserRolesByRoleId" parameterType="java.lang.String">
+         delete from SYS_USER_ROLE where ROLE_ID = #{roleId}
+    </select>
+</mapper>

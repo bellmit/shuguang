@@ -1,0 +1,334 @@
+<link rel="stylesheet" href="assets/css/asms/subjEnt/subjEntView.css"/>
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">监管系统</a>&gt;
+    <a href="" ng-click="removeLocalStorage()">主体管理</a>&gt;
+    <a href="" ng-click="removeLocalStorage()">不良记录</a>&gt;
+    <span>生产经营主体</span>
+</div>
+<div class="Sup_contain_section_contain  gui-section gui-section-wid">
+    <!--第一部分  企业/个体工商户、合作社的内容-->
+    <ul id="firstContent" class="col-lg-12 col-xs-12 col-sm-12 col-md-12" style="display: none;">
+        <li>生产经营主体信息</li>
+        <li style="border-top: 1px solid #9d9d9d;padding-top: 10px;">
+            <ul class="Sup_contain_section_contain_show">
+                <li class="fl">
+                    <ul><li class="fl">主体名称：</li><li class="fl"><span ng-bind="subjEnt.enterpriseName"></span></li></ul>
+                    <ul ng-show="subjEnt.userIdcode"><li class="fl">主体身份码：</li><li class="fl"><span ng-bind="subjEnt.userIdcode"></span></li></ul>
+                    <ul><li class="fl">组织形式：</li><li class="fl"><span ng-bind="subjEnt.entityScaleName"></span></li></ul>
+                    <ul><li class="fl">主体类型：</li><li class="fl"><span ng-bind="subjEnt.entityTypeName"></span></li></ul>
+                    <ul><li class="fl">主体属性：</li><li class="fl"><span ng-bind="subjEnt.entityPropertyName"></span></li></ul>
+                    <ul><li class="fl">所属行业：</li><li class="fl"><span ng-bind="subjEnt.entityIndustryName"></span></li></ul>
+                    <ul><li class="fl">证件类型：</li><li class="fl"><span ng-bind="subjEnt.cardType"></span></li></ul>
+                    <ul><li class="fl">企业工商注册号：</li><li class="fl"><span ng-bind="subjEnt.creditCode"></span></li></ul>
+                    <!--组织机构代码 普通企业证件照有-->
+                    <ul id="organizationCode" style="display: none;"><li class="fl">组织机构代码：</li><li class="fl"><span ng-bind="subjEnt.organizationCode"></span></li></ul>
+                    <ul id="yingyeshijian" style="display: none"><li class="fl">营业期限/有效期：</li><li class="fl">
+                        <span style="word-break: break-all"  ng-bind="subjEnt.businessOperationStart"></span>至
+                        <span style="word-break: break-all"  ng-bind="subjEnt.businessOperationEnd"></span></li>
+                    </ul>
+                    <ul id="yinyeshifoushanchangqi" style="display: none"><li class="fl">营业期限/有效期：</li><li class="fl">
+                        长期营业
+                    </ul>
+                    <ul id="zzOutput"><li class="fl">种植年产量：</li><li class="fl"><span ng-bind="subjEnt.annualOutput"></span><span ng-bind="subjEnt.unitName"></span></li></ul>
+                    <ul id="xmOutput"><li class="fl">畜牧年产量：</li><li class="fl"><span ng-bind="subjEnt.annualOutputX"></span><span ng-bind="subjEnt.unitNameX"></span></li></ul>
+                    <ul id="scOutput"><li class="fl">水产年产量：</li><li class="fl"><span ng-bind="subjEnt.annualOutputS"></span><span ng-bind="subjEnt.unitNameS"></span></li></ul>
+                    <ul><li class="fl">注册地所在：</li><li class="fl"><span ng-bind="subjEnt.area"></span></li></ul>
+                    <ul><li class="fl">详情地址：</li><li class="fl"><span ng-bind="subjEnt.address"></span></li></ul>
+                </li>
+                <li class="fl">
+                    <ul>
+                        <li class="fl">
+                            <p class="fl">企业证件照：</p> <br/>
+                            <span class="fl" id="businessLicenceimg"></span>
+                        </li>
+                        <li id="organizationCertificateimgF" class="fl">
+                            <p>组织机构代码证照：</p> <br/>
+                            <span id="organizationCertificateimg"></span>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <!--第二部分  家庭农场的内容-->
+    <ul id="secondContent" class="col-lg-12 col-xs-12 col-sm-12 col-md-12" style="display: none;">
+        <li>生产经营主体信息</li>
+        <li style="border-top: 1px solid #9d9d9d;padding-top: 10px;">
+            <ul class="Sup_contain_section_contain_show">
+                <li class="fl">
+                    <ul><li class="fl">主体名称：</li><li class="fl"><span ng-bind="subjEnt.enterpriseName"></span></li></ul>
+                    <ul ng-show="subjEnt.userIdcode"><li class="fl">主体身份码：</li><li class="fl"><span ng-bind="subjEnt.userIdcode"></span></li></ul>
+                    <ul><li class="fl">组织形式：</li><li class="fl"><span ng-bind="subjEnt.entityScaleName"></span></li></ul>
+                    <ul><li class="fl">主体类型：</li><li class="fl"><span ng-bind="subjEnt.entityTypeName"></span></li></ul>
+                    <ul><li class="fl">主体属性：</li><li class="fl"><span ng-bind="subjEnt.entityPropertyName"></span></li></ul>
+                    <ul><li class="fl">所属行业：</li><li class="fl"><span ng-bind="subjEnt.entityIndustryName"></span></li></ul>
+                    <ul id="zzOutput02"><li class="fl">种植年产量：</li><li class="fl"><span ng-bind="subjEnt.annualOutput"></span><span ng-bind="subjEnt.unitName"></span></li></ul>
+                    <ul id="xmOutput02"><li class="fl">畜牧年产量：</li><li class="fl"><span ng-bind="subjEnt.annualOutputX"></span><span ng-bind="subjEnt.unitNameX"></span></li></ul>
+                    <ul id="scOutput02"><li class="fl">水产年产量：</li><li class="fl"><span ng-bind="subjEnt.annualOutputS"></span><span ng-bind="subjEnt.unitNameS"></span></li></ul>
+                    <ul><li class="fl">注册地所在：</li><li class="fl"><span ng-bind="subjEnt.area"></span></li></ul>
+                    <ul><li class="fl">详情地址：</li><li class="fl"><span ng-bind="subjEnt.address"></span></li></ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <!--第三部分  个人的内容-->
+    <ul id="thirdContent" class="col-lg-12 col-xs-12 col-sm-12 col-md-12" style="display: none;">
+        <li>生产经营主体信息</li>
+        <li style="border-top: 1px solid #9d9d9d;padding-top: 10px;">
+            <ul class="Sup_contain_section_contain_show">
+                <li class="fl">
+                    <ul><li class="fl">主体名称：</li><li class="fl"><span ng-bind="subjEnt.enterpriseName"></span></li></ul>
+                    <ul ng-show="subjEnt.userIdcode"><li class="fl">主体身份码：</li><li class="fl"><span ng-bind="subjEnt.userIdcode"></span></li></ul>
+                    <ul><li class="fl">组织形式：</li><li class="fl"><span ng-bind="subjEnt.entityScaleName"></span></li></ul>
+                    <ul><li class="fl">主体类型：</li><li class="fl"><span ng-bind="subjEnt.entityTypeName"></span></li></ul>
+                    <ul><li class="fl">主体属性：</li><li class="fl"><span ng-bind="subjEnt.entityPropertyName"></span></li></ul>
+                    <ul><li class="fl">所属行业：</li><li class="fl"><span ng-bind="subjEnt.entityIndustryName"></span></li></ul>
+                    <ul id="zzOutput03"><li class="fl">种植年产量：</li><li class="fl"><span ng-bind="subjEnt.annualOutput"></span><span ng-bind="subjEnt.unitName"></span></li></ul>
+                    <ul id="xmOutput03"><li class="fl">畜牧年产量：</li><li class="fl"><span ng-bind="subjEnt.annualOutputX"></span><span ng-bind="subjEnt.unitNameX"></span></li></ul>
+                    <ul id="scOutput03"><li class="fl">水产年产量：</li><li class="fl"><span ng-bind="subjEnt.annualOutputS"></span><span ng-bind="subjEnt.unitNameS"></span></li></ul>
+                    <ul><li class="fl">注册地所在：</li><li class="fl"><span ng-bind="subjEnt.area"></span></li></ul>
+                    <ul><li class="fl">详情地址：</li><li class="fl"><span ng-bind="subjEnt.address"></span></li></ul>
+                    <ul><li class="fl">电子邮箱：</li><li class="fl"><span ng-bind="subjEnt.contactEmail"></span></li></ul>
+                    <ul><li class="fl">传真号码：</li><li class="fl"><span>{{subjEnt.faxNumber}}</span></li></ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <!--临时生成主体展示区-->
+    <div id="sevenContent" class="col-lg-12 col-xs-12 col-sm-12 col-md-12" style="display: none;">
+        <li>临时生产经营主体信息</li>
+        <li style="border-top: 1px solid #9d9d9d;padding-top: 10px;">
+            <ul class="Sup_contain_section_contain_show">
+                <li class="fl">
+                    <ul><li class="fl">主体名称：</li><li class="fl"><span ng-bind="subjEntTemp.entityName"></span></li></ul>
+                    <ul><li class="fl">组织形式：</li><li class="fl"><span ng-bind="subjEntTemp.entityScale"></span></li></ul>
+                    <ul><li class="fl">主体类型：</li><li class="fl"><span ng-bind="subjEntTemp.entityType"></span></li></ul>
+                    <ul><li class="fl">所属行业：</li><li class="fl"><span ng-bind="subjEntTemp.entityIndustry"></span></li></ul>
+                    <ul id="credType"><li class="fl">证件类型：</li><li class="fl"><span ng-bind="subjEntTemp.credType"></span></li></ul>
+                    <ul><li class="fl">组织机构代码：</li><li class="fl"><span ng-bind="subjEntTemp.orgCode"></span></li></ul>
+                    <ul><li class="fl">主体临时身份码：</li><li class="fl"><span ng-bind="subjEntTemp.identityCode"></span></li></ul>
+                    <!--<ul><li class="fl">联系人：</li><li class="fl"><span ng-bind="subjEntTemp.contactName"></span></li></ul>-->
+                    <!--<ul><li class="fl">联系人电话：</li><li class="fl"><span ng-bind="subjEntTemp.contactPhone"></span></li></ul>-->
+                    <!--<ul><li class="fl">邮箱：</li><li class="fl"><span ng-bind="subjEntTemp.contactEmail"></span></li></ul>-->
+                    <ul><li class="fl">所属区域：</li><li class="fl"><span ng-bind="subjEntTemp.areaId"></span></li></ul>
+                    <ul><li class="fl">详情地址：</li><li class="fl"><span ng-bind="subjEntTemp.address"></span></li></ul>
+                </li>
+                <li class="fl">
+                    <ul>
+                        <li class="fl">
+                            <p class="fl">企业证件照：</p> <br/>
+                            <span class="fl" id="businessLicenceimgL"></span>
+                        </li>
+                        <li id="organizationCertificateimgFL" class="fl">
+                            <p>组织机构代码证照：</p> <br/>
+                            <span id="organizationCertificateimgL"></span>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+    </div>
+    <!--三品一标-->
+    <ul id="spybPic" class="col-lg-12 col-xs-12 col-sm-12 col-md-12">
+        <li>认证情况</li>
+        <li class="clearfix mb25 " style="border-top: 1px solid #9d9d9d;padding-top: 10px;">
+            <div id="WGHShow" style="display: none;" class="col-lg-3 col-xs-3 col-sm-3 col-md-3"><img src="assets/imgs/photo/pollutionFreeAgricultureProducts.png" data-type="WGH"  style="cursor:pointer" ng-click = "openModal($event)" title="无公害农产品"/></div>
+            <div id="LSShow" style="display: none;" class="col-lg-3 col-xs-3 col-sm-3 col-md-3"><img src="assets/imgs/photo/greenFood.png"  style="cursor:pointer" data-type="LS" ng-click = "openModal($event)" title="绿色食品"/></div>
+            <div id="YJShow" style="display: none;" class="col-lg-3 col-xs-3 col-sm-3 col-md-3"><img src="assets/imgs/photo/organicFood.png"  style="cursor:pointer" data-type="YJ"  ng-click = "openModal($event)" title="有机食品"/></div>
+            <div id="DLShow" style="display: none;" class="col-lg-3 col-xs-3 col-sm-3 col-md-3"><img src="assets/imgs/photo/agricultureProductsGeography.png" data-type="DL"   style="cursor:pointer" ng-click = "openModal($event)" title="农产品地理标志"/></div>
+        </li>
+    </ul>
+    <!--无认证显示信息-->
+    <ul id="nospybPic"  class="col-lg-12 col-xs-12 col-sm-12 col-md-12"  style="display: none">
+        <li>认证情况</li>
+        <li class="clearfix mb25" style="border-top: 1px solid #9d9d9d;padding-top: 10px;">
+            <div id="noSpyb" style="font-size: 15px;font-weight: bold">无认证信息</div>
+        </li>
+    </ul>
+    <!--临时生成主体展示区-->
+    <div id="enitContent" class="col-lg-12 col-xs-12 col-sm-12 col-md-12" style="display: none">
+        <ul>
+            <li>联系人信息</li>
+            <li style="border-top: 1px solid #9d9d9d;padding-top: 10px;">
+                <ul class="Sup_contain_section_contain_show">
+                    <li class="fl">
+                        <ul><li class="fl">联系人姓名：</li><li class="fl"><span ng-bind="subjEntTemp.contactName"></span></li></ul>
+                        <ul><li class="fl">联系人联系电话：</li><li class="fl"><span ng-bind="subjEntTemp.contactPhone"></span></li></ul>
+                        <ul><li class="fl">联系人电子邮箱：</li><li class="fl"><span ng-bind="subjEntTemp.contactEmail"></span></li></ul>
+                    </li>
+                    <li class="fl Sup_contain_section_contain_show_TW">
+                        <ul>
+                            <li class="fl">
+                                <p class="fl">身份证正面照：</p> <br/>
+                                <span class="fl" id="positiveIdcardeimgL"></span>
+                            </li>
+                            <li class="fl">
+                                <p>身份证反面照：</p> <br/>
+                                <span id="negativeIdcardimgL"></span>
+                            </li>
+                            <li class="fl">
+                                <p>手持身份证照：</p> <br/>
+                                <span id="handIdcardimgL"></span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <!-- 第四部分 企业/个体工商户、合作社的法人、联系人信息-->
+    <div id="fourthContent" class="col-lg-12 col-xs-12 col-sm-12 col-md-12" style="display: none;">
+        <ul>
+            <li>法定代表人信息</li>
+            <li style="border-top: 1px solid #9d9d9d;padding-top: 10px;">
+                <ul class="Sup_contain_section_contain_show">
+                    <li class="fl Sup_contain_section_contain_show_FR">
+                        <ul><li class="fl">法定代表人：</li><li class="fl"><span ng-bind="subjEnt.legalName"></span></li></ul>
+                        <ul><li class="fl">身份证号：</li><li class="fl"><span ng-bind="subjEnt.legalIdnumber"></span></li></ul>
+                        <ul><li class="fl">联系电话：</li><li class="fl"><span ng-bind="subjEnt.legalPhone"></span></li></ul>
+                    </li>
+                    <li class="fl Sup_contain_section_contain_show_TW">
+                        <ul>
+                            <li class="fl">
+                                <p class="fl">身份证正面照：</p> <br/>
+                                <span class="fl" id="positiveIdcardeimg"></span>
+                            </li>
+                            <li class="fl">
+                                <p>身份证反面照：</p> <br/>
+                                <span id="negativeIdcardimg"></span>
+                            </li>
+                            <li class="fl">
+                                <p>手持身份证照：</p> <br/>
+                                <span id="handIdcardimg"></span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="Sup_contain_section_contain_show_Linkman">
+            <li>联系人信息</li>
+            <li style="border-top: 1px solid #9d9d9d;padding-top: 10px;">
+                <ul class="">
+                    <li class="fl">联系人姓名：<span ng-bind="subjEnt.contactName"></span></li>
+                    <li class="fl">联系人联系电话：<span ng-bind="subjEnt.contactPhone"></span></li>
+                    <li class="fl">联系人电子邮箱：<span ng-bind="subjEnt.contactEmail"></span></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <!-- 第五部分 家庭农场经营者信息-->
+    <div id="fifthContent" class="col-lg-12 col-xs-12 col-sm-12 col-md-12" style="display: none;">
+        <ul>
+            <li>经营者信息</li>
+            <li style="border-top: 1px solid #9d9d9d;padding-top: 10px;">
+                <ul class="Sup_contain_section_contain_show">
+                    <li class="fl Sup_contain_section_contain_show_FR">
+                        <ul><li class="fl">经营者姓名：</li><li class="fl"><span ng-bind="subjEnt.legalName"></span></li></ul>
+                        <ul><li class="fl">身份证号：</li><li class="fl"><span ng-bind="subjEnt.legalIdnumber"></span></li></ul>
+                        <ul><li class="fl">联系电话：</li><li class="fl"><span ng-bind="subjEnt.legalPhone"></span></li></ul>
+                        <ul><li class="fl">电子邮箱：</li><li class="fl"><span ng-bind="subjEnt.contactEmail"></span></li></ul>
+                        <ul><li class="fl">传真号码：</li><li class="fl"><span>{{subjEnt.faxNumber}}</span></li></ul>
+                    </li>
+                    <li class="fl Sup_contain_section_contain_show_TW">
+                        <ul>
+                            <li class="fl">
+                                <p class="fl">身份证正面照：</p> <br/>
+                                <span class="fl" id="positiveIdcardeimgFarm"></span>
+                            </li>
+                            <li class="fl">
+                                <p>身份证反面照：</p> <br/>
+                                <span id="negativeIdcardimgFarm"></span>
+                            </li>
+                            <li class="fl">
+                                <p>手持身份证照：</p> <br/>
+                                <span id="handIdcardimgFarm"></span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <!-- 第六部分 个人信息-->
+    <div id="sixthContent" class="col-lg-12 col-xs-12 col-sm-12 col-md-12" style="display: none;">
+        <ul>
+            <li>个人信息</li>
+            <li style="border-top: 1px solid #9d9d9d;padding-top: 10px;">
+                <ul class="Sup_contain_section_contain_show">
+                    <li class="fl Sup_contain_section_contain_show_FR">
+                        <ul><li class="fl">真实姓名：</li><li class="fl"><span ng-bind="subjEnt.legalName"></span></li></ul>
+                        <ul><li class="fl">身份证号：</li><li class="fl"><span ng-bind="subjEnt.legalIdnumber"></span></li></ul>
+                        <ul><li class="fl">联系电话：</li><li class="fl"><span ng-bind="subjEnt.legalPhone"></span></li></ul>
+                        <ul><li class="fl">电子邮箱：</li><li class="fl"><span ng-bind="subjEnt.contactEmail"></span></li></ul>
+                        <ul><li class="fl">传真号码：</li><li class="fl"><span>{{subjEnt.faxNumber}}</span></li></ul>
+                    </li>
+                    <li class="fl Sup_contain_section_contain_show_TW">
+                        <ul>
+                            <li class="fl">
+                                <p class="fl">身份证正面照：</p> <br/>
+                                <span class="fl" id="positiveIdcardeimgPerson"></span>
+                            </li>
+                            <li class="fl">
+                                <p>身份证反面照：</p> <br/>
+                                <span id="negativeIdcardimgPerson"></span>
+                            </li>
+                            <li class="fl">
+                                <p>手持身份证照：</p> <br/>
+                                <span id="handIdcardimgPerson"></span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <!--按钮-->
+    <div class="Sup_contain_section_contain_show_buton">
+        <button class="gui-btn" ng-click="removeLocalStorage()">关闭</button>
+        <!--<button class="gui-btn">下载</button>-->
+        <!--<button class="gui-btn">打印</button>-->
+    </div>
+</div>
+<!--三品一标模态框-->
+<div class="modal fade"  id="threeProductsAndOneStandard" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid" style="width: 45%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">
+                    <span id="modalTitle">有机食品详情</span>
+                </h4>
+            </div>
+            <!--有机食品-->
+            <div id="organicFood" class="modal-body clearfix gov-h">
+                <div style="color: red">
+                    国家追溯平台与三品一标系统同一主体存在差异,红色判断内容是否相同是判定关联的依据
+                </div>
+                <div id = "organicFoodContent"></div>
+            </div>
+            <!--绿色食品-->
+            <div style="display: none" id = "greenFood" class="modal-body clearfix gov-h">
+                <div style="color: red">
+                    国家追溯平台与三品一标系统同一主体存在差异,红色判断内容是否相同是判定关联的依据
+                </div>
+                <div id="greenFoodContent"></div>
+            </div>
+            <!--无公害农产品-->
+            <div style="display: none" id = "pollutionFreeAgricultureProducts" class="modal-body clearfix gov-h">
+                <div style="color: red">
+                    国家追溯平台与三品一标系统同一主体存在差异,红色判断内容是否相同是判定关联的依据
+                </div>
+                <div id="pfaProContent"></div>
+            </div>
+            <div class="modal-footer mt15">
+                <button class="gui-btn" type="button" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- 图片放大-->
+<div class="Sup_contain_section_img">
+    <img  alt=""/>
+    <span>&#xe6b7;</span>
+</div>

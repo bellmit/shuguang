@@ -1,0 +1,47 @@
+.gui-btn,
+a.gui-btn {
+    display: inline-block;
+    padding: 5px 15px;
+    line-height: 18px;
+    font-size: 14px;
+    color: #FFF;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    vertical-align: middle;
+    border: 1px solid #30aa81;
+    background-color: #47b995;
+    border-radius: 4px;
+    &:hover {
+        background-color: #2fd6a0;
+    }
+    &.btn-small {
+        padding: 1px 8px;
+    }
+    &:disabled {
+        pointer-events: none;
+        opacity: 0.65;
+        cursor: not-allowed;
+    }
+}
+
+.gui-actions {
+    overflow: hidden;
+    margin: 15px 0;
+    h3{
+        line-height: 30px;
+    }
+    .gui-btn {
+        color: #fa9344;
+        border-color: #facb95;
+        padding: 4px 10px;
+        line-height: 20px;
+        background-color: #FFF;
+        &:hover{
+          background-color: #fff2e9;
+        }
+        .gui-icon{
+          margin-right: 5px;
+        }
+    }
+}

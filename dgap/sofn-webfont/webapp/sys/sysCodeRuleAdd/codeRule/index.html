@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="../codeRule.min.css?7bee074c92c32fd6ee6f" rel="stylesheet">
+</head>
+
+<body ng-app="app" style="overflow:scroll;overflow-x:hidden">
+    <div class="sg-page" ng-controller="reactRoot">
+        <react-component name="PageView">
+    </div>
+    <script type="text/javascript" src="../vendors.min.js?7bee074c92c32fd6ee6f"></script>
+    <script type="text/javascript" src="../codeRule/codeRule.min.js?7bee074c92c32fd6ee6f&7bee074c92c32fd6ee6f"></script>
+    <script type="text/javascript" src="/assets/scripts/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $('div').remove('.ant-col-4,.ant-col-24');
+            $('span.ant-breadcrumb-separator,span.ant-breadcrumb-link').filter(function(index){
+                return this.innerText != '系统管理' && this.innerText != '>';
+            }).remove();
+
+            $('span.ant-breadcrumb-separator:last').remove();
+
+        });
+        setTimeout(function(){
+            $('div').remove('.ant-col-4,.ant-col-24');
+            $('span.ant-breadcrumb-separator,span.ant-breadcrumb-link').filter(function(index){
+                return this.innerText != '系统管理' && this.innerText != '>';
+            }).remove();
+
+            $('span.ant-breadcrumb-separator:last').remove();
+        }, 100);
+    </script>
+</body>
+
+</html>

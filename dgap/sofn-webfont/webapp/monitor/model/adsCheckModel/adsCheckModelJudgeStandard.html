@@ -1,0 +1,78 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+    <div class="gui-breadcrumbs">
+        <a href="">监测系统</a>&gt;
+        <a href="">监测模型</a>&gt;
+        <a href="" id="checkModel">模型配置</a>&gt;
+        <span>配置</span>
+    </div>
+    <div class="Sup_contain_section_contain col-lg-12 col-xs-12 col-sm-12 col-md-12">
+        <p class="col-lg-1 col-xs-0 col-sm-1 col-md-1"></p>
+        <div class="Sup_contain_section_contain_head col-lg-12 col-xs-12 col-sm-12 col-md-12">
+
+            <!-- 左侧菜单 -->
+            <div class="col-md-2">
+                <div class="panel-group list-group-panel">
+                    <div class="panel panel-default">
+                        <div class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div class="list-group" style="margin-bottom:0px;">
+                                    <a href="#" type="button" ng-click="edit()" class="list-group-item line-20">修改模型</a>
+                                    <!--<a href="#" ng-click="editType()" class="list-group-item line-20">编辑种类</a>-->
+                                    <a href="#" type="button" ng-click="editSampleLink()" class="list-group-item line-20">编辑抽样环节</a>
+                                    <a href="#" type="button" ng-click="editCheckObject()" class="list-group-item line-20">编辑检测对象</a>
+                                    <a href="#" class="list-group-item active line-20">编辑判定标准</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1">
+            </div>
+            <!--<div class="col-md-1">
+            </div>-->
+            <!-- 右侧内容 -->
+            <div class="col-md-10">
+                <!--<div class="well" style="background-color:white;">-->
+                <div class="tab-content">
+                    <div class="text-left pd-20 mg-auto">
+                        <form class="form-inline well-sm">
+                            <div class="form-group">
+                                <input class="gui-input" type="text"id="nameS" name="nameS" placeholder="请输入判定标准名称" >
+                            </div>
+                            <span class="gui-btn" id="seachTask">查询</span>
+                            <div class="gui-actions">
+                                <span class="gui-btn pull-right" ng-click="addAdsModel()" ><i class="gui-icon icon-add"></i>添加判定标准</span>
+                                <span class="gui-btn pull-right mgr-10" onclick="delAdsModelAttributeMapping()"><i class="gui-icon icon-remove"></i>删除判定标准</span>
+
+                            </div>
+                        </form>
+                        <table id="grid" class="gui-table table table-striped table-hover data-table">
+                        </table>
+                    </div>
+                </div>
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+
+
+<!-- 新增判定标准model -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: center">模型添加判定标准</h4>
+            </div>
+            <div class="modal-body" style="min-height: 100px;">
+                <table id="itemGrid" class="gui-table table table-striped table-hover data-table">
+                </table>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" type="button" data-dismiss="modal">关闭</span>
+                <span class="gui-btn" type="button" ng-click="addAdsModelAttributeMapping()">确定</span>
+            </div>
+        </div>
+    </div>
+</div>

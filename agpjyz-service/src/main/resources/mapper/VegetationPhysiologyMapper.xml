@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agpjyz.mapper.VegetationPhysiologyMapper" >
+
+    <insert id="insertVegetationPhysiology" parameterType="com.sofn.agpjyz.model.VegetationPhysiology">
+        insert into VEGETATION_PHYSIOLOGY
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="protectId != null">PROTECT_ID,</if>
+        <if test="protectValue != null">PROTECT_VALUE,</if>
+            <if test="coverDegree != null">COVER_DEGREE,</if>
+            <if test="canopy != null">CANOPY,</if>
+            <if test="leafArea != null">LEAF_AREA,</if>
+            <if test="inputer != null">INPUTER,</if>
+       <if test="inputerTime != null">INPUTER_TIME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+           <if test="protectId != null">#{protectId},</if>
+            <if test="protectValue != null">#{protectValue},</if>
+            <if test="coverDegree != null">#{coverDegree},</if>
+            <if test="canopy != null">#{canopy},</if>
+            <if test="leafArea != null">#{leafArea},</if>
+          <if test="inputer != null">#{inputer},</if>
+           <if test="inputerTime != null">#{inputerTime},</if>
+        </trim>
+    </insert>
+    <sql id="Base_Column_List">
+    ID,PROTECT_ID,PROTECT_VALUE,
+    COVER_DEGREE,CANOPY,LEAF_AREA,INPUTER,
+    INPUTER_TIME
+    </sql>
+    <select id="get" resultType="com.sofn.agpjyz.model.VegetationPhysiology">
+        select  <include refid="Base_Column_List"/>
+        from
+        VEGETATION_PHYSIOLOGY
+        where id=#{id}
+    </select>
+    <delete id="delVegetationPhysiology">
+        DELETE FROM VEGETATION_PHYSIOLOGY where ID=#{id}
+    </delete>
+    <update id="updateVegetationPhysiology" parameterType="com.sofn.agpjyz.model.VegetationPhysiology">
+        update VEGETATION_PHYSIOLOGY
+        <set>
+            <if test="protectId!= null and protectId != ''">
+                PROTECT_ID=#{protectId},
+            </if>
+            <if test="protectValue != null and protectValue!= ''">
+                PROTECT_VALUE=#{protectValue},
+            </if>
+            <if test="coverDegree != null and coverDegree != ''">
+                COVER_DEGREE=#{coverDegree},
+            </if>
+            <if test="canopy != null and canopy!=''">
+                CANOPY=#{canopy},
+            </if>
+            <if test="leafArea != null  and leafArea!=''">
+                LEAF_AREA=#{leafArea},
+            </if>
+            <if test="inputerTime != null ">
+                INPUTER_TIME=#{inputerTime},
+            </if>
+            <if test="inputer != null and inputer!=''">
+                INPUTER=#{inputer},
+            </if>
+        </set>
+        where  ID=#{id}
+    </update>
+
+    <select id="getVegetationPhysiology" resultType="com.sofn.agpjyz.model.VegetationPhysiology">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        VEGETATION_PHYSIOLOGY
+        <where>
+            <if test="protectId != null and protectId != ''">
+                and PROTECT_ID = #{protectId}
+            </if>
+            <if test="coverDegree != null and coverDegree != ''">
+                and COVER_DEGREE = #{coverDegree}
+            </if>
+
+            <if test="selectDateS!=null">
+                and INPUTER_TIME &gt;= #{selectDateS}
+            </if>
+            <if test="selectDateE!=null">
+                and INPUTER_TIME &lt;= #{selectDateE}
+            </if>
+        </where>
+    </select>
+    <select id="getData" resultType="com.sofn.agpjyz.model.VegetationPhysiology">
+
+    </select>
+</mapper>

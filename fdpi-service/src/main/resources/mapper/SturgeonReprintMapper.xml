@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.SturgeonReprintMapper">
+
+    <sql id="alias_Column_List_sr">
+          sr.ID, sr.APPLY_TIME, sr.STATUS, sr.LABEL_SUM, sr.REPRINT_SUM, sr.OPINION, sr.APPLY_CODE, sr.APPLY_TYPE
+    </sql>
+    <sql id="alias_Column_List_s">
+      s.CREDENTIALS
+    </sql>
+    <sql id="alias_Column_List_tc">
+      tc.COMP_NAME, tc.COMP_TYPE
+    </sql>
+
+    <select id="listByParams" resultType="com.sofn.fdpi.model.SturgeonReprint">
+        select
+        <include refid="alias_Column_List_tc"/>,<include refid="alias_Column_List_s"/>,
+        <include refid="alias_Column_List_sr"/>
+        from STURGEON_REPRINT sr left join STURGEON s on s.ID = sr.STURGEON_ID join TB_COMP tc on sr.COMP_ID = tc.ID
+        <where>
+            sr.DEL_FLAG = 'N' and tc.DEL_FLAG = 'N'
+            <if test="status != null and status != ''">
+                and sr.STATUS = #{status}
+            </if>
+            <if test="applyType != null and applyType != ''">
+                and sr.APPLY_TYPE = #{applyType}
+            </if>
+            <if test="isPrint != null and isPrint != ''">
+                and sr.STATUS > '1' and sr.STATUS !='5' and sr.third_print = #{isPrint}
+            </if>
+            <if test="isMinistry1 != null and isMinistry1 != ''">
+                and sr.STATUS > '1' and sr.STATUS !='5'
+            </if>
+            <if test="isMinistry2 != null and isMinistry2 != ''">
+                and sr.STATUS > '1' and sr.STATUS != '5'
+            </if>
+            <if test="direclyId != null and direclyId != ''">
+                and tc.DIRECLY_ID = #{direclyId} and s.STATUS > '1'
+            </if>
+            <if test="compId != null and compId != ''">
+                and sr.COMP_ID = #{compId}
+            </if>
+            <if test="credentials != null and credentials != ''">
+                and s.CREDENTIALS like '%' || #{credentials} || '%'
+            </if>
+            <if test="compName != null and compName != ''">
+                and tc.COMP_NAME like '%' || #{compName} || '%'
+            </if>
+        </where>
+        order by sr.APPLY_TIME desc
+    </select>
+
+    <select id="getTodayMaxApplyNum" resultType="java.lang.String">
+        SELECT max(apply_code) FROM STURGEON_REPRINT WHERE apply_code like #{todayStr}||'%'
+    </select>
+    <select id="getYearMaxSequenceNum" resultType="java.lang.String">
+        SELECT max(contract_num) FROM STURGEON_REPRINT WHERE contract_num like #{contractNum}||'%'
+    </select>
+</mapper>

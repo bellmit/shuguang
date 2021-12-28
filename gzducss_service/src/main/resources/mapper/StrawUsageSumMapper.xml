@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.StrawUsageSumMapper" >
+        <resultMap id="BaseResultMap" type="com.sofn.ducss.model.StrawUsageSum" >
+            <result column="id" property="id" />
+            <result column="year" property="year" />
+            <result column="area_id" property="areaId" />
+            <result column="straw_type" property="strawType" />
+            <result column="straw_name" property="strawName" />
+            <result column="straw_usage" property="strawUsage" />
+            <result column="comprehensive_rate" property="comprehensiveRate" />
+            <result column="all_total" property="allTotal" />
+            <result column="fertilizer" property="fertilizer" />
+            <result column="fuel" property="fuel" />
+            <result column="basic" property="basic" />
+            <result column="raw_material" property="rawMaterial" />
+            <result column="feed" property="feed" />
+            <result column="other" property="other" />
+            <result column="yield_export" property="yieldExport" />
+            <result column="comprehensive_index" property="comprehensiveIndex" />
+            <result column="industrialization_index" property="industrializationIndex" />
+            <result column="collect_resource" property="collectResource" />
+            <result column="main_total" property="mainTotal" />
+            <result column="return_resource" property="returnResource" />
+
+        </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                year,
+                area_id,
+                straw_type,
+                straw_name,
+                straw_usage,
+                comprehensive_rate,
+                all_total,
+                fertilizer,
+                fuel,
+                basic,
+                raw_material,
+                feed,
+                other,
+                yield_export,
+                comprehensive_index,
+                industrialization_index,
+                collect_resource,
+                main_total,
+                return_resource
+    </sql>
+    <insert id="insertBatchStrawUsageSum" parameterType="java.util.List">
+        INSERT INTO straw_usage_sum (<include refid="Base_Column_List"></include>) values
+        <foreach collection="list" item="item" index="index" separator=",">
+
+            (
+            #{item.id,jdbcType=VARCHAR},
+            #{item.year,jdbcType=VARCHAR},
+            #{item.areaId,jdbcType=VARCHAR},
+            #{item.strawType,jdbcType=VARCHAR},
+            #{item.strawName,jdbcType=VARCHAR},
+            #{item.strawUsage,jdbcType=DECIMAL},
+            #{item.comprehensiveRate,jdbcType=DECIMAL},
+            #{item.allTotal,jdbcType=DECIMAL},
+            #{item.fertilizer,jdbcType=DECIMAL},
+            #{item.fuel,jdbcType=DECIMAL},
+            #{item.basic,jdbcType=DECIMAL},
+            #{item.rawMaterial,jdbcType=DECIMAL},
+            #{item.feed,jdbcType=DECIMAL},
+            #{item.other,jdbcType=DECIMAL},
+            #{item.yieldExport,jdbcType=DECIMAL},
+            #{item.comprehensiveIndex,jdbcType=DECIMAL},
+            #{item.industrializationIndex,jdbcType=DECIMAL},
+            #{item.collectResource,jdbcType=DECIMAL},
+            #{item.mainTotal,jdbcType=DECIMAL},
+            #{item.returnResource,jdbcType=DECIMAL}
+            )
+
+        </foreach>
+
+
+    </insert>
+
+
+
+
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.sofn.ducss.model.StrawUsageSum">
+        INSERT INTO straw_usage_sum
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != year'>
+                year,
+            </if>
+            <if test ='null != areaId'>
+                area_id,
+            </if>
+            <if test ='null != strawType'>
+                straw_type,
+            </if>
+            <if test ='null != strawName'>
+                straw_name,
+            </if>
+            <if test ='null != strawUsage'>
+                straw_usage,
+            </if>
+            <if test ='null != comprehensiveRate'>
+                comprehensive_rate,
+            </if>
+            <if test ='null != allTotal'>
+                all_total,
+            </if>
+            <if test ='null != fertilizer'>
+                fertilizer,
+            </if>
+            <if test ='null != fuel'>
+                fuel,
+            </if>
+            <if test ='null != basic'>
+                basic,
+            </if>
+            <if test ='null != rawMaterial'>
+                raw_material,
+            </if>
+            <if test ='null != feed'>
+                feed,
+            </if>
+            <if test ='null != other'>
+                other,
+            </if>
+            <if test ='null != yieldExport'>
+                yield_export,
+            </if>
+            <if test ='null != comprehensiveIndex'>
+                comprehensive_index,
+            </if>
+            <if test ='null != industrializationIndex'>
+                industrialization_index,
+            </if>
+            <if test ='null != returnResource'>
+                return_resource
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != year'>
+                #{year},
+            </if>
+            <if test ='null != areaId'>
+                #{areaId},
+            </if>
+            <if test ='null != strawType'>
+                #{strawType},
+            </if>
+            <if test ='null != strawName'>
+                #{strawName},
+            </if>
+            <if test ='null != strawUsage'>
+                #{strawUsage},
+            </if>
+            <if test ='null != comprehensiveRate'>
+                #{comprehensiveRate},
+            </if>
+            <if test ='null != allTotal'>
+                #{allTotal},
+            </if>
+            <if test ='null != fertilizer'>
+                #{fertilizer},
+            </if>
+            <if test ='null != fuel'>
+                #{fuel},
+            </if>
+            <if test ='null != basic'>
+                #{basic},
+            </if>
+            <if test ='null != rawMaterial'>
+                #{rawMaterial},
+            </if>
+            <if test ='null != feed'>
+                #{feed},
+            </if>
+            <if test ='null != other'>
+                #{other},
+            </if>
+            <if test ='null != yieldExport'>
+                #{yieldExport},
+            </if>
+            <if test ='null != comprehensiveIndex'>
+                #{comprehensiveIndex},
+            </if>
+            <if test ='null != industrializationIndex'>
+                #{industrializationIndex},
+            </if>
+            <if test ='null != returnResource'>
+                #{returnResource}
+            </if>
+        </trim>
+    </insert>
+
+
+    <delete id="deleteStrawUtilizeSum" parameterType="com.sofn.ducss.model.StrawUtilizeSum">
+        delete  from straw_usage_sum  where  year =#{year} and area_id=#{areaId}
+    </delete>
+
+    <!--
+	 * 根据区域id和年份查找秸秆利用汇总
+    -->
+    <select id="selectStrawUtilizeByAreaIds" resultType="com.sofn.ducss.model.StrawUsageSum">
+        select a.* from straw_usage_sum a left join collect_flow cf on a.year=cf.year and
+        a.area_id=cf.area_id
+        <where>
+            <if test="status != null and status.size() > 0">
+                and cf.status in
+                <foreach collection="status" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="year != null and year != ''">
+                and a.year= #{year}
+            </if>
+            <if test="childrenIds != null and childrenIds.size() > 0">
+                and a.area_id in
+                <foreach collection="childrenIds" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+        </where>
+    </select>
+
+
+</mapper>

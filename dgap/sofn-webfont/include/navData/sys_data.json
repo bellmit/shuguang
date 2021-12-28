@@ -1,0 +1,107 @@
+[
+  {
+    "id": 1,
+    "text": "Folder1",
+    "iconCls": "icon-save",
+    "children": [
+      {
+        "id": 12,
+        "text": "角色管理",
+        "state": "open",
+        "menuUrl": "index.content.sys/role/roleList"
+      },
+      {
+        "id": 13,
+        "text": "菜单管理",
+        "state": "open",
+        "menuUrl": "index.content.sys/sysMenu/menulist"
+      },
+      {
+        "id": 14,
+        "text": "用户管理",
+        "state": "open",
+        "menuUrl": "index.content.sys/user/userList"
+      },
+      {
+        "id": 16,
+        "text": "基础数据管理",
+        "state": "closed",
+        "children": [
+        {
+            "id": 1319,
+            "text": "检测基本配置",
+            "children": [
+              {
+                "id": 1219,
+                "text": "检测标准",
+                "menuUrl": "index.content.sys/adsModelCheckStandard/adsModelCheckStandard"
+              },
+              {
+                "id": 1229,
+                "text": "检测项目",
+                "menuUrl": "index.content.sys/checkItem/adsModelCheckItemList"
+              },
+              {
+                "id": 1249,
+                "text": "抽样环节",
+                "menuUrl": "index.content.sys/adsModelSampleLink/adsModelSampleLink"
+              },
+              {
+                "id": 1259,
+                "text": "判定标准",
+                "menuUrl": "index.content.sys/judgeStandard/adsModelJudgeStandardList"
+              }
+            ]
+          },
+          {
+            "id": 161,
+            "text": "字典管理",
+            "state": "open",
+            "menuUrl": "index.content.sys/dictManager/dictTypeView"
+          },
+          {
+            "id": 162,
+            "text": "农产品分类管理",
+            "state": "open",
+            "menuUrl": "index.content.sys/agriProduct/agriProductList"
+          },
+          {
+            "id": 163,
+            "text": "行政区划管理",
+            "state": "open",
+            "menuUrl": "index.content.sys/region/regionList"
+          }
+        ]
+      },
+      {
+        "id": 17,
+        "text": "资源管理",
+        "state": "open",
+        "menuUrl": "index.content.sys/sysResource/sysResource"
+      },
+      {
+        "id": 18,
+        "text": "编码管理",
+        "state": "open",
+        "menuUrl": "index.content.sys/sysCodeRule/sysCodeRule"
+      },
+      {
+        "id": 19,
+        "text": "公告信息管理",
+        "state": "open",
+        "menuUrl": "index.content.sys/sysNoticerelease/sysNocList"
+      },
+      {
+        "id": 20,
+        "text": "模板管理",
+        "state": "open",
+        "menuUrl": "index.content.sys/sysTemplate/sysTemplateList"
+      },
+      {
+        "id": 21,
+        "text": "日志管理",
+        "state": "open",
+        "menuUrl": "index.content.sys/logManager/logView"
+      }]
+  }
+]

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sofn.fdzem.mapper.WaterQualityMonitoringMapper">
+
+
+    <!--分页+条件查询-->
+    <select id="selectListByQuery" resultType="com.sofn.fdzem.model.WaterQualityMonitoring" parameterType="java.lang.String">
+        select
+        <include refid="Base_column_list"/>
+        from tb_water_quality_monitoring
+        where  monitoring_point_id = #{monitoringPointId}
+    </select>
+    <!--删除-->
+    <delete id="removeById" parameterType="java.lang.String">
+        delete from tb_water_quality_monitoring where monitoring_point_id = #{monitoringPointId}
+    </delete>
+<!--更新-->
+    <update id="update" parameterType="com.sofn.fdzem.model.WaterQualityMonitoring">
+        update tb_water_quality_monitoring set
+        ph = #{ph},water_depth = #{waterDepth},
+        water_temperature = #{waterTemperature},transparency = #{transparency},d_o = #{dO},
+        nitrite_nitrogen = #{nitriteNitrogen},
+        nitrate_nitrogen = #{nitrateNitrogen},ammonia_nitrogen = #{ammoniaNitrogen},
+        mineral_nitrogen = #{mineralNitrogen},labile_phosphate = #{labilePhosphate},
+        c_o_d = #{cOD},petroleum = #{petroleum},cu = #{cu},
+        zn = #{zn},pb = #{pb},cd = #{cd},
+        hg = #{hg},
+        as_a = #{asA},cr = #{cr},coliforms = #{coliforms}
+        where id=#{id}
+    </update>
+
+    <!--添加-->
+    <insert id="insert" parameterType="com.sofn.fdzem.model.WaterQualityMonitoring">
+        insert into tb_water_quality_monitoring
+        (<include refid="Base_column_list"/>)
+         values
+        (#{id},#{monitoringPointId},#{ph},#{waterDepth},#{waterTemperature},#{transparency},
+        #{dO},#{nitriteNitrogen},#{nitrateNitrogen},
+        #{ammoniaNitrogen},#{mineralNitrogen},#{labilePhosphate},
+        #{cOD},#{petroleum},#{cu},#{zn},#{pb},#{cd},#{hg},#{asA},#{cr},#{coliforms})
+    </insert>
+
+    <sql id="Base_column_list">
+        id,monitoring_point_id,ph,water_depth,water_temperature,
+        transparency,d_o,nitrite_nitrogen,
+        nitrate_nitrogen,ammonia_nitrogen,
+        mineral_nitrogen,labile_phosphate,
+        c_o_d,petroleum,cu,zn,pb,cd,hg,as_a,cr,coliforms
+    </sql>
+
+
+</mapper>

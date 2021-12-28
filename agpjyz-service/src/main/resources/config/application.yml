@@ -1,0 +1,94 @@
+server:
+  port: 8890
+spring:
+  application:
+    name: @project.artifactId@
+  profiles:
+    active: @active.profile@
+    include: filter
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  servlet:
+    multipart:
+      max-request-size: 1024MB
+      max-file-size: 1024MB
+#  datasource:
+#    schema:
+#      - classpath:sql/schema.sql
+#    data:
+#      - classpath:sql/data.sql
+#    separator: $$
+#    initialization-mode: always
+#    continue-on-error: false
+
+management:
+  server:
+    servlet:
+      context-path: /management
+    ssl:
+      enabled: false
+
+
+druid:
+  pool:
+    initialSize: 10
+    maxActive: 100
+    minIdle: 10
+
+
+#mybatis-plus
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*Mapper.xml
+  typeAliasesPackage: com.sofn.agpjyz.model
+  global-config:
+    id-type: 3
+    field-strategy: 2
+    auto-set-db-type: true
+    db-column-underline: false
+    refresh-mapper: true
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    log-prefix: mybatis.sql.
+
+logging:
+  config: classpath:logback-spring.xml
+
+eureka:
+  instance:
+    # 心跳时间，即服务续约间隔时间（缺省为30s）
+    lease-renewal-interval-in-seconds: 10
+    # 发呆时间，即服务续约到期时间（缺省为90s）
+    lease-expiration-duration-in-seconds: 20
+    prefer-ip-address: true
+  client:
+    healthcheck:
+      # 开启健康检查（依赖spring-boot-starter-actuator）
+      enabled: true
+    fetch-registry: true
+    register-with-eureka: true
+
+# swagger配置
+swagger:
+  # 扫描包
+  base-package: com.sofn.agpjyz.web
+  # 名称
+  name: 重点生物多样性富集区农业野生植物监测预警子系统+农业野生植物利用调查子系统
+  # 接口前缀
+  prefix: /agpjyz
+
+#  调度中心
+xxl:
+  job:
+    admin:
+      addresses: http://127.0.0.1:8653/xxl-job-admin
+    executor:
+      appname: agpjzb-job-executor
+      port: 8651
+      ip: 127.0.0.1
+      logpath: /data/applogs/xxl-job/jobhandler
+      logretentiondays: 30
+    accessToken:
+

@@ -1,0 +1,92 @@
+.b-button__input {
+  opacity: 0;
+  top: -10px;
+  bottom: -10px;
+  right: -40px;
+  font-size: 50px;
+  position: absolute;
+}
+.btn-upload {
+  overflow: hidden;
+  position: relative;
+  padding: 0 !important;
+}
+.btn-upload .b-button__text {
+  width: 100%;
+  height: 100%;
+  padding: 4px 10px;
+}
+.gui-file {
+  margin-right: -15px;
+  padding-top: 15px;
+}
+.gui-file .file-item {
+  float: left;
+  margin-right: 15px;
+  width: 175px;
+  padding-bottom: 5px;
+  color: #666;
+  margin-bottom: 10px;
+  position: relative;
+  min-height: 150px;
+}
+.gui-file .file-item.item-plus .input-box::before {
+  background: rgba(0, 0, 0, 0.25) url("../../imgs/dist/plus.png") center center no-repeat;
+}
+.gui-file .input-box {
+  display: inline-block;
+  width: 100%;
+  height: 100px;
+  position: relative;
+  background-size: cover;
+  background-position: center center;
+}
+.gui-file .input-box::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.gui-file .input-box.uploaded::before {
+  display: none;
+}
+.gui-file .input-box input[type=file] {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 10;
+}
+.gui-file .file-name {
+  text-align: center;
+  padding: 0 5px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.gui-file .file-remove {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  right: -12px;
+  top: -12px;
+  float: left;
+  cursor: pointer;
+  background: url(../../imgs/dist/remove.png) center center no-repeat;
+}
+.gui-file .gui-progress {
+  position: absolute;
+  left: 0;
+  top: 99px;
+  height: 4px;
+  width: 100%;
+  border-radius: 0;
+  background-color: transparent;
+}
+.fu-selector:hover {
+  background: url(../../imgs/dist/plus.png) center center no-repeat rgba(0, 0, 0, 0.25);
+}

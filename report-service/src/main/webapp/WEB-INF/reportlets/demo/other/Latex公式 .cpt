@@ -1,0 +1,994 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WorkBook xmlVersion="20170720" releaseVersion="10.0.0">
+<Report class="com.fr.report.worksheet.WorkSheet" name="sheet1">
+<ReportPageAttr>
+<HR/>
+<FR/>
+<HC/>
+<FC/>
+</ReportPageAttr>
+<ColumnPrivilegeControl/>
+<RowPrivilegeControl/>
+<RowHeight defaultValue="723900">
+<![CDATA[1295400,723900,723900,723900,723900,723900,723900,723900,723900,876300,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,1295400,1143000,1714500,723900,723900,838200,723900,723900,723900,723900,838200,723900,723900,723900,1143000,838200,723900,723900,723900,723900,723900,723900,723900,723900,723900]]></RowHeight>
+<ColumnWidth defaultValue="2743200">
+<![CDATA[5760000,5760000,5760000,5760000,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200]]></ColumnWidth>
+<CellElementList>
+<C c="0" r="0" cs="4" s="0">
+<O>
+<![CDATA[标准函数#]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="1" cs="4" s="1">
+<O>
+<![CDATA[指数]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="2" s="2">
+<O>
+<![CDATA[\\exp b = a^b]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="1" r="2" s="2">
+<O>
+<![CDATA[\\exp_a b = a^b]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="2" r="2" s="2">
+<O>
+<![CDATA[10^m]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="3" r="2" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="3" cs="4" s="1">
+<O>
+<![CDATA[对数]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="4" s="2">
+<O>
+<![CDATA[\\ln c]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="1" r="4" s="2">
+<O>
+<![CDATA[\\lg d = \\log e]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="2" r="4" s="2">
+<O>
+<![CDATA[\\log_{10} f]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="3" r="4" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="5" cs="4" s="1">
+<O>
+<![CDATA[三角函数]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="6" s="2">
+<O>
+<![CDATA[\\sin a]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="1" r="6" s="2">
+<O>
+<![CDATA[\\cos b]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="2" r="6" s="2">
+<O>
+<![CDATA[\\tan c]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="3" r="6" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="7" s="2">
+<O>
+<![CDATA[\\cot d]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="1" r="7" s="2">
+<O>
+<![CDATA[\\sec e]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="2" r="7" s="2">
+<O>
+<![CDATA[ \\csc f]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="3" r="7" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="8" s="2">
+<O>
+<![CDATA[\\arcsin a]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="1" r="8" s="2">
+<O>
+<![CDATA[\\arccos b]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="2" r="8" s="2">
+<O>
+<![CDATA[\\arctan c]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="3" r="8" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="9" cs="4" s="0">
+<O>
+<![CDATA[符号函数#]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="10" cs="4" s="1">
+<O>
+<![CDATA[绝对值]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="11" s="2">
+<O>
+<![CDATA[r]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="1" r="11" s="2">
+<O>
+<![CDATA[\\left\\vert s \\right\\vert]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="2" r="11" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="3" r="11" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="12" cs="4" s="1">
+<O>
+<![CDATA[最大值,最小值]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="13" s="2">
+<O>
+<![CDATA[\\min(x,y)]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="1" r="13" s="2">
+<O>
+<![CDATA[\\max(x,y)]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="2" r="13" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="3" r="13" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="14" cs="4" s="1">
+<O>
+<![CDATA[界限,极限]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="15" s="2">
+<O>
+<![CDATA[\\min x]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="1" r="15" s="2">
+<O>
+<![CDATA[\\max y]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="2" r="15" s="2">
+<O>
+<![CDATA[\\inf s]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="3" r="15" s="2">
+<O>
+<![CDATA[\\sup t]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="0" r="16" s="2">
+<O>
+<![CDATA[\\lim u]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="1" r="16" s="2">
+<O>
+<![CDATA[\\liminf v]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="2" r="16" s="2">
+<O>
+<![CDATA[\\limsup w]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="3" r="16" s="4">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="17" s="2">
+<O>
+<![CDATA[\\lim_{x \\to \\infty} \\frac{1}{n(n+1)}]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="1" r="17" s="4">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="2" r="17" s="4">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="3" r="17" s="4">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="18" s="2">
+<O>
+<![CDATA[\\dim p]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="1" r="18" s="2">
+<O>
+<![CDATA[\\deg q]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="2" r="18" s="2">
+<O>
+<![CDATA[\\det m]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="3" r="18" s="2">
+<O>
+<![CDATA[ \\ker\\phi]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="0" r="19" cs="4" s="1">
+<O>
+<![CDATA[投射]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="20" s="2">
+<O>
+<![CDATA[\\Pr j]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="1" r="20" s="2">
+<O>
+<![CDATA[\\hom l]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="2" r="20" s="2">
+<O>
+<![CDATA[\\lVert z \\rVert]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="3" r="20" s="2">
+<O>
+<![CDATA[\\arg z]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="0" r="21" cs="4" s="1">
+<O>
+<![CDATA[微分及导数]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="22" s="2">
+<O>
+<![CDATA[dt]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="1" r="22" s="2">
+<O>
+<![CDATA[\\mathrm{d}t]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="2" r="22" s="2">
+<O>
+<![CDATA[\\partial t]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="3" r="22" s="2">
+<O>
+<![CDATA[\\nabla\\psi]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="0" r="23" s="2">
+<O>
+<![CDATA[dy/dx]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="1" r="23" s="2">
+<O>
+<![CDATA[\\mathrm{d}y/\\mathrm{d}x]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="2" r="23" s="2">
+<O>
+<![CDATA[\\frac{dy}{dx}]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="3" r="23" s="2">
+<O>
+<![CDATA[\\frac{\\mathrm{d}y}{\\mathrm{d}x}]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="0" r="24" s="2">
+<O>
+<![CDATA[\\frac{\\partial^2}{\\partial x_1\\partial x_2}y]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="1" r="24" s="4">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="2" r="24" s="4">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="3" r="24" s="4">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="25" s="2">
+<O>
+<![CDATA[\\prime]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="1" r="25" s="2">
+<O>
+<![CDATA[\\backprime]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="2" r="25" s="2">
+<O>
+<![CDATA[f^\\prime]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="3" r="25" s="2">
+<O>
+<![CDATA[f\']]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="0" r="26" s="2">
+<O>
+<![CDATA[f\'\']]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="1" r="26" s="2">
+<O>
+<![CDATA[f^{(3)}]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="2" r="26" s="2">
+<O>
+<![CDATA[\\dot y]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="3" r="26" s="2">
+<O>
+<![CDATA[\\ddot y]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="0" r="27" cs="4" s="0">
+<O>
+<![CDATA[类字母符号及常数#]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="28" s="2">
+<O>
+<![CDATA[\\infty]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="1" r="28" s="2">
+<O>
+<![CDATA[\\aleph]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="2" r="28" s="2">
+<O>
+<![CDATA[\\complement]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="3" r="28" s="2">
+<O>
+<![CDATA[\\backepsilon]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="0" r="29" s="2">
+<O>
+<![CDATA[\\eth]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="1" r="29" s="2">
+<O>
+<![CDATA[\\Finv]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="2" r="29" s="2">
+<O>
+<![CDATA[\\hbar]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="3" r="29" s="2">
+<O>
+<![CDATA[\\Im]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="0" r="30" s="2">
+<O>
+<![CDATA[\\imath]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="1" r="30" s="2">
+<O>
+<![CDATA[\\jmath]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="2" r="30" s="2">
+<O>
+<![CDATA[\\Bbbk]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="3" r="30" s="2">
+<O>
+<![CDATA[\\ell]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="0" r="31" s="2">
+<O>
+<![CDATA[\\mho]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="1" r="31" s="2">
+<O>
+<![CDATA[\\wp]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="2" r="31" s="2">
+<O>
+<![CDATA[ \\Re]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="3" r="31" s="2">
+<O>
+<![CDATA[\\circledS]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="0" r="32" cs="4" s="0">
+<O>
+<![CDATA[模运算#]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="33" s="2">
+<O>
+<![CDATA[s_k \\equiv 0 \\pmod{m}]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="1" r="33" s="4">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="2" r="33" s="4">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="3" r="33" s="4">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="34" s="2">
+<O>
+<![CDATA[a \\bmod b]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="1" r="34" s="4">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="2" r="34" s="4">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="3" r="34" s="4">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="35" s="2">
+<O>
+<![CDATA[\\gcd(m, n)]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="1" r="35" s="2">
+<O>
+<![CDATA[\\operatorname{lcm}(m, n)]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="2" r="35" s="4">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="3" r="35" s="4">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="36" s="2">
+<O>
+<![CDATA[\\mid]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="1" r="36" s="2">
+<O>
+<![CDATA[ \\nmid]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="2" r="36" s="2">
+<O>
+<![CDATA[\\shortmid]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="3" r="36" s="2">
+<O>
+<![CDATA[\\nshortmid]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="0" r="37" cs="4" s="0">
+<O>
+<![CDATA[根号#]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="38" s="2">
+<O>
+<![CDATA[\\surd]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="1" r="38" s="2">
+<O>
+<![CDATA[\\sqrt{2}]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="2" r="38" s="2">
+<O>
+<![CDATA[\\sqrt[n]A{}]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+<C c="3" r="38" s="2">
+<O>
+<![CDATA[\\sqrt[3]A{\\frac{x^3+y^3}{2}}]]></O>
+<PrivilegeControl/>
+<Present class="com.qian.plugin.latexkind.MyPresent" pluginID="com.qian.plugin.latexkind">
+<MyPresent bgColor="255,255,255,255" textColor="0,0,0,255"/>
+</Present>
+<Expand/>
+</C>
+</CellElementList>
+<ReportAttrSet>
+<ReportSettings headerHeight="0" footerHeight="0">
+<PaperSetting/>
+<Background name="ColorBackground" color="-1"/>
+</ReportSettings>
+<Header reportPageType="0">
+<Background name="NullBackground"/>
+<LeftList/>
+<CenterList/>
+<RightList/>
+</Header>
+<Footer reportPageType="0">
+<Background name="NullBackground"/>
+<LeftList/>
+<CenterList/>
+<RightList/>
+</Footer>
+</ReportAttrSet>
+<PrivilegeControl/>
+</Report>
+<ReportParameterAttr>
+<Attributes showWindow="true" delayPlaying="true" windowPosition="1" align="0" useParamsTemplate="true"/>
+<PWTitle>
+<![CDATA[参数]]></PWTitle>
+</ReportParameterAttr>
+<StyleList>
+<Style horizontal_alignment="0" imageLayout="1">
+<FRFont name="微软雅黑" style="0" size="144"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style horizontal_alignment="2" imageLayout="1">
+<FRFont name="微软雅黑" style="0" size="112"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style horizontal_alignment="0" imageLayout="1">
+<FRFont name="SimSun" style="0" size="72"/>
+<Background name="ColorBackground" color="-3355444"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style imageLayout="1">
+<FRFont name="SimSun" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style horizontal_alignment="0" imageLayout="1">
+<FRFont name="SimSun" style="0" size="72"/>
+<Background name="ColorBackground" color="-1"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+</StyleList>
+<DesignerVersion DesignerVersion="KAA"/>
+<PreviewType PreviewType="2"/>
+<TemplateIdAttMark class="com.fr.base.iofile.attr.TemplateIdAttrMark">
+<TemplateIdAttMark TemplateId="c7bbec23-2a62-4f12-aff6-47b23e9250a4"/>
+</TemplateIdAttMark>
+</WorkBook>

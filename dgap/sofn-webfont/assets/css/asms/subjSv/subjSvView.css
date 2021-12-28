@@ -1,0 +1,70 @@
+.Sup_contain_section_contain_head{
+    text-align: center;
+    margin: auto;
+    overflow: hidden;
+}
+.Sup_contain_section_contain_head p{
+    font-size: 25px;
+    margin:20px 0px 30px 20px;
+}
+.Sup_contain_section_contain_head ul li{
+
+}
+.Sup_contain_section_contain_head ul li{
+    /*font-size: 16px;*/
+    clear: both;
+    margin-top: 10px;
+    line-height: 100%;
+}
+.Sup_contain_section_contain_head ul li:after{
+    content: "";
+    height: 0px;
+    display: table;
+    clear: both;
+}
+.Sup_contain_section_contain_head span{
+    margin-right: 10px;
+    display: inline-block;
+    text-align: right;
+    height: 30px;
+    line-height: 30px;
+    vertical-align: middle;
+}
+.gui-select{
+    width: 100%;
+}
+.Sup_contain_section_contain_input{
+    width: 450px;
+    outline: none;
+    /*height: 30px;*/
+}
+.Sup_contain_section_contain_head_button{
+    width: 120px;
+    height: 30px;
+    font-size: 20px;
+    background: #20944d;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    outline: none;
+    margin: 15px 60px 15px 150px;
+
+}
+/*添加星号*/
+.important{
+    position: relative;
+}
+.this-after{
+    right: -65px;;
+}
+.form-control {
+    padding: 4px 12px;
+    height: 30px;
+}
+.control-label{
+    text-align: right;
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 5px;
+    padding-right: 10px
+}

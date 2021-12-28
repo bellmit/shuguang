@@ -1,0 +1,68 @@
+    <link rel="stylesheet" href="assets/css/asms/ass/assChecklist.css"/>
+    <div class="gui-breadcrumbs">
+        <a href="javascript:void(0)">查询系统</a>&gt;
+        <a href="" ng-click="retrunDiskTop()">检测任务</a>&gt;
+        <a id="titleName" href="" ng-click="retrunDiskTop()">例行监测</a>&gt;
+        <span>抽样单列表</span>
+    </div>
+<div class="gui-section">
+    <!-- 承担单位或牵头单位 start-->
+    <div class="gui-form-group">
+        <div name="JDccCdUnitSpan" style="display: none">
+            <span>承担单位</span>
+            <div class="gui-select">
+                <select name = "JdccCdUnit" onchange="selectCdUnit()">
+                    <option value="">请选择</option>
+                    <option ng-repeat="unit in JdccCdUnit" value="{{unit.superviseBearUnitId}}">{{unit.leadUnitName}}</option>
+                </select>
+            </div>
+            <!--<button ng-click="retrunDiskTop()" class="gui-btn">返回</button>-->
+        </div>
+        <div name="JDccSonTaskSpan" style="display: none">
+            <span>承担单位任务</span>
+            <div class="gui-select">
+                <select name = "JDccSonTask" onchange="selectCdUnitTask()">
+                    <option value="">请选择</option>
+                    <option ng-repeat="task in JDccSonTask" value="{{task.id}}">{{task.taskName}}</option>
+                </select>
+            </div>
+            <!--<button ng-click="retrunDiskTop()" class="gui-btn">返回</button>-->
+        </div>
+        <div name="LxJcQtUnitSpan" style="display: none">
+            <span>牵头单位</span>
+            <div class="gui-select">
+                <select name = "lxjcQtUnit" onchange="selectObj()">
+                    <option value="">请选择</option>
+                    <option ng-repeat="unit in lxjcQtUnit" value="{{unit.leadUnitId}}">{{unit.leadUnitName}}</option>
+                </select>
+            </div>
+            <button ng-click="retrunDiskTop()" class="gui-btn">返回</button>
+        </div>
+        <div name="ZxjcQtUnitSpan" style="display: none">
+            <span>牵头单位</span>
+            <div class="gui-select">
+                <select name = "ZxjcQtUnit" onchange="selectObj()">
+                    <option value="">请选择</option>
+                    <option ng-repeat="unit in ZxjcQtUnit" value="{{unit.leadUnitId}}">{{unit.leadUnitName}}</option>
+                </select>
+            </div>
+            <button ng-click="retrunDiskTop()" class="gui-btn">返回</button>
+        </div>
+        <!-- 承担单位或牵头单位 end-->
+        <div name="jcObjSpan" style="display: none">
+            <span>检测对象</span>
+            <div class="gui-select">
+                <select name = "jcObj" onchange="selectObj()">
+                    <option value="">请选择</option>
+                    <option ng-repeat="obj in jcObjList" value="{{obj.id}}">{{obj.productName}}</option>
+                </select>
+            </div>
+            <button ng-click="retrunDiskTop()" class="gui-btn">返回</button>
+        </div>
+        <!--<button class="gui-btn" id="ToCheck">查询</button>-->
+    </div>
+    <table id="grid" class="gui-table mt15"
+           style="width: 100%">
+    </table>
+</div>
+

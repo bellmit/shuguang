@@ -1,0 +1,70 @@
+<link rel="stylesheet" href="assets/css/asms/subjSv/subjSvList.css"/>
+<div class="gui-mainBc">
+    <div class="gui-breadcrumbs">
+        <a href="">查询系统</a>&gt;
+        <a href="">监管信息查询</a>&gt;
+        <span>查询统计</span>
+    </div>
+    <div class="gui-section ">
+        <div class="">
+            <form id="queryForm" class=" gui-form-group " style="">
+                <div class="mt15">
+                    <span>产品名称</span>
+                    <input class="gui-input" maxlength="30" type="text" style="width: 150px;" placeholder="请输入产品名称"
+                           name="productName"/>
+                    <span>产品追溯码</span>
+                    <input class="gui-input" type="text" style="width: 150px;" placeholder="请输入产品追溯码"
+                           name="productTraceCode"/>
+                </div>
+                <div class="mt15">
+                    <span>查询时间</span>
+                    <input id="qryStartTime" name="qryStartTime" style="cursor: pointer;width: 120px;"
+                           class="Wdate gui-input" type="text"
+                           onFocus="var endDate=$dp.$('dateEnd');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'qryEndTime\')}'})"/>--
+                    <input id="qryEndTime" name="qryEndTime" class="Wdate gui-input"
+                           style="cursor: pointer;width: 120px;margin-left: 10px;" type="text"
+                           onFocus="WdatePicker({minDate:'#F{$dp.$D(\'qryStartTime\')}'})"/>
+                    <button class="gui-btn"  ng-disabled="!!btnDisabled" ng-click="queryInfoList()">查询</button>
+                    <button class="gui-btn" ng-click="reSetFilter()">重置</button>
+                    <button class="gui-btn" ng-click="exportData()">导出</button>
+                </div>
+            </form>
+            <table id="entGrid"
+                   class="gui-table mt15">
+            </table>
+        </div>
+    </div>
+</div>
+
+<!--模态框-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-stylesm" style="width: 50%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">
+                    <span style="text-align: center;">详细信息</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <div class="mt15">
+                    <span>查询来源:</span>
+                    <select id="sourcesQuery" style="width:70%;margin-left: 10px;" onchange="reloadDetailQryData()">
+                        <option value="">全部</option>
+                        <option value="1">web门户</option>
+                        <option value="2">第三方应用</option>
+                    </select>
+                </div>
+                <table id="detailQryInfoTable"
+                       class="gui-table mt15">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" data-dismiss="modal">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

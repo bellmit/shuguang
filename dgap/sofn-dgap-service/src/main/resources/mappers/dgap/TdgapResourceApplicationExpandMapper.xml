@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.dao.dgap.TDgapResourceApplicationExpandMapper">
+    <resultMap id="resultMap" type="com.sofn.model.generator.TDgapResourceApplication">
+        <id column="ID" property="id" jdbcType="VARCHAR"/>
+        <result column="RESOURCE_ID" property="resourceId" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"/>
+        <result column="EFFECTIVE_DATE" property="effectiveDate" jdbcType="TIMESTAMP"/>
+        <result column="EXPIRE_DATE" property="expireDate" jdbcType="TIMESTAMP"/>
+        <result column="REASON" property="reason" jdbcType="VARCHAR"/>
+        <result column="AUDIT_USER_ID" property="auditUserId" jdbcType="VARCHAR"/>
+        <result column="PASS_OR_NOT" property="passOrNot" jdbcType="VARCHAR"/>
+        <result column="APPROVAL" property="approval" jdbcType="VARCHAR"/>
+        <result column="CONTACT_NUMBER" property="contactNumber" jdbcType="VARCHAR"/>
+        <result column="CALLER_TOKEN" property="callerToken" jdbcType="VARCHAR"/>
+        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="DEL_FLAG" property="delFlag" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD1" property="reservedField1" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD2" property="reservedField2" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD3" property="reservedField3" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD4" property="reservedField4" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD5" property="reservedField5" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD6" property="reservedField6" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD7" property="reservedField7" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD8" property="reservedField8" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD9" property="reservedField9" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD10" property="reservedField10" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD11" property="reservedField11" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD12" property="reservedField12" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD13" property="reservedField13" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD14" property="reservedField14" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD15" property="reservedField15" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD16" property="reservedField16" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD17" property="reservedField17" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD18" property="reservedField18" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD19" property="reservedField19" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD20" property="reservedField20" jdbcType="VARCHAR"/>
+        <result column="AUDIT_TIME" property="auditTime" jdbcType="TIMESTAMP"/>
+        <result column="USER_NAME" property="userName" jdbcType="VARCHAR"/>
+        <result column="LOCAL_PLATFORM_APPLI_ID" property="localPlatformAppliId" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="coloums">
+      ID, RESOURCE_ID, USER_ID, STATUS, EFFECTIVE_DATE, EXPIRE_DATE, REASON, AUDIT_USER_ID,
+    PASS_OR_NOT, APPROVAL, CONTACT_NUMBER, CALLER_TOKEN, CREATE_BY, CREATE_TIME, UPDATE_BY,
+    UPDATE_TIME, DEL_FLAG, RESERVED_FIELD1, RESERVED_FIELD2, RESERVED_FIELD3, RESERVED_FIELD4,
+    RESERVED_FIELD5, RESERVED_FIELD6, RESERVED_FIELD7, RESERVED_FIELD8, RESERVED_FIELD9,
+    RESERVED_FIELD10, RESERVED_FIELD11, RESERVED_FIELD12, RESERVED_FIELD13, RESERVED_FIELD14,
+    RESERVED_FIELD15, RESERVED_FIELD16, RESERVED_FIELD17, RESERVED_FIELD18, RESERVED_FIELD19,
+    RESERVED_FIELD20,LOCAL_PLATFORM_APPLI_ID
+    </sql>
+    
+    <select id="queryByResourceAndUser" parameterType="string" resultMap="resultMap">
+        SELECT
+        <include refid="coloums"></include>
+        <![CDATA[
+         FROM T_DGAP_RESOURCE_APPLICATION
+        where USER_ID = #{userId} and RESOURCE_ID = #{resourceId} and DEL_FLAG='N'
+      ]]>
+    </select>
+
+
+
+    <select id="getList" resultType="java.util.Map">
+        SELECT * FROM
+        (SELECT M.*,ROWNUM rn
+        FROM(
+        SELECT DISTINCT
+        T.ID,
+        T.DEL_FLAG,
+        T.RESOURCE_ID,
+        T.USER_NAME,
+        T.USER_ID,
+        T.EFFECTIVE_DATE,
+        T.EXPIRE_DATE,
+        T.REASON,
+        T.PASS_OR_NOT,
+        T.CREATE_TIME,
+        T.APPROVAL,
+        T.UPDATE_TIME,
+        D.WSDL_URL,
+        D.NAME AS DNAME,
+        D.TYPE,
+        TDR.NAME
+        FROM T_DGAP_RESOURCE_APPLICATION T
+        LEFT JOIN
+        T_DGAP_RESOURCE D
+        ON T.RESOURCE_ID = D.ID
+        LEFT JOIN
+        T_DGAP_RESOURCE_DIRECTORY TDR
+        ON D.DIRECTORY_ID = TDR.ID
+        LEFT JOIN T_DGAP_ROLE_RESOURCE DR
+        ON DR.RESOURCE_ID=D.ID
+        WHERE 1 = 1
+        AND DR.DEL_FLAG = 'N'
+        AND T.DEL_FLAG = 'N'
+        <if test="roleIds!=null">
+            AND DR.ROLE_ID in (${roleIds})
+        </if>
+        <if test="resourceName !=null and resourceName !=''">
+            AND D.NAME LIKE '%' || #{resourceName} || '%'
+        </if>
+        <if test="resourceType !=null and resourceType !=''">
+            AND D.TYPE LIKE '%' || #{resourceType} || '%'
+        </if>
+        <if test="userName !=null and userName !=''">
+            AND T.USER_NAME LIKE '%' || #{userName} || '%'
+        </if>
+        ORDER BY T.UPDATE_TIME DESC) M
+        )
+        WHERE rn BETWEEN 1+#{pageSize}*(#{pageNum}-1) AND #{pageSize}*#{pageNum}
+    </select>
+    <select id="getCount" resultType="java.lang.Long">
+        SELECT COUNT(DISTINCT T.ID) FROM T_DGAP_RESOURCE_APPLICATION T
+        LEFT JOIN
+        T_DGAP_RESOURCE D
+        ON T.RESOURCE_ID = D.ID
+        LEFT JOIN
+        T_DGAP_RESOURCE_DIRECTORY TDR
+        ON D.DIRECTORY_ID = TDR.ID
+        LEFT JOIN T_DGAP_ROLE_RESOURCE DR
+        ON DR.RESOURCE_ID=D.ID
+        WHERE 1 = 1 AND T.DEL_FLAG = 'N'
+        AND DR.DEL_FLAG = 'N'
+        AND T.USER_ID != #{loginedUserId}
+        <if test="roleIds!=null">
+            AND DR.ROLE_ID in (${roleIds})
+        </if>
+        <if test="resourceName !=null and resourceName !=''">
+            AND D.NAME LIKE '%' || #{resourceName} || '%'
+        </if>
+        <if test="resourceType !=null and resourceType !=''">
+            AND D.TYPE LIKE '%' || #{resourceType} || '%'
+        </if>
+        <if test="userName !=null and userName !=''">
+            AND T.USER_NAME LIKE '%' || #{userName} || '%'
+        </if>
+    </select>
+
+    <select id="getResourcePage" resultType="java.util.Map">
+
+        SELECT * FROM
+        (SELECT M.*,ROWNUM rn
+        FROM
+        (SELECT r.NAME AS RESOURCENAME,r.TYPE AS RESOURCETYPE,r.ID AS RESOURCEID,r.WSDL_URL,a.*,TLPA.PLATFORM_NAME
+        FROM T_DGAP_RESOURCE_APPLICATION a
+        LEFT JOIN T_DGAP_RESOURCE r
+        ON a.RESOURCE_ID = r.ID
+        LEFT JOIN T_DGAP_LOCAL_PLATFORM_APPLI TLPA
+        ON a.LOCAL_PLATFORM_APPLI_ID = TLPA.ID
+        WHERE 1=1 AND a.DEL_FLAG ='N' AND r.DEL_FLAG ='N' AND (TLPA.DEL_FLAG ='N' OR TLPA.DEL_FLAG IS NULL)
+        AND a.USER_ID =#{userId}
+        <if test="name !=null and name !=''">
+            AND r.NAME LIKE '%' || #{name} || '%'
+        </if>
+        <if test="type !=null and type !=''">
+            AND r.TYPE LIKE '%' || #{type} || '%'
+        </if>
+        ORDER BY a.UPDATE_TIME DESC)M
+        )
+        WHERE rn BETWEEN 1+#{pageSize}*(#{pageNum}-1) AND #{pageSize}*#{pageNum}
+    </select>
+
+    <select id="getResourceCount" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM (
+        SELECT
+        ROWNUM AS rn
+        FROM T_DGAP_RESOURCE_APPLICATION a
+        LEFT JOIN T_DGAP_RESOURCE r
+        ON a.RESOURCE_ID = r.ID
+        LEFT JOIN T_DGAP_LOCAL_PLATFORM_APPLI TLPA
+        ON a.LOCAL_PLATFORM_APPLI_ID = TLPA.ID
+        WHERE 1=1 AND a.DEL_FLAG ='N' AND r.DEL_FLAG ='N' AND (TLPA.DEL_FLAG ='N' OR TLPA.DEL_FLAG IS NULL)
+        AND a.USER_ID =#{userId}
+        <if test="name !=null and name !=''">
+            AND r.NAME LIKE '%' || #{name} || '%'
+        </if>
+        <if test="type !=null and type !=''">
+            AND r.TYPE LIKE '%' || #{type} || '%'
+        </if>
+        )
+    </select>
+    <select id="getResourceById" parameterType="string" resultType="map">
+       SELECT
+        r.NAME AS RESOURCENAME,r.TYPE AS RESOURCETYPE,r.ID AS RID,a.*,ROWNUM AS rn
+        FROM T_DGAP_RESOURCE_APPLICATION a,T_DGAP_RESOURCE r
+        WHERE 1=1 AND a.RESOURCE_ID = r.ID AND a.DEL_FLAG !='Y' AND a.ID = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getbyParam"   parameterType="string" resultType="com.sofn.model.generator.TDgapResourceApplication">
+        SELECT
+        *
+        FROM T_DGAP_RESOURCE_APPLICATION a
+        WHERE 1=1 AND a.RESOURCE_ID = 'dfzsptdj-00000000000000000000000000000000000000000' AND a.DEL_FLAG !='Y' AND a.USER_ID = #{userId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getbyParams"  parameterType="string"  resultType="com.sofn.model.generator.TDgapResourceApplication">
+        SELECT
+        *
+        FROM T_DGAP_RESOURCE_APPLICATION a
+        WHERE 1=1  AND a.DEL_FLAG !='Y'  AND  a.LOCAL_PLATFORM_APPLI_ID = #{localPlatformAppliId,jdbcType=VARCHAR}
+    </select>
+
+
+
+    <update id="batchDelete" parameterType="string">
+        update T_DGAP_RESOURCE_APPLICATION set del_flag='Y'
+        where id in
+        <foreach collection="ids" index="index" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <select parameterType="string" id="getTdgapResourceApplication" resultType="map">
+        <![CDATA[
+
+                select T1.USER_ID,T1.USER_NAME, t2.wsdl_url,T2.NAME,t2.id as ws_id
+                from T_DGAP_RESOURCE_APPLICATION T1,T_DGAP_RESOURCE T2
+                where caller_token = #{authCode}
+                and T1.del_flag = 'N'
+                and T2.ID = T1.RESOURCE_ID
+                AND T1.PASS_OR_NOT='Y'
+                and sysdate >= effective_date
+                AND (sysdate <= expire_date or expire_date is NULL)
+                AND T1.DEL_FLAG='N'
+
+        ]]>
+    </select>
+    <select id="queryCallerToken" resultType="java.lang.String">
+        SELECT CALLER_TOKEN  FROM T_DGAP_RESOURCE_APPLICATION
+    </select>
+
+    <select id="getResource" resultType="com.sofn.model.generator.TDgapResource">
+        SELECT t.NAME,t.ID FROM  T_DGAP_RESOURCE t WHERE t.DEL_FLAG='N'
+    </select>
+
+    <select id="countByResourceId" parameterType="string" resultType="int">
+        SELECT count(t.ID) FROM  T_DGAP_RESOURCE_APPLICATION t WHERE t.DEL_FLAG='N'
+        AND t.RESOURCE_ID = #{resourceId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="countByResources" parameterType="string" resultType="int">
+        SELECT count(t.ID) FROM  T_DGAP_RESOURCE_APPLICATION t WHERE t.DEL_FLAG='N'
+        AND t.RESOURCE_ID in
+        <foreach collection="ids" index="index" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="getByResourceType"  parameterType="string" resultType="com.sofn.model.generator.TDgapResourceApplication">
+        SELECT DISTINCT
+        T.ID,
+        T.DEL_FLAG,
+        T.RESOURCE_ID,
+        T.USER_NAME,
+        T.USER_ID,
+        T.EFFECTIVE_DATE,
+        T.EXPIRE_DATE,
+        T.REASON,
+        T.PASS_OR_NOT,
+        T.CREATE_TIME,
+        T.APPROVAL,
+        T.UPDATE_TIME
+        FROM T_DGAP_RESOURCE_APPLICATION T
+        LEFT JOIN
+        T_DGAP_RESOURCE D
+        ON T.RESOURCE_ID = D.ID
+        LEFT JOIN
+        T_DGAP_RESOURCE_DIRECTORY TDR
+        ON D.DIRECTORY_ID = TDR.ID
+        LEFT JOIN T_DGAP_ROLE_RESOURCE DR
+        ON DR.RESOURCE_ID=D.ID
+        WHERE 1 = 1 AND T.DEL_FLAG = 'N'
+            AND D.TYPE = #{resourceType,jdbcType=VARCHAR}
+            AND T.PASS_OR_NOT = 'Y'
+        ORDER BY T.UPDATE_TIME DESC
+    </select>
+
+
+    <select id="getAppliByToken"   parameterType="string" resultType="com.sofn.model.generator.TDgapResourceApplication">
+        SELECT
+        *
+        FROM T_DGAP_RESOURCE_APPLICATION a
+        WHERE 1=1 AND a.DEL_FLAG !='Y' AND a.RESOURCE_ID = #{resourceId,jdbcType=VARCHAR}  AND a.CALLER_TOKEN = #{token,jdbcType=VARCHAR}
+    </select>
+
+
+    <select id="getListDeatails" resultType="java.util.Map">
+        SELECT * FROM
+        (SELECT M.*,ROWNUM rn
+        FROM(
+        SELECT DISTINCT
+        T.ID,
+        T.DEL_FLAG,
+        T.RESOURCE_ID,
+        T.USER_NAME,
+        T.USER_ID,
+        T.EFFECTIVE_DATE,
+        T.EXPIRE_DATE,
+        T.REASON,
+        T.PASS_OR_NOT,
+        T.CREATE_TIME,
+        T.APPROVAL,
+        T.UPDATE_TIME,
+        D.WSDL_URL,
+        D.NAME AS DNAME,
+        D.TYPE,
+        TDR.NAME
+        FROM T_DGAP_RESOURCE_APPLICATION T
+        LEFT JOIN
+        T_DGAP_RESOURCE D
+        ON T.RESOURCE_ID = D.ID
+        LEFT JOIN
+        T_DGAP_RESOURCE_DIRECTORY TDR
+        ON D.DIRECTORY_ID = TDR.ID
+        LEFT JOIN T_DGAP_ROLE_RESOURCE DR
+        ON DR.RESOURCE_ID=D.ID
+        WHERE 1 = 1
+        AND DR.DEL_FLAG = 'N'
+        AND T.DEL_FLAG = 'N'
+        <if test="resourceName !=null and resourceName !=''">
+            AND D.NAME LIKE '%' || #{resourceName} || '%'
+        </if>
+        <if test="resourceType !=null and resourceType !=''">
+            AND D.TYPE LIKE '%' || #{resourceType} || '%'
+        </if>
+        <if test="userName !=null and userName !=''">
+            AND T.USER_NAME LIKE '%' || #{userName} || '%'
+        </if>
+        ORDER BY T.UPDATE_TIME DESC) M
+        )
+        WHERE rn BETWEEN 1+#{pageSize}*(#{pageNum}-1) AND #{pageSize}*#{pageNum}
+    </select>
+    <select id="getCountListDeatails" resultType="java.lang.Long">
+        SELECT COUNT(DISTINCT T.ID) FROM T_DGAP_RESOURCE_APPLICATION T
+        LEFT JOIN
+        T_DGAP_RESOURCE D
+        ON T.RESOURCE_ID = D.ID
+        LEFT JOIN
+        T_DGAP_RESOURCE_DIRECTORY TDR
+        ON D.DIRECTORY_ID = TDR.ID
+        LEFT JOIN T_DGAP_ROLE_RESOURCE DR
+        ON DR.RESOURCE_ID=D.ID
+        WHERE 1 = 1 AND T.DEL_FLAG = 'N'
+        AND DR.DEL_FLAG = 'N'
+        <if test="resourceName !=null and resourceName !=''">
+            AND D.NAME LIKE '%' || #{resourceName} || '%'
+        </if>
+        <if test="resourceType !=null and resourceType !=''">
+            AND D.TYPE LIKE '%' || #{resourceType} || '%'
+        </if>
+        <if test="userName !=null and userName !=''">
+            AND T.USER_NAME LIKE '%' || #{userName} || '%'
+        </if>
+    </select>
+
+
+    <select id="getResourceApplicationDetails" parameterType="string" resultType="map">
+       SELECT
+        r.NAME AS RESOURCENAME,
+        r.TYPE AS RESOURCETYPE,
+        a.*,
+        ROWNUM AS rn
+        FROM T_DGAP_RESOURCE_APPLICATION a
+        left join T_DGAP_RESOURCE r on a.RESOURCE_ID = r.ID
+        WHERE 1=1  AND a.DEL_FLAG !='Y' AND a.ID = #{id,jdbcType=VARCHAR}
+    </select>
+</mapper>

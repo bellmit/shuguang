@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.dao.dgap.TDgapDataImportTableExpandMapper" >
+
+  <select id="selectTableChineseName" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT DISTINCT T.CHINESE_NAME FROM  T_DGAP_DATA_IMPORT_TABLE T LEFT JOIN  T_DGAP_RESOURCE F ON F.ID = T.RESOURCE_ID WHERE F.ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectTableEnglishName" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT DISTINCT T.ENGLISH_NAME FROM  T_DGAP_DATA_IMPORT_TABLE T LEFT JOIN T_DGAP_RESOURCE F ON F.ID = T.RESOURCE_ID WHERE F.ID  = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getAlltableNames"  resultType="java.lang.String" parameterType="java.lang.String">
+    SELECT DISTINCT T.ENGLISH_NAME FROM  T_DGAP_DATA_IMPORT_TABLE T LEFT JOIN T_DGAP_RESOURCE F ON F.ID = T.RESOURCE_ID
+     LEFT JOIN  T_DGAP_RESOURCE_APPLICATION A  ON F.ID = A.RESOURCE_ID   WHERE 1 = 1 AND T.DEL_FLAG = 'N' AND A.PASS_OR_NOT='Y'
+      AND A.USER_ID = #{loginedUserId}
+  </select>
+  <select id="checkStatus" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT T.STATUS FROM T_DGAP_DATA_IMPORT_TABLE T LEFT JOIN T_DGAP_RESOURCE R ON T.RESOURCE_ID = R.ID WHERE R.ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="getDataById" parameterType="java.lang.String" resultType="com.sofn.model.generator.TDgapDataImportTable">
+    SELECT T.* FROM T_DGAP_DATA_IMPORT_TABLE T LEFT JOIN T_DGAP_RESOURCE R ON t.RESOURCE_ID = r.ID WHERE R.ID =  #{id,jdbcType=VARCHAR}
+  </select>
+  <update id="updateStatus" parameterType="com.sofn.model.generator.TDgapDataImportTable">
+     update T_DGAP_DATA_IMPORT_TABLE
+    set CHINESE_NAME = #{chineseName,jdbcType=VARCHAR},
+      ENGLISH_NAME = #{englishName,jdbcType=VARCHAR},
+      RESOURCE_ID = #{resourceId,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      CREATE_BY = #{createBy,jdbcType=VARCHAR},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      UPDATE_BY = #{updateBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      DEL_FLAG = #{delFlag,jdbcType=VARCHAR},
+      RESERVED_FIELD1 = #{reservedField1,jdbcType=VARCHAR},
+      RESERVED_FIELD2 = #{reservedField2,jdbcType=VARCHAR},
+      RESERVED_FIELD3 = #{reservedField3,jdbcType=VARCHAR},
+      RESERVED_FIELD4 = #{reservedField4,jdbcType=VARCHAR},
+      RESERVED_FIELD5 = #{reservedField5,jdbcType=VARCHAR},
+      RESERVED_FIELD6 = #{reservedField6,jdbcType=VARCHAR},
+      RESERVED_FIELD7 = #{reservedField7,jdbcType=VARCHAR},
+      RESERVED_FIELD8 = #{reservedField8,jdbcType=VARCHAR},
+      RESERVED_FIELD9 = #{reservedField9,jdbcType=VARCHAR},
+      RESERVED_FIELD10 = #{reservedField10,jdbcType=VARCHAR},
+      RESERVED_FIELD11 = #{reservedField11,jdbcType=VARCHAR},
+      RESERVED_FIELD12 = #{reservedField12,jdbcType=VARCHAR},
+      RESERVED_FIELD13 = #{reservedField13,jdbcType=VARCHAR},
+      RESERVED_FIELD14 = #{reservedField14,jdbcType=VARCHAR},
+      RESERVED_FIELD15 = #{reservedField15,jdbcType=VARCHAR},
+      RESERVED_FIELD16 = #{reservedField16,jdbcType=VARCHAR},
+      RESERVED_FIELD17 = #{reservedField17,jdbcType=VARCHAR},
+      RESERVED_FIELD18 = #{reservedField18,jdbcType=VARCHAR},
+      RESERVED_FIELD19 = #{reservedField19,jdbcType=VARCHAR},
+      RESERVED_FIELD20 = #{reservedField20,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectByName" resultType="com.sofn.model.generator.TDgapDataImportTable" parameterType="string">
+    select * from T_DGAP_DATA_IMPORT_TABLE where ENGLISH_NAME 
+    LIKE '%' || #{tableName} || '%'
+  </select>
+  <select id="getAllTables" resultType="string">
+     select ENGLISH_NAME from T_DGAP_DATA_IMPORT_TABLE WHERE RESOURCE_ID != #{id,jdbcType=VARCHAR}
+  </select>
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysSystemOrgMapper">
+
+  <insert id="saveBatch" parameterType="java.util.List">
+    INSERT INTO SYS_SYSTEM_ORG (ID,APP_ID,ORG_ID )VALUES
+    <foreach collection="list" separator="," item="sysSystemOrg">
+      (
+      #{sysSystemOrg.id},
+      #{sysSystemOrg.appId},
+      #{sysSystemOrg.orgId}
+      )
+    </foreach>
+  </insert>
+
+  <delete id="deleteByOrgIdAndAppIds" parameterType="java.util.Map">
+    delete from SYS_SYSTEM_ORG a
+    where
+    <foreach collection="orgAndAppIds" item="orgAndAppId" open="(" close=")" separator="or">
+      a.org_id = #{orgAndAppId.orgId} and a.APP_ID in
+      <foreach collection="orgAndAppId.appIds" item="appId" open="(" close=")" separator=",">
+        #{appId}
+      </foreach>
+    </foreach>
+
+  </delete>
+
+  <select id="getInfoByOrgId" parameterType="java.util.Map" resultType="com.sofn.sys.model.SysSystemOrg">
+        SELECT id id,app_id appId,org_id orgId FROM SYS_SYSTEM_ORG WHERE ORG_ID =  #{orgId}
+
+  </select>
+
+  <delete id="deleteByOrgIds" parameterType="java.util.List">
+    delete from SYS_SYSTEM_ORG where ORG_ID IN
+    <foreach collection="orgIds" item="orgId" open="(" close=")" separator=",">
+      #{orgId}
+    </foreach>
+  </delete>
+
+</mapper>

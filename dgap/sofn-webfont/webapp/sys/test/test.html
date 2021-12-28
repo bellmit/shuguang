@@ -1,0 +1,63 @@
+<div class="gui-section">
+    <div class="gui-form-group">
+        <form>
+            字典名称:<input class="gui-input form_input" type="text" id="keyWord" ng-model="keyWord" placeholder="请输入查询关键字"/>
+            宽度：<input class="gui-input form_input" type="number" id="w" ng-model="w" placeholder="请输入宽度"/>
+            <button class="gui-btn" ng-click="click()">查询</button>
+        </form>
+    </div>
+    <div style="height:50px;width:{{w}}px;border-style: solid;border-color: #0c0c0c;border-width: thin;">
+        <p>{{clock.now}}</p>
+    </div>
+</div>
+
+<ul class="gui-list clearfix">
+    <li style="width: 620px;margin: 0 auto;">
+        <form name="myForm" novalidate>
+            <input type="text" class="gui-input"  ng-model="keyword" ng-keyup="onInputChanged($event)" style="width: 518px;" minlength="1" maxlength="30" placeholder="产品信息名称必须为1-30个字符组成">
+            <span class="field-item">
+                    <button type="button" ng-disabled="myForm.$invalid" class="gui-btn" ng-click="toQuery()"><i class="gui-icon icon-query"></i>查询</button>
+                </span>
+        </form>
+    </li>
+    <li style="width: 620px;margin: 0 auto;">
+        <div>
+            <div class="gui-checkbox-group">
+                <div class="gui-loader" ng-if="showLoader"><div class="ball-beat"><div></div><div></div><div></div></div><p>加载中...</p></div>
+                <div class="gui-checkbox-group-item gui-col-4" ng-click="selectItem($index,item);" ng-class="{active:$index==selected}" ng-repeat="item in productArr track by $index">
+                    {{
+
+                    item.name
+
+                    }}</div>
+            </div>
+            <nav style="text-align:center;">
+                <ul class="pagination" style="display: inline-block; margin:20px 0; border-radius:4px; padding-right: 0px;">
+                    <li ng-class="{disabled:selPage==undefined||selPage<2}">
+                        <a ng-click="firstPage()">
+                            <span>首页</span>
+                        </a>
+                    </li>
+                    <li ng-class="{disabled:selPage==undefined||selPage<2}">
+                        <a ng-click="previous()">
+                            <span>上页</span>
+                        </a>
+                    </li>
+                    <li ng-repeat="page in pageList" ng-class="{active: isActivePage(page)}">
+                        <a ng-click="selectPage(page)">{{ page }}</a>
+                    </li>
+                    <li ng-class="{disabled:selPage==undefined||pages==selPage}">
+                        <a ng-click="next()">
+                            <span>下页</span>
+                        </a>
+                    </li>
+                    <li ng-class="{disabled:selPage==undefined||pages==selPage}">
+                        <a ng-click="lastPage()">
+                            <span>尾页</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </li>
+</ul>

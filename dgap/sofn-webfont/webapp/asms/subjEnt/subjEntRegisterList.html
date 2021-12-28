@@ -1,0 +1,92 @@
+<link rel="stylesheet" href="assets/css/asms/subjSv/subjInt.css"/>
+<div class="gui-mainBc">
+    <div class="gui-breadcrumbs">
+        <a href="javascript:void(0)">监管系统</a>&gt;
+        <a ui-sref="index.content.asms/subjEnt/subjEntRegisterList">主体管理</a>&gt;
+        <span>生产经营主体</span>
+    </div>
+    <div class="  gui-TabCut ">
+        <ul class="clearfix gov-h">
+            <li class="fl subjEntList" style="display: none" ui-sref="index.content.asms/subjEnt/subjEntList">生产经营主体信息</li>
+            <li class="fl gp-r subjEntTempList" style="display: none" ui-sref="index.content.asms/subjEnt/subjEntTempList">临时注册主体</li>
+            <li   class="fl gp-r gui-TabCheck">注册待审核<span class="news">{{registerToAuditCount}}</span></li>
+            <li class="fl gp-r subjEntChangeList" style="display: none" ui-sref="index.content.asms/subjEnt/subjEntChangeList">注册变更待审核<span class="news">{{changeToAuditCount}}</span></li>
+            <li class="fl gp-r subjEntRevokeList" style="display: none" ui-sref="index.content.asms/subjEnt/subjEntRevokeList">监管申请注销待审核<span class="news">{{revokeToAuditCount}}</span></li>
+            <li class="fl gp-r subjEntCancelList" style="display: none" ui-sref="index.content.asms/subjEnt/subjEntCancelList">主体申请注销待审核<span class="news">{{cancelToAuditCount}}</span></li>
+            <li class="fl gp-r subjEntActivationList" style="display: none;width: 180px" ui-sref="index.content.asms/subjEnt/subjEntActivationList">注销主体激活申请待审核<span class="news">{{activationToAuditCount}}</span></li>
+            <!--<li class="fl gp-r subjEntSPYBList" ui-sref="index.content.asms/subjEnt/subjEntSPYBList">三品一标主体</li>-->
+        </ul>
+        <div class="gui-botLine"></div>
+    </div>
+    <div class="gui-section">
+        <form id="queryForm" class="gui-form-group">
+            <span id="AnyArea">所属区域</span>
+            <div class="gui-select">
+                <select id="sheng" >
+                    <option value="">省</option>
+                </select>
+            </div>
+            <div class="gui-select">
+                <select id="shi">
+                    <option value="">市</option>
+                </select>
+            </div>
+            <div class="gui-select">
+                <select id="xian">
+                    <option value="">区/县</option>
+                </select>
+            </div>
+            <div class="mt15">
+                <span>审核状态</span>
+                <div class="gui-select">
+                    <select name="approveStatus">
+                        <option value="0,1,2">全部</option>
+                        <option value="0">待审核</option>
+                        <option value="1">通过</option>
+                        <option value="2">未通过</option>
+                    </select>
+                </div>
+                <span>所属行业</span>
+                <div class="gui-select">
+                    <select name="entityIndustry">
+                        <option ng-selected="{{x.id == subjEntRegisterListQueryParams.entityIndustry && industryType.length>1}}" ng-repeat="x in industryType" value="{{x.id}}">{{x.dictName}}</option>
+                    </select>
+                </div>
+                <span>组织形式</span>
+                <div class="gui-select">
+                    <select name="entityScale" ng-model="entityScale">
+                        <option value="">全部</option>
+                        <option ng-selected="{{x.id == subjEntRegisterListQueryParams.entityScale}}" ng-repeat="x in orgMode" value="{{x.id}}">{{x.dictName}}</option>
+                    </select>
+                </div>
+                <span>认证类型</span>
+                <div class="gui-select">
+                    <select name="spybLicType" ng-model="spybLicType">
+                        <option value="">全部</option>
+                        <option  ng-selected="{{x.dictValue == subjEntListQueryparams.entityType}}" ng-repeat="x in authenticationType" value="{{x.dictValue}}">{{x.dictName}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mt15">
+                <span>主体类别</span>
+                <div class="gui-select">
+                    <select name="entityType" ng-model="entityType">
+                        <option value="">全部</option>
+                        <option ng-selected="{{x.id == subjEntRegisterListQueryParams.entityType}}" ng-repeat="x in subjType" value="{{x.id}}">{{x.dictName}}</option>
+                    </select>
+                </div>
+                <span>申请日期</span>
+                <input id="dateBegin" name="dateBegin" style="cursor: pointer;width: 120px;"  class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('dateEnd');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateEnd\')}'})"/>
+                --
+                <input id="dateEnd" name="dateEnd" class="Wdate gui-input" style="cursor: pointer;width: 120px;margin-left:10px;"  type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'dateBegin\')}'})"/>
+                <span>主体名称</span>
+                <input class="gui-input" type="text" style="width: 130px;" placeholder="请输入主体名称" name="entName"/>
+                <button class="gui-btn"  ng-disabled="!!btnDisabled"  ng-click="querySubjEntRegisterList()">查询</button>
+                <button class="gui-btn " ng-click="reloadArea()"> 重置</button>
+            </div>
+        </form>
+        <table id="entRegisterGrid"
+               class="gui-table mt15" style="width: 100%">
+        </table>
+    </div>
+</div>

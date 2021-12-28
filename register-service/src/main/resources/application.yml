@@ -1,0 +1,28 @@
+server:
+  port: 8880
+
+eureka:
+  instance:
+    # 租期更新时间间隔
+    lease-renewal-interval-in-seconds: 1
+    # 租期到期时间间隔
+    lease-expiration-duration-in-seconds: 2
+    # 使用ip替代实例名
+    prefer-ip-address: true
+  server:
+    # 测试时关闭自我保护机制，保证不可用服务及时踢出
+    enableSelfPreservation: false
+    responseCacheUpdateIntervalMs: 3000
+    # 清理间隔
+    eviction-interval-timer-in-ms: 3000
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    #表示eureka client间隔多久去拉取服务注册信息，默认为30秒
+    registry-fetch-interval-seconds: 30
+
+spring:
+  application:
+    name: register-service
+  profiles:
+    active: @active.profile@

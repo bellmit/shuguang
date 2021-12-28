@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.SyncSysRegionMapper" >
+
+<!--    <select id="getMaxYear" resultType="java.lang.Integer">
+        select max(year) from ducss_region_copy_sys
+    </select>-->
+
+<!--    <select id="getYearDataNumber" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(1) from ducss_region_copy_sys where year = #{year}
+    </select>-->
+
+<!--    <select id="getChildrenRegion" parameterType="java.util.Map" resultType="java.lang.String">
+        select region_code from ducss_region_copy_sys where parent_id =#{parentId} and year = #{year}
+    </select>-->
+
+<!--    <select id="getLevel" parameterType="java.util.Map" resultType="java.lang.String">
+         select level from ducss_region_copy_sys where region_code =#{areaId} and year =  #{year}
+    </select>-->
+
+<!--    <select id="getName" parameterType="java.util.Map" resultType="java.lang.String">
+         select region_name from ducss_region_copy_sys where region_code =#{areaId} and year =  #{year}
+    </select>-->
+
+
+<!--    <select id="getAreaId" parameterType="java.util.Map" resultType="java.util.Map" >
+        select dr.region_code as REGIONCODE,dr.level as LEVEL
+        from ducss_region_copy_sys dr
+        left join collect_flow cf on cf.area_id = dr.region_code and cf.YEAR = #{year}
+        where dr.year = #{regionYear}  and cf.STATUS in ('1', '5') and dr.parent_id in
+        <foreach collection="parentIds" item="parentId" open="(" close=")" separator=",">
+            #{parentId}
+        </foreach>
+    </select>-->
+
+    <select id="getAreaId" parameterType="java.util.Map" resultType="string" >
+        select
+            cf.area_id as REGIONCODE
+        from
+            collect_flow cf
+        where cf.year = #{year} and cf.STATUS in ('1', '5')
+        <if test="countyAreaIds != null and countyAreaIds.size()>0">
+            and cf.area_id in
+            <foreach collection="countyAreaIds" item="countyAreaId" open="(" close=")" separator=",">
+                #{countyAreaId}
+            </foreach>
+        </if>
+    </select>
+
+<!--    <select id="getAreaIdByStateV1"  parameterType="java.util.Map" resultType="java.util.Map" >
+        select dr.region_code as REGIONCODE,dr.level as LEVEL
+        from ducss_region_copy_sys dr
+        left join collect_flow cf on cf.area_id = dr.region_code and cf.YEAR = #{year}
+        where dr.year = #{regionYear}
+        and cf.STATUS in
+        <foreach collection="status" item="stat" open="(" close=")" separator=",">
+            #{stat}
+        </foreach>
+
+        and dr.parent_id in
+        <foreach collection="parentIds" item="parentId" open="(" close=")" separator=",">
+            #{parentId}
+        </foreach>
+    </select>-->
+
+    <select id="getAreaIdByState"  parameterType="java.util.Map" resultType="string">
+        select
+            cf.area_id as REGIONCODE
+        from
+            collect_flow cf
+        where cf.year = #{year}
+        and cf.STATUS in
+        <foreach collection="status" item="stat" open="(" close=")" separator=",">
+            #{stat}
+        </foreach>
+        <if test="countyAreaIds != null and countyAreaIds.size()>0">
+            and cf.area_id in
+            <foreach collection="countyAreaIds" item="countyAreaId" open="(" close=")" separator=",">
+                #{countyAreaId}
+            </foreach>
+        </if>
+    </select>
+
+<!--    <select id="getAreaIdByLevel" parameterType="java.util.Map" resultType="com.sofn.ducss.model.DucssRegionCopySys">
+       SELECT
+        region_code regionCode ,
+        region_name regionName,
+        parent_id parentId,
+        parent_ids parentIds,
+        "level" as level
+    FROM
+        ducss_region_copy_sys
+	 where year = #{regionYear} and "level" = #{level}
+    </select>-->
+
+<!--
+    <select id="getNameMap" parameterType="java.util.Map" resultType="java.util.Map">
+        select a.region_code as regioncode, a.region_name as regionname
+        from ducss_region_copy_sys a
+        where a.year = #{regionYear}
+        and a.region_code in
+        <foreach collection="areaIds" item="areaId" separator="," open="(" close=")">
+            #{areaId}
+        </foreach>
+    </select>
+-->
+
+</mapper>

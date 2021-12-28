@@ -1,0 +1,96 @@
+    <link rel="stylesheet" href="assets/css/ales/punish/checkReport.css"/>
+    <div class="gui-breadcrumbs">
+        <a href="">执法系统</a>&gt;
+        <a href="">行政处罚</a>&gt;
+        <span>查看</span>
+    </div>
+        <div class="Sup_contain_section_contain  gui-section gui-section-wid" style="margin-top: 0;">
+		    <h4 class="mt15" align="center">农产品质量安全行政处罚单</h4>
+            <ul class="clearfix gov-h">
+                <li>
+                   行政处罚决定案号
+                </li>
+				 <li>
+                    <span ng-bind="reCord.punishCode"></span>
+                </li>
+                <li>
+                    当事主体                 
+                </li>
+				<li>
+				 <span ng-bind="enterprise"></span>
+				</li>
+				<li>
+                    当事主体身份码                  
+                </li>
+				<li>
+				<span ng-bind="reCord.enterpriseCode"></span>
+				</li>
+				<li>
+                    当事人                 
+                </li>
+				<li>
+				<span ng-bind="reCord.legalPerson"></span>
+				</li>
+				<li>
+                    案件名称                 
+                </li>
+				<li>
+				<span ng-bind="reCord.caseName"></span>
+				</li>
+				<li>
+                    违法产品名称                  
+                </li>
+				<li>
+				<span ng-bind="reCord.productName"></span>
+				</li>
+				<li>
+                    标称生产企业                 
+                </li>
+				<li>
+				<span ng-bind="reCord.enterpriseName"></span>
+				</li>
+				<li>
+                    生产日期或批次                  
+                </li>
+				<li>
+				<span ng-bind="reCord.manufactureDate"></span>
+				</li>
+				<li>
+                    案件定性                
+                </li>
+				<li>
+				<span ng-bind="reCord.punishQualitative"></span>
+				</li>
+				<li>
+                    行政处罚决定                  
+                </li>
+				<li>
+				<span ng-bind="reCord.punishResult"></span>
+				</li>
+				<li>
+                    决定书                 
+                </li>
+				<li>
+				<span ng-bind="reCord.punishFiles"></span>
+				</li>
+				<li>
+                    执法单位                  
+                </li>
+				<li>
+				<span ng-bind="reCord.enforceLawId"></span>
+				</li>
+				<li>
+                    执法人员                
+                </li>
+				<li>
+                   <span ng-bind="reCord.enforceLawPeople"></span>          
+                </li>
+            </ul>
+            <div class="mt15" align="center">
+                <button class="gui-btn" ui-sref="index.content.ales/punish/produceAdminPunishlist">关闭</button>
+            </div>
+
+        </div>
+       
+        <input id="ID" class="gui-input" type="text" style="visibility: hidden"/>
+

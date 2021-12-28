@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agzirz.mapper.FkyjzhMapper" >
+
+  <resultMap id="BaseResultMap" type="com.sofn.agzirz.model.FKYJZH" >
+    <result column="FKYJZH_NO" property="fkyjzhNo" jdbcType="VARCHAR" />
+    <result column="EVENT_TIME" property="eventTime" jdbcType="TIMESTAMP" />
+    <result column="EVENT_LOCATION" property="eventLocation" jdbcType="VARCHAR" />
+    <result column="EVENT_CAUSE" property="eventCause" jdbcType="VARCHAR" />
+    <result column="EVENT_CONTENT" property="eventContent" jdbcType="VARCHAR" />
+    <result column="EVENT_IMGS" property="eventImgs" jdbcType="VARCHAR" />
+    <result column="EVENT_AFFECT" property="eventAffect" jdbcType="VARCHAR" />
+    <result column="IMPORTANCE" property="importance" jdbcType="VARCHAR" />
+    <result column="EMER_ORGANI" property="emerOrgani" jdbcType="VARCHAR" />
+    <result column="EMER_ORGANI_NAME" property="emerOrganiName" jdbcType="VARCHAR" />
+    <result column="REPORT_USER" property="reportUser" jdbcType="VARCHAR" />
+    <result column="REPORT_TIME" property="reportTime" jdbcType="TIMESTAMP" />
+    <result column="ENABLE_STATUS" property="enableStatus" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    FKYJZH_NO,EVENT_TIME,EVENT_LOCATION,EVENT_CAUSE,EVENT_CONTENT,EVENT_IMGS,EVENT_AFFECT,
+    IMPORTANCE,EMER_ORGANI,EMER_ORGANI_NAME,REPORT_USER,REPORT_TIME,ENABLE_STATUS
+  </sql>
+
+
+  <select id="getFkyjzhByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM FKYJZH
+    <where>
+      1=1 AND ENABLE_STATUS = 'Y'
+      <if test="eventCause != null and eventCause != ''">
+        and EVENT_CAUSE like '%'||#{eventCause}||'%'
+      </if>
+      <if test="importance != null and importance != ''">
+        and IMPORTANCE = #{importance}
+      </if>
+      <if test="colName!=null and colName!=''">
+        and ${colName} = #{colVal}
+      </if>
+      <if test="dateBegin != null and ''!=dateBegin">and to_date(#{dateBegin},'yyyy-MM-dd') &lt; REPORT_TIME</if>
+      <if test="dateEnd != null and ''!=dateEnd">and to_date(#{dateEnd},'yyyy-MM-dd') &gt; REPORT_TIME</if>
+
+    </where>
+
+  </select>
+
+
+  <select id="getFkyjzhById" parameterType="java.lang.String" resultType="com.sofn.agzirz.model.FKYJZH">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM FKYJZH
+    WHERE FKYJZH_NO= #{id} AND ENABLE_STATUS = 'Y'
+
+  </select>
+
+
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agsjsi.mapper.WetExamplePointCollectProcMapper" >
+    <select id="listByForeignId" parameterType="java.lang.String" resultType="com.sofn.agsjsi.vo.ProcessVo">
+        select ID,STATUS,ADVICE,PERSON_NAME
+            ,(case STATUS when '0' then '已保存'
+                            when '1' then '已撤回'
+                            when '2' then '已上报'
+                            when '3' then '市级退回'
+                            when '4' then '市级通过'
+                            when '5' then '省级退回'
+                            when '6' then '省级通过'
+                            when '7' then '总站退回'
+                            when '8' then '总站通过'
+                            when '9' then '专家批复'
+            END) STATUS_NAME
+            ,CREATE_TIME
+        from wet_example_point_collect_proc
+        where COLLECT_ID=#{foreignId}
+        order by CREATE_TIME desc
+    </select>
+
+
+</mapper>

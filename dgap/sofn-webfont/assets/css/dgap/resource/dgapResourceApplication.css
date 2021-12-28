@@ -1,0 +1,45 @@
+/*内容部分*/
+.Sup_contain_section_head_nav li{
+    width: 160px;
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
+    margin: 10px 50px 10px 0px;
+    text-align: center;
+    font-size: 16px;
+    border: 1px solid #4BA0D6;
+    border-radius: 5px;
+}
+textarea{
+    width: 193px;
+}
+/*隐藏内容*/
+.dis-none{
+    display: none;
+}
+#bc_change{
+    background-color: #4BA0D6;
+    color: white;
+}
+.tableHead{
+    padding: 10px 10px;
+    background-color:#4BA0D6;
+    margin-top: 20px;
+    line-height: 100%;
+    color: white;
+}
+th td{
+    text-align: center;
+}
+.Sup_contain_section_contain_02 select{
+    width: 194px;
+    height: 24px;
+}
+
+.modal-body tr td{
+    padding:10px 20px;
+    text-align: left;
+}
+.Sup_contain_section_contain table th,th, td {
+    text-align: center;
+}

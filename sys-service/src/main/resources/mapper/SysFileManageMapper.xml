@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysFileManageMapper">
+    <resultMap id="customResultMap" type="com.sofn.sys.model.SysFileManage">
+        <result column="ID" property="id"></result>
+        <result column="FILE_NAME" property="fileName"></result>
+        <result column="FILE_PATH" property="filePath"></result>
+        <result column="FILE_SIZE" property="fileSize"></result>
+        <result column="FILE_TYPE" property="fileType"></result>
+        <result column="OPERATOR" property="operator"></result>
+        <result column="OPERATE_TIME" property="operateTime"></result>
+        <result column="SYSTEM" property="system"></result>
+        <result column="REMARK" property="remark"></result>
+        <result column="DOWNLOAD_TIMES" property="downloadTimes"></result>
+        <result column="DEL_FLAG" property="delFlag"></result>
+        <result column="CREATE_USER_ID" property="createUserId"></result>
+        <result column="CREATE_TIME" property="createTime"></result>
+        <result column="UPDATE_USER_ID" property="updateUserId"></result>
+        <result column="UPDATE_TIME" property="updateTime"></result>
+        <result column="INTERFACE_NUM" property="interfaceNum"></result>
+        <result column="ACTIVATION_STATE" property="activationState"></result>
+    </resultMap>
+
+    <sql id="fileResule">
+         ID                            ,
+            FILE_NAME                     ,
+            FILE_PATH                     ,
+            FILE_SIZE                     ,
+            FILE_TYPE                     ,
+            SYSTEM                        ,
+            REMARK                        ,
+            DOWNLOAD_TIMES                ,
+            OPERATOR       AS     OPERATOR          ,
+            OPERATE_TIME                  ,
+            DEL_FLAG                      ,
+            CREATE_USER_ID                ,
+            CREATE_TIME                   ,
+            UPDATE_USER_ID                ,
+            UPDATE_TIME                   ,
+            INTERFACE_NUM                 ,
+            ACTIVATION_STATE               ,
+            FILE_NUMBER,
+            FILE_STATE,
+            BUSINESS_FILE_TYPE
+    </sql>
+
+    <select id="getSysFileByCondition" parameterType="java.util.Map" resultType="com.sofn.sys.vo.SysFileManageVo">
+        SELECT
+        A.ID  ,
+        A.FILE_NAME fileName,
+        A.FILE_PATH filePath,
+        A.FILE_SIZE fileSize,
+        A.FILE_TYPE fileType,
+        A.OPERATOR AS operator,
+        A.FILE_NUMBER,
+        A.FILE_STATE,
+        A.BUSINESS_FILE_TYPE,
+        B.NICKNAME operatorName,
+        A.OPERATE_TIME operateTime,
+        C.ID systemId,
+        C.SUBSYSTEM_NAME systemName,
+        A.DOWNLOAD_TIMES  downloadTimes,
+        A.REMARK remark,
+        c.app_id  appId
+        FROM
+        SYS_FILE_MANAGE A
+        LEFT JOIN SYS_USER B ON A.OPERATOR = B.ID AND B.DEL_FLAG = 'N'
+        LEFT JOIN SYS_SUBSYSTEM C ON (A.SYSTEM = C.ID OR A.SYSTEM = C.APP_ID) AND C.DEL_FLAG = 'N'
+        <where>
+            <if test="fileName != null and fileName != ''">
+                and POSITION (#{fileName} in A.file_name)>0
+            </if>
+            <if test="fileType != null and fileType != ''">
+                and A.FILE_TYPE like '%' || #{fileType} || '%'
+            </if>
+            <if test="createUserId != null and createUserId != ''">
+                and A.CREATE_USER_ID = #{createUserId}
+            </if>
+            <if test="operatorName != null and operatorName != ''">
+                and B.NICKNAME LIKE '%' || #{operatorName} || '%'
+            </if>
+            <if test="fileNumber != null and operatorName != ''">
+                and A.FILE_NUMBER = #{fileNumber}
+            </if>
+            <if test="fileState != null and fileState != ''">
+                and A.FILE_STATE = #{fileState}
+            </if>
+            <if test="businessFileType != null and businessFileType != ''">
+                and A.BUSINESS_FILE_TYPE =  #{businessFileType}
+            </if>
+            AND A.ACTIVATION_STATE = 'Y'
+            AND A.DEL_FLAG = 'N'
+            <if test="systemId != null and systemId != ''">
+                and (
+                C.ID = #{systemId} OR C.APP_ID = #{systemId}
+                )
+            </if>
+
+        </where>
+        order by OPERATE_TIME desc
+    </select>
+
+    <update id="activationFile" parameterType="java.util.Map">
+        update sys_file_manage
+        set
+        <if test="fileName != null and fileName != ''">
+            FILE_NAME = #{fileName},
+        </if>
+        SYSTEM = #{systemId},
+        <if test="remark != null and remark != ''">
+            REMARK = #{remark},
+        </if>
+        INTERFACE_NUM = #{interfaceNum},
+        ACTIVATION_STATE = 'Y',
+        UPDATE_TIME = current_timestamp,
+        UPDATE_USER_ID = #{updateUserId},
+        OPERATOR = #{updateUserId},
+        OPERATE_TIME = current_timestamp
+        where
+        id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        and DEL_FLAG='N'
+    </update>
+
+    <update id="activationFile2" parameterType="java.util.Map">
+        update sys_file_manage
+        set
+        <if test="sysFileManageForm.fileName != null and sysFileManageForm.fileName != ''">
+            FILE_NAME = #{sysFileManageForm.fileName,jdbcType=VARCHAR},
+        </if>
+        SYSTEM = #{sysFileManageForm.systemId,jdbcType=VARCHAR},
+        REMARK = #{sysFileManageForm.remark,jdbcType=VARCHAR},
+        FILE_NUMBER = #{sysFileManageForm.fileNumber,jdbcType=VARCHAR},
+        BUSINESS_FILE_TYPE = #{sysFileManageForm.businessFileType,jdbcType=VARCHAR},
+        <if test="sysFileManageForm.interfaceNum != null and sysFileManageForm.interfaceNum != ''">
+            INTERFACE_NUM = #{sysFileManageForm.interfaceNum},
+        </if>
+        ACTIVATION_STATE = 'Y',
+        FILE_STATE = #{sysFileManageForm.fileState,jdbcType=VARCHAR},
+        UPDATE_TIME = current_timestamp,
+        UPDATE_USER_ID = #{updateUserId,jdbcType=VARCHAR},
+        OPERATOR = #{updateUserId,jdbcType=VARCHAR},
+        OPERATE_TIME = current_timestamp
+        where
+        id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        and DEL_FLAG='N'
+    </update>
+
+
+    <select id="getSysFileByIdsIncludNotActivation" parameterType="java.util.List" resultMap="customResultMap">
+        SELECT
+        <include refid="fileResule"></include>
+        from sys_file_manage
+        where DEL_FLAG='N' and
+        id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        order by UPDATE_TIME,CREATE_TIME desc
+    </select>
+
+    <select id="getOne" parameterType="java.lang.String" resultMap="customResultMap">
+        SELECT
+        <include refid="fileResule"></include>
+        from sys_file_manage
+        where id = #{id} and DEL_FLAG='N' and ACTIVATION_STATE = 'Y'
+    </select>
+
+    <update id="batchDeleteFile" parameterType="java.util.Map">
+        update sys_file_manage set UPDATE_TIME = current_timestamp,DEL_FLAG='Y',UPDATE_USER_ID=#{updateUserId},OPERATOR = #{updateUserId},OPERATE_TIME = current_timestamp
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="selectNotActivationCount" resultType="java.lang.Long">
+        select count(1) from SYS_FILE_MANAGE a
+        where
+        abs(round(date_part('day',a.OPERATE_TIME - current_timestamp))) >= #{beforeDays}
+        and a.ACTIVATION_STATE = 'N'
+        and a.DEL_FLAG = 'N'
+    </select>
+
+
+    <select id="selectNotActivationList" resultMap="customResultMap">
+        select
+        <include refid="fileResule"></include>
+        from SYS_FILE_MANAGE a
+        where
+        abs(round(date_part('day',a.OPERATE_TIME - current_timestamp))) >= #{beforeDays}
+        and a.ACTIVATION_STATE = 'N'
+        and a.DEL_FLAG = 'N'
+    </select>
+
+    <update id="addFileDownlowdNum" parameterType="java.util.List">
+        update SYS_FILE_MANAGE set DOWNLOAD_TIMES = DOWNLOAD_TIMES + 1
+        where id in
+        (<foreach collection="ids" item="id" separator=",">
+        #{id}
+    </foreach>)
+    </update>
+
+    <select id="getFileNameNum" parameterType="java.util.Map" resultType="java.lang.Long">
+
+        select count(1) from SYS_FILE_MANAGE a
+        where a.DEL_FLAG = 'N' and (a.SYSTEM = #{appId} or a.SYSTEM = #{systemId})
+        and a.FILE_NAME = #{fileName}
+        <if test="fileId != null and fileId != ''">
+            AND a.id != #{fileId}
+        </if>
+    </select>
+
+
+</mapper>

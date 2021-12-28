@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.SpeMapper">
+    <resultMap id="BaseResult" type="com.sofn.fdpi.model.Spe">
+        <id property="id" column="ID"/>
+        <result property="speName" column="SPE_NAME"/>
+        <result property="speCode" column="SPE_CODE"/>
+        <result property="cites" column="CITES"/>
+        <result property="identify" column="IDENTIFY"/>
+        <result property="pedigree" column="PEDIGREE"/>
+        <result property="intro" column="INTRO"/>
+        <result property="habit" column="HABIT"/>
+        <result property="distribution" column="DISTRIBUTION"/>
+        <!-- <result property="photo" column="PHOTO"/>-->
+        <result property="createUserId" column="CREATE_USER_ID"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="updateUserId" column="UPDATE_USER_ID"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="delFlag" column="DEL_FLAG"/>
+        <result property="latinName" column="LATIN_NAME"/>
+        <result property="localName" column="LOCAL_NAME"/>
+        <result property="tradeName" column="TRADE_NAME"/>
+        <result property="proLevel" column="PRO_LEVEL"/>
+        <result property="conStatus" column="CON_STATUS"/>
+        <collection property="files" ofType="com.sofn.fdpi.model.FileManage">
+            <id column="fileid" property="id"></id>
+            <result column="FILE_SOURCE_ID" property="fileSourceId"></result>
+
+        </collection>
+    </resultMap>
+    <sql id="alias_Column_List_sp">
+
+    </sql>
+    <sql id="alias_Column_List_tc">
+
+    </sql>
+    <resultMap id="rs1" type="com.sofn.fdpi.model.Spe">
+        <id property="id" column="ID"/>
+        <result property="speName" column="SPE_NAME"/>
+        <result property="speCode" column="SPE_CODE"/>
+        <result property="latinName" column="LATIN_NAME"/>
+        <result property="cites" column="CITES"/>
+        <result property="identify" column="IDENTIFY"/>
+        <result property="proLevel" column="PRO_LEVEL"/>
+        <result property="pedigree" column="PEDIGREE"/>
+        <collection property="files" ofType="com.sofn.fdpi.model.FileManage">
+            <id column="fileid" property="id"></id>
+            <result column="FILE_SOURCE_ID" property="fileSourceId"></result>
+        </collection>
+    </resultMap>
+    <select id="getSpeByPage" parameterType="java.util.Map" resultMap="rs1">
+        select
+        *
+        FROM TB_SPECIES
+        <where>
+            DEL_FLAG='N'
+            <if test="speName != null and speName != ''">
+                and SPE_NAME like '%'||#{speName}||'%'
+            </if>
+            <if test="identify != null and identify != ''">
+                and IDENTIFY = #{identify}
+            </if>
+            <if test="pedigree != null and pedigree != ''">
+                and PEDIGREE = #{pedigree}
+            </if>
+            <if test="proLevel != null and proLevel != ''">
+                and PRO_LEVEL = #{proLevel}
+            </if>
+            <if test="cites != null and cites != ''">
+                and CITES = #{cites}
+            </if>
+
+        </where>
+        ORDER By SPE_CODE
+
+    </select>
+    <update id="deleteSpeInfo">
+        update TB_SPECIES
+        set
+        DEL_FLAG = 'Y',
+        UPDATE_TIME=#{updateTime},
+      UPDATE_USER_ID=#{updateUserId}
+        where
+        ID = #{id}
+
+
+    </update>
+    <select id="getSpeciesByName" resultMap="BaseResult">
+        select ID,SPE_NAME,PRO_LEVEL,SPE_CODE
+        from TB_SPECIES
+        where DEL_FLAG='N'
+         and SPE_NAME=#{speName}
+
+    </select>
+
+    <resultMap id="SecondLevel" type="com.sofn.fdpi.vo.SpeNameLevelVo">
+        <id column="ID" property="id"></id>
+        <result column="SPE_NAME" property="speName"></result>
+        <result column="PRO_LEVEL" property="proLevel"></result>
+        <result column="SPE_CODE" property="speCode"></result>
+    </resultMap>
+    <select id="getSecondLevel" resultMap="SecondLevel">
+          select ID,SPE_NAME,PRO_LEVEL from TB_SPECIES where PRO_LEVEL=#{proLevel} and DEL_FLAG='N'
+    </select>
+
+    <select id="getSpeciesName" resultMap="SecondLevel">
+         select ID,SPE_NAME,PRO_LEVEL,SPE_CODE,SPE_TYPE from TB_SPECIES  where DEL_FLAG='N' order by CREATE_TIME
+    </select>
+
+    <select id="getSpeById" resultMap="BaseResult">
+    select
+    TB_SPECIES.ID,TB_SPECIES.SPE_NAME,TB_SPECIES.LATIN_NAME,TB_SPECIES.SPE_CODE,
+    TB_SPECIES.PRO_LEVEL,TB_SPECIES.CITES,TB_SPECIES.INTRO,
+    TB_SPECIES.IDENTIFY,TB_SPECIES.PEDIGREE,TB_SPECIES.PHOTO,
+    TB_SPECIES.HABIT,TB_SPECIES.DISTRIBUTION,TB_SPECIES.LOCAL_NAME,
+    TB_SPECIES.TRADE_NAME,
+    FILE_MANAGE.ID as fileid,FILE_MANAGE.FILE_SOURCE_ID
+    FROM TB_SPECIES,FILE_MANAGE
+    where
+    TB_SPECIES.ID =FILE_MANAGE.FILE_SOURCE_ID
+    and TB_SPECIES.ID=#{id} and DEL_FLAG='N'
+</select>
+    <select id="getSpe" resultType="com.sofn.fdpi.model.Spe">
+        select ID from TB_SPECIES where SPE_NAME=#{speName} and PRO_LEVEL= #{proLevel} and DEL_FLAG='N'
+    </select>
+    <select id="speName" resultType="com.sofn.fdpi.model.Spe">
+         select * from TB_SPECIES where SPE_NAME=#{speName} and DEL_FLAG='N' and id !=#{id}
+    </select>
+    <select id="getPapersSpe" resultType="com.sofn.fdpi.model.Papers">
+SELECT
+	P . ID,
+	P .PAR_STATUS,
+	PS.SPEC_ID
+FROM
+	papers P,
+	PAPERS_SPEC ps
+WHERE
+ P . ID = PS.PAPERS_ID
+AND PS.DEL_FLAG = 'N'
+AND P .DEL_FLAG = 'N'
+AND PS.SPEC_ID=#{id}
+</select>
+
+    <resultMap id="allSpeciesResultMap" type="java.util.Map">
+        <result column="ID" property="key" jdbcType="VARCHAR"></result>
+        <result column="SPE_NAME" property="value" jdbcType="VARCHAR"></result>
+    </resultMap>
+    <select id="getMapForAllSpecies" resultMap="allSpeciesResultMap">
+        select ID,SPE_NAME
+        from TB_SPECIES
+        where DEL_FLAG='N'
+    </select>
+</mapper>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<!-- ===================================================================== -->
+<!--                                                                       --><!--  Log4j Configuration                                                  --><!--                                                                       --><!-- ===================================================================== --><!-- $Id: log4j.xml,v 1.2 2004/01/05 08:24:49 li_zhi Exp $ --><!--
+   | For more configuration infromation and examples see the Jakarta Log4j
+   | owebsite: http://jakarta.apache.org/log4j
+ -->
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+
+  <!-- ================================= -->
+  <!-- Preserve messages in a local file -->
+  <!-- ================================= -->
+
+  <!-- A size based file rolling appender-->
+  <appender name="FILE" class="com.cvicse.workflow.logging.appender.RollingFileAppender">
+    <param name="File" value="C:/logs/inforflow.log" />
+    <param name="Threshold" value="INFO" />
+    <param name="MaxFileSize" value="500KB" />
+    <param name="MaxBackupIndex" value="1" />
+
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d %-5p [%c] %m%n" />
+    </layout>
+  </appender>
+
+  <!-- ============================== -->
+  <!-- Append messages to the console -->
+  <!-- ============================== -->
+
+  <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+    <param name="Target" value="System.out" />
+
+    <layout class="org.apache.log4j.PatternLayout">
+      <!-- The default pattern: Date Priority [Category] Message\n -->
+      <param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{3}] %m%n" />
+    </layout>
+  </appender>
+  
+  <!-- ============================== -->
+  <!-- Append messages without class's name to the console -->
+  <!-- ============================== -->  
+  <appender name="CONSOLE2" class="org.apache.log4j.ConsoleAppender">
+    <param name="Target" value="System.out" />
+
+    <layout class="org.apache.log4j.PatternLayout">
+      <!-- The default pattern: Date Priority [Category] Message\n -->
+      <param name="ConversionPattern" value="%d{ABSOLUTE} %-5p %m%n" />
+    </layout>
+  </appender>
+  
+  <!-- ======================= -->
+  <!-- Setup the Root category -->
+  <!-- ======================= -->
+  <logger name="com.cvicse.workflow" additivity="false">
+    <level value ="INFO" />
+    <appender-ref ref="FILE"/>
+  </logger>
+  <logger name="com.cvicse.workflow.util.WorkflowConfig" additivity="false">
+    <level value ="INFO" />
+    <appender-ref ref="CONSOLE2"/>
+  </logger>
+  <root>
+    <priority value ="WARN" />
+    <appender-ref ref="CONSOLE" />
+  </root>
+
+</log4j:configuration>

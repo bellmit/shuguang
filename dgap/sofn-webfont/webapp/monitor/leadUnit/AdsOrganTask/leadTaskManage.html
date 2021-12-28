@@ -1,0 +1,156 @@
+<link rel="stylesheet" href="../../assets/css/monitor/task.css"/>
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+<link rel="stylesheet" href="../../assets/css/monitor/subjSvList.css"/>
+<link rel="stylesheet" href="assets/css/sys/sysBase/baseInfoList.css"/>
+<div>
+    <div class="gui-section clearfix">
+        <div class="gui-page-head no-border">
+            <h3 class="color-green" style="padding-left: 500px">任务退回清单</h3>
+        </div>
+        <div id="count">
+
+        </div>
+        <table id="grid" class="gui-table mt15">
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="dModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top:100px;">
+    <div class="modal-dialog modal-style">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="modalTitle" style="text-align: center">抽样退回回执单</h4>
+            </div>
+            <div class="modal-body" style="min-height: 300px;margin-left: 50px">
+                <form class="form-horizontal" id="addRecipe">
+                    <div class="form-group line-20">
+                        <label class="col-sm-5 control-task">机构名称:</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input type="hidden" id="taskId" />
+                                <input type="hidden" id="organId" />
+                                <input type="hidden" id="orgType" />
+                                <div id="organName"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-5 control-task">样品编号:</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <div id="sCode"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-5 control-task">样品名称:</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <div id="sNmae"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label id="myFinishNum" class="col-sm-5 control-task">抽样完成数:</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <!--<input type="hidden" id="finishNum"/>-->
+                                <div id="finishNum"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label id="myReportTime" class="col-sm-5 control-task">抽样上报时间:</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <div id="receiptTime"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label id="myReason" class="col-sm-5 control-task">抽样退回原因:</label>
+                        <h5 rows="6" cols="40" id="reason"></h5>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" type="button" data-dismiss="modal">关闭</span>
+                <span style="margin-left: 20px;" id="modifyBtn" class="gui-btn" type="button" ng-click="modifySampleOrCheck()">修改抽样单</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="dModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top:100px;">
+    <div class="modal-dialog modal-style">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="modalTitle2" style="text-align: center">抽样退回回执单</h4>
+            </div>
+            <div class="modal-body" style="min-height: 300px;margin-left: 50px">
+                <form class="form-horizontal" id="addRecipe2">
+                    <div class="form-group line-20">
+                        <label class="col-sm-5 control-task">机构名称:</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input type="hidden" id="taskId2" />
+                                <input type="hidden" id="organId2" />
+                                <input type="hidden" id="orgType2" />
+                                <div id="organName2"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-5 control-task">样品编号:</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <div id="sCode2"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-5 control-task">样品名称:</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <div id="sNmae2"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label id="myFinishNum2" class="col-sm-5 control-task">抽样完成数:</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <!--<input type="hidden" id="finishNum"/>-->
+                                <div id="finishNum2"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label id="myReportTime2" class="col-sm-5 control-task">抽样上报时间:</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <div id="receiptTime2"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label id="myReason2" class="col-sm-5 control-task">监管退回原因:</label>
+                        <h5 rows="6" cols="40" id="reason2"></h5>
+                    </div>
+                    <div class="form-group line-20">
+                        <label id="myReason3" class="col-sm-5 control-task">退回原因:</label>
+                        <textarea rows="3" cols="50" id="reason3" name="reason3" placeholder="请输入退回原因" class="gui-input text_sketch"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" type="button" data-dismiss="modal">关闭</span>
+                <span style="margin-left: 20px;" id="modifyBtn2" class="gui-btn" type="button" ng-click="addPecipe()">修改抽样单</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+

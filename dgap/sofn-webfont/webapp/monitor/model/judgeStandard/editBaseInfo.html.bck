@@ -1,0 +1,50 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+<div class="gui-breadcrumbs">
+        <a href="">监测系统</a>&gt;
+        <a href="">检测模型</a>&gt;
+        <a href="">判定标准</a>&gt;
+        <span>基本信息</span>
+</div>
+    <div class="Sup_contain_section_contain ">
+        <!-- 左侧菜单 -->
+        <div class="col-md-2">
+            <div class="panel-group list-group-panel pdr-20">
+                <div class="panel panel-default">
+                    <div class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="list-group" style="margin-bottom:0px;">
+                                <span class="list-group-item active line-20">基本信息</span>
+                                <span class="list-group-item pointer line-20" ng-click="goUploadFile()">上传附件</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 右侧菜单 -->
+        <div class="col-md-10">
+            <div class="well" style="background-color: white;">
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">标准名称</label>
+                            <div class="col-sm-6 mgl-30">
+                                <input type="text" class="gui-input" name="name" placeholder="请输入判定标准名称" value="">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <!--<button class="pull-left" type="button" ng-click="updateInfo()">修改</button>-->
+                    <button class="pull-left mgl-30 gui-btn" ng-click="goJudgeList()">返回</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+

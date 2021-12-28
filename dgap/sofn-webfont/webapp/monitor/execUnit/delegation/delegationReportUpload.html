@@ -1,0 +1,30 @@
+<link rel="stylesheet" href="../../assets/css/monitor/subjSvList.css"/>
+<div class="gui-breadcrumbs">
+    <a href="">受托检测</a>&gt;
+    <span>报告上传</span>
+</div>
+<div class="gui-section">
+    <ul class="gui-tab">
+        <li role="presentation" class="pointer"><a ng-click="taskDetail()">任务详情</a></li>
+        <!--<li role="presentation" class="pointer"><a ng-click="test()">检测</a></li>-->
+        <li role="presentation" class="active"><a ng-click="routineReportUpload()">报告上传</a></li>
+    </ul>
+</div>
+<div>
+    <div class="col-md-11 col-md-offset-1">
+        <div class="modal-body">
+            <div class="row">
+                <div style="width: 600px">
+                    <form method="post" enctype="multipart/form-data" id="eventForm">
+                        <input style="display: inline;width: 225px" id="file-1" multiple="true"
+                               data-overwrite-initial="false" accept="*"
+                               data-min-file-count="1" data-max-file-count="1" type="file"/>
+
+                </form>
+                <p> 备注：文件只支持 “word，pdf，xlsx，rar” 格式，文件大小不超过50M。 </p>
+                <!--   <a href="webapp\monitor\cq\导入.xlsx">导入模板</a>-->
+            </div>
+        </div>
+    </div>
+</div>
+</div>

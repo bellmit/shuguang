@@ -1,0 +1,64 @@
+<link rel="stylesheet" href="assets/css/asms/subjSv/subjSvChange.css"/>
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">监管系统</a>&gt;
+    <a ui-sref="index.content.asms/subjDt/subjDtList">主体管理</a>&gt;
+    <a ui-sref="index.content.asms/subjDt/subjDtChangeList">检测机构</a>&gt;
+    <span>注册变更审核</span>
+</div>
+<div class=" gui-section gui-section-wid" >
+    <h4 class="mt15 mb25">注册变更审核</h4>
+    <form id="changeForm" name="changeForm">
+    <input type="hidden" ng-model="subjDtChangeId">
+    <input type="hidden" ng-model="subjDtChange.applyUserId">
+    <input type="hidden" ng-model="subjDtChange.applyTime">
+    <input type="hidden" ng-model="subjDtChange.applyDtId">
+    <table class="ApplyTable">
+
+        <tbody>
+        <tr>
+            <td>主体信息</td>
+            <td>变更前</td>
+            <td>变更后</td>
+        </tr>
+        <tr><td>机构名称</td><td><span ng-bind="subjDt.dtName"></span><img class="pull-right" ng-show="subjDt.dtName!=subjDtChange.dtName" src="../assets/imgs/common/arrow.png"/></td><td><span ng-bind="subjDtChange.dtName"></span></td></tr>
+        <tr><td>机构代码</td><td><span ng-bind="subjDt.dtCode"></span><img class="pull-right" ng-show="subjDt.dtCode!=subjDtChange.dtCode" src="../assets/imgs/common/arrow.png"/></td><td><span ng-bind="subjDtChange.dtCode"></span></td></tr>
+        <tr><td>机构类别</td><td><span ng-bind="subjDt.dtType"></span><img class="pull-right" ng-show="subjDt.dtType!=subjDtChange.dtType" src="../assets/imgs/common/arrow.png"/></td><td><span ng-bind="subjDtChange.dtType"></span></td></tr>
+        <tr><td>机构性质</td><td><span ng-bind="subjDt.dtNature"></span><img class="pull-right" ng-show="subjDt.dtNature!=subjDtChange.dtNature" src="../assets/imgs/common/arrow.png"/></td><td><span ng-bind="subjDtChange.dtNature"></span></td></tr>
+        <tr><td>资质</td><td><span ng-bind="subjDt.dtQualifications"></span><img class="pull-right" ng-show="subjDt.dtQualifications!=subjDtChange.dtQualifications" src="../assets/imgs/common/arrow.png"/></td><td><span ng-bind="subjDtChange.dtQualifications"></span></td></tr>
+        <tr><td>依托单位</td><td><span>{{subjDt.dtRelyOnUnit||'无'}}</span><img class="pull-right" ng-show="subjDt.dtRelyOnUnit!=subjDtChange.dtRelyOnUnit" src="../assets/imgs/common/arrow.png"/></td><td><span>{{subjDtChange.dtRelyOnUnit||'无'}}</span></td></tr>
+        <tr><td>机构级别</td><td><span ng-bind="subjDt.dtLevelName"></span><img class="pull-right" ng-show="subjDt.dtLevelName!=subjDtChange.dtLevelName" src="../assets/imgs/common/arrow.png"/></td><td><span ng-bind="subjDtChange.dtLevelName"></span></td></tr>
+        <tr><td>所属区域</td><td><span ng-bind="subjDt.dtArea"></span><img class="pull-right" ng-show="subjDt.dtArea!=subjDtChange.dtArea" src="../assets/imgs/common/arrow.png"/></td><td><span ng-bind="subjDtChange.dtArea"></span></td></tr>
+        <tr><td>法人</td><td><span ng-bind="subjDt.dtLegalMan"></span><img class="pull-right" ng-show="subjDt.dtLegalMan!=subjDtChange.dtLegalMan" src="../assets/imgs/common/arrow.png"/></td><td><span ng-bind="subjDtChange.dtLegalMan"></span></td></tr>
+        <tr><td>负责人</td><td><span ng-bind="subjDt.dtLeader"></span><img class="pull-right" ng-show="subjDt.dtLeader!=subjDtChange.dtLeader" src="../assets/imgs/common/arrow.png"/></td><td><span ng-bind="subjDtChange.dtLeader"></span></td></tr>
+        <tr><td>负责人电话</td><td><span>{{subjDt.dtLeaderPhone||'无'}}</span><img class="pull-right" ng-show="subjDt.dtLeaderPhone!=subjDtChange.dtLeaderPhone" src="../assets/imgs/common/arrow.png"/></td><td><span>{{subjDtChange.dtLeaderPhone||'无'}}</span></td></tr>
+        <tr><td>联系人</td><td><span ng-bind="subjDt.dtContact"></span><img class="pull-right" ng-show="subjDt.dtContact!=subjDtChange.dtContact" src="../assets/imgs/common/arrow.png"/></td><td><span ng-bind="subjDtChange.dtContact"></span></td></tr>
+        <tr><td>联系人电话</td><td><span ng-bind="subjDt.dtContactPhone"></span><img class="pull-right" ng-show="subjDt.dtContactPhone!=subjDtChange.dtContactPhone" src="../assets/imgs/common/arrow.png"/></td><td><span  ng-bind="subjDtChange.dtContactPhone"></span></td></tr>
+        <tr><td>联系人QQ</td><td><span>{{subjDt.dtContactQQ||'无'}}</span><img class="pull-right" ng-show="subjDt.dtContactQQ!=subjDtChange.dtContactQQ" src="../assets/imgs/common/arrow.png"/></td><td><span>{{subjDtChange.dtContactQQ||'无'}}</span></td></tr>
+        <tr><td>电子邮箱</td><td><span>{{subjDt.dtContactEmail||'无'}}</span><img class="pull-right" ng-show="subjDt.dtContactEmail!=subjDtChange.dtContactEmail" src="../assets/imgs/common/arrow.png"/></td><td><span>{{subjDtChange.dtContactEmail||'无'}}</span></td></tr>
+        <tr><td>邮编</td><td><span>{{subjDt.dtPostcode||'无'}}</span><img class="pull-right" ng-show="subjDt.dtPostcode!=subjDtChange.dtPostcode" src="../assets/imgs/common/arrow.png"/></td><td><span>{{subjDtChange.dtPostcode||'无'}}</span></td></tr>
+        <tr><td>技术负责人</td><td><span>{{subjDt.dtTechnicalDirector||'无'}}</span><img class="pull-right" ng-show="subjDt.dtTechnicalDirector!=subjDtChange.dtTechnicalDirector" src="../assets/imgs/common/arrow.png"/></td><td><span>{{subjDtChange.dtTechnicalDirector||'无'}}</span></td></tr>
+        <tr><td>质量负责人</td><td><span>{{subjDt.dtQualityDirector||'无'}}</span><img class="pull-right" ng-show="subjDt.dtQualityDirector!=subjDtChange.dtQualityDirector" src="../assets/imgs/common/arrow.png"/></td><td><span>{{subjDtChange.dtQualityDirector||'无'}}</span></td></tr>
+        <tr><td>参数</td><td><span>{{subjDt.dtParameter||'无'}}</span><img class="pull-right" ng-show="subjDt.dtParameter!=subjDtChange.dtParameter" src="../assets/imgs/common/arrow.png"/></td><td><span>{{subjDtChange.dtProductRange||'无'}}</span></td></tr>
+        <tr><td>产品范围</td><td><span>{{subjDt.dtProductRange||'无'}}</span><img class="pull-right" ng-show="subjDt.dtProductRange!=subjDtChange.dtProductRange" src="../assets/imgs/common/arrow.png"/></td><td><span>{{subjDtChange.dtProductRange||'无'}}</span></td></tr>
+        <tr class="Sup_contain_section_contain_head_photo"><td style="vertical-align: middle">变更原因</td><td colspan="2" style="text-align: left;">
+            <textarea class="gui-textarea form-control" rows="3" readonly="readonly" ng-model="subjDtChange.applyReason"></textarea>
+        </td></tr>
+        <tr class="Sup_contain_section_contain_head_photo"><td style="vertical-align: middle">审核意见<span style="color:red;">*</span></td><td colspan="2" style="text-align: left;" class="form-group">
+            <textarea placeholder="请输入审核意见" rows="3" name="auditSuggestion" ng-model="subjDtChange.auditSuggestion"
+                      class="gui-textarea form-control"
+                      data-bv-notempty="true"
+                      data-bv-notempty-message="审核意见不能为空"
+                      data-bv-stringlength="true"
+                      data-bv-stringlength-max="300"
+                      data-bv-stringlength-message="审核意见不能超过300个字符"></textarea>
+        </td></tr>
+        </tbody>
+    </table>
+    </form>
+    <div style="text-align: center" class="mt15 mb25">
+        <button id="passBut"   style="display: none;" class="gui-btn" ng-click="auditSubjDtChange(1)">审核通过</button>
+        <button id="refuseBut" style="display: none;" class="gui-btn" ng-click="auditSubjDtChange(2)">审核不通过</button>
+        <button id="closeBut" class="gui-btn" ng-click="removeLocalStorage()">关闭</button>
+    </div>
+
+</div>

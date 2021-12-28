@@ -1,0 +1,37 @@
+.gui-tab {
+    background-color: #FFF;
+    overflow: visible;
+    width: 100%;
+    color: #218D4A;
+    padding: 10px 15px 0;
+    margin-left: -15px;
+    margin-right: -15px;
+    box-sizing: content-box;
+    border-bottom: 1px solid #329961;
+    height: 38px;
+    & > li {
+        float: left;
+        padding: 0 5px;
+        color: #666;
+        cursor: pointer;
+        background-color: #f7f7f7;
+        border: 1px solid #d5d5d5;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+        margin-right: 8px;
+        border-bottom: none;
+        position: relative;
+        z-index: 10;
+    }
+    a {
+        display: block;
+        padding: 8px 10px;
+        color: #666;
+    }
+    .active {
+        background-color: #FFF;
+        padding-bottom: 1px;
+        margin-bottom: -1px;
+        border-color: #329961;
+    }
+}

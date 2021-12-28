@@ -1,0 +1,51 @@
+<link rel="stylesheet" href="assets/css/tts/base/baseInfoList.css">
+<link rel="stylesheet" href="assets/css/tts/base/baseAdd.css">
+<div class="gui-breadcrumbs">
+    <a href="">屠宰管理</a>&gt;
+    <a href="">屠宰记录</a>&gt;
+    <span>屠宰记录</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group">
+        <span class="important">产品名称</span>
+        <input name="productName" class="gui-input" type="text" placeholder="请输入产品名称">
+        <span class="gui-select">
+            <select ng-model="ttsScltxxcjScgl.status" name="status">
+            <option value="">当前状态</option>
+            <option value="1">未卖出</option>
+            <option value="2">未卖完</option>
+            <option value="3">已卖完</option>
+            <option value="4">已合成</option>
+            <!--<option value="3">已卖完</option>-->
+            </select>
+        </span>
+    </div>
+    <div class="gui-form-group">
+        <span class="important">时间</span>
+        <input id="startDate" name="startDate" readonly="readonly" class="gui-input Wdate" type="text" onfocus="var endDate=$dp.$('endDate');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'endDate\')}'})">至
+        <input id="endDate" name="endDate" class="gui-input Wdate" readonly="readonly" type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}'})">
+        <button class="gui-btn" id="ToClean">清空</button>
+        <button class="gui-btn" id="ToCheck">查询</button>
+    </div><div class="gui-actions"></div>
+    <div>
+        <table id="grid" class="gui-table">
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="record" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-style">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel"> 屠宰记录详情</h4>
+            </div>
+            <div class="modal-body">
+                <table id="recordList" class="gui-table">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>

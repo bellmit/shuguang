@@ -1,0 +1,103 @@
+<!--<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>-->
+<div class="gui-breadcrumbs">
+    <a href="">监测系统</a>&gt;
+    <a href="">承担单位</a>&gt;
+    <span>报告汇总</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group clearfix">
+        <label>行业</label>
+        <span class="gui-select">
+            <select id="industry" style="width: 120px" >
+                <option value="">全部</option>
+                 <option ng-repeat="x in industry">{{x.dictName}}</option>
+            </select>
+        </span>
+        <label>监测类型</label>
+        <span class="gui-select">
+            <select id="category" style="width: 120px">
+                <option value="">全部</option>
+                <option ng-repeat="x in category">{{x}}</option>
+            </select>
+        </span>
+        <label>年度</label>
+        <span class="gui-select">
+            <select id="year" style="width: 120px">
+                <option value="">全部</option>
+                <option ng-repeat="x in year">{{x}}</option>
+            </select>
+        </span>
+    </div>
+    <div class="gui-form-group clearfix">
+        <label>任务名称</label>
+        <span class="gui-select">
+            <select id="taskName" style="width: 120px">
+                <option value="">全部</option>
+                 <option ng-repeat="x in monitorTask">{{x.monitorTask}}</option>
+            </select>
+        </span>
+        <label>报告名称</label>
+        <input  type="text" class="gui-input" name="fileName" placeholder="请输入报告名称" ng-keyup="enterEvent($event)">
+        <span class="gui-btn" id="seachTask">查询</span>
+        <span class="gui-btn" id="resetBtn">重置</span>
+    </div>
+    <div class="setslist " >
+        <ul>
+
+        </ul>
+    </div>
+    <div  class="cq2">
+        <!--<button class="gui-btn" id="clear">清除筛选</button>-->
+        <button class="gui-btn fr mr15" id="batchDel" ng-click="batchDownload()">批量下载</button>
+    </div>
+
+    <div class="col-lg-12 col-xs-12 col-sm-12 col-md-12  NewsSize td mt15">
+        <table id="grid"
+               class="gui-table table-striped table-hover data-table">
+        </table>
+    </div>
+        <!--批量按钮放到上边-->
+        <!--<button type="button" class="gui-btn fr" ng-click="batchDownload()">批量下载</button>-->
+
+
+    <iframe id="i1" style="display:none"></iframe>
+    <a download="" href="" target="blank" id="downFile"></a>
+</div>
+
+
+<!-- 报告上传 model -->
+<div class="modal fade" id="fileModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content" style="min-width: 700px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: left">报告上传</h4>
+            </div>
+            <div class="modal-body" style="min-height: 350px;">
+                <h4 id="taskNameModel" style="margin: 10px 0px;">任务名称：</h4>
+                <div class="gui-form-group">
+                    <label class="control-label for=taskName">年度</label>
+                    <span class="gui-select">
+               <select id="yearModel" class="gui-select">
+                   <option value="">全部</option>
+                   <option ng-repeat="x in year" ng-selected="x==selectedYear">{{x}}</option>
+               </select>
+        </span>
+                </div>
+                <form method="post" enctype="multipart/form-data" id="eventForm">
+                    <div file-upload options="vm.uploadOptions" files="vm.files"></div>
+                </form>
+                <p> 备注：文件只支持 “doc，docx，pdf，xls，xlsx，rar，zip” 格式，文件大小不超过50M。 </p>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <spanspan class="gui-btn" type="button" data-dismiss="modal">关闭</spanspan>
+                <span ng-if="disabled" class="gui-btn" style="background-color: grey">上传</span>
+                <span ng-if="!disabled" class="gui-btn" ng-click="addAdsFile()">上传</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

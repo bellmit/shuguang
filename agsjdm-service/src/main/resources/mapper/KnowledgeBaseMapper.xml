@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agsjdm.mapper.KnowledgeBaseMapper" >
+    <insert id="save" parameterType="java.util.Map">
+        insert into KNOWLEDGE_BASE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="knowledge != null">KNOWLEDGE,</if>
+            <if test="documentId != null">DOCUMENT_ID,</if>
+            <if test="documentValue != null">DOCUMENT_VALUE,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="knowledge != null">#{knowledge},</if>
+            <if test="documentId != null">#{documentId},</if>
+            <if test="documentValue != null">#{documentValue},</if>
+        </trim>
+    </insert>
+    <resultMap id="baseMap" type="com.sofn.agsjdm.model.KnowledgeBase">
+        <id column="ID" property="id" jdbcType="VARCHAR"></id>
+        <result column="KNOWLEDGE" property="knowledge" jdbcType="VARCHAR"></result>
+        <result column="DOCUMENT_ID" property="documentId" jdbcType="VARCHAR"></result>
+        <result column="DOCUMENT_VALUE" property="documentValue" jdbcType="VARCHAR"></result>
+        <association property="k" javaType="com.sofn.agsjdm.model.KnowledgeBaseAttachment">
+            <id column="KID" property="id"></id>
+            <result property="fileId" column="FILE_ID"></result>
+            <result property="fileName" column="FILE_NAME"></result>
+            <result property="knowledgeId" column="KNOWLEDGE_ID"></result>
+        </association>
+    </resultMap>
+    <sql id="Base_Column_List1">
+        b.ID as KID,b.FILE_ID,b.FILE_NAME,b.KNOWLEDGE_ID
+    </sql>
+    <sql id="Base_Column_List">
+        a.ID,a.KNOWLEDGE,a.DOCUMENT_ID,a.DOCUMENT_VALUE
+    </sql>
+    <select id="getNameAndType" resultMap="baseMap">
+        select ID
+        from KNOWLEDGE_BASE where KNOWLEDGE=#{knowledge} and DOCUMENT_ID=#{documentId}
+    </select>
+    <select id="list" resultMap="baseMap">
+        select <include refid="Base_Column_List"></include>,<include refid="Base_Column_List1"></include>
+        from KNOWLEDGE_BASE a,KNOWLEDGE_BASE_ATTACHMENT b
+        <where>
+            1 = 1 and a.ID=b.KNOWLEDGE_ID
+            <if test="knowledge != null and knowledge != ''">
+                and a.KNOWLEDGE like  '%' || #{knowledge} || '%'
+            </if>
+            <if test="documentId != null and documentId != ''">
+                and a.DOCUMENT_ID = #{documentId}
+            </if>
+            <if test="province != null and province != ''">
+                and PROVINCE = #{province}
+            </if>
+            <if test="city != null and city != ''">
+                and CITY = #{city}
+            </if>
+            <if test="county != null and county != ''">
+                and COUNTY = #{county}
+            </if>
+        </where>
+    </select>
+
+
+
+
+</mapper>

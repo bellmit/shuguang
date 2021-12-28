@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agpjpm.mapper.MonitorMapper">
+    <sql id="base_Column_List_page">
+      id, protect_id, survey_date, surveyor, survey_dept, province, province_name, city, city_name,
+      county, county_name, addr, tel
+    </sql>
+    <sql id="base_Column_List_export">
+      id, protect_id, survey_date, survey_dept, surveyor, province_name, city_name, county_name, addr, tel, target_spec,
+      damage, other, fence, nurse, warning, patrol, tower, other_facilities, avg_temp, avg_rainfall, super_species,
+      super_seedling, super_family, super_genera, super_growth, super_cover,
+      super_area, trun_green_start, trun_green_end, wither_start, wither_end, invade_species, invade_spec_name,
+      invade_area, invade_hazard, invade_eradicate
+    </sql>
+
+    <select id="listByParams" parameterType="java.util.Map" resultType="com.sofn.agpjpm.model.Monitor">
+        select
+        <choose>
+            <when test="type!=null and type eq 'export'">
+                <include refid="base_Column_List_export"/>
+            </when>
+            <otherwise>
+                <include refid="base_Column_List_page"/>
+            </otherwise>
+        </choose>
+        from monitor
+        <where>
+            del_flag = 'N'
+            <if test="protectId != null and protectId != ''">
+                and protect_id = #{protectId}
+            </if>
+            <if test="province != null and province != ''">
+                and province = #{province}
+            </if>
+            <if test="city != null and city != ''">
+                and city = #{city}
+            </if>
+            <if test="county != null and county != ''">
+                and county = #{county}
+            </if>
+            <if test="surveyor != null and surveyor != ''">
+                and surveyor like '%'||#{surveyor}|| '%'
+            </if>
+            <if test="surveyDept != null and surveyDept != ''">
+                and survey_dept like '%'||#{surveyDept}|| '%'
+            </if>
+            <if test="tel != null and tel != ''">
+                and tel like '%'||#{tel}|| '%'
+            </if>
+            <if test="endTime != null and endTime != ''">
+                and survey_date &lt;= #{endTime}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                and survey_date &gt;= #{startTime}
+            </if>
+            <if test="createUserId != null and createUserId != ''">
+                and create_user_id = #{createUserId}
+            </if>
+        </where>
+        order by survey_date desc
+    </select>
+
+</mapper>

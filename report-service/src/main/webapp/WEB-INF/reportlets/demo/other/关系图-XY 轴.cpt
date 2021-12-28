@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WorkBook xmlVersion="20170720" releaseVersion="10.0.0">
+<TableDataMap>
+<TableData name="link" class="com.fr.data.impl.EmbeddedTableData">
+<Parameters/>
+<DSName>
+<![CDATA[]]></DSName>
+<ColumnNames>
+<![CDATA[source,,.,,target]]></ColumnNames>
+<ColumnTypes>
+<![CDATA[java.lang.String,java.lang.String]]></ColumnTypes>
+<RowData ColumnTypes="java.lang.String,java.lang.String">
+<![CDATA[HTH/cP8t+&:P%#u*\I^%k3_BnJl!THe(M(<+;@6*'Ssm\@(Fjr>S%7\HT$:$!!~
+]]></RowData>
+</TableData>
+<TableData name="node" class="com.fr.data.impl.EmbeddedTableData">
+<Parameters/>
+<DSName>
+<![CDATA[]]></DSName>
+<ColumnNames>
+<![CDATA[name,,.,,x,,.,,y,,.,,category]]></ColumnNames>
+<ColumnTypes>
+<![CDATA[java.lang.String,java.lang.String,java.lang.String,java.lang.String]]></ColumnTypes>
+<RowData ColumnTypes="java.lang.String,java.lang.String,java.lang.String,java.lang.String">
+<![CDATA[HTH/cP8t+&:Ebt!JH=r_m7X)<Sb$[o;D+'hXr^=dAS?Z=\YG?%8f8P?90Sn0RhJC3).ORHKb
+I&rRUYJs?-<PN^fF38nSHKcO9ACO'1s,[_IW]A~
+]]></RowData>
+</TableData>
+</TableDataMap>
+<Report class="com.fr.report.worksheet.WorkSheet" name="sheet1">
+<ReportPageAttr>
+<HR/>
+<FR/>
+<HC/>
+<FC/>
+</ReportPageAttr>
+<ColumnPrivilegeControl/>
+<RowPrivilegeControl/>
+<RowHeight defaultValue="723900">
+<![CDATA[8724900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900]]></RowHeight>
+<ColumnWidth defaultValue="2743200">
+<![CDATA[19240500,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200]]></ColumnWidth>
+<CellElementList>
+<C c="0" r="0">
+<O t="CC">
+<LayoutAttr selectedIndex="0"/>
+<ChangeAttr enable="false" changeType="button" timeInterval="5" buttonColor="-8421505" carouselColor="-8421505" showArrow="true">
+<TextAttr>
+<Attr alignText="0"/>
+</TextAttr>
+</ChangeAttr>
+<Chart name="默认" chartClass="com.fr.plugin.graphchart.custom.GraphChart" nodeSymbol="0" nodeSymbolSize="25" edgeBeginSymbol="0" edgeBeginSymbolSize="10" edgeEndSymbol="2" edgeEndSymbolSize="10" showLabel="true" showToolbox="true" axisLineColor="-16777216" axisTextColor="-16777216">
+<Title titleVisible="true" position="0" text="关系图-XY 轴">
+<TextAttr>
+<Font name="楷体" bold="true" italic="false" size="20" foreground="-6737050"/>
+</TextAttr>
+<AttrBorder borderStyle="0" roundBorder="false" roundRadius="0"/>
+<AttrBackground alpha="1.0"/>
+</Title>
+<Legend legendVisible="true" position="3"/>
+<AttrFillStyle colorStyle="3" specificStyleName="crazy">
+<ColorList>
+<Color colorValue="-6750106"/>
+<Color colorValue="-256"/>
+<Color colorValue="-16764007"/>
+<Color colorValue="-3394765"/>
+<Color colorValue="-3355444"/>
+<Color colorValue="-16764058"/>
+<Color colorValue="-65485"/>
+<Color colorValue="-13421773"/>
+<Color colorValue="-26368"/>
+<Color colorValue="-3355648"/>
+</ColorList>
+</AttrFillStyle>
+<AttrBackground alpha="1.0">
+<Background name="GradientBackground" direction="0" begin="4.0" end="150.0" beginColor="-52" endColor="-13057"/>
+</AttrBackground>
+<XAxis showAxisLabel="true" reverseAxis="false">
+<Title titleVisible="true" position="0" text="X 分类">
+<TextAttr>
+<Font name="微软雅黑" bold="false" italic="false" size="16" foreground="-16777216"/>
+</TextAttr>
+<AttrBorder borderStyle="0" roundBorder="false" roundRadius="0"/>
+<AttrBackground alpha="1.0"/>
+</Title>
+</XAxis>
+<YAxis showAxisLabel="true" reverseAxis="true">
+<Title titleVisible="true" position="0" text="Y 分类">
+<TextAttr>
+<Font name="微软雅黑" bold="false" italic="false" size="16" foreground="-16777216"/>
+</TextAttr>
+<AttrBorder borderStyle="0" roundBorder="false" roundRadius="0"/>
+<AttrBackground alpha="1.0"/>
+</Title>
+</YAxis>
+<ChartDefinition>
+<GraphChartTableDataDefinition layout="0" source="source" target="target" name="name" x="x" y="y" category="category" date="date" v="date">
+<NodeTableData class="com.fr.data.impl.NameTableData">
+<Name>
+<![CDATA[node]]></Name>
+</NodeTableData>
+<LinkTableData class="com.fr.data.impl.NameTableData">
+<Name>
+<![CDATA[link]]></Name>
+</LinkTableData>
+<CalendarTableData class="com.fr.data.impl.NameTableData">
+<Name>
+<![CDATA[emds3]]></Name>
+</CalendarTableData>
+</GraphChartTableDataDefinition>
+</ChartDefinition>
+</Chart>
+</O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+</CellElementList>
+<ReportAttrSet>
+<ReportSettings headerHeight="0" footerHeight="0">
+<PaperSetting/>
+<Background name="ColorBackground" color="-1"/>
+</ReportSettings>
+</ReportAttrSet>
+<PrivilegeControl/>
+</Report>
+<ReportParameterAttr>
+<Attributes showWindow="true" delayPlaying="true" windowPosition="1" align="0" useParamsTemplate="false"/>
+<PWTitle>
+<![CDATA[参数]]></PWTitle>
+</ReportParameterAttr>
+<StyleList/>
+<DesignerVersion DesignerVersion="KAA"/>
+<PreviewType PreviewType="0"/>
+<TemplateIdAttMark class="com.fr.base.iofile.attr.TemplateIdAttrMark">
+<TemplateIdAttMark TemplateId="8eab4613-ac8e-45a8-ad4c-468b8a5c9818"/>
+</TemplateIdAttMark>
+</WorkBook>

@@ -1,0 +1,49 @@
+<div class="gui-breadcrumbs">
+    <a href="">内部管理</a>&gt;
+    <a href="">客户信息管理</a>&gt;
+    <span>客户详细信息</span>
+</div>
+<div class="gui-section">
+    <div class="gui-page-head">
+        <h3>查看客户信息</h3>
+    </div>
+    <div class="ovh">
+        <ul class="gui-list clearfix">
+            <li>
+                <div class="form-item"><span class="title">客户名字:</span>
+                    <input ng-model="userName" disabled type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">联系方式:</span>
+                    <input ng-model="phone" disabled type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">客户主体用户码:</span>
+                    <input ng-model="customerUserIdCode" disabled type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">单位主体身份码:</span>
+                    <input ng-model="customerEntityIdCode" disabled type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">单位名称:</span>
+                    <input ng-model="name" disabled type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">单位地址:</span>
+                    <input ng-model="address" disabled type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="text-center">
+                    <button class="gui-btn" ng-click="removeLocalStorage()" ui-sref="index.content.tts/TtsScltxxcjCustomer/TtsScltxxcjCustomerlist">关闭</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

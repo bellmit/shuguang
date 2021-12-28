@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.dao.dgap.TDgapAlertConfigLogExpandMapper">
+    <resultMap id="BaseResultMap" type="com.sofn.model.generator.TDgapAlertLog">
+        <id column="ID" property="id" jdbcType="VARCHAR"/>
+        <result column="ALERT_CONFIG_ID" property="alertConfigId" jdbcType="VARCHAR"/>
+        <result column="TARGET_ID" property="targetId" jdbcType="VARCHAR"/>
+        <result column="DESCRIPTION" property="description" jdbcType="VARCHAR"/>
+        <result column="ALERT_DATE" property="alertDate" jdbcType="TIMESTAMP"/>
+        <result column="SOLVE_DATE" property="solveDate" jdbcType="TIMESTAMP"/>
+        <result column="SOLVE_USER_ID" property="solveUserId" jdbcType="VARCHAR"/>
+        <result column="SOLVE_STATUS" property="solveStatus" jdbcType="VARCHAR"/>
+        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="DEL_FLAG" property="delFlag" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD1" property="reservedField1" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD2" property="reservedField2" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD3" property="reservedField3" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD4" property="reservedField4" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD5" property="reservedField5" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD6" property="reservedField6" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD7" property="reservedField7" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD8" property="reservedField8" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD9" property="reservedField9" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD10" property="reservedField10" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD11" property="reservedField11" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD12" property="reservedField12" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD13" property="reservedField13" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD14" property="reservedField14" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD15" property="reservedField15" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD16" property="reservedField16" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD17" property="reservedField17" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD18" property="reservedField18" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD19" property="reservedField19" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD20" property="reservedField20" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getConfigLogList" resultType="java.util.Map">
+        SELECT * FROM(
+        SELECT M.*,ROWNUM rn
+        FROM(
+        SELECT DISTINCT
+        TD.NAME AS DNAME,
+        D.ALERT_TYPE,
+        D.TARGET_ID,
+        TDR.NAME AS RNAME,
+        T.ID,
+        T.ALERT_DATE,
+        T.SOLVE_DATE,
+        T.SOLVE_STATUS,
+        T.DESCRIPTION,
+        T.UPDATE_TIME
+        FROM T_DGAP_ALERT_LOG T
+        LEFT JOIN T_DGAP_ALERT_CONFIG D
+        ON T.ALERT_CONFIG_ID = D.ID
+        LEFT JOIN T_DGAP_RESOURCE TD
+        ON T.TARGET_ID = TD.ID
+        LEFT JOIN
+        T_DGAP_RESOURCE_DIRECTORY TDR
+        ON
+        TD.DIRECTORY_ID = TDR.ID
+        WHERE 1 = 1 AND T.DEL_FLAG = 'N'
+        <if test="alertConfigId !=null and alertConfigId !=''">
+            AND TDR.NAME = #{alertConfigId}
+        </if>
+        <if test="targetId !=null and targetId !=''">
+            AND T.TARGET_ID = #{targetId}
+        </if>
+        <if test="alertDate !=null">
+            AND T.ALERT_DATE >= #{alertDate}
+        </if>
+        <if test="solveDate !=null">
+            AND T.SOLVE_DATE >= #{solveDate}
+        </if>
+        <if test="solveStatus !=null and solveStatus !=''">
+            AND T.SOLVE_STATUS = #{solveStatus}
+        </if>
+        <if test="solveStatus2 !=null ">
+            AND T.SOLVE_STATUS is null
+        </if>
+        ORDER BY T.UPDATE_TIME DESC) M
+        )
+        WHERE rn BETWEEN 1+#{pageSize}*(#{pageNum}-1) AND #{pageSize}*#{pageNum}
+
+    </select>
+
+    <select id="getCount" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM T_DGAP_ALERT_LOG T
+        LEFT JOIN T_DGAP_ALERT_CONFIG D
+        ON T.ALERT_CONFIG_ID = D.ID
+        LEFT JOIN T_DGAP_RESOURCE TD
+        ON T.TARGET_ID = TD.ID
+        LEFT JOIN
+        T_DGAP_RESOURCE_DIRECTORY TDR
+        ON
+        TD.DIRECTORY_ID = TDR.ID
+        WHERE 1 = 1 AND T.DEL_FLAG = 'N'
+        <if test="alertConfigId !=null and alertConfigId !=''">
+            AND TDR.NAME = #{alertConfigId}
+        </if>
+        <if test="targetId !=null and targetId !=''">
+            AND T.TARGET_ID =  #{targetId}
+        </if>
+        <if test="alertDate !=null">
+            AND T.ALERT_DATE >= #{alertDate}
+        </if>
+        <if test="solveDate !=null">
+            AND T.SOLVE_DATE >= #{solveDate}
+        </if>
+        <if test="solveStatus !=null and solveStatus !=''">
+            AND T.SOLVE_STATUS = #{solveStatus}
+        </if>
+        <if test="solveStatus2 !=null">
+            AND T.SOLVE_STATUS is null
+        </if>
+
+    </select>
+
+    <select id="selectIsHasAlert" resultType="int">
+          select count(1) from T_DGAP_ALERT_LOG where TARGET_ID=#{resourceId} and SOLVE_STATUS is null
+    </select>
+</mapper>

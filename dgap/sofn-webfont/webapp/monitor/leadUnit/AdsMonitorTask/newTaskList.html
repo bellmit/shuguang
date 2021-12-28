@@ -1,0 +1,47 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css" />
+<div class="gui-breadcrumbs">
+    <a href="">监测系统</a>&gt;
+    <a href="">项目管理</a>&gt;
+    <span>新任务</span>
+</div>
+<!-- Tab panes -->
+<div class="gui-section">
+    <ul class="gui-tab" role="tablist">
+        <li role="presentation" class="active"><a id="newTask" role="tab" data-toggle="tab">新任务</a></li>
+        <li role="presentation" class="pointer"><a id="bePubTask" role="tab" data-toggle="tab">待发布任务</a></li>
+        <li role="presentation" class="pointer"><a id="historyTask" role="tab" data-toggle="tab">历史任务</a></li>
+        <li role="presentation" class="pointer"><a id="supTask" role="tab" data-toggle="tab">接收任务</a></li>
+    </ul>
+    <div class="gui-form-group">
+        <div class="text-left  mg-auto">
+            <form class="form-inline well-sm">
+                <div class="form-group">
+                    <span>监测类型:</span>
+                    <select name="monitorClass" class="gui-select">
+                        <option value="">全部</option>
+                        <option value="例行监测">例行监测</option>
+                        <option value="专项监测">专项监测</option>
+                        <option value="监督抽查">监督抽查</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <span>年度:</span>
+                    <select name="year" class="gui-select">
+                        <option value="">全部</option>
+                        <option ng-repeat="x in year">{{x}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <span>任务名称:</span>
+                    <input type="text" name="taskName" class="gui-input" placeholder="请输入任务名称">
+                </div>
+                <span id="seachTask" class="gui-btn">查询</span>
+                <div class="gui-actions">
+                    <span ng-click="addTask()" class="fr gui-btn"><i class="gui-icon icon-add"></i>新增</span>
+                </div>
+            </form>
+            <table id="grid" class="gui-table mt15" style="width: 100%">
+            </table>
+        </div>
+    </div>
+</div>

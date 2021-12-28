@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agzirdd.mapper.InvestigatExaminaRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.agzirdd.model.InvestigatExaminaRecord" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="SPECIES_INVESTIGATION_ID" property="speciesInvestigationId" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="AUDITOR" property="auditor" jdbcType="VARCHAR" />
+    <result column="OPINION" property="opinion" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ID, SPECIES_INVESTIGATION_ID, STATUS, AUDITOR, OPINION, CREATE_TIME
+  </sql>
+
+  <select id="getInvestigatExaminaRecordByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM INVESTIGAT_EXAMINA_RECORD
+    <where>
+      1=1
+      <if test="speciesInvestigationId != null and speciesInvestigationId != ''">
+        AND SPECIES_INVESTIGATION_ID = #{speciesInvestigationId}
+      </if>
+    </where>
+    ORDER BY CREATE_TIME desc
+  </select>
+
+  <delete id="deleteInvestigatExaminaRecord" parameterType="java.lang.String">
+    delete
+    from INVESTIGAT_EXAMINA_RECORD
+    where
+    SPECIES_INVESTIGATION_ID = #{speciesInvestgatId}
+  </delete>
+
+</mapper>

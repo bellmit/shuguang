@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:cache="http://www.springframework.org/schema/cache"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
+                        http://www.springframework.org/schema/cache
+                        http://www.springframework.org/schema/cache/spring-cache.xsd">
+	<!--配置文件加载-->
+	<!--<bean id="resourcePropertySource" class="org.springframework.core.io.support.ResourcePropertySource">
+		<constructor-arg name="name" value="redis.properties"/>
+		<constructor-arg name="resource" value="classpath:redis.properties"/>
+	</bean>-->
+	<!--redisCluster配置-->
+	<!--<bean id="redisClusterConfiguration" class="org.springframework.data.redis.connection.RedisClusterConfiguration">
+		<constructor-arg name="propertySource" ref="resourcePropertySource"/>
+	</bean>-->
+
+	<bean id="redisHttpSessionConfiguration"
+		  class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration">
+		<!--超时时间,默认1800秒-->
+		<property name="maxInactiveIntervalInSeconds" value="1800" />
+	</bean>
+	<bean id="redisCacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
+		<constructor-arg ref="redisTemplate" />
+		<property name="defaultExpiration" value="${redis.expiration}" />
+	</bean>
+
+	<!-- 使用中间类解决RedisCache.jedisConnectionFactory的静态注入，从而使MyBatis实现第三方缓存 -->
+	<bean id="redisCacheTransfer" class="com.sofn.core.support.cache.redis.RedisCacheTransfer">
+		<property name="jedisConnectionFactory" ref="jedisConnectionFactory"/>
+	</bean>
+
+	<!-- jedis连接redis集群 -->
+	<bean id="jedisCluster" class="com.sofn.core.support.cache.jedis.JedisClusterFactory">
+		<property name="clusterConfig" value="jedisClusterConfig"></property>
+		<!-- 属性文件里 key的前缀 -->
+		<property name="addressKeyPrefix" value="redis.clusternode"></property>
+		<property name="timeout" value="300000"></property>
+		<property name="maxRedirections" value="6"></property>
+		<property name="jedisPoolConfig" ref="jedisPoolConfig"></property>
+	</bean>
+
+</beans>

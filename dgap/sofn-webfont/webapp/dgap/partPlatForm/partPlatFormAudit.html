@@ -1,0 +1,274 @@
+﻿﻿<link rel="stylesheet" href="assets/css/dgap/platForm/partPlatFormApply.css">
+<div class="gui-breadcrumbs">
+    <a href="">数据共享系统</a>&gt;
+    <a href="">地方平台对接管理</a>&gt;
+    <span>地方平台对接审核</span>
+</div>
+<div class="gui-section">
+    <form>
+
+        <div class="gui-form-group">
+            <span>平台名称</span>
+            <input name="queryPlatFormName" type="text" class="gui-input" id="queryPlatFormName" >
+            <span class="color-gray">审核状态</span>
+            <div class="gui-select">
+                <select id="status" name="status">
+                    <option value="">全部</option>
+                    <!--<option value="NEW">新建</option>-->
+                    <option value="APPLICATED">待审核</option>
+                    <option value="APPROVED">审核通过</option>
+                    <option value="REJECTED">审核不通过</option>
+                </select>
+            </div>
+            <span class="color-gray">启用状态</span>
+            <div class="gui-select">
+                <select id="enableStatus" name="enableStatus">
+                    <option value="">全部</option>
+                    <option value="STARTED">启用</option>
+                    <option value="STOPPED">禁用</option>
+                </select>
+            </div>
+        </div>
+        <div class="gui-form-group">
+            <span>申请时间</span>
+            <input name="dateBegin" style="cursor: pointer;width: 120px;" class="Wdate gui-input main_ch" id="dateBegin"
+                   onfocus="var endDate=$dp.$('dateEnd');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateEnd\')}'})">
+            <span>至</span>
+            <input name="dateEnd" style="cursor: pointer;width: 120px;" class="Wdate gui-input main_ch" id="dateEnd"
+                   onfocus="WdatePicker({minDate:'#F{$dp.$D(\'dateBegin\')}'})">
+            <span class="color-gray">平台级别</span>
+            <div class="gui-select">
+                <select id="queryPlatFormLevel" name="queryPlatFormLevel">
+                    <option value="">全部</option>
+                    <option value="PROVINCE">省级平台</option>
+                    <option value="CITY">市级平台</option>
+                    <option value="COUNTY">县级平台</option>
+                </select>
+            </div>
+        </div>
+        <div class="gui-form-group">
+            <span>平台所属区域</span>
+            <div class="gui-select">
+                <select id="sheng" name="sheng"style="width: 122px;height: 27px;" disabled="disabled">
+                    <option value="">省</option>
+                </select>
+            </div>
+            <div class="gui-select">
+                <select id="shi" name="shi"style="width: 122px;height: 27px;" disabled="disabled">
+                    <option value="">市</option>
+                </select>
+            </div>
+            <div class="gui-select">
+                <select id="xian" name="xian"style="width: 122px;height: 27px;" disabled="disabled">
+                    <option value="">区/县</option>
+                </select>
+            </div>
+            <button class="gui-btn ml15 submit-btn" ng-click="resourceDirs()">查询</button>
+            <button class="gui-btn ml15 submit-btn" ng-click="cleanData()">重置</button>
+        </div>
+    </form>
+
+
+    <table id="reDir" class="gui-table">
+    </table>
+</div>
+
+<!-- 模态框（审核） -->
+<div class="modal fade" id="audit" tabindex="-1" role="dialog" aria-labelledby="resDirAddLabel" aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="resDirAddLabel">
+                    地方平台对接审核
+                </h4>
+            </div>
+            <div class="modal-body ">
+                <div id="attributeForm" style="text-align: center">
+                    <h5 class="modal-title"  >
+                        申请信息
+                    </h5>
+                    <hr />
+                    <div class="form-item form-group">
+                        <label>平台名称 :</label>
+                        <input name="platFormName" ng-model="partPlatFormApply.platFormName" class="gui-in
+                       put form-control" disabled="disabled">
+                    </div>
+                    <div class="form-item form-group">
+                        <label>资源目录<i class="gui-colorRed">*</i></label>
+                        <input class="gui-input form-control" value="地方追溯平台对接" disabled="disabled">
+                    </div>
+                    <div class="form-item form-group">
+                        <label>平台所属区域 ：</label>
+                        <input name="platFormAreaId" ng-model="partPlatFormApply.platFormAreaId" class="gui-in
+                       put form-control" disabled="disabled" >
+                    </div>
+                    <div class="form-item form-group">
+                        <label>平台级别</label>
+                        <div class="gui-select" style="width: 50%;">
+                            <select id="platFormLevel" name="platFormLevel" ng-model="partPlatFormApply.platFormLevel" disabled="disabled">
+                                <option value="PROVINCE" readonly="readonly">省级平台</option>
+                                <option value="CITY" readonly="readonly">市级平台</option>
+                                <option value="COUNTY" readonly="readonly">县级平台</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>平台行业</label>
+                        <input id="industry1" ng-model="partPlatFormApply.industry" name="industry" class="form-control  ThisEnd"  type="checkbox" value="checkbox" checked="checked" />种植业
+                        <input id="industry2" ng-model="partPlatFormApply.industry" name="industry" class="form-control  ThisEnd"  type="checkbox" value="checkbox" />畜牧业
+                        <input id="industry3" ng-model="partPlatFormApply.industry" name="industry" class="form-control  ThisEnd"  type="checkbox" value="checkbox" />渔业
+                    </div>
+                    <div class="form-item form-group">
+                        <label>平台网址</label>
+                        <input name="url" disabled="disabled"  ng-model="partPlatFormApply.url" class="gui-input form-control" data-bv-notempty="true" data-bv-notempty-message="平台网址不能为空">
+                    </div>
+                    <div class="form-item form-group">
+                        <label>通知地址<i class="gui-colorRed">*</i></label>
+                        <input name="dataNotifierUrl" isabled="disabled" ng-model="partPlatFormApply.dataNotifierUrl" class="gui-input form-control" data-bv-notempty="true" data-bv-notempty-message="通知地址不能为空"
+                        >
+                    </div>
+                    <div class="form-item form-group">
+                        <label>申请单位 :</label>
+                        <input name="appliCationDepartment" disabled="disabled" ng-model="partPlatFormApply.appliCationDepartment" class="gui-input form-control" >
+                    </div>
+                    <div class="form-item form-group">
+                        <label>申请人 :</label>
+                        <input name="appliCant"  disabled="disabled"ng-model="partPlatFormApply.appliCant" class="gui-input form-control" >
+                    </div>
+                    <div class="form-item form-group">
+                        <label>申请时间 :</label>
+                        <input name="appliCationTime"  disabled="disabled" class="gui-input form-control" >
+                    </div>
+                    <div class="form-item form-group">
+                        <label>备注</label>
+                        <textarea name="note" id="note" ng-model="partPlatFormApply.note" disabled="disabled" class="gui-textarea form-control">
+                            </textarea>
+                    </div>
+                    <h5 class="modal-title"  >
+                        审核信息
+                    </h5>
+                    <hr />
+                    <div class="form-item form-group">
+                        <label>审核意见 <i class="gui-colorRed">*</i></label>
+                        <textarea name="auditComments"  id="auditComments" ng-model="partPlatFormApply.auditComments"  class="gui-textarea form-control">
+                        </textarea>
+                    </div>
+                    <input type="text" class="gui-input" style="display: none"  value="" name="HiddenID"/>
+                </div>
+                <div class="modal-footer">
+                    <span type="button" class="gui-btn " data-dismiss="modal" ng-click="failAudit()">拒绝申请</span>
+                    <span type="button" class="gui-btn " data-dismiss="modal" ng-click="successAudit()">审核通过
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 模态框（查看 ） -->
+<div class="modal fade" id="platFormShow" tabindex="-1" role="dialog" aria-labelledby="resDirAddLabel" aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" >
+                    地方平台对接申请详情
+                </h4>
+            </div>
+            <div class="modal-body ">
+                <div id="showModelForm" style="text-align: center">
+                    <h5 class="modal-title"  >
+                        申请信息
+                    </h5>
+                    <hr />
+                    <div class="form-item form-group">
+                        <label>平台名称 :</label>
+                        <input name="showPlatFormName" ng-model="reCord.platFormName" class="gui-in
+                       put form-control" >
+                    </div>
+                    <div class="form-item form-group">
+                        <label>资源目录<i class="gui-colorRed">*</i></label>
+                        <input class="gui-input form-control" value="地方追溯平台对接" disabled="disabled">
+                    </div>
+                    <div class="form-item form-group">
+                        <label>平台所属区域 ：</label>
+                        <input name="showPlatFormAreaId"  class="gui-in
+                       put form-control" >
+                    </div>
+                    <div class="form-item form-group">
+                        <label>平台级别 ：</label>
+                        <div class="gui-select" style="width: 50%;">
+                            <select id="showPlatFormLevel" name="showPlatFormLevel" ng-model="reCord.platFormLevel">
+                                <option value="PROVINCE" readonly="readonly">省级平台</option>
+                                <option value="CITY" readonly="readonly">市级平台</option>
+                                <option value="COUNTY" readonly="readonly">县级平台</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>平台行业 :</label>
+                        <input id="showIndustry1" ng-model="reCord.industry" name="showIndustry" class="form-control  ThisEnd"  type="checkbox" value="AGRICUTURE" checked="checked"/>种植业
+                        <input id="showIndustry2" ng-model="reCord.industry" name="showIndustry" class="form-control  ThisEnd"  type="checkbox" value="HUSBANDRY"/>畜牧业
+                        <input id="showIndustry3" ng-model="reCord.industry" name="showIndustry" class="form-control  ThisEnd"  type="checkbox" value="AQUACULTURE"/>渔业
+                    </div>
+                    <div class="form-item form-group">
+                        <label>平台网址 :</label>
+                        <input name="showUrl"  ng-model="reCord.url" class="gui-input form-control" data-bv-notempty="true" data-bv-notempty-message="平台网址不能为空"
+                        >
+                    </div>
+                    <div class="form-item form-group">
+                        <label>通知地址<i class="gui-colorRed">*</i></label>
+                        <input name="showDataNotifierUrl"  ng-model="reCord.dataNotifierUrl" class="gui-input form-control" data-bv-notempty="true" data-bv-notempty-message="通知地址不能为空"
+                        >
+                    </div>
+                    <div class="form-item form-group">
+                        <label>申请单位 :</label>
+                        <input name="showAppliCationDepartment" ng-model="reCord.appliCationDepartment" class="gui-in
+                   put form-control" >
+                    </div>
+                    <div class="form-item form-group">
+                        <label>申请人 :</label>
+                        <input name="showAppliCant" ng-model="reCord.appliCant" class="gui-in
+                   put form-control" >
+                    </div>
+                    <div class="form-item form-group">
+                        <label>申请时间 :</label>
+                        <input name="showAppliCationTime"  class="gui-in
+                   put form-control" >
+                    </div>
+                    <div class="form-item form-group">
+                        <label>备注 :</label>
+                        <textarea name="showNote" ng-model="reCord.note" class="gui-textarea form-control">
+            </textarea>
+                    </div>
+                    <div  id="auditSuggestion">
+                        <h5 class="modal-title"  >
+                            审核信息
+                        </h5>
+                        <hr />
+                        <div class="form-item form-group">
+                            <label>审核人 :</label>
+                            <input name="auditUserId"  ng-model="reCord.auditUserId" class="gui-input form-control" >
+                        </div>
+                        <div class="form-item form-group">
+                            <label>审核结果 :</label>
+                            <input name="auditResult" id="auditResult" class="gui-input form-control" >
+                        </div>
+                        <div class="form-item form-group">
+                            <label>审核意见 :</label>
+                            <textarea name="showAuditComments" ng-model="reCord.auditComments" class="gui-textarea form-control">
+                  </textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <span type="button" class="gui-btn" data-dismiss="modal">关闭</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

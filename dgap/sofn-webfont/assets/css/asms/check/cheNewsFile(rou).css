@@ -1,0 +1,74 @@
+.Sup_contain_section_contain_head{
+    text-align: center;
+    margin: auto;
+    overflow: hidden;
+}
+.Sup_contain_section_contain_head p{
+    font-size: 25px;
+    margin:20px 0px 30px 20px;
+}
+.Sup_contain_section_contain_head ul li{
+
+}
+.Sup_contain_section_contain_head ul li{
+    /*font-size: 16px;*/
+    clear: both;
+    margin-top: 10px;
+    line-height: 100%;
+}
+.Sup_contain_section_contain_head ul li:after{
+    content: "";
+    height: 0px;
+    display: table;
+    clear: both;
+}
+.Sup_contain_section_contain_head span{
+    margin-right: 50px;
+    display: inline-block;
+    text-align: right;
+    height: 30px;
+    line-height: 30px;
+    vertical-align: middle;
+}
+.gui-select{
+    width: 100%;
+}
+.Sup_contain_section_contain_input{
+    width: 450px;
+    outline: none;
+    /*height: 30px;*/
+}
+.Sup_contain_section_contain_head_button{
+    width: 120px;
+    height: 30px;
+    font-size: 20px;
+    background: #20944d;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    outline: none;
+    margin: 15px 60px 15px 150px;
+
+}
+
+/*******************************************/
+
+.txt{ height:30px; border:0px solid #cdcdcd; width:230px;}
+
+.btn{ background-color:#FAB013; border:1px solid #FAB013;height:30px; color: #FFFFFF;}
+
+.file{ position:absolute; top:0; right:80px; height:24px; filter:alpha(opacity:0);opacity: 0;width:260px }
+
+/*隐藏文件上传预览窗口*/
+#fileUpload .file-preview{
+    display: none;
+}
+/*调整文件上传预览框宽度*/
+#fileUpload .file-caption-name {
+    width: 200px;
+    display: inline-block;
+    overflow: hidden;
+    max-height: 20px;
+    padding-right: 10px;
+    word-break: break-all;
+}

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.StrawProduceMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.ducss.model.StrawProduce" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="year" property="year" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaId" jdbcType="VARCHAR" />
+    <result column="straw_type" property="strawType" jdbcType="VARCHAR" />
+    <result column="theory_resource" property="theoryResource" jdbcType="DECIMAL" />
+    <result column="collect_resource" property="collectResource" jdbcType="DECIMAL" />
+    <result column="grain_yield" property="grainYield"  jdbcType="DECIMAL"/>
+    <result column="seed_area" property="seedArea" jdbcType="DECIMAL" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, year, area_id, straw_type, theory_resource, collect_resource
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from straw_produce
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from straw_produce
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <update id="updateByPrimaryKey" parameterType="com.sofn.ducss.model.StrawProduce" >
+    update straw_produce
+    set year = #{year,jdbcType=VARCHAR},
+      area_id = #{areaId,jdbcType=VARCHAR},
+      straw_type = #{strawType,jdbcType=VARCHAR},
+      theory_resource = #{theoryResource,jdbcType=DECIMAL},
+      collect_resource = #{collectResource,jdbcType=DECIMAL},
+      grain_yield= #{grainYield,jdbcType=DECIMAL},
+      seed_area=#{seedArea,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <delete id="deleteStrawProduce" parameterType="com.sofn.ducss.model.StrawProduce">
+    delete from straw_produce where  year=#{year} and area_id=#{areaId}
+  </delete>
+
+  <select id="sumStrawProduce" resultType="com.sofn.ducss.model.StrawProduce">
+    SELECT
+    #{year} as year,
+    straw_type as straw_type,
+    SUM(theory_resource) as theory_resource,
+    SUM(collect_resource) as collect_resource
+    FROM
+    straw_produce a, collect_flow c
+    WHERE
+    c.area_id = a.area_id and c.year=a.year  and a.area_id in
+    <foreach collection="childrenIds" item="areaId" open="(" close=")" separator=",">
+      #{areaId}
+    </foreach>
+    and a.year = #{year}
+    <if test="status!=null and status!=''">
+      and c.status in(${status})
+    </if>
+    group by straw_type
+  </select>
+
+    <insert id="insertStrawProduce" parameterType="com.sofn.ducss.model.StrawProduce">
+        insert into
+        straw_produce(id,year,area_id,straw_type,theory_resource,collect_resource,grain_yield,seed_area) values(
+        #{id,jdbcType=VARCHAR},#{year,jdbcType=VARCHAR},#{areaId,jdbcType=VARCHAR},#{strawType,jdbcType=VARCHAR},
+        #{theoryResource,jdbcType=DECIMAL},#{collectResource,jdbcType=DECIMAL},#{grainYield,jdbcType=DECIMAL},#{seedArea,jdbcType=DECIMAL})
+    </insert>
+
+  <insert id="insertBatchStrawProduce" parameterType="java.util.List">
+    insert into
+    straw_produce(id,year,area_id,straw_type,theory_resource,collect_resource,grain_yield,seed_area)
+    values
+    <foreach collection="list" item="item" index= "index" separator =",">
+      (#{item.id,jdbcType=VARCHAR},
+      #{item.year,jdbcType=VARCHAR},
+      #{item.areaId,jdbcType=VARCHAR},
+      #{item.strawType,jdbcType=VARCHAR},
+      #{item.theoryResource,jdbcType=DECIMAL},
+      #{item.collectResource,jdbcType=DECIMAL},
+      #{item.grainYield,jdbcType=DECIMAL},
+      #{item.seedArea,jdbcType=DECIMAL})
+    </foreach>
+  </insert>
+
+  <select id="sumStrawProduce2" resultType="com.sofn.ducss.model.StrawProduce">
+    SELECT
+    #{parentAreaId} as area_id,
+    #{year} as year,
+    straw_type as straw_type,
+    SUM(theory_resource) as theory_resource,
+    SUM(collect_resource) as collect_resource,
+    SUM(grain_yield) as grain_yield,
+    SUM(seed_area) as seed_area
+    FROM
+    straw_produce a,collect_flow c
+    WHERE
+    a.area_id in
+    <foreach collection="ids" item="id" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+    and c.area_id = a.area_id and c.year=a.year
+    and a.year = #{year}
+    <if test="status!=null and status.size() > 0">
+      and c.status in
+      <foreach collection="status" item="stat" open="(" close=")" separator=",">
+        #{stat}
+      </foreach>
+    </if>
+    group by straw_type
+  </select>
+
+  <select id="sumStrawProduceTwo" resultType="com.sofn.ducss.vo.StrawProduceResVo2">
+    SELECT
+    #{year} as year,
+    straw_type as straw_type,
+    SUM(theory_resource) as theory_resource,
+    SUM(collect_resource) as collect_resource,
+    SUM(grain_yield) AS grain_yield,
+    SUM(seed_area) as seed_area
+    FROM
+    straw_produce a, collect_flow c
+    WHERE
+    c.area_id = a.area_id and c.year=a.year  and a.area_id in 
+    <foreach collection="childrenIds" item="areaId" open="(" close=")" separator=",">
+      #{areaId}
+    </foreach>
+
+    and a.year = #{year}
+    <if test="status != null and status.size() > 0">
+      and c.status in
+      <foreach collection="status" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+    group by straw_type
+  </select>
+
+</mapper>

@@ -1,0 +1,77 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+<script type="text/javascript" src="../../../../libs/eCharts/echarts.min.js"></script>
+<div class="gui-breadcrumbs">
+    <a href="">监测系统</a>&gt;
+    <a href="">报表</a>&gt;
+    <span>检测环节统计</span>
+</div>
+<div class="gui-section">
+    <ul class="gui-tab reportSamp" role="tablist">
+        <li role="presentation" class="pointer"><a role="tab" data-toggle="tab" ng-click="goSamplingLingk()">抽样环节统计</a>
+        </li>
+        <li role="presentation" class="pointer"><a role="tab" data-toggle="tab" ng-click="goSamplingArea()">抽样地区统计</a>
+        </li>
+        <li role="presentation" class="pointer"><a role="tab" data-toggle="tab" ng-click="goSamplingOrgan()">抽样机构统计</a>
+        </li>
+        <li role="presentation" class="active"><a role="tab" data-toggle="tab">检测环节统计</a></li>
+        <li role="presentation" class="pointer"><a role="tab" data-toggle="tab" ng-click="goCheckArea()">检测地区统计</a></li>
+        <li role="presentation" class="pointer"><a role="tab" data-toggle="tab" ng-click="goCheckObject()">检测对象统计</a>
+        </li>
+        <li role="presentation" class="pointer"><a role="tab" data-toggle="tab" ng-click="goCheckInfo()">检测项目统计</a></li>
+        <li role="presentation" class="pointer"><a role="tab" data-toggle="tab" ng-click="goCheckOrgan()">检测机构统计</a>
+        </li>
+    </ul>
+    <div id="abc"></div>
+    <div class="gui-section">
+        <div id="main" class="hide" style="width: 600px;height:300px;"></div>
+        <div class="gui-actions">
+            <input class="gui-input" type="text" id="taskName" name="taskName" readonly="readonly"
+                   placeholder="点击选择监测任务" ng-click="selectTaskName()">
+            <span class="gui-btn" ng-click="exportExcel()"><i class="gui-icon icon-export"></i>导出</span>
+        </div>
+        <table id="grid" class="gui-table mt15" style="width: 100%">
+            <tr>
+                <th>抽样场所</th>
+                <th>检测数量</th>
+                <th>合格数</th>
+                <th>合格率%</th>
+            </tr>
+            <tr ng-repeat="x in list">
+                <td>{{x.CHECK_LINK}}</td>
+                <td>{{x.DETECTION_NUM}}</td>
+                <td>{{x.QUALIFIE_NUM}}</td>
+                <td>{{x.PASS * 100}}%</td>
+            </tr>
+            <tr ng-if="list.length == 0">
+                <td colspan="8">暂无匹配数据，请选择监测任务</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<!-- 选择任务名称model -->
+<div class="modal fade" id="taskNameModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: center">选择任务名称</h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <div class="gui-section">
+                    <div class="gui-form-group">
+                        <input type="text" class="gui-input" name="sTaskName"
+                               placeholder="请输入任务名称">
+                        <span class="gui-btn" id="seachTaskName">查询</span>
+                    </div>
+                    <table id="taskNameGrid" class="gui-table mt15" style="width: 100%">
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" type="button" data-dismiss="modal">关闭</span>
+            </div>
+        </div>
+    </div>
+</div>

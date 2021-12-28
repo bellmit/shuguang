@@ -1,0 +1,213 @@
+<link rel="stylesheet" href="assets/css/ales/taskManage/alesEntrustDetectionAdd.css"/>
+<style>
+    input[type=checkbox], input[type=radio] {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 0;
+        height: 15px;
+        width: 15px;
+    }
+
+    .Istable tr td {
+        padding: 10px 5px;
+    }
+
+    .Istable input {
+        border: none;
+        outline: none;
+    }
+</style>
+<div class="gui-breadcrumbs">
+    <a ui-sref="index.content.ales/taskManage/alesEntrustDetection">执法系统</a>&gt;
+    <a ui-sref="index.content.ales/taskManage/alesEntrustDetection">日常执法管理</a>&gt;
+    <a ui-sref="index.content.ales/taskManage/alesEntrustDetection">委托检测任务</a>&gt;
+    <span id="OprTitle">新增</span>
+</div>
+
+<div class="Sup_contain_section_contain_head gui-section gui-secrion-wid">
+    <h4 style="text-align: center">委托检测任务</h4>
+    <hr/>
+    <form id="attributeForm" class="form-horizontal"
+          data-bv-excluded>
+
+        <div class="form-group">
+            <label class="col-lg-3 col-md-3 col-sm-3 control-label">任务名称<span style="color: red"> *</span>:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <input type="text" class="form-control gui-input" name="taskName"
+                       ng-model="alesEntrustDetection.taskName"
+                       data-bv-notempty="true"
+                       data-bv-notempty-message="请填写任务名称" maxlength="30"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-3 col-md-3 col-sm-3 control-label">任务优先级<span style="color: red"> *</span>:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="gui-select" >
+                    <select name="priority" ng-model="priority">
+                        <!--<option value=""></option>-->
+                        <option value="3">一般</option>
+                        <option value="2">紧急</option>
+                        <option value="1">特急</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-3 col-md-3 col-sm-3 control-label">年&nbsp;&nbsp;度<span
+                    style="color: red">*</span>:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <input class="Wdate form-control gui-input" name="taskYear" readonly
+                       onChange="SdDateValid.DataValid(this)"
+                       onfocus="WdatePicker({isShowToday:false,skin:'default',dateFmt:'yyyy', minDate:'%y'})" class="Wdate"/>
+                <div class="DataValidTip" style="font-size: 12px;margin-top: 5px;color: #a94442;display: none">
+                    年度不能为空
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <label class="col-lg-3 col-md-3 col-sm-3 control-label">任务时间<span style="color: red"> *</span>:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <div class="col-lg-3 col-md-3 col-sm-3">
+                <input name="taskBeginTime" class="Wdate form-control gui-input" onChange="SdDateValid.DataValid(this)"
+                       id="taskBeginTime" style="cursor: pointer" readonly="readonly" type="text"
+                       onFocus="var endDate=$dp.$('taskEndTime');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'taskEndTime\')}', minDate:''})"/><!--%y-%M-%d-->
+                <div class="DataValidTip" style="font-size: 12px;margin-top: 5px;color: #a94442;display: none">
+                    开始时间不能为空
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3">
+                <input name="taskEndTime" class="Wdate form-control gui-input" onChange="SdDateValid.DataValid(this)"
+                       id="taskEndTime" style="cursor: pointer" readonly="readonly" type="text"
+                       onFocus="WdatePicker({minDate:'#F{$dp.$D(\'taskBeginTime\')}'})"/>
+                <div class="DataValidTip" style="font-size: 12px;margin-top: 5px;color: #a94442;display: none">
+                    结束时间不能为空
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-3 col-md-3 col-sm-3 control-label">发布单位&nbsp;&nbsp;<span></span>:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <input class="form-control gui-input" name="taskReleaseUnit"
+                       ng-model="alesEntrustDetection.taskReleaseUnit" readonly="readonly"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-3 col-md-3 col-sm-3 control-label">受托单位<span style="color: red"> *</span>:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <input class="form-control gui-input" name="stUnitName" readonly
+                       onChange="SdDateValid.DataValid(this)" ng-model="alesEntrustDetection.stUnitName"
+                       ng-click="selectModalQdButt()"/>
+                <div class="DataValidTip" style="font-size: 12px;margin-top: 5px;color: #a94442;display: none">
+                    受托单位不能为空
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-3 col-md-3 col-sm-3 control-label">判定标准<span style="color: red">*</span>:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <input id="inputDetection" class="form-control gui-input" name="detection" ng-model="alesEntrustDetection.detection"
+                       maxlength="200" ng-click="judgeStandardStandards()" readonly/>
+                <div class="PdDataValidTip" style="font-size: 12px;margin-top: 5px;color: #a94442;display: none">
+                    判定标准不能为空
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-3 col-md-3 col-sm-3 control-label">文件号&nbsp;<span></span>:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <input class="form-control gui-input" ng-model="alesEntrustDetection.fileCode" maxlength="20"/>
+            </div>
+        </div>
+        <div class="form-group">
+                <label class="col-lg-3 col-md-3 col-sm-3 control-label">附件&nbsp;<span style="color: red"> *</span>:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <!--<div name="filesupload" style="display:block" colspan="3" style="height: 80px;margin-left: 5px" class="col-lg-6 col-md-6 col-sm-6">-->
+                <div file-upload options="vm.uploadOptions" files="vm.files"></div>
+                <p><h5 style="margin-right: 300px;"> 备注：文件只支持 “jpg,jpeg,png,gif,bmp,doc,docx,xls,xlsx,pdf,rar,zip” 格式，图片大小不超过5M,文件大小不能超过50M</h5> </p>
+           <!-- </div>-->
+            <!--<div name="filesview" style="display:none" colspan="3" style="height: 80px;margin-left: 5px" class="col-lg-6 col-md-6 col-sm-6">
+                <div class="_box" id="imgSpot"/>
+            </div>-->
+        </div>
+        <div class="form-group">
+            <label class="col-lg-3 col-md-3 col-sm-3 control-label">备&nbsp;&nbsp;注&nbsp;&nbsp;<span></span>:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                        <textarea class="form-control gui-input" ng-model="alesEntrustDetection.remark" maxlength="200">
+                        </textarea>
+            </div>
+        </div>
+    </form>
+    <input type="text" class="gui-input" style="display: none" value="" name="standardId" ng-model="alesEntrustDetection.standardId" />
+    <div class="mb25">
+        <button class="gui-btn" ng-click="saveTask()">保存</button>
+        <button class="gui-btn" ui-sref="index.content.ales/taskManage/alesEntrustDetection">返回</button>
+        <button class="gui-btn" name="sampleButton" ng-click="sample()" style="display: none">检测对象</button>
+    </div>
+</div>
+<!--受托单位模态框-->
+<div class="modal fade" id="selectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">
+                    <span id="modalTitle">委托单位选择</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <form>
+                    <div class="gui-select" style="width: 30%;">
+                        <select id="selectQueryShen">
+                            <option value="">--请选择省--</option>
+                        </select>
+                    </div>
+                    <div class="gui-select" style="width: 30%;">
+                        <select id="selectQueryShi" style="width: 100px">
+                            <option value="">--请选择市--</option>
+                        </select>
+                    </div>
+                    <div class="gui-select" style="width: 30%;">
+                        <select id="selectQueryXian" style="width: 100px">
+                            <option value="">--请选择县--</option>
+                        </select>
+                    </div>
+                    <div class="mt15">
+                        <input type="text" class="gui-input" name="selectQueryName" placeholder="请输入名称">
+                        <button id="selectTocheck" class="gui-btn">查询</button>
+                    </div>
+                </form>
+                <!--list-->
+                <table id="selectGrid" style="width: 100%;" class="gui-table mt15">
+                </table>
+                <div class="modal-footer">
+                    <button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--判定标准选择-->
+<div class="modal fade" id="judgeStandard_Model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>判定标准</span>
+                </h4>
+            </div>
+            <!--list-->
+            <table id="judgeStandardTaskGrid" style="width: 100%;" class="gui-table mt15">
+            </table>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" ng-click="selectPDBzButt()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>

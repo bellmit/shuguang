@@ -1,0 +1,57 @@
+//    angularjs数据传输
+var myapp=angular.module("myapp",[]);
+var mytype="";
+var myend="";
+    myapp.controller("sysTemplateUpdate",function($scope,$http,$state){
+		$scope.id=window.localStorage.getItem("sys_sysTemplate_id");
+		$http({
+			url:"/sofn-sys-web/sysTemplate/queryById",
+			method:"post",
+			data:{
+				id:$scope.id
+			}
+		}).success(function(data){
+	    	$("input[name='templateName']").val(data.sysTemplate.templateName);
+	    	$("input[name='templateType']").val(data.sysTemplate.templateType);
+	    	$("input[name='templateFilename']").val(data.sysTemplate.templateFilename);
+	    	$("input[name='status']").val(data.sysTemplate.status);
+			$("input[name='remark']").val(data.sysTemplate.remark);
+	    	//public filed
+	    	$("input[name='delFlag']").val(data.sysTemplate.delFlag);
+	    	$("input[name='createBy']").val(data.sysTemplate.createBy);
+	    	$("input[name='createTime']").val(data.sysTemplate.createTime);
+		});
+		//
+        $scope.updateSysTemplate = function(){
+	    	 $scope.sysTemplate.templateName = $("input[name='templateName']").val();
+	    	 $scope.sysTemplate.templateType = $("input[name='templateType']").val();
+	    	 $scope.sysTemplate.templateFilename = $("input[name='templateFilename']").val();
+	    	// $scope.sysTemplate.status = $("input[name='status']").val();
+			 $scope.sysTemplate.remark = $("input[name='remark']").val();
+	    	 $scope.sysTemplate.delFlag =$("input[name='delFlag']").val();
+	    	 $scope.sysTemplate.createBy = $("input[name='createBy']").val();
+	    	 $scope.sysTemplate.createTime = $("input[name='createTime']").val();
+	    	 $scope.sysTemplate.id = $scope.id;
+            $http({
+                    url:"/sofn-sys-web/sysTemplate/updateSysTemplate",
+                    data:$scope.sysTemplate,
+                    method:"post",
+                    //post传输方式   头信息
+                    headers: {
+                        post: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    }
+                }).success(function(data){
+                alert("修改成功");
+                $state.go("index.content.sys/sysTemplate/list");
+            }).
+            error(function(){
+				alert("修改失败");
+            })
+        };
+		//清楚缓存
+		$scope.RemoveLocal=function(){
+			window.localStorage.removeItem("id");
+		};
+    });
+
+

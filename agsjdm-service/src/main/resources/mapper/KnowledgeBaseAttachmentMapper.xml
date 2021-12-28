@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agsjdm.mapper.KnowledgeBaseAttachmentMapper" >
+
+
+    <delete id="del" >
+         DELETE  FROM KNOWLEDGE_BASE_ATTACHMENT where KNOWLEDGE_ID=#{id}
+    </delete>
+    <update id="updateKnow">
+        update KNOWLEDGE_BASE_ATTACHMENT
+        <set>
+            <if test="fileId!= null and fileId != ''">
+                FILE_ID=#{fileId},
+            </if>
+            <if test="fileName != null and fileName!= ''">
+                FILE_NAME=#{fileName},
+            </if>
+        </set>
+        where  KNOWLEDGE_ID=#{id}
+    </update>
+    <select id="getOne" resultType="com.sofn.agsjdm.model.KnowledgeBaseAttachment">
+       select ID,FILE_ID,KNOWLEDGE_ID from KNOWLEDGE_BASE_ATTACHMENT where  KNOWLEDGE_ID=#{id}
+   </select>
+    <select id="getOneBySouceId1" resultType="com.sofn.agsjdm.model.KnowledgeBaseAttachment">
+       select ID,FILE_ID,KNOWLEDGE_ID from KNOWLEDGE_BASE_ATTACHMENT where  KNOWLEDGE_ID=#{id}
+   </select>
+</mapper>

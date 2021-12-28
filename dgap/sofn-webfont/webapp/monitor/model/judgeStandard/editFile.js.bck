@@ -1,0 +1,77 @@
+var myapp=angular.module("myapp",[]);
+myapp.controller("editFile",function($scope,$http,$state){
+
+    var token = window.localStorage.getItem("token");
+
+    var judgeStandardId = window.localStorage.getItem("judgeStandardId");
+
+    /**
+     * 返回判定标准列表页
+     */
+    $scope.goJudgeList = function () {
+        $state.go("index.content.monitor/model/judgeStandard/adsModelJudgeStandardList");
+    }
+
+    /**
+     * 跳转到基本信息页面
+     */
+    $scope.goBaseInfo = function () {
+        $state.go("index.content.monitor/model/judgeStandard/editBaseInfo");
+    }
+
+    var name = "";
+    /**
+     * 查询判定标准基础信息
+     */
+    $http({
+        url:"/sofn-ads-web/adsModelJudgeStandard/queryById",
+        method:"post",
+        dataType:"json",
+        params : {"id" : judgeStandardId},
+        headers: {
+            post: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }
+    }).success(function(data){
+        name = data.adsModelJudgeStandard.name;
+        var filePath = data.adsModelJudgeStandard.filePath;
+        if(filePath!=null && filePath!=''){
+            $("#file_name").html("附件下载").attr("href",filePath);
+        }
+        initFile();
+    });
+
+    window.initFile =function () {
+        /**
+         * 文件上传
+         */
+        $("#file-1").fileinput({
+            language: 'zh',
+            uploadUrl: "/sofn-ads-web/adsModelJudgeStandard/saveFile",
+            allowedFileExtensions : ['xlsx', 'xls','doc','docx','pdf','png','jpg'],
+            maxFileSize: 10000,
+            maxFilesNum: 1,
+            // showPreview:false,
+            enctype: 'multipart/form-data',
+            maxFileCount: 1, //表示允许同时上传的最大文件个数
+            msgFilesTooMany: "只能选择{m}个文件！",
+            msgSizeTooLarge: "只允许上传10MB以内的文件",
+            // dropZoneTitle: '基地图片预览'
+            uploadExtraData:{
+                "id": judgeStandardId,
+                "name" : name,
+                "token":token
+            },
+        }).on("fileuploaded", function (event, data, previewId, index) {
+            if(data.response.httpCode==200)
+            {
+                jBox.tip('上传成功','success');
+                $("#file_name").html("附件下载").attr("href",data.response.filePath);
+            }
+            else{
+                jBox.tip(data.response.msg,'info');
+            }
+        });
+    }
+
+})
+

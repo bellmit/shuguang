@@ -1,0 +1,122 @@
+    <link rel="stylesheet" href="assets/css/ales/taskManage/myCheckTask.css"/>
+    <style>
+        .table-bordered tr th, td{
+            text-align: left;
+        }
+    </style>
+    <!--<div class="gui-TabCut">
+        <ul class="clearfix gov-h">
+            <li class="fl gp-r gui-TabCheck">监督抽查任务</li>
+            <li class="fl gp-r qryEntrustDetection" style="display: none" ui-sref="index.content.qry/taskManage/qryEntrustDetection">委托检测任务</li>
+        </ul>
+        <div class="gui-botLine"></div>
+    </div>
+
+    <div class="gui-breadcrumbs">
+        <a href="">查询系统</a>&gt;
+        <a href="">执法信息查询</a>&gt;
+        <span>承担任务查询</span>
+    </div>-->
+    <div class="gui-mainBc">
+        <div class="gui-breadcrumbs">
+            <a href="">查询系统</a>&gt;
+            <a href="">执法信息查询</a>&gt;
+            <span>承担任务查询</span>
+        </div>
+        <div class="gui-TabCut">
+            <ul class="clearfix gov-h" >
+                <li class="fl gp-r gui-TabCheck">监督抽查任务</li>
+                <li class="fl gp-r qrySubjSvList" ui-sref="index.content.qry/taskManage/qryEntrustDetection">委托检测任务</li>
+
+            </ul>
+            <div class="gui-botLine"></div>
+        </div>
+        <div class="gui-section">
+             <!--任务查询-->
+                <div class="tab-pane fade in active" id="ypinfo">
+                    <br>
+                    <div class="Sup_contain_section  col-lg-12 col-xs-12 col-sm-12 col-md-12">
+                        <div class="Sup_contain_section_contain">
+                            <br class="gui-form-group">
+                                <span>任务名称</span>
+                                <input maxlength="30" class="gui-input" type="text" name="History_Task_NAME" style="max-width: 120px" placeholder="请输入任务名称"/>
+                                <!--   日期  屏蔽日期 2018年5月31日10:04:35
+                                   <input id="History_Task_Date_Begin" name="History_Task_Date_Begin" style="cursor: pointer;width: 120px;margin-right: 0px;" readonly="readonly" class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('History_Task_Date_End');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'History_Task_Date_End\')}'})"/>
+                                   &lt;!&ndash;<input class="gui-input "  name="History_Task_Date_Begin" style="width: 100px;"  readonly="readonly" id="History_Task_Date_Begin" onclick="SelectDate(this)" />&ndash;&gt;
+                                   至
+                                   <input id="History_Task_Date_End" name="History_Task_Date_End" class="Wdate gui-input" style="cursor: pointer;width: 120px;" readonly="readonly" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'History_Task_Date_Begin\')}'})"/>
+                                   &lt;!&ndash;<input class="gui-input " name="History_Task_Date_End" style="width: 100px;"  readonly="readonly" id="History_Task_Date_End" onclick="SelectDate(this)"/>&ndash;&gt;-->
+                                <span>任务状态</span>
+                                <div class="gui-select">
+                                    <select name="isSample">
+                                        <option value="">不限</option>
+                                        <option value="0">未提交</option>
+                                        <option value="1">已提交</option>
+                                        <option value="2">部分提交</option>
+                                    </select>
+                              <!--  <span>任务类型</span>
+                                <div class="gui-select">
+                                    <select name="taskType">
+                                        <option value="">不限</option>
+                                        <option value="例行监测">例行监测</option>
+                                        <option value="专项检测">专项检测</option>
+                                        <option value="监督抽查">监督抽查</option>
+                                    </select>
+                                </div>-->
+                                <!--<span>任务状态</span>
+                                <div class="gui-select">
+                                    <select name="isSample">
+                                        <option value="">不限</option>
+                                        <option value="0">未提交</option>
+                                        <option value="1">已提交</option>
+                                        <option value="2">部分提交</option>
+                                    </select>-->
+                                     <!-- <span>任务名称</span>
+                                <input maxlength="30" class="gui-input" type="text" name="History_Task_NAME" style="max-width: 120px" placeholder="请输入任务名称"/>-->
+                                   </div>
+                            &nbsp;&nbsp;&nbsp;
+                                <span>年度</span>
+                                <input id="Ddl_Year" name="taskYear" type="text" runat="server"  onfocus="WdatePicker({skin:'default',dateFmt:'yyyy',minDate:'2010',maxDate:'%y'})" class="Wdate gui-input" style=" width:80px;margin-right: 30px;cursor: pointer" readonly="readonly"/>
+                            <br><br>
+                            <span>开始时间</span>
+                                <input id="History_Task_Date_Begin" name="History_Task_Date_Begin" style="cursor: pointer;width: 120px;margin-right: 0px;" readonly="readonly" class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('History_Task_Date_BeginEnd');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'History_Task_Date_BeginEnd\')}'})"/>
+                                至
+                                <input id="History_Task_Date_BeginEnd" name="History_Task_Date_BeginEnd" class="Wdate gui-input" style="cursor: pointer;width: 120px;" readonly="readonly" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'History_Task_Date_Begin\')}'})"/>
+                            <span>结束时间</span>
+                            <input id="History_Task_Date_EndBegin" name="History_Task_Date_EndBegin" style="cursor: pointer;width: 120px;margin-right: 0px;" readonly="readonly" class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('History_Task_Date_End');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'History_Task_Date_End\')}'})"/>
+                            至
+                            <input id="History_Task_Date_End" name="History_Task_Date_End" class="Wdate gui-input" style="cursor: pointer;width: 120px;" readonly="readonly" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'History_Task_Date_EndBegin\')}'})"/>
+                            <br><br>
+                                <span id="AnyArea">
+                                <span>所属区域</span>
+                                <div class="gui-select">
+                                    <select id="sheng" >
+                                        <option value="">省</option>
+                                    </select>
+                                </div>
+                                <div class="gui-select">
+                                    <select id="shi">
+                                        <option value="">市</option>
+                                    </select>
+                                </div>
+                                <div class="gui-select">
+                                    <select id="xian">
+                                        <option value="">区/县</option>
+                                    </select>
+                                </div>
+                                <button id="History_Task_ToCheck" class="gui-btn" >查询</button>
+                                <button class="gui-btn"  ng-click="cleanSelectModelQuery()">重置</button><br><br>
+                                </span>
+
+                            </div>
+                            <div class="gui-actions">
+                                <button  ng-click="exportData()" class="fr gui-btn fr ml15">导出</button>
+                            </div>
+                            <table id="grid" class="gui-table mt15"
+                                   style="width: 100%">
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                </div>
+        </div>

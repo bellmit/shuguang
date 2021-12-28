@@ -1,0 +1,61 @@
+.Sup_contain_section>p{
+    font-size: 20px;
+    margin: 80px 50px 20px 50px;
+}
+.Sup_contain_section_contain_head{
+    width: 1100px;
+    font-size: 18px;
+    /*margin:auto ;*/
+    text-align: center;
+}
+.Sup_contain_section_contain_head div{
+    width: inherit;
+}
+.Sup_contain_section_contain_head_ul{
+    width: inherit;
+    margin: auto;
+}
+.Sup_contain_section_contain_head_ul>li ul li{
+    margin: 20px 0px;
+}
+.Sup_contain_section_contain_head_ul>li ul li:first-child{
+    width: 20%;
+    text-align: right;
+
+    padding-right: 40px;
+}
+.Sup_contain_section_contain_head_ul>li ul li:nth-of-type(2){
+    width: 80%;
+    text-align: left;
+}
+.Sup_contain_section_contain_head_ul>li ul li:nth-of-type(2) select,input{
+    width: 60%;
+    cursor: pointer;
+}
+#Sup_contain_section_contain_head_ul_select select{
+    width: 15%;
+    margin-right: 6%;
+}
+.Sup_contain_section_contain_head div p{
+    width: inherit;
+    text-align: center;
+}
+.Sup_contain_section_contain_head_button{
+    /*width: 200px;*/
+    padding: 5px 20px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    color: white;
+    background-color: #4BA0D6;
+    margin:50px  250px 0px 0px;
+}
+.Sup_contain_section_contain_head_button a{
+    display: inline-block;
+    width: inherit;
+    height: inherit;
+}
+.Sup_contain_section_contain_head_button a:hover{
+    text-decoration: none;
+    color: inherit;
+}

@@ -1,0 +1,171 @@
+<link rel="stylesheet" href="assets/css/asms/check/cheRoutine.css" />
+<div class="gui-breadcrumbs">
+	<a href="">查询系统</a>&gt;
+	<a href="">农产品追溯信息查询</a>&gt;
+	<span>农产品追溯信息查询统计</span>
+</div>
+<div class="gui-TabCut">
+	<ul class="clearfix gov-h">
+		<li class="fl gp-r" style="width: 180px;" ui-sref="index.content.qry/zsmquery/traceSearch">追溯链条查询</li>
+		<li class="fl gp-r gui-TabCheck" style="width: 180px;">农产品追溯信息查询统计</li>
+	</ul>
+	<div class="gui-botLine"></div>
+</div>
+<div class="gui-section">
+	<form class="gui-form-group" id="queryForm">
+		
+
+		<!--<span>认证类型</span>
+		<input type="checkbox" value="" name="entityIndustryLimit" ng-click="limitCheckBox('entityIndustry','entityIndustryLimit')"><span class="checkedIndustryTypeText">不限</span>
+		<span ng-repeat="a in industryType">
+            <input type="checkbox" value="{{a.id}}" name="entityIndustry" ng-click="limitCheckBox('entityIndustryLimit','entityIndustry')"><span class="checkedIndustryTypeText" ng-bind="a.dictName"></span>
+		</span>-->
+		<div class="mt15">
+			<span id="AnyArea">所属区域</span>
+			<div class="gui-select">
+				<select id="sheng">
+					<option value="">省</option>
+				</select>
+			</div>
+			<div class="gui-select">
+				<select id="shi">
+					<option value="">市</option>
+				</select>
+			</div>
+			<div class="gui-select">
+				<select id="xian">
+					<option value="">区/县</option>
+				</select>
+			</div>
+			<span>统计时间</span>
+			<input id="dateCreateBegin" name="dateCreateBegin" style="cursor: pointer;width: 120px;" class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('dateCreateEnd');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateCreateEnd\')}'})" />--
+			<input id="dateCreateEnd" name="dateCreateEnd" class="Wdate gui-input" style="cursor: pointer;width: 120px;margin-left: 10px;" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'dateCreateBegin\')}'})" />
+			<input type="checkbox" value="" name="countTimeLimit" ng-click="limitCountTime()"><span class="checkedIndustryTypeText">不限</span>
+		</div>
+		<div class="mt15">
+			
+			<span>关键字</span>
+			<input class="gui-input" maxlength="30" name="keyWord" type="text" placeholder="产品名称、产品种类" />
+
+			<div class="condition-item condition-custom" data-control="text" ng-show="visibleindustry" style="margin-right: 15px;">
+                <span>所属行业</span>
+				<input type="checkbox" value="" name="entityIndustryLimit" ng-click="limitCheckBoxAll('entityIndustry','entityIndustryLimit')"><span class="checkedIndustryTypeText">不限</span>
+				<span ng-repeat="a in industryType">
+		            <input type="checkbox" value="{{a.dictValue}}" name="entityIndustry" ng-click="limitCheckBox('entityIndustryLimit','entityIndustry')"><span class="checkedIndustryTypeText" ng-bind="a.dictName"></span>
+				</span>
+            </div>
+            <div class="condition-item condition-custom" data-control="text" ng-show="visibleproductSort">
+                <span>产品种类</span>
+				<div class="gui-select">
+					<select id="productSort" productSort>
+						<option value="">请选择</option>
+						<option ng-repeat="x in productSort" value="{{x.PRODUCT_SORT}}">{{x.PRODUCT_SORT}}</option>
+					</select>
+				</div>
+            </div>
+			<button class="gui-btn" ng-disabled="!!btnDisabled" ng-click="queryDataTable()">查询</button>
+			<button class="gui-btn" ng-click="resetQuery()">重置</button>
+		</div>
+
+		<span href="#modalCondition" data-toggle="modal" class="custom-condition">自定义条件</span>
+    </form>
+	<!-- 图表面板 -->
+	<div class="gui-table-panel clearfix">
+		<p class="table-total" ng-show="isListView">符合条件的数据总计: {{tableTotal}} 项</p>
+		<!-- 切换视图展示 -->
+		<div class="view-type">展示方式
+			<i class="gui-icon icon-list highlight" ng-class="{'highlight': isListView}" ng-click="toggleView(true)" title="以列表视图展示"></i>
+			<i class="gui-icon icon-chart" ng-class="{'highlight': !isListView }" ng-click="toggleView(false)" title="以图形视图展示"></i>
+		</div>
+		<button class="gui-btn" ng-show="isListView" ng-click="exportData()">导出</button>
+	</div>
+	<!-- 图表区域 -->
+	<div class="gui-content-slide">
+		<div ng-style="{'transform': viewX}" class="content-wrap">
+			<div class="content-block">
+				<table id="data-grid" class="gui-table table-nowrap mt15" style="width: 100%">
+				</table>
+			</div>
+			<div class="content-block">
+				<div sg-chart options="vm.chartOptions" update="vm.chart"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--模态框-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog removeBor" style="width: 70%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="myModalLabel">查询详情</h4>
+			</div>
+			<div class="modal-body clearfix gov-h">
+				<div class="mt15">
+					<span>关键字</span>:<input class="gui-input" style="width: 250px;margin-left: 5px;" maxlength="64" id="keyWordPlus" type="text" placeholder="输入追溯码" />
+					<button class="gui-btn" ng-disabled="!!btnDisabled" onclick="reloadDetailQryData()">查询</button>
+				</div>
+				<div class="table-responsive">
+					<table id="detail-data-gird" class="gui-table mt15">
+					</table>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalCondition" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel1">请选择自定义条件</h4>
+            </div>
+            <div class="modal-body">
+                <form novalidate="novalidate">
+                <div class="list-head">
+                    <label>
+                        <input type="checkbox" class="condition-checked-all" />全选
+                    </label>
+                </div>
+                <ul class="gui-list list-condition">
+                    <li class="disabled">
+                        <label>
+                            <input type="checkbox" checked disabled />所属区域
+                        </label>
+
+                    </li>
+                    <li class="disabled">
+                        <label>
+                            <input type="checkbox" checked disabled>统计时间
+                        </label>
+                    </li>
+                    <li class="disabled">
+                        <label>
+                            <input type="checkbox" checked disabled>产品名称
+                        </label>
+                    </li>
+                    <li data-key="industry">
+                        <label>
+                            <input type="checkbox">所属行业
+                        </label>
+                    </li>
+                    <li data-key="productSort">
+                        <label>
+                            <input type="checkbox">产品种类
+                        </label>
+                    </li>
+                </ul>
+				</form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="gui-btn" ng-click="confirmCondition()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>

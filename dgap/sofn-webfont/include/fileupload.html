@@ -1,0 +1,18 @@
+<dl class="gui-file clearfix">
+    <dd class="file-item" ng-repeat="file in files" ng-show="!file.hidden">
+        <div class="b-button js-fileapi-wrapper input-box" ng-style="getBackgroundForPath(file)">
+            <input type="file" name="file" data-index="{{$index}}" class="b-button__input" accept="{{settings.accept}}" />
+        </div>
+        <div class="gui-progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: {{+file.progress}}%"></div>
+        </div>
+        <span class="file-remove" ng-show="file.src" data-index="{{$index}}" ng-click="remove($event)"></span>
+        <p class="file-name">{{ file.previewName || file.vname || file.name || file.title || '请选择文件'}}</p>
+    </dd>
+    <dd class="file-item item-plus" ng-show="files.length < settings.max">
+        <div class="b-button js-fileapi-wrapper input-box">
+            <input type="file" name="file" data-index="{{files.length}}" class="b-button__input" accept="{{settings.accept}}" />
+        </div>
+        <p class="file-name">请选择文件</p>
+    </dd>
+</dl>

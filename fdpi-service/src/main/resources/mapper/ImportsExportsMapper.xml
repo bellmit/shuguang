@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.ImportsExportsMapper" >
+
+    <insert id="addImoretExport" parameterType="hashmap">
+    insert  into IMPORTS_EXPORTS
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="id != null">ID,</if>
+        <if test="impType != null">IMP_TYPE,</if>
+        <if test="impAuform != null">IMP_AUFORM,</if>
+        <if test="impComp != null">IMP_COMP,</if>
+        <if test="exComp != null">EX_COMP,</if>
+        <if test="validityTime != null">VALIDITY_TIME,</if>
+        <if test="imexPort != null">IMEX_PORT,</if>
+        <if test="originLocal != null">ORIGIN_LOCAL,</if>
+        <if test="visaAuth != null">VISA_AUTH,</if>
+        <if test="issueDate != null">ISSUE_DATE,</if>
+        <if test="createUserId != null">CREATE_USER_ID,</if>
+        <if test="createTime != null">CREATE_TIME,</if>
+        DEL_FLAG,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <if test="id != null">#{id},</if>
+        <if test="impType != null">#{impType},</if>
+        <if test="impAuform != null">#{impAuform},</if>
+        <if test="impComp != null">#{impComp},</if>
+        <if test="exComp != null">#{exComp},</if>
+        <if test="validityTime != null">#{validityTime},</if>
+        <if test="imexPort != null">#{imexPort},</if>
+        <if test="originLocal != null">#{originLocal},</if>
+        <if test="visaAuth != null">#{visaAuth},</if>
+        <if test="issueDate != null">#{issueDate},</if>
+        <if test="createUserId != null">#{createUserId},</if>
+        <if test="createTime != null">#{createTime},</if>
+       'N',
+    </trim>
+</insert>
+    <resultMap id="ImportsExports" type="com.sofn.fdpi.model.ImportsExports">
+        <id column="ID" property="id"></id>
+        <result column="IMP_AUFORM" property="impAuform"></result>
+        <result column="IMP_COMP" property="impComp"></result>
+        <result column="EX_COMP" property="exComp" ></result>
+
+        <result column="VALIDITY_TIME" property="validityTime" ></result>
+
+        <result column="VISA_AUTH" property="visaAuth" ></result>
+        <result column="ISSUE_DATE" property="issueDate" ></result>
+        <collection property="ies" ofType="com.sofn.fdpi.model.ImportsExportsSpecies">
+            <id column="exID" property="id"></id>
+            <result column="EXPORTS_ID" property="exportsId"></result>
+            <result column="SPE_NAME" property="speName"></result>
+            <result column="PRO_LEVEL" property="proLevel"></result>
+            <result column="AMOUNT" property="amount"></result>
+            <result column="SOURCE" property="source"></result>
+            <result column="PORT" property="port"></result>
+        </collection>
+    </resultMap>
+    <select id="getImportsExportsById" resultMap="ImportsExports">
+    SELECT
+	IMPORTS_EXPORTS. ID,
+	IMPORTS_EXPORTS.IMP_AUFORM,
+	IMPORTS_EXPORTS.IMP_COMP,
+	IMPORTS_EXPORTS.EX_COMP,
+	IMPORTS_EXPORTS.VALIDITY_TIME,
+	IMPORTS_EXPORTS.VISA_AUTH,
+	IMPORTS_EXPORTS.ISSUE_DATE,
+	IMPORTS_EXPORTS.DEL_FLAG,
+	IMPORTS_EXPORTS_SPECIES. ID AS exID,
+	IMPORTS_EXPORTS_SPECIES.EXPORTS_ID,
+	IMPORTS_EXPORTS_SPECIES.SPE_NAME,
+	IMPORTS_EXPORTS_SPECIES.PRO_LEVEL,
+	IMPORTS_EXPORTS_SPECIES.AMOUNT,
+	IMPORTS_EXPORTS_SPECIES. SOURCE,
+	IMPORTS_EXPORTS_SPECIES.PORT
+    FROM
+	IMPORTS_EXPORTS,
+	IMPORTS_EXPORTS_SPECIES
+    WHERE
+	    IMPORTS_EXPORTS. ID = IMPORTS_EXPORTS_SPECIES.EXPORTS_ID
+     and IMPORTS_EXPORTS.ID=#{id}
+     and IMPORTS_EXPORTS.DEL_FLAG='N'
+    </select>
+    <resultMap id="ImportsExportsList" type="com.sofn.fdpi.model.ImportsExports">
+        <id column="ID" property="id"></id>
+        <result column="IMP_AUFORM" property="impAuform"></result>
+        <result column="IMP_COMP" property="impComp"></result>
+        <result column="EX_COMP" property="exComp" ></result>
+        <result column="VALIDITY_TIME" property="validityTime" ></result>
+        <result column="ISSUE_DATE" property="issueDate" ></result>
+    </resultMap>
+    <select id="getImportsExportsList" resultMap="ImportsExportsList">
+        SELECT
+        ID,
+        IMP_AUFORM,
+        IMP_COMP,
+        EX_COMP,
+        VALIDITY_TIME,
+        (CASE IS_PRINT WHEN '0' THEN '未打印'
+        WHEN '1' THEN '已打印' END) as IS_PRINT,
+        ISSUE_DATE
+        FROM
+        IMPORTS_EXPORTS
+        WHERE
+        DEL_FLAG = 'N'
+       <if test="impAuform!= null and impAuform != ''">
+           and IMP_AUFORM like '%'||#{impAuform}||'%'
+
+        </if>
+        <if test="impComp!= null and impComp!=''">
+            and (IMP_COMP like  CONCAT(CONCAT('%',#{impComp}),'%')  OR EX_COMP like  CONCAT(CONCAT('%',#{impComp}),'%'))
+        </if>
+        <if test="startTime !=null">
+            AND VALIDITY_TIME >= to_timestamp(#{startTime},'yyyy-MM-dd HH24:MI:SS')
+        </if>
+        <if test="endTime !=null">
+            AND VALIDITY_TIME &lt;= to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+        </if>
+        <if test="isPrint != null and isPrint!=''">
+            and  IS_PRINT like '%'||#{isPrint}||'%'
+        </if>
+        order by CREATE_TIME desc,IMP_AUFORM desc
+    </select>
+    <update id="updateImportsExports" parameterType="com.sofn.fdpi.model.ImportsExports">
+        update IMPORTS_EXPORTS
+        <set>
+            <if test="impAuform != null and impAuform!= ''">
+                IMP_AUFORM =#{impAuform},
+            </if>
+
+                IMP_COMP  =#{impComp},
+
+
+                EX_COMP  =#{exComp},
+
+            <if test="validityTime != null ">
+                VALIDITY_TIME=#{validityTime},
+            </if>
+            <if test="visaAuth != null and visaAuth!=''">
+                VISA_AUTH  =#{visaAuth},
+            </if>
+            <if test="issueDate != null ">
+                ISSUE_DATE =#{issueDate},
+            </if>
+            <if test="updateUserId != null and updateUserId!=''">
+                UPDATE_USER_ID=#{updateUserId},
+            </if>
+            <if test="updateTime != null ">
+                UPDATE_TIME=#{updateTime},
+            </if>
+        </set>
+        where ID=#{id}
+    </update>
+    <update id="delImportsExports">
+        update IMPORTS_EXPORTS set  DEL_FLAG='Y' where ID=#{id}
+    </update>
+    <resultMap id="ImportsExportsByImpAuform" type="com.sofn.fdpi.model.ImportsExports">
+        <id column="ID" property="id"></id>
+        <result column="IMP_AUFORM" property="impAuform"></result>
+    </resultMap>
+    <select id="getImportsExportsByImpAuform" resultMap="ImportsExportsByImpAuform">
+         select ID,IMP_AUFORM from IMPORTS_EXPORTS where  IMP_AUFORM=#{impAuform} and DEL_FLAG='N'
+    </select>
+
+    <update id="printImports">
+     update IMPORTS_EXPORTS set IS_PRINT='1' where ID=#{id}
+</update>
+
+    <sql id="base">
+       ID,IMP_AUFORM,IMP_COMP,EX_COMP,VALIDITY_TIME,VISA_AUTH,ISSUE_DATE
+    </sql>
+
+    <resultMap id="rsforredis" type="com.sofn.fdpi.vo.ImExportCacheVo">
+        <id column="ID" property="id"></id>
+        <result column="IMP_AUFORM" property="impAuform"></result>
+        <result column="SPE_NAME" property="speName"></result>
+    </resultMap>
+<select id="saveRedis" resultMap="rsforredis">
+        SELECT
+            ie.ID,
+            ie.IMP_AUFORM,
+            ies.SPE_NAME
+        FROM
+            IMPORTS_EXPORTS ie,
+            IMPORTS_EXPORTS_SPECIES ies
+        WHERE
+            ie.ID=ies.EXPORTS_ID
+            and ie.DEL_FLAG='N'
+</select>
+</mapper>

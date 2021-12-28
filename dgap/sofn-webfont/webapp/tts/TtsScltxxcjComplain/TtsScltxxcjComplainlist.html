@@ -1,0 +1,29 @@
+
+<div class="gui-breadcrumbs">
+    <span>投诉举报</span>
+</div>
+<div class="gui-section">
+    <ul class="gui-tab">
+        <li><a ui-sref="index.content.tts/TtsScltxxcjComplain/ttsScltxxcjComplainAdd">我要投诉</a></li>
+        <li class="active"><a ui-sref="index.content.tts/TtsScltxxcjComplain/TtsScltxxcjComplainlist">投诉反馈</a></li>
+    </ul>
+    <div class="gui-form-group">
+        <input id="beginDate" readonly="readonly" class="gui-input Wdate" type="text" onfocus="var endDate=$dp.$('lessDate');
+        WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'lessDate\')}'})">
+        <span style="padding-bottom: 20px;">至</span>
+        <input id="lessDate" class="gui-input Wdate" readonly="readonly" type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'beginDate\')}'})">
+
+        <!--<input id="dateBegin" readonly="readonly" class="gui-input Wdate" type="text" onFocus="var endDate=$dp.$('dateEnd');WdatePicker({-->
+            <!--onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateEnd\')}'})" />-->
+        <!--<span style="margin-right: 10px;">至</span>-->
+        <!--<input id="dateEnd" class="gui-input Wdate" readonly="readonly" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'dateBegin\')}'})" />-->
+
+
+        <input type="text" class="gui-input" id="keywords" name="keywords" placeholder="请输入查询内容">
+        <button class="gui-btn" type="button" id="search_bt">查询</button>
+    </div><div class="gui-actions"></div>
+    <div>
+        <table id="grid" class="gui-table">
+        </table>
+    </div>
+</div>

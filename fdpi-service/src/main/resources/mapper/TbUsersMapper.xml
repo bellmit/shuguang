@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.TbUsersMapper" >
+
+  <resultMap id="BaseResultMap" type="com.sofn.fdpi.model.TbUsers" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="ACCOUNT" property="account" jdbcType="VARCHAR" />
+    <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+    <result column="USER_STATUS" property="userStatus" jdbcType="VARCHAR" />
+    <result column="USER_STATUS_NAME" property="userStatusName" jdbcType="VARCHAR" />
+    <result column="COMP_ID" property="compId" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="DATE" />
+    <result column="CREATE_USER_ID" property="createUserId" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE" />
+    <result column="UPDATE_USER_ID" property="updateUserId" jdbcType="VARCHAR" />
+    <result column="DEL_FLAG" property="delFlag" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ID, ACCOUNT, PASSWORD, USER_STATUS
+    , (case USER_STATUS when '1' then '启用' else '停用' end) USER_STATUS_NAME
+    , COMP_ID,CREATE_TIME, CREATE_USER_ID, UPDATE_TIME
+    , UPDATE_USER_ID, DEL_FLAG
+  </sql>
+
+
+
+  <!--修改员工密码-->
+  <update id="updatePasswordById" parameterType="java.util.Map">
+    update TB_USERS
+    set
+      PASSWORD = #{password},
+      UPDATE_TIME = #{updateTime},
+      UPDATE_USER_ID = #{updateUserId}
+    where
+      ID = #{id}
+  </update>
+
+  <!--修改员工状态-->
+  <update id="updateStatusById" parameterType="java.util.Map">
+    update TB_USERS
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="userStatus!=null and userStatus!=''">
+        USER_STATUS=#{userStatus},
+      </if>
+      <if test="updateTime!=null">
+        UPDATE_TIME=#{updateTime},
+      </if>
+      <if test="userStatus!=null and userStatus!=''">
+        UPDATE_USER_ID=#{updateUserId},
+      </if>
+      <if test="delFlag!=null and delFlag!=''">
+        DEL_FLAG=#{delFlag},
+      </if>
+      <if test="sysCompId!=null and sysCompId!=''">
+        COMP_ID=#{sysCompId},
+      </if>
+      <if test="sysUserId!=null and sysUserId!=''">
+        ID=#{sysUserId},
+      </if>
+    </trim>
+    where
+      ID = #{id}
+  </update>
+  <resultMap id="UserIdAndPwdResultMap" type="com.sofn.fdpi.model.TbUsers">
+    <id column="ID" property="id" jdbcType="VARCHAR"></id>
+    <result column="PASSWORD" property="password" jdbcType="VARCHAR"></result>
+    <result column="ACCOUNT" property="account" jdbcType="VARCHAR"></result>
+  </resultMap>
+  <select id="getUserIdAndPassword" resultMap="UserIdAndPwdResultMap">
+    select ID,PASSWORD,ACCOUNT
+    from TB_USERS
+    where COMP_ID=#{compId}
+    LIMIT 1 OFFSET 0
+  </select>
+  <!--查询当前直属下的企业信息-->
+  <resultMap id="compUserInfo" type="com.sofn.fdpi.vo.CompanyUserInfo">
+    <id column="ID" property="id"></id>
+    <result column="REGION_IN_CH" property="local"></result>
+    <result column="COMP_NAME" property="compName"></result>
+  </resultMap>
+  <select id="getCompUserInfo" resultMap="compUserInfo">
+    SELECT
+    tb_users.ID,
+    TB_COMP.REGION_IN_CH,
+    TB_COMP.COMP_NAME
+    FROM
+    tb_users
+    inner  JOIN TB_COMP ON TB_COMP. ID = tb_users.COMP_ID
+    AND tb_users.DEL_FLAG = 'N'
+    AND TB_COMP.DEL_FLAG = 'N'
+    <if test="compName != null and compName!=''">
+      and COMP_NAME like '%'||#{compName}||'%'
+    </if>
+    AND TB_COMP. ID IN (
+    SELECT
+    TB_COMP. ID
+    FROM
+    TB_DEPARTMENT,
+    TB_COMP
+    WHERE
+    ORG_ID = DIRECLY_ID
+    AND ORG_ID = #{orgId}
+    AND TB_DEPARTMENT.DEL_FLAG = 'N'
+    )
+  </select>
+  <resultMap id="companyUserInfo" type="com.sofn.fdpi.vo.UserCompanyInfoVo">
+    <id column="ID" property="id"></id>
+    <result column="REGION_IN_CH" property="local"></result>
+    <result column="COMP_NAME" property="compName"></result>
+    <result column="LEGAL" property="legal"></result>
+    <result column="CONTACT_ADDRESS" property="contactAddress"></result>
+    <result column="POST_ADDRESS" property="postAddress"></result>
+  </resultMap>
+  <select id="getCompanyUserInfo" resultMap="companyUserInfo">
+SELECT
+	TB_USERS. ID,
+	REGION_IN_CH,
+	COMP_NAME,
+	LEGAL,
+	CONTACT_ADDRESS,
+	POST_ADDRESS
+FROM
+	TB_USERS
+INNER JOIN TB_COMP ON TB_USERS.COMP_ID = TB_COMP. ID
+AND TB_USERS. ID = #{id}
+
+  </select>
+
+</mapper>

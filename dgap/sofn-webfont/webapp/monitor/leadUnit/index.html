@@ -1,0 +1,57 @@
+<link rel="stylesheet" href="../../assets/css/monitor/demo.css"/>
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+<div class="Sup_contain_section col-lg-12 col-xs-12 col-sm-12 col-md-12">
+    <div class="gui-breadcrumbs">
+        <a href="">监测系统</a>&gt;
+        <span>牵头单位</span>
+    </div>
+    <div class="gui-section">
+    <p class=" col-lg-1 col-xs-0 col-sm-1 col-md-1"></p>
+    <div class="text-center">
+        <div class="col-md-5" style="border-right: 1px solid silver;">
+            <h1>项目管理</h1>
+            <div class="jc-item" ng-repeat="x in leadItems" ng-click="goTaskDetail(x)">
+                <!--<div class="text-left pd-5" title="点击进入">
+                    <h5><a class="text-info" href="#">{{x.taskName}}</a></span> &lt;!&ndash;<span class="label label-danger pull-right">New</span>&ndash;&gt;</h5>
+                    <span class="textr-silver">{{x.monitorClass}}</span><br>
+                    <span class="textr-silver">时间：{{x.startTime}}</span><br>
+                    <span class="textr-silver">主管单位：{{x.releaseUnit}}</span>
+                </div>-->
+                <div class="text-left pd-5" title="点击进入">
+                    <h5><a class="text-info" href="#">{{x.RMNAME}}</a></span> <!--<span class="label label-danger pull-right">New</span>--></h5>
+                    <span class="textr-silver">{{x.RMTYPE}}</span><br>
+                    <span class="textr-silver">时间：{{x.RMDATEBEGIN}}</span><br>
+                    <span class="textr-silver">主管单位：{{x.RMRELEASEUNIT}}</span>
+                </div>
+            </div>
+            <div ng-if="leadItems.length>1">
+                <div>
+                    <a title="点击查看更多任务" class="pointer pull-right pointer pdr-p25"  ng-click="goNewTaskList()">更多》》</a>
+                </div>
+            </div>
+            <div ng-if="leadItems.length==0">
+                暂无数据
+            </div>
+        </div>
+        <div class="col-md-5">
+            <h1>承担任务</h1>
+            <div class="jc-item" ng-repeat="x in execItems" ng-click="goExecTaskDetal(x.id)">
+                <div class="text-left pd-5" title="点击进入">
+                    <h5><a class="text-info" href="#">{{x.taskName}}</a></span> <!--<span class="label label-danger pull-right">New</span>--></h5>
+                    <span class="textr-silver">{{x.monitorClass}}</span><br>
+                    <span class="textr-silver">时间：{{x.startTime}}</span><br>
+                    <span class="textr-silver">主管单位：{{x.releaseUnit}}</span>
+                </div>
+            </div>
+            <div ng-if="total > 3">
+                <div>
+                    <a title="点击查看更多任务" class="pointer pull-right pdr-p25" ng-click="goExecTaskList()" >更多》》</a>
+                </div>
+            </div>
+            <div ng-if="execItems.length==0">
+                暂无数据
+            </div>
+        </div>
+    </div>
+    </div>
+</div>

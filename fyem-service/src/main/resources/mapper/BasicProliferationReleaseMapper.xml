@@ -1,0 +1,719 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fyem.mapper.BasicProliferationReleaseMapper" >
+    <resultMap id="BaseResultMap" type="com.sofn.fyem.model.BasicProliferationRelease" >
+        <id column="ID" property="id" jdbcType="VARCHAR" />
+        <result column="BELONG_YEAR" property="belongYear" jdbcType="VARCHAR" />
+        <result column="RELEASE_SITE" property="releaseSite" jdbcType="VARCHAR" />
+        <result column="PROVINCE_ID" property="provinceId" jdbcType="VARCHAR" />
+        <result column="CITY_ID" property="cityId" jdbcType="VARCHAR" />
+        <result column="COUNTY_ID" property="countyId" jdbcType="VARCHAR" />
+        <result column="LONGITUDE" property="longitude" jdbcType="VARCHAR" />
+        <result column="LATITUDE" property="latitude" jdbcType="VARCHAR" />
+        <result column="RELEASE_TIME" property="releaseTime" jdbcType="TIMESTAMP" />
+        <result column="RELEASE_MONEY" property="releaseMoney" jdbcType="DOUBLE" />
+        <result column="ORGANIZATION_ID" property="organizationId" jdbcType="VARCHAR" />
+        <result column="ORGANIZATION_NAME" property="organizationName" jdbcType="VARCHAR" />
+        <result column="RELEASE_LEVEL" property="releaseLevel" jdbcType="VARCHAR" />
+        <result column="RELEASE_VARIETIES" property="releaseVarieties" jdbcType="VARCHAR" />
+        <result column="RELEASE_NUMBER" property="releaseNumber" jdbcType="DOUBLE" />
+        <result column="RELEASE_SPECIFICATION" property="releaseSpecification" jdbcType="DOUBLE" />
+        <result column="NATION_INVESTMENT" property="nationInvestment" jdbcType="DOUBLE" />
+        <result column="PROVINCE_INVESTMENT" property="provinceInvestment" jdbcType="DOUBLE" />
+        <result column="CITY_INVESTMENT" property="cityInvestment" jdbcType="DOUBLE" />
+        <result column="SOCIETY_INVESTMENT" property="societyInvestment" jdbcType="DOUBLE" />
+        <result column="PROVIDE_ORGANIZATION_ID" property="provideOrganizationId" jdbcType="VARCHAR" />
+        <result column="PROVIDE_ORGANIZATION_NAME" property="provideOrganizationName" jdbcType="VARCHAR" />
+        <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+        <result column="ACCESSORY" property="accessory" jdbcType="VARCHAR" />
+        <result column="STATUS" property="status" jdbcType="VARCHAR" />
+        <result column="RELEASE_EVALUATE" property="releaseEvaluate" jdbcType="DOUBLE" />
+        <result column="ROLE_CODE" property="roleCode" jdbcType="VARCHAR" />
+        <result column="CREATE_USER_ID" property="createUserId" jdbcType="VARCHAR" />
+        <result column="CREATE_ORGANIZATION_NAME" property="createOrganizationName" jdbcType="VARCHAR" />
+        <result column="CREATE_ORGANIZATION_ID" property="createOrganizationId" jdbcType="VARCHAR" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, belong_year, release_site, province_id, city_id, county_id, longitude, latitude,
+    release_time, release_money, organization_id, organization_name, release_level, release_varieties,
+    release_number, release_specification, nation_investment, province_investment, city_investment,
+    society_investment, provide_organization_id, provide_organization_name, remark, accessory,
+    status, release_evaluate, role_code, create_user_id, create_organization_name, create_organization_id,
+    create_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from BASIC_PROLIFERATION_RELEASE
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insert" parameterType="com.sofn.fyem.model.BasicProliferationRelease" >
+        insert into BASIC_PROLIFERATION_RELEASE (id, belong_year, release_site,
+                                                 province_id, city_id, county_id,
+                                                 longitude, latitude, release_time,
+                                                 release_money, organization_id, organization_name,
+                                                 release_level, release_varieties, release_number,
+                                                 release_specification, nation_investment, province_investment,
+                                                 city_investment, society_investment, provide_organization_id,
+                                                 provide_organization_name, remark, accessory,
+                                                 status, release_evaluate, role_code,
+                                                 create_user_id, create_organization_name, create_organization_id,
+                                                 create_time)
+        values (#{id,jdbcType=VARCHAR}, #{belongYear,jdbcType=VARCHAR}, #{releaseSite,jdbcType=VARCHAR},
+                #{provinceId,jdbcType=VARCHAR}, #{cityId,jdbcType=VARCHAR}, #{countyId,jdbcType=VARCHAR},
+                #{longitude,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR}, #{releaseTime,jdbcType=TIMESTAMP},
+                #{releaseMoney,jdbcType=DOUBLE}, #{organizationId,jdbcType=VARCHAR}, #{organizationName,jdbcType=VARCHAR},
+                #{releaseLevel,jdbcType=VARCHAR}, #{releaseVarieties,jdbcType=VARCHAR}, #{releaseNumber,jdbcType=DOUBLE},
+                #{releaseSpecification,jdbcType=DOUBLE}, #{nationInvestment,jdbcType=DOUBLE}, #{provinceInvestment,jdbcType=DOUBLE},
+                #{cityInvestment,jdbcType=DOUBLE}, #{societyInvestment,jdbcType=DOUBLE}, #{provideOrganizationId,jdbcType=VARCHAR},
+                #{provideOrganizationName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{accessory,jdbcType=VARCHAR},
+                #{status,jdbcType=VARCHAR}, #{releaseEvaluate,jdbcType=DOUBLE}, #{roleCode,jdbcType=VARCHAR},
+                #{createUserId,jdbcType=VARCHAR}, #{createOrganizationName,jdbcType=VARCHAR}, #{createOrganizationId,jdbcType=VARCHAR},
+                #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <select id="getBPRById" resultType="com.sofn.fyem.model.BasicProliferationRelease" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List" />
+        from  BASIC_PROLIFERATION_RELEASE
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <select id="listBPRByBelongYear" resultType="com.sofn.fyem.vo.BasicProliferationReleaseVO" parameterType="java.util.Map">
+        select id,belong_year,province_id,city_id,county_id,
+        release_site,release_time,organization_name,
+        release_varieties ,release_level,status
+        from  BASIC_PROLIFERATION_RELEASE
+        <where>
+            <if test="belongYear != null and belongYear != ''">
+                belong_year = #{belongYear}
+            </if>
+            <if test="provinceId != null and provinceId != ''">
+                and province_id = #{provinceId}
+            </if>
+            <if test="cityId != null and cityId != ''">
+                and city_id = #{cityId}
+            </if>
+            <if test="countyId != null and countyId != ''">
+                and county_id = #{countyId}
+            </if>
+            <if test="roleCode != null and roleCode != ''">
+                and role_code = #{roleCode}
+            </if>
+            <if test="organizationId != null and organizationId != ''">
+                and organization_id = #{organizationId}
+            </if>
+            <if test="createUserId != null and createUserId != ''">
+                and create_user_id = #{createUserId}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateStatus" parameterType="com.sofn.fyem.model.BasicProliferationRelease" >
+        update BASIC_PROLIFERATION_RELEASE
+        <set>
+            <if test=" status != null and  status != '' " >
+                status = #{status}
+            </if>
+            <if test=" remark != null" >
+                ,remark = #{remark}
+            </if>
+        </set>
+        <where>
+            <if test="belongYear != null and belongYear != ''" >
+                belong_year = #{belongYear}
+            </if>
+            <if test="provinceId != null and provinceId != ''" >
+                and  province_id = #{provinceId}
+            </if>
+            <if test="cityId != null and cityId != ''" >
+                and  city_id = #{cityId}
+            </if>
+            <if test="countyId != null and countyId != ''" >
+                and  county_id = #{countyId}
+            </if>
+            <if test="organizationId != null and organizationId != ''">
+                and  organization_id = #{organizationId}
+            </if>
+            <if test="createUserId != null and createUserId != ''">
+                and  create_user_id = #{createUserId}
+            </if>
+            <if test="organizationName != null and organizationName != ''">
+                and  create_organization_name = #{organizationName}
+            </if>
+            <if test="roleCode != null and roleCode != ''">
+                and  role_code = #{roleCode}
+            </if>
+            <trim prefix="and (" suffix=")" prefixOverrides="and|or">
+                <if test=" statusConditionFirst != null and  statusConditionFirst != '' " >
+                    status = #{statusConditionFirst}
+                </if>
+                <if test=" statusConditionSecond != null and  statusConditionSecond != '' " >
+                    or  status = #{statusConditionSecond}
+                </if>
+            </trim>
+        </where>
+    </update>
+
+    <!--m-->
+    <select id="getBasicProliferationReleaseListByQuery" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        id,
+        belong_year,
+        release_site,
+        province_id,
+        city_id,
+        county_id,
+        longitude,
+        latitude,
+        release_time,
+        status,
+        release_evaluate
+        from BASIC_PROLIFERATION_RELEASE
+        <where>
+            <if test="belongYear != null and belongYear != ''">
+                belong_year = #{belongYear}
+            </if>
+            <if test="provinceId != null and provinceId != ''">
+                and province_id = #{provinceId}
+            </if>
+            <if test="cityId != null and cityId != ''">
+                and city_id = #{cityId}
+            </if>
+            <if test="countyId != null and countyId != ''">
+                and county_id = #{countyId}
+            </if>
+            <if test="roleCode != null and roleCode != ''">
+                and role_code = #{roleCode}
+            </if>
+            <if test="organizationId != null and organizationId != ''">
+                and organization_id = #{organizationId}
+            </if>
+            <if test="beginDate != null and beginDate != ''">
+                AND release_time &gt;= #{beginDate}
+            </if>
+            <if test="endDate != null and endDate != ''">
+                AND release_time &lt;= #{endDate}
+            </if>
+            <if test="createUserId != null and createUserId != ''">
+                and create_user_id = #{createUserId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getBasicProliferationReleaseById" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+            id,
+            belong_year,
+            release_site,
+            province_id,
+            city_id,
+            county_id,
+            longitude,
+            latitude,
+            release_time,
+            status,
+            release_evaluate
+        from BASIC_PROLIFERATION_RELEASE
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateReleaseEvaluate" parameterType="java.util.Map">
+        update BASIC_PROLIFERATION_RELEASE
+        <set>
+            id = #{id}
+            <if test=" releaseEvaluate != null and  releaseEvaluate != '' " >
+                ,release_evaluate = #{releaseEvaluate}
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+    <!--m-->
+
+    <select id="getBasicProliferationReleaseList" resultType="com.sofn.fyem.vo.BasicProliferationReleaseForm" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List" />
+        from BASIC_PROLIFERATION_RELEASE
+        <where>
+            <if test="belongYear != null and belongYear != ''">
+                belong_year = #{belongYear}
+            </if>
+            <if test="provinceId != null and provinceId != ''">
+                and province_id = #{provinceId}
+            </if>
+            <if test="cityId != null and cityId != ''">
+                and city_id = #{cityId}
+            </if>
+            <if test="countyId != null and countyId != ''">
+                and county_id = #{countyId}
+            </if>
+            <if test="organizationId != null and organizationId != ''">
+                and organization_id = #{organizationId}
+            </if>
+            <if test="createUserId != null and createUserId != ''">
+                and create_user_id = #{createUserId}
+            </if>
+            <if test="organizationName != null and organizationName != ''">
+                and create_organization_name = #{organizationName}
+            </if>
+            <if test="roleCode != null and roleCode != ''">
+                and  role_code = #{roleCode}
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectByBelongYearAndCountyId" resultType="com.sofn.fyem.model.BasicProliferationRelease" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List" />
+        from BASIC_PROLIFERATION_RELEASE
+        <where>
+            <if test="belongYear != null and belongYear != ''">
+                belong_year = #{belongYear}
+            </if>
+            <if test="countyId != null and countyId != ''">
+                and county_id = #{countyId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getProliferationReleaseInfos" resultType="com.sofn.fyem.vo.ProliferationReleaseInfosVo" parameterType="java.util.Map">
+        select
+        province_id as region,
+        SUM(CAST(release_number as DECIMAL(65,4))) as releaseNumber,
+        SUM(CAST(nation_investment as DECIMAL(65,2))) as nationInvestment,
+        SUM(CAST(province_investment as DECIMAL(65,2))) as provinceInvestment,
+        SUM(CAST(city_investment as DECIMAL(65,2))) as cityInvestment,
+        SUM(CAST(society_investment as DECIMAL(65,2))) as societyInvestment,
+        SUM(CAST(nation_investment as DECIMAL(65,2))
+        +CAST(province_investment as DECIMAL(65,2))
+        +CAST(city_investment as DECIMAL(65,2))
+        +CAST(society_investment as DECIMAL(65,2))) as investmentTotal,
+        (
+        SUM(case release_level when '3' then 1 when null then 1 else 0 end)
+        ) as nationReleaseCount,
+        (
+        SUM(case release_level when '2' then 1 when null then 1 else 0 end)
+        ) as provinceReleaseCount,
+        (
+        SUM(case release_level when '1' then 1 when null then 1 else 0 end)
+        ) as cityReleaseCount,
+        (
+        SUM(case release_level when '0' then 1 when null then 1 else 0 end)
+        ) as otherReleaseCount,
+        (
+        SUM(case release_level when '3' then 1 when '2' then 1 when '1' then 1 when '0' then 1 when null then 1 else 0 end)
+        ) as releaseCountTotal
+        from BASIC_PROLIFERATION_RELEASE
+        <where>
+            <if test="belongYear != null and belongYear != ''">
+                belong_year = #{belongYear}
+            </if>
+        </where>
+        group by province_id
+        order by region asc
+    </select>
+
+    <select id="getProliferationReleaseInfosByProvinceId" resultType="com.sofn.fyem.vo.ProliferationReleaseInfosVo" parameterType="java.util.Map">
+        select
+        city_id as region,
+        SUM(CAST(release_number as DECIMAL(65,4))) as releaseNumber,
+        SUM(CAST(nation_investment as DECIMAL(65,2))) as nationInvestment,
+        SUM(CAST(province_investment as DECIMAL(65,2))) as provinceInvestment,
+        SUM(CAST(city_investment as DECIMAL(65,2))) as cityInvestment,
+        SUM(CAST(society_investment as DECIMAL(65,2))) as societyInvestment,
+        SUM(CAST(nation_investment as DECIMAL(65,2))
+        +CAST(province_investment as DECIMAL(65,2))
+        +CAST(city_investment as DECIMAL(65,2))
+        +CAST(society_investment as DECIMAL(65,2))) as investmentTotal,
+        (
+        SUM(case release_level when '3' then 1 when null then 1 else 0 end)
+        ) as nationReleaseCount,
+        (
+        SUM(case release_level when '2' then 1 when null then 1 else 0 end)
+        ) as provinceReleaseCount,
+        (
+        SUM(case release_level when '1' then 1 when null then 1 else 0 end)
+        ) as cityReleaseCount,
+        (
+        SUM(case release_level when '0' then 1 when null then 1 else 0 end)
+        ) as otherReleaseCount,
+        (
+        SUM(case release_level when '3' then 1 when '2' then 1 when '1' then 1 when '0' then 1 when null then 1 else 0 end)
+        ) as releaseCountTotal
+        from BASIC_PROLIFERATION_RELEASE
+        <where>
+            <if test="belongYear != null and belongYear != ''">
+                belong_year = #{belongYear}
+            </if>
+            <if test="provinceId != null and provinceId != ''">
+                and province_id = #{provinceId}
+            </if>
+        </where>
+        group by city_id
+        order by region asc
+    </select>
+
+    <select id="getProliferationReleaseInfosByCityId" resultType="com.sofn.fyem.vo.ProliferationReleaseInfosVo" parameterType="java.util.Map">
+        select county_id                                         as region,
+               SUM(CAST(release_number as DECIMAL(65, 4)))       as releaseNumber,
+               SUM(CAST(nation_investment as DECIMAL(65, 2)))    as nationInvestment,
+               SUM(CAST(province_investment as DECIMAL(65, 2)))  as provinceInvestment,
+               SUM(CAST(city_investment as DECIMAL(65, 2)))      as cityInvestment,
+               SUM(CAST(society_investment as DECIMAL(65, 2)))   as societyInvestment,
+               SUM(CAST(nation_investment as DECIMAL(65, 2))
+                   + CAST(province_investment as DECIMAL(65, 2))
+                   + CAST(city_investment as DECIMAL(65, 2))
+                   + CAST(society_investment as DECIMAL(65, 2))) as investmentTotal,
+               (
+                   SUM(case release_level when '3' then 1 when null then 1 else 0 end)
+                   ) as nationReleaseCount,
+               (
+                   SUM(case release_level when '2' then 1 when null then 1 else 0 end)
+                   ) as provinceReleaseCount,
+               (
+                   SUM(case release_level when '1' then 1 when null then 1 else 0 end)
+                   ) as cityReleaseCount,
+               (
+                   SUM(case release_level when '0' then 1 when null then 1 else 0 end)
+                   ) as otherReleaseCount,
+               (
+                   SUM(case release_level when '3' then 1 when '2' then 1 when '1' then 1 when '0' then 1 when null then 1 else 0 end)
+                   ) as releaseCountTotal
+        from BASIC_PROLIFERATION_RELEASE
+        <where>
+            <if test="belongYear != null and belongYear != ''">
+                belong_year = #{belongYear}
+            </if>
+            <if test="cityId != null and cityId != ''">
+                and city_id = #{cityId}
+            </if>
+        </where>
+        group by county_id
+        order by region asc
+    </select>
+
+    <select id="getProliferationReleaseInfosByCountyId" resultType="com.sofn.fyem.vo.ProliferationReleaseInfosVo" parameterType="java.util.Map">
+        select
+        release_site as region,
+        SUM(CAST(release_number as DECIMAL(65,4))) as releaseNumber,
+        SUM(CAST(nation_investment as DECIMAL(65,2))) as nationInvestment,
+        SUM(CAST(province_investment as DECIMAL(65,2))) as provinceInvestment,
+        SUM(CAST(city_investment as DECIMAL(65,2))) as cityInvestment,
+        SUM(CAST(society_investment as DECIMAL(65,2))) as societyInvestment,
+        SUM(CAST(nation_investment as DECIMAL(65,2))
+        +CAST(province_investment as DECIMAL(65,2))
+        +CAST(city_investment as DECIMAL(65,2))
+        +CAST(society_investment as DECIMAL(65,2))) as investmentTotal,
+        (
+        SUM(case release_level when '3' then 1 when null then 1 else 0 end)
+        ) as nationReleaseCount,
+        (
+        SUM(case release_level when '2' then 1 when null then 1 else 0 end)
+        ) as provinceReleaseCount,
+        (
+        SUM(case release_level when '1' then 1 when null then 1 else 0 end)
+        ) as cityReleaseCount,
+        (
+        SUM(case release_level when '0' then 1 when null then 1 else 0 end)
+        ) as otherReleaseCount,
+        (
+        SUM(case release_level when '3' then 1 when '2' then 1 when '1' then 1 when '0' then 1 when null then 1 else 0 end)
+        ) as releaseCountTotal
+        from BASIC_PROLIFERATION_RELEASE
+        <where>
+            <if test="belongYear != null and belongYear != ''">
+                belong_year = #{belongYear}
+            </if>
+            <if test="countyId != null and countyId != ''">
+                and county_id = #{countyId}
+            </if>
+        </where>
+        group by release_site
+        order by region asc
+    </select>
+
+    <select id="countBasicProliferationRelease" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select count(id)
+        from BASIC_PROLIFERATION_RELEASE
+        <where>
+            <if test="belongYear != null and belongYear != ''" >
+                belong_year = #{belongYear}
+            </if>
+            <if test="countyId != null and countyId != ''">
+                and  county_id = #{countyId}
+            </if>
+            <if test="status != null and status != ''" >
+                and  status = #{status}
+            </if>
+            <if test="createUserId != null and createUserId != ''">
+                and create_user_id = #{createUserId}
+            </if>
+        </where>
+    </select>
+
+    <!--分布图示 放流活动次数-->
+    <select id="getProliferationReleaseLocationDistribution" resultType="com.sofn.fyem.vo.ProliferationReleaseLocationDistributionVo" parameterType="java.util.Map">
+        select
+        <choose>
+            <when test="provinceId != null and provinceId != ''">
+                city_id as region,
+            </when>
+            <when test="cityId != null and cityId != ''">
+                county_id as region,
+            </when>
+            <when test="countyId != null and countyId != ''">
+                CONCAT(COUNTY_ID,'-',RELEASE_SITE) as region,
+            </when>
+            <otherwise>
+                province_id as region,
+            </otherwise>
+        </choose>
+        AVG(CAST(longitude as DECIMAL(9,6))) as longitude,
+        AVG(CAST(latitude as DECIMAL(9,6))) as latitude,
+        (
+        SUM(case release_level when '3' then 1 when null then 1 else 0 end)
+        ) as releaseCountry,
+        (
+        SUM(case release_level when '2' then 1 when null then 1 else 0 end)
+        ) as releaseProv,
+        (
+        SUM(case release_level when '1' then 1 when null then 1 else 0 end)
+        ) as releaseCity,
+        (
+        SUM(case release_level when '0' then 1 when null then 1 else 0 end)
+        ) as releaseOther,
+        (
+        SUM(case release_level when '3' then 1 when '2' then 1 when '1' then 1 when '0' then 1 when null then 1 else 0 end)
+        ) as releaseCountTotal
+        from BASIC_PROLIFERATION_RELEASE
+        <where>
+            <if test="belongYear != null and belongYear != ''">
+                belong_year = #{belongYear}
+            </if>
+            <if test="provinceId != null and provinceId != ''">
+                and province_id = #{provinceId}
+            </if>
+            <if test="cityId != null and cityId != ''">
+                and city_id = #{cityId}
+            </if>
+            <if test="countyId != null and countyId != ''">
+                and county_id = #{countyId}
+            </if>
+        </where>
+        <choose>
+            <when test="provinceId != null and provinceId != ''">
+                group by city_id
+            </when>
+            <when test="cityId != null and cityId != ''">
+                group by county_id
+            </when>
+            <when test="countyId != null and countyId != ''">
+                group by region
+            </when>
+            <otherwise>
+                group by province_id
+            </otherwise>
+        </choose>
+        order by region asc
+    </select>
+
+    <!--分布图示 放流点位分布-->
+    <select id="getProliferationReleasePoints" resultType="com.sofn.fyem.vo.ProliferationReleaseLocationDistributionVo" parameterType="java.util.Map">
+        select
+        CONCAT(county_id,'-',release_site) as region,release_site, longitude, latitude, release_time, release_money, organization_name,
+        release_level, release_varieties, release_number, release_specification, provide_organization_name
+        from BASIC_PROLIFERATION_RELEASE
+        <where>
+            <if test="belongYear != null and belongYear != ''">
+                belong_year = #{belongYear}
+            </if>
+            <if test="provinceId != null and provinceId != ''">
+                and province_id = #{provinceId}
+            </if>
+            <if test="cityId != null and cityId != ''">
+                and city_id = #{cityId}
+            </if>
+            <if test="countyId != null and countyId != ''">
+                and county_id = #{countyId}
+            </if>
+        </where>
+    </select>
+
+    <!--分布图示 放流数量(鱼苗)-->
+    <select id="getProliferationReleaseCount" resultType="com.sofn.fyem.vo.ProliferationReleaseLocationDistributionVo" parameterType="java.util.Map">
+        select
+        <choose>
+            <when test="provinceId != null and provinceId != ''">
+                city_id as region,
+            </when>
+            <when test="cityId != null and cityId != ''">
+                county_id as region,
+            </when>
+            <when test="countyId != null and countyId != ''">
+                CONCAT(county_id,'-',release_site) as region,
+            </when>
+            <otherwise>
+                province_id as region,
+            </otherwise>
+        </choose>
+        SUM(CAST(release_number as DECIMAL(65,4))) as releaseNumberTotal
+        from BASIC_PROLIFERATION_RELEASE
+        <where>
+            <if test="belongYear != null and belongYear != ''">
+                belong_year = #{belongYear}
+            </if>
+            <if test="provinceId != null and provinceId != ''">
+                and province_id = #{provinceId}
+            </if>
+            <if test="cityId != null and cityId != ''">
+                and city_id = #{cityId}
+            </if>
+            <if test="countyId != null and countyId != ''">
+                and county_id = #{countyId}
+            </if>
+        </where>
+        <choose>
+            <when test="provinceId != null and provinceId != ''">
+                group by city_id
+            </when>
+            <when test="cityId != null and cityId != ''">
+                group by county_id
+            </when>
+            <when test="countyId != null and countyId != ''">
+                group by region
+            </when>
+            <otherwise>
+                group by province_id
+            </otherwise>
+        </choose>
+        order by region asc
+    </select>
+
+    <!--分布图示 投入资金-->
+    <select id="getProliferationReleaseInvestFunds" resultType="com.sofn.fyem.vo.ProliferationReleaseLocationDistributionVo" parameterType="java.util.Map">
+        select
+        <choose>
+            <when test="provinceId != null and provinceId != ''">
+                city_id as region,
+            </when>
+            <when test="cityId != null and cityId != ''">
+                county_id as region,
+            </when>
+            <when test="countyId != null and countyId != ''">
+                CONCAT(county_id,'-',release_site) as region,
+            </when>
+            <otherwise>
+                province_id as region,
+            </otherwise>
+        </choose>
+        AVG(CAST(longitude as DECIMAL(9,6))) as longitude,
+        AVG(CAST(latitude as DECIMAL(9,6))) as latitude,
+        SUM(CAST(nation_investment as DECIMAL(65,2))) as nationInvestment,
+        SUM(CAST(province_investment as DECIMAL(65,2))) as provinceInvestment,
+        SUM(CAST(city_investment as DECIMAL(65,2))) as cityInvestment,
+        SUM(CAST(society_investment as DECIMAL(65,2))) as societyInvestment,
+        SUM(CAST(nation_investment as DECIMAL(65,2))
+        +CAST(province_investment as DECIMAL(65,2))
+        +CAST(city_investment as DECIMAL(65,2))
+        +CAST(society_investment as DECIMAL(65,2))) as investmentTotal
+        from BASIC_PROLIFERATION_RELEASE
+        <where>
+            <if test="belongYear != null and belongYear != ''">
+                belong_year = #{belongYear}
+            </if>
+            <if test="provinceId != null and provinceId != ''">
+                and province_id = #{provinceId}
+            </if>
+            <if test="cityId != null and cityId != ''">
+                and city_id = #{cityId}
+            </if>
+            <if test="countyId != null and countyId != ''">
+                and county_id = #{countyId}
+            </if>
+        </where>
+        <choose>
+            <when test="provinceId != null and provinceId != ''">
+                group by city_id
+            </when>
+            <when test="cityId != null and cityId != ''">
+                group by county_id
+            </when>
+            <when test="countyId != null and countyId != ''">
+                group by region
+            </when>
+            <otherwise>
+                group by province_id
+            </otherwise>
+        </choose>
+        order by region asc
+    </select>
+
+    <select id="getProliferationReleaseLocationDistributionByProvinceId" resultType="com.sofn.fyem.vo.ProliferationReleaseLocationDistributionVo" parameterType="java.util.Map">
+        select
+        city_id as region,
+        (
+        COUNT(release_level = '0' OR '1' OR '2'OR '3' OR NULL)
+        ) as releaseCountTotal
+        from BASIC_PROLIFERATION_RELEASE
+        <where>
+            <if test="belongYear != null and belongYear != ''">
+                belong_year = #{belongYear}
+            </if>
+            <if test="provinceId != null and provinceId != ''">
+                and province_id = #{provinceId}
+            </if>
+        </where>
+        group by city_id
+        order by region asc
+    </select>
+
+    <select id="getProliferationReleaseLocationDistributionByCityId" resultType="com.sofn.fyem.vo.ProliferationReleaseLocationDistributionVo" parameterType="java.util.Map">
+        select
+        county_id as region,
+        (
+        SUM(case release_level when '3' then 1 when '2' then 1 when '1' then 1 when '0' then 1 when null then 1 else 0 end)
+        ) as releaseCountTotal
+        from BASIC_PROLIFERATION_RELEASE
+        <where>
+            <if test="belongYear != null and belongYear != ''">
+                belong_year = #{belongYear}
+            </if>
+            <if test="cityId != null and cityId != ''">
+                and city_id = #{cityId}
+            </if>
+        </where>
+        group by county_id
+        order by region asc
+    </select>
+
+    <select id="getProliferationReleaseLocationDistributionByCountyId" resultType="com.sofn.fyem.vo.ProliferationReleaseLocationDistributionVo" parameterType="java.util.Map">
+        select
+        release_site as regionName,
+        longitude as longitude,
+        latitude as latitude,
+        (
+        SUM(case release_level when '3' then 1 when '2' then 1 when '1' then 1 when '0' then 1 when null then 1 else 0 end)
+        ) as releaseCountTotal
+        from BASIC_PROLIFERATION_RELEASE
+        <where>
+            <if test="belongYear != null and belongYear != ''">
+                belong_year = #{belongYear}
+            </if>
+            <if test="countyId != null and countyId != ''">
+                and county_id = #{countyId}
+            </if>
+        </where>
+        group by id
+        order by create_time desc
+    </select>
+
+</mapper>

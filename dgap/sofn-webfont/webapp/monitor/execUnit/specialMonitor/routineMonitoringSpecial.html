@@ -1,0 +1,73 @@
+<link rel="stylesheet" href="../../assets/css/monitor/task.css" />
+<link rel="stylesheet" href="../../assets/css/monitor/cq.css"/>
+<div class="gui-breadcrumbs">
+    <a href="">监测系统</a>&gt;
+    <a href="">承担单位</a>&gt;
+    <span>专项监测</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group clearfix">
+        <label>行业</label>
+        <span class="gui-select">
+            <select id="hangye" class="combobox" data-style="btn-info" style="width: 120px">
+                <option value="ALL" style="width: 200px">全部</option>
+            </select>
+        </span>
+        <label>年度</label>
+        <span>
+            <!--<select id="year" class="combobox" data-style="btn-info" style="width: 120px">-->
+                <!--<option value="ALL">全部</option>-->
+            <!--</select>-->
+             <input id="year" type="text" onfocus="WdatePicker({skin:'default',dateFmt:'yyyy',isShowClear:false})" class="Wdate gui-input" style=" width:120px;" value="全部" readonly/>
+        </span>
+    </div>
+    <div class="gui-form-group clearfix">
+        <label>级别</label>
+        <span class="gui-select">
+            <select id="level" class="combobox" data-style="btn-info" style="width: 120px">
+                <option value="ALL">全部</option>
+                <option value="0 ">部级</option>
+                <option value="1 ">省级</option>
+                <option value="2 ">市级</option>
+                <option value="3 ">县级</option>
+            </select>
+        </span>
+        <label>状态</label>
+        <span class="gui-select">
+            <select id="status" class="combobox" data-style="btn-info" style="width: 120px">
+                <option value="ALL">全部</option>
+                <option value="0">未发布</option>
+                <option value="1">已发布</option>
+                <option value="2">执行中</option>
+                <option value="3">已结束,已完成</option>
+                <option value="4">已结束,未完成</option>
+                <option value="5">已废止</option>
+            </select>
+        </span>
+        <div class="cq2" style="clear:both;display:inline;"><span class="gui-btn" style="margin:10px;" id="clear">重置</span></div>
+        <span class="gui-btn" id="ToCheck">查询</span>
+
+    </div>
+<div class="setslist" style="float:left;display:inline;">
+    <ul>
+    </ul>
+</div>
+    <div class="gui-actions" style="clear: both">
+        <span class="gui-btn fr" ng-click="exportExcel()"><i class="gui-icon icon-export"></i>导出Excel</span>
+    </div>
+<!--监测列表-->
+    <table id="grid" class="gui-table">
+    </table>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,633 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysOrgMapper">
+
+    <resultMap id="selectJoinResultMap" type="com.sofn.sys.vo.SysOrgVo">
+        <result column="id" property="id"></result>
+        <result column="organizationName" property="organizationName"></result>
+        <result column="parentId" property="parentId"></result>
+        <result column="regionLastCode" property="regionLastCode"></result>
+        <result column="addressLastCode" property="addressLastCode"></result>
+        <result column="organizationLevel" property="organizationLevel"></result>
+        <result column="thirdOrg" property="thirdOrg"></result>
+        <result column="addressDetail" property="addressDetail"></result>
+        <result column="principal" property="principal"></result>
+        <result column="phone" property="phone"></result>
+        <result column="longitude" property="longitude"></result>
+        <result column="latitude" property="latitude"></result>
+        <collection property="appIds" ofType="java.lang.String">
+            <result column="appId" property="appId"></result>
+        </collection>
+    </resultMap>
+
+    <sql id="sysOrgSql">
+        so.ID,
+        so.PARENT_ID,
+        so.ORGANIZATION_NAME,
+        so.PARENT_IDS,
+        so.DEL_FLAG,
+        so.ORGANIZATION_LEVEL,
+        so.THIRD_ORG,
+        so.ADDRESS_DETAIL,
+        so.PRINCIPAL,
+        so.PHONE,
+        so.SORT,
+        so.REGION_LAST_CODE,
+        so.ADDRESS_LAST_CODE,
+        SO.longitude,
+        SO.latitude
+
+    </sql>
+
+    <select id="selectByParentIdAndAppIds" resultType="com.sofn.sys.model.SysOrg">
+        SELECT * from SYS_ORG so join SYS_SYSTEM_ORG sso on so.ID=sso.ORG_ID
+        <where>
+            and DEL_FLAG= 'N'
+            <if test="parentId != null and parentId != ''">
+                and so.PARENT_ID= #{parentId}
+            </if>
+            <if test="appIds != null and appIds.size>0">
+                and sso.APP_ID IN
+                <foreach collection="appIds" item="appId" open="(" close=")" separator=",">
+                    #{appId}
+                </foreach>
+            </if>
+        </where>
+        order by so.create_time desc , so.id DESC
+    </select>
+
+    <select id="selectByAppIdsOfUser" resultType="com.sofn.sys.model.SysOrg">
+        select * from (
+        SELECT
+        <include refid="sysOrgSql" />,
+        SO.create_time
+        from SYS_ORG so
+        left join SYS_SYSTEM_ORG sso on so.ID=sso.ORG_ID
+        left join SYS_REGION sr on so.REGION_LAST_CODE=sr.REGION_CODE
+        left join SYS_REGION sre on so.ADDRESS_LAST_CODE=sre.REGION_CODE
+        <where>
+            and so.DEL_FLAG= 'N'
+            <if test="userOrgId != null and userOrgId != ''">
+                and (
+                so.PARENT_IDS LIKE '%'|| '/' || #{userOrgId} ||'%'
+                or so.ID=#{userOrgId}
+                )
+            </if>
+            <if test="orgName != null and orgName != ''">
+                and so.ORGANIZATION_NAME LIKE '%'|| #{orgName} ||'%'
+            </if>
+            <if test="regionCode != null and regionCode != ''">
+                and so.REGION_LAST_CODE = #{regionCode}
+            </if>
+            <if test="orgLevel != null and orgLevel != ''">
+                and SO.ORGANIZATION_LEVEL = #{orgLevel}
+            </if>
+            <!--      <if test="regionCode != null and regionCode != ''">-->
+            <!--        and (-->
+            <!--        sr.PARENT_IDS LIKE concat('%/',#{regionCode})-->
+            <!--        or-->
+            <!--        sr.REGION_CODE=#{regionCode}-->
+            <!--        or-->
+            <!--        sre.PARENT_IDS LIKE concat('%/',#{regionCode})-->
+            <!--        or-->
+            <!--        sre.REGION_CODE=#{regionCode}-->
+            <!--        )-->
+            <!--      </if>-->
+            <if test="thirdOrg != null and thirdOrg != ''">
+                and so.THIRD_ORG = #{thirdOrg}
+            </if>
+            <if test="appIds != null and appIds.size>0">
+                and (
+                sso.APP_ID IN(
+                <foreach collection="appIds" item="appId" separator=",">
+                    #{appId}
+                </foreach>
+                ) or sso.APP_ID in (
+                select app_id from SYS_SUBSYSTEM where id in (
+                <foreach collection="appIds" item="appId" separator=",">
+                    #{appId}
+                </foreach>
+                )
+                )
+                )
+            </if>
+        </where>
+
+        union
+        SELECT
+        <include refid="sysOrgSql" />,
+        SO.create_time
+        from SYS_ORG so where so.id = 'sysorgroot' ) kkk order by create_time desc
+    </select>
+
+    <select id="selectAllByAppId" resultType="com.sofn.sys.model.SysOrg">
+        SELECT DISTINCT
+        <include refid="sysOrgSql" />
+        from SYS_ORG so
+        left join SYS_SYSTEM_ORG sso on so.ID=sso.ORG_ID
+        -- left join SYS_REGION sr on so.REGION_LAST_CODE=sr.REGION_CODE
+        <where>
+            and so.DEL_FLAG= 'N'
+            <if test="appId != null and appId != ''">
+                and sso.APP_ID=#{appId}
+            </if>
+            <if test="orgName != null and orgName != ''">
+                and so.ORGANIZATION_NAME like '%' || #{orgName} || '%'
+            </if>
+            <if test="regionLastCode != null and regionLastCode != ''">
+                and so.REGION_LAST_CODE=#{regionLastCode}
+            </if>
+        </where>
+    </select>
+
+    <select id="getInfoByCondition" parameterType="java.util.Map" resultType="java.util.HashMap">
+        select
+        so.ID,
+        so.ORGANIZATION_NAME ORGNAME,
+        so.ADDRESS_LAST_CODE,
+        sr.REGION_CODE,
+        sr.REGION_NAME,
+        sr.PARENT_IDS,
+        sr.PARENT_NAMES
+        from SYS_ORG so
+        left join SYS_REGION sr
+        on so.ADDRESS_LAST_CODE=sr.REGION_CODE
+        <where>
+            <if test="organizationName != null and organizationName!=''">
+                and so.ORGANIZATION_NAME like '%' || #{organizationName} || '%'
+            </if>
+            <if test="ids != null and ids.size != 0">
+                and SO.ID in
+                <foreach collection="ids" item="id" separator="," open="(" close=")">
+                    #{id,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectJoin" parameterType="java.util.Map" resultMap="selectJoinResultMap">
+        SELECT
+        SO.id id,
+        SO.ORGANIZATION_NAME organizationName,
+        SO.PARENT_ID parentId,
+        SSO.APP_ID appId,
+        SO.REGION_LAST_CODE regionLastCode,
+        SO.ADDRESS_LAST_CODE addressLastCode,
+        SO.ORGANIZATION_LEVEL organizationLevel,
+        SO.THIRD_ORG thirdOrg,
+        SO.ADDRESS_DETAIL addressDetail,
+        SO.PRINCIPAL principal,
+        SO.PHONE phone,
+        SO.longitude,
+        SO.latitude
+        FROM
+        SYS_ORG so
+        LEFT JOIN SYS_SYSTEM_ORG sso ON SSO.ORG_ID = SO. ID
+        left join SYS_SUBSYSTEM ss on (sso.app_id = ss.app_id or sso.app_id = ss.id) and ss.del_flag != 'Y'
+        <where>
+            and so.DEL_FLAG='N'
+            <if test="params.organizationName != null and params.organizationName!=''">
+                and so.ORGANIZATION_NAME like '%' || #{orgName} || '%'
+            </if>
+            <if test="params.appId != null and params.appId!=''">
+                and (ss.APP_ID=#{params.appId} or ss.id = #{params.appId} )
+            </if>
+            <if test="params.appIds != null and params.size > 0">
+                and (
+                ss.APP_ID in
+                <foreach collection="params.appIds" item="appId" open="(" close=")" separator=",">
+                    #{appId}
+                </foreach>
+                or
+                ss.ID in
+                <foreach collection="params.appIds" item="appId" open="(" close=")" separator=",">
+                    #{appId}
+                </foreach>
+                )
+            </if>
+
+            <if test="params.thridOrg != null and params.thridOrg!=''">
+                and so.THIRD_ORG=#{params.thridOrg}
+            </if>
+        </where>
+    </select>
+
+    <select id="getProxyOrgByRegionIdAndAppId" parameterType="java.util.Map"
+            resultType="com.sofn.sys.vo.SysOrganizationTreeVo">
+        select
+        so.ID AS ID,
+        SO.PARENT_ID AS parentId,
+        SO.PARENT_IDS AS parentIds,
+        SO.ORGANIZATION_NAME AS organizationName,
+        SO.THIRD_ORG AS thirdOrg,
+        SO.ORGANIZATION_LEVEL AS organizationLevel,
+        SO.ORGANIZATION_LEVEL AS organizationLevelName,
+        SO.REGIONCODE regioncode,
+        SO.REGIONCODE as regioncodeName,
+        SO.ADDRESS address,
+        SO.ADDRESS as addressName,
+        SO.PRINCIPAL principal,
+        SO.PHONE phone,
+        from SYS_ORG so where so.id in (
+        select a.THIRD_ORG_ID from SYS_ORG_AGENT a
+        left join SYS_ORG b on a.ORG_ID = b.id and b.del_flag != 'Y'
+        left join SYS_SUBSYSTEM ss on a.subsystem_id = ss.id and ss.del_flag != 'Y'
+        <where>
+            <if test="regionId != null and regionId != ''">
+                and b.REGION_LAST_CODE = #{regionId}
+            </if>
+            <if test="appId != null and appId != ''">
+                and (a.SUBSYSTEM_ID = #{appId} or ss.app_id = #{appId})
+            </if>
+            <if test="orgId != null and orgId != ''">
+                and a.ORG_ID = #{orgId}
+            </if>
+        </where>
+        )
+
+    </select>
+
+    <select id="selectByAppIdAndFunctionCode" resultType="com.sofn.sys.model.SysOrg">
+        SELECT
+        <include refid="sysOrgSql" />
+        from SYS_ORG so
+        left join SYS_SYSTEM_ORG sso on so.ID=sso.ORG_ID
+        left join SYS_SYSTEM_FUNCTION ssf on so.ID=ssf.ORG_ID
+        left join SYS_REGION sr on so.REGION_LAST_CODE=sr.REGION_CODE
+        <where>
+            and so.DEL_FLAG= 'N'
+            <if test="appId != null and appId != ''">
+                and sso.APP_ID=#{appId}
+                and ssf.APP_ID=#{appId}
+            </if>
+            <if test="functionCode != null and functionCode != ''">
+                and ssf.FUNCTION_CODE=#{functionCode}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByRegionAndLevel" resultType="com.sofn.sys.model.SysOrg">
+        SELECT
+        DISTINCT so.ID,
+        so.PARENT_ID parentId,
+        so.ORGANIZATION_NAME organizationName,
+        so.PARENT_IDS parentIds,
+        so.DEL_FLAG delFlag,
+        so.ORGANIZATION_LEVEL organizationLevel,
+        so.THIRD_ORG thirdOrg,
+        so.ADDRESS_DETAIL addressDetail,
+        so.PRINCIPAL principal,
+        so.PHONE phone,
+        so.SORT sort,
+        so.REGION_LAST_CODE regionLastCode ,
+        so.ADDRESS_LAST_CODE addressLastCode,
+        SO.longitude longitude,
+        SO.latitude latitude
+        from SYS_ORG so
+        left join SYS_SYSTEM_ORG sso on so.ID=sso.ORG_ID
+        left join SYS_REGION sr on so.REGION_LAST_CODE=sr.REGION_CODE
+        <where>
+            and so.DEL_FLAG= 'N'
+            <if test="appId != null and appId != ''">
+                and sso.APP_ID=#{appId}
+            </if>
+            <if test="level != null and level != ''">
+                and so.ORGANIZATION_LEVEL=#{level}
+            </if>
+            <if test="region != null and region != ''">
+                and sr.PARENT_IDS like '%/' || #{region} || '%'
+            </if>
+        </where>
+    </select>
+
+    <select id="getOrgAndProxyOrg" parameterType="java.util.Map" resultType="java.lang.String">
+        SELECT A.ID FROM SYS_ORG A
+        LEFT JOIN SYS_SYSTEM_ORG B on a.ID = B.ORG_ID
+        WHERE A.ID IN (
+        SELECT
+        SO.ID
+        FROM
+        SYS_ORG so
+        WHERE
+        SO. ID = #{orgId}
+        UNION
+        SELECT
+        SOA.THIRD_ORG_ID
+        FROM
+        SYS_ORG_AGENT soa
+        WHERE
+        SOA.ORG_ID = #{orgId}
+        AND SOA.SUBSYSTEM_ID IN
+        <foreach collection="systemAppIds" item="systemAppId" open="(" close=")" separator=",">
+            #{systemAppId}
+        </foreach>
+        )
+        AND B.APP_ID IN
+        <foreach collection="systemAppIds" item="systemAppId" open="(" close=")" separator=",">
+            #{systemAppId,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+
+    <select id="getChildrenOrgByIds" parameterType="java.util.Map" resultType="java.lang.String">
+        select a.ID from SYS_ORG a LEFT JOIN SYS_SYSTEM_ORG B ON A.ID = B.ORG_ID LEFT JOIN SYS_SUBSYSTEM SS ON (SS.ID =
+        B.APP_ID OR SS.APP_ID = B.APP_ID)
+        where (
+        <foreach collection="parentIdss" item="parentIds" separator="or">
+            a.PARENT_IDS like #{parentIds,jdbcType=VARCHAR} || '%'
+        </foreach>
+        )
+        AND A.DEL_FLAG != 'Y'
+        <if test="appId != null and appId != ''">
+            AND(
+            SS.APP_ID = #{appId,jdbcType=VARCHAR} OR SS.ID = #{appId,jdbcType=VARCHAR}
+            )
+        </if>
+    </select>
+
+    <select id="selectListByAppIdAndIds" parameterType="java.util.Map" resultType="com.sofn.sys.model.SysOrg">
+        select
+        so.*,
+        sr.REGION_CODE,
+        sr.REGION_NAME,
+        sr.PARENT_IDS,
+        sr.PARENT_NAMES
+        from SYS_ORG so
+        left join SYS_REGION sr on so.ADDRESS_LAST_CODE=sr.REGION_CODE
+        left join SYS_SYSTEM_ORG sso on so.ID=sso.ORG_ID
+        <where>
+            <if test="appId != null and appId!=''">
+                and sso.APP_ID = #{appId}
+            </if>
+            <if test="ids != null and ids.size != 0">
+                and so.ID in
+                <foreach collection="ids" item="id" separator="," open="(" close=")">
+                    #{id,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+        </where>
+        order by so.create_time desc , so.id DESC
+    </select>
+
+    <select id="getParentIdsByOrgIds" parameterType="java.util.Map" resultType="java.lang.String">
+        select a.PARENT_IDS||'/' || a.ID PARENT_IDS from SYS_ORG a where a.id in
+        <foreach collection="orgIds" item="orgId" open="(" close=")" separator=",">
+            #{orgId,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+
+    <select id="selectByAppId" resultType="com.sofn.sys.model.SysOrg">
+        SELECT  distinct <include refid="sysOrgSql" /> , so.create_time from SYS_ORG so left join SYS_SYSTEM_ORG sso on so.ID=sso.ORG_ID
+        left join SYS_SUBSYSTEM ss on ss.app_id = sso.app_id
+        <where>
+            and so.DEL_FLAG= 'N'
+            <if test="parentId != null and parentId != ''">
+                and so.PARENT_ID= #{parentId}
+            </if>
+            <if test="level != null and level != ''">
+                and so.ORGANIZATION_LEVEL=#{level}
+            </if>
+            <if test="appId != null and appId != ''">
+                and (sso.APP_ID=#{appId} or ss.id = #{appId} )
+            </if>
+        </where>
+        order by so.create_time desc , so.id DESC
+    </select>
+
+    <select id="selectDrillByAppId" resultType="com.sofn.sys.model.SysOrg">
+        SELECT * from SYS_ORG so join SYS_SYSTEM_ORG sso on so.ID=sso.ORG_ID
+        <where>
+            and DEL_FLAG= 'N'
+            <if test="appId != null and appId != ''">
+                and sso.APP_ID=#{appId}
+            </if>
+            <if test="parentId != null and parentId != ''">
+                and (
+                so.PARENT_IDS LIKE '%'|| '/' || #{parentId} ||'%'
+                or
+                so.ID=#{parentId}
+                )
+            </if>
+        </where>
+        order by so.create_time desc , so.id DESC
+    </select>
+
+    <update id="batchDelete" parameterType="java.util.Map">
+        update SYS_ORG set DEL_FLAG='Y',UPDATE_USER_ID=#{deleteUserId},UPDATE_TIME=#{deleteDate}
+        where ID in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="getOrgInfoByAppIdAndFunctionCode" parameterType="java.util.Map"  resultType="com.sofn.sys.model.SysOrg">
+        SELECT
+        <include refid="sysOrgSql" />
+        from SYS_ORG so
+        LEFT JOIN SYS_SYSTEM_ORG SSO ON SSO.ORG_ID = SO.ID
+        where
+        so.DEL_FLAG = 'N'
+        AND SSO.APP_ID = #{appId}
+        AND SO.ID IN (
+        select org_id from SYS_SYSTEM_FUNCTION where function_code = (
+        select SD.id from SYS_DICT sd left join SYS_DICT_TYPE sdt on SD.DICTTYPEID = SDT.ID
+        where sdt.TYPEVALUE = 'sys_org_function' and sd.dictcode = #{functionCode}
+        ) and APP_ID = #{appId}
+        )
+    </select>
+
+    <select id="getOrgInfoByAppIdAndParentIdAndOtherParam" parameterType="java.util.Map" resultType="com.sofn.sys.model.SysOrg">
+        select
+        distinct
+        so.ID,
+        so.PARENT_ID,
+        so.ORGANIZATION_NAME,
+        so.PARENT_IDS,
+        so.DEL_FLAG,
+        so.ORGANIZATION_LEVEL,
+        so.THIRD_ORG,
+        so.ADDRESS_DETAIL,
+        so.PRINCIPAL,
+        so.PHONE,
+        so.SORT,
+        so.REGION_LAST_CODE,
+        so.ADDRESS_LAST_CODE,
+        SO.longitude,
+        SO.latitude,
+        so.create_time
+        from (
+        select * from SYS_ORG
+        where PARENT_IDS like (#{otherParam.parentIdStrs} || '%')
+        union
+        select * from sys_org a where
+        a.ID =  #{otherParam.id}
+        ) so
+        LEFT JOIN SYS_SYSTEM_ORG SSO ON SSO.ORG_ID = SO.ID
+        LEFT JOIN SYS_SUBSYSTEM SS ON SS.APP_ID =SSO.APP_ID
+        WHERE SO.DEL_FLAG = 'N'
+        AND (SSO.APP_ID = #{appId} OR SS.ID = #{appId})
+        <if test="otherParam.orgName != null and otherParam.orgName != ''">
+            and so.ORGANIZATION_NAME LIKE '%'|| #{otherParam.orgName} ||'%'
+        </if>
+        <if test="otherParam.regionCode != null and otherParam.regionCode != ''">
+            and so.REGIONCODE like '%' || #{otherParam.regionCode} || '%'
+        </if>
+        <if test="otherParam.orgLevel != null and otherParam.orgLevel != ''">
+            and SO.ORGANIZATION_LEVEL = #{otherParam.orgLevel}
+        </if>
+        <if test="otherParam.thirdOrg != null and otherParam.thirdOrg != ''">
+            and so.THIRD_ORG = #{otherParam.thirdOrg}
+        </if>
+        order by so.create_time desc , so.id DESC
+    </select>
+
+
+    <select id="getOrgInfoByParentIdAndAppId" parameterType="java.util.Map" resultMap="selectJoinResultMap">
+        SELECT
+        SO.id id,
+        SO.ORGANIZATION_NAME organizationName,
+        SO.PARENT_ID parentId,
+        SSO.APP_ID appId,
+        SO.REGION_LAST_CODE regionLastCode,
+        SO.ADDRESS_LAST_CODE addressLastCode,
+        SO.ORGANIZATION_LEVEL organizationLevel,
+        SO.THIRD_ORG thirdOrg,
+        SO.ADDRESS_DETAIL addressDetail,
+        SO.PRINCIPAL principal,
+        SO.PHONE phone,
+        SO.longitude longitude,
+        SO.latitude latitude
+        FROM
+        SYS_ORG so
+        LEFT JOIN SYS_SYSTEM_ORG sso ON SSO.ORG_ID = SO. ID
+        left join SYS_SUBSYSTEM ss on (sso.app_id = ss.app_id or sso.app_id = ss.id) and ss.del_flag != 'Y'
+        where  so.PARENT_IDS like #{parentIdStr} || '%' and sso.APP_ID in
+        <foreach collection="appIds" item="appId" close=")" open="(" separator=",">
+            #{appId}
+        </foreach>
+        order by so.create_time desc , so.id DESC
+    </select>
+
+    <select id="getOrgIdByRegionCodeAndAppId" parameterType="java.util.Map" resultType="com.sofn.sys.model.SysOrg">
+        select
+        <include refid="sysOrgSql" />,
+        so.REGIONCODE regioncode
+        from SYS_ORG so
+        left join SYS_SYSTEM_ORG sso on SSO.ORG_ID = SO.ID
+        where app_id = #{appId}
+        <if test="orgLevel != null and orgLevel != ''">
+            and SO.ORGANIZATION_LEVEL = #{orgLevel}
+        </if>
+        <if test="regionCode != null and regionCode != ''">
+            and (SO.REGIONCODE like  '%' || #{regionCode} || '%' or SO.REGION_LAST_CODE= #{regionCode})
+        </if>
+        and SO.ID != 'sysorgroot'
+        and SO.DEL_FLAG = 'N'
+    </select>
+
+
+    <select id="replaceParentIds" parameterType="java.util.Map" >
+
+        update SYS_ORG set PARENT_IDS = replace(PARENT_IDS,#{oldParentIdsPrefix},#{newParentIdsPrefix})  where id in
+        <foreach collection="ids" item="id" close=")" open="(" separator=",">
+            #{id}
+        </foreach>
+
+    </select>
+
+    <select id="getChildInfoByParentIdsAndAppIds" parameterType="java.util.Map" resultType="com.sofn.sys.model.SysOrg">
+        select
+        <include refid="sysOrgSql" />,
+        so.REGIONCODE regioncode
+        from SYS_ORG so
+        LEFT JOIN SYS_SYSTEM_ORG sso ON SSO.ORG_ID = SO. ID
+        left join SYS_SUBSYSTEM ss on (sso.app_id = ss.app_id or sso.app_id = ss.id) and ss.del_flag != 'Y'
+        where SO.DEL_FLAG = 'N'
+        and SO.PARENT_IDS LIKE #{parentIds} || '%'
+        AND SS.APP_ID IN
+        <foreach collection="appIds" item="appId" open="(" close=")" separator=",">
+            #{appId}
+        </foreach>
+        ORDER BY SO.CREATE_TIME DESC,SO.ID DESC
+    </select>
+
+
+    <!--    <select id="getOrgCanShowOrgIds" parameterType="java.util.Map" resultType="java.lang.String">-->
+    <!--        select so.id from SYS_ORG so where so.id in (-->
+    <!--            select id from SYS_ORG  where id = #{orgId}-->
+    <!--            <if test="carryProxyOrg != null and 'Y'.toString() == carryProxyOrg">-->
+    <!--                union-->
+    <!--                select ORG_ID from SYS_ORG_AGENT where org_id in (-->
+    <!--                    select id from SYS_ORG where id = #{orgId}-->
+    <!--                    union-->
+    <!--                    select id from sys_org  where PARENT_IDS like-->
+    <!--                    (select PARENT_IDS || '/' || id || '%' from SYS_ORG  where id = #{orgId})-->
+    <!--                )-->
+    <!--                <if test="appIds != null and appIds.size() > 0">-->
+    <!--                    and SUBSYSTEM_ID-->
+    <!--                    in-->
+    <!--                    <foreach collection="appIds" item="appId" open="(" close=")" separator=",">-->
+    <!--                        #{appId}-->
+    <!--                    </foreach>-->
+    <!--                </if>-->
+    <!--                 and SUBSYSTEM_ID = 'sys'-->
+    <!--            </if>-->
+    <!--            <if test="carryChildren != null and 'Y'.toString() == carryChildren">-->
+    <!--                union-->
+    <!--                select id from sys_org  where PARENT_IDS like-->
+    <!--                (select PARENT_IDS || '/' || id || '%' from SYS_ORG  where id = #{orgId} )-->
+    <!--            </if>-->
+    <!--        ) and exists (-->
+    <!--            select sso.org_id from SYS_SYSTEM_ORG sso where sso.app_id in ('ducss') and so.id = sso.org_id-->
+    <!--        )-->
+    <!--    </select>-->
+
+    <select id="getOrgCanShowOrgIds" parameterType="java.util.Map" resultType="java.lang.String">
+        <include refid="com.sofn.sys.mapper.CommonMapper.getOrgCanShowOrgIds">
+            <property name="appIds" value="#{appIds}"/>
+            <property name="orgId" value="#{orgId}"/>
+            <property name="carryChildren" value="#{carryChildren}"/>
+            <property name="carryProxyOrg" value="#{carryProxyOrg}"/>
+        </include>
+    </select>
+
+    <sql id="sysOrgSqlInfo">
+        a.ID,
+        a.PARENT_ID,
+        a.ORGANIZATION_NAME,
+        a.PARENT_IDS,
+        a.DEL_FLAG,
+        a.ORGANIZATION_LEVEL,
+        a.THIRD_ORG,
+        a.ADDRESS_DETAIL,
+        a.PRINCIPAL,
+        a.PHONE,
+        a.SORT,
+        a.REGION_LAST_CODE,
+        a.ADDRESS_LAST_CODE,
+        a.longitude,
+        a.latitude
+    </sql>
+
+    <select id="getAllSysOgrList" resultType="com.sofn.sys.model.SysOrg">
+        <foreach collection="regionCodeList" open="(" close=")" item="id" separator="union all">
+            SELECT DISTINCT
+            <include refid="sysOrgSqlInfo" />
+            from SYS_ORG a
+            left join SYS_SYSTEM_ORG b on a.ID = b.ORG_ID
+            left join SYS_SYSTEM_FUNCTION c on a.ID = c.ORG_ID
+            left join SYS_DICT d on c.function_code = d.ID
+            left join sys_region e on a.REGION_LAST_CODE = e.region_code
+            <where>
+                and a.DEL_FLAG = 'N'
+                and e.parent_ids like '%/100000/' || #{id} || '%'
+                <if test="appId != null and appId != ''">
+                    and b.APP_ID = #{appId}
+                </if>
+                <if test="dictCode != null and dictCode != ''">
+                    and d.dictcode = #{dictCode}
+                </if>
+            </where>
+        </foreach>
+    </select>
+
+</mapper>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agpjpm.mapper.SurveyMapper">
+    <select id="listByParams" parameterType="java.util.Map" resultType="com.sofn.agpjpm.vo.ServeyListVo">
+        SELECT
+        sy.ID,
+        sy.province_name,
+        sy.city_name,
+        sy.county_name,
+        sy.survey_num,
+        sy.survey_date,
+        sy.surveyor,
+        sy.tel,
+        to_char(sy.altitude, '9999')altitude,
+        ha.habitat_id,
+        cl.climatic_id,
+        la.landform_id,
+        so.soil_id
+        FROM
+        Survey sy
+        LEFT JOIN
+        habitat_type ha on
+        sy.id=ha.survey_id
+        LEFT JOIN
+        climatic_type cl on
+        sy.id=cl.survey_id
+        LEFT JOIN
+        landform_type la on
+        sy.id=la.survey_id
+        LEFT JOIN
+        soil_type so on
+        sy.id=so.survey_id
+        <where>
+            1=1
+            <if test="habitatId != null and habitatId != ''">
+                and ha.habitat_id = #{habitatId}
+            </if>
+            <if test="soilId != null and soilId != ''">
+                and so.soil_id = #{soilId}
+            </if>
+            <if test="landformId != null and landformId != ''">
+                and la.landform_id = #{landformId}
+            </if>
+            <if test="climaticId != null and climaticId != ''">
+                and cl.climatic_id = #{climaticId}
+            </if>
+            <if test="province != null and province != ''">
+                and sy.province = #{province}
+            </if>
+            <if test="city != null and city != ''">
+                and sy.city = #{city}
+            </if>
+            <if test="county != null and county != ''">
+                and sy.county = #{county}
+            </if>
+            <if test="surveyor != null and surveyor != ''">
+                and sy.surveyor like '%'||#{surveyor}|| '%'
+            </if>
+            <if test="endTime != null and endTime != ''">
+                and sy.survey_date &lt;= #{endTime}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                and sy.survey_date &gt;= #{startTime}
+            </if>
+            <if test="createUserId != null and createUserId != ''">
+                and sy.create_user_id = #{createUserId}
+            </if>
+        </where>
+        order by sy.survey_date desc
+    </select>
+
+
+</mapper>

@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.TbCompMapper">
+    <resultMap id="BaseResultMap" type="com.sofn.fdpi.vo.TbCompVo">
+        <id column="ID" property="id" jdbcType="VARCHAR"/>
+        <result column="COMP_NAME" property="compName" jdbcType="VARCHAR"/>
+        <result column="COMP_PROVINCE" property="compProvince" jdbcType="VARCHAR"/>
+        <result column="COMP_CITY" property="compCity" jdbcType="VARCHAR"/>
+        <result column="COMP_DISTRICT" property="compDistrict" jdbcType="VARCHAR"/>
+        <result column="REGION_IN_CH" property="regionInCh" jdbcType="VARCHAR"/>
+        <result column="CONTACT_ADDRESS" property="contactAddress" jdbcType="VARCHAR"/>
+        <result column="POST_ADDRESS" property="postAddress" jdbcType="VARCHAR"/>
+        <result column="LEGAL" property="legal" jdbcType="VARCHAR"/>
+        <result column="LINKMAN" property="LinkMan" jdbcType="VARCHAR"/>
+        <result column="PHONE" property="phone" jdbcType="DATE"/>
+        <result column="EMAIL" property="email" jdbcType="VARCHAR"/>
+        <result column="COMP_STATUS" property="compStatus" jdbcType="VARCHAR"/>
+        <result column="COMP_STATUS_NAME" property="compStatusName" jdbcType="VARCHAR"/>
+        <result column="DIRECLY_ID" property="direclyId" jdbcType="VARCHAR"/>
+        <result column="PROVINCIAL_ID" property="provincialId" jdbcType="VARCHAR"/>
+        <result column="BUS_LICENSE_FILE_NAME" property="busLicenseFileName" jdbcType="VARCHAR"/>
+        <result column="BUS_LICENSE_FILE_ID" property="busLicenseFileId" jdbcType="VARCHAR"/>
+        <result column="BUS_LICENSE_FILE_PATH" property="busLicenseFilePath" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR"/>
+        <result column="CREATE_USER_ID" property="createUserId" jdbcType="VARCHAR"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="VARCHAR"/>
+        <result column="UPDATE_USER_ID" property="updateUserId" jdbcType="VARCHAR"/>
+        <result column="DEL_FLAG" property="delFlag" jdbcType="VARCHAR"/>
+        <result column="COMP_CODE" property="compCode" jdbcType="VARCHAR"/>
+        <result column="COMP_TYPE" property="compType" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    ID, COMP_NAME, COMP_PROVINCE, COMP_CITY, COMP_OODE, COMP_TYPE
+    , COMP_DISTRICT,REGION_IN_CH,CONTACT_ADDRESS, POST_ADDRESS, LEGAL
+    , LINKMAN, PHONE,EMAIL,COMP_STATUS
+    , (case COMP_STATUS when '1' THEN '审核通过' WHEN '2' THEN '退回' ELSE '注册' END) COMP_STATUS_NAME
+    , DIRECLY_ID, PROVINCIAL_ID, BUS_LICENSE_FILE_NAME, BUS_LICENSE_FILE_ID
+    , BUS_LICENSE_FILE_PATH,CREATE_TIME,UPDATE_TIME,UPDATE_USER_ID
+    , CREATE_USER_ID,DEL_FLAG
+  </sql>
+
+    <select id="ListByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_COMP
+        <where>
+            <if test="compName != null and compName != ''">
+                and COMP_NAME like '%'||#{compName}||'%'
+            </if>
+            and DEL_FLAG='0'
+        </where>
+        ORDER By CREATE_TIME DESC
+    </select>
+
+
+    <resultMap id="compAndYearInspectResultMap" type="com.sofn.fdpi.vo.TbCompVo">
+        <id column="ID" property="id" jdbcType="VARCHAR"/>
+        <result column="COMP_NAME" property="compName" jdbcType="VARCHAR"/>
+        <result column="REGION_IN_CH" property="regionInCh" jdbcType="VARCHAR"/>
+        <result column="INSPECT_ID" property="lastYearInspectId" jdbcType="VARCHAR"/>
+        <result column="UPDATE_TIME" property="lastYearInspectDate" jdbcType="VARCHAR"/>
+        <result column="IS_DIRECTLY" property="isDirectly" jdbcType="VARCHAR"/>
+        <result column="COMP_CODE" property="compCode" jdbcType="VARCHAR"/>
+        <result column="COMP_TYPE" property="compType" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="listForCompAndYearInspect" parameterType="java.util.Map" resultMap="compAndYearInspectResultMap">
+        select
+        A.ID, A.COMP_NAME, A.REGION_IN_CH, A.LINKMAN,A.COMP_CODE,A.COMP_TYPE
+        ,C.ID AS INSPECT_ID,C.UPDATE_TIME
+        ,(case A.DIRECLY_ID when #{userOrgId} then '1' else '0' end) IS_DIRECTLY
+        FROM TB_COMP A
+        left join (select TB_COMP_ID,MAX(YEAR) as YEAR from PAPERS_YEAR_INSPECT where STATUS='4' and DEL_FLAG='N' group
+        by
+        TB_COMP_ID) B on A.ID=B.TB_COMP_ID
+        left join PAPERS_YEAR_INSPECT C on B.TB_COMP_ID=C.TB_COMP_ID and B.YEAR=C.YEAR
+        <where>
+            and A.COMP_STATUS='1'
+            and A.DEL_FLAG='N'
+            <if test="provinceCode != null and provinceCode != ''">
+                and A.COMP_PROVINCE = #{provinceCode}
+            </if>
+            <if test="cityCode != null and cityCode != ''">
+                and A.COMP_CITY = #{cityCode}
+            </if>
+            <if test="districtCode != null and districtCode != ''">
+                and A.COMP_DISTRICT = #{districtCode}
+            </if>
+            <if test="compName != null and compName != ''">
+                and A.COMP_NAME like '%'||#{compName}||'%'
+            </if>
+            <if test="compFullName != null and compFullName != ''">
+                and A.COMP_NAME = #{compFullName}
+            </if>
+            <if test="sysOrgProvince!=null and sysOrgProvince!=''">
+                and A.COMP_PROVINCE=#{sysOrgProvince}
+            </if>
+            <if test="sysOrgCity!=null and sysOrgCity!=''">
+                and A.COMP_CITY=#{sysOrgCity}
+            </if>
+            <if test="sysOrgDistrict!=null and sysOrgDistrict!=''">
+                and A.COMP_DISTRICT=#{sysOrgDistrict}
+            </if>
+            <if test="compId!=null and compId!=''">
+                and A.ID=#{compId}
+            </if>
+            <if test="sysDirectOrgId!=null and sysDirectOrgId!=''">
+                and A.DIRECLY_ID=#{sysDirectOrgId}
+            </if>
+        </where>
+        order by A.CREATE_TIME DESC
+    </select>
+
+
+    <select id="getCombById" resultMap="BaseResultMap">
+        SELECT
+        B.ID, B.COMP_NAME, B.COMP_PROVINCE, B.COMP_CITY, B.COMP_CODE,B.COMP_TYPE
+        , B.COMP_DISTRICT,B.REGION_IN_CH,B.CONTACT_ADDRESS, B.POST_ADDRESS, C.LEGAL
+        , B.LINKMAN, B.PHONE,B.EMAIL,B.COMP_STATUS
+        , (case B.COMP_STATUS when '1' THEN '审核通过' WHEN '2' THEN '退回' ELSE '注册' END) COMP_STATUS_NAME
+        , B.DIRECLY_ID, B.PROVINCIAL_ID, B.BUS_LICENSE_FILE_NAME, B.BUS_LICENSE_FILE_ID
+        , B.BUS_LICENSE_FILE_PATH,B.CREATE_TIME,B.UPDATE_TIME,B.UPDATE_USER_ID
+        , B.CREATE_USER_ID,B.DEL_FLAG
+        FROM TB_COMP B
+        left join (SELECT distinct COMP_ID, LEGAL FROM PAPERS
+        WHERE UPDATE_TIME = (SELECT max(UPDATE_TIME) FROM PAPERS WHERE PAR_STATUS = '4' AND COMP_ID = #{id})
+        ) C ON B.ID=C.COMP_ID
+        <where>
+            and B.ID = #{id}
+        </where>
+    </select>
+
+    <!--获取当前企业的直属机构和级别-->
+    <resultMap id="deptLevelResultMap" type="com.sofn.fdpi.vo.DepartmentLevelVo">
+        <result column="DIRECLY_ID" property="sysDeptId" jdbcType="VARCHAR"></result>
+        <result column="DIRECT_ORG_LEVEL" property="sysLevel" jdbcType="VARCHAR"></result>
+    </resultMap>
+    <select id="getDeptLevel" resultMap="deptLevelResultMap">
+        select DIRECLY_ID,DIRECT_ORG_LEVEL
+        from TB_COMP
+        where ID=#{id}
+        and DEL_FLAG='N'
+        and COMP_STATUS='1'
+    </select>
+    <!--修改企业的行政区划和直属机构-->
+    <update id="updateCompRegionById" parameterType="com.sofn.fdpi.model.TbComp">
+        update TB_COMP
+        set
+        COMP_PROVINCE = #{compProvince},
+        COMP_CITY = #{compCity},
+        COMP_DISTRICT = #{compDistrict},
+        REGION_IN_CH = #{regionInCh},
+        DIRECLY_ID=#{direclyId},
+        DIRECT_ORG_LEVEL=#{directOrgLevel},
+        UPDATE_USER_ID = #{updateUserId},
+        UPDATE_TIME= #{updateTime}
+        <where>
+            ID = #{id}
+        </where>
+
+    </update>
+
+    <!--修改企业信息-->
+    <update id="updateComById" parameterType="com.sofn.fdpi.model.TbComp">
+        update TB_COMP
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="contactAddress!=null and contactAddress!=''">
+                CONTACT_ADDRESS = #{contactAddress},
+            </if>
+            <if test="postAddress!=null and postAddress!=''">
+                POST_ADDRESS = #{postAddress},
+            </if>
+            <if test="legal!=null and legal!=''">
+                LEGAL = #{legal},
+            </if>
+            <if test="LinkMan!=null and LinkMan!=''">
+                LINKMAN = #{LinkMan},
+            </if>
+            <if test="phone!=null and phone!=''">
+                PHONE = #{phone},
+            </if>
+            <if test="email!=null and email!=''">
+                EMAIL = #{email},
+            </if>
+            <if test="busLicenseFileName!=null and busLicenseFileName!=''">
+                BUS_LICENSE_FILE_NAME = #{busLicenseFileName},
+            </if>
+            <if test="busLicenseFileId!=null and busLicenseFileId!=''">
+                BUS_LICENSE_FILE_ID = #{busLicenseFileId},
+            </if>
+            <if test="busLicenseFilePath!=null and busLicenseFilePath!=''">
+                BUS_LICENSE_FILE_PATH = #{busLicenseFilePath},
+            </if>
+            <if test="updateUserId!=null and updateUserId!=''">
+                UPDATE_USER_ID = #{updateUserId},
+            </if>
+            <if test="updateTime!=null">
+                UPDATE_TIME= #{updateTime},
+            </if>
+            <if test="compCode != null and compCode !=''">
+                COMP_CODE = #{compCode},
+            </if>
+            <if test="compType != null and compType != ''">
+                COMP_TYPE = #{compType},
+            </if>
+        </trim>
+        where
+        ID = #{id}
+    </update>
+
+    <!--修改企业状态-->
+    <update id="updateStatusById" parameterType="java.util.Map">
+        update TB_COMP
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compStatus!=null and compStatus!=''">
+                COMP_STATUS=#{compStatus},
+            </if>
+            <if test="updateTime!=null">
+                UPDATE_TIME=#{updateTime},
+            </if>
+            <if test="updateUserId!=null and updateUserId!=''">
+                UPDATE_USER_ID=#{updateUserId},
+            </if>
+            <if test="compCode!=null and compCode!=''">
+                COMP_CODE=#{compCode},
+            </if>
+            <if test="compId!=null and compId!=''">
+                ID=#{compId},
+            </if>
+            <if test="directOrgId!=null and directOrgId!=''">
+                DIRECLY_ID=#{directOrgId},
+            </if>
+            <if test="directOrgLevel!=null and directOrgLevel!=''">
+                DIRECT_ORG_LEVEL=#{directOrgLevel},
+            </if>
+            <if test="delFlag!=null and delFlag!=''">
+                DEL_FLAG=#{delFlag},
+            </if>
+        </trim>
+        where
+        ID = #{id}
+    </update>
+    <select id="listForAllCompAndUser" resultType="com.sofn.fdpi.vo.CompAndUserVo">
+        select A.COMP_NAME,B.ACCOUNT AS USER_NAME
+        FROM TB_COMP A
+        LEFT JOIN TB_USERS B ON A.ID=B.COMP_ID
+        WHERE A.DEL_FLAG='N'
+    </select>
+    <select id="getCompCount" resultType="java.lang.Integer">
+        select count(*) from TB_COMP where COMP_STATUS = #{status}
+    </select>
+
+    <select id="getTodayMaxApplyNum" resultType="java.lang.String">
+        SELECT max(apply_num) FROM tb_comp WHERE apply_num like #{todayStr}||'%'
+    </select>
+
+    <select id="getMaxCompCode" resultType="java.lang.String">
+        select max(comp_code) from tb_comp
+    </select>
+
+</mapper>

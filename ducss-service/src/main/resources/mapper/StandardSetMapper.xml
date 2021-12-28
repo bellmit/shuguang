@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.StandardSetMapper" >
+
+
+    <resultMap id="BaseResultMap" type="com.sofn.ducss.model.StandardSet" >
+        <result column="id" property="id" />
+        <result column="year" property="year" />
+        <result column="operator" property="operator" />
+        <result column="operation_time" property="operationTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                year,
+                operator,
+                operation_time
+    </sql>
+    <select id="getStandardSetList" resultType="com.sofn.ducss.model.StandardSet">
+        select <include refid="Base_Column_List"/> from standard_set
+        <where>
+        <if test="years !=null and years.size()>0">
+            year in
+            <foreach collection="years" item="year" open="(" separator="," close=")">
+                #{year}
+            </foreach>
+        </if>
+    </where>
+        order by year desc
+    </select>
+
+    <select id="selectCopyYear" resultType="java.lang.String">
+        SELECT year FROM standard_set order by year desc
+    </select>
+
+
+</mapper>

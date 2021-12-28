@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysBaseDataMapper" >
+    <resultMap id="BaseResultMap" type="com.sofn.sys.model.SysBaseData" >
+        <id column="ID" jdbcType="VARCHAR" property="id" />
+        <!--<result column="DICTTYPEID" jdbcType="VARCHAR" property="sysDictType.id" />-->
+        <result column="BASEDATACODE" jdbcType="VARCHAR" property="BaseDatacode" />
+        <result column="BASEDATANAME" jdbcType="VARCHAR" property="BaseDataname" />
+        <result column="ENABLE" jdbcType="VARCHAR" property="enable" />
+        <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+        <result column="CREATE_USER_ID" jdbcType="VARCHAR" property="createUserId" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="UPDATE_USER_ID" jdbcType="VARCHAR" property="updateUserId" />
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+        <association property="sysBaseDataType" javaType="com.sofn.sys.model.SysBaseDataType">
+            <result column="BASEDATATYPEID" property="id" />
+        </association>
+    </resultMap>
+
+    <resultMap id="CommBaseDataMap" type="com.sofn.common.model.BaseData">
+        <id column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="BASEDATATYPEID" jdbcType="VARCHAR" property="baseDataTypeId"/>
+        <result column="BASEDATACODE" jdbcType="VARCHAR" property="baseDataCode"/>
+        <result column="BASEDATANAME" jdbcType="VARCHAR" property="baseDataName"/>
+    </resultMap>
+
+    <select id="getBaseDataById" resultMap="BaseResultMap">
+        SELECT
+        SYS_BASEDATA.ID,
+        SYS_BASEDATA.BASEDATATYPEID BASEDATATYPEID,
+        SYS_BASEDATA.BASEDATACODE,
+        SYS_BASEDATA.BASEDATANAME,
+        SYS_BASEDATA.ENABLE,
+        SYS_BASEDATA.REMARK,
+        SYS_BASEDATA.CREATE_USER_ID,
+        SYS_BASEDATA.CREATE_TIME,
+        SYS_BASEDATA.UPDATE_USER_ID,
+        SYS_BASEDATA.UPDATE_TIME
+        FROM
+        SYS_BASEDATA,SYS_BASEDATA_TYPE
+        WHERE SYS_BASEDATA.BASEDATATYPEID = SYS_BASEDATA_TYPE.ID
+        <if test="ids != null and ids.size > 0">
+            AND SYS_BASEDATA.ID in
+            <foreach collection="ids" item="id" separator="," close=")" open="(">
+                #{id}
+            </foreach>
+        </if>
+
+
+    </select>
+    <select id="getBaseDataInfo" resultMap="BaseResultMap">
+           SELECT
+                ID,
+                BASEDATATYPEID,
+                BASEDATACODE,
+                BASEDATANAME,
+                ENABLE as ENABLE,
+                REMARK,
+                CREATE_USER_ID,
+                CREATE_TIME,
+                UPDATE_USER_ID,
+                UPDATE_TIME
+            FROM
+                SYS_BASEDATA
+    </select>
+    <select id="getBaseDataByName" resultMap="BaseResultMap">
+        SELECT
+        ID,
+        BASEDATATYPEID,
+        BASEDATACODE,
+        BASEDATANAME,
+        ENABLE as ENABLE,
+        REMARK,
+        CREATE_USER_ID,
+        CREATE_TIME,
+        UPDATE_USER_ID,
+        UPDATE_TIME
+        FROM
+        SYS_BASEDATA
+        <where>
+            POSITION (#{baseDataName} in BASEDATANAME)>0
+        </where>
+    </select>
+
+
+    <select id="getBaseDataByValueAndType" resultMap="BaseResultMap">
+        SELECT
+        ID,
+        BASEDATATYPEID,
+        BASEDATACODE,
+        BASEDATANAME,
+        ENABLE as ENABLE,
+        REMARK,
+        CREATE_USER_ID,
+        CREATE_TIME,
+        UPDATE_USER_ID,
+        UPDATE_TIME
+        FROM
+        SYS_BASEDATA
+        WHERE 1=1
+        <if test="basedatacode != null and basedatacode != ''">
+            and BASEDATACODE = #{basedatacode}
+        </if>
+        <if test="basedataname != null and basedataname != ''">
+            and BASEDATANAME = #{basedataname}
+        </if>
+        <if test="basedatatypeid != null and basedatatypeid != ''">
+            and BASEDATATYPEID = #{basedatatypeid}
+        </if>
+
+        <if test="id != null and id != ''">
+            AND ID != #{id}
+        </if>
+
+    </select>
+    <select id="getBaseDataNameByValueAndType" resultMap="BaseResultMap">
+        SELECT
+        ID,
+        BASEDATATYPEID,
+        BASEDATACODE,
+        BASEDATANAME,
+        ENABLE as ENABLE,
+        REMARK,
+        CREATE_USER_ID,
+        CREATE_TIME,
+        UPDATE_USER_ID,
+        UPDATE_TIME
+        FROM
+        SYS_BASEDATA
+        WHERE 1=1
+        <if test="basedatacode != null and basedatacode != ''">
+            and BASEDATACODE = #{basedatacode}
+        </if>
+        <if test="typeValue != null and typeValue != ''">
+            and BASEDATATYPEID = (SELECT ID FROM SYS_BASEDATA_TYPE WHERE TYPEVALUE = #{typeValue})
+        </if>
+    </select>
+    <select id="getBaseDataListByType" resultMap="BaseResultMap">
+        SELECT
+        ID,
+        BASEDATATYPEID,
+        BASEDATACODE,
+        BASEDATANAME,
+        ENABLE as ENABLE,
+        REMARK,
+        CREATE_USER_ID,
+        CREATE_TIME,
+        UPDATE_USER_ID,
+        UPDATE_TIME
+        FROM
+        SYS_BASEDATA
+        WHERE 1=1
+        <if test="typevalue != null and typevalue != ''">
+            and BASEDATATYPEID = (SELECT ID FROM SYS_BASEDATA_TYPE WHERE TYPEVALUE = #{typevalue})
+        </if>
+    </select>
+
+    <select id="getBaseDataListByTypeId" resultMap="BaseResultMap">
+        SELECT
+        ID,
+        BASEDATATYPEID,
+        BASEDATACODE,
+        BASEDATANAME,
+        ENABLE as ENABLE,
+        REMARK,
+        CREATE_USER_ID,
+        CREATE_TIME,
+        UPDATE_USER_ID,
+        UPDATE_TIME
+        FROM
+        SYS_BASEDATA
+        WHERE 1=1
+        <if test="typeId != null and typeId != ''">
+            and BASEDATATYPEID = #{typeId}
+        </if>
+    </select>
+
+    <insert id="saveBaseDataInfo">
+
+        insert into SYS_BASEDATA (ID,BASEDATATYPEID,
+        BASEDATACODE, BASEDATANAME,ENABLE, REMARK,
+        CREATE_USER_ID, CREATE_TIME, UPDATE_USER_ID,UPDATE_TIME)
+        values (#{id,jdbcType=VARCHAR},#{sysBaseDataType.id,jdbcType=VARCHAR},#{BaseDatacode,jdbcType=VARCHAR},#{BaseDataname,jdbcType=VARCHAR},
+        #{enable,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{createUserId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+        #{updateUserId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP})
+
+
+    </insert>
+
+    <insert id="batchSaveBaseDataInfo" parameterType="java.util.Map">
+
+        insert into SYS_BASEDATA (ID,BASEDATATYPEID,
+        BASEDATACODE, BASEDATANAME,ENABLE, REMARK,
+        CREATE_USER_ID, CREATE_TIME, UPDATE_USER_ID,UPDATE_TIME)values
+        <foreach collection="sysBaseDataList" item="sysBaseData" separator=",">
+            (#{sysBaseData.id,jdbcType=VARCHAR},
+            #{sysBaseData.basedatatypeid,jdbcType=VARCHAR},
+            #{sysBaseData.BaseDatacode,jdbcType=VARCHAR},
+            #{sysBaseData.BaseDataname,jdbcType=VARCHAR},
+            #{sysBaseData.enable,jdbcType=VARCHAR},
+            #{sysBaseData.remark,jdbcType=VARCHAR},
+            #{sysBaseData.createUserId,jdbcType=VARCHAR},
+            #{sysBaseData.createTime,jdbcType=TIMESTAMP},
+            #{sysBaseData.updateUserId,jdbcType=VARCHAR},
+            #{sysBaseData.updateTime,jdbcType=TIMESTAMP})
+        </foreach>
+
+    </insert>
+
+    <update id="updateBaseDataInfo" >
+        update SYS_BASEDATA
+        set ENABLE = #{enable},UPDATE_USER_ID=#{updateUserId},UPDATE_TIME=#{updateTime}
+        WHERE ID = #{id}
+    </update>
+
+    <delete id="deleteBaseDataInfo" parameterType="java.util.Map">
+        DELETE FROM SYS_BASEDATA WHERE ID in
+        <foreach collection="ids" open="(" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getListByAppIdAndType" resultMap="CommBaseDataMap">
+        SELECT SD.ID, SD.BASEDATATYPEID, SD.BASEDATANAME, SD.BASEDATACODE FROM SYS_BASEDATA_TYPE SDT
+        LEFT JOIN SYS_BASEDATA SD ON SDT.ID=SD.BASEDATATYPEID
+        INNER JOIN SYS_SUBSYSTEM_BASEDATA_OWN SSBO ON SD.ID=SSBO.BASE_DATA_ID
+        WHERE SD.ENABLE='Y'
+        <if test="appId != null and appId != ''">
+            and APP_ID = #{appId}
+        </if>
+        <if test="type != null and type != ''">
+            and SDT.TYPEVALUE = #{type}
+        </if>
+    </select>
+
+    <select id="getByTypeAndKey" resultMap="CommBaseDataMap">
+        SELECT ID, BASEDATATYPEID, BASEDATANAME, BASEDATACODE FROM SYS_BASEDATA
+        WHERE ENABLE='Y'
+        <if test="type != null and type != ''">
+            and BASEDATATYPE = #{type}
+        </if>
+        <if test="key != null and key != ''">
+            and BASEDATACODE = #{key}
+        </if>
+    </select>
+
+    <select id="getBaseDataByBaseTypeIds" resultType="com.sofn.sys.model.SysBaseData">
+        SELECT
+        a.ID,
+        a.BASEDATANAME BaseDataname,
+        a.BASEDATACODE BaseDatacode,
+        a.ENABLE as enable,
+        a.BASEDATATYPEID basedatatypeid,
+        a.REMARK remark
+        FROM
+        SYS_BASEDATA a
+        where a.BASEDATATYPEID in
+        <foreach collection="types" item="type" open="(" close=")" separator=",">
+            #{type}
+        </foreach>
+    </select>
+
+
+    <select id="getBaseDataCodeByNames" parameterType="java.util.Map" resultMap="CommBaseDataMap">
+        SELECT DISTINCT SD.ID, SD.BASEDATATYPEID, SD.BASEDATANAME, SD.BASEDATACODE
+        FROM SYS_BASEDATA SD
+        LEFT JOIN SYS_BASEDATA_TYPE SBT ON SD.BASEDATATYPEID = SBT.ID
+        left join SYS_SUBSYSTEM_BASEDATA_OWN SSBO on SD.id = ssbo.base_data_id
+        WHERE SD.ENABLE='Y'
+        AND SBT.TYPEVALUE = #{baseDataTypeCode}
+        AND SSBO.APP_ID = #{appId}
+        AND SD.BASEDATANAME in
+        <foreach collection="baseDataNames" item="baseDataName" open="(" close=")" separator=",">
+            #{baseDataName}
+        </foreach>
+    </select>
+
+
+    <select id="getBaseDataCodeByParams" parameterType="java.util.Map"  resultMap="BaseResultMap">
+        SELECT
+        SB.ID,
+        SB.BASEDATATYPEID,
+        SB.BASEDATACODE,
+        SB.BASEDATANAME,
+        SB.ENABLE as ENABLE,
+        SB.REMARK,
+        SB.CREATE_USER_ID,
+        SB.CREATE_TIME,
+        SB.UPDATE_USER_ID,
+        SB.UPDATE_TIME
+        FROM
+        SYS_BASEDATA SB LEFT JOIN SYS_BASEDATA_TYPE SBT ON SB.BASEDATATYPEID = SBT.ID
+        where 1 = 1
+        <if test="keyword != null and keyword != ''">
+            and  (SB.BASEDATANAME like '%' ||#{keyword} ||'%' OR SB.BASEDATACODE like '%' ||#{keyword} ||'%')
+        </if>
+        <if test="baseDataTypeCode != null and baseDataTypeCode != ''">
+            and SBT.TYPEVALUE = #{baseDataTypeCode}
+        </if>
+        ORDER BY SB.CREATE_TIME DESC, SB.ID DESC
+
+    </select>
+
+    <update id="updateBaseDataInfoById" parameterType="com.sofn.sys.model.SysBaseData">
+         update SYS_BASEDATA
+         set
+            BASEDATANAME=#{sysBaseData.BaseDataname},
+            ENABLE = #{sysBaseData.enable},
+            REMARK=#{sysBaseData.remark},
+            BASEDATACODE=#{sysBaseData.BaseDatacode},
+            UPDATE_USER_ID=#{sysBaseData.updateUserId},
+            UPDATE_TIME=#{sysBaseData.updateTime}
+         WHERE ID = #{sysBaseData.id}
+    </update>
+
+    <select id="getSysBaseDataAndType" parameterType="java.util.Map" resultType="com.sofn.sys.vo.SysBaseDataAndTypeVo">
+        select
+        SB.id dataId,
+        SBT.id typeId,
+        SB.BASEDATACODE dataCode,
+        SB.BASEDATANAME dataName,
+        SBT.TYPENAME typeName,
+        sbt.TYPEVALUE typeCode ,
+        SB.REMARK dataRemark,
+        SBT.REMARK typeRemark
+        from SYS_BASEDATA SB
+        left  join SYS_BASEDATA_TYPE sbt on SB.BASEDATATYPEID = SBT.ID
+        left join SYS_SUBSYSTEM_BASEDATA_OWN ssbo on sb.id = ssbo.base_data_id
+        where SB.ENABLE = 'Y'
+        <if test="keyword != null and keyword != ''">
+            AND (SB.BASEDATACODE like '%' || #{keyword} || '%'
+            OR  SB.BASEDATANAME like '%' || #{keyword} || '%'
+            OR  SBT.TYPENAME like '%' || #{keyword} || '%'
+            OR   sbt.TYPEVALUE like '%' || #{keyword} || '%'
+
+            )
+        </if>
+        <if test="ids != null and ids.size > 0">
+            AND SB.ID IN
+            <foreach collection="ids" item="id" separator="," open="(" close=")">
+                #{id}
+            </foreach>
+        </if>
+        <if test="appId != null and appId != ''">
+            AND ssbo.app_id = #{appId}
+        </if>
+    </select>
+
+</mapper>

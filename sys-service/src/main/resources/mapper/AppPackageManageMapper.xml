@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.AppPackageManageMapper" >
+
+    <resultMap id="appPackageManageResult" type="com.sofn.sys.model.AppPackageManage">
+        <result column="ID" property="id"></result>
+        <result column="PRODUCT_NAME" property="productName"></result>
+        <result column="PLATFORM" property="platform"></result>
+        <result column="VERSION" property="version"></result>
+        <result column="INT_VERSION" property="intVersion"></result>
+        <result column="STATE" property="state"></result>
+        <result column="UPDATE_DESCRIPTION" property="updateDescription"></result>
+        <result column="SYS_FILE_MANAGE_ID" property="sysFileManageId"></result>
+        <result column="DEL_FLAG" property="delFlag"></result>
+        <result column="CREATE_USER_ID" property="createUserId"></result>
+        <result column="CREATE_TIME" property="createTime"></result>
+        <result column="UPDATE_USER_ID" property="updateUserId"></result>
+        <result column="UPDATE_TIME" property="updateTime"></result>
+    </resultMap>
+
+    <select id="getListByCondition" resultMap="appPackageManageResult" parameterType="java.util.Map">
+        select
+        ID                 ,
+        PRODUCT_NAME       ,
+        PLATFORM           ,
+        VERSION            ,
+        INT_VERSION        ,
+        STATE              ,
+        UPDATE_DESCRIPTION ,
+        SYS_FILE_MANAGE_ID  ,
+        DEL_FLAG           ,
+        CREATE_USER_ID     ,
+        CREATE_TIME        ,
+        UPDATE_USER_ID     ,
+        UPDATE_TIME
+        from APP_PACKAGE_MANAGE
+        <where>
+            <if test="productName != null and productName != ''">
+                and PRODUCT_NAME like '%' || #{productName} || '%'
+            </if>
+
+            <if test="platform != null and platform != ''">
+                and PLATFORM =  #{platform}
+            </if>
+            <if test="state != null and state != ''">
+                and STATE =  #{state}
+            </if>
+            and DEL_FLAG = 'N'
+        </where>
+
+        order by CREATE_TIME desc
+    </select>
+
+    <select id="getAndroidMaxVersion" resultType="java.lang.Integer" parameterType="java.lang.String">
+         select
+            MAX(INT_VERSION)
+        from APP_PACKAGE_MANAGE
+        where PLATFORM = 'android'  and PRODUCT_NAME = #{productName} and DEL_FLAG = 'N'
+    </select>
+
+    <select id="getNumberByNameAndPlatform" resultType="java.lang.Integer"  parameterType="java.util.Map">
+        select
+        count(1)
+        from APP_PACKAGE_MANAGE
+        where PRODUCT_NAME = #{productName}
+        and VERSION = #{version}
+        and PLATFORM =  #{platform}
+        and DEL_FLAG = 'N'
+        <if test="id != null and id != ''">
+            and id != #{id}
+        </if>
+    </select>
+
+    <select id="getListByProductNameAntPlatform" parameterType="java.util.Map" resultMap="appPackageManageResult">
+        select
+        ID                 ,
+        PRODUCT_NAME       ,
+        PLATFORM           ,
+        VERSION            ,
+        INT_VERSION        ,
+        STATE              ,
+        UPDATE_DESCRIPTION ,
+        SYS_FILE_MANAGE_ID  ,
+        DEL_FLAG           ,
+        CREATE_USER_ID     ,
+        CREATE_TIME        ,
+        UPDATE_USER_ID     ,
+        UPDATE_TIME
+        from APP_PACKAGE_MANAGE
+        where PRODUCT_NAME = #{productName} and PLATFORM =  #{platform} and DEL_FLAG = 'N'
+    </select>
+
+</mapper>

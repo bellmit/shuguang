@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agpjpm.mapper.TargetSpecMapper">
+
+<select id="getList" resultType="java.lang.String">
+    select distinct spec_id from target_spec where del_flag='N' and is_system='Y' and  spec_source='2'
+</select>
+    <resultMap id="rs1" type="com.sofn.agpjpm.vo.DropDownWithLatinVo">
+        <result column="spec_id" property="id"></result>
+        <result column="spec_name" property="name"></result>
+        <result column="latin_name" property="latinName"></result>
+        <result column="attr_name" property="attrName"></result>
+        <result column="family_name" property="familyName"></result>
+    </resultMap>
+    <select id="getBySpecId" resultMap="rs1">
+
+ select	spec_id,spec_name,latin_name,attr_name,family_name from target_spec where spec_id=#{specId} and del_flag='N' ORDER BY create_time desc LIMIT 1
+</select>
+    <update id="updateForDelete">
+        update target_spec set del_flag='Y' where id=#{id};
+    </update>
+</mapper>

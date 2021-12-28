@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fyrpa.mapper.EnvironmentResourcesMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.fyrpa.model.EnvironmentResources" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="basin_or_sea_area" property="basinOrSeaArea" jdbcType="VARCHAR" />
+    <result column="river_or_maritime_space" property="riverOrMaritimeSpace" jdbcType="VARCHAR" />
+    <result column="major_protect_object" property="majorProtectObject" jdbcType="VARCHAR" />
+    <result column="longitude" property="longitude" jdbcType="VARCHAR" />
+    <result column="latitude" property="latitude" jdbcType="VARCHAR" />
+    <result column="current_protection_area" property="currentProtectionArea" jdbcType="DOUBLE" />
+    <result column="core_region_area" property="coreRegionArea" jdbcType="DOUBLE" />
+    <result column="experiment_region_area" property="experimentRegionArea" jdbcType="DOUBLE" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="DATE" />
+    <result column="is_del" property="isDel" jdbcType="VARCHAR" />
+    <result column="longitude_range" property="longitudeRange" jdbcType="VARCHAR" />
+    <result column="latitude_range" property="latitudeRange" jdbcType="VARCHAR" />
+    <result column="start_time" property="startTime" jdbcType="DATE" />
+    <result column="end_time" property="endTime" jdbcType="DATE" />
+
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, basin_or_sea_area, river_or_maritime_space, major_protect_object, longitude, 
+    latitude, current_protection_area, core_region_area, experiment_region_area,
+    status, create_time,is_del,range,start_time,end_time
+  </sql>
+
+</mapper>

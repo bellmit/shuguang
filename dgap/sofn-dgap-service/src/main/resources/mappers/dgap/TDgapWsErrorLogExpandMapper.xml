@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.dao.dgap.TDgapWsErrorLogExpandMapper">
+    <resultMap id="BaseResultMap" type="com.sofn.model.generator.TDgapWsErrorLog" >
+        <id column="ID" property="id" jdbcType="VARCHAR" />
+        <result column="RESOURCE_DIRECTORY_ID" property="resourceDirectoryId" jdbcType="VARCHAR" />
+        <result column="WEB_SERVICE_ID" property="webServiceId" jdbcType="VARCHAR" />
+        <result column="WEB_SERVICE_NAME" property="webServiceName" jdbcType="VARCHAR" />
+        <result column="METHOD_NAME" property="methodName" jdbcType="VARCHAR" />
+        <result column="CALLER_USER" property="callerUser" jdbcType="VARCHAR" />
+        <result column="ERROR_TYPE" property="errorType" jdbcType="VARCHAR" />
+        <result column="ERROR_DESC" property="errorDesc" jdbcType="VARCHAR" />
+        <result column="ERROR_DATE" property="errorDate" jdbcType="TIMESTAMP" />
+        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" />
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="DEL_FLAG" property="delFlag" jdbcType="VARCHAR" />
+    </resultMap>
+    <!--资源列表-->
+    <select id="getPageCount" resultType="long">
+        SELECT COUNT(*) FROM T_DGAP_WS_ERROR_LOG T
+        LEFT JOIN T_DGAP_RESOURCE_DIRECTORY TD ON T.RESOURCE_DIRECTORY_ID = TD.ID
+        WHERE T.DEL_FLAG = 'N'
+        <if test="resourceDirectoryId !=null and resourceDirectoryId !=''">
+            AND RESOURCE_DIRECTORY_ID = #{resourceDirectoryId}
+        </if>
+        <if test="webServiceName !=null and webServiceName !=''">
+            AND WEB_SERVICE_NAME = #{webServiceName}
+        </if>
+        <if test="webServiceId !=null and webServiceId !=''">
+            AND WEB_SERVICE_ID = #{webServiceId}
+        </if>
+        <if test="methodName !=null and methodName !=''">
+            AND METHOD_NAME LIKE '%' || #{methodName} || '%'
+        </if>
+        <if test="callerUser !=null and callerUser !=''">
+            AND CALLER_USER LIKE '%' || #{callerUser} || '%'
+        </if>
+        <if test="errorType !=null and errorType !=''">
+            AND ERROR_TYPE = #{errorType}
+        </if>
+        <if test="startTime !=null and startTime !=''">
+            <![CDATA[
+            AND T.ERROR_DATE >= #{startTime}
+              ]]>
+        </if>
+        <if test="endTime !=null and endTime !=''">
+            <![CDATA[
+               AND T.ERROR_DATE < #{endTime}
+             ]]>
+        </if>
+    </select>
+
+    <select id="getPagesList" resultType="java.util.Map">
+        SELECT * FROM(
+        SELECT M.*,ROWNUM as rn FROM
+        (SELECT
+        T.ID, T.RESOURCE_DIRECTORY_ID, TD.NAME AS RESOURCE_DIR_NAME, T.WEB_SERVICE_ID,
+        T.WEB_SERVICE_NAME, T.METHOD_NAME,
+        T.CALLER_USER, T.ERROR_TYPE, T.ERROR_DESC,
+        T.ERROR_DATE, T.CREATE_BY, T.CREATE_TIME,
+        T.UPDATE_BY, T.UPDATE_TIME
+        FROM T_DGAP_WS_ERROR_LOG T
+        LEFT JOIN T_DGAP_RESOURCE_DIRECTORY TD ON T.RESOURCE_DIRECTORY_ID = TD.ID
+        WHERE T.DEL_FLAG = 'N'
+        <if test="resourceDirectoryId !=null and resourceDirectoryId !=''">
+            AND T.RESOURCE_DIRECTORY_ID = #{resourceDirectoryId}
+        </if>
+        <if test="webServiceName !=null and webServiceName !=''">
+            AND T.WEB_SERVICE_NAME = #{webServiceName}
+        </if>
+        <if test="webServiceId !=null and webServiceId !=''">
+            AND T.WEB_SERVICE_ID =  #{webServiceId}
+        </if>
+        <if test="methodName !=null and methodName !=''">
+            AND T.METHOD_NAME LIKE '%' || #{methodName} || '%'
+        </if>
+        <if test="callerUser !=null and callerUser !=''">
+            AND CALLER_USER LIKE '%' || #{callerUser} || '%'
+        </if>
+        <if test="errorType !=null and errorType !=''">
+            AND T.ERROR_TYPE = #{errorType}
+        </if>
+        <if test="startTime !=null and startTime !=''">
+            <![CDATA[
+            AND T.ERROR_DATE >= #{startTime}
+              ]]>
+        </if>
+        <if test="endTime !=null and endTime !=''">
+            <![CDATA[
+               AND T.ERROR_DATE < #{endTime}
+             ]]>
+        </if>
+        ORDER BY T.UPDATE_TIME DESC
+        ) M )
+        WHERE rn BETWEEN 1+#{pageSize}*(#{pageNum}-1) AND #{pageSize}*#{pageNum}
+    </select>
+
+</mapper>

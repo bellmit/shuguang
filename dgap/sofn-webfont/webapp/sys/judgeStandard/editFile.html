@@ -1,0 +1,39 @@
+<style>
+.btn-file {
+    margin-bottom: 30px;
+}
+
+.btn-default {
+    margin-bottom: 30px;
+}
+
+#eventForm .file-preview {
+    display: none;
+}
+</style>
+<div class="gui-breadcrumbs">
+    <a href="">监测系统</a>&gt;
+    <a href="">检测模型</a>&gt;
+    <a href="">判定标准</a>&gt;
+    <span>附件上传</span>
+</div>
+<div class="gui-section">
+    <ul class="gui-tab ng-scope">
+        <li><a ui-sref="index.content.sys/judgeStandard/editBaseInfo">基本信息</a></li>
+        <li class="active"><a ui-sref="index.content.sys/judgeStandard/editFile">上传附件</a></li>
+    </ul>
+    <div class="max-w-600 margin-auto">
+        <form method="post" enctype="multipart/form-data" id="eventForm">
+            <!--<a id="file_name" download="" class="btn btn-link" target="_blank"></a>
+               注：文件格式为：xlsx,xls,doc,docx,pdf,png,jpg。
+            只允许上传10MB以内的文件
+            <input class="gui-input" id="file-1" multiple="true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="1" type="file">-->
+        </form>
+        <div>
+            <div file-upload options="vm.uploadOptions" files="vm.files"></div>
+        </div>
+        <div class="text-center">
+            <button class="gui-btn" ng-click="goJudgeList()">返回</button>
+        </div>
+    </div>
+</div>

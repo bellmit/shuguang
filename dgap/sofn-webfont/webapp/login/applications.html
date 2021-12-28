@@ -1,0 +1,198 @@
+<link rel="stylesheet" href="../../assets/styles/dashboard.css" />
+<header class="gui-header clearfix">
+    <div class="section-logo">
+        <img
+            src="/assets/imgs/icon/logo.png"
+            alt="国家农产品质量安全追溯管理信息平台（政务办公）"
+            class="logo"
+        />
+        <h1>国家农产品质量安全追溯管理信息平台<em></em></h1>
+    </div>
+    <div class="section-nav">
+        <span class="gui-dropdown">
+            <span class="current">
+                <img src="../assets/imgs/icon/img_11.png" alt="" />
+                <span class="text" title="{{user.userName}}"
+                    >{{user.userName}}</span
+                >
+            </span>
+            <ul class="dropdown-list clearfix">
+                <li><a ng-click="gotoPersonalCenter($event)">个人中心</a></li>
+                <li><a ng-click="gotoHelpCenter($event)">帮助中心</a></li>
+                <li><a ng-click="loginOut($event)">退出登录</a></li>
+            </ul>
+        </span>
+    </div>
+</header>
+<div>
+    <ul class="dashboard-feature clearfix">
+        <li class="asms" ng-show="!!systems.ASMS">
+            <a ng-click="sysName('asms')">
+                <div class="icon">
+                    <img src="/images/login/icon/jgxt.png" alt="" />
+                </div>
+                <div class="bottom">
+                    <span class="highlight"></span>
+                    <span class="normal"></span>
+                    <span class="text">监管系统</span>
+                </div>
+            </a>
+        </li>
+        <li class="monitor" ng-show="!!systems.ADS">
+            <a
+                ui-sref="index.content.monitor/welcome/welcome"
+                ng-click="sysName('ads')"
+            >
+                <div class="icon">
+                    <img src="/images/login/icon/jcxt.png" alt="" />
+                </div>
+                <div class="bottom">
+                    <span class="highlight"></span>
+                    <span class="normal"></span>
+                    <span class="text">监测系统</span>
+                </div>
+            </a>
+        </li>
+        <li class="ales" ng-show="!!systems.ALES">
+            <a ng-click="sysName('ales')">
+                <div class="icon">
+                    <img src="/images/login/icon/zfxt.png" alt="" />
+                </div>
+                <div class="bottom">
+                    <span class="highlight"></span>
+                    <span class="normal"></span>
+                    <span class="text">执法系统</span>
+                </div>
+            </a>
+        </li>
+        <li class="fxjc" ng-show="!!systems.FXJC">
+            <a ng-click="go($event)">
+                <div class="icon">
+                    <img src="/images/login/icon/fxjc.png" alt="" />
+                </div>
+                <div class="bottom">
+                    <span class="highlight"></span>
+                    <span class="normal"></span>
+                    <span class="text">分析决策</span>
+                </div>
+            </a>
+        </li>
+        <li class="xxcx" ng-show="!!systems.QRY">
+            <a ng-click="sysName('qry')">
+                <div class="icon">
+                    <img src="/images/login/icon/xxcx.png" alt="" />
+                </div>
+                <div class="bottom">
+                    <span class="highlight"></span>
+                    <span class="normal"></span>
+                    <span class="text">信息查询</span>
+                </div>
+            </a>
+        </li>
+        <li class="dgap" ng-show="!!systems.DGAP">
+            <a ng-click="sysName('dgap')">
+                <div class="icon">
+                    <img src="/images/login/icon/sjgx.png" alt="" />
+                </div>
+                <div class="bottom">
+                    <span class="highlight"></span>
+                    <span class="normal"></span>
+                    <span class="text">数据共享</span>
+                </div>
+            </a>
+        </li>
+        <li class="sys" ng-show="!!systems.SYS">
+            <a
+                ui-sref="index.content.sys/role/roleList"
+                ng-click="sysName('sys')"
+            >
+                <div class="icon">
+                    <img src="/images/login/icon/xtgl.png" alt="" />
+                </div>
+                <div class="bottom">
+                    <span class="highlight"></span>
+                    <span class="normal"></span>
+                    <span class="text">系统管理</span>
+                </div>
+            </a>
+        </li>
+        <li class="xxcj" ng-show="!!systems.XXCJ">
+            <a ng-click="sysName('xxcj')">
+                <div class="icon">
+                    <img src="/images/login/icon/xxcj.jpg" alt="" />
+                </div>
+                <div class="bottom">
+                    <span class="normal"></span>
+                    <span class="highlight"></span>
+                    <span class="text">信息采集组件</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<!--查看模态框-->
+<div
+    class="modal fade help"
+    id="helpList"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myModalLabel"
+    aria-hidden="true"
+>
+    <div class="modal-dialog modal-style" style="width: 700px;height: 500px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span
+                    ><span class="sr-only">关闭</span>
+                </button>
+                <h2 class="modal-title">帮助中心</h2>
+            </div>
+            <div class="modal-body">
+                <ul class="message-list clearfix"></ul>
+            </div>
+            <div class="modal-footer">
+                <span type="button" class="gui-btn" data-dismiss="modal"
+                    >关闭</span
+                >
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--查看模态框-->
+<div
+    class="modal fade help"
+    id="helpListInfo"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myModalLabel"
+    aria-hidden="true"
+>
+    <div class="modal-dialog modal-style" style="width: 1100px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span
+                    ><span class="sr-only">关闭</span>
+                </button>
+                <h2 class="modal-title">帮助中心</h2>
+            </div>
+            <div class="modal-body">
+                <h4
+                    align="center"
+                    class="mt15"
+                    style="margin-bottom: 13px"
+                    id="helpListTitile2"
+                ></h4>
+                <article style="margin-bottom: 10px;" id="myInfo"></article>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

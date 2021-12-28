@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<infor-licenses version="1.0">
+  <production name="Flow" version="V9" />
+  <license component="Server" version="V8">
+    <formal>false</formal>
+    <licensee>Standard</licensee>
+    <cpus>nolimited</cpus>
+    <expiration>20210205</expiration>
+    <serial>snrqux384598</serial>
+    <units>nolimited</units>
+    <ip>any</ip>
+    <userinfor>www.cvicse.com</userinfor>
+    <signature>nNsbUSMrknOUeFI1O3eblbq9g9r2OskklcbdTa2jkJSLzwntIlZjrGwxmB/qFyKHWB2DpqIiPYodC0fxm3BU+fb60csd5x7+Jt3rOY7DHaj8b3lgPiVp+DFuyZbwPUhEyo4E7DbVoxo1RcPFgr31SNarOPlJhoE5UyjKdVFoIpucE8e1pXvzVlFXrBPLJsID07V0Qsw6wjkZJA81ti4M4Lv2DHmkDoKVzV30hOKJk4rtCLzTKjHuKuYGI9BwtYH+h4QjIUgFLgc=</signature>
+  </license>
+  <license component="Flow" version="V9">
+    <formal>false</formal>
+    <licensee>Enterprise</licensee>
+    <cpus>nolimited</cpus>
+    <expiration>20210205</expiration>
+    <serial>snrqux384598</serial>
+    <units>nolimited</units>
+    <ip>any</ip>
+    <userinfor>www.cvicse.com</userinfor>
+    <signature>nNsbUSMrknOUeFI1O3eblbq9g9r2OskklcbdTa2jkJRiuya6Ddz9PbhEalNIuXLRUVesE8smwgMGSlGYkFN1S8IBuYZ58h4w4CIODW0m9HeX7rnW/G2RuC+qvCco7pEf1VS3oqUoYiXlHqDrECS39NarOPlJhoE5UyjKdVFoIpucE8e1pXvzVlFXrBPLJsID07V0Qsw6wjmWydmD3mHXQ7v2DHmkDoKVzV30hOKJk4rtCLzTKjHuKuYGI9BwtYH+h4QjIUgFLgc=</signature>
+  </license>
+</infor-licenses>
+

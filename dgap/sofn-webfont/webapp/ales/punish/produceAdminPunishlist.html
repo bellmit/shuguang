@@ -1,0 +1,346 @@
+<link rel="stylesheet" href="assets/css/ales/ales.css" />
+<div class="gui-breadcrumbs">
+    <a ui-sref="index.content.ales/punish/produceAdminPunishlist">执法系统</a>&gt;
+    <a ui-sref="index.content.ales/punish/produceAdminPunishlist">日常执法管理</a>&gt;
+    <span>行政处罚</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group">
+        <span>所属行业</span>
+        <input type="checkbox" value="" name="entityIndustryLimit" ng-click="limitCheckBox('entityIndustry','entityIndustryLimit')"><span class="checkedIndustryTypeText">不限</span>
+        <span ng-repeat="a in industryType">
+                    <input type="checkbox" value="{{a.id}}" name="entityIndustry" ng-click="limitCheckBox('entityIndustryLimit','entityIndustry')"><span class="checkedIndustryTypeText" ng-bind="a.dictName"></span>
+        </span>
+        <br>
+        <br>
+        <span>主体类型</span>
+        <input type="checkbox" value="" name="entityTypeLimit" ng-click="limitCheckBox('entityType','entityTypeLimit')"><span class="checkedIndustryTypeText">不限</span>
+        <span ng-repeat="a in entityType">
+                    <input type="checkbox" value="{{a.dictName}}" name="entityType" ng-click="limitCheckBox('entityTypeLimit','entityType')"><span class="checkedIndustryTypeText" ng-bind="a.dictName"></span>
+        </span>
+        <br>
+        <br>
+        <span>区域</span>
+        <div class="gui-select">
+            <select id="sheng" name="ObjShen">
+                <option value="">省</option>
+            </select>
+        </div>
+        <div class="gui-select">
+            <select id="shi" name="ObjShi">
+                <option value="">市</option>
+            </select>
+        </div>
+        <div class="gui-select">
+            <select id="xian" name="ObjXian">
+                <option value="">区/县</option>
+            </select>
+        </div>
+        <span>年度</span>
+        <input id="Ddl_Year" name="taskYear" type="text" runat="server" onfocus="WdatePicker({skin:'default',dateFmt:'yyyy',minDate:'2010',maxDate:'%y'})" readonly="readonly" class=" gui-input" style=" width:100px;cursor: pointer" />
+        <span href="#modalCondition" data-toggle="modal" class="custom-condition">自定义条件</span>
+    </div>
+    <div class="gui-form-group">
+        <div class="">
+            <div class="condition-item">
+                <span>日期</span>
+                <input class="gui-input" name="datebegin" style="width: 120px;cursor: pointer;margin-right: 0px" readonly="readonly" id="datebegin" type="text" onFocus="var endDate=$dp.$('dateend');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateend\')}'})" /> --
+                <input class="gui-input" name="dateend" style="width: 120px;cursor: pointer;" readonly="readonly" id="dateend" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'datebegin\')}'})" />
+            </div>
+            <!--  <span>关键字</span>
+            <input class="gui-input" type="text" style="max-width: 130px" id="queryCon" name="queryCon" placeholder="请输入查询条件" maxlength="30" /> -->
+            <div class="condition-item condition-custom" data-control="text" ng-show="visiblecaseName">
+                <span>案件名称</span>
+                <input class="gui-input" ng-model="caseName" maxlength="80" type="text" placeholder="请输入案件名称" name="caseName" />
+            </div>
+            <div class="condition-item condition-custom" data-control="text" ng-show="visiblepenaltySource">
+                <span>行政处罚来源</span>
+                <div class="gui-select">
+                    <select ng-init="penaltySource=''" ng-model="penaltySource">
+                        <option value="" ng-selected="true">不限</option>
+                        <option value="检查发现">检查发现</option>
+                        <option value="群众举报（投诉）">群众举报（投诉）</option>
+                        <option value="上级交办">上级交办</option>
+                        <option value="有关部门移送">有关部门移送</option>
+                        <option value="媒体曝光">媒体曝光</option>
+                        <option value="监督抽查">监督抽查</option>
+                        <option value="违法行为人交代">违法行为人交代</option>
+                    </select>
+                </div>
+            </div>
+            <div class="condition-item condition-custom" data-control="text" ng-show="visiblepunishCode">
+                <span>行政处罚决定案号</span>
+                <input class="gui-input" ng-model="punishCode" maxlength="80" type="text" placeholder="请输入行政处罚决定案号" name="punishCode" />
+            </div>
+            <div class="condition-item condition-custom" data-control="text" ng-show="visibleproductName">
+                <span>违法产品名称</span>
+                <input class="gui-input" ng-model="productName" maxlength="80" type="text" placeholder="请输入违法产品名称" name="productName" />
+            </div>
+            <div class="condition-item condition-custom" data-control="text" ng-show="visibleenteriseName">
+                <span>标称生产企业</span>
+                <input class="gui-input" ng-model="enteriseName" maxlength="80" type="text" placeholder="请输入标称生产企业" name="enteriseName" />
+            </div>
+            <div class="condition-item condition-custom" data-control="text" ng-show="visiblemanufactureDate">
+                <span>生产日期或批号</span>
+                <input class="gui-input" ng-model="manufactureDate" maxlength="80" type="text" placeholder="请输入生产日期或批号" name="manufactureDate" />
+            </div>
+            <div class="condition-item condition-custom" data-control="text" ng-show="visibleenforceLawPeople">
+                <span>执法人员</span>
+                <input class="gui-input" ng-model="enforceLawPeople" maxlength="80" type="text" placeholder="请输入执法人员" name="enforceLawPeople" />
+            </div>
+            <div class="condition-item">
+                <button class="gui-btn" id="ToCheck" ng-click="querySelectList($event)" style="">查询</button>
+                <button class="gui-btn" ng-click="cleanSelectModelQuery($event)" style="">重置</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 图表面板 -->
+    <div class="gui-table-panel clearfix">
+        <p class="table-total" ng-show="isListView">符合条件的数据总计: {{tableTotal}} 项</p>
+        <!-- 切换视图展示 -->
+        <div class="view-type">展示方式
+            <i class="gui-icon icon-list highlight" ng-class="{'highlight': isListView}" ng-click="toggleView(true)" title="以列表视图展示"></i>
+            <i class="gui-icon icon-chart" ng-class="{'highlight': !isListView }" ng-click="toggleView(false)" title="以图形视图展示"></i>
+        </div>
+        <div class="gui-actions no-margin fr">
+            <button ng-click="del()" class="fr gui-btn fr ml15" id="delId">
+                <i class="gui-icon icon-remove"></i>删除</button>
+            <button class="gui-btn fr ml15" ui-sref="index.content.ales/punish/produceAdminPunishAdd" id="newId">
+                <i class="gui-icon icon-add"></i>新增行政处罚</button>
+            <button class="gui-btn fr" onclick="produceAdminPunishPrint()" style="margin-left: 5px" id="produceId">
+                <i class="gui-icon icon-print"></i>打印行政处罚单</button>
+        </div>
+    </div>
+    <!-- 图表区域 -->
+    <div class="gui-content-slide">
+        <div ng-style="{'transform': viewX}" class="content-wrap">
+            <div class="content-block">
+                <table id="grid" class="gui-table table-nowrap mt15" style="width: 100%">
+                </table>
+            </div>
+            <div class="content-block">
+                <div sg-chart options="vm.chartOptions" update="vm.chart"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--模态框的添加-&#45;&#45;查看-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog removeBor">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabels" style="text-align: center">行政处罚信息</h4>
+            </div>
+            <div class="modal-body clearfix gov-h " style="padding-left: 0px;padding-right: 0px;background-color: white;">
+                <div class="table-responsive">
+                    <table class="ApplyTable table-bordered">
+                        <tr>
+                            <td style="text-align: right; ">行政处罚来源 :</td>
+                            <td style="text-align: left">
+                                <span ng-bind="reCord.penaltySource"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right; background-color: white;">行政处罚决定案号 :</td>
+                            <td style="text-align: left;background-color: white;">
+                                <span ng-bind="reCord.punishCode"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right;">
+                                当事主体 :
+                            </td>
+                            <td style="text-align: left;">
+                                <a style="cursor: pointer;" onclick="selectEnterpriseInfo()"><span ng-bind="reCord.enterpriseIdName"></span></a>
+                                <!--&nbsp;&nbsp;&nbsp;&nbsp;<button onclick="selectEnterpriseInfo()" class="fr gui-btn" style="margin-right:20px;">查看详细信息</button>-->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right;background-color: white;">
+                                当事主体身份码 :
+                            </td>
+                            <td style="text-align: left;background-color: white;">
+                                <span ng-bind="reCord.enterpriseCode" style="word-break:break-all;"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                当事人 :
+                            </td>
+                            <td style="text-align: left">
+                                <span ng-bind="reCord.legalPerson"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right;background-color: white;">
+                                案件名称 :
+                            </td>
+                            <td style="text-align: left;background-color: white;">
+                                <span ng-bind="reCord.caseName"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                违法产品名称 :
+                            </td>
+                            <td style="text-align: left">
+                                <span ng-bind="reCord.productName"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right;background-color: white;">
+                                标称生产企业 :
+                            </td>
+                            <td style="text-align: left;background-color: white;">
+                                <span ng-bind="reCord.enterpriseName"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                生产日期或批次 :
+                            </td>
+                            <td style="text-align: left">
+                                <span ng-bind="reCord.manufactureDate"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right;background-color: white;">
+                                案件定性 :
+                            </td>
+                            <td style="text-align: left;background-color: white;">
+                                <span ng-bind="reCord.punishQualitative"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                行政处罚决定 :
+                            </td>
+                            <td style="text-align: left">
+                                <span ng-bind="reCord.punishResult"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right;background-color: white;">
+                                决定书 :
+                            </td>
+                            <td style="text-align: left;background-color: white;">
+                                <a onclick="downloadFile()" style="cursor: pointer"><span ng-bind="reCord.punishFilesName"></span></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                执法单位 :
+                            </td>
+                            <td style="text-align: left">
+                                <span ng-bind="reCord.enforceLawId"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right;background-color: white;">
+                                执法人员 :
+                            </td>
+                            <td style="text-align: left;background-color: white;">
+                                <span ng-bind="reCord.enforceLawPeople"></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal" onclick="qinchuhuanchun()">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalCondition" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">请选择自定义条件</h4>
+            </div>
+            <div class="modal-body">
+                <form novalidate="novalidate">
+                    <div class="list-head">
+                        <label>
+                            <input type="checkbox" class="condition-checked-all" />全选
+                        </label>
+                    </div>
+                    <ul class="gui-list list-condition">
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled />所属行业
+                            </label>
+                        </li>
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled>所属区域
+                            </label>
+                        </li>
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled>主体类型
+                            </label>
+                        </li>
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled>年度
+                            </label>
+                        </li>
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled>日期
+                            </label>
+                        </li>
+                        <li data-key="caseName">
+                            <label>
+                                <input type="checkbox">案件名称
+                            </label>
+                        </li>
+                        <li data-key="penaltySource">
+                            <label>
+                                <input type="checkbox">行政处罚来源
+                            </label>
+                        </li>
+                        <li data-key="punishCode">
+                            <label>
+                                <input type="checkbox">行政处罚决定案号
+                            </label>
+                        </li>
+                        <!--                         <li data-key="enierpriseIdName">
+                            <label>
+                                <input type="checkbox">当事主体
+                            </label>
+                        </li> -->
+                        <li data-key="productName">
+                            <label>
+                                <input type="checkbox">违法产品名称
+                            </label>
+                        </li>
+                        <li data-key="enteriseName">
+                            <label>
+                                <input type="checkbox">标称生产企业
+                            </label>
+                        </li>
+                        <li data-key="manufactureDate">
+                            <label>
+                                <input type="checkbox">生产日期或批号
+                            </label>
+                        </li>
+                        <li data-key="enforceLawPeople">
+                            <label>
+                                <input type="checkbox">执法人员
+                            </label>
+                        </li>
+                    </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="gui-btn" ng-click="confirmCondition()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>

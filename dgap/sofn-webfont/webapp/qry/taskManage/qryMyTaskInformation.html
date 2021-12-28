@@ -1,0 +1,110 @@
+<link rel="stylesheet" href="assets/css/ales/taskManage/myTaskInformation.css"/>
+<div class="gui-breadcrumbs">
+    <a href="">查询系统</a>&gt;
+    <a href="">执法信息查询</a>&gt;
+    <a href="#/index/content/qry/taskManage/qryMyCheckTask">承担任务</a>&gt;
+    <span>任务信息</span>
+</div>
+<div class="gui-section clearfix gov-h">
+    <h4>基本信息</h4>
+    <!--基本信息-->
+    <form class="bs-example bs-example-form" role="form">
+        <div class=" ">
+            <div class="">
+                <div class="clearfix gov-h mt15">
+                    <label class="col-lg-5 col-md-5 col-sm-5 " style="text-align: right;padding-right: 10px;">任务名称：</label>
+                    <span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   " ng-bind="checkTask.taskName"></span>
+                </div>
+                <div class="clearfix gov-h mt15">
+                    <label class="col-lg-5 col-md-5 col-sm-5 " style="text-align: right;padding-right: 10px;">监测类型：</label>
+                    <span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   " ng-bind="checkTask.taskType"></span>
+                </div>
+                <div class="clearfix gov-h mt15">
+                    <label class="col-lg-5 col-md-5 col-sm-5 " style="text-align: right;padding-right: 10px;">年度：</label>
+                    <span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   " ng-bind="checkTask.taskYear"></span>
+                </div>
+                <div class="clearfix gov-h mt15">
+                    <label  class="col-lg-5 col-md-5 col-sm-5 " style="text-align: right;padding-right: 10px;">任务时间：</label>
+                    <div class="col-lg-5 col-md-5 col-sm-5 " >
+
+                        <span ng-bind="checkTask.taskBeginTime"></span>&nbsp;&nbsp;至&nbsp;&nbsp;
+                        <span ng-bind="checkTask.taskEndTime"></span>
+                    </div>
+
+                </div>
+                <div class="clearfix gov-h mt15">
+                    <label class="col-lg-5 col-md-5 col-sm-5 " style="text-align: right;padding-right: 10px;">创建时间：</label>
+                    <span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   " ng-bind="checkTask.createTime"></span>
+                </div>
+                <div class="clearfix gov-h mt15">
+                    <label class="col-lg-5 col-md-5 col-sm-5 " style="text-align: right;padding-right: 10px;">发布单位：</label>
+                    <span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   "  ng-bind="checkTask.taskReleaseUnit"></span>
+                </div>
+                <div class="clearfix gov-h mt15"  name = "cdUnit" style="display: none">
+                    <label class="col-lg-5 col-md-5 col-sm-5 " style="text-align: right;padding-right: 10px;">承担单位：</label>
+                    <span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   "  ng-bind="checkTask.cdUnits"></span>
+                </div>
+                <div class="clearfix gov-h mt15" name = "cyUnit" style="display: none">
+                    <label class="col-lg-5 col-md-5 col-sm-5 " style="text-align: right;padding-right: 10px;">抽样单位：</label>
+                    <span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   "   ng-bind="checkTask.cyUnitName"></span>
+                </div>
+                <div class="clearfix gov-h mt15" name = "zfUnit">
+                    <label class="col-lg-5 col-md-5 col-sm-5 " style="text-align: right;padding-right: 10px;">监督执法单位：</label>
+                    <span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   "   ng-bind="checkTask.cyUnitName"></span>
+                </div>
+                <div class="clearfix gov-h mt15" name = "jcUnit" style="display: none">
+                    <label class="col-lg-5 col-md-5 col-sm-5 " style="text-align: right;padding-right: 10px;">检测单位：</label>
+                    <span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   "   ng-bind="checkTask.jcUnitName"></span>
+                </div>
+                <!--<div class="clearfix gov-h mt15">
+                    <label class="col-lg-5 col-md-5 col-sm-5 " style="text-align: right;padding-right: 10px;">判定标准：</label>
+                    <span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   "  ng-bind="checkTask.pdStandardLinkId"></span>
+                </div>-->
+                <!--<div class="clearfix gov-h mt15">
+                    <label class="col-lg-5 col-md-5 col-sm-5 " style="text-align: right;padding-right: 10px;">检测标准：</label>
+                    <span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   "  ng-bind="checkTask.jcStandardLinkId"></span>
+                </div>-->
+                <div class="clearfix gov-h mt15">
+                    <label class="col-lg-5 col-md-5 col-sm-5 " style="text-align: right;padding-right: 10px;">抽样截止时间：</label>
+                    <span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   "  ng-bind="checkTask.taskSampleDeadline"></span>
+                </div>
+                <div class="clearfix gov-h mt15">
+                    <label class="col-lg-5 col-md-5 col-sm-5 " style="text-align: right;padding-right: 10px;">所属区域：</label>
+                    <span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   "  ng-bind="checkTask.createOrgRegionId"></span>
+                </div>
+                <div class="clearfix gov-h mt15">
+                    <label class="col-lg-5 col-md-5 col-sm-5 " style="text-align: right;padding-right: 10px;">文件号：</label>
+                    <span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   "  ng-bind="checkTask.fileNumber"></span>
+                </div>
+                <!--<div class="clearfix gov-h mt15" name="File">
+                </div>-->
+                <div class="clearfix gov-h mt15" name="File">
+                    <label class="col-lg-5 col-md-5 col-sm-5 " style="text-align: right;padding-right: 10px;">附件：</label>
+                    <a class="color " style="cursor: pointer" class="Check-report" onclick="downFile()">
+                        <span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   "
+                              ng-bind="checkTask.attachmentName"></span>
+                    </a>
+
+                </div>
+                <!--<div class="clearfix gov-h mt15">-->
+                    <!--<label class="col-lg-5 col-md-5 col-sm-5 " style="text-align: right;padding-right: 10px;">文件号：</label>-->
+                    <!--<span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   "  ng-bind="checkTask.fileCode"></span>-->
+                <!--</div>-->
+                <!--<div class="clearfix gov-h mt15">-->
+                    <!--<label class="col-lg-5 col-md-5 col-sm-5 " style="padding-right: 10px;text-align: right">备注：</label>-->
+                    <!--<span class="col-lg-5 col-md-5 col-sm-5 " style="text-align: left   "  ng-bind="checkTask.remark"></span>-->
+                <!--</div>-->
+            </div>
+        </div>
+    </form>
+    <hr/>
+    <!--监测信息-->
+    <!--<P><h4>监测信息-【{{synType}}】</h4>
+    <p class="fleft">
+        <button ng-click="retrunDiskTop()" class="gui-btn">返回</button>
+        &lt;!&ndash;<button class="gui-btn"><a href="http://10.0.51.100/dfs/group1/M00/00/03/CgAzGFi3xk6ACArlAARxUvdKjMs6..docx" style="cursor:pointer;color: white">下载抽样单</a></button>&ndash;&gt;
+    </p>-->
+    <table id="JC_XX_Grid" class="gui-table mt15"
+           style="width: 100%">
+    </table>
+</div>

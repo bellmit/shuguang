@@ -1,0 +1,195 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+<link rel="stylesheet" href="../../libs/bootstrap/bootstrap-3.3.5-dist/css/bootstrap.css"/>
+<style type="text/css">
+    .asterisk {
+        right: -70px;
+        top: -3px;
+        color: red;
+        font-family: xinhao;
+    }
+</style>
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">查询系统</a>&gt;
+    <a href="" ng-click="back()">检测任务</a>&gt;
+    <a ui-sref="index.content.qry/monitorTask/taskSample/qryTaskSampleList">抽样单列表</a>&gt;
+    <span>抽样单</span>
+</div>
+<div class="gui-section">
+    <!--头-->
+    <h3 class="col-md-9 col-md-offset-3" style="margin-bottom: 20px">农业部 农产品质量安全抽样单</h3>
+    <table style="width: 100%;line-height: 80%;font-size: small;margin-top: 20px">
+        <tr>
+            <td height="40px" style="text-align: left"><span>产品追溯码：</span>
+                <input style="width: 80%" class="codeline gui-input" type="text" readOnly="true" ng-model="data.PRODUCT_TRACEABILITY_CODE">
+            </td>
+            <!--<td rowspan="2" width="120px">-->
+            <!--<div id="erweimacode" style="margin-right: 100px"></div>-->
+            <!--</td>-->
+        </tr>
+        <tr>
+            <td height="40px" style="text-align: left"><span>样&nbsp;品&nbsp;编&nbsp;码&nbsp;：</span>
+                <input readOnly="true" type="text" style="width:80%" class="codeline gui-input" ng-model="data.SAMPLE_CODE">
+            </td>
+        </tr>
+        <tr>
+            <td height="35px" style="text-align: left;vertical-align: middle;"><span>样品编码规则：20位以内的大写字母、小写字母、数字及其组合</span>
+            </td>
+        </tr>
+    </table>
+    <!--内容 -->
+    <table class="gui-table" id="attributeForm">
+
+        <tr style="text-align: left">
+            <td rowspan="4">被抽查单位情况</td>
+            <td style="text-align: right;padding-right: 10px;">单位地址<span class="asterisk">*</span></td>
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="data.TESTED_ADDRESS" name="testedAddress" readOnly="true"
+            ></td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">单位名称<span class="asterisk">*</span></td>
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="data.TESTED_DEPARMENT" name="testedDeparment" readOnly="true"
+            ></td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">联系人<span class="asterisk">*</span></td>
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="data.TESTED_LINKMAN" name="testedLinkman" readOnly="true">
+            </td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">联系电话<span class="asterisk">*</span></td>
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="data.TESTED_LINKMANPHONE" name="testedLinkmanphone" readOnly="true"
+            ></td>
+        </tr>
+
+        <tr style="text-align: left">
+            <td rowspan="6">样品信息</td>
+            <td style="text-align: right;padding-right: 10px;">抽样地点<span class="asterisk">*</span></td>
+            <td colspan="2" style="height: 80px;margin-left: 5px" class="form-group">
+                <input type="text" class="gui-input" style="width:90%;" ng-model="data.SAMPLE_PLACE" readOnly="true"
+                       name="samplePlace"  >
+            </td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">样品名称<span class="asterisk">*</span></td>
+            <td colspan="2" class="form-group"><input style="width: 100%;" type="text" class="gui-input"
+                                                      ng-model="data.SAMPLE_NAME" readOnly="true" name="sampleName"
+            ></td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">样品来源<span class="asterisk">*</span></td>
+            <td colspan="1" class="form-group">
+                <p>
+                    <label class="checkbox-inline">
+                        <input type="radio" class="selfProduced" name="isSelfProduced" value="自产" ng-click="switchIsSelfProduced()"> 自产
+                    </label>
+
+                    <label class="checkbox-inline">
+                        <input type="radio" class="notSelfProduced" name="isSelfProduced" value="其他" ng-click="switchIsSelfProduced()"> 其他
+                    </label>
+                </p>
+            </td>
+            <td colspan="2" class="form-group">
+                <input class="gui-input sampleSource" style="width: 70%;display: block" id="producingAreaName" name="producingAreaName" type="text" ng-model="data.PRODUCTIONS_TATUS" />
+            </td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">抽样数量<span class="asterisk">*</span></td>
+            <td colspan="1" class="form-group">
+                <input type="text" style="width: 100%;" class="gui-input" ng-model="data.SAMPLE_NUMBER" name="sampleNumber" readOnly="true"  >
+            </td>
+            <td colspan="1" class="form-group">
+                <span>抽样单位</span>
+                <div class="gui-select">
+                    <input type="text" style="width: 100%;" class="gui-input" ng-model="data.SAMPLE_NUMBER_UNIT" name="sampleNumberUnit" readOnly="true"  >
+                </div>
+            </td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">抽样基数<span class="asterisk">*</span></td>
+            <td colspan="1" class="form-group">
+                <input type="text" style="width: 100%;" class="gui-input" ng-model="data.SAMPLE_BASE" name="sampleBase"  readOnly="true" >
+            </td>
+            <td colspan="1" class="form-group">
+                <span>抽样单位</span>
+                <div class="gui-select">
+                    <input type="text" style="width: 100%;" class="gui-input" ng-model="data.SAMPLE_BASE_UNIT" name="sampleBaseUnit" readOnly="true"  >
+                </div>
+            </td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">生产日期</td>
+            <td colspan="2" class="form-group">
+                <input id="produceDate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="produceDate"  ng-model="data.PRODUCE_DATE" onblur="clearValidate()"
+                       class="gui-input" readOnly="true" >
+            </td>
+        </tr>
+
+        <tr style="text-align: left">
+            <td rowspan="4">抽样单位情况</td>
+            <td style="text-align: right;padding-right: 10px;">单位名称<span class="asterisk">*</span></td>
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="data.SAMPLE_DEPARMENT" name="sampleDeparment" readOnly="true"
+            ></td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">联系人<span class="asterisk">*</span></td>
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="data.SAMPLE_LINKMAN" name="sampleLinkman" readOnly="true"
+            >
+            </td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">通讯地址<span class="asterisk">*</span></td>
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="data.SAMPLE_ADDRESS" name="sampleAddress" readOnly="true"
+            ></td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">联系电话<span class="asterisk">*</span></td>
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="data.SAMPLE_PHONE" name="samplePhone" readOnly="true"
+            ></td>
+        </tr>
+
+        <tr style="height: 80px;text-align: left">
+            <td>
+                <label class="">备注<span class="asterisk">*</span></label>
+            </td>
+            <td colspan="3" style="height: 80px;margin-left: 5px" class="form-group">
+                <input type="text" class="gui-input" style="width:90%;" ng-model="data.COMMENT"
+                       name="comment"  readOnly="true">
+            </td>
+        </tr>
+
+    </table>
+
+    <table>
+        <tr style="height: 80px;text-align: left">
+            <td>
+                <label class="">附件<span class="asterisk">*</span></label>
+            </td>
+            <td name="filesview"  colspan="3" style="height: 80px;margin-left: 5px" class="form-group">
+                <div class="_box" id="imgSpot"/>
+            </td>
+        </tr>
+        <tr style="height: 80px;text-align: left">
+            <td>
+                <label class="">抽样人员<span class="asterisk">*</span></label>
+            </td>
+            <td colspan="3"　class="form-group">
+                <input type="text" class="gui-input" ng-model="data.SAMPLE_PERSON"
+                       name="samplePerson"
+                >
+            </td>
+        </tr>
+    </table>
+
+
+    <p style="text-align: center;border-top: 1px solid #9d9d9d;padding-top: 10px;" class="mt15 ">
+        <button ui-sref="index.content.qry/monitorTask/taskSample/qryTaskSampleList" class="ml15 mb25 gui-btn" type="button" >返回</button>
+    </p>
+</div>

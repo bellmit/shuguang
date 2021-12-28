@@ -1,0 +1,178 @@
+<link rel="stylesheet" href="assets/css/asms/check/cheNewsFile(rou).css"/>
+<style>
+    .Sup_contain_section_contain_head span {
+        margin-right: 0px;
+        display: table;
+    }
+    .form-group label.required:after {
+        display: inline-block;
+        content: '*';
+        color: red;
+        font-size: 12px;
+        vertical-align: middle;
+    }
+</style>
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">监管系统</a>&gt;
+    <a ui-sref="index.content.asms/check/checkTask">检测任务</a>&gt;
+    <a ui-sref="index.content.asms/check/checkTask">监督抽查</a>&gt;
+    <span id="OprTitle">操作</span>
+</div>
+<div class="gui-section clearfix gov-h">
+    <h3 style="text-align: center" class="mt15 mb25">监督抽查</h3>
+    <div class="Sup_contain_section_contain_head col-lg-12 col-xs-12 col-sm-12 col-md-12">
+
+        <form id="attributeForm" class="form-horizontal"
+              data-bv-excluded>
+
+            <div class="form-group">
+                <label class="col-lg-3 col-md-3 col-sm-3 control-label required">任务名称 </label>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <input type="text" name="taskName" class="form-control" ng-model="checkTask.taskName"
+                           data-bv-notempty="true"
+                           data-bv-notempty-message="请填写任务名称" maxlength="40"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-3 col-md-3 col-sm-3 control-label required">任务优先级 </label>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <select name="taskPriority" class="form-control gui-input" ng-model="checkTask.taskPriority" required data-bv-notempty-message="请填写任务名称">
+                        <option value='' disabled selected style='display:none;'>请选择</option>
+                        <option value="3">一般</option>
+                        <option value="2">紧急</option>
+                        <option value="1">特急</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-3 col-md-3 col-sm-3 control-label required">年&nbsp;&nbsp;度 </label>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <input name="taskyear" onChange="SdDateValid.DataValid(this)" class="form-control"
+                           onfocus="WdatePicker({isShowToday:false,skin:'default',dateFmt:'yyyy', minDate:'%y'})" class="Wdate"/>
+                    <div class="DataValidTip" style="font-size: 12px;margin-top: 5px;color: #a94442;display: none">
+                        年度不能为空
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-3 col-md-3 col-sm-3 control-label required">任务时间 </label>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <input name="taskBeginTime" class="Wdate form-control gui-input" onChange="SdDateValid.DataValid(this)"
+                           id="taskBeginTime" style="cursor: pointer" readonly="readonly" type="text"
+                           onFocus="var endDate=$dp.$('taskEndTime');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'taskEndTime\')}', minDate:'%y-1-1'})"/>
+                    <!--<input name="taskBeginTime" onChange="SdDateValid.DataValid(this)" class="Wdate form-control gui-input"-->
+                           <!--id="taskBeginTime" style="cursor: pointer" readonly="readonly"-->
+                           <!--ng-model="checkTask.taskBeginTime" type="text"-->
+                           <!--onFocus="var endDate=$dp.$('taskEndTime');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'taskEndTime\')}', minDate:'%y-%M-%d'})"/>-->
+                    <div class="DataValidTip" style="font-size: 12px;margin-top: 5px;color: #a94442;display: none">
+                        开始时间不能为空
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <input name="taskEndTime" class="Wdate form-control gui-input" onChange="SdDateValid.DataValid(this)"
+                           id="taskEndTime" style="cursor: pointer" readonly="readonly" type="text"
+                           onFocus="WdatePicker({minDate:'#F{$dp.$D(\'taskBeginTime\')}', minDate:'%y-%M-%d'})"/>
+                    <!--<input name="taskEndTime" onChange="SdDateValid.DataValid(this)" id="taskEndTime"-->
+                           <!--class="Wdate form-control gui-input" style="cursor: pointer" readonly="readonly" type="text"-->
+                           <!--onFocus="WdatePicker({minDate:'#F{$dp.$D(\'taskBeginTime\')}'})"-->
+                           <!--ng-model="checkTask.taskEndTime"/>-->
+                    <div class="DataValidTip" style="font-size: 12px;margin-top: 5px;color: #a94442;display: none">
+                        结束时间不能为空
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-3 col-md-3 col-sm-3 control-label required">发布单位 </label>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <input type="text" name="taskReleaseUnit" readonly class="form-control" data-bv-notempty="true"
+                           data-bv-notempty-message="请选择发布单位">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-3 col-md-3 col-sm-3 control-label required">承担单位 </label>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <input type="text" onChange="SdDateValid.DataValid(this)" readonly name="cdName"
+                           class="form-control" ng-click="selectPerson()">
+                    <div class="DataValidTip" style="font-size: 12px;margin-top: 5px;color: #a94442;display: none">
+                        承担单位不能为空
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 col-md-3 col-sm-3 control-label required">文件号 </label>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <input type='text' name='fileCode' class="form-control" ng-model="checkTask.fileNumber"
+                           data-bv-notempty="true"
+                           data-bv-notempty-message="请输入文件号" maxlength="30"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 col-md-3 col-sm-3 control-label">备&nbsp;&nbsp;注&nbsp;&nbsp; </label>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <textarea type="text" name="remark" class="form-control" ng-model="checkTask.remark"></textarea>
+                </div>
+            </div>
+            <div class="form-group" style="margin-left: 125px">
+                <label class="col-lg-3 col-md-3 col-sm-3 control-labe required">附&nbsp;&nbsp;件</label>
+                <div file-upload options="vm.uploadOptions" files="vm.files"></div>
+            </div>
+
+        </form>
+        <!--******************************-->
+        <div align="center" class="mb25">
+            <button class="gui-btn" ng-click="infoSave()">保存</button>
+            <button class="gui-btn" ui-sref="index.content.asms/check/checkTask" ng-click="cleanCookie()">取消</button>
+        </div>
+    </div>
+
+</div>
+<!--personSelectList-->
+<div class="modal fade" id="selectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid" style="width: 60%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">
+                    <span id="modalTitle">机构选择</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <div class="gui-select" style="width: 30%;">
+                    <select id="selectQueryShen" style="width: 100px">
+                        <option value="">--省--</option>
+                    </select>
+                </div>
+                <div class="gui-select" style="width: 30%;">
+                    <select id="selectQueryShi" style="width: 100px">
+                        <option value="">--市--</option>
+                    </select>
+                </div>
+                <div class="gui-select" style="width: 30%;">
+                    <select id="selectQueryXian" style="width: 100px">
+                        <option value="">--县--</option>
+                    </select>
+                </div>
+                <input class="gui-input mt15" type="text" name="selectQueryName" placeholder="请输入名称">
+                <button class="gui-btn mt15" id="selectTocheck" ng-disabled="!!btnDisabled" data-toggle="tooltip" data-placement="right"
+                        title="根据输入条件检索列表">查询
+                </button>
+                <button class="gui-btn mt15" data-toggle="tooltip" data-placement="right"
+                        ng-click="cleanSelectModelQuery()">重置
+                </button>
+                <button class="gui-btn mt15" data-toggle="tooltip" data-placement="right" ng-click="cleanSelected()">
+                    清空已选择
+                </button>
+                <!--list-->
+                <table id="selectGrid" style="width: 100%;" class="gui-table mt15">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn mt15" type="button" ng-click="selectModalQdButt()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>

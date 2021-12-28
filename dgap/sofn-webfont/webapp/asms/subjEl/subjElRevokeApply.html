@@ -1,0 +1,46 @@
+<link rel="stylesheet" href="assets/css/asms/subjSv/subjSvRevokeApply.css"/>
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">监管系统</a>&gt;
+    <a ui-sref="index.content.asms/subjEl/subjElList">主体管理</a>&gt;
+    <a ui-sref="index.content.asms/subjEl/subjElList">执法机构</a>&gt;
+    <span>注册撤销申请</span>
+</div>
+    <div class="  gui-section gui-section-wid">
+        <h4 class="mt15 mb25">注册撤销申请</h4>
+        <form id="applyRevokeForm" name="applyRevokeForm">
+        <input class="gui-input" ng-model="subjElId" type="hidden"/>
+            <table class="ApplyTable" style="text-align: left">
+                <tbody>
+                <tr><td>机构名称</td><td><span ng-bind="subjEl.elName"></span></td></tr>
+                <tr><td>机构代码</td><td><span ng-bind="subjEl.elCode"></span></td></tr>
+                <tr><td>机构类别</td><td><span ng-bind="subjEl.elType"></span></td></tr>
+                <tr><td>机构级别</td><td><span ng-bind="subjEl.elLevelName"></span></td></tr>
+                <tr><td>所属区域</td><td><span ng-bind="subjEl.elArea"></span></td></tr>
+                <tr><td>通讯地址</td><td><span ng-bind="subjEl.elAddress"></span></td></tr>
+                <tr><td>负责人</td><td><span ng-bind="subjEl.elLeader"></span></td></tr>
+                <tr><td>负责人电话</td><td><span ng-bind="subjEl.elLeaderPhone"></span></td></tr>
+                <tr><td>联系人</td><td><span ng-bind="subjEl.elContact"></span></td></tr>
+                <tr><td>联系人电话</td><td><span ng-bind="subjEl.elContactPhone"></span></td></tr>
+                <tr><td>联系人QQ</td><td><span>{{subjEl.elContactQQ||'无'}}</span></td></tr>
+                <tr><td>电子邮箱</td><td><span>{{subjEl.elContactEmail||'无'}}</span></td></tr>
+                <tr><td>邮编</td><td><span>{{subjEl.elPostcode||'无'}}</span></td></tr>
+                <tr><td>单位性质</td><td><span>{{subjEl.elUnitNature||'无'}}</span></td></tr>
+                <tr><td>具体办事机构</td><td><span>{{subjEl.elWorkBody||'无'}}</span></td></tr>
+                <tr><td>执法人数</td><td><span>{{subjEl.elPeopleNum||'无'}}</span></td></tr
+                <tr class="Sup_contain_section_contain_head_photo"><td style="vertical-align: middle">撤销原因<span style="color:red;">*</span></td><td  class="form-group">
+                    <textarea style="max-width: 500px" rows="3" ng-model="applyReason" name="applyReason"
+                              class="form-control"
+                              data-bv-notempty="true"
+                              data-bv-notempty-message="撤销原因不能为空"
+                              data-bv-stringlength="true"
+                              data-bv-stringlength-max="300"
+                              data-bv-stringlength-message="撤销原因不能超过300个字符"></textarea>
+                </td></tr>
+                </tbody>
+            </table>
+        </form>
+        <div align="center">
+            <button class="gui-btn mt15 mb25" ng-click="removeLocalStorage()">取消</button>
+            <button class="gui-btn mt15 mb25" ng-click="applySubjElRevoke()">确认</button>
+        </div>
+    </div>

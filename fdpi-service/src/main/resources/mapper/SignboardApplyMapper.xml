@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.SignboardApplyMapper">
+
+    <sql id="alias_Column_List_sa">
+      sa.ID, sa.SPE_ID, sa.COMP_ID, sa.APPLY_TYPE, sa.APPLY_TIME, sa.APPLY_NUM, sa.SPE_UTILIZE_TYPE, sa.SPE_SOURCE, sa.APPLY_CODE,sa.SALE_PROVINCE,sa.CITES_CODE
+      ,sa.ANDRIAS_CONTENT,sa.TYPE,sa.INTRODUCTION,sa.PROCESS_STATUS, sa.LAST_ADVICE, sa.CREATE_USER_ID, sa.CREATE_TIME, sa.UPDATE_USER_ID, sa.UPDATE_TIME, sa.DEL_FLAG
+    </sql>
+    <sql id="alias_Column_List_ts">
+      ts.SPE_NAME, ts.SPE_CODE
+    </sql>
+    <sql id="alias_Column_List_sp">
+      sp.PERSON as auditer
+    </sql>
+    <sql id="alias_Column_List_tc">
+      tc.COMP_NAME, tc.COMP_PROVINCE, tc.COMP_CITY, tc.COMP_DISTRICT, tc.CONTACT_ADDRESS, tc.POST_ADDRESS,
+      tc.LEGAL, tc.LINKMAN, tc.PHONE, tc.EMAIL, tc.COMP_TYPE
+    </sql>
+    <select id="listByParams" resultType="com.sofn.fdpi.model.SignboardApply">
+        select (select count(1) from signboard s where apply_id = sa.ID and s.print_status = '1') as allotmentNum,
+        <include refid="alias_Column_List_sa"/>,<include refid="alias_Column_List_ts"/>,
+        <include refid="alias_Column_List_tc"/>,
+        <include refid="alias_Column_List_sp"/>
+        from SIGNBOARD_APPLY sa
+        left join TB_SPECIES ts on sa.SPE_ID = ts.ID
+        left join TB_COMP tc on sa.COMP_ID = tc.ID
+        left join SIGNBOARD_PROCESS sp on sp.APPLY_ID = sa.ID and
+        sp.CREATE_TIME = (select max(CREATE_TIME) from SIGNBOARD_PROCESS where STATUS = '4' and APPLY_ID = sa.ID)
+        <where>
+            sa.DEL_FLAG = 'N'
+            <if test="processStatus != null and processStatus != ''">
+                and sa.PROCESS_STATUS = #{processStatus}
+            </if>
+            <if test="applyType != null and applyType != ''">
+                and sa.APPLY_TYPE = #{applyType}
+            </if>
+            <if test="auditer != null and auditer != ''">
+                and sp.PERSON like '%' || #{auditer} || '%'
+            </if>
+            <if test="direclyId != null and direclyId != ''">
+                and tc.DIRECLY_ID = #{direclyId}
+            </if>
+            <if test="compId != null and compId != ''">
+                and sa.COMP_ID = #{compId}
+            </if>
+            <if test="speId != null and speId != ''">
+                and sa.SPE_ID = #{speId}
+            </if>
+            <if test="applyDateS!=null">
+                and sa.APPLY_TIME &gt;= to_timestamp(#{applyDateS},'yyyy-MM-dd HH24:MI:SS')
+            </if>
+            <if test="applyDateE!=null">
+                and sa.APPLY_TIME &lt;= to_timestamp(#{applyDateE},'yyyy-MM-dd HH24:MI:SS')
+            </if>
+            <if test="speName != null and speName != ''">
+                and ts.SPE_NAME like '%' || #{speName} || '%'
+            </if>
+            <if test="applyCode != null and applyCode != ''">
+                and sa.APPLY_CODE like '%' || #{applyCode} || '%'
+            </if>
+            <if test="compName != null and compName != ''">
+                and tc.COMP_NAME like '%' || #{compName} || '%'
+            </if>
+            <choose>
+                <!--区级初审权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.fdpi.constants.Constants@REGION_TYPE_COUNTY">
+                    and sa.PROCESS_STATUS > '1' and sa.PROCESS_STATUS !='10' and tc.COMP_DISTRICT = #{regionLastCode}
+                </when>
+                <!--市级初审权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.fdpi.constants.Constants@REGION_TYPE_CITY">
+                    and sa.PROCESS_STATUS > '1' and sa.PROCESS_STATUS !='10' and tc.COMP_CITY = #{regionLastCode}
+                </when>
+                <!--省级有初审和复审权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.fdpi.constants.Constants@REGION_TYPE_PROVINCE">
+                    and sa.PROCESS_STATUS > '1' and sa.PROCESS_STATUS !='10' and tc.COMP_PROVINCE = #{regionLastCode}
+                </when>
+                <!--部级终审权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.fdpi.constants.Constants@REGION_TYPE_MINISTRY">
+                    and sa.PROCESS_STATUS > '3' and sa.PROCESS_STATUS !='10'
+                </when>
+            </choose>
+        </where>
+        order by sa.CREATE_TIME desc
+    </select>
+
+    <select id="getSignboardApply" resultType="com.sofn.fdpi.model.SignboardApply">
+        select
+        <include refid="alias_Column_List_ts"/>,<include refid="alias_Column_List_tc"/>,
+        <include refid="alias_Column_List_sa"/>
+        from SIGNBOARD_APPLY sa
+        left join TB_SPECIES ts on sa.SPE_ID = ts.ID
+        left join TB_COMP tc on sa.COMP_ID = tc.ID
+        where sa.ID = #{id}
+    </select>
+
+    <select id="validAppyingCode" resultType="java.lang.String">
+        select distinct s.CODE
+        from SIGNBOARD s
+        join SIGNBOARD_APPLY_LIST sal ON s. ID = sal.SIGNBOARD_ID
+        join SIGNBOARD_APPLY sa ON sa. ID = sal.APPLY_ID
+        where sa.PROCESS_STATUS != '8' and sa.PROCESS_STATUS != '9' and sa.process_status != '1'
+        and sal.SIGNBOARD_ID = #{signboardId}
+    </select>
+
+    <select id="getTodayMaxApplyNum" resultType="java.lang.String">
+        SELECT max(apply_code) FROM signboard_apply WHERE apply_code like #{todayStr}||'%'
+    </select>
+
+    <select id="countApplyNum" resultType="com.sofn.fdpi.model.SignboardApply">
+        SELECT sa.type, sa.apply_num, (select count(1) from signboard_apply_list WHERE apply_id = sa.id and del_flag = 'N')  as allotmentNum
+        FROM SIGNBOARD_APPLY sa
+        where sa.DEL_FLAG = 'N'
+            AND sa.PROCESS_STATUS != '9'
+            AND sa.PROCESS_STATUS != '10'
+            AND sa.APPLY_TYPE = '1'
+            AND sa.TYPE = #{signboardType}
+            AND sa.COMP_ID = #{compId}
+            AND sa.SPE_ID = #{speId}
+    </select>
+</mapper>

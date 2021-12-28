@@ -1,0 +1,54 @@
+<div class="gui-breadcrumbs">
+    <a href="">数据共享系统</a>&gt;
+    <a href="">数据统计</a>&gt;
+    <span>调度统计</span>
+</div>
+<!-- 开发人员只需要在跟换下面这个div里面内容即可   begin-->
+<div class="gui-section">
+    <form novalidate name="myForm">
+        <div class="gui-form-group">
+            <lable>资源目录</lable>
+            <span class="gui-select">
+          <select ngc-select-search="" class="common-select" name="alertType" id="dirSelect" ng-model="a">
+            <option value="">--请选择资源目录--</option>
+            <option value="{{dir.id}}" ng-repeat="dir in dirs">{{dir.name}}</option>
+          </select>
+        </span>
+            <span class="color-gray">服务名称</span>
+            <input class="gui-input" name="webServiceName" id="webServiceName" type="text" ng-model="webServiceName" ng-maxlength="60"
+                   placeholder="服务名称">
+        </div>
+        <div class="gui-form-group form-group clearfix">
+            <span class="color-gray">开始时间</span>
+            <!--<input id="startTime" class="gui-input Wdate" name="datebegin" style="cursor: pointer" readonly="readonly" type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd '}) ">-->
+            <input id="startTime" name="datebegin" style="cursor: pointer;width: 166px" readonly="readonly"
+                   class="Wdate gui-input form-control" type="text"
+                   onfocus="var endDate=$dp.$('endTime');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'endTime\')}'})">
+
+            <span class="color-gray">结束时间</span>
+            <!--<input id="endTime" style="cursor: pointer" name="dateend" readonly="readonly" class="gui-input Wdate" type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd '}) ">-->
+            <input id="endTime" name="dateend" class="Wdate form-control gui-input" style="cursor: pointer;width: 166px"
+                   readonly="readonly" type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'startTime\')}'})">
+
+        </div>
+        <div class="gui-form-group form-group clearfix">
+            <span class="color-gray">业务方法名称</span>
+            <input class="gui-input" name="bussnessName" id="bussnessName" type="text" ng-model="bussnessName" ng-maxlength="60"
+                   placeholder="业务方法名称">
+            <span class="color-gray">调用方名称</span>
+            <input class="gui-input" name="callerToken" id="callerToken" type="text" ng-model="callerToken" ng-maxlength="60"
+                   placeholder="调用方名称">
+            <!--<span class="gui-btn" ng-click="queryResourceMaList()">查询</span>-->
+            <button  class="gui-btn submit-btn" ng-disabled="myForm.$invalid" disabled="disabled"
+                    ng-click="queryResourceMaList()">
+                查询
+            </button>
+            <button class="gui-btn ml15 submit-btn" ng-click="cleanDaily()">重置</button>
+        </div>
+    </form>
+    <div class="gui-actions"></div>
+    <div>
+        <table id="dailyStat" class="gui-table">
+        </table>
+    </div>
+</div>

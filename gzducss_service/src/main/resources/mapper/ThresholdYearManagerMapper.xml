@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.ThresholdYearManagerMapper" >
+
+    <select id="getCountByYear" resultType="java.lang.Integer">
+        select count(1) from threshold_year_manager where year = #{year}
+        <if test="id != null and id != ''">
+            and id != #{id}
+        </if>
+    </select>
+    
+    <select id="getHaveYear" resultType="java.lang.String">
+        select DISTINCT year from threshold_year_manager order by year desc
+    </select>
+
+</mapper>

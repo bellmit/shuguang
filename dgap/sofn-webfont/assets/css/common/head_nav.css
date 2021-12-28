@@ -1,0 +1,272 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
+ul{
+    list-style: none;
+}
+a{
+    text-decoration: none;
+    color: inherit;
+}
+.cursor_pointer{
+    cursor: pointer;
+}
+body,html,.Sup_contain{
+    width: 100%;
+    border: none;
+    font-family: "宋体";
+}
+.Sup_contain{
+    position: relative;
+}
+.Sup_contain_head{
+    position: relative;
+    background: #4CA1D7;
+    /*padding-bottom: 1%;*/
+    color: white;
+    border: none;
+}
+.Sup_contain_head div:first-child{
+    font-size: 20px;
+    padding: 5px 5px;
+    position: relative;
+
+}
+.Sup_contain_head_item{
+    font-size: 14px;
+    margin-left: 2%;
+}
+.Sup_contain_head_logo{
+    width: 50px;
+    height: 50px;
+}
+.Sup_contain_head_img{
+    text-align: center;
+
+}
+.Sup_contain_head_img ul li{
+    float: left;
+    height: 66px;
+    padding: 5px 0px;
+    font-size: 12px;
+}
+.Sup_contain_head_img ul li:hover{
+    background-color:#2B99E0 ;
+    cursor: pointer;
+}
+/*用户部分*/
+.Sup_contain_head_user{
+    /*padding: 5px 0px;*/
+    height: 66px;
+    font-size: 14px;
+    line-height: 66px;
+}
+/*导航部分*/
+.Sup_contain_side{
+    width: 200px;
+    height:1000px;
+    color: white;
+    display: inline-block;
+    background-color: #4BA0D6;
+}
+.Sup_contain_side_user{
+    height: 66px;
+    background-color: #1E6F59;
+    position: relative;
+    line-height: 66px;
+    text-align: center;
+}
+.Sup_contain_side_user:before{
+    content: "头像";
+    position: absolute;
+    left: 40%;
+    top: -20px;
+    font-size: 25px;
+}
+/*下拉菜单(bootstrap)*/
+.panel-default>.panel-heading {
+    color: white;
+    background-color: #3695D4;
+}
+.panel {
+    margin-bottom: 20px;
+    background-color: #3695D4;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+.panel-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 20px;
+    color: inherit;
+}
+.panel-body {
+    padding: 0;
+}
+.Sup_contain_side_nav_item{
+    width: 100%;
+    height: 50px;
+    overflow: hidden;
+    font-size: 18px;
+    line-height: 50px;
+    position: relative;
+}
+.Sup_contain_side_nav{
+    background-color: #3695D4;
+    color: white;
+}
+.Sup_contain_side_nav_item:after{
+    content:"";
+    position: absolute;
+    right: 20px;
+    top: -50px;
+    z-index: 10;
+    border-right:15px solid white;
+    border-left: 15px solid transparent;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+}
+.Sup_contain_side_nav_item_after:after{
+    content:"";
+    position: absolute;
+    right: 0px;
+    top: 10px;
+    z-index: 10;
+    border-right:15px solid white;
+    border-left: 15px solid transparent;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+}
+.Sup_contain_side_nav_item:hover>a{
+    background-color: #64ABDB;
+    color: #FF9C02;
+    text-decoration: none;
+}
+.Sup_contain_side_nav_item>a{
+    padding-left: 15px;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.Sup_contain_side_nav_item ul{
+    position: absolute;
+    left:100%;
+    width: 100%;
+}
+.Sup_contain_section{
+    position: relative;
+    display: inline-block;
+}
+.Sup_contain_section_head{
+    height:60px;
+    border-bottom: 1px solid #EDEDED;
+    line-height: 60px;
+    background-color: white;
+}
+#Sup_contain_section_head_h2{
+    font-size: 18px;
+    height: inherit;
+    line-height: 100%;
+    text-align: left;
+    font-size: 20px!important;
+}
+#Sup_contain_section_head_h2>a:hover{
+    text-decoration: none;
+}
+/*图标字体*/
+@font-face {
+    font-family: close;
+    src: url('../../../libs/fonts/iconfont.eot'); /* IE9*/
+    src: url("../../../libs/fonts/iconfont.woff");
+}
+@font-face {
+    font-family: xinhao;src: url(../../../libs/fonts/iconfontXinhao.woff);
+}
+/*关闭*/
+#bt_close{
+    width: 100px;
+    height: 30px;
+    font-size: 20px;
+    outline: none;
+    cursor: pointer;
+    margin-left: 45%;
+    border-radius: 5px;
+    background-color: white;
+    border: 1px solid #4CA1D7;
+}
+#bt_close:hover{
+    background-color: #4CA1D7;
+    color: white;
+}
+#bt_close a:hover{
+    text-decoration: none;
+    color: white;
+}
+/*修改导航栏border*/
+.panel-group .panel+.panel {
+    margin-top: 0px;
+}
+.panel-group .panel {
+    margin-bottom: 0;
+    border-radius: 0px;
+}
+.panel {
+    margin-bottom: 20px;
+    background-color: #3695D4;
+    border:none;
+    border-bottom: 1px solid white;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+/*/!*新翻页*!/*/
+.NewsSize{
+    font-size: 14px;
+    border: 1px solid #E0E0E0;
+}
+.NewsSize select{
+    font-size: 14px;
+    line-height: 16px;
+}
+.NewsSize select:hover{
+    cursor: pointer;
+}
+.NewsSize li{
+    cursor: pointer;
+}
+.NewsSize>div div:nth-last-of-type(2)>div:nth-of-type(1){
+    float: right;
+}
+.NewsSize>div div:nth-last-of-type(2)>div:nth-of-type(2){
+    float: left;
+    line-height: 35px;
+}
+.NewsSize>div div:nth-last-of-type(2)>div:nth-of-type(2) select{
+    padding: 0px;
+    height: inherit;
+    line-height: inherit;
+}
+.NewsSize>div div:nth-last-of-type(2)>div:nth-of-type(3){
+    float: left;
+    margin-left: 50px;
+}
+/*datatable*/
+.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+    position: relative;
+    min-height: 1px;
+    padding-right: 0px;
+    padding-left: 0px;
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+    padding: 6px 0px;
+}
+.table{font-size: 14px;}

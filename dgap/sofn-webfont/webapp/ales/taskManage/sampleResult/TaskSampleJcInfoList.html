@@ -1,0 +1,41 @@
+<div class="gui-breadcrumbs">
+    <a ui-sref="index.content.ales/taskManage/myCheckTask">执法系统</a>&gt;
+    <a ui-sref="index.content.ales/taskManage/myCheckTask">监督抽查管理</a>&gt;
+    <a ui-sref="index.content.ales/taskManage/myCheckTask">监督抽查任务</a>&gt;
+    <a ui-sref="index.content.ales/taskManage/myTaskInformation">任务信息</a>&gt;
+    <a ui-sref="index.content.ales/taskManage/myTaskSampleList">抽样单列表</a>&gt;
+    <span>样品及检测信息列表</span>
+</div>
+<div class="gui-section">
+    <!--<div class="gui-form-group">-->
+        <!--<span>年份</span>-->
+        <!--<input name="years" onfocus="WdatePicker({skin:'default',dateFmt:'yyyy'})" class="Wdate gui-input"-->
+               <!--placeholder="&#45;&#45;请选择年份&#45;&#45;"/>-->
+        <!--任务名称-->
+        <!--<input class="gui-input" type="text" placeholder="请输入查找内容" name="monitorTask"/>-->
+        <!--<button class="gui-btn" id="ToCheck">查询</button>-->
+    <!--</div>-->
+    <table id="grid" class="gui-table "
+           style="width: 100%">
+    </table>
+
+    <div class="modal fade" id="product_info2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog modal-style" style="width: 800px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                    <h4 class="modal-title" id="myModalLabel1">查看检测信息详情</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <table id="productList" class="gui-table">
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <span type="button" class="gui-btn" data-dismiss="modal">返回</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,33 @@
+<inforreport-authentication>
+	<authentication id="aaa" inforreport-template="aaa.ipr">
+		<!--inforreport template="aaa.ipr"/-->
+		<target type="Node">node1</target>
+		<target type="Node">node2</target>
+		<target type="Node">node3</target>
+		<permission>
+			<field name="id">1</field>
+			<field name="name">-1</field>
+			<field name="opinion">0</field>
+			<cell position="C4">1</cell>
+			<cell position="B5">-1</cell>
+			<cell position="C6">0</cell>
+			<area left-top="E4" right-bottom="G4">1</area>
+			<area left-top="P3" right-bottom="O4">0</area>
+		</permission>
+	</authentication>
+	<authentication id="bbb" inforreport-template="aaa.ipr">
+		<target type="User">node1</target>
+		<target type="Node">node2</target>
+		<target type="Node">node3</target>
+		<permission>
+			<field name="id">1</field>
+			<field name="name">-1</field>
+			<field name="opinion">0</field>
+			<cell position="C4">1</cell>
+			<cell position="B5">-1</cell>
+			<cell position="C6">0</cell>
+			<area left-top="E4" right-bottom="G4">1</area>
+			<area left-top="P3" right-bottom="O4">0</area>
+		</permission>
+	</authentication>
+</inforreport-authentication>

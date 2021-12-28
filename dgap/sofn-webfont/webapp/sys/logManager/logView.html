@@ -1,0 +1,40 @@
+<div class="gui-breadcrumbs">
+    <a href="">系统管理</a>&gt;
+    <span>日志管理</span>
+</div>
+
+<!-- 开发人员只需要在跟换下面这个div里面内容即可   begin-->
+<div class="gui-section">
+  <div class="gui-form-group clearfix">
+    <span class="gui-select">
+      <select class="mr15" name="type" id="handType" style="width:100px;">
+          <option value="">全部</option>
+          <option ng-repeat="o in operateTypesOptions" value="{{o}}">{{o}}</option>
+<!--          <option value="登入">登入</option>-->
+<!--          <option value="登出">登出</option>-->
+<!--          <option value="删除">删除</option>-->
+<!--          <option value="修改">修改</option>-->
+<!--          <option value="增加">增加</option>-->
+<!--          <option value="查询">查询</option>-->
+<!--          <option value="根据字典父类类型获取所有子类">根据字典父类类型获取所有子类</option>-->
+      </select>
+    </span>
+    <!-- <span>操作人</span> -->
+    <input class="gui-input" type="text" placeholder="操作人" id="logUser" maxlength="30" onkeyup="this.value=this.value.replace(/\s+/g,'')">
+    <input class="gui-input" type="text" placeholder="请输入操作说明" id="logDesc" maxlength="30" name="logDesc" onkeyup="this.value=this.value.replace(/\s+/g,'')">
+    <input class="gui-input" type="text" placeholder="请输入操作IP" id="logIP" maxlength="30" name="logIP" onkeyup="this.value=this.value.replace(/\s+/g,'')">
+  </div>
+  <div class="gui-form-group clearfix">
+    <span>日志时间段</span>
+    <input class="gui-input form_input" name="dateBegin" placeholder="起始日期" id="dateBegin" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd', maxDate:'#F{$dp.$D(\'dateEnd\')}'})">--
+    <input class="gui-input form_input" name="dateEnd" placeholder="终止日期" id="dateEnd" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd', minDate:'#F{$dp.$D(\'dateBegin\')}'})">
+  </div>
+    <div class="gui-actions">
+        <button class="gui-btn fr ml15" ng-click="queryhistoryList()"><i class="gui-icon icon-history"></i>查询日志记录</button>
+        <button class="gui-btn fr mr15" ng-click="exportReport()"><i class="gui-icon icon-export"></i>导出审计报表</button>
+        <button class="gui-btn fr mr15" ng-click="exportLog()"><i class="gui-icon icon-export"></i>导出日志记录</button>
+    </div>
+  <div>
+      <table id="grid" class="gui-table" style="width: 100%"></table>
+  </div>
+</div>

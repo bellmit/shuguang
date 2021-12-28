@@ -1,0 +1,331 @@
+<link rel="stylesheet" href="assets/css/sys/resource/resource.css">
+<!--<script src="http://apps.bdimg.com/libs/angular.js/1.5.0-beta.0/angular.min.js"> </script>-->
+<style>
+    #updateModal select{
+        width: 100%;
+        max-width: 100%;
+        min-width: 100%;
+    }
+    #addModal select{
+        width: 100%;
+        max-width: 100%;
+        min-width: 100%;
+    }
+</style>
+<div class="gui-mainBc">
+<div class="gui-breadcrumbs">
+    <a href="">系统管理</a>&gt;<span>资源管理</span>
+</div>
+<!-- 开发人员只需要在跟换下面这个div里面内容即可   begin-->
+<div class="gui-section">
+    <div class="gui-form-group clearfix">
+        <span class="gui-select">
+        <select class="mr15" id="sheng">
+            <option value="">--省份--</option>
+        </select>
+      </span>
+        <span class="gui-select">
+        <select class="mr15" id="shi">
+            <option value="">--城市--</option>
+        </select>
+      </span>
+        <span class="gui-select">
+        <select class="mr15" id="xian">
+            <option value="">--区/县--</option>
+        </select>
+      </span>
+    </div>
+    <div class="gui-form-group clearfix">
+        <span class="gui-select">
+        <select class="mr15" ng-model="typeSelect" name="resourcetype">
+            <option ng-repeat=" x in typeList" value="{{x.value}}">{{x.name}}</option>
+        </select>
+      </span>
+        <span class="gui-select">
+        <select class="mr15" ng-model="filedSelect" name="professionalfiled">
+            <option ng-repeat=" x in fieldList" value="{{x.value}}">{{x.name}}</option>
+        </select>
+      </span>
+        <input class="gui-input mr15" name="name" type="text" placeholder="请输入姓名关键字" maxlength="30">
+        <button class="gui-btn" id="ToCheck" >查询</button>
+
+
+        
+        
+    </div><div class="gui-actions"><button class="gui-btn fr" ng-click="deleteResource()" ng-if="menuAuthority == readWriteAuthority"><i class="gui-icon icon-remove"></i>删除</button><button class="gui-btn fr mr15" ng-click="addResource()" ng-if="menuAuthority == readWriteAuthority"><i class="gui-icon icon-add"></i>新增</button></div>
+    <div>
+        <table id="grid" class="gui-table" style="width: 100%">
+        </table>
+    </div>
+</div>
+<!--<button id="importResource">导入</button>-->
+<!-- 模态框（Modal） 导入摸态框-->
+<!--<div class="modal fade " id="importModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">-->
+    <!--<div class="modal-dialog">-->
+        <!--<div class="modal-content">-->
+            <!--<div class="modal-header">-->
+                <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
+                <!--<h4 class="modal-title">导入资源</h4>-->
+            <!--</div>-->
+            <!--<div class="modal-body">-->
+                <!--<div class="form-item">-->
+                    <!--<form enctype="multipart/form-data">-->
+                        <!--<input id="file-1" type="file" name="file" multiple=" true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="5">-->
+                    <!--</form>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="modal-footer">-->
+                <!--<button type="button" class="gui-btn" data-dismiss="modal">关闭</button>-->
+                <!--<button type="button" class="gui-btn" id="save" ng-click="importSubjDt()">提交</button>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<!--新增摸态框-->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="addForm" role="form" name="addModalForm" class="form-horizontal" novalidate><!--novalidate是html5的属性，表示自动屏蔽html5验证-->
+            <!--摸态框头部分-->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">资源新增</h4>
+            </div>
+            <!--  摸态框body部分-->
+            <div class="modal-body">
+                <div class="form-item">
+                    <label class="required">资源类型</label>
+                    <span class="gui-select">
+                        <select ng-model="addResourceTypeSelect" name="addResourceType" style="width:280px;" required>
+                            <option ng-repeat=" x in typeList" value="{{x.value}}">{{x.name}}</option>
+                        </select>
+                    </span>
+                    <span ng-show="addModalForm.addResourceType.$dirty && addModalForm.addResourceType.$invalid || addForm.valided && addModalForm.addResourceType.$invalid">
+                        <span style="color: red" ng-show="addModalForm.addResourceType.$error.required">请选择资源类型</span>
+                    </span>
+                </div>
+                <div class="form-item">
+                    <label class="required">姓名</label>
+                    <input class="gui-input addInput" type="text" id="name" ng-model="sysResource.name" name="NAME" maxlength="21" required>
+                    <span ng-show="addModalForm.NAME.$dirty && addModalForm.NAME.$invalid || addForm.valided && addModalForm.NAME.$invalid">
+                        <span style="color: red" ng-show="addModalForm.NAME.$error.required">请输入姓名</span>
+                    </span>
+                </div>
+                <div class="form-item ">
+                    <label class="required">专业领域</label>
+                    <span class="gui-select">
+                        <select class="addInput" ng-model="addTypeSelect" name="addType" required>
+                            <option ng-repeat=" x in addFieldList" value="{{x.value}}">{{x.name}}</option>
+                        </select>
+                    </span>
+                    <span ng-show="addModalForm.addType.$dirty && addModalForm.addType.$invalid || addForm.valided && addModalForm.addType.$invalid">
+                        <span style="color: red" ng-show="addModalForm.addType.$error.required">请选择专业领域</span>
+                    </span>
+                </div>
+                <div class="form-item ">
+                    <label class="required">职称</label>
+                    <span class="gui-select">
+                        <select class="addInput" ng-model="addJobTitleSelect" name="addJobTitle" required>
+                            <option ng-repeat=" x in jobTitles" value="{{x.dictValue}}">{{x.dictName}}</option>
+                        </select>
+                    </span>
+                    <span ng-show="addModalForm.addJobTitle.$dirty && addModalForm.addJobTitle.$invalid || addForm.valided && addModalForm.addJobTitle.$invalid">
+                        <span style="color: red" ng-show="addModalForm.addJobTitle.$error.required">请选择职称</span>
+                    </span>
+                </div>
+                <div class="form-item ">
+                    <label class="required">单位</label>
+                    <input class="gui-input addInput " type="text" ng-model="sysResource.unit" name="unitForAdd" maxlength="50" required>
+                    <span ng-show="addModalForm.unitForAdd.$dirty && addModalForm.unitForAdd.$invalid || addForm.valided && addModalForm.unitForAdd.$invalid">
+                        <span style="color: red" ng-show="addModalForm.unitForAdd.$error.required">请输入单位</span>
+                    </span>
+                </div>
+                <div class="form-item">
+                    <label class="required">所在地</label>
+                    <span class="gui-select" style="width: 148px">
+                        <select id="shengAdd" name="addProvince" ng-model="addForm.addProvinceSelect" required>
+                            <option value="">--请选择省份--</option>
+                        </select>
+                    </span>
+                    <span class="gui-select" style="width: 148px">
+                        <select id="shiAdd" name="addCity" ng-model="addForm.addCitySelect" required>
+                            <option value="">--请选择城市--</option>
+                        </select>
+                    </span>
+                    <span class="gui-select" style="width: 148px">
+                        <select id="xianAdd" name="addCounty" ng-model="addForm.addCountySelect" required>
+                            <option value="">--请选择区/县--</option>
+                        </select>
+                    </span>
+                    <span ng-show="addModalForm.addProvince.$dirty && addModalForm.addProvince.$invalid || addForm.valided && addModalForm.addProvince.$invalid">
+                        <span style="color: red" ng-show="addModalForm.addProvince.$error.required">请选择省份</span>
+                    </span>
+                    <span ng-show="addModalForm.addCity.$dirty && addModalForm.addCity.$invalid || addForm.valided && addModalForm.addCity.$invalid">
+                        <span style="color: red" ng-show="addModalForm.addCity.$error.required">请选择城市</span>
+                    </span>
+                    <span ng-show="addModalForm.addCounty.$dirty && addModalForm.addCounty.$invalid || addForm.valided && addModalForm.addCounty.$invalid">
+                        <span style="color: red" ng-show="addModalForm.addCounty.$error.required">请选择区/县</span>
+                    </span>
+                </div>
+                <div class="form-item">
+                    <label class="required">详细地址</label>
+                    <input class="gui-input addInput" type="text" ng-model="sysResource.address" name="addressForAdd" maxlength="50" required>
+                    <span style="color: red" ng-show="addModalForm.addressForAdd.$dirty && addModalForm.addressForAdd.$invalid || addForm.valided && addModalForm.addressForAdd.$invalid">
+                        <span ng-show="addModalForm.addressForAdd.$error.required">请输入详细地址</span>
+                    </span>
+                </div>
+                <div class="form-item">
+                    <label class="required">联系方式</label>
+                    <input class="gui-input addInput" type="text" ng-model="sysResource.contract" name="contractForAdd" maxlength="21" required>
+                    <span style="color: red" ng-show="addModalForm.contractForAdd.$dirty && addModalForm.contractForAdd.$invalid || addForm.valided && addModalForm.contractForAdd.$invalid">
+                        <span ng-show="addModalForm.contractForAdd.$error.required">请输入联系方式</span>
+                    </span>
+                </div>
+                <div class="form-item">
+                    <label class="required">状态</label>
+                    <span class="gui-select">
+                      <select class="addInput" ng-model="statusForAddSelect" name="statusForAdd">
+                          <option ng-repeat=" x in statusList" value="{{x.value}}">{{x.name}}</option>
+                      </select>
+                    </span>
+                </div>
+            </div>
+            <!--摸态框底部-->
+            <div class="modal-footer">
+                <button class="gui-btn" ng-click="cancelResource('cancelAdd')" id="cancelAdd">取消</button>
+                <button id="saveButton" class="gui-btn" ng-click="submitForm(addModalForm.$valid)" >保存</button>
+            </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!--修改资源-->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!--摸态框头部分-->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel1">资源修改</h4>
+            </div>
+            <!--  摸态框body部分-->
+            <div class=" saveModal modal-body ">
+                <form name="updateResourceForm" novalidate>
+                    <div class="form-item">
+                        <label class="required">资源类型</label>
+                        <span class="gui-select">
+                         <select ng-model="updateResourceTypeSelect" name="updateResourceType" style="width:280px;" required>
+                             <option ng-repeat=" x in typeList" value="{{x.value}}">{{x.name}}</option>
+                         </select>
+                        </span>
+                        <span style="color:red" ng-show="updateResourceForm.updateResourceType.$invalid && updateResourceForm.updateResourceType.$dirty">
+                            <span ng-show="updateResourceForm.updateResourceType.$error.required">请选择资源类型</span>
+                        </span>
+                    </div>
+                    <div class="form-item">
+                        <label class="required">姓名</label>
+                        <input class="addInput gui-input" type="text" ng-model="sysResource.name" name="name" maxlength="21" required>
+                        <span style="color:red" ng-show="updateResourceForm.name.$invalid && updateResourceForm.name.$dirty">
+                            <span ng-show="updateResourceForm.name.$error.required">请输入姓名</span>
+                        </span>
+                    </div>
+                    <div class="form-item">
+                        <label class="required">专业领域</label>
+                        <span class="gui-select">
+                           <select class="addInput" ng-model="sysResource.professionalfiled" name="professionalfiled" required>
+                               <option ng-repeat=" o in addFieldList" value="{{o.value}}">{{o.name}}</option>
+                           </select>
+                        </span>
+                        <span style="color:red" ng-show="updateResourceForm.professionalfiled.$invalid && updateResourceForm.professionalfiled.$dirty">
+                            <span ng-show="updateResourceForm.professionalfiled.$error.required">请选择专业领域</span>
+                        </span>
+                    </div>
+                    <div class="form-item">
+                        <label class="required">职称</label>
+                        <span class="gui-select">
+                            <select class="addInput" ng-model="sysResource.jobtitle" name="updateJobTitle" required>
+                                <option ng-repeat=" x in jobTitles" value="{{x.dictValue}}">{{x.dictName}}</option>
+                            </select>
+                        </span>
+                        <span style="color:red" ng-show="updateResourceForm.updateJobTitle.$invalid && updateResourceForm.updateJobTitle.$dirty">
+                            <span ng-show="updateResourceForm.updateJobTitle.$error.required">请选择专业领域</span>
+                        </span>
+                    </div>
+                    <div class="form-item">
+                        <label class="required">单位</label>
+                        <input class="addInput gui-input" type="text" ng-model="sysResource.unit" name="unit" maxlength="50" required>
+                        <span style="color:red" ng-show="updateResourceForm.unit.$invalid && updateResourceForm.unit.$dirty">
+                            <span ng-show="updateResourceForm.unit.$error.required">请输入单位</span>
+                        </span>
+                    </div>
+                    <div class="form-item">
+                        <label class="required">所在地</label>
+                        <span class="gui-select" style="width: 148px">
+                            <select id="shengUpdate" style="width: 90px" >
+                              <option value="">--请选择省份--</option>
+                            </select>
+                            <input type="hidden" name="province" ng-model="sysResource.province" required>
+                        </span>
+                        <span class="gui-select" style="width: 148px">
+                            <select id="shiUpdate" style="width: 90px">
+                              <option value="">--请选择城市--</option>
+                            </select>
+                            <input type="hidden" name="city" ng-model="sysResource.city" required>
+                        </span>
+                        <span class="gui-select" style="width: 148px">
+                            <select id="xianUpdate" style="width: 90px">
+                              <option value="">--请选择区/县--</option>
+                            </select>
+                            <input type="hidden" name="county" ng-model="sysResource.county" required>
+                        </span>
+                        <span style="color:red" ng-show="updateResourceForm.province.$invalid && updateResourceValided">
+                            <span ng-show="updateResourceForm.province.$error.required">请选择省份</span>
+                        </span>
+                        <span style="color:red" ng-show="updateResourceForm.city.$invalid && updateResourceValided">
+                            <span ng-show="updateResourceForm.city.$error.required">请选择城市</span>
+                        </span>
+                        <span style="color:red" ng-show="updateResourceForm.county.$invalid && updateResourceValided">
+                            <span ng-show="updateResourceForm.county.$error.required">请选择区/县</span>
+                        </span>
+                    </div>
+                    <div class="form-item">
+                        <label class="required">详细地址</label>
+                        <input class="addInput gui-input" type="text" ng-model="sysResource.address" name="address" maxlength="50" required>
+                        <span style="color:red" ng-show="updateResourceForm.address.$invalid && updateResourceForm.address.$dirty">
+                            <span ng-show="updateResourceForm.address.$error.required">请输入详细地址</span>
+                        </span>
+                    </div>
+                    <div class="form-item">
+                        <label class="required">联系方式</label>
+                        <input class="addInput gui-input" type="text" ng-model="sysResource.contract" name="contract" maxlength="21" required>
+                        <span style="color:red" ng-show="updateResourceForm.contract.$invalid && updateResourceForm.contract.$dirty">
+                            <span ng-show="updateResourceForm.contract.$error.required">请输入联系方式</span>
+                        </span>
+                    </div>
+                    <div class="form-item">
+                        <label class="required">状态</label>
+                        <span class="gui-select">
+                            <select class="addInput" ng-model="statusForUpdateSelect" name="statusForUpdate" required>
+                                <option ng-repeat=" x in statusList" value="{{x.value}}">{{x.name}}</option>
+                            </select>
+                        </span>
+                        <span style="color:red" ng-show="updateResourceForm.statusForUpdate.$invalid && updateResourceForm.statusForUpdate.$dirty">
+                            <span ng-show="updateResourceForm.statusForUpdate.$error.required">请选择状态</span>
+                        </span>
+                    </div>
+                </form>
+            </div>
+            <!--摸态框底部-->
+            <div class="modal-footer">
+                <button id="updateButton" class="gui-btn" ng-click="updateResource()" >保存</button>
+                <button ng-click="cancelResource('cancelUpdate')" class="gui-btn" id="cancelUpdate">取消</button>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+</div>

@@ -1,0 +1,98 @@
+<link rel="stylesheet" href="assets/css/asms/check/cheRoutine.css"/>
+<link rel="stylesheet" href="assets/css/ales/etl/etlDailyEnforceLawlist.css"/>
+<div class="gui-breadcrumbs">
+    <a href="">信息查询</a>&gt;
+    <a href="">检测信息查询</a>&gt;
+    <span>受检单位查询</span>
+</div>
+
+<div class="gui-section">
+    <form class="gui-form-group" id="queryForm">
+        <div class="clearfix gov-h">
+            <div class="gui-mediaInline">
+                <span>受检单位</span>
+                <input class="gui-input" style="width: 200px;" type="text" ng-model="testedDeparment" name="testedDeparment"
+                       placeholder="请输入受检单位名称" />
+            </div>
+            <div class="gui-mediaInline mt15">
+                <span>任务年度</span>
+                <input name="year" style="width:120px" onfocus="WdatePicker({skin:'default',dateFmt:'yyyy'})"
+                       class="Wdate gui-input"
+                       placeholder="选择年份"/>
+                <span>任务名称</span>
+                <input class="gui-input" style="width: 80px;" type="text" name="taskName" placeholder="请输入任务名称"/>
+                <span>任务类型：</span>
+                <div class="gui-select" STYLE="width: 180px;">
+                    <select id="monitorClass" name="monitorClass">
+                        <option value="">不限</option>
+                        <option value="例行监测">例行监测</option>
+                        <option value="专项监测">专项监测</option>
+                        <option value="监督抽查">监督抽查</option>
+                        <option value="受托检测">受托检测</option>
+                        <option value="复检任务">复检任务</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="gui-mediaInline mt15">
+            <span>样品名称</span>
+            <input class="gui-input" style="width: 120px;" type="text" name="sampleName"  ng-model="sampleName" placeholder="请选择样品名称" />
+            <span>样品编码</span>
+            <input class="gui-input" style="width: 120px;" type="text" name="sampleCode"  ng-model="sampleCode" placeholder="请选择样品编码" />
+
+        <div class="gui-mediaInline mt15">
+            <span>检测结果</span>
+            <div class="gui-select" STYLE="width: 120px;">
+                <select name="result">
+                    <option value="">选择结果</option>
+                   <!-- <option value="">所有</option>-->
+                    <option value="1">合格</option>
+                    <option value="0">不合格</option>
+                    <option value="-1">暂未检测</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="gui-mediaInline mt15">
+            <button id="ToCheck" data-toggle="tooltip" class="gui-btn" ng-disabled="!!btnDisabled" data-placement="right" title="根据输入条件检索列表" ng-click="ToCheck($event)">
+                查询
+            </button>
+            <button id="lead" data-toggle="tooltip" class="gui-btn" data-placement="right" ng-click="reloadArea($event)" >
+                重置
+            </button>
+        </div>
+</div>
+</form>
+<table id="grid" class="gui-table mt15"
+       style="width: 100%">
+</table>
+</div>
+
+
+<div class="modal fade" id="product_info2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-style" style="width: 800px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">关闭</span></button>
+                <h4 class="modal-title" id="myModalLabel">检测项目详情</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-header">
+                    样品名称: <input  readonly="readonly" id="sampleName"> 样品编码：<input  id="sampleCode" readonly="readonly"> 产品编码：<input  id="productTraceabilityCode" readonly="readonly">
+                </div>
+                <div>
+                    <table id="productList1" class="gui-table">
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span type="button" class="gui-btn" data-dismiss="modal" >返回</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

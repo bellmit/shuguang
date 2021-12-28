@@ -1,0 +1,134 @@
+<div class="gui-breadcrumbs">
+    <a href="">用户主体管理</a>&gt;
+    <span>非管理员信息</span>
+</div>
+<div class="gui-section">
+    <form id="attributeForm1" method="post" class="form-horizontal" data-bv-message="This value is not valid" data-bv-feedbackicons-valid="glyphicon glyphicon-ok" data-bv-feedbackicons-invalid="glyphicon glyphicon-remove" data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+    <ul class="gui-list mt15">
+        <li>
+            <div class="gui-page-head">
+                <h3 style="padding-bottom:18px">账号信息</h3>
+                <div style="position: absolute;left:75%;display:inline">
+                    <button class="gui-btn" onclick="editInfo()">修改个人信息</button>
+                    <button class="gui-btn" onclick="showUpdatePwd()">修改密码</button>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-item form-group">
+                <label>账号</label>
+                <input type="text" class="gui-input" id="accounts" ng-model="accounts" name="accounts" readonly="readonly">
+            </div>
+        </li>
+        <li>
+            <div class="form-item form-group">
+                <label>账号类型</label>
+                <input type="text" class="gui-input" value="普通账号" name="accounts" readonly="readonly">
+            </div>
+        </li>
+        <li>
+            <div class="form-item form-group">
+                <label>主体身份码</label>
+                <input type="text"  class="gui-input" id="entityIdcode" ng-model="entityIdcode" name="entityIdcode" readonly="readonly">
+            </div>
+        </li>
+        <li>
+            <div class="form-item form-group">
+                <label>主体用户码</label>
+                <input type="text"  class="gui-input" id="userIdcode" ng-model="userIdcode" name="userIdcode" readonly="readonly">
+            </div>
+        </li>
+        <li>
+            <div class="form-item form-group">
+                <label>主体名称</label>
+                <input type="text"  class="gui-input" id="enterpriseName" ng-model="enterpriseName" name="enterpriseName" readonly="readonly">
+            </div>
+        </li>
+        <li>
+            <div class="form-item form-group">
+                <label>主体地址</label>
+                <input type="text"  class="gui-input" id="address" ng-model="address" name="address" readonly="readonly">
+            </div>
+        </li>
+        <li>
+            <div class="form-item form-group">
+                <label>姓名</label>
+                <input type="text" placeholder="请输入真实姓名" data-bv-notempty="" data-bv-notempty-message="真实姓名不能为空" data-bv-stringlength="" data-bv-stringlength-min="2" data-bv-stringlength-max="8" data-bv-stringlength-message="联系人姓名必须超过2，不超过8个字符" class="gui-input" id="realName" ng-model="realName" name="realName" readonly="readonly">
+            </div>
+        </li>
+        <li>
+            <div class="form-item form-group">
+                <label>联系电话</label>
+                <input type="text"  class="gui-input" id="contactPhone" ng-model="contactPhone" name="contactPhone" placeholder="请输入联系电话" data-bv-notempty="" data-bv-notempty-message="联系电话不能为空" data-bv-isphone="true" data-bv-isphone-message="请输入有效的手机号码" readonly="readonly">
+            </div>
+        </li>
+        <li>
+            <div class="form-item form-group">
+                <label>电子邮箱</label>
+                <input type="text"  class="gui-input" id="contactEmail" ng-model="contactEmail" name="contactEmail" placeholder="请输入电子邮箱" data-bv-notempty="" data-bv-notempty-message="电子邮箱不能为空" data-bv-emailaddress="true" data-bv-emailaddress-message="输入不是一个有效的电子邮件地址" data-bv-stringlength="" data-bv-stringlength-min="6" data-bv-stringlength-max="30" data-bv-stringlength-message="邮箱必须超过6，不超过30个字符" readonly="readonly">
+            </div>
+        </li>
+        <li>
+            <div class="form-item form-group">
+                <label>身份证号码</label>
+                <input type="text"  class="gui-input" id="legalIdnumber" ng-model="legalIdnumber" name="legalIdnumber" placeholder="请输入身份证号"
+                       data-bv-notempty="true"
+                       data-bv-notempty-message="身份证号不能是空"
+                       data-bv-idderactive="true"
+                       data-bv-idderactive-message="身份证号不正确"
+                       onblur="queryByIdCode()" readonly="readonly">
+            </div>
+        </li>
+        <li>
+            <div id="anniu" hidden="hidden" class="text-center" style="margin-bottom:50px;">
+                <button class="gui-btn" onclick="cancelEdit();">取消</button>
+                <button ng-click="updateUserInfo()" class="gui-btn ml15">保存</button>
+            </div>
+        </li>
+    </ul>
+    </form>
+</div>
+<!-- 修改密码model -->
+<div class="modal fade" id="updatePwd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                <h4 class="modal-title" id="myModalLabel1">修改密码</h4>
+            </div>
+            <form id="attributeForm" method="post" class="form-horizontal" data-bv-message="This value is not valid">
+                <ul class="gui-list">
+                    <li>
+                        <div class="form-item form-group">
+                            <span class="title">输入原密码</span>
+                            <input id="formerPwd" onblur="checkPwd()" type="password" name="formerPwd" class="form-control" data-bv-notempty="true" data-bv-notempty-message="原密码不能是空">
+                            <small id="formerPwdMsg" class="help-block" data-bv-validator="stringLength" data-bv-for="password" hidden="hidden" data-bv-result="INVALID" style="display: block; color: #a94442"></small>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="form-item form-group">
+                            <span class="title">输入新密码</span>
+                            <input id="newPwd"type="password" class="form-control" name="password" data-bv-stringlength="true" data-bv-stringlength-min="8" data-bv-stringlength-max="16" data-bv-stringlength-message="密码最少8个字符，不超过16个字符" ng-model="TtsScltxxcjRegiter.password" data-bv-notempty="true" data-bv-notempty-message="新密码不能是空" data-bv-different="true" data-bv-different-field="formerPwd" data-bv-different-message="新密码不能与原密码相同">
+                        </div>
+                    </li>
+                    <li>
+                        <div class="form-item form-group">
+                            <span class="title">确认新密码</span>
+                            <input id="checkNewPwd" onblur="checksNewPwd()" type="password" class="form-control" name="confirmPassword" ng-model="TtsScltxxcjRegiter.confirmPassword" data-bv-notempty="true" data-bv-notempty-message="确认密码不能是空" data-bv-stringlength="true" data-bv-stringlength-min="8" data-bv-stringlength-max="16" data-bv-stringlength-message="密码最少8个字符，不超过16个字符" data-bv-identical="true" data-bv-identical-field="password" data-bv-identical-message="两次输入的密码不一致" >
+                        </div>
+                    </li>
+                    <li>
+                        <div class="text-center mt15">
+                            <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                            <button class="gui-btn" ng-click="updatepassword()" id="regin">确认</button>
+                        </div>
+                    </li>
+                </ul>
+            </form>
+            <!-- <div class="modal-footer">
+                 <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                 <button type="button" class="gui-btn" data-dismiss="modal">修改</button>
+             </div>-->
+        </div>
+    </div>
+</div>

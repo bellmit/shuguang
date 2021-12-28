@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysRoleRoleGroupMapper">
+
+    <resultMap id="customResultMap" type="com.sofn.sys.model.SysRoleRoleGroup">
+        <id column="ID" property="id" jdbcType="VARCHAR"/>
+        <result column="GROUP_ID" property="groupId" jdbcType="VARCHAR"/>
+        <result column="ROLE_ID" property="roleId" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="batchSaveSysRoleGroup" parameterType="java.util.Map">
+        INSERT INTO SYS_ROLE_GROUP (
+        ID,
+        GROUP_ID,
+        ROLE_ID)VALUES
+        <foreach collection="sysRoleGroups" separator=","  item="sysRoleGroup">
+            (#{sysRoleGroup.id},
+            #{sysRoleGroup.groupId},
+            #{sysRoleGroup.roleId})
+        </foreach>
+    </insert>
+    <delete id="dropRoleGroupsByGroupId" parameterType="java.lang.String">
+        delete from SYS_ROLE_GROUP where group_id = #{groupId}
+    </delete>
+    <select id="getListByGroupId" parameterType="java.lang.String" resultMap="customResultMap">
+        SELECT srg.ID,srg.GROUP_ID,srg.ROLE_ID  from SYS_ROLE_GROUP srg join SYS_ROLE sr on srg.ROLE_ID=sr.ID
+        WHERE sr.STATUS='1' and srg.GROUP_ID = #{groupId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getCountByRoleId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT count(1) from SYS_ROLE_GROUP
+        where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectUserHasRoleAndCreateGroup" parameterType="java.util.Map"
+            resultType="com.sofn.sys.vo.SysRoleGroupVo">
+
+
+        select
+        SG.ID id, SG.GROUP_NAME groupName, SG.DESCRIPTION description,
+        string_agg(SR.ID,',') roleIds,
+        string_agg(SR.ROLE_NAME,',') roleNames
+        -- to_char(XMLAGG(XMLELEMENT(E, SR.ID || ',')).EXTRACT('//text()').getclobval()) roleIds,
+        -- to_char(XMLAGG(XMLELEMENT(E, SR.ROLE_NAME || ',')).EXTRACT('//text()').getclobval()) roleNames
+        from SYS_GROUP sg
+        left join SYS_ROLE_GROUP srg on SG.id = SRG.group_id
+        left join sys_role sr on sr.id = srg.role_id and sr.del_flag != 'Y'
+        where sg.del_flag != 'Y'
+        <if test="userId != null and userId != ''">
+            and sg.id in (
+            select group_id from sys_user_group sug where SUG.user_id = #{userId}
+            )
+        </if>
+        <if test="groupName != null and groupName != ''">
+            AND POSITION(#{groupName} in SG.GROUP_NAME)>0
+        </if>
+        GROUP BY SG.ID, SG.GROUP_NAME, SG.DESCRIPTION
+        <if test="userId != null and userId != ''">
+            union
+            select
+            SG.ID id, SG.GROUP_NAME groupName, SG.DESCRIPTION description,
+            string_agg(SR.ID,',') roleIds,
+            string_agg(SR.ROLE_NAME,',') roleNames
+            -- to_char(XMLAGG(XMLELEMENT(E, SR.ID || ',')).EXTRACT('//text()').getclobval()) roleIds,
+            -- to_char(XMLAGG(XMLELEMENT(E, SR.ROLE_NAME || ',')).EXTRACT('//text()').getclobval()) roleNames
+            from SYS_GROUP sg
+            left join SYS_ROLE_GROUP srg on SG.id = SRG.group_id
+            left join sys_role sr on sr.id = srg.role_id and sr.del_flag != 'Y'
+            where sg.del_flag != 'Y' and sg.create_user_id = #{userId}
+            <if test="groupName != null and groupName != ''">
+                AND instr(SG.GROUP_NAME,#{groupName})>0
+            </if>
+            GROUP BY SG.ID, SG.GROUP_NAME, SG.DESCRIPTION
+        </if>
+    </select>
+
+
+    <select id="selectUserHasRoleGroup" parameterType="java.lang.String" resultType="com.sofn.sys.vo.SysRoleGroupVo">
+        select
+        SG.ID id, SG.GROUP_NAME groupName, SG.DESCRIPTION description,
+        string_agg(SR.ID,',') roleIds,
+        string_agg(SR.ROLE_NAME,',') roleNames
+        -- to_char(XMLAGG(XMLELEMENT(E, SR.ID || ',')).EXTRACT('//text()').getclobval()) roleIds,
+        -- to_char(XMLAGG(XMLELEMENT(E, SR.ROLE_NAME || ',')).EXTRACT('//text()').getclobval()) roleNames
+        from SYS_GROUP SG
+        LEFT JOIN SYS_USER_GROUP SUG ON SG.ID = SUG.GROUP_ID
+        LEFT JOIN SYS_ROLE_GROUP SRG ON SRG.GROUP_ID = SG.ID
+        LEFT JOIN SYS_ROLE SR ON SRG.ROLE_ID = SR.ID
+        WHERE 1 = 1
+        <if test="userId != null and userId != ''">
+            AND SUG.USER_ID= #{userId}
+        </if>
+        AND SG.DEL_FLAG != 'Y'
+        GROUP BY SG.ID, SG.GROUP_NAME, SG.DESCRIPTION
+        <if test="userId != null and userId != ''">
+            union
+            select
+            SG.ID id, SG.GROUP_NAME groupName, SG.DESCRIPTION description,
+            string_agg(SR.ID,',') roleIds,
+            string_agg(SR.ROLE_NAME,',') roleNames
+            -- to_char(XMLAGG(XMLELEMENT(E, SR.ID || ',')).EXTRACT('//text()').getclobval()) roleIds,
+            -- to_char(XMLAGG(XMLELEMENT(E, SR.ROLE_NAME || ',')).EXTRACT('//text()').getclobval()) roleNames
+            from SYS_GROUP SG
+            LEFT JOIN SYS_USER_GROUP SUG ON SG.ID = SUG.GROUP_ID
+            LEFT JOIN SYS_ROLE_GROUP SRG ON SRG.GROUP_ID = SG.ID
+            LEFT JOIN SYS_ROLE SR ON SRG.ROLE_ID = SR.ID
+            WHERE 1 = 1 AND SG.CREATE_USER_ID =  #{userId}
+            AND SG.DEL_FLAG != 'Y'
+            GROUP BY SG.ID, SG.GROUP_NAME, SG.DESCRIPTION
+        </if>
+
+
+
+    </select>
+
+    <delete id="dropRoleGroupByRoleId" parameterType="java.lang.String">
+        delete from SYS_ROLE_GROUP a where a.ROLE_ID = #{roleId}
+    </delete>
+
+</mapper>

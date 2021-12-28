@@ -1,0 +1,94 @@
+<div class="gui-breadcrumbs">
+    <a href="">优化建议</a>&gt;
+    <span>修改</span>
+</div>
+<div class="gui-section">
+    <div class="ovh">
+        <ul class="gui-list">
+            <li>
+                <div class="form-item">
+                    <span class="title">标题<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjProposal.title" name="title" placeholder="请输入标题" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">内容<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjProposal.content" name="content" placeholder="请输入内容" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">时间<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjProposal.time" name="time" class="gui-input" readonly="readonly" onclick="SelectDate(this)">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">附件名称<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjProposal.attachName" name="attachName" placeholder="请输入附件名称" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">附件路径<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjProposal.attachPath" name="attachPath" placeholder="请输入附件路径" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">主体身份码<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjProposal.entityIdcode" name="entityIdcode" placeholder="请输入主体身份码" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">主体用户码<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjProposal.userIdcode" name="userIdcode" placeholder="请输入主体用户码" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">IP地址<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjProposal.ip" name="ip" placeholder="请输入IP地址" class="gui-input">
+                </div>
+            </li>
+            <li style="display: none;">
+                <div class="form-item">
+                    <span class="title">删除标识<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjProposal.delFlag" name="delFlag" placeholder="请输入删除标识" class="gui-input">
+                </div>
+            </li>
+            <li style="display: none;">
+                <div class="form-item">
+                    <span class="title">创建人ID<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjProposal.createBy" name="createBy" placeholder="请输入创建人ID" class="gui-input">
+                </div>
+            </li>
+            <li style="display: none;">
+                <div class="form-item">
+                    <span class="title">修改人ID<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjProposal.updateBy" name="updateBy" placeholder="请输入修改人ID" class="gui-input">
+                </div>
+            </li>
+            <li style="display: none;">
+                <div class="form-item">
+                    <span class="title">创建时间<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjProposal.createTime" name="createTime" class="gui-input" readonly="readonly" onclick="SelectDate(this)">
+                </div>
+            </li>
+            <li style="display: none;">
+                <div class="form-item">
+                    <span class="title">修改时间<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjProposal.updateTime" name="updateTime" class="gui-input" readonly="readonly" onclick="SelectDate(this)">
+                </div>
+            </li>
+            <li>
+            <div class="text-center">
+                <button class="gui-btn" ui-sref="index.content.tts/TtsScltxxcjProposal/TtsScltxxcjProposallist">取消</button>
+                <button class="gui-btn" ng-disabled="myform.JGname.$dirty&&myform.JGname.$invalid" ng-click="updateTtsScltxxcjProposal()">提交</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

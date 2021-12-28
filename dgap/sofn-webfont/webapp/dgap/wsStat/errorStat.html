@@ -1,0 +1,53 @@
+<link rel="stylesheet" href="/assets/css/dgap/resource/alertConfig.css">
+<div class="gui-breadcrumbs">
+    <a href="">数据共享系统</a>&gt;
+    <a href="">数据统计</a>&gt;
+    <span>服务出错统计</span>
+</div>
+<div class="gui-section">
+    <form>
+    <div class="gui-form-group">
+      <lable>资源目录</lable>
+      <span class="gui-select">
+        <select ngc-select-search="" class="common-select" name="alertType" id="dirSelect" ng-model="a">
+          <option value="">--请选择资源目录--</option>
+          <option value="{{dir.id}}" ng-repeat="dir in dirs">{{dir.name}}</option>
+        </select>
+      </span>
+      <span class="color-gray">开始时间</span>
+<!--        <input id="startTime" class="gui-input Wdate" name="datebegin" style="cursor: pointer" readonly="readonly" type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd '}) ">-->
+        <input id="startTime" name="datebegin" style="cursor: pointer;width: 166px" readonly="readonly"
+               class="Wdate gui-input form-control" type="text"
+               onfocus="var endDate=$dp.$('endTime');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'endTime\')}'})">
+        <span class="color-gray">结束时间</span>
+<!--        <input id="endTime" class="gui-input Wdate" name="dateend" style="cursor: pointer" readonly="readonly" type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd '}) ">-->
+        <input id="endTime" name="dateend" class="Wdate form-control gui-input" style="cursor: pointer;width: 166px"
+               readonly="readonly" type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'startTime\')}'})">
+    </div>
+    <div class="gui-form-group">
+        <span class="color-gray">服务名称</span>
+        <input id="webServiceName" name="webServiceName" class="gui-input" type="text" maxlength="50" placeholder="服务名称">
+        <span class="color-gray">出错类型</span>
+        <span class="gui-select">
+            <select id="errorType" name="errorType" class=" ">
+                <option value="">--出错类型--</option>
+                <option value="{{errorType.id}}" ng-repeat="errorType in wsErrorTypes">{{errorType.name}}</option>
+            </select>
+        </span>
+    </div>
+
+    <div class="gui-form-group">
+        <span class="color-gray">调用方名称</span>
+        <input id="callerUser" name="callerUser" class="gui-input" type="text" maxlength="20" placeholder="调用方名称">
+        <span class="color-gray">业务方法名称</span>
+        <input id="methodName" name="methodName" class="gui-input" type="text" maxlength="20" placeholder="业务方法名称">
+        <button class="gui-btn submit-btn glyphicon glyphicon-search " ng-click="ToCheck()">查询</button>
+        <button class="gui-btn ml15 submit-btn" ng-click="cleanError()">重置</button>
+    </div>
+    </form>
+    <div class="gui-actions"></div>
+    <div>
+        <table id="errorStat" class="gui-table">
+        </table>
+    </div>
+</div>

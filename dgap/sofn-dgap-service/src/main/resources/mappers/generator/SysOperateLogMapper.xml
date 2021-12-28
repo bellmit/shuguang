@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.dao.generator.SysOperateLogMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.model.generator.SysOperateLog" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="OPERATE_USERID" property="operateUserid" jdbcType="VARCHAR" />
+    <result column="OPERATE_USERNAME" property="operateUsername" jdbcType="VARCHAR" />
+    <result column="OPERATE_TIME" property="operateTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATE_IP" property="operateIp" jdbcType="VARCHAR" />
+    <result column="USER_TOKEN" property="userToken" jdbcType="VARCHAR" />
+    <result column="VISIT_URL" property="visitUrl" jdbcType="VARCHAR" />
+    <result column="VISIT_PARAM" property="visitParam" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="FAIL_INFO" property="failInfo" jdbcType="VARCHAR" />
+    <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="DEL_FLAG" property="delFlag" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD1" property="reservedField1" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD2" property="reservedField2" jdbcType="VARCHAR" />
+    <result column="OPERATE_TYPE" property="operateType" jdbcType="VARCHAR" />
+    <result column="OPERATE_DESCRIBE" property="operateDescribe" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from SYS_OPERATE_LOG
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.sofn.model.generator.SysOperateLog" >
+    insert into SYS_OPERATE_LOG (ID, OPERATE_USERID, OPERATE_USERNAME, 
+      OPERATE_TIME, OPERATE_IP, USER_TOKEN, 
+      VISIT_URL, VISIT_PARAM, STATUS, 
+      FAIL_INFO, CREATE_BY, CREATE_TIME, 
+      UPDATE_BY, UPDATE_TIME, DEL_FLAG, 
+      RESERVED_FIELD1, RESERVED_FIELD2, OPERATE_TYPE, 
+      OPERATE_DESCRIBE)
+    values (#{id,jdbcType=VARCHAR}, #{operateUserid,jdbcType=VARCHAR}, #{operateUsername,jdbcType=VARCHAR}, 
+      #{operateTime,jdbcType=TIMESTAMP}, #{operateIp,jdbcType=VARCHAR}, #{userToken,jdbcType=VARCHAR}, 
+      #{visitUrl,jdbcType=VARCHAR}, #{visitParam,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{failInfo,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=VARCHAR}, 
+      #{reservedField1,jdbcType=VARCHAR}, #{reservedField2,jdbcType=VARCHAR}, #{operateType,jdbcType=VARCHAR}, 
+      #{operateDescribe,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sofn.model.generator.SysOperateLog" >
+    update SYS_OPERATE_LOG
+    set OPERATE_USERID = #{operateUserid,jdbcType=VARCHAR},
+      OPERATE_USERNAME = #{operateUsername,jdbcType=VARCHAR},
+      OPERATE_TIME = #{operateTime,jdbcType=TIMESTAMP},
+      OPERATE_IP = #{operateIp,jdbcType=VARCHAR},
+      USER_TOKEN = #{userToken,jdbcType=VARCHAR},
+      VISIT_URL = #{visitUrl,jdbcType=VARCHAR},
+      VISIT_PARAM = #{visitParam,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      FAIL_INFO = #{failInfo,jdbcType=VARCHAR},
+      CREATE_BY = #{createBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_BY = #{updateBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      DEL_FLAG = #{delFlag,jdbcType=VARCHAR},
+      RESERVED_FIELD1 = #{reservedField1,jdbcType=VARCHAR},
+      RESERVED_FIELD2 = #{reservedField2,jdbcType=VARCHAR},
+      OPERATE_TYPE = #{operateType,jdbcType=VARCHAR},
+      OPERATE_DESCRIBE = #{operateDescribe,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select ID, OPERATE_USERID, OPERATE_USERNAME, OPERATE_TIME, OPERATE_IP, USER_TOKEN, 
+    VISIT_URL, VISIT_PARAM, STATUS, FAIL_INFO, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
+    DEL_FLAG, RESERVED_FIELD1, RESERVED_FIELD2, OPERATE_TYPE, OPERATE_DESCRIBE
+    from SYS_OPERATE_LOG
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select ID, OPERATE_USERID, OPERATE_USERNAME, OPERATE_TIME, OPERATE_IP, USER_TOKEN, 
+    VISIT_URL, VISIT_PARAM, STATUS, FAIL_INFO, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
+    DEL_FLAG, RESERVED_FIELD1, RESERVED_FIELD2, OPERATE_TYPE, OPERATE_DESCRIBE
+    from SYS_OPERATE_LOG
+  </select>
+</mapper>

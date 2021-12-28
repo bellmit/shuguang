@@ -1,0 +1,66 @@
+<link rel="stylesheet" href="assets/css/tts/complain/myComplain.css">
+<div class="gui-breadcrumbs">
+    <span>优化建议</span>
+</div>
+<div class="gui-section">
+    <div id="success" style="display: none">
+        <div class="gui-page-head text-center">
+            <h2>平台优化建议保存成功，点击返回继续添加建议！</h2>
+        </div>
+        <div class="text-center">
+            <button ng-click="returenAdd();" class="gui-btn">返回</button>
+        </div>
+    </div>
+    <div class="ovh" id="addForm">
+        <form id="attributeForm" method="post" class="form-horizontal" data-bv-message="This value is not valid" data-bv-feedbackicons-valid="glyphicon glyphicon-ok" data-bv-feedbackicons-invalid="glyphicon glyphicon-remove" data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+            <ul class="gui-list">
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title">标题</label>
+                        <input type="text" class="gui-input form-control" id="title" ng-model="ttsScltxxcjProposal.title" name="title" placeholder="请输入标题" data-bv-notempty="true" data-bv-notempty-message="请填写标题!" data-bv-stringlength="true" data-bv-stringlength-min="2" data-bv-stringlength-max="20" data-bv-stringlength-message="标题必须在2到20个字之间!">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title">内容</label>
+                        <textarea class="gui-textarea form-control" id="content" ng-model="ttsScltxxcjProposal.content" name="content" placeholder="请输入优化建议内容（300字）" rows="8" data-bv-notempty="true" data-bv-notempty-message="请输入变更原因!" data-bv-stringlength="true" data-bv-stringlength-min="1" data-bv-stringlength-max="300" data-bv-stringlength-message="内容必须在1到300个字之间!">
+
+                        </textarea>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title">附件</label>
+                        <input type="text" ng-model="fileName" id="fileName" class="gui-input" name="fileName" ng-click="myModal61()" readonly>
+                    </div>
+                </li>
+                <li>
+                    <div class="text-center">
+                        <button ng-click="addTtsScltxxcjProposal()" class="gui-btn">提交</button>
+                    </div>
+                </li>
+            </ul>
+        </form>
+</div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel1">附件上传</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <form enctype="multipart/form-data">
+                        <input class="gui-input" id="file-1" multiple="true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="1" type="file">
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" ng-click="setFileInput();" data-dismiss="modal">保存</button>
+            </div>
+        </div>
+    </div>
+</div>

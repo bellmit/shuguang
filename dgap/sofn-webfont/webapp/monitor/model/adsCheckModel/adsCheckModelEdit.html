@@ -1,0 +1,63 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+    <div class="gui-breadcrumbs">
+        <a href="">监测系统</a>&gt;
+        <a href="">监测模型</a>&gt;
+        <a href="" id="checkModel">模型配置</a>&gt;
+        <span>配置</span>
+    </div>
+    <div class="Sup_contain_section_contain col-lg-12 col-xs-12 col-sm-12 col-md-12">
+        <p class="col-lg-1 col-xs-0 col-sm-1 col-md-1"></p>
+        <div class="Sup_contain_section_contain_head col-lg-12 col-xs-12 col-sm-12 col-md-12">
+            <!-- 左侧菜单 -->
+            <div class="col-md-2">
+                <div class="panel-group list-group-panel">
+                    <div class="panel panel-default">
+                        <div class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div class="list-group" style="margin-bottom:0px;">
+                                    <a href="#" class="list-group-item active line-20">修改模型</a>
+                                    <!--<a href="#" ng-click="editType()" class="list-group-item line-20">编辑模型种类</a>-->
+                                    <a href="#" type="button" ng-click="editSampleLink()" class="list-group-item line-20">编辑抽样环节</a>
+                                    <a href="#" type="button" ng-click="editCheckObject()" class="list-group-item line-20">编辑检测对象</a>
+                                    <a href="#" type="button" ng-click="editJudgeStandard()" class="list-group-item line-20">编辑判定标准</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1">
+            </div>
+            <!-- 右侧内容 -->
+            <div class="col-md-10">
+                <div class="well" style="background-color:white;">
+                    <form class="form-horizontal" id="updateCheckModel">
+                        <div class="form-group line-20">
+                            <p></p>
+                            <label class="col-sm-5 control-task text-right">模型名称:&nbsp&nbsp</label>
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <input type="hidden" id="idU" name="idU"/>
+                                    <input type="text" id="modelNameU" name="modelNameU" class="form-control text-height-28"
+                                           data-bv-notempty="true"
+                                           data-bv-notempty-message="内容不能是空"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group line-20">
+                            <label class="col-sm-5 control-task text-right">行业:&nbsp&nbsp</label>
+                            <div class="col-sm-3">
+                                <select ng-model="selectedIndustry" id="industryU" name="industryU" class="form-control">
+                                    <option ng-repeat="x in IndustryType">{{x.dictName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="text-align:center;">
+                            <span class="gui-btn" type="button" ng-click="back()">返回上一页</span>
+                            <span class="gui-btn" type="button" ng-click="updateAdsModel()">保存</span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.dhhrp.mapper.ThresholdMapper">
+    <select id="existThreshold" resultType="com.sofn.dhhrp.model.Threshold">
+        select * from threshold
+        <where>
+        1=1
+        <if test="variety != null and variety != ''">
+            and variety = #{variety}
+        </if>
+        <if test="indexPar != null and indexPar != ''">
+            and index_par = #{indexPar}
+        </if>
+    </where>
+    </select>
+
+    <select id="repeatThreshold" resultType="com.sofn.dhhrp.model.Threshold">
+        select * from threshold
+        <where>
+            1=1
+            <if test=" id!= null and id != ''">
+            and id!=#{id}
+            </if>
+            <if test="variety != null and variety != ''">
+                and variety = #{variety}
+            </if>
+            <if test="indexPar != null and indexPar != ''">
+                and index_par = #{indexPar}
+            </if>
+        </where>
+    </select>
+    <resultMap id="rs2" type="com.sofn.dhhrp.model.Threshold">
+        <id column="id" property="id" jdbcType="VARCHAR"></id>
+        <id column="variety" property="variety" jdbcType="VARCHAR"></id>
+    </resultMap>
+    <select id="listByParams" resultMap="rs2">
+SELECT
+	c.id,
+	c.variety
+FROM
+	threshold c,
+	(
+		SELECT
+			a1.*, a2.variety
+		FROM
+			(
+				SELECT
+					point_name,
+					id,
+					longitude,
+					latitude,
+					province,
+					city,
+					county,
+					monitoring_time,
+					amount
+				FROM
+					baseinfo
+			) a1,
+			(
+				SELECT
+					max(b.monitoring_time) monitoring_time,
+					bs.variety
+				FROM
+					baseinfo b
+				LEFT JOIN baseinfo bs ON b.id = bs.id
+				WHERE
+					1 = 1
+				AND b. STATUS = '8'
+				GROUP BY
+					bs.variety
+			) a2
+		<where>
+			a1.monitoring_time = a2.monitoring_time
+			<if test="variety != null and variety != ''">
+				and a2.variety=#{variety}
+			</if>
+			<if test="point_name != null and point_name != ''">
+				and a1.point_name=#{pointName}
+			</if>
+
+		</where>
+	) d
+WHERE
+	c.variety = d.variety
+
+
+    </select>
+  <resultMap id="rs1" type="com.sofn.dhhrp.vo.DropDownVo">
+       <id column="variety" property="id" jdbcType="VARCHAR"></id>
+   </resultMap>
+   <select id="listName" resultMap="rs1">
+		 SELECT
+			a.variety
+		FROM
+			baseinfo a
+		WHERE
+			a.status = '8'
+			and a.del_flag='N'
+            GROUP BY variety
+    </select>
+</mapper>

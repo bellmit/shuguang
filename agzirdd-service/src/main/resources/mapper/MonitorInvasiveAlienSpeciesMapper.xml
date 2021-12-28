@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agzirdd.mapper.MonitorInvasiveAlienSpeciesMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.agzirdd.model.MonitorInvasiveAlienSpecies" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="SPECIES_MONITOR_ID" property="speciesMonitorId" jdbcType="VARCHAR" />
+    <result column="SPECIES_TYPE" property="speciesType" jdbcType="VARCHAR" />
+    <result column="SPECIES_TYPE_NAME" property="speciesTypeName" jdbcType="VARCHAR" />
+    <result column="SPECIES_ID" property="speciesId" jdbcType="VARCHAR" />
+    <result column="SPECIES_NAME" property="speciesName" jdbcType="VARCHAR" />
+    <result column="LATIN_NAME" property="latinName" jdbcType="VARCHAR" />
+    <result column="AMOUNT" property="amount" jdbcType="VARCHAR" />
+    <result column="COVER_RATIO" property="coverRatio" jdbcType="VARCHAR" />
+    <result column="ORDER_NUMBER" property="orderNumber" jdbcType="VARCHAR" />
+    <result column="LONGITUDE" property="longitude" jdbcType="VARCHAR" />
+    <result column="LATITUDE" property="latitude" jdbcType="VARCHAR" />
+    <result column="ALTITUDE" property="altitude" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, SPECIES_MONITOR_ID,SPECIES_TYPE, SPECIES_TYPE_NAME,SPECIES_ID,SPECIES_NAME, LATIN_NAME, AMOUNT, COVER_RATIO,
+    ORDER_NUMBER,LONGITUDE,LATITUDE,ALTITUDE,REMARK, CREATE_TIME
+  </sql>
+
+  <select id="getMonitorInvasiveAlienSpeciesByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM MONITOR_INVASIVE_ALIEN_SPECIES
+    <where>
+      1=1
+      <if test="speciesMonitorId != null and speciesMonitorId != ''">
+        AND SPECIES_MONITOR_ID = #{speciesMonitorId}
+      </if>
+    </where>
+    ORDER BY CREATE_TIME desc
+  </select>
+
+  <delete id="deleteMonitorInvasiveAlienSpecies" parameterType="java.lang.String">
+    delete
+    from MONITOR_INVASIVE_ALIEN_SPECIES
+    where
+    SPECIES_MONITOR_ID = #{speciesMonitorId}
+  </delete>
+
+</mapper>

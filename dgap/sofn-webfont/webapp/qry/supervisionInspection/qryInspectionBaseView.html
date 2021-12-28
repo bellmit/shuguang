@@ -1,0 +1,86 @@
+<link rel="stylesheet" href="assets/css/asms/Work/Check_report.css"/>
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">查询系统</a>&gt;
+    <a ui-sref="index.content.qry/supervisionInspection/qryInspectionBaseList">监督检查信息查询</a>&gt;
+    <a ui-sref="index.content.qry/supervisionInspection/qryInspectionBaseList">基地巡查</a>&gt;
+    <span>查看</span>
+</div>
+<div class="Sup_contain_section_contain gui-section " >
+    <ul class="mt15">
+        <li class="Bor_line">巡查信息</li>
+        <li>
+            <!--<p>主体名称：<span ng-bind="subjEnt.enterpriseName"></span></p>-->
+            <div class="gui-mainViews" style="">
+                <p >主体信息</p>
+                <ul>
+                    <li>主体名称：<span ng-bind="subjEnt.enterpriseName" /></li>
+                    <li>组织形式：<span ng-bind="subjEnt.entityScaleName" /></li>
+                    <li>所属行业：<span ng-bind="subjEnt.entityIndustryName" /></li>
+                    <li>主体地址：<span ng-bind="subjEnt.address"/></li>
+                    <li id="frdb">法定代表人：<span ng-bind="subjEnt.legalName" /></li>
+                    <li id="dbdh">代表电话：<span ng-bind="subjEnt.legalPhone" /></li>
+                    <li>联 系 人：<span ng-bind="subjEnt.contactName" /></li>
+                    <li>联系电话：<span ng-bind="subjEnt.contactPhone" /></li>
+                    <li><button class="gui-btn" ng-click="gis()">查看地理位置</button></li>
+                </ul>
+            </div>
+        </li>
+        <li class="Bor_line">
+            巡查处理意见
+        </li>
+        <li>
+            <p>任务类型：<span ng-bind="baseInspection.inspectionTypeName"></span></p>
+            <p>巡查结果：<span ng-bind="baseInspection.inspectionResult"></span></p>
+            <p>
+                巡查意见：
+            </p>
+            <textarea class="gui-textarea" readonly name="" id="" cols="80" rows="5" ng-bind="baseInspection.inspectionView">
+            </textarea>
+        </li>
+        <li class="Bor_line">现场取证</li>
+            <li class="_box" id="imgSpot">
+        </li>
+        <li class="Bor_line">现场视频</li>
+             <li class="_box" id = "videoSpot">
+        </li>
+        <li class="Bor_line">巡查机构信息</li>
+        <li class="_box col-lg-12 col-xs-12 col-sm-12 col-md-12">
+            <div class="col-lg-3 col-xs-12 col-sm-3 col-md-3">巡查时间 <input class="gui-input" type="text" readonly ng-model="baseInspection.inspectionTime"/></div>
+            <div class="col-lg-3 col-xs-12 col-sm-3 col-md-3">巡查机构 <input class="gui-input" type="text" readonly ng-model="baseInspection.inspectionSvName"/></div>
+            <div class="col-lg-3 col-xs-12 col-sm-3 col-md-3">巡查人员 <input class="gui-input" type="text" readonly ng-model="baseInspection.inspectionUserName"/></div>
+        </li>
+        <li class="Bor_line">被巡查对象签字</li>
+        <li class="_box">
+            <div>负责人签字 <input class="gui-input" readonly ng-model="baseInspection.headSign" type="text" name="inspectionSvId" placeholder="请录入巡查机构"/></div>
+            <div><span>签字照片</span> <span id="headSignFile"> 暂无签字照片</span></div>
+        </li>
+        <li>
+            <button  class="gui-btn" ng-click="removeLocalStorage()">关闭</button>
+        </li>
+    </ul>
+</div>
+
+<div class="modal fade" id="gis" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog " style="width: 80%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span
+                        aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">
+                    <span>查看地理位置</span>
+                    <!-- point overlay -->
+                    <div id="info" class="ol-popup gui-hide"><div id="info-content"></div></div>
+                    <div id="searchBar"></div>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="mapDiv" style="width:100%; height:500px;"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>

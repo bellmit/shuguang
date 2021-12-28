@@ -1,0 +1,140 @@
+server:
+  port: 7999
+
+spring:
+  servlet:
+    multipart:
+      max-request-size: 1024MB
+      max-file-size: 1024MB
+  application:
+    name: @project.artifactId@
+  profiles:
+    active: @active.profile@
+#    active: prod
+    include: filter
+
+ribbon:
+  ReadTimeout: 1800000
+  ConnectTimeout: 600000
+  eureka:
+    enabled: true
+
+zuul:
+  #修改信号量,默认信号量大小100
+  semaphore:
+    max-semaphores: 2000
+  # 避免Content-Length 丢失
+  set-content-length: true
+  # 配置header过滤，设置空，避免Authorization信息丢失
+  sensitive-headers:
+  host:
+    connect-timeout-millis: 150000
+    socket-timeout-millis: 1800000
+  hystrix:
+    command:
+      default:
+        execution:
+          isolation:
+            thread:
+              timeoutInMilliseconds: 1800000
+  routes:
+    sys-service: /sys/**
+    workflow-service: /workflow/**
+    share-service: /share/**
+    enp-service: /enp/**
+    aeem-service: /aeem/**
+    pmlcsc-service: /pmlcsc/**
+    pmpps-service: /pmpps/**
+    astcap-service: /astcap/**
+    fdpi-service: /fdpi/**
+    bigdata-service: /bigdata/**
+    agpjzb-service: /agpjzb/**
+    agpjyz-service: /agpjyz/**
+    agpjqf-service: /agpjqf/**
+    agziml-service: /agziml/**
+    agzirdd-service: /agzirdd/**
+    agziwj-service: /agziwj/**
+    agzirz-service: /agzirz/**
+    aszdqq-service: /aszdqq/**
+    pcmsk-service: /pcmsk/**
+    fyzdj-service: /fyzdj/**
+    fywxg-service: /fywxg/**
+    fdsbsf-service: /fdsbsf/**
+    fdzem-service: /fdzem/**
+    fdnpm-service: /fdnpm/**
+    peeb-service: /peeb/**
+    pcafcs-service: /pcafcs/**
+    pcafwm-service: /pcafwm/**
+    pcaam-service: /pcaam/**
+    pcaww-service: /pcaww/**
+    ahhpp-service: /ahhpp/**
+    pcpsm-service: /pcpsm/**
+    agsjsi-service: /agsjsi/**
+    fdcad-service: /fdcad/**
+    agsjdm-service: /agsjdm/**
+    ahhdp-service: /ahhdp/**
+    pmcmp-service: /pmcmp/**
+    aggsqi-service: /aggsqi/**
+    pcstd-service: /pcstd/**
+    pmnkc-service: /pmnkc/**
+    pmae-service: /pmae/**
+    pmat-service: /pmat/**
+    pmai-service: /pmai/**
+    pmwc-service: /pmwc/**
+    pmwe-service: /pmwe/**
+    pmwt-service: /pmwt/**
+    pmwi-service: /pmwi/**
+    pmsca-service: /pmsca/**
+    pmse-service: /pmse/**
+    pmst-service: /pmst/**
+    pmsi-service: /pmsi/**
+    pmqse-service: /pmqse/**
+    pmqst-service: /pmqst/**
+    pmqsi-service: /pmqsi/**
+    aggsqm-service: /aggsqm/**
+    ahhrm-service: /ahhrm/**
+    dhhrp-service: /dhhrp/**
+    aszdwp-service: /aszdwp/**
+    pcbbfwm-service: /pcbbfwm/**
+    pcddsm-service: /pcddsm/**
+    pcddus-service: /pcddus/**
+    pcscw-service: /pcscw/**
+    pccfs-service: /pccfs/**
+    pcnpl-service: /pcnpl/**
+    pcces-service: /pcces/**
+    pcddam-service: /pcddam/**
+    fyrpa-service: /fyrpa/**
+    fyem-service: /fyem/**
+    fymfb-service: /fymfb/**
+    fdzdr-service: /fdzdr/**
+    aszdd-service: /aszdd/**
+    ducss-service: /ducss/**
+    spider-service: /spider/**
+    agzisj-service: /agzisj/**
+    agpjpm-service: /agpjpm/**
+    agzipc-service: /agzipc/**
+    bmw-service: /bmw/**
+# swagger配置
+swagger:
+  # 扫描包
+  base-package: com.sofn.gatewayservice.web
+  # 名称
+  name: 网关
+  # 接口前缀
+  prefix:
+
+eureka:
+  instance:
+    # 心跳时间，即服务续约间隔时间（缺省为30s）
+    lease-renewal-interval-in-seconds: 10
+    # 发呆时间，即服务续约到期时间（缺省为90s）
+    lease-expiration-duration-in-seconds: 20
+  client:
+    healthcheck:
+      # 开启健康检查（依赖spring-boot-starter-actuator）
+      enabled: true
+    fetch-registry: true
+    register-with-eureka: true
+
+#logging:
+#  config: classpath:logback-spring.xml

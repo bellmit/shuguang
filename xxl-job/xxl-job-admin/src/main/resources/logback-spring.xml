@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+    <!-- 应用名称 -->
+    <property name="APP_NAME" value="xxl-job-admin"/>
+    <!-- 当前环境 -->
+    <springProperty scope="context" name="active" source="spring.profiles.active"/>
+
+    <!-- 日志输出格式 -->
+    <property name="ENCODER_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{80} - %msg%n"/>
+    <contextName>${APP_NAME}</contextName>
+
+    <!-- 日志输出格式:只输出msg -->
+    <property name="ENCODER_MSG" value="%d{yyyy-MM-dd HH:mm:ss.SSS} - %msg%n"/>
+
+    <!-- 控制台日志：输出全部日志到控制台 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>${ENCODER_PATTERN}</Pattern>
+        </encoder>
+    </appender>
+
+    <!-- 文件日志：输出全部日志到文件 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/logs/${active}/${APP_NAME}/${APP_NAME}-logback.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>/logs/${active}/${APP_NAME}/${APP_NAME}-logback.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxHistory>5</maxHistory>
+            <maxFileSize>20MB</maxFileSize>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${ENCODER_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+        <queueSize>1024</queueSize>
+        <appender-ref ref="FILE"/>
+    </appender>
+
+    <root>
+        <level value="INFO"/>
+        <!-- 只在windows或者mac系统输出日志到控制台 -->
+        <if condition='property("os.name").toUpperCase().contains("WINDOWS") || property("os.name").toUpperCase().contains("MAC")'>
+            <then>
+                <appender-ref ref="STDOUT"/>
+            </then>
+        </if>
+        <appender-ref ref="ASYNC_FILE"/>
+    </root>
+
+    <!-- 开发、测试环境 -->
+    <springProfile name="local,dev,test,chengdu">
+        <logger name="org.apache.ibatis" level="DEBUG"/>
+        <logger name="com.alibaba.druid" level="DEBUG"/>
+        <logger name="java.sql" level="DEBUG"/>
+        <logger name="com.sofn" level="DEBUG"/>
+        <logger name="mybatis.sql" level="DEBUG"/>
+    </springProfile>
+
+    <!-- 生产环境 -->
+    <springProfile name="beijing">
+        <logger name="org.apache.ibatis" level="DEBUG"/>
+        <logger name="mybatis.sql" level="DEBUG"/>
+        <logger name="java.sql" level="DEBUG"/>
+        <logger name="com.sofn" level="DEBUG"/>
+    </springProfile>
+</configuration>

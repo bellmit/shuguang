@@ -1,0 +1,82 @@
+<script async="async" type="text/javascript" src="../../../../assets/scripts/ckeditor/ckeditor.js"></script>
+<div class="gui-mainBc">
+    <div class="gui-breadcrumbs">
+        <a href="">系统管理</a>&gt;
+        <a href="">在线编辑管理</a>&gt;
+        <span ng-cloak>{{headerText}}</span>
+    </div>
+    <div class="gui-section">
+        <h3 align="center" class="mt15" style="margin-bottom: 20px" ng-cloak>{{headerText}}</h3>
+        <div class="modal-body">
+            <form class="default_w_h" id="docForm" name="documentForm" novalidate ng-cloak>
+                <div class="form-item form-group">
+                    <label class="required">标题:</label>
+                    <input type="text" id="documentTitle"  ng-model="document.title" class="gui-input form-control" name="title"  maxlength="150" required>
+                    <span style="color:red" ng-show="documentForm.title.$invalid && submittingValidate">
+                        <span ng-show="documentForm.title.$error.required">标题不能为空</span>
+                    </span>
+                </div>
+                <div class="form-item form-group">
+                    <label class="required">内容:</label>
+                    <textarea id="documentContent" ng-model="document.content" name="content" style="visibility: hidden" class="gui-textarea form-control ckeditor" required></textarea>
+                    <span style="color:red" ng-show="documentForm.content.$invalid && submittingValidate">
+                        <span ng-show="documentForm.content.$error.required">内容不能为空</span>
+                    </span>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3 form-item form-group">
+                            <label class="required">类别:</label>
+                            <span class="gui-select">
+                                <select class="gui-select form-control" style="max-width:100%;min-width:100%;" ng-model="document.type" name="type" required>
+                                    <option ng-repeat="o in docTypeOptions" value="{{o.dictName}}">{{o.dictName}}</option>
+                                </select>
+                            </span>
+                            <span style="color:red" ng-show="documentForm.type.$invalid && submittingValidate">
+                                <span ng-show="documentForm.type.$error.required">类别不能为空</span>
+                            </span>
+                        </div>
+                        <div class="col-md-3 form-item form-group">
+                            <label class="required">适用系统:</label>
+                            <span class="gui-select">
+                                <select class="gui-select form-control" style="max-width:100%;min-width:100%;" ng-model="document.applyTo" name="applyTo" required>
+                                    <option ng-repeat="(k, v) in systemOptions" value="{{k}}">{{v}}</option>
+                                </select>
+                            </span>
+                            <span style="color:red" ng-show="documentForm.applyTo.$invalid && submittingValidate">
+                                <span ng-show="documentForm.applyTo.$error.required">适用系统不能为空</span>
+                            </span>
+                            <input type="hidden" ng-model="formValid">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button class="gui-btn fr ml15" style="margin-right: 20px;" ng-click="cancel()">取消</button>
+                    <button ng-if="permission.action" class="gui-btn fr ml15" ng-click="save(documentForm.$valid)">保存</button>
+                    <button ng-if="permission.action" class="gui-btn fr" ng-click="preview()">预览</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- 模态框（Modal）预览 -->
+    <div class="modal fade " id="previewModal" tabindex="-1" role="dialog" aria-labelledby="previewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-style">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="previewModalLabel">预览</h4>
+                </div>
+                <div class="modal-body">
+                    <h4 align="center" class="mt15" style="margin-bottom: 13px">{{document.title}}</h4>
+                    <article ng-bind-html="document.content | toTrustHtml" style="margin-bottom: 10px;">
+                    </article>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="gui-btn" ng-click="close()">关闭</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal -->
+    </div>
+</div>

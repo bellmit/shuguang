@@ -1,0 +1,796 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysUserMapper" >
+
+    <resultMap id="customResultMap" type="com.sofn.sys.model.SysUser" >
+        <id column="ID" property="id" jdbcType="VARCHAR" />
+        <result column="NICKNAME" property="nickname" jdbcType="VARCHAR" />
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+        <result column="USERNAME" property="username" jdbcType="VARCHAR" />
+        <result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
+        <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+        <result column="STATUS" property="status" jdbcType="VARCHAR" />
+        <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+        <result column="CREATE_USER_ID" property="createUserId" jdbcType="VARCHAR" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="DATE" />
+        <result column="UPDATE_USER_ID" property="updateUserId" jdbcType="VARCHAR" />
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE" />
+        <result column="DEL_FLAG" property="delFlag" jdbcType="VARCHAR" />
+        <result column="ORGANIZATION_ID" property="organizationId" jdbcType="VARCHAR" />
+        <result column="SALT" property="salt" jdbcType="VARCHAR" />
+        <result column="SEX" property="sex"  />
+        <result column="INIT_PASSWORD" property="initPassword" jdbcType="VARCHAR" />
+        <result column="UPDATED" property="updated"  />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+      ID, NICKNAME, PASSWORD AS PASSWORD, USERNAME, MOBILE, EMAIL,REMARK, STATUS, CREATE_USER_ID, CREATE_TIME,
+      UPDATE_USER_ID, UPDATE_TIME, DEL_FLAG, ORGANIZATION_ID, SALT,SEX,UPDATED
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="customResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from SYS_USER
+        where ID = #{id,jdbcType=VARCHAR} AND DEL_FLAG != 'Y'
+    </select>
+
+    <insert id="insertSelective" parameterType="com.sofn.sys.model.SysUser" >
+        insert into SYS_USER
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                ID,
+            </if>
+            <if test="nickname != null" >
+                NICKNAME,
+            </if>
+            <if test="password != null" >
+                PASSWORD,
+            </if>
+            <if test="initPassword != null" >
+                INIT_PASSWORD,
+            </if>
+            <if test="username != null" >
+                USERNAME,
+            </if>
+            <if test="mobile != null" >
+                MOBILE,
+            </if>
+
+            <if test="email != null" >
+                EMAIL,
+            </if>
+            <if test="status != null" >
+                STATUS,
+            </if>
+            <if test="createUserId != null" >
+                CREATE_USER_ID,
+            </if>
+            <if test="createTime != null" >
+                CREATE_TIME,
+            </if>
+            <if test="updateUserId != null" >
+                UPDATE_USER_ID,
+            </if>
+            <if test="updateTime != null" >
+                UPDATE_TIME,
+            </if>
+            <if test="delFlag != null" >
+                DEL_FLAG,
+            </if>
+            <if test="organizationId != null" >
+                ORGANIZATION_ID,
+            </if>
+            <if test="salt != null" >
+                SALT,
+            </if>
+
+            <if test="remark != null" >
+                REMARK,
+            </if>
+            <if test="sex != null" >
+                SEX
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="nickname != null" >
+                #{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null" >
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="initPassword != null" >
+                #{initPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="username != null" >
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null" >
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null" >
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserId != null" >
+                #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=DATE},
+            </if>
+            <if test="updateUserId != null" >
+                #{updateUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=DATE},
+            </if>
+            <if test="delFlag != null" >
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="organizationId != null" >
+                #{organizationId,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null" >
+                #{salt,jdbcType=VARCHAR},
+            </if>
+
+            <if test="remark != null" >
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null" >
+                #{sex}
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.sofn.sys.model.SysUser" >
+        update SYS_USER
+        <set >
+            <if test="nickname != null" >
+                NICKNAME = #{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null" >
+                PASSWORD = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="username != null" >
+                USERNAME = #{username,jdbc
+                Type=VARCHAR},
+            </if>
+            <if test="mobile != null" >
+                MOBILE = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null" >
+                EMAIL = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                STATUS = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserId != null" >
+                CREATE_USER_ID = #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                CREATE_TIME = #{createTime,jdbcType=DATE},
+            </if>
+            <if test="updateUserId != null" >
+                UPDATE_USER_ID = #{updateUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null" >
+                UPDATE_TIME = #{updateTime,jdbcType=DATE},
+            </if>
+            <if test="delFlag != null" >
+                DEL_FLAG = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="organizationId != null" >
+                ORGANIZATION_ID = #{organizationId,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null" >
+                SALT = #{salt,jdbcType=VARCHAR},
+            </if>
+
+            <if test="sex != null" >
+                SEX = #{sex},
+            </if>
+
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="getUserListBySubsystem" parameterType="java.util.Map" resultType="com.sofn.sys.model.SysUser">
+        select
+        DISTINCT
+        SU.ID            AS             id,
+        SU.NICKNAME                     nickname,
+        SU.PASSWORD      AS             password,
+        SU.INIT_PASSWORD                initPassword,
+        SU.USERNAME                     username,
+        SU.MOBILE                       mobile,
+        SU.EMAIL                        email,
+        SU.STATUS                       status,
+        SU.CREATE_USER_ID               createUserId,
+        SU.CREATE_TIME                  createTime,
+        SU.UPDATE_USER_ID               updateUserId,
+        SU.UPDATE_TIME                  updateTime,
+        SU.DEL_FLAG                     delFlag,
+        SU.ORGANIZATION_ID              organizationId,
+        SU.SALT                         salt,
+        SU.SEX                          sex
+        from SYS_USER SU
+        LEFT JOIN SYS_ORGANIZATION SO ON SU.ORGANIZATION_ID = SO.ID and SO.DEL_FLAG != 'Y'
+        LEFT JOIN SYS_USER_GROUP SUG ON SUG.USER_ID = SU.ID
+        LEFT JOIN SYS_ROLE_GROUP SRG ON SUG.GROUP_ID = SRG.GROUP_ID
+        LEFT JOIN SYS_USER_ROLE SUR ON SUR.USER_ID = SU.ID
+        LEFT JOIN SYS_ROLE SR ON (SR.ID = SUR.ROLE_ID OR SR.ID = SRG.ROLE_ID) AND SR.DEL_FLAG != 'Y'
+        WHERE SU.DEL_FLAG != 'Y'
+        <if test="organizationLevel != null and organizationLevel != ''">
+            AND SO.ORGANIZATION_LEVEL = #{organizationLevel,jdbcType=VARCHAR}
+        </if>
+        <if test="subsystemId != null and subsystemId != ''">
+            AND SR.SUBSYSTEM_ID = #{subsystemId,jdbcType=VARCHAR}
+        </if>
+        <if test="proxyUser != null and proxyUser == 'Y'.toString() and proxyOrgs != null and proxyOrgs.size > 0">
+            union
+            select
+            DISTINCT
+            SU.ID                 AS        id,
+            SU.NICKNAME                     nickname,
+            SU.PASSWORD           AS        password,
+            SU.INIT_PASSWORD                initPassword,
+            SU.USERNAME                     username,
+            SU.MOBILE                       mobile,
+            SU.EMAIL                        email,
+            SU.STATUS                       status,
+            SU.CREATE_USER_ID               createUserId,
+            SU.CREATE_TIME                  createTime,
+            SU.UPDATE_USER_ID               updateUserId,
+            SU.UPDATE_TIME                  updateTime,
+            SU.DEL_FLAG                     delFlag,
+            SU.ORGANIZATION_ID              organizationId,
+            SU.SALT                         salt,
+            SU.SEX                          sex
+            from SYS_USER SU
+            where 1=1
+            and SU.ORGANIZATION_ID in
+            <foreach collection="proxyOrgs" item="proxyOrg" open="(" close=")" separator=",">
+                #{proxyOrg,jdbcType=VARCHAR}
+            </foreach>
+
+        </if>
+    </select>
+
+    <select id="getSysUserByCondition" parameterType="java.util.Map" resultType="com.sofn.sys.model.SysUser">
+        select
+        ID              AS           id,
+        NICKNAME                     nickname,
+        PASSWORD        AS           password,
+        INIT_PASSWORD                initPassword,
+        USERNAME                     username,
+        MOBILE                       mobile,
+        EMAIL                        email,
+        STATUS                       status,
+        CREATE_USER_ID               createUserId,
+        CREATE_TIME                  createTime,
+        UPDATE_USER_ID               updateUserId,
+        UPDATE_TIME                  updateTime,
+        DEL_FLAG                     delFlag,
+        ORGANIZATION_ID              organizationId,
+        SALT                         salt,
+        SEX                          sex,
+        UPDATED                      updated
+        from sys_user
+        <where>
+            DEL_FLAG!='Y'
+
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+
+            <if test="keyword != null and keyword != ''">
+                and (
+                position (#{keyword} in EMAIL)>0
+                or position (#{keyword} in MOBILE)>0
+                or position(#{keyword} in USERNAME)>0
+                or position(#{keyword} in NICKNAME)>0
+                )
+            </if>
+
+            <if test="limitOrg != null and 'Y'.toString() == limitOrg">
+                and ORGANIZATION_ID in (
+                <include refid="com.sofn.sys.mapper.CommonMapper.getOrgCanShowOrgIds">
+                    <property name="appIds" value="#{appIds}"/>
+                    <property name="orgId" value="#{orgId}"/>
+                    <property name="carryChildren" value="#{carryChildren}"/>
+                    <property name="carryProxyOrg" value="#{carryProxyOrg}"/>
+                </include>
+                )
+            </if>
+            <if test="organizationId != null and organizationId != ''">
+                and ORGANIZATION_ID = #{organizationId}
+            </if>
+
+            <if test="userId != null and userId != ''">
+                or CREATE_USER_ID = #{userId}
+            </if>
+
+        </where>
+
+        order by CREATE_TIME desc,id desc
+    </select>
+
+    <insert id="batchSave" parameterType="java.util.List">
+        insert into sys_user (
+        ID,
+        NICKNAME,
+        PASSWORD,
+        INIT_PASSWORD,
+        USERNAME,
+        MOBILE,
+        EMAIL,
+        STATUS,
+        CREATE_USER_ID,
+        CREATE_TIME,
+        UPDATE_USER_ID,
+        UPDATE_TIME,
+        DEL_FLAG,
+        ORGANIZATION_ID,
+        SALT,
+        SEX
+        )
+        values<foreach collection="sysUsers" item="sysUser" separator=",">
+        (
+        #{sysUser.id,jdbcType=VARCHAR},
+        #{sysUser.nickname,jdbcType=VARCHAR},
+        #{sysUser.password,jdbcType=VARCHAR},
+        #{sysUser.initPassword,jdbcType=VARCHAR},
+        #{sysUser.username,jdbcType=VARCHAR},
+        #{sysUser.mobile,jdbcType=VARCHAR},
+        #{sysUser.email,jdbcType=VARCHAR},
+        #{sysUser.status,jdbcType=VARCHAR},
+        #{sysUser.createUserId,jdbcType=VARCHAR},
+        #{sysUser.createTime,jdbcType=DATE},
+        #{sysUser.updateUserId,jdbcType=VARCHAR},
+        #{sysUser.updateTime,jdbcType=DATE},
+        #{sysUser.delFlag,jdbcType=VARCHAR},
+        #{sysUser.organizationId,jdbcType=VARCHAR},
+        #{sysUser.salt,jdbcType=VARCHAR},
+        #{sysUser.sex,jdbcType=VARCHAR}
+        )
+    </foreach>
+    </insert>
+
+
+    <resultMap id="sysUserFormResult" type="com.sofn.sys.vo.SysUserForm">
+        <id column="ID" property="id"  />
+        <result column="NICKNAME" property="nickname"  />
+        <result column="ORGANIZATION_ID" property="organizationId" />
+        <result column="ORGANIZATION_NAME" property="organizationName"/>
+        <result column="USERNAME" property="username"/>
+        <result column="INIT_PASSWORD" property="initPassword"/>
+        <result column="GROUP_ID" property="groupIds"/>
+        <result column="GROUP_NAME" property="groupNames" />
+        <result column="EMAIL" property="email" />
+        <result column="STATUS" property="status" />
+        <result column="REMARK" property="remark" />
+        <result column="CREATE_USER_ID" property="createUserId" />
+        <result column="MOBILE" property="mobile"  />
+        <result column="CREATE_TIME" property="createTime" />
+        <result column="UPDATE_USER_ID" property="updateUserId" />
+        <result column="UPDATE_TIME" property="updateTime"  />
+        <result column="DEL_FLAG" property="delFlag"/>
+        <result column="SEX" property="sex"  />
+        <result column="UPDATED" property="updated"  />
+    </resultMap>
+
+
+    <select id="getUserInfoByIds" parameterType="java.util.List" resultMap="sysUserFormResult">
+        select
+        a.id id,
+        a.NICKNAME NICKNAME,
+        a.ORGANIZATION_ID  ORGANIZATION_ID,
+        B.ORGANIZATION_NAME ORGANIZATION_NAME,
+        a.USERNAME USERNAME,
+        a.INIT_PASSWORD INIT_PASSWORD,
+        g.group_id GROUP_ID,
+        GR.GROUP_NAME GROUP_NAME,
+        a.email email,
+        a.STATUS STATUS,
+        a.REMARK REMARK,
+        a.CREATE_USER_ID CREATE_USER_ID,
+        a.CREATE_TIME CREATE_TIME,
+        a.UPDATE_USER_ID UPDATE_USER_ID,
+        a.UPDATE_TIME UPDATE_TIME,
+        a.DEL_FLAG DEL_FLAG,
+        a.MOBILE   MOBILE,
+        a.SEX SEX,
+        a.UPDATED UPDATED
+        from SYS_USER a
+        left join SYS_ORGANIZATION B ON A.ORGANIZATION_ID = B.ID and (B.DEL_FLAG = 'N' or B.DEL_FLAG is null)
+        left join SYS_USER_GROUP g on a.id = g.user_id
+        left join SYS_GROUP GR ON G.GROUP_ID = GR.ID
+        <where>
+            <if test="ids != null and ids.size != 0">
+                and a.Id in
+                <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+            and a.del_flag != 'Y'
+        </where>
+    </select>
+
+    <select id="getRoleIdsByUserId" parameterType="java.lang.String" resultType="java.lang.String">
+        select
+             A.roleId
+        from (
+        select G.ROLE_ID roleId from sys_user  aa
+        left join SYS_USER_GROUP k on aa.ID = k.user_id   -- 关联用户角色组表
+        left join SYS_ROLE_GROUP G ON K.ID = G.GROUP_ID  -- 找出角色ID   用户管理角色组 角色组关联角色
+        where aa.id = #{userId} and aa.DEL_FLAG = 'N' and G.ROLE_ID is not null
+        UNION -- 去重取交集
+        select r.ROLE_ID roleId from sys_user aa
+        left join SYS_USER_ROLE r on aa.ID = r.USER_ID    -- 关联用户角色表
+        where aa.id = #{userId} and aa.DEL_FLAG = 'N' and r.ROLE_ID is not null
+        ) A
+    </select>
+
+    <select id="getRoleInfoByRoleIds" parameterType="java.util.List" resultType="java.util.HashMap">
+        select DISTINCT
+        RR.ROLE_ID ROLEID,
+        R.ROLE_CODE ROLECODE,
+        r.ROLE_NAME ROLENAME,
+        rec.permission PERMISSION
+        from SYS_ROLE_RESOURCE rr
+        left join SYS_ROLE r on rr.ROLE_ID = r.ID  and (r.DEL_FLAG = 'N' or r.del_flag is null)
+        left join SYS_RESOURCE rec on rr.resource_id = rec.id  and (rec.DEL_FLAG = 'N' or rec.del_flag is null)
+        where r.ROLE_NAME is not null
+        and rr.ROLE_ID in
+        <foreach collection="roleIds" item="roleId" open="(" close=")" separator="," >
+            #{roleId}
+        </foreach>
+        order by RR.ROLE_ID
+    </select>
+
+
+    <resultMap id="getBasicUserInfoResult" type="com.sofn.sys.vo.BasicUserInfo">
+        <result column="USERID" property="id"></result>
+        <result column="NICKNAME" property="nickname"></result>
+        <result column="USERNAME" property="username"></result>
+        <result column="INIT_PASSWORD" property="initPassword"></result>
+        <result column="email" property="email"></result>
+        <result column="MOBILE" property="mobile"></result>
+        <result column="STATUS" property="status"></result>
+        <result column="SEX" property="sex"></result>
+        <result column="REMARK" property="remark"></result>
+        <result column="ORGANIZATION_NAME" property="orgName"></result>
+        <result column="orgId" property="orgId"></result>
+        <collection property="sysRoleVos" ofType="com.sofn.sys.vo.SysRoleVo">
+            <result column="rID" property="id" ></result>
+            <result column="ROLE_NAME" property="roleName" ></result>
+            <result column="DESCRIBE" property="describe" ></result>
+            <result column="ROLE_CODE" property="roleCode" ></result>
+            <result column="RSTATUS" property="status" ></result>
+        </collection>
+    </resultMap>
+
+    <select id="getBasicUserInfo" parameterType="com.sofn.sys.vo.SelectUserConditionVo" resultMap="getBasicUserInfoResult">
+        select
+        DISTINCT
+        a.id USERID,
+        a.NICKNAME,
+        a.USERNAME,
+        a.INIT_PASSWORD,
+        a.email,
+        a.STATUS,
+        a.REMARK,
+        a.MOBILE ,
+        a.SEX,
+        so.ORGANIZATION_NAME,
+        so.ID orgId,
+        sr.ID rID,
+        sr.ROLE_NAME,
+        SR.DESCRIBE,
+        SR.ROLE_CODE,
+        SR.STATUS RSTATUS
+        from SYS_USER a
+        left join SYS_USER_GROUP g on a.id = g.user_id
+        left join SYS_ORG so on a.ORGANIZATION_ID = so.id
+        left join SYS_GROUP GR ON G.GROUP_ID = GR.ID
+        left join SYS_ROLE_GROUP rg on g.group_id = rg.group_id
+        left join SYS_USER_ROLE ur on a.id = ur.user_id
+        left join SYS_ROLE sr on (sr.id = rg.role_id or sr.id = ur.role_id)
+        left join SYS_SUBSYSTEM ssub on sr.subsystem_id = ssub.id
+        where 1=1
+        <if test="ids != null and ids.size > 0">
+            and a.ID in
+            <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+        <if test="nickName != null and nickName != ''">
+            and a.NICKNAME like '%' || #{nickName} || '%'
+        </if>
+        <if test="userName != null and userName != ''">
+            and a.USERNAME like '%' || #{userName} || '%'
+        </if>
+        <if test="subsystemId != null and subsystemId != ''">
+            and (ssub.id = #{subsystemId} or ssub.app_id = #{subsystemId})
+        </if>
+        <if test="roleIds != null and roleIds.size > 0">
+            and (sr.id in
+            <foreach collection="roleIds" item="roleId" open="(" close=")" separator=",">
+                #{roleId}
+            </foreach>
+            or sr.role_code in
+            <foreach collection="roleIds" item="roleId" open="(" close=")" separator=",">
+                #{roleId}
+            </foreach>
+            )
+
+        </if>
+        <if test="orgId != null and orgId != ''">
+            and a.ORGANIZATION_ID = #{orgId}
+        </if>
+        <if test="orgName != null and orgName != ''">
+            and so.ORGANIZATION_NAME like '%'|| #{orgName}||'%'
+        </if>
+        and (a.DEL_FLAG = 'N' or a.DEL_FLAG is null)
+        and (sr.del_flag = 'N'or  sr.del_flag is null)
+        and (ssub.del_flag = 'N' or ssub.del_flag is null)
+
+    </select>
+
+    <select id="getBasicUserInfoNew" parameterType="com.sofn.sys.vo.SelectUserConditionVo" resultMap="getBasicUserInfoResult">
+        <foreach collection="regioncodes" open="(" close=")" item="id" separator="union all">
+        select
+        DISTINCT
+        a.id USERID,
+        a.NICKNAME,
+        a.USERNAME,
+        a.INIT_PASSWORD,
+        a.email,
+        a.STATUS,
+        a.REMARK,
+        a.MOBILE ,
+        a.SEX,
+        so.ORGANIZATION_NAME,
+        so.ID orgId,
+        sr.ID rID,
+        sr.ROLE_NAME,
+        SR.DESCRIBE,
+        SR.ROLE_CODE,
+        SR.STATUS RSTATUS
+        from SYS_USER a
+        left join SYS_USER_GROUP g on a.id = g.user_id
+        left join SYS_ORG so on a.ORGANIZATION_ID = so.id
+        left join SYS_GROUP GR ON G.GROUP_ID = GR.ID
+        left join SYS_ROLE_GROUP rg on g.group_id = rg.group_id
+        left join SYS_USER_ROLE ur on a.id = ur.user_id
+        left join SYS_ROLE sr on (sr.id = rg.role_id or sr.id = ur.role_id)
+        left join SYS_SUBSYSTEM ssub on sr.subsystem_id = ssub.id
+        LEFT JOIN sys_system_org sso on sso.org_id = so.id
+        LEFT JOIN sys_region srg ON srg.region_code = so.region_last_code
+        where 1=1
+        <if test="ids != null and ids.size > 0">
+            and a.ID in
+            <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+        <if test="nickName != null and nickName != ''">
+            and a.NICKNAME like '%' || #{nickName} || '%'
+        </if>
+        <if test="userName != null and userName != ''">
+            and a.USERNAME like '%' || #{userName} || '%'
+        </if>
+        <if test="subsystemId != null and subsystemId != ''">
+            and (ssub.id = #{subsystemId}
+                or ssub.app_id = #{subsystemId}
+                or sso.app_id = #{subsystemId})
+        </if>
+        <if test="roleIds != null and roleIds.size > 0">
+            and (sr.id in
+            <foreach collection="roleIds" item="roleId" open="(" close=")" separator=",">
+                #{roleId}
+            </foreach>
+            or sr.role_code in
+            <foreach collection="roleIds" item="roleId" open="(" close=")" separator=",">
+                #{roleId}
+            </foreach>
+            )
+
+        </if>
+        <if test="orgId != null and orgId != ''">
+            and a.ORGANIZATION_ID = #{orgId}
+        </if>
+        <if test="orgName != null and orgName != ''">
+            and so.ORGANIZATION_NAME like '%'|| #{orgName}||'%'
+        </if>
+        and (a.DEL_FLAG = 'N' or a.DEL_FLAG is null)
+        and (sr.del_flag = 'N'or  sr.del_flag is null)
+        and (ssub.del_flag = 'N' or ssub.del_flag is null)
+        and srg.parent_ids like '/100000/' || #{id} || '%'
+        </foreach>
+    </select>
+
+    <select id="getExportUserInfo" parameterType="java.util.Map" resultType="com.sofn.sys.vo.Excel.ImportSysUserVo">
+        select
+        SUS.USERNAME userName,
+        SUS.NICKNAME nickname,
+        CASE when SUS.SEX = '1' then '男'
+        when SUS.SEX = '2' then '女'  else '未知' end sex,
+        SO.ORGANIZATION_NAME organizationName,
+        (
+        SELECT
+        replace(wmsys.wm_concat(SR.ROLE_NAME),',',',')
+        FROM SYS_ROLE SR WHERE SR.ID IN(
+        SELECT SUR.ROLE_ID FROM SYS_USER_ROLE SUR WHERE SUR.USER_ID = SUS.ID
+        UNION
+        SELECT SRG.ROLE_ID FROM SYS_USER_GROUP SUG
+        LEFT JOIN SYS_ROLE_GROUP SRG ON SUG.GROUP_ID = SRG.GROUP_ID
+        WHERE SUG.USER_ID = SUS.ID
+        ) AND SR.DEL_FLAG = 'N'
+        )  roleNames,
+        (
+        select
+        replace(wmsys.wm_concat(SG.GROUP_NAME),',',',')
+
+        from SYS_GROUP sg
+        where SG.ID in (select SUG.GROUP_ID from SYS_USER_GROUP sug WHERE SUG.USER_ID = SUS.ID)
+        AND sg.DEL_FLAG = 'N'
+        ) groupNames,
+
+        SUS.INIT_PASSWORD initPassword,
+        SUS.MOBILE mobile,
+        SUS.EMAIL email,
+        case when 	SUS.STATUS = '1' then '正常'
+        when 	SUS.STATUS = '0' then '限制'
+        when 	SUS.STATUS = '2' then '禁用'
+        when 	SUS.STATUS = '3' then '注销' end status
+        from SYS_USER SUS
+        LEFT JOIN SYS_ORGANIZATION SO ON SUS.ORGANIZATION_ID = SO.ID
+        WHERE SUS.DEL_FLAG = 'N'
+        <if test="userName != null and userName != ''">
+            and SUS.USERNAME like '%' || #{userName} || '%'
+        </if>
+        <if test="keyword != null and keyword != ''">
+            and (
+            position(#{keyword} in SUS.EMAIL)>0
+            or position(#{keyword} in SUS.MOBILE)>0
+            or position(#{keyword} in SUS.USERNAME)>0
+            or position(#{keyword} in SUS.NICKNAME)>0
+            )
+        </if>
+        <if test="organizationId != null and organizationId != ''">
+            and SUS.ORGANIZATION_ID = #{organizationId}
+        </if>
+    </select>
+
+    <select id="getUserByRoleIdAndSubsystemId" parameterType="java.util.Map" resultType="com.sofn.sys.vo.BasicUserInfo">
+        select
+        DISTINCT
+        a.id id,
+        a.NICKNAME nickname,
+        a.USERNAME username,
+        a.INIT_PASSWORD initPassword,
+        a.email email,
+        a.STATUS status,
+        a.REMARK remark,
+        a.MOBILE   mobile,
+        a.SEX sex
+        from SYS_USER a
+        left join SYS_USER_ROLE ur on a.id = ur.user_id
+        left join SYS_ROLE sr on sr.id = ur.role_id
+        where 1=1  and sr.del_flag != 'Y'
+        <if test="roleId != null and roleId != ''">
+            and sr.ID = #{roleId}
+        </if>
+
+        <if test="subsystemId != null and subsystemId != ''">
+            and sr.SUBSYSTEM_ID = #{subsystemId}
+        </if>
+        <if test="username != null and username != ''">
+            and a.USERNAME = #{username}
+        </if>
+        <if test="nickname != null and nickname != ''">
+            and a.NICKNAME = #{nickname}
+        </if>
+        <if test="limitOrg != null and 'Y'.toString() == limitOrg">
+            and ORGANIZATION_ID in (
+            <include refid="com.sofn.sys.mapper.CommonMapper.getOrgCanShowOrgIds">
+                <property name="appIds" value="#{appIds}"/>
+                <property name="orgId" value="#{orgId}"/>
+                <property name="carryChildren" value="#{carryChildren}"/>
+                <property name="carryProxyOrg" value="#{carryProxyOrg}"/>
+            </include>
+            )
+        </if>
+        <if test="userId != null and userId != ''">
+            union
+            select
+            DISTINCT
+            a.id id,
+            a.NICKNAME nickname,
+            a.USERNAME username,
+            a.INIT_PASSWORD initPassword,
+            a.email email,
+            a.STATUS status,
+            a.REMARK remark,
+            a.MOBILE   mobile,
+            a.SEX sex
+            from SYS_USER a
+            left join SYS_USER_ROLE ur on a.id = ur.user_id
+            where a.CREATE_USER_ID = #{userId}
+            and UR.ROLE_ID = #{roleId}
+        </if>
+
+    </select>
+
+    <select id="getUserByNotExistsRoleId" parameterType="java.util.Map" resultType="com.sofn.sys.vo.BasicUserInfo">
+        select
+        DISTINCT
+        a.id id,
+        a.NICKNAME nickname,
+        a.USERNAME username,
+        a.INIT_PASSWORD initPassword,
+        a.email email,
+        a.STATUS status,
+        a.REMARK remark,
+        a.MOBILE   mobile,
+        a.SEX sex
+        from SYS_USER a
+        where a.id  not in (
+        select
+        a.id id
+        from SYS_USER a
+        left join SYS_USER_ROLE ur on a.id = ur.user_id
+        left join SYS_ROLE sr on sr.id = ur.role_id
+        where 1=1 and sr.ID = #{roleId} and sr.del_flag != 'Y'
+        <if test="subsystemId != null and subsystemId != ''">
+            and sr.SUBSYSTEM_ID = #{subsystemId}
+        </if>
+        )
+        <if test="username != null and username != ''">
+            and a.USERNAME = #{username}
+        </if>
+        <if test="nickname != null and nickname != ''">
+            and a.NICKNAME = #{nickname}
+        </if>
+
+        <if test="orgIds != null and orgIds.size > 0">
+            and a.ORGANIZATION_ID in
+            <foreach collection="orgIds" item="orgId" open="(" close=")" separator=",">
+                #{orgId}
+            </foreach>
+        </if>
+    </select>
+
+    <sql id="User_Column_List" >
+      a.ID, a.NICKNAME, a.PASSWORD AS PASSWORD, a.USERNAME, a.MOBILE, a.EMAIL,
+      a.REMARK, a.STATUS, a.CREATE_USER_ID, a.CREATE_TIME, a.UPDATE_USER_ID,
+      a.UPDATE_TIME, a.DEL_FLAG, a.ORGANIZATION_ID, a.SALT,a.SEX
+    </sql>
+
+    <select id="getUserUsingApp" resultMap="customResultMap">
+        <foreach collection="regionCodeList" open="(" close=")" item="id" separator="union all">
+            select DISTINCT
+            <include refid="User_Column_List" />
+            from sys_user a
+            left join sys_org b on a.organization_id = b.id
+            left join sys_system_org c on c.org_id = b.id
+            left join sys_region d on d.region_code = b.region_last_code
+            <where>
+                and a.DEL_FLAG != 'Y'
+                and d.parent_ids like '/100000/' || #{id} || '%'
+                <if test="appId != null and appId != ''">
+                    and c.app_id = #{appId}
+                </if>
+            </where>
+        </foreach>
+    </select>
+
+</mapper>

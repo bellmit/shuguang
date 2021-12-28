@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysRoleGroupMapper" >
+
+    <resultMap id="customResultMap" type="com.sofn.sys.model.SysRoleGroup" >
+        <id column="ID" property="id" jdbcType="VARCHAR" />
+        <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR" />
+        <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+        <result column="CREATE_USER_ID" property="createUserId" jdbcType="VARCHAR" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="DATE" />
+        <result column="UPDATE_USER_ID" property="updateUserId" jdbcType="VARCHAR" />
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE" />
+        <result column="DEL_FLAG" property="delFlag" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+      ID, GROUP_NAME, DESCRIPTION, CREATE_USER_ID, CREATE_TIME, UPDATE_USER_ID, UPDATE_TIME,
+      DEL_FLAG
+    </sql>
+
+    <select id="getSysGroupByCondition" parameterType="java.util.Map" resultMap="customResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM SYS_GROUP
+        <where> 1=1
+            <if test="delFlag != null">
+                and DEL_FLAG= #{delFlag,jdbcType=VARCHAR}
+            </if>
+            <if test="groupName != null and groupName != ''">
+                and GROUP_NAME= #{groupName}
+            </if>
+        </where>
+    </select>
+
+  <!--  <select id="selectRolesByUserId" resultMap="customResultMap">
+        SELECT
+            r.*
+        FROM SYS_GROUP r
+        LEFT JOIN SYS_USER_ROLE ur ON ur.ROLE_ID = r.ID
+        WHERE ur.USER_ID = #{userId}
+  </select>-->
+
+    <select id="getSysGroupByName" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT count(1) from SYS_GROUP where 1 =1
+        <if test="groupName != null and groupName != ''">
+            and GROUP_NAME = #{groupName}
+        </if>
+        <if test="id != null and id != ''">
+            and ID != #{id}
+        </if>
+    </select>
+</mapper>

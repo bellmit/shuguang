@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WorkBook xmlVersion="20170720" releaseVersion="10.0.0">
+<Report class="com.fr.report.worksheet.WorkSheet" name="sheet1">
+<ReportPageAttr>
+<HR/>
+<FR/>
+<HC/>
+<FC/>
+</ReportPageAttr>
+<ColumnPrivilegeControl/>
+<RowPrivilegeControl/>
+<RowHeight defaultValue="723900">
+<![CDATA[1371600,990600,723900,800100,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900]]></RowHeight>
+<ColumnWidth defaultValue="2743200">
+<![CDATA[19697700,4762500,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200]]></ColumnWidth>
+<CellElementList>
+<C c="0" r="0" cs="2" s="0">
+<O>
+<![CDATA[2019番薯嘉年华苏州站]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="1" s="1">
+<O>
+<![CDATA[活动]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="1" s="1">
+<O>
+<![CDATA[图片]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="2" s="2">
+<O>
+<![CDATA[帆软甜品站正式开张]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="2" s="3">
+<O>
+<![CDATA[image1]]></O>
+<PrivilegeControl/>
+<NameJavaScriptGroup>
+<NameJavaScript name="图片lightbox1">
+<JavaScript class="com.fr.plugin.widget.lighbox.link.LighBoxHyperlink" pluginID="com.fr.plugin.widget.lighbox.img">
+<JavaScript class="com.fr.plugin.widget.lighbox.link.LighBoxHyperlink">
+<Parameters/>
+<TargetFrame>
+<![CDATA[_blank]]></TargetFrame>
+<Features width="600" height="400"/>
+<URL>
+<![CDATA[http://bbs.fanruan.com/data/attachment/forum/201911/04/095047zmva51hwlnts1hhl.png]]></URL>
+</JavaScript>
+</JavaScript>
+</NameJavaScript>
+</NameJavaScriptGroup>
+<Expand/>
+</C>
+<C c="0" r="3" s="2">
+<O>
+<![CDATA[第一次试营业，免费品尝，人气火爆]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="3" s="3">
+<O>
+<![CDATA[image2]]></O>
+<PrivilegeControl/>
+<NameJavaScriptGroup>
+<NameJavaScript name="图片lightbox1">
+<JavaScript class="com.fr.plugin.widget.lighbox.link.LighBoxHyperlink" pluginID="com.fr.plugin.widget.lighbox.img">
+<JavaScript class="com.fr.plugin.widget.lighbox.link.LighBoxHyperlink">
+<Parameters/>
+<TargetFrame>
+<![CDATA[_blank]]></TargetFrame>
+<Features width="600" height="400"/>
+<URL>
+<![CDATA[http://bbs.fanruan.com/data/attachment/forum/201911/04/100148g86ueu8u2qcu8cjo.png]]></URL>
+</JavaScript>
+</JavaScript>
+</NameJavaScript>
+</NameJavaScriptGroup>
+<Expand/>
+</C>
+<C c="0" r="4" s="2">
+<O>
+<![CDATA[帆软小卖部，不出售，抽奖100%中奖]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="4" s="3">
+<O>
+<![CDATA[image3]]></O>
+<PrivilegeControl/>
+<NameJavaScriptGroup>
+<NameJavaScript name="图片lightbox1">
+<JavaScript class="com.fr.plugin.widget.lighbox.link.LighBoxHyperlink" pluginID="com.fr.plugin.widget.lighbox.img">
+<JavaScript class="com.fr.plugin.widget.lighbox.link.LighBoxHyperlink">
+<Parameters/>
+<TargetFrame>
+<![CDATA[_blank]]></TargetFrame>
+<Features width="600" height="400"/>
+<URL>
+<![CDATA[http://bbs.fanruan.com/data/attachment/forum/201911/04/100248p6z6sevxivg5rgwm.png]]></URL>
+</JavaScript>
+</JavaScript>
+</NameJavaScript>
+</NameJavaScriptGroup>
+<Expand/>
+</C>
+<C c="0" r="5" s="2">
+<O>
+<![CDATA[饲养员变身小卖部店长]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="5" s="3">
+<O>
+<![CDATA[image4]]></O>
+<PrivilegeControl/>
+<NameJavaScriptGroup>
+<NameJavaScript name="图片lightbox1">
+<JavaScript class="com.fr.plugin.widget.lighbox.link.LighBoxHyperlink" pluginID="com.fr.plugin.widget.lighbox.img">
+<JavaScript class="com.fr.plugin.widget.lighbox.link.LighBoxHyperlink">
+<Parameters/>
+<TargetFrame>
+<![CDATA[_blank]]></TargetFrame>
+<Features width="600" height="400"/>
+<URL>
+<![CDATA[http://bbs.fanruan.com/data/attachment/forum/201911/04/100334gj37sv3txdejze54.png]]></URL>
+</JavaScript>
+</JavaScript>
+</NameJavaScript>
+</NameJavaScriptGroup>
+<Expand/>
+</C>
+<C c="0" r="6" s="2">
+<O>
+<![CDATA[番薯们陆续签到，没想到会到场这么多小姐姐]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="6" s="3">
+<O>
+<![CDATA[image5]]></O>
+<PrivilegeControl/>
+<NameJavaScriptGroup>
+<NameJavaScript name="图片lightbox1">
+<JavaScript class="com.fr.plugin.widget.lighbox.link.LighBoxHyperlink" pluginID="com.fr.plugin.widget.lighbox.img">
+<JavaScript class="com.fr.plugin.widget.lighbox.link.LighBoxHyperlink">
+<Parameters/>
+<TargetFrame>
+<![CDATA[_blank]]></TargetFrame>
+<Features width="600" height="400"/>
+<URL>
+<![CDATA[http://bbs.fanruan.com/data/attachment/forum/201911/04/102535gs9j0ffbvb9jwwjm.png]]></URL>
+</JavaScript>
+</JavaScript>
+</NameJavaScript>
+</NameJavaScriptGroup>
+<Expand/>
+</C>
+<C c="0" r="7" s="2">
+<O>
+<![CDATA[番薯们到齐，这就是番薯正式开始]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="7" s="3">
+<O>
+<![CDATA[image6]]></O>
+<PrivilegeControl/>
+<NameJavaScriptGroup>
+<NameJavaScript name="图片lightbox1">
+<JavaScript class="com.fr.plugin.widget.lighbox.link.LighBoxHyperlink" pluginID="com.fr.plugin.widget.lighbox.img">
+<JavaScript class="com.fr.plugin.widget.lighbox.link.LighBoxHyperlink">
+<Parameters/>
+<TargetFrame>
+<![CDATA[_blank]]></TargetFrame>
+<Features width="600" height="400"/>
+<URL>
+<![CDATA[http://bbs.fanruan.com/data/attachment/forum/201911/04/101813k2yyxpnh4xyygbiy.png]]></URL>
+</JavaScript>
+</JavaScript>
+</NameJavaScript>
+</NameJavaScriptGroup>
+<Expand/>
+</C>
+<C c="0" r="8" s="2">
+<O>
+<![CDATA[原来悟帆人偶里一直是传说哥，连饭团都不知道]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="8" s="3">
+<O>
+<![CDATA[image7]]></O>
+<PrivilegeControl/>
+<NameJavaScriptGroup>
+<NameJavaScript name="图片lightbox1">
+<JavaScript class="com.fr.plugin.widget.lighbox.link.LighBoxHyperlink" pluginID="com.fr.plugin.widget.lighbox.img">
+<JavaScript class="com.fr.plugin.widget.lighbox.link.LighBoxHyperlink">
+<Parameters/>
+<TargetFrame>
+<![CDATA[_blank]]></TargetFrame>
+<Features width="600" height="400"/>
+<URL>
+<![CDATA[http://bbs.fanruan.com/data/attachment/forum/201911/04/101918pz9vv69a8lerdvl9.png]]></URL>
+</JavaScript>
+</JavaScript>
+</NameJavaScript>
+</NameJavaScriptGroup>
+<Expand/>
+</C>
+<C c="0" r="9" s="2">
+<O>
+<![CDATA[用户分享自己结识帆软的时间与故事，现场竟然出现了比传说哥还早接触帆软的资深番薯]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="9" s="3">
+<O>
+<![CDATA[image8]]></O>
+<PrivilegeControl/>
+<NameJavaScriptGroup>
+<NameJavaScript name="图片lightbox1">
+<JavaScript class="com.fr.plugin.widget.lighbox.link.LighBoxHyperlink" pluginID="com.fr.plugin.widget.lighbox.img">
+<JavaScript class="com.fr.plugin.widget.lighbox.link.LighBoxHyperlink">
+<Parameters/>
+<TargetFrame>
+<![CDATA[_blank]]></TargetFrame>
+<Features width="600" height="400"/>
+<URL>
+<![CDATA[http://bbs.fanruan.com/data/attachment/forum/201911/04/102002ffw6gje0afabk4yv.png]]></URL>
+</JavaScript>
+</JavaScript>
+</NameJavaScript>
+</NameJavaScriptGroup>
+<Expand/>
+</C>
+<C c="0" r="10" s="2">
+<O>
+<![CDATA[产品吐槽大会，研发、测试、产品无一人幸免，被帆哥软妹铁锤伺候]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="10" s="3">
+<O>
+<![CDATA[image9]]></O>
+<PrivilegeControl/>
+<NameJavaScriptGroup>
+<NameJavaScript name="图片lightbox1">
+<JavaScript class="com.fr.plugin.widget.lighbox.link.LighBoxHyperlink" pluginID="com.fr.plugin.widget.lighbox.img">
+<JavaScript class="com.fr.plugin.widget.lighbox.link.LighBoxHyperlink">
+<Parameters/>
+<TargetFrame>
+<![CDATA[_blank]]></TargetFrame>
+<Features width="600" height="400"/>
+<URL>
+<![CDATA[http://bbs.fanruan.com/data/attachment/forum/201911/04/101802heseckukyzeedddk.png]]></URL>
+</JavaScript>
+</JavaScript>
+</NameJavaScript>
+</NameJavaScriptGroup>
+<Expand/>
+</C>
+<C c="0" r="11" s="2">
+<O>
+<![CDATA[最终五项大奖花落他们手中，看来小姐姐的朋友圈点赞就是多]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="11" s="3">
+<O>
+<![CDATA[image10]]></O>
+<PrivilegeControl/>
+<NameJavaScriptGroup>
+<NameJavaScript name="图片lightbox1">
+<JavaScript class="com.fr.plugin.widget.lighbox.link.LighBoxHyperlink" pluginID="com.fr.plugin.widget.lighbox.img">
+<JavaScript class="com.fr.plugin.widget.lighbox.link.LighBoxHyperlink">
+<Parameters/>
+<TargetFrame>
+<![CDATA[_blank]]></TargetFrame>
+<Features width="600" height="400"/>
+<URL>
+<![CDATA[http://bbs.fanruan.com/data/attachment/forum/201911/04/101752xgztse1c1f8tccqt.png]]></URL>
+</JavaScript>
+</JavaScript>
+</NameJavaScript>
+</NameJavaScriptGroup>
+<Expand/>
+</C>
+<C c="0" r="12" s="2">
+<O>
+<![CDATA[最后的番薯大合照，快来找自己吧]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="12" s="3">
+<O>
+<![CDATA[image11]]></O>
+<PrivilegeControl/>
+<NameJavaScriptGroup>
+<NameJavaScript name="图片lightbox1">
+<JavaScript class="com.fr.plugin.widget.lighbox.link.LighBoxHyperlink" pluginID="com.fr.plugin.widget.lighbox.img">
+<JavaScript class="com.fr.plugin.widget.lighbox.link.LighBoxHyperlink">
+<Parameters/>
+<TargetFrame>
+<![CDATA[_blank]]></TargetFrame>
+<Features width="600" height="400"/>
+<URL>
+<![CDATA[http://bbs.fanruan.com/data/attachment/forum/201911/04/094837vioxygikggybcyyd.png]]></URL>
+</JavaScript>
+</JavaScript>
+</NameJavaScript>
+</NameJavaScriptGroup>
+<Expand/>
+</C>
+</CellElementList>
+<ReportAttrSet>
+<ReportSettings headerHeight="0" footerHeight="0">
+<PaperSetting/>
+<Background name="ColorBackground" color="-1"/>
+</ReportSettings>
+</ReportAttrSet>
+<PrivilegeControl/>
+</Report>
+<ReportParameterAttr>
+<Attributes showWindow="true" delayPlaying="true" windowPosition="1" align="0" useParamsTemplate="true"/>
+<PWTitle>
+<![CDATA[参数]]></PWTitle>
+</ReportParameterAttr>
+<StyleList>
+<Style horizontal_alignment="0" imageLayout="1">
+<FRFont name="SimSun" style="0" size="112" foreground="-236032"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1" color="-6908266"/>
+<Bottom style="1" color="-6908266"/>
+<Left style="1" color="-6908266"/>
+<Right style="1" color="-6908266"/>
+</Border>
+</Style>
+<Style horizontal_alignment="0" imageLayout="1">
+<FRFont name="SimSun" style="0" size="88" foreground="-16724737"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1" color="-6908266"/>
+<Bottom style="1" color="-6908266"/>
+<Left style="1" color="-6908266"/>
+<Right style="1" color="-6908266"/>
+</Border>
+</Style>
+<Style imageLayout="1">
+<FRFont name="SimSun" style="0" size="80"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1" color="-6908266"/>
+<Bottom style="1" color="-6908266"/>
+<Left style="1" color="-6908266"/>
+<Right style="1" color="-6908266"/>
+</Border>
+</Style>
+<Style imageLayout="1">
+<FRFont name="SimSun" style="0" size="80" foreground="-16776961" underline="1"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1" color="-6908266"/>
+<Bottom style="1" color="-6908266"/>
+<Left style="1" color="-6908266"/>
+<Right style="1" color="-6908266"/>
+</Border>
+</Style>
+</StyleList>
+<DesignerVersion DesignerVersion="KAA"/>
+<PreviewType PreviewType="0"/>
+<TemplateIdAttMark class="com.fr.base.iofile.attr.TemplateIdAttrMark">
+<TemplateIdAttMark TemplateId="b4ae2439-b140-4a86-872e-acf9e075bd82"/>
+</TemplateIdAttMark>
+</WorkBook>

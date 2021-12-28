@@ -1,0 +1,99 @@
+<link rel="stylesheet" href="assets/css/asms/subjSv/subjSvList.css"/>
+<div class="gui-mainBc">
+    <div class="gui-breadcrumbs">
+        <a href="javascript:void(0)">监管系统</a>&gt;
+        <a ui-sref="index.content.asms/subjEl/subjElList">主体管理</a>&gt;
+        <span>执法机构</span>
+    </div>
+    <div class="gui-TabCut">
+        <ul class="clearfix gov-h">
+            <li id=""   class="fl gp-r aaa gui-TabCheck">执法机构主体信息</li>
+            <li class="fl gp-r subjElChangeList" style="display: none" ui-sref="index.content.asms/subjEl/subjElChangeList">注册变更待审核<span class="news"          ng-show="changeToAuditCount>0">{{changeToAuditCount}}</span></li>
+            <li class="fl gp-r subjElCancelList" style="display: none" ui-sref="index.content.asms/subjEl/subjElCancelList">注册注销待审核<span class="news"          ng-show="cancelToAuditCount>0">{{cancelToAuditCount}}</span></li>
+            <li class="fl gp-r subjElRevokeList" style="display: none" ui-sref="index.content.asms/subjEl/subjElRevokeList">注册撤销待审核<span class="news"          ng-show="revokeToAuditCount>0">{{revokeToAuditCount}}</span></li>
+        </ul>
+        <div class="gui-botLine"></div>
+    </div>
+    <div class="gui-section">
+        <form id="queryForm" class="gui-form-group">
+            <span id="AnyArea">所属区域</span>
+            <div class="gui-select">
+                <select id="sheng" >
+                    <option value="">省</option>
+                </select>
+            </div>
+            <div class="gui-select">
+                <select id="shi">
+                    <option value="">市</option>
+                </select>
+            </div>
+            <div class="gui-select">
+                <select id="xian">
+                    <option value="">区/县</option>
+                </select>
+            </div>
+            <span id="status_text">状态</span>
+            <div class="gui-select">
+                <select id="status">
+                    <option value="">全部</option>
+                    <option value="0">正常</option>
+                    <option value="1">待变更</option>
+                    <option value="2">待注销</option>
+                    <option value="3">待撤销</option>
+                    <option value="4">已注销</option>
+                    <option value="5">已撤销</option>
+                </select>
+            </div>
+            <div class="mt15">
+                <span>注册日期</span>
+                <input id="dateBegin" name="dateBegin" style="cursor: pointer;width: 120px;margin-right: 10px;" class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('dateEnd');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateEnd\')}'})"/>
+                --
+                <input id="dateEnd" name="dateEnd" class="Wdate gui-input" style="cursor: pointer;width: 120px;margin-left:10px;" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'dateBegin\')}'})"/>
+                <span>机构名称</span>
+                <input class="gui-input" style="width: 150px;" type="text" placeholder="请输入机构名称" name="elName"/>
+                <button class="gui-btn" ng-click="querySubjElList()">查询</button>
+                <button class="gui-btn " ng-click="reloadArea()">
+                   重置</button>
+            </div>
+        </form>
+<!--<div class="gui-actions">-->
+    <!--<button class="gui-btn fr ml15 mr15" ui-sref="index.content.asms/subjEl/subjElAdd">-->
+        <!--<i class="gui-icon icon-add"></i>-->
+        <!--新增</button>-->
+    <!--<button class="gui-btn fr" id="importSubjEl">-->
+        <!--<i class="gui-icon icon-export"></i>批量导入</button>-->
+<!--</div>-->
+        <table id="elGrid"
+               class="gui-table mt15 text-left" style="width:100%;">
+        </table>
+    </div>
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade " id="importModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">批量导入执法机构</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div style="width: 500px">
+                        <form method="post" enctype="multipart/form-data">
+                            <input id="file-1"  type="file" name="file"  multiple=" true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="5">
+                            <br>
+                        </form>
+                        <a href="webapp\asms\subjEl\zfdrModel.xlsx" style="color:#0000FF;">执法导入模板</a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" data-dismiss="modal">关闭</button>
+                <button class="gui-btn" type="button" id="save" ng-click="importSubjEl()">提交</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+

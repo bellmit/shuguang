@@ -1,0 +1,446 @@
+<link rel="stylesheet" href="assets/css/tts/register/accountInfo/recordDetails.css">
+<div class="gui-breadcrumbs">
+    <a href="">用户主体管理</a>&gt;
+    <span>备案详情</span>
+</div>
+<div class="gui-section">
+    <div class="ovh">
+        <ul class="gui-list clearfix">
+            <li>
+                <div class="gui-page-head">
+                    <h3>账号信息</h3>
+                    <a style="position: absolute;left:80%;cursor: pointer" onclick="showUpdatePwd()">修改密码</a>
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">账号</span>
+                    <span class="field-text" ng-bind="account"></span>
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">账号类型</span>
+                    <span class="field-text" ng-model="accountType">管理员</span>
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">主体身份码</span>
+                    <span class="field-text" ng-bind="entityIdcode"></span>
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">主体用户码</span>
+                    <span class="field-text" ng-bind="userIdcode"></span>
+                </div>
+            </li>
+        </ul>
+        <ul class="gui-list clearfix">
+            <li>
+                <div class="gui-page-head">
+                    <h3  style="padding-bottom:18px">备案信息</h3>
+                    <div style="position: absolute;left:75%;display:inline">
+                        <button class="gui-btn" ui-sref="index.content.tts/register/recordUpdateSingle/recordUpdateSingle">备案变更</button>
+                        <button class="gui-btn" ui-sref="index.content.tts/register/recordLogout/recordLogout">备案注销</button>
+                    </div>
+                </div>
+            </li>
+            <li style="position: relative;">
+                <div class="form-item">
+                    <span class="title">组织形式</span>
+                    <span class="field-text" ng-bind="entityScale"></span>
+                </div>
+                <div style="position: absolute;left:460px">
+                    <span class="title">证照信息</span>
+                    <div class="field-text">
+                        <div class="fl mr15" style="width:160px;">
+                            <img id="legalImage1" src="images/register/licenseIma.png" width="160" height="135">
+                            <div class="text-center" style="width:200px;">身份证正面</div>
+                        </div>
+                        <div class="fl mr15" style="width:160px;">
+                            <img id="legalImage2" src="images/register/licenseIma.png" width="160" height="135">
+                            <div class="text-center" style="width:200px;">身份证反面</div>
+                        </div>
+                        <div class="fl mr15" style="width:160px;">
+                            <img id="legalImage3" src="images/register/licenseIma.png" width="160" height="135">
+                            <div class="text-center" style="width:200px;">手持身份证</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="position:absolute;width: 1px;height: 259px;background-color: #ddd;left:440px;top: -3px;"></div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">主体类型</span>
+                    <span class="field-text" ng-bind="entityType"></span>
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">所属行业</span>
+                    <span class="field-text" ng-bind="entityIndustry"></span>
+                </div>
+            </li>
+            <li >
+                <div class="form-item">
+                    <span class="title">证件类型</span>
+                    <span class="field-text">身份证</span>
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">身份证号</span>
+                    <span class="field-text" ng-bind="idcode"></span>
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">所属区域</span>
+                    <span class="field-text" ng-bind="area"></span>
+                </div>
+            </li>
+            <li>
+                <div class="gui-page-head">
+                    <h3>三品一标信息</h3>
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <div class="field-text">
+                        <div class="fl mr15" name="pfaProducts" style="width:60px;" onclick="showInfo(this)">
+                            <img src="images/tts/wgh.png" width="60" height="60">
+                            <div class="text-center">无公害</div>
+                        </div>
+                        <div class="fl mr15" name="greenFood" style="width:60px;" onclick="showInfo(this)">
+                            <img src="images/tts/green.png" width="60" height="60">
+                            <div class="text-center">绿色食品</div>
+                        </div>
+                        <div class="fl mr15" name="organicFood" style="width:60px;" onclick="showInfo(this)">
+                            <img src="images/tts/yj.png" width="60" height="60">
+                            <div class="text-center">有机食品</div>
+                        </div>
+                        <div class="fl mr15" name="geogIndicat" style="width:60px;" onclick="showInfo(this)">
+                            <img src="images/tts/wgh.png" width="60" height="60">
+                            <div class="text-center">地理标志</div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="gui-page-head">
+                    <h3>联系人信息</h3>
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">联系人</span>
+                    <span class="field-text" ng-bind="contactName"></span>
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">联系电话</span>
+                    <span class="field-text" ng-bind="contactPhone"></span>
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">邮箱</span>
+                    <span class="field-text" ng-bind="contactEmail"></span>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="gui-page-head">
+        <h3>变更记录</h3>
+    </div>
+    <div>
+        <table id="changeGrid" class="gui-table">
+        </table>
+    </div>
+    <div class="text-center mb15">
+        <button class="gui-btn" ui-sref="index.content.tts/register/recordUpdateSingle/recordUpdateSingle">备案变更</button>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="pfaProducts" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div align="center">
+                    <h4 class="modal-title">无公害农产品</h4>
+                </div>
+                <div>
+                    <h2></h2>
+                </div>
+                <div class="col-lg-12 col-xs-12 col-sm-12 col-md-12">
+                    <ul>
+                        <li>
+                            <label>获证单位:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>通讯地址:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>产地地址:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>产品名称:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>批准产量:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>证书编号:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>有效期限:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>签发人:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>时间:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pager" align="center">
+                <button class="gui-btn" type="button" data-dismiss="modal">关闭</button>
+            </div>
+            <div>
+                <h2></h2>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="greenFood" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div align="center">
+                    <h4 class="modal-title">绿色食品</h4>
+                </div>
+                <div>
+                    <h2></h2>
+                </div>
+                <div class="col-lg-12 col-xs-12 col-sm-12 col-md-12">
+                    <ul>
+                        <li>
+                            <label>产品名称:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>产品编号:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>企业信息码:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>生产商:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>批准产量:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>许可期限:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>颁证机构:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>代表签字:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>颁证日期:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pager" align="center">
+                <button class="gui-btn" type="button" data-dismiss="modal">关闭</button>
+            </div>
+            <div>
+                <h2></h2>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 修改密码model -->
+<div class="modal fade" id="updatePwd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                <h4 class="modal-title" id="myModalLabel1">修改密码</h4>
+            </div>
+            <form id="attributeForm" method="post" class="form-horizontal" data-bv-message="This value is not valid">
+                <ul class="gui-list">
+                    <li>
+                        <div class="form-item form-group">
+                            <span class="title">输入原密码</span>
+                            <input id="formerPwd" onblur="checkPwd()" type="password" name="formerPwd" class="form-control" data-bv-notempty="true" data-bv-notempty-message="原密码不能是空">
+                            <small id="formerPwdMsg" class="help-block" data-bv-validator="stringLength" data-bv-for="password" hidden="hidden" data-bv-result="INVALID" style="display: block; color: #a94442"></small>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="form-item form-group">
+                            <span class="title">输入新密码</span>
+                            <input id="newPwd"type="password" class="form-control" name="password" data-bv-stringlength="true" data-bv-stringlength-min="8" data-bv-stringlength-max="16" data-bv-stringlength-message="密码最少8个字符，不超过16个字符" ng-model="TtsScltxxcjRegiter.password" data-bv-notempty="true" data-bv-notempty-message="新密码不能是空" data-bv-different="true" data-bv-different-field="formerPwd" data-bv-different-message="新密码不能与原密码相同">
+                        </div>
+                    </li>
+                    <li>
+                        <div class="form-item form-group">
+                            <span class="title">确认新密码</span>
+                            <input id="checkNewPwd" onblur="checksNewPwd()" type="password" class="form-control" name="confirmPassword" ng-model="TtsScltxxcjRegiter.confirmPassword" data-bv-notempty="true" data-bv-notempty-message="确认密码不能是空" data-bv-stringlength="true" data-bv-stringlength-min="8" data-bv-stringlength-max="16" data-bv-stringlength-message="密码最少8个字符，不超过16个字符" data-bv-identical="true" data-bv-identical-field="password" data-bv-identical-message="两次输入的密码不一致" >
+                        </div>
+                    </li>
+                    <li>
+                        <div class="text-center mt15">
+                            <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                            <button class="gui-btn" ng-click="updatepassword()" id="regin">确认</button>
+                        </div>
+                    </li>
+                </ul>
+            </form>
+            <!-- <div class="modal-footer">
+                 <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                 <button type="button" class="gui-btn" data-dismiss="modal">修改</button>
+             </div>-->
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="organicFood" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div align="center">
+                    <h4 class="modal-title">有机食品</h4>
+                </div>
+                <div>
+                    <h2></h2>
+                </div>
+                <div class="col-lg-12 col-xs-12 col-sm-12 col-md-12">
+                    <ul>
+                        <li>
+                            <label>产品名称:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>商标名称:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>产品编号:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>生产商:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>企业信息码:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>批准产量:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>许可期限:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>颁证机构:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>代表签字:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>颁证日期:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pager" align="center">
+                <button class="gui-btn" type="button" data-dismiss="modal">关闭</button>
+            </div>
+            <div>
+                <h2></h2>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="geogIndicat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div align="center">
+                    <h4 class="modal-title">农产品地理标志</h4>
+                </div>
+                <div>
+                    <h2></h2>
+                </div>
+                <div class="col-lg-12 col-xs-12 col-sm-12 col-md-12">
+                    <ul>
+                        <li>
+                            <label>核准登记产品全称:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>登记申请人全称:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>产品生产总规模:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>质量控制规范编号:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>登记证书编号:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                        <li>
+                            <label>日期:</label>&nbsp;
+                            <span ng-bind="" class="ng-binding"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pager" align="center">
+                <button class="gui-btn" type="button" data-dismiss="modal">关闭</button>
+            </div>
+            <div>
+                <h2></h2>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,60 @@
+    <div class="gui-breadcrumbs">
+        <a href="">监管系统</a>&gt;
+        <a href="">检测任务</a>&gt;
+        <a href="">复检任务</a>&gt;
+        <a href="">报告列表</a>&gt;
+        <span>报告详情</span>
+    </div>
+<div class="gui-section gui-section-wid"  >
+    <div class="Sup_contain_section_MMC" style="top: 135px;">
+        <span id="PrintArea">打印</span>
+        <span>下载</span>
+    </div>
+    <ul class="mt15">
+        <li class="Bor_line">巡查信息</li>
+        <li>
+            <p>主体名称：<span ng-bind="reCord.id"></span></p>
+            <div><span style="vertical-align: top">主体信息：</span>
+                <ul>
+                    <li>主体地址：CXXXXXXXXXX</li>
+                    <li>法定代表人：XXXXX</li>
+                    <li>联 系 人：XXXXXXXX</li>
+                    <li>联系电话：12556485698</li>
+                    <li>三品一标：无公害农产品、绿色食品、有机食品、农产品地理标志</li>
+                    <li>基地产品：西红柿、马铃薯、黄瓜</li>
+                    <li>查看地理位置</li>
+                </ul>
+            </div>
+        </li>
+        <li class="Bor_line">
+            巡查处理意见
+        </li>
+        <li>
+            <p>任务类型：<span ng-bind="reCord.inspectionType"></span></p>
+            <p>巡查结果：<span ng-bind="reCord.inspectionResult"></span></p>
+            <p>
+                巡查意见：
+            </p>
+            <textarea class="gui-textarea" name="" id="" cols="80" rows="5" ng-bind="reCord.inspectionView"></textarea>
+        </li>
+        <li class="Bor_line">现场取证</li>
+        <li class="_box">
+            <img src="assets/imgs/photo/实例图片.png" alt=""/>
+            <img src="assets/imgs/photo/实例图片.png" alt=""/>
+            <img src="assets/imgs/photo/实例图片.png" alt=""/>
+            <img src="assets/imgs/photo/实例图片.png" alt=""/>
+            <img src="assets/imgs/photo/实例图片.png" alt=""/>
+            <img src="assets/imgs/photo/实例图片.png" alt=""/>
+        </li>
+        <li class="Bor_line">巡查机构信息</li>
+        <li class="_box">
+            <div>巡查时间 <input class="gui-input" type="text" ng-model="reCord.inspectionTime"/></div>
+            <div>巡查机构 <input class="gui-input" type="text" ng-model="reCord.inspectionSuperviseId"/></div>
+            <div>巡查人员 <input class="gui-input" type="text" ng-model="reCord.inspectionUserName"/></div>
+        </li>
+    </ul>
+    <p align="center">
+        <button  class="gui-btn" ng-click="RemoveLocal()">关闭</button>
+    </p>
+</div>
+<input id="ID" class="gui-input" type="text" style="visibility: hidden"/>

@@ -1,0 +1,13 @@
+{
+  "resourceId": "813b545d348b437ab08bf5d62376729edf4de846f3a64d08b41c3bc4186866fd",
+  "chineseName": "字段xxx",
+  "englishName": "xxx",
+  "type": "varchar",
+  "len": 2
+}
+{
+  "data": "保存成功",
+  "httpCode": 200,
+  "msg": "OK",
+  "timestamp": 1481780499172
+}

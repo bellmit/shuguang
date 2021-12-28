@@ -1,0 +1,357 @@
+var myapp=angular.module("myapp",[]);
+myapp.controller("deptlist",function($scope,$http,$state){
+    $("#ToCheck").click(function(){
+        $("#grid").dataTable().api().ajax.reload();
+    });
+
+    //新增
+    $scope.listAdd=function (id) {
+        $("#myModal").modal("show");
+
+        //看用户信息是从前台传还是后台取
+        //从前台传机构id
+        id=-1;
+        $.ajax({
+            url:"/sofn-sys-web/sysOrganization/findOrgById",
+            type:"post",
+            dataType:"json",
+            data:"id="+id,
+            success:function(data){
+                $("input[name='reservedField1']").val(data.SysOrganization.orgName);
+                $("input[name='deptLevel']").val(data.SysOrganization.orgType);
+                $("input[name='deptType']").val(data.SysOrganization.orgLevel);
+                $("input[name='regionId']").val(data.SysOrganization.regionName);
+				//机构id
+				$("input[name='regionId0']").val(data.SysOrganization.id);
+
+            },
+            fail: function (data) {
+                alert("服务器异常,请联系后台管理人员");
+            }
+        });
+
+    }
+
+    //新增信息
+    $scope.addSysDept = function(){
+            	// 	机构名称、
+				//机构类别、
+				//机构级别、
+//		 $scope.sysDept.reservedField1 = $("input[name='reservedField1']").val();
+//  	 $scope.sysDept.deptLevel = $("input[name='deptLevel']").val();
+//  	 $scope.sysDept.deptType = $("input[name='deptType']").val();
+    	 //验证表单，不通过则返回
+    if(!$('#modalForm').valid())
+        return;
+    	 $scope.sysDept.regionId = $("input[name='regionId0']").val();
+    	 $scope.sysDept.deptName = $("input[name='deptName0']").val();
+    	 $scope.sysDept.deptManager = $("input[name='deptManager0']").val();
+    	 $scope.sysDept.phone = $("input[name='phone0']").val();
+    	 $scope.sysDept.status = $("select[name='status0']").val();
+        $http({
+            url:"/sofn-sys-web/sysDept/addSysDept",
+            data:$scope.sysDept,
+            method:"post",
+            headers: {
+                post: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }
+        }).success(function(data){
+            alert("保存成功");
+            $("#myModal").modal("hide");
+            $("#grid").dataTable().api().ajax.reload();
+        }).error(function(){
+            alert("保存失败");
+        })
+    }
+     $(function(){
+		//选择栏背景颜色变化
+        $(".Sup_contain_section_head_nav li").click(function(){
+            $(this).attr("id","bc_change").siblings().removeAttr("id","bc_change");
+        });
+        //各个部分的内容切换
+        $(".Sup_contain_section_contain_01").css("top","80px");
+        $(".Sup_contain_section_head_nav li:first-child").attr("id","bc_change").click(function(){
+            $(".Sup_contain_section_contain_01").css("top","80px").siblings().css("top","-2000%")
+        });
+        $(".Sup_contain_section_head_nav li:nth-of-type(2)").click(function(){
+            $(".Sup_contain_section_contain_02").css("top","80px").siblings().css("top","-2000%")
+        });
+        $(".Sup_contain_section_head_nav li:nth-of-type(3)").click(function(){
+            $(".Sup_contain_section_contain_03").css("top","80px").siblings().css("top","-2000%")
+        });
+        $(".Sup_contain_section_head_nav li:nth-of-type(4)").click(function(){
+            $(".Sup_contain_section_contain_04").css("top","80px").siblings().css("top","-2000%")
+        });
+        if(navigator.appVersion.substring(22,23)==9){
+            if($(".myPlaceholder").val()==""){
+                $(this).val("点击选择查询日期");
+            }
+        }
+    });
+
+	/**
+	 * 分页展示数据
+	 */
+    $(function() {
+        //bootstrap表格
+        $("#grid").dataTable({
+            ajax : {
+                url : "/sofn-sys-web/sysDept/getSysDeptList",
+                dataSrc:function(json){
+//              	json=JSON.stringify(obj)
+                    json.recordsTotal=json.page.recordsTotal;//总个数
+                    json.recordsFiltered=json.page.recordsTotal;
+                    json.pageNumber=json.page.pageNum;//页码
+                    json.pageSize=json.page.pageSize;//每页个数
+                    json.start=(json.page.pageNum-1)*json.page.pageSize;//起始位置
+                    json.length=json.page.pageSize;
+                    return json.list;
+                },
+                data : function(params) {
+                	//分页条件查询，不实现，自己写
+                    //params.name = $("input[name='in_name']").val();
+                    //params.tel =  $("input[name='in_tel']").val();
+                    params.deptName = $("input[name='deptName7']").val();
+                    params.status = $("select[name='status7']").val();
+                },
+                type:"post"
+            },
+            columns : [
+            	//部门管理,部门管理,
+				{
+                    data : "tpck",
+                    title : '<input id="checkAll"  type="checkbox" />',
+                    render : function(data, type, row) {
+                        return '<input type="checkbox" name="tpck" />';
+                    },
+                    width:"2%"
+
+                },
+            	{
+            		data: "deptName",
+            		title: "部门名称",
+                    width:"8%"
+            	},
+            	{
+            		data: "reservedField1",
+            		title: "机构名称",
+                    width:"10%"
+            	},
+            	{
+            		data: "reservedField2",
+            		title: "所属区域",
+                    width:"15%"
+            	},
+            	{
+            		data: "phone",
+            		title: "电话",
+                    width:"10%"
+            	},
+            	{
+            		data: "status",
+            		title: "状态",
+                    width:"5%"
+            	},
+
+                {
+                    data : "id",
+                    title : "编辑",
+                    render : function(data, type, row) {
+                    	// 数据操作选择项
+                        var look_a = '<a style="margin-right: 10px;cursor: pointer;" class="Check-report color"   onclick="updateData(\''+data+'\',2)">查看</a>';
+                        var update_a = '<a style="margin-right: 10px;cursor: pointer" class="color" onclick="updateData(\''+data+'\',1)">修改</a>';
+                        var delete_a = '<a style="cursor: pointer" class="color" onclick="deleteData(\''+data+'\')">删除</a>';
+                        return look_a+update_a+delete_a;
+                    },
+                    width:"10%"
+                },
+            ]
+        });
+        //导航展开
+        $("#collapseThree").attr("class","panel-collapse collapse in");
+        $("#collapseThree li:nth-of-type(1)").css("background-color","#64ABDB").addClass("Sup_contain_side_nav_item_after").siblings().css("background-color","#3695D4").removeClass("Sup_contain_side_nav_item_after");
+    });
+
+
+    /**
+     * 跳转到查询页面
+     */
+    window.lookView=function(data){
+        window.localStorage.setItem("sys_sysDept_id",data);
+        $state.go("index.content.sys/sysDept/sysDeptView")
+    }
+
+
+
+
+
+
+
+    /**
+     * 获取需要修改的数据
+     */
+    window.updateData = function(data,type){
+        $scope.id=data;
+        var tempId = data;
+        var type= type;
+        if (type==1) {
+        $("#myModal2").modal("show");
+        } else{
+        $("#myModal3").modal("show");
+        }
+
+        $.ajax({
+            url:"/sofn-sys-web/sysDept/findDeptById",
+            type:"post",
+            dataType:"json",
+            data:{
+				id:$scope.id
+			},
+            success:function(data){
+                  $("input[name='reservedField1']").val(data.sysOrganization.orgName);
+		    	  $("input[name='deptLevel']").val(data.sysOrganization.orgType);
+		    	  $("input[name='deptType']").val(data.sysOrganization.orgLevel);
+		    	  $("input[name='regionId']").val(data.sysOrganization.regionName);
+		    	  $("input[name='regionId01']").val(data.sysOrganization.id);
+
+		    	  $("input[name='deptName1']").val(data.sysDept.deptName);
+		    	  $("input[name='deptManager1']").val(data.sysDept.deptManager);
+		    	  $("input[name='phone1']").val(data.sysDept.phone);
+		    	  $("select[name='status1']").val(data.sysDept.status);
+
+			      $("input[name='delFlag']").val(data.sysDept.delFlag);
+			      $("input[name='createBy']").val(data.sysDept.createBy);
+			     $("input[name='createTime']").val(data.sysDept.createTime);
+
+			     $("input[name='isSubitem']").val(data.sysDept.isSubitem);
+			     $("input[name='parentId']").val(data.sysDept.parentId);
+			     $("input[name='id']").val(data.sysDept.id);
+            },
+            fail: function (data) {
+                alert("服务器异常,请联系后台管理人员");
+            }
+        });
+
+        $scope.filChange = function () {
+            var s = $("input[name='templateFilename3']").val();
+            $("input[name='copyTemplateFilename3']").val(s);
+        }
+
+        /**
+         * 修改
+          */
+        $scope.updateSysDept = function () {
+//                  $scope.sysDept.reservedField1 = $("input[name='reservedField1']").val();
+//		    	 	$scope.sysDept.deptLevel = $("input[name='deptLevel']").val();
+//		    	 	$scope.sysDept.deptType = $("input[name='deptType']").val();
+//		    	 	$scope.sysDept.regionId = $("input[name='regionId']").val();
+		    	 	 if(!$('#modalForm0').valid())
+      					  return;
+		    	 	$scope.sysDept.regionId = $("input[name='regionId01']").val();
+		    	 	$scope.sysDept.deptName = $("input[name='deptName1']").val();
+		    	 	$scope.sysDept.deptManager = $("input[name='deptManager1']").val();
+		    	 	$scope.sysDept.phone = $("input[name='phone1']").val();
+		    	 	$scope.sysDept.status = $("select[name='status1']").val();
+
+
+			    	 $scope.sysDept.id = $("input[name='id']").val();
+                    $http({
+                        url:"/sofn-sys-web/sysDept/updateSysDept",
+                        data:$scope.sysDept,
+                        method:"post",
+                        //post传输方式   头信息
+                        headers: {
+                            post: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                        }
+                    }).success(function(data){
+                        alert("修改成功");
+                        $("#myModal2").modal("hide");
+                        $("#grid").dataTable().api().ajax.reload();
+                    }).
+                    error(function(){
+                        alert("修改失败");
+                    })
+        }
+
+        //清楚缓存
+            $scope.RemoveLocal=function(){
+                window.localStorage.removeItem("id");
+            };
+    }
+
+
+/**
+     * 获取复选框选中行
+     * @returns {*}
+     */
+    $scope.getSelectRowsIds = function(){
+        var rows = $("#grid").DataTable().rows('.selected').data();
+        var length = rows.length;
+        if(length<=0){
+            alert("请至少选择一行记录！");
+            return false;
+        }
+        var ids = [];
+        for (var i = 0; i < length; i++) {
+            ids.push(rows[i].id);
+        }
+
+        return ids;
+    }
+
+ /**
+     * 批量删除
+     */
+    $scope.listDele=function () {
+        var i = $scope.getSelectRowsIds();
+        if (i!=false){
+            if(confirm('是否批量删除已选择行？'))
+            {
+               console.info(i.toString());
+               $.ajax({
+                    url:"sofn-sys-web/sysDept/deleteAll",
+                    type:"post",
+                    dataType:"json",
+                    data:{idStr:i.toString()},
+                    success:function(data){
+                        alert("删除成功！");
+                        $("#grid").dataTable().api().ajax.reload();
+                    },
+                    fail: function (data) {
+                        alert("失败");
+                    }
+                });
+            }
+        }
+    }
+    //全选/全不选
+    $("#checkAll").click(function() {
+        if ($(this).prop("checked") == true) {
+            $("#grid input[type='checkbox']").prop("checked", true);
+            $("#grid tbody tr").addClass("selected");
+        } else {
+            $("#grid input[type='checkbox']").prop("checked", false);
+            $("#grid tbody tr").removeClass("selected");
+        }
+    });
+
+    /**
+     * 执行删除的方法
+     */
+    window.deleteData = function(data){
+    	//选择是否进行删除
+    	if(confirm('是否进行删除...'))
+    	{
+    		$.ajax({
+                url:"/sofn-sys-web/sysDept/deleteDept",
+                type:"post",
+                dataType:"json",
+                data:{id:data},
+                success:function(data){
+                    alert("删除成功！");
+                    $("#grid").dataTable().api().ajax.reload();
+                }
+            });
+    	}
+    };
+})

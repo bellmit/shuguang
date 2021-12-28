@@ -1,0 +1,104 @@
+server:
+  port: 8881
+spring:
+  application:
+    name: @project.artifactId@
+  profiles:
+    # active: @active.profile@
+    active: local
+    #active: local
+    include: filter
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  servlet:
+    multipart:
+      max-request-size: 1024MB
+      max-file-size: 1024MB
+  rabbitmq:
+    listener:
+      direct:
+        auto-startup: false
+
+
+management:
+  server:
+    servlet:
+      context-path: /management
+    ssl:
+      enabled: false
+
+druid:
+  pool:
+    initialSize: 10
+    maxActive: 100
+    minIdle: 10
+
+#mybatis-plus
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*Mapper.xml
+  typeAliasesPackage: com.sofn.sys.model
+  global-config:
+    id-type: 3
+    field-strategy: 2
+    auto-set-db-type: true
+    db-column-underline: false
+    refresh-mapper: true
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    log-prefix: mybatis.sql.
+    default-fetch-size: 1000
+
+eureka:
+  instance:
+    # 心跳时间，即服务续约间隔时间（缺省为30s）
+    lease-renewal-interval-in-seconds: 10
+    # 发呆时间，即服务续约到期时间（缺省为90s）
+    lease-expiration-duration-in-seconds: 20
+    prefer-ip-address: true
+  client:
+    healthcheck:
+      # 开启健康检查（依赖spring-boot-starter-actuator）
+      enabled: true
+    fetch-registry: true
+    register-with-eureka: true
+
+logging:
+  config: classpath:logback-spring.xml
+
+# swagger配置
+swagger:
+  # 扫描包
+  base-package: com.sofn.sys.web
+  # 名称
+  name: 系统管理
+  # 接口前缀
+  prefix: /sys
+#  调度中心
+
+sofn:
+  enableRemoveSpace:
+    enable: true
+  rabbitmq:
+    enable: true
+    username: ENC(lmibPZ7E3KosjaZy4F/cEA==)
+    password: ENC(pBI1BV+c0RHAETv6dNwLHExlm2II1V6S)
+  fineReport:
+    enable: true
+    password: ENC(nRB/h+b2oeSO0d2bP4dQTw==)
+    #reportUrl: http://218.89.222.119:8080/webroot/decision/view/report?viewlet=
+    reportUrl: http://192.168.21.132:8080/webroot/decision/view/report?viewlet=
+  inforFlow:
+    enable: true
+    processModelUrl: http://218.89.222.119:8088/ProcessModeler/
+  elasticsearch:
+    ip: 192.168.21.128
+    host: 9299
+    password: ENC(pN6hd53+t+VI52RzSAN1teapLhGPvtqC)
+
+jasypt:
+  encryptor:
+    password: sofn@2021
+

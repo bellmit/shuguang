@@ -1,0 +1,175 @@
+<div class="gui-breadcrumbs">
+    <a href="">查询系统</a>&gt;
+    <span>查询统计报表</span>
+</div>
+<style>
+.gui-table {
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.gui-table td,
+.gui-table th {
+    text-align: center;
+}
+
+.gui-table .highlight-orange,  .gui-table .highlight-orange td, .gui-table .highlight-orange th{
+    background-color: #fffae7 !important;
+    color: #d87319;
+    white-space: nowrap;
+}
+.gui-table .highlight-green,  .gui-table .highlight-green th{
+    background-color: #fafffb !important;
+    color: #3d934d;
+}
+.gui-table tfoot th{
+    border-top: none;
+}
+</style>
+<div class="gui-section">
+    <div class="gui-form-group">
+        <form id="queryForm">
+            <div class="mt15">
+                <span>统计时间</span>
+                <input  name="datebegin" ng-model="dateBegin" value="{{dateBegin}}" style="cursor: pointer;width: 120px;" class="Wdate gui-input main_ch" id="datebegin" onfocus = "WdatePicker({dateFmt:'yyyy-MM-dd '}) " ng-keyup="enterEvent($event)"/>
+                <span>至&nbsp;&nbsp;&nbsp;</span>
+                <input  name="dateend" ng-model="dateEnd" value="{{dateEnd}}" style="cursor: pointer;width: 120px;" class="Wdate gui-input main_ch"  id="dateend" onfocus = "WdatePicker({dateFmt:'yyyy-MM-dd '}) "  ng-keyup="enterEvent($event)"/>
+                <span class="span_date btn btn-default gui-btn" id="span_0" ng-click="choose(0)">不限</span>
+                <span class="span_date btn btn-default" id="span_1" ng-click="choose(1)">昨天</span>
+                <span class="span_date btn btn-default" id="span_2" ng-click="choose(2)">今天</span>
+                <span class="span_date btn btn-default" id="span_3" ng-click="choose(3)">7天</span>
+                <span class="span_date btn btn-default" id="span_4" ng-click="choose(4)">30天</span>
+                <span class="span_date btn btn-default" id="span_5" ng-click="choose(5)">60天</span>
+                <span class="span_date btn btn-default" id="span_6" ng-click="choose(6)">90天</span>
+            </div>
+            <div class="mt15">
+                <span id="AnyArea" class="mr15">所属区域</span>
+                <div class="gui-select">
+                    <select id="sheng" onchange="regionChange(this)">
+                        <option value="">省</option>
+                    </select>
+                </div>
+                <div class="gui-select">
+                    <select id="shi" onchange="regionChange(this)">
+                        <option value="">市</option>
+                    </select>
+                </div>
+                <div class="gui-select">
+                    <select id="xian">
+                        <option value="">区/县</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mt15">
+                <span class="mr15">监管系统</span>
+                <span ng-repeat="a in ASMS" class="mr15">
+                        <input type="checkbox" id="{{a.id}}" name="ASMS" ng-click="changeCheck(a)" ng-checked="a.id=='ASMS_ALL'">
+                        <span ng-bind="a.name"></span>
+                </span>
+            </div>
+            <div class="mt15">
+                <span class="mr15">执法系统</span>
+                <span ng-repeat="b in ALES" class="mr15">
+                        <input type="checkbox" id="{{b.id}}" name="ALES" ng-click="changeCheck(b)"  ng-checked="b.id=='ALES_ALL'">
+                        <span ng-bind="b.name"></span>
+                </span>
+            </div>
+            <div class="mt15">
+                <span class="mr15">监测系统</span>
+                <span ng-repeat="c in ADS" class="mr15">
+                        <input type="checkbox" id="{{c.id}}" name="ADS" ng-click="changeCheck(c)" ng-checked="c.id=='ADS_ALL'">
+                        <span ng-bind="c.name"></span>
+                </span>
+            </div>
+            <div class="mt15">
+                <span class="mr15">追溯系统</span>
+                <span ng-repeat="d in TTS" class="mr15">
+                        <input type="checkbox" id="{{d.id}}" name="TTS" ng-click="changeCheck(d)" ng-checked="d.id=='TTS_ALL'">
+                        <span ng-bind="d.name"></span>
+                </span>
+            </div>
+            <div class="mt15" style="padding-top: 15px;">
+                <button class="gui-btn" ng-disabled="!!btnDisabled" ng-click="query()">查询</button>
+                <button class="gui-btn" ng-click="reset()">重置</button>
+                <button class="gui-btn" ng-click="exportExcel()">导出</button>
+            </div>
+        </form>
+    </div>
+    <div style="margin-bottom: 16px;">
+        查询统计截止时间：<span id="END_TIME"></span>
+        <button class="gui-btn" ng-click="detail()"
+                style="float:right;margin-right: 10px;display: none;">窗口浏览</button>
+    </div>
+    <div id="table">
+    <table id="dtGrid" class="gui-table" style="width: 100%">
+        <thead>
+            <tr>
+                <th rowspan="2" class="highlight-green">区域</th>
+                <th colSpan="6" class="highlight-green">监管系统</th>
+                <th colSpan="4" class="highlight-green">执法系统</th>
+                <th colSpan="5" class="highlight-green">监测系统</th>
+                <th rowspan="2" class="highlight-orange">合计</th>
+                <th colSpan="5" class="highlight-green">追溯系统</th>
+                <th rowspan="2" class="highlight-orange">总计</th>
+            </tr>
+            <tr>
+                <th>基地巡查</th>
+                <th>例行监测</th>
+                <th>专项监测</th>
+                <th>监督抽查</th>
+                <th>应急任务</th>
+                <th>投诉受理</th>
+                <th>现场巡查</th>
+                <th>委托任务</th>
+                <th>行政处罚</th>
+                <th>监督抽查</th>
+                <th>例行监测</th>
+                <th>专项监测</th>
+                <th>监督抽查</th>
+                <th>受托检测</th>
+                <th>复检任务</th>
+                <th>主体注册</th>
+                <th>生成批次总数</th>
+                <th>追溯码打印次数</th>
+                <th>交易总数</th>
+                <th>交易成功数</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr class="highlight-orange">
+                <th>合计</th>
+                <th colSpan="6">{{ASMS_TOTAL}}</th>
+                <th colSpan="4">{{ALES_TOTAL}}</th>
+                <th colSpan="5">{{ADS_TOTAL}}</th>
+                <th>{{ASMS_TOTAL + ALES_TOTAL + ADS_TOTAL}}</th>
+                <th colSpan="5">{{TTS_TOTAL}}</th>
+                <th>{{ASMS_TOTAL + ALES_TOTAL + ADS_TOTAL + TTS_TOTAL}}</th>
+            </tr>
+        </tfoot>
+    </table>
+    </div>
+</div>
+
+
+<div class="modal fade" id="model" tabindex="-1" role="dialog" aria-
+     labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-stylesm" style="width: 98%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-
+                        dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">
+                    <span>查询统计报表</span>
+                </h4>
+            </div>
+            <div id="content" class="modal-body clearfix gov-h">
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" data-
+                        dismiss="modal">返回</button>
+            </div>
+        </div>
+    </div>
+</div>

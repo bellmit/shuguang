@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.ForfeiMapper" >
+    <resultMap id="BaseResultMap" type="com.sofn.fdpi.model.Forfei">
+        <id property="id" column="ID"/>
+        <result property="compId" column="COMP_ID"/>
+        <result property="ffType" column="FF_TYPE"/>
+        <result property="ffDate" column="FF_DATE"/>
+        <result property="ffLocal" column="FF_LOCAL"/>
+        <result property="speName" column="SPE_NAME"/>
+        <result property="sex" column="SEX"/>
+        <result property="speNum" column="SPE_NUM"/>
+        <result property="speCon" column="SPE_CON"/>
+        <result property="resSites" column="RES_SITES"/>
+        <result property="ffIdea" column="FF_IDEA"/>
+        <result property="ffMeth" column="FF_METH"/>
+        <result property="ffUnit" column="FF_UNIT"/>
+        <result property="disDate" column="DIS_DATE"/>
+        <result property="proModel" column="PRO_MODEL"/>
+        <result property="packType" column="PACK_TYPE"/>
+        <result property="status" column="STATUS"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="createUserId" column="CREATE_USER_ID"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="updateUserId" column="UPDATE_USER_ID"/>
+        <result property="delFlag" column="DEL_FLAG"/>
+        <result property="province" column="province"/>
+        <result property="city" column="city"/>
+        <result property="area" column="area"/>
+        <collection property="files" ofType="com.sofn.fdpi.model.FileManage">
+            <id column="exID" property="id"></id>
+            <result column="FILE_NAME" property="fileName"></result>
+            <result column="FILE_PATH" property="filePath"></result>
+            <result column="FILE_TYPE" property="fileType"></result>
+            <result column="FILE_SIZE" property="fileSize"></result>
+            <result column="FILE_SOURCE_ID" property="fileSourceId"></result>
+            <result column="FILE_STATUS" property="fileStatus"></result>
+        </collection>
+    </resultMap>
+    <sql id="Base_Column_List">
+        b.ID,b.FF_TYPE,b.FF_DATE,
+        b.FF_LOCAL,b.SPE_NAME,
+        b.FF_UNIT,b.DIS_DATE,b.STATUS,b.SPE_NUM
+    </sql>
+    <sql id="file">
+      c.ID as exID,c.FILE_SOURCE_ID,
+      c.FILE_NAME,c.FILE_PATH,c.FILE_TYPE,c.FILE_SIZE,c.FILE_STATUS
+  </sql>
+    <select id="getForFeiList" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+     from FORFEI b
+     <where>
+         b.DEL_FLAG = 'N'
+         <if test="ffType != null and ffType != ''">
+             and b.FF_TYPE = #{ffType}
+         </if>
+         <if test="speName != null and speName != ''">
+             and b.SPE_NAME  like '%'||#{speName}||'%'
+         </if>
+         <if test="status != null and status != ''">
+             and b.STATUS = #{status}
+         </if>
+
+         <choose>
+             <when test="province != null and province != ''">
+                 and b.province = #{province}
+                 and b.STATUS >= 2
+             </when>
+             <when test="provinceOrg != null and provinceOrg != ''">
+                 AND ((  b.province = #{provinceOrg} and b.STATUS >= 2 )or ORG_ID=#{orgId})
+             </when>
+         </choose>
+         <choose>
+             <when test="city != null and city != ''">
+                 and b.CITY = #{city}
+                 and b.STATUS >= 2
+             </when>
+             <when test="cityOrg != null and cityOrg != ''">
+                 AND ((  b.CITY = #{cityOrg} and b.STATUS >= 2 )or ORG_ID=#{orgId})
+             </when>
+         </choose>
+         <choose>
+             <when test="area != null and area != ''">
+                 and b.AREA = #{area}
+                 and b.STATUS >= 2
+             </when>
+             <when test="areaOrg != null and areaOrg != ''">
+                 AND ((  b.AREA = #{areaOrg} and b.STATUS >= 2 )or ORG_ID=#{orgId})
+             </when>
+         </choose>
+             <choose>
+         <!--部级终审权限-->
+         <when test="Min!=null and Min!='' ">
+             and b.STATUS >=4
+         </when>
+     </choose>
+     </where>
+       order by CREATE_TIME desc
+    </select>
+    <update id="deleteForFeiInfo">
+        update FORFEI
+        set
+        DEL_FLAG = 'Y',
+        UPDATE_TIME = #{updateTime},
+        UPDATE_USER_ID=#{updateUserId}
+        where
+        ID=#{id}
+    </update>
+</mapper>

@@ -1,0 +1,32 @@
+.gui-tree-sidebar .gui-list > li{
+    padding: 2px 5px;
+}
+.gui-tree-sidebar .gui-list li:first-child a{
+    margin-left: 0;
+    font-size: 14px;
+}
+.gui-tree-sidebar .gui-list a{
+    color: #666;
+    margin-left: 18px;
+    padding: 1px 5px;
+    display: inline-block;
+    line-height: 18px;
+    font-size: 12px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    background-color: #eee;
+    border-radius: 4px;
+    word-break:break-all;
+    white-space: normal;
+}
+
+.gui-tree-sidebar .gui-list .active a{
+    color: #FFF;
+    border: 1px solid #20944d;
+    background-color: #20944d;
+}
+
+.Sup_contain_section_contain table th,th, td {
+    text-align: center;
+}

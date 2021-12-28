@@ -1,0 +1,250 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+<!-- <div ng-include="'include/header.html'" ng-controller="header"></div> -->
+<style>
+.loginPageView{
+    background-color: #eee;
+}
+    .gui-list .form-item{
+        padding-left: 115px;
+    }
+    .gui-list .form-item .title, .gui-list .form-item label{
+        margin-left: -115px;
+        width: 115px;
+    }
+    .gui-mid-wrapper{
+        height: 0;
+        width: 0;
+        overflow: hidden;
+    }
+    .has-error .form-control:focus {
+            border-color: #843534 !important;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 6px #ce8483 !important;
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 6px #ce8483 !important;
+        }
+</style>
+    <div class="gui-breadcrumbs">
+        <a href="">监测系统</a>&gt;
+        <a href="">账号信息</a>&gt;
+        <span>非管理员账号</span>
+    </div>
+<div class="gui-section">
+    <div class="gui-page-head text-center">
+        <h1>个人中心</h1>
+        <a href="javascript:void(0);" class="gui-btn fr" onClick="javascript :history.back(-1);" >返回</a>
+    </div>
+    <div class="gui-page-head no-border">
+        <h3>账号信息</h3>
+        <a href="" class="color-green fr mr15" ng-click="showUpdatePwdModal()">修改密码</a>
+        <a href="" class="color-green fr mr15" ng-click="showUpdateInfoModal()">修改个人信息</a>
+
+    </div>
+    <div class="ovh">
+        <ul class="gui-list">
+            <li>
+                <div class="form-item">
+                    <span class="title">账号：</span>
+                    <span class="field-text">{{user.account}}</span>
+                </div>
+            </li>
+           <!-- <li>
+                <div class="form-item">
+                    <span class="title">账号类型：</span>
+                    <span class="field-text">用户</span>
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">主体身份证：</span>
+                    <span class="field-text"></span>
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">主体用户码：</span>
+                    <span class="field-text"></span>
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">主体身份证：</span>
+                    <span class="field-text"></span>
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">主体名称：</span>
+                    <span class="field-text"></span>
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">所属区域：</span>
+                    <span class="field-text"></span>
+                </div>
+            </li>-->
+            <li>
+                <div class="form-item">
+                    <span class="title">姓名：</span>
+                    <span class="field-text">{{user.userName}}</span>
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">职位：</span>
+                    <span class="field-text">{{user.postName}}</span>
+                </div>
+            </li>
+            <!--<li>
+                <div class="form-item">
+                    <span class="title">身份证号：</span>
+                    <span class="field-text"></span>
+                </div>
+            </li>-->
+            <li>
+                <div class="form-item">
+                    <span class="title">联系方式：</span>
+                    <span class="field-text">{{user.phone}}</span>
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">邮箱：</span>
+                    <span class="field-text">{{user.email}}</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- 模态框（Modal）修改密码 -->
+<div class="modal fade" id="dModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-stylesm" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="modalTitle">修改密码</h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <form id="pwd_form" class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label mgr-10">输入原密码</label>
+                        <div class="col-sm-7">
+                            <input name="oldPwd" type="password" class="gui-input"
+                                   data-bv-notempty="true"
+                                   data-bv-notempty-message="原始密码不能为空"
+                                   data-bv-stringlength="true"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label mgr-10">输入新密码</label>
+                        <div class="col-sm-7">
+                            <input name="newPwd" type="password" class="gui-input"
+                            data-bv-notempty="true"
+                            maxlength="16"
+                            data-bv-password="true"
+                            data-bv-password-message="密码应包含数字、小写字母、大写字母、-、_ 至少3种规则，长度8-16位"
+                            data-bv-notempty-message="新密码不能为空"
+                            data-bv-stringlength="true"
+                            data-bv-identical-field="newPwd2"
+                            data-bv-stringlength-message="请输入8到16位长度的密码"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label mgr-10">确认新密码</label>
+                        <div class="col-sm-7">
+                            <input name="newPwd2" type="password" class="gui-input"
+                            data-bv-notempty="true"
+                            data-bv-password="true"
+                            maxlength="16"
+                            data-bv-notempty-message="确认密码不能为空"
+                            data-bv-identical="true"
+                            data-bv-identical-field="newPwd"
+                            data-bv-identical-message="密码和它的确认密码不一致"
+                                   />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer mgt-15">
+                <span class="gui-btn"  data-dismiss="modal" id="cancel">取消</span>
+                <span class="gui-btn" id="updatePwd">确认</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 模态框（Modal）信息变更 -->
+<div class="modal fade" id="uModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-stylesm" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">信息变更</h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <form id="info_form" class="form-horizontal" ng-model="user" role="form">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label mgr-10">账号</label>
+                        <div class="col-sm-7">
+                            <input name="account" type="text" ng-model="user.account" class="gui-input"
+                                   data-bv-notempty="true"
+                                   data-bv-notempty-message="账号不能为空" disabled/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label mgr-10">姓名</label>
+                        <div class="col-sm-7">
+                            <input name="userName" type="text" ng-model="user.userName" class="gui-input"
+                                   data-bv-notempty="true"
+                                   data-bv-notempty-message="姓名不能为空" disabled/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label mgr-10">职务</label>
+                        <div class="col-sm-7">
+                            <select name="postId"  ng-model="selectpostType" class="gui-select"
+                                    data-bv-notempty="true"
+                                    data-bv-notempty-message="职务不能为空">
+                                <option ng-repeat="x in postType" name="{{x.name}}" value="{{x.postId}}">{{x.title}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!--<div class="form-group">
+                        <label class="col-sm-4 control-label mgr-10">身份证号码</label>
+                        <div class="col-sm-7">
+                            <input name="reservedField2" type="text" ng-model="user.reservedField2" class="gui-input"
+                                   data-bv-notempty="true"
+                                   data-bv-notempty-message="联系电话不能为空"
+                                   data-bv-isPhone="true"
+                                   data-bv-isPhone-message="请输入有效的手机号码" />
+                        </div>
+                    </div>-->
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label mgr-10">联系电话</label>
+                        <div class="col-sm-7">
+                            <input name="phone" type="text" ng-model="user.phone" class="gui-input"
+                                   data-bv-notempty="true"
+                                   data-bv-notempty-message="联系电话不能为空"
+                                   data-bv-isPhone="true"
+                                   data-bv-isPhone-message="请输入有效的手机号码" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label mgr-10">邮箱</label>
+                        <div class="col-sm-7">
+                            <input name="email" type="email" ng-model="user.email" class="gui-input"
+                                   data-bv-notempty="true"
+                                   data-bv-notempty-message="邮箱不能为空"
+                                   data-bv-emailaddress="true"
+                                   data-bv-emailaddress-message="输入不是一个有效的电子邮件地址"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer mgt-15">
+                <span class="gui-btn"  data-dismiss="modal" id="ucancel">取消</span>
+                <span class="gui-btn" id="updateInfo">提交</span>
+            </div>
+        </div>
+    </div>
+</div>

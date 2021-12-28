@@ -1,0 +1,268 @@
+<link rel="stylesheet" href="assets/css/asms/baseInspection/inspectionList.css"/>
+<div class="gui-breadcrumbs">
+    <a href="">查询系统</a>&gt;
+    <a href="">监督检查信息查询</a>&gt;
+    <span>基地巡查</span>
+</div>
+<div class="gui-TabCut">
+    <ul class="clearfix gov-h">
+        <li class="fl gp-r gui-TabCheck">基地巡查</li>
+        <li class="fl gp-r" ui-sref="index.content.qry/supervisionInspection/qryKhTaskList">考核任务</li>
+        <li class="fl gp-r" ui-sref="index.content.qry/supervisionInspection/qryAssessList">巡查人员考核</li>
+        <li class="fl gp-r" ui-sref="index.content.qry/supervisionInspection/qryElInspectionList">执法检查</li>
+        <li class="fl gp-r" ui-sref="index.content.qry/supervisionInspection/qryElPersonList">执法人员</li>
+    </ul>
+    <div class="gui-botLine"></div>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group">
+        <span>所属行业</span>
+        <input type="checkbox" value="" name="entityIndustryLimit" ng-click="limitCheckBoxAll('entityIndustry','entityIndustryLimit')"><span class="checkedIndustryTypeText">不限</span>
+        <span ng-repeat="a in industryType">
+            <input type="checkbox" value="{{a.id}}" name="entityIndustry" ng-click="limitCheckBox('entityIndustryLimit','entityIndustry')"><span class="checkedIndustryTypeText" ng-bind="a.dictName"></span>
+        </span>
+        <div class="mt15">
+            <span>组织形式</span>
+            <input type="checkbox" value="" name="entityScaleLimit" ng-click="limitCheckBoxAll('entityScale','entityScaleLimit')"><span class="checkedIndustryTypeText">不限</span>
+            <span ng-repeat="a in orgMode">
+                <input type="checkbox" value="{{a.id}}" name="entityScale" ng-click="limitCheckBox('entityScaleLimit','entityScale')"><span class="checkedIndustryTypeText" ng-bind="a.dictName"></span>
+            </span>
+        </div>
+        <div class="mt15">
+            <span>主体类别</span>
+            <input type="checkbox" value="" name="entityTypeLimit" ng-click="limitCheckBoxAll('entityType','entityTypeLimit')"><span class="checkedIndustryTypeText">不限</span>
+            <span ng-repeat="a in subjType">
+                <input type="checkbox" value="{{a.id}}" name="entityType" ng-click="limitCheckBox('entityTypeLimit','entityType')"><span class="checkedIndustryTypeText" ng-bind="a.dictName"></span>
+            </span>
+        </div>
+        <div class="mt15">
+            <span>巡查结果</span>
+            <span>
+                <input type="checkbox" value="" name="inspectionResultLimit" ng-click="limitCheckBoxAll('inspectionResult','inspectionResultLimit')" checked><span class="checkedIndustryTypeText">全部</span>
+                <input type="checkbox" value="1" name="inspectionResult" ng-click="limitCheckBox('inspectionResultLimit','inspectionResult')" ><span class="checkedIndustryTypeText">合格</span>
+                <input type="checkbox" value="3" name="inspectionResult" ng-click="limitCheckBox('inspectionResultLimit','inspectionResult')" ><span class="checkedIndustryTypeText">整改</span>
+                <input type="checkbox" value="2" name="inspectionResult" ng-click="limitCheckBox('inspectionResultLimit','inspectionResult')" ><span class="checkedIndustryTypeText">不合格</span>
+            </span>
+        </div>
+        <div class="mt15">
+            <span>任务类型</span>
+            <input  name="inspectionTypeLimit"  ng-click="limitCheckBoxAll('inspectionType','inspectionTypeLimit')" class="ThisType" type="checkbox" value="1"/><span>不限</span>
+            <input  name="inspectionType"  ng-click="limitCheckBox('inspectionTypeLimit','inspectionType')" class="ThisType" type="checkbox" value="1"/><span>基地</span>
+            <input  name="inspectionType"  ng-click="limitCheckBox('inspectionTypeLimit','inspectionType')" class="ThisType" type="checkbox" value="2"/><span>主体</span>
+            <input  name="inspectionType"  ng-click="limitCheckBox('inspectionTypeLimit','inspectionType')" class="ThisType" type="checkbox" value="3"/><span>农资</span>
+            <input  name="inspectionType"  ng-click="limitCheckBox('inspectionTypeLimit','inspectionType')" class="ThisType" type="checkbox" value="0"/><span>其他</span>
+        </div>
+        <div class="mt15">
+            <span id="AnyArea">所属区域</span>
+            <div class="gui-select">
+                <select id="sheng">
+                    <option value="">省</option>
+                </select>
+            </div>
+            <div class="gui-select">
+                <select id="shi">
+                    <option value="">市</option>
+                </select>
+            </div>
+            <div class="gui-select">
+                <select id="xian">
+                    <option value="">区/县</option>
+                </select>
+            </div>
+            <span>创建日期</span>
+            <input id="createDateBegin" name="createDateBegin" style="cursor: pointer;width: 120px;" class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('createDateEnd');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'createDateEnd\')}'})"/>
+            --
+            <input id="createDateEnd" name="createDateEnd" class="Wdate gui-input" style="cursor: pointer;width: 120px;margin-left:10px;" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'createDateBegin\')}'})"/>
+        </div>
+        <form name="searchForm" id="searchForm" class="mt15">
+            <!--<span>主体类别</span>-->
+            <!--<div class="gui-select">-->
+                <!--<select name="entityType">-->
+                    <!--<option value="">全部</option>-->
+                    <!--<option ng-repeat="x in subjType" value="{{x.id}}">{{x.dictName}}</option>-->
+                <!--</select>-->
+            <!--</div>-->
+            <!--<span>组织形式</span>-->
+            <!--<div class="gui-select">-->
+                <!--<select name="entityScale">-->
+                    <!--<option value="">全部</option>-->
+                    <!--<option ng-repeat="x in orgMode" value="{{x.id}}">{{x.dictName}}</option>-->
+                <!--</select>-->
+            <!--</div>-->
+            <div class="mt15">
+                <span>巡查日期</span>
+                <input id="dateBegin" name="dateBegin" style="cursor: pointer;width: 120px;" class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('dateEnd');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateEnd\')}'})"/>
+                --
+                <input id="dateEnd" name="dateEnd" class="Wdate gui-input" style="cursor: pointer;width: 120px;margin-left:10px" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'dateBegin\')}'})"/>
+                <span>主体名称</span>
+                <input class="gui-input" maxlength="30" name="enterpriseName" type="text" placeholder="请输入主体名称"/>
+                <span>巡查员</span>
+                <input class="gui-input" maxlength="30" name="inspectionUserName" type="text" placeholder="巡查员"/>
+                <div class="condition-item condition-custom" data-control="text" ng-show="visibleinspectionSvName">
+                    <span>巡查机构</span>
+                    <input class="gui-input" ng-model="inspectionSvName" maxlength="80" type="text" placeholder="请输入巡查机构" name="inspectionSvName" />
+                </div>
+                <div class="condition-item condition-custom" data-control="text" ng-show="visibleaddress">
+                    <span>主体地址</span>
+                    <input class="gui-input" ng-model="address" maxlength="80" type="text" placeholder="请输入主体地址" name="address" />
+                </div>
+                <div class="condition-item condition-custom" data-control="text" ng-show="visiblelegalName">
+                    <span>法定代表人</span>
+                    <input class="gui-input" ng-model="legalName" maxlength="80" type="text" placeholder="请输入法定代表人" name="legalName" />
+                </div>
+                <div class="condition-item condition-custom" data-control="text" ng-show="visiblelegalPhone">
+                    <span>法人联系电话</span>
+                    <input class="gui-input" ng-model="legalPhone" maxlength="80" type="text" placeholder="请输入法人联系电话" name="legalPhone" />
+                </div>
+                <div class="condition-item condition-custom" data-control="text" ng-show="visiblecontactName">
+                    <span>联系人</span>
+                    <input class="gui-input" ng-model="contactName" maxlength="80" type="text" placeholder="请输入联系人" name="contactName" />
+                </div>
+                <div class="condition-item condition-custom" data-control="text" ng-show="visiblecontactPhone">
+                    <span>联系人电话</span>
+                    <input class="gui-input" ng-model="contactPhone" maxlength="80" type="text" placeholder="请输入联系人电话" name="contactPhone" />
+                </div>
+                <div style="padding-top: 15px;">
+                    <button class="gui-btn" ng-disabled="!!btnDisabled" ng-click="queryBaseInspection($event)">查询</button>
+                    <button class="gui-btn" type="reset" ng-click="resetArea($event)">重置</button>
+                </div>
+            </div>
+            <span href="#modalCondition" data-toggle="modal" class="custom-condition">自定义条件</span>
+        </form>
+    </div>
+    <!--<div class="gui-table-panel clearfix">-->
+        <!--<p class="table-total">符合条件的数据总计: {{tableTotal}} 项</p>-->
+        <!--<button class="gui-btn" ng-click="exportData()">导出</button>-->
+    <!--</div>-->
+    <!--<table id="grid" class="gui-table table-nowrap mt15" style="width: 100%">-->
+    <!--</table>-->
+    <!-- 图表面板 -->
+    <div class="gui-table-panel clearfix">
+        <p class="table-total" ng-show="isListView">符合条件的数据总计: {{tableTotal}} 项</p>
+        <!-- 切换视图展示 -->
+        <div class="view-type">展示方式
+            <i class="gui-icon icon-list highlight" ng-class="{'highlight': isListView}" ng-click="toggleView(true)" title="以列表视图展示"></i>
+            <i class="gui-icon icon-chart" ng-class="{'highlight': !isListView }" ng-click="toggleView(false)" title="以图形视图展示"></i>
+        </div>
+        <button class="gui-btn" ng-show="isListView" ng-click="exportData()">导出</button>
+    </div>
+    <!-- 图表区域 -->
+    <div class="gui-content-slide">
+        <div ng-style="{'transform': viewX}" class="content-wrap">
+            <div class="content-block">
+                <table id="grid" class="gui-table table-nowrap mt15" style="width: 100%">
+                </table>
+            </div>
+            <div class="content-block">
+                <div sg-chart options="vm.chartOptions" update="vm.chart"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalCondition" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">请选择自定义条件</h4>
+            </div>
+            <div class="modal-body">
+                <form novalidate="novalidate">
+                <div class="list-head">
+                    <label>
+                        <input type="checkbox" class="condition-checked-all" />全选
+                    </label>
+                </div>
+                <ul class="gui-list list-condition">
+                    <li class="disabled">
+                        <label>
+                            <input type="checkbox" checked disabled />所属行业
+                        </label>
+
+                    </li>
+                    <li class="disabled">
+                        <label>
+                            <input type="checkbox" checked disabled>组织形式
+                        </label>
+                    </li>
+                    <li class="disabled">
+                        <label>
+                            <input type="checkbox" checked disabled>主体类别
+                        </label>
+                    </li>
+                    <li class="disabled">
+                        <label>
+                            <input type="checkbox" checked disabled>任务类型
+                        </label>
+                    </li>
+                    <li class="disabled">
+                        <label>
+                            <input type="checkbox" checked disabled>巡查结果
+                        </label>
+                    </li>
+                    <li class="disabled">
+                        <label>
+                            <input type="checkbox" checked disabled>所属区域
+                        </label>
+                    </li>
+                    <li class="disabled">
+                        <label>
+                            <input type="checkbox" checked disabled>创建日期
+                        </label>
+                    </li>
+                    <li class="disabled">
+                        <label>
+                            <input type="checkbox" checked disabled>巡查日期
+                        </label>
+                    </li>
+                    <li class="disabled">
+                        <label>
+                            <input type="checkbox" checked disabled>主体名称
+                        </label>
+                    </li>
+                    <li class="disabled">
+                        <label>
+                            <input type="checkbox" checked disabled>巡查员
+                        </label>
+                    </li>
+                    <li data-key="inspectionSvName">
+                        <label>
+                            <input type="checkbox">巡查机构
+                        </label>
+                    </li>
+                    <li data-key="address">
+                        <label>
+                            <input type="checkbox">主体地址
+                        </label>
+                    </li>
+                    <li data-key="legalName">
+                        <label>
+                            <input type="checkbox">法定代表人
+                        </label>
+                    </li>
+                    <li data-key="legalPhone">
+                        <label>
+                            <input type="checkbox">法人联系电话
+                        </label>
+                    </li>
+                    <li data-key="contactName">
+                        <label>
+                            <input type="checkbox">联系人
+                        </label>
+                    </li>
+                    <li data-key="contactPhone">
+                        <label>
+                            <input type="checkbox">联系人电话
+                        </label>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="gui-btn" ng-click="confirmCondition()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>

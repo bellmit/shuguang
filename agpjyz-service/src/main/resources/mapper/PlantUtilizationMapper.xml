@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agpjyz.mapper.PlantUtilizationMapper">
+
+    <sql id="base_Column_List">
+      ID, PROVINCE_NAME, CITY_NAME, COUNTY_NAME, SPEC_VALUE, LATIN, INDUSTRIAL_ID, INDUSTRIAL_VALUE,
+      PURPOSE, UTILIZATION_UNIT, REPORT_PERSON, REPORT_TIME
+    </sql>
+
+
+    <select id="listByParams" parameterType="java.util.Map" resultType="com.sofn.agpjyz.model.PlantUtilization">
+        select
+        <include refid="base_Column_List"/>
+        from PLANT_UTILIZATION
+        <where>
+            DEL_FLAG = 'N'
+            <if test="specId != null and specId != ''">
+                and SPEC_ID = #{specId}
+            </if>
+            <if test="industrialId != null and industrialId != ''">
+                and INDUSTRIAL_ID like '%' || #{industrialId} || '%'
+            </if>
+            <if test="purpose != null and purpose != ''">
+                and PURPOSE like '%' || #{purpose} || '%'
+            </if>
+            <if test="utilizationUnit != null and utilizationUnit != ''">
+                and UTILIZATION_UNIT like '%' || #{utilizationUnit} || '%'
+            </if>
+            <if test="reportPerson != null and reportPerson != ''">
+                and REPORT_PERSON like '%' || #{reportPerson} || '%'
+            </if>
+            <if test="province != null and province != ''">
+                and PROVINCE = #{province}
+            </if>
+            <if test="city != null and city != ''">
+                and CITY = #{city}
+            </if>
+            <if test="province2 != null and province2 != ''">
+                and (PROVINCE = #{province2} or CREATE_USER_ID = #{createUserId2})
+            </if>
+            <if test="city2 != null and city2 != ''">
+                and (CITY = #{city2} or CREATE_USER_ID = #{createUserId2})
+            </if>
+            <if test="county != null and county != ''">
+                and COUNTY = #{county}
+            </if>
+            <if test="createUserId != null and createUserId != ''">
+                and CREATE_USER_ID = #{createUserId}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND REPORT_TIME &lt;= #{endTime}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                AND REPORT_TIME &gt;= #{startTime}
+            </if>
+        </where>
+        order by CREATE_TIME desc
+    </select>
+
+    <update id="updateOther">
+        update PLANT_UTILIZATION
+        set OTHER = OTHER || #{other}
+        where ID = #{id}
+    </update>
+</mapper>

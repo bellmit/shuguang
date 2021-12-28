@@ -1,0 +1,400 @@
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">监管系统</a>&gt;
+    <a ui-sref="index.content.asms/check/reCheckTask">检测任务</a>&gt;
+    <a ui-sref="index.content.asms/check/reCheckTask">复检任务</a>&gt;
+    <span>操作</span>
+</div>
+
+<!--任务基本信息-->
+<div class="gui-section">
+    <ul>
+        <li class="Bor_line" style="height: 30px"><span style="display: inline-block;vertical-align:bottom">基本信息</span>
+            <button ng-click="infoSave()" class=" fr ml15 gui-btn">保存</button>
+            <button ui-sref="index.content.asms/check/reCheckTask" class="gui-btn fr ml15">返回
+            </button>
+        </li>
+    </ul>
+    <form id="reCheckTaskAddFrom" class=" " role="">
+        <div class="">
+            <div class="" style="line-height: 30px">
+                <!--初检任务类型-->
+                <div class="clearfix gov-h mt15">
+                    <span class="col-lg-3 col-md-3 col-sm-3" style="text-align: right;padding-right: 10px;">初检任务类型&nbsp;<span
+                            style="color: red">*</span></span>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="gui-select" style="width: 100%">
+                            <select class="form-control" id="recheckchange" name="recheckchange">
+                                <option value="0">--任务类型--</option>
+                                <option value="1">例行监测</option>
+                                <option value="2">专项检测</option>
+                                <option value="3">监督抽查</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!--初检任务名称-->
+                <div class="clearfix gov-h mt15">
+                    <span class="col-lg-3 col-md-3 col-sm-3"
+                          style="text-align: right;padding-right: 10px;">初检任务名称&nbsp;</span>
+                    <input type="text" name="taskName" id="taskNameCheck" class="col-lg-6 col-md-6 col-sm-6 gui-input"
+                           readonly="readonly">
+                </div>
+                <div class="clearfix gov-h mt15" style="display: none" name="batchSelectDiv">
+                    <span class="col-lg-3 col-md-3 col-sm-3"
+                          style="text-align: right;padding-right: 10px;">批次&nbsp;<span
+                            style="color: red">*</span></span>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="gui-select" style="width: 100%">
+                            <input class="form-control" type="text" readonly="readonly" id="taskBatch" name="batch">
+                            <!--<select class="form-control" name="batch">-->
+                                <!--<option value="">&#45;&#45;批次&#45;&#45;</option>-->
+                                <!--<option value="1">第一批次</option>-->
+                                <!--<option value="2">第二批次</option>-->
+                                <!--<option value="3">第三批次</option>-->
+                                <!--<option value="4">第四批次</option>-->
+                            <!--</select>-->
+                        </div>
+                    </div>
+                </div>
+                <!--复检任务名称-->
+                <div class="clearfix gov-h mt15">
+                    <span class="col-lg-3 col-md-3 col-sm-3"
+                          style="text-align: right;padding-right: 10px;">复检任务名称&nbsp;</span>
+                    <input type="text" name="recheckTaskName" class="col-lg-6 col-md-6 col-sm-6 gui-input"
+                           readonly="readonly">
+                </div>
+                <div class="clearfix gov-h mt15">
+                    <span class="col-lg-3 col-md-3 col-sm-3" style="text-align: right;padding-right: 10px;">复检任务优先级&nbsp;<span
+                            style="color: red">*</span></span>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="gui-select" style="width: 100%">
+                            <select class="form-control"  name="recheckTaskPriority" ng-model="asmsRecheckTask.recheckTaskPriority">
+                                <option value=''>--请选择--</option>
+                                <option value="3">一般</option>
+                                <option value="2">紧急</option>
+                                <option value="1">特急</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix gov-h mt15">
+                    <span class="col-lg-3 col-md-3 col-sm-3" style="text-align: right;padding-right: 10px;">复检单位<span
+                            style="color: red">*</span></span>
+                    <input class="col-lg-6 col-md-6 col-sm-6 gui-input" readonly id="recheckUnitName"
+                           name="recheckUnitName" type="text" ng-click="selectrecheckUnitId()"
+                    />
+                </div>
+                <!--年度-->
+                <div class="clearfix gov-h mt15">
+                    <span class="col-lg-3 col-md-3 col-sm-3" style="text-align: right;padding-right: 10px;">年&nbsp;&nbsp;度&nbsp;<span
+                            style="color: red">*</span></span>
+                    <input name="recheckTaskYear" class="col-lg-6 col-md-6 col-sm-6 gui-input"
+                           ng-model="asmsRecheckTask.recheckTaskYear"
+                           onfocus="WdatePicker({isShowToday:false,skin:'default',dateFmt:'yyyy', minDate:'%y'})" class="Wdate"/>
+                </div>
+                <!--任务时间-->
+                <div class="clearfix gov-h mt15">
+                    <span class="col-lg-3 col-md-3 col-sm-3"
+                          style="text-align: right;padding-right: 10px;">任务时间&nbsp;<span
+                            style="color: red">*</span></span>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <input id="rmDateBegin" name="recheckTaskBegin"
+                               style="width:48%;cursor: pointer;margin-right: 0px;"
+                               class="Wdate form-control gui-input" type="text"
+                               onFocus="var endDate=$dp.$('rmDateEnd');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'rmDateEnd\')}', minDate:'%y-1-1', onpicked:pickedFunc, oncleared:clearedFunc})"/>-
+                        <input id="rmDateEnd" name="recheckTaskEnd"
+                               class="Wdate form-control gui-input fr"
+                               style="width:48%;cursor: pointer;margin-right: 0px;" type="text"
+                               onfocus="endDatePickerRule(this)" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+    <hr/>
+    <!--复检对象-->
+    <div name="SAMPLE_DIV" style="display: none">
+        <ul>
+            <li class="Bor_line" style="height: 30px">
+                    <span style="display: inline-block;vertical-align:bottom">
+                        复检样品名称:
+                    <input style="width: 150px" class="gui-input" type="text" name="queryRecheckSampleName"/>
+                    <button id="obj_Check" class="gui-btn">查询</button>
+                    </span>
+                <button ng-click="cleanCookie()" class="fr ml15 gui-btn">完成</button>
+                <button ng-click="relTask()" class="fr ml15 gui-btn">发布</button>
+                <button ng-click="cyd_DelFunc()" class="fr ml15 gui-btn">删除</button>
+                <button ng-click="add_obj()" class="fr ml15 gui-btn">添加</button>
+            </li>
+        </ul>
+        <table id="FJ_OBJ_GRID" class="gui-table mt15" style="width: 100%;">
+        </table>
+    </div>
+</div>
+
+<!-- Modal 复检对象 -->
+<div class="modal fade" id="bModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    <span id="modalTitle">title</span>
+                </h4>
+            </div>
+            <div class="modal-body" style="padding: 10px 30px">
+                <form id="attributeForm" class="form-horizontal"
+                      data-bv-excluded>
+                    <div class="form-group">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">样品名称<span
+                                style="color:red;">*</span>：</label>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <input type="text" name="oprSampleName" class="form-control gui-input"
+                                   ng-click="cydSelect()" ng-model="asmsRecheckObject.recheckSampleName"
+                                   data-bv-notempty="true" data-bv-notempty-message="" readonly/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">样品编码<span
+                                style="color:red;">*</span>：</label>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <input type="text" name="oprSampleCode" class="form-control gui-input"
+                                   ng-click="cydSelect()" ng-model="asmsRecheckObject.recheckSampleCode"
+                                   data-bv-notempty="true" data-bv-notempty-message="" readonly/>
+                        </div>
+                    </div>
+
+                    <!--<div class="form-group">-->
+                    <!--<label class="col-lg-3 col-md-3 col-sm-3 control-label">复检单位<span style="color:red;">*</span>：</label>-->
+                    <!--<div class="col-lg-6 col-md-6 col-sm-6">-->
+                    <!--<input type="text" name="oprFjUnit" class="form-control gui-input" ng-click="selectrecheckUnitId()" ng-model="asmsRecheckObject.recheckUnitName" data-bv-notempty="true" data-bv-notempty-message="" readonly/>-->
+                    <!--</div>-->
+                    <!--</div>-->
+
+                    <div class="form-group">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">复检企业名称：</label>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <input type="text" name="oprTestedDeparment" class="form-control gui-input"
+                                   ng-model="asmsRecheckObject.testedDeparment" readonly/>
+                        </div>
+                    </div>
+                </form>
+                <div align="center">
+                    <button class="gui-btn" ng-click="cyd_SaveFunc()">保存</button>
+                    <button class="gui-btn" type="button" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Modal 抽样单选择-->
+<div class="modal fade" id="cydSelect_modal" tabindex="-1" role="dialog" aria-labelledby="myModal" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">
+                    <span>抽样列表</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <div class="mt15">
+                    <form>
+                        <input class="gui-input" type="text" name="pro_name" placeholder="产品名称">
+                        <input class="gui-input" type="text" name="cyd_code" placeholder="样品编码">
+                        <button id="cydSelectQueryButton" class="gui-btn">查询</button>
+                        <button class="gui-btn" type="reset">重置</button>
+                    </form>
+                </div>
+                <!--list-->
+                <table id="cydSelectGrid" style="width: 100%;" class="gui-table mt15">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <!--<button class="gui-btn" ng-click="selectSample()" >选择</button>-->
+                <button class="gui-btn" type="button" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 模态框（Modal）例行监测-->
+<div class="modal fade " id="sysResource_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" style="width: 60%;padding-top:15px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="ModalLabel">例行监测初检任务</h4>
+            </div>
+            <div class="modal-body clearfix gov-h" style="padding: 10px 10px
+                ">
+                <span>时间</span>
+                <input id="datebegin" name="datebegin" style="width: 178px;height: 24px;cursor: pointer"
+                        class="Wdate form-control gui-input" type="text"
+                       onFocus="var endDate=$dp.$('dateend');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateend\')}'})"/>
+                <span>至</span>
+                <input id="dateend" name="dateend" class="Wdate form-control gui-input"
+                       style="width: 178px;height: 24px;cursor: pointer"  type="text"
+                       onFocus="WdatePicker({minDate:'#F{$dp.$D(\'datebegin\')}'})"/>
+                <input type="text" class="gui-input" name="taskRMName" placeholder="请输入任务名称"/>
+                <button id="ToCheck" ng-disabled="!!btnRoutineDisabled" class="gui-btn">查询</button>
+                <button class="gui-btn" ng-disabled="!!btnRMReloadDisabled" ng-click="cleanQueryRM()">重置</button>
+                <div class="">
+                    <form id="enterprise_form" class="default_w_h">
+                        <input name="enterprise" id="enterprise" type="hidden">
+                        <input name="crop_audit_state" id="crop_audit_state" value="0" type="hidden">
+                    </form>
+                    <table id="sysResGrid" style="width: 100%;" class="gui-table mt15">
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+                <button type="button" id="save" class="gui-btn" ng-click="SubMainRmName()">提交</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+    <input type="hidden" name="enterpriseId"/>
+</div>
+</div>
+
+<!-- 模态框（Modal）专项检测-->
+<div class="modal fade " id="special_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" style="width: 60%;padding-top:15px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="specialModalLabel">专项检测初检任务</h4>
+            </div>
+            <div class="modal-body clearfix gov-h" style="padding: 10px 10px ">
+                <span>时间</span>
+                <input id="specialdatebegin" name="specialdatebegin" style="width: 178px;height: 24px;cursor: pointer"
+                        class="Wdate form-control gui-input" type="text"
+                       onFocus="var endDate=$dp.$('specialdateend');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'specialdateend\')}'})"/>
+                <span>至</span>
+                <input id="specialdateend" name="specialdateend" class="Wdate form-control gui-input"
+                       style="width: 178px;height: 24px;cursor: pointer" type="text"
+                       onFocus="WdatePicker({minDate:'#F{$dp.$D(\'specialdatebegin\')}'})"/>
+                <input type="text" class="gui-input" name="taskSMName" placeholder="请输入任务名称"/>
+                <button id="specialToCheck" ng-disabled="!!btnSpecialDisabled" class="gui-btn">查询</button>
+                <button data-toggle="tooltip" ng-disabled="!!btnSMReloadDisabled" class="gui-btn" ng-click="cleanQuerySM()">重置</button>
+                <div class="">
+                    <form id="special_form" class="default_w_h">
+                        <input name="enterprise" id="special" type="hidden">
+                        <input name="crop_audit_state" id="specialGrid_audit_state" value="0" type="hidden">
+                    </form>
+                    <table id="specialGrid" style="width: 100%;" class="gui-table mt15">
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+                <button type="button" class="gui-btn" ng-click="SubMainSmName()">提交</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+    <input type="hidden" name="enterpriseId"/>
+</div>
+</div>
+
+<!-- 模态框（Modal）监督抽查-->
+<div class="modal fade " id="checkTask_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" style="width: 60%;padding-top:15px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="checkTaskModalLabel">监督抽查初检任务</h4>
+            </div>
+            <div class="modal-body clearfix gov-h" style="padding: 10px 10px">
+                <span>时间</span>
+                <input id="checkTaskdatebegin" name="checkTaskdatebegin"
+                       style="width: 178px;height: 24px;cursor: pointer"
+                       class="Wdate form-control gui-input" type="text"
+                       onFocus="var endDate=$dp.$('checkTaskdateend');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'checkTaskdateend\')}'})"/>
+                <span>至</span>
+                <input id="checkTaskdateend" name="checkTaskdateend" class="Wdate form-control gui-input"
+                       style="width: 178px;height: 24px;cursor: pointer"  type="text"
+                       onFocus="WdatePicker({minDate:'#F{$dp.$D(\'checkTaskdatebegin\')}'})"/>
+                <input type="text" class="gui-input" name="taskCheckName" placeholder="请输入任务名称"/>
+                <button id="checkTaskToCheck" ng-disabled="!!btnCheckDisabled" class="gui-btn">查询</button>
+                <button class="gui-btn" ng-disabled="!!btnCheckTaskReloadDisabled" ng-click="cleanQueryCheck()">重置</button>
+                <div class="">
+                    <form id="checkTask_form" class="default_w_h">
+                        <input name="enterprise" id="checkTask" type="hidden">
+                        <input name="crop_audit_state" id="checkTask_audit_state" value="0" type="hidden">
+                    </form>
+                    <table id="checkTaskGrid" style="width: 100%;" class="gui-table mt15">
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class=" gui-btn" data-dismiss="modal">关闭</button>
+                <button type="button" class="gui-btn" ng-click="SubMainCheckName()">提交</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+    <input class="gui-input" type="hidden" name="enterpriseId"/>
+</div>
+</div>
+
+<!--复检单位选择模态框-->
+<div class="modal fade" id="selectModal" tabindex="-1" role="dialog" aria-labelledby="myModal" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid" style="width: 60%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModal">
+                    <span id="modalTitles">复检单位</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <div class="gui-select" style="width: 30%">
+                    <select id="selectQueryShen">
+                        <option value="">--省--</option>
+                    </select>
+                </div>
+                <div class="gui-select" style="width: 30%">
+                    <select id="selectQueryShi">
+                        <option value="">--市--</option>
+                    </select>
+                </div>
+                <div class="gui-select" style="width: 30%">
+                    <select id="selectQueryXian">
+                        <option value="">--区/县--</option>
+                    </select>
+                </div>
+                <div class="mt15">
+                    <input class="gui-input" type="text" name="selectQueryName" placeholder="请输入名称">
+                    <button id="selectTocheck" ng-disabled="!!btnDisabled" class="gui-btn">查询</button>
+                    <button class="gui-btn" ng-click="cleanSelectModelQuerys()">重置</button>
+                </div>
+                <!--list-->
+                <table id="selectGrid" style="width: 100%;" class="gui-table mt15">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

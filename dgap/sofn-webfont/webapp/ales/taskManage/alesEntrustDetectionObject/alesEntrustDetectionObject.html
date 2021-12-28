@@ -1,0 +1,432 @@
+<link rel="stylesheet" href="assets/css/ales/etl/etlAddDailyEnforceLaw.css" />
+<div class="gui-breadcrumbs">
+    <a ui-sref="index.content.ales/taskManage/alesEntrustDetection">执法系统</a>&gt;
+    <a ui-sref="index.content.ales/taskManage/alesEntrustDetection">日常执法管理</a>&gt;
+    <a ui-sref="index.content.ales/taskManage/alesEntrustDetection">委托检测任务</a>&gt;
+    <span>委托检测对象</span>
+</div>
+<div class=" gui-section gui-section-wid clearfix gov-h">
+    <div class="mt15">
+        <button class="gui-btn" ng-click="add()" id="addId">新增</button>
+
+        <button class="gui-btn" ng-click="update()" id="updateId">修改</button>
+
+        <button class="gui-btn" ng-click="delete()" id="deleteId">删除</button>
+    </div>
+    <!--新增几面表格框-->
+    <table id="grid" class="gui-table mt15" style="width: 100%;">
+    </table>
+</div>
+
+<!--检测对象-->
+<div class="modal fade" id="MOB_INFO_MODEL" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    <span>检测对象</span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form name="jcdxModal" class="form-horizontal mt15" novalidate>
+                    <div class="form-item form-group">
+                        <label class="title required">所属行业</label>
+                        <select ng-model="alesWtTaskMonitor.industry" class="gui-input" required
+                                ng-change="typeClean()">
+                            <option value=""></option>
+                            <option ng-repeat="x in HyFl" ng-selected="x.dictValue == alesWtTaskMonitor.industry"
+                                    value="{{x.dictValue}}">{{x.dictName}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-item form-group">
+                        <label class="title required">产品名称</label>
+                        <input type="text" name="productName" class="gui-input" ng-model="alesWtTaskMonitor.productName"
+                               readonly ng-click="findProductInfo()" required/>
+                    </div>
+
+                    <div class="form-item form-group">
+                        <label class="title required">产品类型</label>
+                        <input type="text" name="productType" class="gui-input" ng-model="alesWtTaskMonitor.productType"
+                               readonly required/>
+                    </div>
+
+                    <div class="form-item form-group">
+                        <label class="title">受检单位</label>
+                        <input type="text" name="szUnits" class="gui-input" ng-model="alesWtTaskMonitor.szUnits"
+                               ng-click="sJUnitStandards()" readonly/>
+                    </div>
+
+                    <div class="form-item form-group">
+                        <label class="title required">受检项目</label>
+                        <input type="text" name="detectionItemId" class="gui-input" ng-model="alesWtTaskMonitor.crites"
+                               ng-click="criteCheck()" readonly required/>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" ng-disabled="jcdxModal.$invalid" disabled="disabled" ng-click="save()">保存
+                </button>
+                <button class="gui-btn" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--受检单位选择-->
+<div class="modal fade" id="sJUnit_Model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>受检单位</span>
+                </h4>
+            </div>
+            <div class="gui-TabCut ">
+                <ul class="clearfix gov-h">
+                    <li id="entTab" class="fl gp-r gui-TabCheck" ng-click="switchEnt()">生产经营主体</li>
+                    <li id="entTempTab" class="fl gp-r" ng-click="switchEntTemp()">临时登记主体</li>
+                </ul>
+                <div class="gui-botLine"></div>
+            </div>
+            <div id="entDiv">
+                <form class="gui-form-group">
+                    <div class="modal-body clearfix gov-h">
+                        <div class="gui-select" style="width: 30%;">
+                            <select id="sjUnitShen" style="width: 100px">
+                                <option value="">--省--</option>
+                            </select>
+                        </div>
+                        <div class="gui-select" style="width: 30%;">
+                            <select id="sjUnitShi" style="width: 100px">
+                                <option value="">--市--</option>
+                            </select>
+                        </div>
+                        <div class="gui-select" style="width: 30%;">
+                            <select id="sjUnitXian" style="width: 100px">
+                                <option value="">--县--</option>
+                            </select>
+                        </div>
+                        <!--<input class="gui-input mt15" type="text" name="entIdCode" placeholder="请输入编码"> 屏蔽编码查询 2018-4-26 18:25:51-->
+                        <input class="gui-input mt15" type="text" name="sjUnitName" placeholder="请输入名称">
+                        <button id="sJUnitSelectTocheck" class="gui-btn" data-toggle="tooltip" data-placement="right"
+                                title="根据输入条件检索列表" ng-click="querySjUnit()">查询
+                        </button>
+                    </div>
+                </form>
+                <table id="sJUnitTaskGrid" style="width: 100%;" class="gui-table mt15">
+                </table>
+                <div class="modal-footer">
+                    <button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+                    <button class="gui-btn" type="button" ng-click="selectSzDwButt()">确定</button>
+                </div>
+            </div>
+            <div id="entTempDiv" style="display: none;">
+                <form class="gui-form-group"  id="entTempForm">
+                    <div class="modal-body clearfix gov-h">
+                        <div class="gui-select" style="width: 30%;">
+                            <select id="sjUnitShenTemp" style="width: 100px">
+                                <option value="">--省--</option>
+                            </select>
+                        </div>
+                        <div class="gui-select" style="width: 30%;">
+                            <select id="sjUnitShiTemp" style="width: 100px">
+                                <option value="">--市--</option>
+                            </select>
+                        </div>
+                        <div class="gui-select" style="width: 30%;">
+                            <select id="sjUnitXianTemp" style="width: 100px">
+                                <option value="">--县--</option>
+                            </select>
+                        </div>
+                        <input class="gui-input mt15" type="text" name="sjUnitNameTemp" placeholder="请输入临时主体名称">
+                        <button id="sJUnitSelectTocheckTemp" class="gui-btn" data-toggle="tooltip" data-placement="right"
+                                title="根据输入条件检索列表" ng-click="querySjUnitTemp()">查询
+                        </button>
+                        <button data-toggle="tooltip" class="gui-btn" data-placement="right" ng-click="addEntTemp()">新增临时登记主体</button>
+                    </div>
+                </form>
+                <table id="sJUnitTaskGridTemp" style="width: 100%;" class="gui-table mt15">
+                </table>
+                <div class="modal-footer">
+                    <button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+                    <button class="gui-btn" type="button" ng-click="selectSzDwButtTemp()">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 模态框（Modal）生产经营主体临时备案 -->
+<div class="modal fade " id="entTempModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid" style="height:800px;overflow: auto;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">生产经营主体临时注册</h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <div class="Sup_contain_section_contain" style="margin-top: 0px;padding: 0px 0px 20px 0px">
+                    <ul class="inspectionUl" id="entTemp">
+                        <li style="border-top: 1px solid #9d9d9d;padding-top: 5px">生产经营主体信息</li>
+                        <li>
+                            <ul class="Sup_contain_section_contain_ul">
+                                <li class="fl">组织形式<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl">
+                                    <span ng-repeat="c in orgMode">
+                                <input name="entityScaleId" id="entityScaleId" type="radio" ng-model="subjEntTemp.entityScaleId"  value="{{c.id}}" ng-click="selectEntityScale(c.dictName)"/><span>{{c.dictName}}</span>
+                                    </span>
+                                </li>
+                            </ul>
+                        </li>
+                        <li id="credType" style="display: block;">
+                            <ul class="Sup_contain_section_contain_ul">
+                                <li class="fl">证件类型<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl">
+                                    <select ng-model="subjEntTemp.credType" ng-init="subjEntTemp.credType='普通营业执照(有独立组织机构代码证)'" ng-change="selectBusiness()" id="selectBusiness" class="gui-select" data-bv-notempty="true" data-bv-notempty-message="证照类型不能为空">
+                                        <option value="普通营业执照(有独立组织机构代码证)" selected = "selected" >普通营业执照(有独立组织机构代码证)</option>
+                                        <option value="三证合一营业执照(无独立组织机构代码证)">三证合一营业执照(无独立组织机构代码证)</option>
+                                    </select>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <ul class="Sup_contain_section_contain_ul">
+                                <li class="fl">主体类型<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl">
+                                    <span ng-repeat="b in subjType">
+                                <input  name="entityTypeId" id="entityTypeId" type="radio" ng-model="subjEntTemp.entityTypeId"  value="{{b.id}}"/><span>{{b.dictName}}</span>
+                                    </span>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <ul class="Sup_contain_section_contain_ul">
+                                <li class="fl">所属行业<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl">
+                                    <span ng-repeat="a in industryType">
+                                <input type="checkbox" value="{{a.id}}" id="entityIndustryId" name="entityIndustryId"><span class="checkedIndustryTypeText" ng-bind="a.dictName"></span>
+                                        <!--<input  name="entityIndustryId" type="radio" ng-model="subjEntTemp.entityIndustryId"  value="{{a.id}}"/><span>{{a.dictName}}</span>-->
+                                    </span>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <ul class="Sup_contain_section_contain_Text">
+                                <li class="fl">企业名称<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl form-group">
+                                    <input class="gui-input form-control" name="entityName" type="text" ng-model="subjEntTemp.entityName" maxlength="50"
+                                           data-bv-notempty="true" data-bv-notempty-message="企业名称不能为空"
+                                           data-bv-stringlength="true" data-bv-stringlength-max="50"
+                                           data-bv-stringlength-message="企业名称不能超过50个字符" />
+                                    <!--验证方式2 onblur="entityNameValidation()"
+                                    <div class="entityNullCss" style="display: none;color: #a94442;font-size: 12px">
+                                        企业名称不能为空,名称不能超过50个字符
+                                    </div>-->
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <ul class="Sup_contain_section_contain_Text">
+                                <li class="fl">证照号码<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl form-group">
+                                    <input class="gui-input form-control" name="orgCode" type="text" ng-model="subjEntTemp.orgCode" minlength="15" maxlength="18"
+                                           data-bv-notempty="true"
+                                           data-bv-notempty-message="证照号码不能为空"
+                                           data-bv-regexp="true"
+                                           data-bv-regexp-regexp="^[0-9A-HJ-NPQRTUWXY]{2}\d{6}[0-9A-HJ-NPQRTUWXY]{10}$|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])|X\d{1}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$)|(^[A|B|C|D|E|F|G|H|Q|W|O|P|J|M|N|X|L|K|U|Y|T]\d{8}|[0-9]\d{8}([0-9]|[A|B|C|D|E|F|G|H|Q|W|O|P|J|M|N|X|L|K|U|Y|T])\d{9}[A|B|C|D|E|F|G|H|Q|W|O|P|J|M|N|X|L|K|U|Y|T]\d{1}$)|(^[A|B|C|D|E|F|G|H|Q|W|O|P|J|M|N|X|L|K|U|Y|T]|[0-9]\d{15}$)"
+                                           data-bv-regexp-message="企业请填写工商注册号，个人请填写身份证号" />
+                                   <!--验证方式2 onblur="orgCodeValidation()"
+                                    <div class="orgCodeNullValCss" style="display: none;color: #a94442;font-size: 12px">
+                                        企业请填写工商注册号，个人请填写身份证号
+                                    </div>-->
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <ul class="Sup_contain_section_contain_Text">
+                                <li class="fl">所属区域<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl form-group">
+                                    <div class="gui-select">
+                                        <select class="form-control" id="subjTempSheng" name="subjTempSheng" data-bv-notempty="true" data-bv-notempty-message="省不能为空">
+                                            <option value="">--省--</option>
+                                        </select>
+                                    </div>
+                                    <div class="gui-select">
+                                        <select class="form-control" id="subjTempShi" name="subjTempShi" data-bv-notempty="true" data-bv-notempty-message="市不能为空">
+                                            <option value="">--市--</option>
+                                        </select>
+                                    </div>
+                                    <div class="gui-select">
+                                        <select class="form-control" id="subjTempXian" name="subjTempXian" data-bv-notempty="true" data-bv-notempty-message="县不能为空">
+                                            <option value="">--区/县--</option>
+                                        </select>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li style="">
+                            <ul class="Sup_contain_section_contain_Text">
+                                <li class="fl">详细地址<span style="color:red;"></span></li>
+                                <li class="fl form-group">
+                                    <input class="gui-input" type="text" name="address" ng-model="subjEntTemp.address"
+                                     data-bv-notempty="true"
+                                       data-bv-notempty-message="请详细填写省、市、区县、乡镇、街道、社区楼牌号等信息"
+                                       data-bv-stringlength="true"
+                                       data-bv-stringlength-max="50"
+                                       data-bv-stringlength-message="详细地址不能超过50个字符"
+                                       onkeyup="this.value=this.value.replace(/^ +| +$/g,'')"
+                                       required data-bv-notempty-message="请详细填写省、市、区县、乡镇、街道、社区楼牌号等信息"/>
+                                   <!--验证方式2 onblur="addressReminder()" />
+                                    <div class="addNullCss" style="display: none;color: #a94442;font-size: 12px">
+                                        请详细填写省、市、区县、乡镇、街道、社区楼牌号等信息
+                                    </div>
+                                </li>-->
+                            </ul>
+                        </li>
+                        <li style="border-top: 1px solid #9d9d9d;padding-top: 5px">联系人信息</li>
+                        <li>
+                            <ul class="Sup_contain_section_contain_Text">
+                                <li class="fl">联系人姓名<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl form-group">
+                                    <input class="gui-input form-control" type="text" name="contactName" ng-model="subjEntTemp.contactName"  minlength="1" maxlength="10"
+                                           data-bv-notempty="true" data-bv-notempty-message="联系人姓名不能为空"
+                                           data-bv-stringlength="true" data-bv-stringlength-max="50"
+                                           data-bv-stringlength-message="联系人姓名不能超过10个字符"  />
+                                   <!--验证方式2 onblur="contactNameValidation()"/>
+                                    <div class="contactNameNullValCss" style="display: none;color: #a94442;font-size: 12px">
+                                        联系人姓名不能为空,不能超过50个字符
+                                    </div>-->
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <ul class="Sup_contain_section_contain_Text">
+                                <li class="fl">联系电话<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl form-group">
+                                    <input class="gui-input form-control" type="text" name="contactPhone" ng-model="subjEntTemp.contactPhone"
+                                           data-bv-notempty="true"
+                                           data-bv-notempty-message="联系人电话不能为空"
+                                           data-bv-isTelephone="true" />
+                                    <!--验证方式2 onblur="contactPhoneValidation()"/>
+                                    <div class="contactPhoneNullValCss" style="display: none;color: #a94442;font-size: 12px">
+                                        请输入正确的电话号码：（座机：028-5582235或手机：13100000000）
+                                    </div>-->
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <ul class="Sup_contain_section_contain_Text">
+                                <li class="fl">电子邮箱
+                                </li>
+                                <li class="fl form-group" style="text-align: left">
+                                    <input class="gui-input form-control" type="text" name="contactEmail" ng-model="subjEntTemp.contactEmail" data-bv-stringlength="true" data-bv-stringlength-max="50" data-bv-stringlength-message="电子邮箱不能超过50个字符" data-bv-emailaddress="true" data-bv-emailaddress-message="输入不是一个有效的电子邮件地址" />
+                                </li>
+                            </ul>
+                        </li>
+                       <!-- <li id="businessHead" style="border-bottom: 1px solid #9d9d9d;padding-top: 5px;">主体证照信息<span style="color:red;">*</span></li>
+                        <li id="businessContent">
+                            <ul>
+                                <li style="margin-right:65px;" class="fl form-group">
+                                    <div file-upload options="vm.uploadHeadOptions" files="vm.businessLicenceimg"></div>
+                                </li>
+                                <li id="selectOrganizationCertificateimg" style="margin-right:10px;" class="fl form-group">
+                                    <div file-upload options="vm.uploadHeadOptions" files="vm.organizationCertificateimg"></div>
+                                </li>
+                            </ul>
+                        </li>-->
+                      <!--  <li style="border-bottom: 1px solid #9d9d9d;padding-top: 5px;">法定代表人证照信息<span style="color:red;"></span></li>
+                        <li>
+                            <ul>
+                                <li style="margin-right:65px;" class="fl form-group">
+                                    <div file-upload options="vm.uploadHeadOptions" files="vm.positiveIdcardeimg"></div>
+                                </li>
+                                <li style="margin-right:15px;" class="fl form-group">
+                                    <div file-upload options="vm.uploadHeadOptions" files="vm.negativeIdcardimg"></div>
+                                </li>
+                                <li class="fl form-group">
+                                    <div file-upload options="vm.uploadHeadOptions" files="vm.handIdcardimg"></div>
+                                </li>
+                            </ul>
+                        </li>-->
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" data-dismiss="modal">取消</button>
+                <button class="gui-btn" ng-click="addSubjEntTemp()">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 产品选择框 -->
+<div class="modal fade" id="product_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">关闭</span></button>
+                <h4 class="modal-title" id="myModalLabel1">产品信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="gui-form-group">
+                    <input name="keyWord" class="gui-input" type="text" placeholder="请输入名称关键字">
+                    <button class="gui-btn" id="toCheckId">查询</button>
+                </div>
+                <div>
+                    <table id="productList" class="gui-table">
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 检测项选择框 -->
+<div class="modal fade" id="crite_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">检测项</h4>
+            </div>
+            <!--新增查询窗口 -->
+            <div class="modal-body">
+                <div class="gui-form-group">
+                    <form id="testPesticideResiduesQueryForm">
+                    <label class="required">检测标准:</label>
+                        <span class="gui-select" style="width: 100px;">
+                                <select class="gui-select form-control" style="min-width: 120%;" ng-model="selectedStandardCode">
+                                    <option ng-repeat="x in itemCode" value="{{x}}">{{x}}</option>
+                                </select>
+                            </span>
+                        检测项:<input class="gui-input form_input" style="width: 120px;" type="text" id="objectName" ng-model="queryTestObjectName" placeholder="请输入检测对象关键字">
+                        <button class="gui-btn" ng-click="queryList();" id="queryId">查询</button>
+                    </form>
+                </div>
+                <div >
+                    <table id="criteList" style="width: 100%;" class="gui-table mt15">
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="gui-btn" type="button" ng-click="selectCriteButt()">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

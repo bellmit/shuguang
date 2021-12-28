@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+        <mapper namespace="com.sofn.dhhrp.mapper.IndexParMapper">
+<select id="exist" resultType="com.sofn.dhhrp.model.IndexPar">
+    select id,value from index_par where value=#{value}
+</select>
+    <select id="repeat" resultType="com.sofn.dhhrp.model.IndexPar">
+    select id,value from index_par where value=#{value} and id!=#{id}
+</select>
+    <select id="listPage" resultType="com.sofn.dhhrp.model.IndexPar">
+    select id,value from index_par
+    <where>
+        1=1
+        <if test="value != null and value != ''">
+            and value like '%' || #{value} || '%'
+        </if>
+    </where>
+</select>
+  <resultMap id="rs1" type="com.sofn.dhhrp.vo.DropDownVo">
+       <id column="id" property="id" jdbcType="VARCHAR"></id>
+       <id column="value" property="name" jdbcType="VARCHAR"></id>
+   </resultMap>
+  <select id="listName" resultMap="rs1">
+     select id,value from index_par
+    </select>
+</mapper>

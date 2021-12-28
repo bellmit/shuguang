@@ -1,0 +1,92 @@
+<link rel="stylesheet" href="assets/css/asms/resource/seSysResourcelist.css"/>
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">监管系统</a>&gt;
+    <a ui-sref="index.content.asms/resource/seSysResourcelist">应急管理</a>&gt;
+    <span>专家资源</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group">
+        <span>专业领域</span>
+        <div class="gui-select">
+            <select name="professionalfiled" placeholder="专业领域选择">
+                <option value="">全部</option>
+                <option value="1">检测</option>
+                <option value="2">农药</option>
+                <option value="3">检测检疫</option>
+            </select>
+        </div>
+        <span>所在地</span>
+        <div class="gui-select">
+            <select id="sheng" name="location" placeholder="所在地选择">
+                <option value="">省</option>
+            </select>
+        </div>
+        <span>姓名</span>
+        <input class="gui-input" type="text" id="queryCon" name="queryCon" style="width: 150px;" placeholder="请输入姓名"
+               maxlength="30"/>
+        <button class="gui-btn" ng-disabled="!!btnDisabled" id="ToCheck">查询</button>
+        <button class="gui-btn" ng-disabled="!!btnReloadDisabled" ng-click="cleanSelectModelQuery()">重置</button>
+    </div>
+    <table id="grid"
+           class="gui-table mt15">
+    </table>
+</div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog removeBor">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">专家信息</h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <form class="bs-example bs-example-form" role="form">
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-md-12">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">资源类型&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.resourcetype"></span>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">姓名&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.name"/>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">职称&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.jobtitle"/>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">专业领域&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.professionalfiled"/>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">联系方式&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.contract"/>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">单位&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.unit"/>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">所在地&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="location"/>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">详细地址&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.address"/>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">状态&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.status"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer mt15">
+                <button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+

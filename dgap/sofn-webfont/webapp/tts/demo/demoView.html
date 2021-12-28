@@ -1,0 +1,22 @@
+<link rel="stylesheet" href="assets/css/tts/base/baseAdd.css">
+
+<div class="Sup_contain_section col-lg-12 col-xs-12 col-sm-12 col-md-12">
+    <div class="Sup_contain_section_head col-lg-12 col-xs-12 col-sm-12 col-md-12 " style="background-color: white">
+         <h2 id="Sup_contain_section_head_h2">
+            <a href=""><span>追溯系统  > </span></a>  
+            <a href=""><span>内部管理  > </span></a>
+            <a href=""><span>测试信息管理 > </span></a>
+            <span>  查看</span>
+         </h2>
+    </div>
+    <p class="col-lg-1 col-xs-0 col-sm-1 col-md-1"></p>
+    <div class="Sup_contain_section_contain_head col-lg-10 col-xs-12 col-sm-10 col-md-10">
+        <p>测试数据详情</p>
+        <ul>
+            <li><span>姓名</span> <input ng-model="name" readonly="readonly" type="text" class="Sup_contain_section_contain_input"></li>
+            <li><span>电话</span> <input ng-model="tel" readonly="readonly" type="text" class="Sup_contain_section_contain_input"></li>
+            <li><span>创建时间</span> <input ng-model="cjrq" readonly="readonly" type="text" class="Sup_contain_section_contain_input"></li>
+        </ul>
+        <button class="Sup_contain_section_contain_head_button" ng-click="removeLocalStorage()" ui-sref="index.content.tts/demo/demo">关闭</button>
+    </div>
+</div>

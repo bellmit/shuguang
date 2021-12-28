@@ -1,0 +1,81 @@
+.Sup_contain_section_contain{
+    margin: auto;
+    font-size: 20px;
+}
+._line{
+    padding: 0px 0px!important;
+    border-bottom: 1px solid #4BA0D6;
+}
+.Sup_contain_section_contain>ul>li:nth-of-type(2){
+    padding: 10px 0px;
+}
+.Sup_contain_section_contain>ul>li ul li{
+    padding: 10px 0px;
+    font-size: 14px;
+}
+.Sup_contain_section_contain>ul>li ul li:first-child{
+    width: 25%;
+    /*padding-right:  50px;*/
+    text-align: right;
+}
+.Sup_contain_section_contain>ul>li ul li:last-child{
+    width: 75%;
+}
+.Sup_contain_section_contain_ul li input{
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+.Sup_contain_section_contain>ul>li ul li:last-child input,select{
+    margin-left: 50px;
+}
+.Important{
+    font-family: xinhao;
+    color: red;
+    vertical-align: middle;
+    font-size: 18px;
+    /*margin-left: 0px;*/
+}
+.Sup_contain_section_contain_Text li input{
+    width: 400px;
+    font-size: 14px;
+}
+.Sup_contain_section_contain_Text select{
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+    margin-left: 3px;
+}
+.Sup_contain_section_contain_Text select:first-child{
+    margin-left: 50px;
+}
+.Sup_contain_section_contain_Text p{
+    margin-top: 20px;
+}
+.Sup_contain_section_contain_Text p:nth-of-type(2) input{
+    width: 200px;!important;
+}
+.Sup_contain_section_contain_Text p:nth-of-type(2) button{
+    margin-left: 50px;
+    width: 150px;
+    outline: none;
+    border-radius: 15px;
+}
+.Sup_contain_section_contain>ul>li:last-child{
+    text-align: center;
+
+}
+.Sup_contain_section_contain>ul>li:last-child button{
+    width: 100px;
+    height: 30px;
+    margin: 50px 50px 0px 50px;
+    border-radius: 15px;
+    outline: none;
+    color: white;
+    border: 1px solid #4BA0D6;
+    background-color: #4BA0D6;
+}
+/*.Sup_contain_section_contain>ul>li:last-child button:hover{*/
+/*background-color: #4BA0D6;*/
+/*color: white;*/
+/*}*/

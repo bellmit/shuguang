@@ -1,0 +1,59 @@
+<link rel="stylesheet" href="assets/css/tts/base/baseAdd.css"/>
+
+<div class="Sup_contain_section col-lg-12 col-xs-12 col-sm-12 col-md-12">
+    <div class="Sup_contain_section_head col-lg-12 col-xs-12 col-sm-12 col-md-12 " style="background-color: white">
+         <h2 id="Sup_contain_section_head_h2">
+            <a href=""><span >追溯系统  > </span></a>  
+            <a href=""><span >内部管理  > </span></a>
+            <a href=""><span >菜单管理 > </span></a>
+            <span>新增</span>
+         </h2>
+    </div>
+    
+    
+
+    <p class="col-lg-1 col-xs-0 col-sm-1 col-md-1"></p>
+    <div class="Sup_contain_section_contain_head col-lg-10 col-xs-12 col-sm-10 col-md-10">
+        <p>新增菜单管理信息</p>
+        <ul>
+        	 <li>
+        		<span class="important">菜单名称<span class="this-after">*</span></span>
+        		<input type="text" ng-model="sysMenu.menuName" name="menuName"  placeholder="请输入菜单名称" class="Sup_contain_section_contain_input"/>
+        	</li>
+        	 <li>
+        		<span class="important">序号<span class="this-after">*</span></span>
+        		<input type="text" ng-model="sysMenu.numbers" name="numbers"  placeholder="请输入序号" class="Sup_contain_section_contain_input"/>
+        	</li>
+        	<li>
+        		<span class="important">父级菜单<span class="this-after">*</span></span>
+        		<input type="text" ng-model="sysMenu.parentId" name="parentId"  placeholder="请输入父级菜单" class="Sup_contain_section_contain_input"/>
+        	</li>
+        	 <li>
+        		<span class="important">菜单描述<span class="this-after">*</span></span>
+        		<input type="text" ng-model="sysMenu.describes" name="describes"  placeholder="请输入菜单描述" class="Sup_contain_section_contain_input"/>
+        	</li>
+        	 <li>
+        		<span class="important">url<span class="this-after">*</span></span>
+        		<input type="text" ng-model="sysMenu.url" name="url"  placeholder="url"  class="Sup_contain_section_contain_input"/>
+        	</li>
+        	 <li>
+        		<span class="important">菜单类型<span class="this-after">*</span></span>
+        		<input type="text" ng-model="sysMenu.menuType" name="menuType"  placeholder="菜单类型" class="Sup_contain_section_contain_input"/>
+        	</li>
+        	<li>
+        		<span class="important">菜单值<span class="this-after">*</span></span>
+        		<input type="text" ng-model="sysMenu.menuValue" name="menuValue"  placeholder="请输入菜单值" class="Sup_contain_section_contain_input"/>
+        	</li>
+        	<li>
+        		<span class="important">图    标<span class="this-after">*</span></span>
+        		<input type="text" ng-model="sysMenu.image" name="image"  placeholder="请输入图标" class="Sup_contain_section_contain_input"/>
+        	</li>
+        	<li>
+        		<span class="important">所属权限<span class="this-after">*</span></span>
+        		<input type="text" ng-model="sysMenu.reservedField1" name="reservedField1"  placeholder="请输入所属权限" class="Sup_contain_section_contain_input"/>
+        	</li>
+        </ul>
+        <button class="Sup_contain_section_contain_head_button" ui-sref="index.content.sys/sysMenu/list">取消</button>
+        <button class="Sup_contain_section_contain_head_button" ng-disabled="myform.JGname.$dirty&&myform.JGname.$invalid" ng-click="addSysMenu()">提交</button>
+    </div>
+</div>

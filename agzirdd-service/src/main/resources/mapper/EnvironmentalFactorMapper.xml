@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agzirdd.mapper.EnvironmentalFactorMapper" >
+
+  <resultMap id="BaseResultMap" type="com.sofn.agzirdd.model.EnvironmentalFactor" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="BELONG_YEAR" property="belongYear" jdbcType="VARCHAR" />
+    <result column="MONITOR_ID" property="monitorId" jdbcType="VARCHAR" />
+    <result column="MONITOR_NAME" property="monitorName" jdbcType="VARCHAR" />
+    <result column="TEMPERATURE" property="temperature" jdbcType="NUMERIC" />
+    <result column="HUMIDITY" property="humidity" jdbcType="NUMERIC" />
+    <result column="PRECIPITATION" property="precipitation" jdbcType="NUMERIC" />
+    <result column="TOTAL_RADIATION" property="totalRadiation" jdbcType="NUMERIC" />
+    <result column="EFFECTIVE_RADIATION" property="effectiveRadiation" jdbcType="NUMERIC" />
+    <result column="VIOLET_RADIATION" property="violetRadiation" jdbcType="NUMERIC" />
+    <result column="WIND_POWER" property="windPower" jdbcType="NUMERIC" />
+    <result column="WIND_DIRECTION" property="windDirection" jdbcType="VARCHAR" />
+    <result column="SOIL_TEMPERATURE" property="soilTemperature" jdbcType="NUMERIC" />
+    <result column="SOIL_HUMIDITY" property="soilHumidity" jdbcType="VARCHAR" />
+    <result column="COLLECT_TIME" property="collectTime" jdbcType="TIMESTAMP" />
+    <result column="STATE" property="state" jdbcType="VARCHAR" />
+    <result column="CREATE_USER_ID" property="createUserId" jdbcType="VARCHAR" />
+    <result column="CREATE_USER_NAME" property="createUserName" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="PROVINCE_ID" property="provinceId" jdbcType="VARCHAR" />
+    <result column="CITY_ID" property="cityId" jdbcType="VARCHAR" />
+    <result column="COUNTY_ID" property="countyId" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ID,BELONG_YEAR ,MONITOR_ID, MONITOR_NAME, TEMPERATURE, HUMIDITY, PRECIPITATION, TOTAL_RADIATION,
+    EFFECTIVE_RADIATION, VIOLET_RADIATION, WIND_POWER, WIND_DIRECTION, SOIL_TEMPERATURE, 
+    SOIL_HUMIDITY, COLLECT_TIME, STATE, CREATE_USER_ID, CREATE_USER_NAME, CREATE_TIME,
+    PROVINCE_ID, CITY_ID, COUNTY_ID
+  </sql>
+
+  <select id="getEnvironmentalFactorByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM ENVIRONMENTAL_FACTOR
+    <where>
+      1=1
+      <if test="monitorId != null and monitorId != ''">
+        and MONITOR_ID = #{monitorId}
+      </if>
+      <if test="soilTemperature != null and soilTemperature != ''">
+        and SOIL_TEMPERATURE like '%'||#{soilTemperature}||'%'
+      </if>
+      <if test="soilHumidity != null and soilHumidity != ''">
+        and SOIL_HUMIDITY like '%'||#{soilHumidity}||'%'
+      </if>
+      <if test="beginDate != null and beginDate != ''">
+        AND CREATE_TIME &gt;=to_date(#{beginDate},'yyyy-MM-dd')
+      </if>
+      <if test="endDate != null and endDate != ''">
+        AND CREATE_TIME &lt;(to_date(#{endDate},'yyyy-MM-dd'))+1
+      </if>
+      <if test="createUserId != null and createUserId != ''">
+        AND CREATE_USER_ID = #{createUserId}
+      </if>
+      <if test="provinceId != null and provinceId != ''">
+        and PROVINCE_ID = #{provinceId}
+      </if>
+      <if test="cityId != null and cityId != ''">
+        and CITY_ID = #{cityId}
+      </if>
+      <if test="countyId != null and countyId != ''">
+        and COUNTY_ID = #{countyId}
+      </if>
+    </where>
+    ORDER BY CREATE_TIME desc
+  </select>
+
+  <select id="getEnvironmentalFactorById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from ENVIRONMENTAL_FACTOR
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <!--修改监测点基本信息状态-->
+  <update id="updateStatus" parameterType="java.util.Map">
+    update ENVIRONMENTAL_FACTOR
+    <set >
+      <if test=" status != null and  status != '' " >
+        STATUS = #{status},
+      </if>
+      <if test=" remark != null and  remark != '' " >
+        remark = #{remark,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where
+    ID = #{id}
+  </update>
+
+</mapper>

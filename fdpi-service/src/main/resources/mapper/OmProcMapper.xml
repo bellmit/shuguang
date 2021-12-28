@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.OmProcMapper">
+    <select id="getOmHistogram" resultType="com.sofn.fdpi.vo.OmHistogram">
+        select sum(deal_num) as quantity,count(0) as remainingQty,to_char(deal_date,'YYYY-MM') as month
+        from om_breed_to_proc
+        where del_flag='N'
+        <if test="im!=null and im!=''">
+            and transfer_comp=#{im}
+        </if>
+        <if test="cr!=null and cr!=''">
+            and credential like '%' || #{cr} || '%'
+        </if>
+        <if test="st!=null and en!=null">
+            and deal_date BETWEEN #{st} and #{en}
+        </if>
+        group by to_char(deal_date, 'YYYY-MM')
+        order by month
+    </select>
+
+    <select id="getBreedSelectVoList" resultType="com.sofn.fdpi.vo.SelectVo">
+        select cell_comp as key,
+        (select comp_name from om_comp oc where oc.id=cell_comp) as val
+        from om_breed_to_proc
+        where del_flag='N' and transfer_comp=#{cid}
+        group by cell_comp
+        having sum(remaining_qty)!=0
+    </select>
+
+    <select id="getImportQuotaListByMap" resultType="com.sofn.fdpi.vo.QuotaListVo">
+        select ob.id as id,ob.transfer_comp as compId,ob.credential as credential,
+        ob.deal_date as dealDate,ob.import_size as importSize,ob.deal_num as importNum,
+        ob.remaining_qty as residueNum,(select comp_name from om_comp where id=ob.transfer_comp) as compName,
+        (select tame_allow_ton from om_comp where id=ob.transfer_comp) as tameAllowTon,ob.obversion as obversion,ob.remaining_qty_convert as residueConvert
+        from om_breed_to_proc as ob
+        <where>
+            del_flag='N'
+            <if test="regionCode!=null and regionCode!=''">
+                and province=#{regionCode}
+            </if>
+            <if test="compName!=null and compName!=''">
+                and transfer_comp=#{compName}
+            </if>
+            <if test="credential!=null and credential!=''">
+                and credential like '%' || #{credential} || '%'
+            </if>
+            <if test="dealDate!=null">
+                and deal_date=#{dealDate}
+            </if>
+        </where>
+        order by ${field} ${order}
+    </select>
+</mapper>

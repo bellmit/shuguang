@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sofn.fdzem.mapper.EvaluateVoMapper">
+
+
+    <!--分页+条件查询-->
+    <select id="selectEvaluateVoPage" resultType="com.sofn.fdzem.vo.EvaluateVo" parameterType="java.lang.String">
+        select ms.id,ms.name,ms.area,ms.sea_area,te.score as score,ms.year as submitYear
+        from tb_monitoring_station_task ms
+        left outer join tb_evaluate te on te.monitor_id=ms.id
+        <where> ms.status=5
+            <if test="organizationName !=null and  organizationName!= ''">
+                and name like CONCAT('%',#{organizationName, jdbcType=VARCHAR}::text,'%')
+            </if>
+
+            <if test="submitYear !=null and submitYear != ''">
+                and  ms.year =#{submitYear}
+            </if>
+
+            <if test="lowestScore != null and lowestScore != ''">
+                and te.score &gt;=#{lowestScore}
+            </if>
+
+            <if test="highestScore != null and highestScore != ''">
+                and te.score &lt;=#{highestScore}
+            </if>
+
+            <if test="isAcs != null and isAcs != ''">
+                ORDER BY ${fileId} ${isAcs}
+            </if>
+            limit #{pageSize} OFFSET #{pageNum}
+        </where>
+    </select>
+
+</mapper>

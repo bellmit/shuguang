@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.dao.dgap.DataImportExpandMapper">
+    <select id="getTableNameByResourceId" resultType="com.sofn.model.generator.TDgapDataImportTable">
+    SELECT * FROM T_DGAP_DATA_IMPORT_TABLE T WHERE T.RESOURCE_ID=#{resourceId,jdbcType=VARCHAR}
+    </select>
+    <select id="getFieldNameByResourceId" resultType="com.sofn.model.generator.TDgapDataImportField">
+        SELECT * FROM T_DGAP_DATA_IMPORT_FIELD T WHERE T.DATA_IMPORT_TABLE_ID=#{dataImportTableId,jdbcType=VARCHAR}
+    </select>
+    <select id="getFieldNameByTableName" resultType="com.sofn.model.generator.TDgapDataImportField">
+        SELECT * FROM T_DGAP_DATA_IMPORT_FIELD f, T_DGAP_DATA_IMPORT_TABLE t
+        WHERE f.DATA_IMPORT_TABLE_ID=t.id and t.english_name =#{tablename,jdbcType=VARCHAR}
+    </select>
+    <select id="getPreResourceId" resultType="com.sofn.model.generator.TDgapDataImportTable">
+    SELECT * FROM T_DGAP_DATA_IMPORT_TABLE T WHERE T.ENGLISH_NAME=#{tableName,jdbcType=VARCHAR}
+    </select>
+</mapper>

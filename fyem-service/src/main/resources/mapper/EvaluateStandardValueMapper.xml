@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fyem.mapper.EvaluateStandardValueMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.fyem.model.EvaluateStandardValue" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="BELONG_YEAR" property="belongYear" jdbcType="VARCHAR" />
+    <result column="FIRST_INDICATOR_ID" property="firstIndicatorId" jdbcType="VARCHAR" />
+    <result column="SECOND_INDICATOR_ID" property="secondIndicatorId" jdbcType="VARCHAR" />
+    <result column="BASIC_RELEASE_ID" property="basicReleaseId" jdbcType="VARCHAR" />
+    <result column="NUMERICA_VALUE" property="numericaValue" jdbcType="DOUBLE" />
+    <result column="ACTUAL_VALUE" property="actualValue" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, belong_year,first_indicator_id, second_indicator_id, basic_release_id, numerica_value, actual_value
+  </sql>
+
+  <select id="getEvaluateStandardValueByQuery" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from EVALUATE_STANDARD_VALUE
+    <where>
+      1=1
+      <if test="belongYear != null and belongYear != ''">
+        AND belong_year = #{belongYear}
+      </if>
+      <if test="firstIndicatorId != null and firstIndicatorId != ''">
+        AND first_indicator_id = #{firstIndicatorId}
+      </if>
+      <if test="secondIndicatorId != null and secondIndicatorId != ''">
+        AND second_indicator_id = #{secondIndicatorId}
+      </if>
+      <if test="basicReleaseId != null and basicReleaseId != ''">
+        AND basic_release_id = #{basicReleaseId}
+      </if>
+    </where>
+  </select>
+
+  <insert id="batchSaveEvaluateStandardValue" parameterType="java.util.Map" >
+    insert into EVALUATE_STANDARD_VALUE (
+    id,
+    belong_year,
+    first_indicator_id,
+    second_indicator_id,
+    basic_release_id,
+    numerica_value,
+    actual_value
+    )
+    values
+    <foreach collection ="valueList" item="valueObj" index= "index" separator =",">
+      (
+      #{valueObj.id},
+      #{valueObj.belongYear},
+      #{valueObj.firstIndicatorId},
+      #{valueObj.secondIndicatorId},
+      #{valueObj.basicReleaseId},
+      #{valueObj.numericaValue},
+      #{valueObj.actualValue}
+      )
+    </foreach>
+  </insert>
+
+  <delete id="batchDeleteEvaluateStandardValue" parameterType="java.lang.String" >
+    delete
+    from EVALUATE_STANDARD_VALUE
+    <where>
+        1=1
+      <if test="belongYear != null and belongYear != ''">
+        AND belong_year = #{belongYear}
+      </if>
+      <if test="basicReleaseId != null and basicReleaseId != ''">
+        AND basic_release_id = #{basicReleaseId}
+      </if>
+    </where>
+  </delete>
+</mapper>

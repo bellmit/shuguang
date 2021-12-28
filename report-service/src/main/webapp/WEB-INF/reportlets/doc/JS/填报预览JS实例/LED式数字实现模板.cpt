@@ -1,0 +1,789 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WorkBook xmlVersion="20170720" releaseVersion="10.0.0">
+<TableDataMap>
+<TableData name="ds1" class="com.fr.data.impl.DBTableData">
+<Parameters/>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[FRDemo]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[SELECT * FROM F财务指标分析]]></Query>
+<PageQuery>
+<![CDATA[]]></PageQuery>
+</TableData>
+</TableDataMap>
+<ReportWebAttr>
+<ServerPrinter/>
+<WebWriteContent>
+<Listener event="startload">
+<JavaScript class="com.fr.js.JavaScriptImpl">
+<Parameters/>
+<Content>
+<![CDATA[/*
+ * selector：需要生成led样式容器的选择器；例  #testId
+ * color：led灯的颜色；例 red
+ * width：led灯的宽度；例 100
+ * height：led灯的高度；例 200
+ * values：led需要显示的值；例 -123.4
+ * lineWidth：led灯的线宽；例 5
+ * italics：倾斜角度；例 10
+ */
+ 
+
+window.ledSetValue= function(selector,color,width,height,values,lineWidth,italics,opacity_){
+		color = color == null || color == ""?"orange":color;
+		width = width == null || width == ""?50:width;
+		height = height == null || height == ""?100:height;
+		values = values == null || values == ""?0:values;
+		lineWidth = lineWidth == null || lineWidth == ""?5:lineWidth;
+		italics = italics == null || italics == ""?0:italics;
+	 
+		
+		var valuesArr = values.toString().split("");
+		var commaCount = values.toString().match(/\./g) == null?0:values.toString().match(/\./g).length;
+		var divWidth = (valuesArr.length - commaCount) * width + (valuesArr.length - commaCount-1)*lineWidth*0.5 + (width*0.5 - 0.5*lineWidth)*commaCount;
+		//生成一个随机数，该数用来作为canvas画板的id
+		var random = 'canvas' + new Date().getTime().toString() + (Math.random() * 10000000).toString().substring(0, 6).replace(/\./g, '');
+		var html = '<canvas id="'+random +'" width="'+divWidth+'" height="'+height+'" style="transform:skewX('+italics+'deg)">21</canvas>';
+		
+		document.querySelector(selector).innerHTML = html;
+		var c=document.querySelector("#"+random);
+		
+		var ctx=c.getContext("2d");
+		ctx.lineWidth=lineWidth;
+		ctx.strokeStyle = color;
+		
+		var distanceLeft = 0;
+		for(var i=0;i<valuesArr.length;i++){
+			var styleLed = setNumber(valuesArr[i]A);
+			
+			if(valuesArr[i]A != "."){
+				ctx.lineCap="round";
+				//七段数码管第一段（关于七段数码管详情请百度）
+				ctx.beginPath();
+				ctx.globalAlpha = styleLed[0]A;
+				ctx.moveTo(1.5*lineWidth + distanceLeft,0.5*lineWidth);
+				ctx.lineTo(width - 1.5*lineWidth + distanceLeft,0.5*lineWidth);
+				ctx.stroke();
+				//七段数码管第二段
+				ctx.beginPath();
+				ctx.globalAlpha = styleLed[1]A;
+				ctx.moveTo(width - 0.5*lineWidth + distanceLeft,1.5*lineWidth);
+				ctx.lineTo(width - 0.5*lineWidth + distanceLeft,height/2 - lineWidth);
+				ctx.stroke();
+				//七段数码管第三段
+				ctx.beginPath();
+				ctx.globalAlpha = styleLed[2]A;
+				ctx.moveTo(width - 0.5*lineWidth + distanceLeft,height/2 + lineWidth);
+				ctx.lineTo(width - 0.5*lineWidth + distanceLeft,height  - 1.5*lineWidth);
+				ctx.stroke();
+				//七段数码管第四段
+				ctx.beginPath();
+				ctx.globalAlpha = styleLed[3]A;
+				ctx.moveTo(1.5*lineWidth + distanceLeft,height  - 0.5*lineWidth);
+				ctx.lineTo(width - 1.5*lineWidth + distanceLeft,height  - 0.5*lineWidth);
+				ctx.stroke();
+				//七段数码管第五段
+				ctx.beginPath();
+				ctx.globalAlpha = styleLed[4]A;
+				ctx.moveTo(0.5*lineWidth + distanceLeft,height/2 + lineWidth);
+				ctx.lineTo(0.5*lineWidth + distanceLeft,height  - 1.5*lineWidth);
+				ctx.stroke();
+				//七段数码管第六段
+				ctx.beginPath();
+				ctx.globalAlpha = styleLed[5]A;
+				ctx.moveTo(0.5*lineWidth + distanceLeft,1.5*lineWidth);
+				ctx.lineTo(0.5*lineWidth + distanceLeft,height/2 - lineWidth);
+				ctx.stroke();
+				//七段数码管第七段
+				ctx.beginPath();
+				ctx.globalAlpha = styleLed[6]A;
+				ctx.moveTo(1.5*lineWidth + distanceLeft,height/2);
+				ctx.lineTo(width - 1.5*lineWidth + distanceLeft,height/2);
+				ctx.stroke();
+				
+				distanceLeft += width + 0.5*lineWidth;
+			}else{
+				ctx.beginPath();
+				ctx.lineCap="square";
+				ctx.globalAlpha = 1;
+				ctx.moveTo(0.25*width - 0.5*lineWidth + distanceLeft,height - lineWidth);
+				ctx.lineTo(0.25*width - 0.5*lineWidth  + distanceLeft,height - lineWidth);
+				ctx.stroke();
+				distanceLeft += 0.5*width - 0.5*lineWidth;
+			}
+		}
+		/*
+		 *设置单个数字的值的方法
+		 *number：传入单个数字的值
+		 *opacity：设置led不亮部分的透明度  
+		 */
+		function setNumber(number,opacity=opacity_ ){
+			var styleLed = []A;
+			switch(number.toString()) {
+				case '0':
+					styleLed = [1,1,1,1,1,1,opacity]A;
+					break;
+				case '1':
+					styleLed = [opacity,1,1,opacity,opacity,opacity,opacity]A;
+					break;
+				case '2':
+					styleLed = [1,1,opacity,1,1,opacity,1]A;
+					break;
+				case '3':
+					styleLed = [1,1,1,1,opacity,opacity,1]A;
+					break;
+				case '4':
+					styleLed = [opacity,1,1,opacity,opacity,1,1]A;
+					break;
+				case '5':
+					styleLed = [1,opacity,1,1,opacity,1,1]A;
+					break;
+				case '6':
+					styleLed = [1,opacity,1,1,1,1,1]A;
+					break;
+				case '7':
+					styleLed = [1,1,1,opacity,opacity,opacity,opacity]A;
+					break;
+				case '8':
+					styleLed = [1,1,1,1,1,1,1]A;
+					break;
+				case '9':
+					styleLed = [1,1,1,1,opacity,1,1]A;
+					break;
+				case '-':
+					styleLed = [opacity,opacity,opacity,opacity,opacity,opacity,1]A;
+					break;
+				default:
+					styleLed = [opacity,opacity,opacity,opacity,opacity,opacity,opacity]A;
+					break;
+			}
+			return styleLed;
+		}
+		
+	}]]></Content>
+</JavaScript>
+</Listener>
+<Listener event="afterload">
+<JavaScript class="com.fr.js.JavaScriptImpl">
+<Parameters/>
+<Content>
+<![CDATA[var x_='C' //设置具体哪列展示成LED样式 ，该列的值必须是数字
+var num_=16 //具体从哪一行开始展示
+ //setTimeout(function(){
+	$('td[id^="'+x_+'"]A').each(function(){
+		var num=$(this).attr('id').substring(1,$(this).attr('id').indexOf('-'))
+
+ 
+         if( parseInt(num)<num_){return true;}
+	
+	var id=	$(this).attr('id').substring(0,$(this).attr('id').indexOf('-'))
+	var	qingxiedu=contentPane.curLGP.getCellValue(id)
+		 if(qingxiedu.length==0||typeof qingxiedu=='undefined'){
+		 	qingxiedu='0'
+		 	}
+
+		 window.ledSetValue("#"+$(this).attr('id'),'red',20,30,qingxiedu,3,1,0.06);
+	 } )
+ 	
+ //	},9)]]></Content>
+</JavaScript>
+</Listener>
+<Listener event="afterload">
+<JavaScript class="com.fr.js.JavaScriptImpl">
+<Parameters/>
+<Content>
+<![CDATA[ 
+window.ledSetValue("#B11-0-0" ,'red',20,30,-0.032,3,1,0.06);]]></Content>
+</JavaScript>
+</Listener>
+<ToolBars/>
+<EditRowColor setColor="false"/>
+<WebWrite SheetPosition="3"/>
+<RptLocation isShowAtLeft="true"/>
+<UnloadCheck/>
+<ShowWidgets/>
+<OtherAttr autoStash="false"/>
+</WebWriteContent>
+</ReportWebAttr>
+<Report class="com.fr.report.worksheet.WorkSheet" name="sheet1">
+<ReportPageAttr>
+<HR/>
+<FR/>
+<HC/>
+<FC/>
+</ReportPageAttr>
+<ColumnPrivilegeControl/>
+<RowPrivilegeControl/>
+<RowHeight defaultValue="723900">
+<![CDATA[952500,838200,838200,876300,914400,876300,990600,876300,990600,876300,2362200,723900,533400,457200,1104900,1981200,723900]]></RowHeight>
+<ColumnWidth defaultValue="2743200">
+<![CDATA[2743200,8648700,6438900,5524500,5143500,2743200,2743200,2743200,2743200,2743200,2743200]]></ColumnWidth>
+<CellElementList>
+<C c="0" r="0">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="0" s="0">
+<O>
+<![CDATA[LED属性]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="2" r="0" s="0">
+<O>
+<![CDATA[属性值]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="1" s="1">
+<O>
+<![CDATA[颜色]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="2" r="1" s="2">
+<O>
+<![CDATA[red]]></O>
+<PrivilegeControl/>
+<Widget class="com.fr.form.ui.TextEditor">
+<WidgetAttr description="">
+<MobileBookMark useBookMark="true" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<TextAttr/>
+<Reg class="com.fr.form.ui.reg.NoneReg"/>
+<widgetValue/>
+<MobileScanCodeAttr scanCode="true" textInputMode="0"/>
+</Widget>
+<Expand/>
+</C>
+<C c="3" r="1" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="4" r="1" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="5" r="1" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="2" s="1">
+<O>
+<![CDATA[宽度]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="2" r="2" s="2">
+<O t="I">
+<![CDATA[20]]></O>
+<PrivilegeControl/>
+<Widget class="com.fr.form.ui.NumberEditor">
+<WidgetAttr description="">
+<MobileBookMark useBookMark="true" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<NumberAttr>
+<widgetValue/>
+</NumberAttr>
+</Widget>
+<Expand/>
+</C>
+<C c="3" r="2" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="4" r="2" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="5" r="2" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="3" s="1">
+<O>
+<![CDATA[高度]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="2" r="3" s="2">
+<O t="I">
+<![CDATA[30]]></O>
+<PrivilegeControl/>
+<Widget class="com.fr.form.ui.NumberEditor">
+<WidgetAttr description="">
+<MobileBookMark useBookMark="true" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<NumberAttr>
+<widgetValue/>
+</NumberAttr>
+</Widget>
+<Expand/>
+</C>
+<C c="3" r="3" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="4" r="3" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="5" r="3" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="4" s="1">
+<O>
+<![CDATA[字体倾斜度]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="2" r="4" s="2">
+<O t="I">
+<![CDATA[0]]></O>
+<PrivilegeControl/>
+<Widget class="com.fr.form.ui.NumberEditor">
+<WidgetAttr description="">
+<MobileBookMark useBookMark="true" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<NumberAttr>
+<widgetValue/>
+</NumberAttr>
+</Widget>
+<Expand/>
+</C>
+<C c="3" r="4" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="4" r="4" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="5" r="4" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="5" s="1">
+<O>
+<![CDATA[字体背景透明度(不透明赋值1,透明赋值0)]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="2" r="5" s="2">
+<O t="BigDecimal">
+<![CDATA[0.1]]></O>
+<PrivilegeControl/>
+<Widget class="com.fr.form.ui.NumberEditor">
+<WidgetAttr description="">
+<MobileBookMark useBookMark="true" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<NumberAttr>
+<widgetValue/>
+</NumberAttr>
+</Widget>
+<Expand/>
+</C>
+<C c="3" r="5" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="4" r="5" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="5" r="5" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="6" s="1">
+<O>
+<![CDATA[字体粗细]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="2" r="6" s="2">
+<O t="I">
+<![CDATA[2]]></O>
+<PrivilegeControl/>
+<Widget class="com.fr.form.ui.NumberEditor">
+<WidgetAttr description="">
+<MobileBookMark useBookMark="true" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<NumberAttr>
+<widgetValue/>
+</NumberAttr>
+</Widget>
+<Expand/>
+</C>
+<C c="3" r="6" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="4" r="6" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="5" r="6" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="7" s="1">
+<O>
+<![CDATA[数字]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="2" r="7" s="2">
+<O>
+<![CDATA[ -23.2]]></O>
+<PrivilegeControl/>
+<Widget class="com.fr.form.ui.NumberEditor">
+<WidgetAttr description="">
+<MobileBookMark useBookMark="true" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<NumberAttr>
+<widgetValue/>
+</NumberAttr>
+</Widget>
+<Expand/>
+</C>
+<C c="3" r="7" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="4" r="7" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="5" r="7" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="8" s="1">
+<O>
+<![CDATA[展示的单元格(首字母大写)]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="2" r="8" s="2">
+<O>
+<![CDATA[B11]]></O>
+<PrivilegeControl/>
+<Widget class="com.fr.form.ui.TextEditor">
+<WidgetAttr disabled="true" description="">
+<MobileBookMark useBookMark="true" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<TextAttr/>
+<Reg class="com.fr.form.ui.reg.NoneReg"/>
+<widgetValue/>
+<MobileScanCodeAttr scanCode="true" textInputMode="0"/>
+</Widget>
+<Expand/>
+</C>
+<C c="3" r="8" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="4" r="8" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="5" r="8" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="9" cs="2">
+<PrivilegeControl/>
+<Widget class="com.fr.form.ui.FreeButton">
+<Listener event="click">
+<JavaScript class="com.fr.js.JavaScriptImpl">
+<Parameters>
+<Parameter>
+<Attributes name="a"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=row()]]></Attributes>
+</O>
+</Parameter>
+</Parameters>
+<Content>
+<![CDATA[	 var cell = contentPane.curLGP.getTDCell(0,0);
+contentPane.curLGP.selectTDCell(cell);
+var x_='C'
+	var yanse=contentPane.curLGP.getCellValue(x_+(a-8))
+     var kuandu=contentPane.curLGP.getCellValue(x_+(a-7))
+     var gaodu=contentPane.curLGP.getCellValue(x_+(a-6))
+     var qingxiedu=contentPane.curLGP.getCellValue(x_+(a-5))
+     var toumingdu=contentPane.curLGP.getCellValue(x_+(a-4))
+     var cuxi=contentPane.curLGP.getCellValue(x_+(a-3))
+     var zhi=contentPane.curLGP.getCellValue(x_+(a-2))
+     var danyuange=contentPane.curLGP.getCellValue(x_+(a-1))
+ 
+ 	window.ledSetValue("#"+danyuange+"-0-0",yanse,kuandu,gaodu,zhi,cuxi,qingxiedu,toumingdu);
+		 
+ 	]]></Content>
+</JavaScript>
+</Listener>
+<WidgetAttr description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<Text>
+<![CDATA[点击]]></Text>
+</Widget>
+<Expand/>
+</C>
+<C c="3" r="9" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="4" r="9" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="5" r="9" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="10" cs="2" s="4">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="4" r="10" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="5" r="10" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="3" r="11" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="4" r="11" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="5" r="11" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="3" r="12" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="4" r="12" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="5" r="12" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="3" r="13" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="4" r="13" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="5" r="13" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="14" s="0">
+<O>
+<![CDATA[ID]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="14" s="0">
+<O>
+<![CDATA[财务指标]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="2" r="14" s="0">
+<O>
+<![CDATA[2011年指标数据]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="3" r="14" s="0">
+<O>
+<![CDATA[2010年指标数据]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="4" r="14" s="0">
+<O>
+<![CDATA[2009年指标数据]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="5" r="14" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="15" s="2">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="ID"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand dir="0"/>
+</C>
+<C c="1" r="15" s="1">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="CWZBKM"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand dir="0"/>
+</C>
+<C c="2" r="15" s="5">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="2011"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand dir="0"/>
+</C>
+<C c="3" r="15" s="2">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="2010"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand dir="0"/>
+</C>
+<C c="4" r="15" s="2">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="2009"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand dir="0"/>
+</C>
+<C c="5" r="15" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+</CellElementList>
+<ReportAttrSet>
+<ReportSettings headerHeight="0" footerHeight="0">
+<PaperSetting/>
+<Background name="ColorBackground" color="-1"/>
+</ReportSettings>
+<Header reportPageType="0">
+<Background name="NullBackground"/>
+<LeftList/>
+<CenterList/>
+<RightList/>
+</Header>
+<Footer reportPageType="0">
+<Background name="NullBackground"/>
+<LeftList/>
+<CenterList/>
+<RightList/>
+</Footer>
+</ReportAttrSet>
+<ReportWriteAttr/>
+<PrivilegeControl/>
+</Report>
+<ReportParameterAttr>
+<Attributes showWindow="true" delayPlaying="true" windowPosition="1" align="0" useParamsTemplate="true"/>
+<PWTitle>
+<![CDATA[参数]]></PWTitle>
+</ReportParameterAttr>
+<StyleList>
+<Style horizontal_alignment="0" imageLayout="1">
+<FRFont name="微软雅黑" style="0" size="72"/>
+<Background name="ImageBackground" layout="2">
+<FineImage fm="png">
+<IM>
+<![CDATA[!Q"h"s+sQI7h#eD$31&+%7s)Y;?-[t%fcS0'F4mC!!&3S\C(?W!/X985u`*!mF8rZ!FZ[mdJ
+No=a%1@h_DK4?Th+3iLAPnbcJn3*eJG^HS,cRZlN#j-R0V*W4Fed@!AlMATS[po:!<]AQ''&q
+S!*(c/johW?rq]AB?Wn:%l"K74Fl&bsGYo0\N:_i;F8q<r*qCr#N@^/-F5ZK?G@ffUuGFT;=.
+TZKo!NNm.OB:@7P:"i\!!!!j78?7R6=>B~
+]]></IM>
+</FineImage>
+</Background>
+<Border>
+<Top style="1" color="-6697729"/>
+<Bottom style="1" color="-6697729"/>
+<Left style="1" color="-6697729"/>
+<Right style="1" color="-6697729"/>
+</Border>
+</Style>
+<Style imageLayout="1">
+<FRFont name="微软雅黑" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1" color="-6697729"/>
+<Bottom style="1" color="-6697729"/>
+<Left style="1" color="-6697729"/>
+<Right style="1" color="-6697729"/>
+</Border>
+</Style>
+<Style horizontal_alignment="0" imageLayout="1">
+<FRFont name="微软雅黑" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1" color="-6697729"/>
+<Bottom style="1" color="-6697729"/>
+<Left style="1" color="-6697729"/>
+<Right style="1" color="-6697729"/>
+</Border>
+</Style>
+<Style horizontal_alignment="0" imageLayout="1">
+<FRFont name="SimSun" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border/>
+</Style>
+<Style horizontal_alignment="0" imageLayout="1">
+<FRFont name="SimSun" style="0" size="72"/>
+<Background name="ColorBackground" color="-3342337"/>
+<Border/>
+</Style>
+<Style horizontal_alignment="2" imageLayout="1">
+<FRFont name="微软雅黑" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1" color="-6697729"/>
+<Bottom style="1" color="-6697729"/>
+<Left style="1" color="-6697729"/>
+<Right style="1" color="-6697729"/>
+</Border>
+</Style>
+</StyleList>
+<DesignerVersion DesignerVersion="KAA"/>
+<PreviewType PreviewType="1"/>
+<TemplateIdAttMark class="com.fr.base.iofile.attr.TemplateIdAttrMark">
+<TemplateIdAttMark TemplateId="b7f0a6cf-a566-44bc-80be-427c0f7408e0"/>
+</TemplateIdAttMark>
+</WorkBook>

@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.CollectFlowMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.ducss.model.CollectFlow" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="year" property="year" jdbcType="VARCHAR" />
+    <result column="province_id" property="provinceId" jdbcType="VARCHAR" />
+    <result column="city_id" property="cityId" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaId" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="TINYINT" />
+    <result column="theory_num" property="theoryNum" jdbcType="DECIMAL" />
+    <result column="collect_num" property="collectNum" jdbcType="DECIMAL" />
+    <result column="main_num" property="mainNum" jdbcType="DECIMAL" />
+    <result column="farmer_split_num" property="farmerSplitNum" jdbcType="DECIMAL" />
+    <result column="direct_return_num" property="directReturnNum" jdbcType="DECIMAL" />
+    <result column="straw_utilize_num" property="strawUtilizeNum" jdbcType="DECIMAL" />
+    <result column="syn_utilize_num" property="synUtilizeNum" jdbcType="DECIMAL" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isreport" property="isreport" jdbcType="TINYINT" />
+    <result column="create_user_id" property="createUserId" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="buy_other_num" property="buyOtherNum" jdbcType="DECIMAL" />
+    <result column="export_num" property="exportNum" jdbcType="DECIMAL" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, year, province_id, city_id, area_id, level, theory_num, collect_num, main_num, 
+    farmer_split_num, direct_return_num, straw_utilize_num, syn_utilize_num, status, 
+    isreport, create_user_id, create_user, buy_other_num, export_num, create_date
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from collect_flow
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from collect_flow
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <update id="updateByPrimaryKey" parameterType="com.sofn.ducss.model.CollectFlow" >
+    update collect_flow
+    set year = #{year,jdbcType=VARCHAR},
+      province_id = #{provinceId,jdbcType=VARCHAR},
+      city_id = #{cityId,jdbcType=VARCHAR},
+      area_id = #{areaId,jdbcType=VARCHAR},
+      level = #{level,jdbcType=TINYINT},
+      theory_num = #{theoryNum,jdbcType=DECIMAL},
+      collect_num = #{collectNum,jdbcType=DECIMAL},
+      main_num = #{mainNum,jdbcType=DECIMAL},
+      farmer_split_num = #{farmerSplitNum,jdbcType=DECIMAL},
+      direct_return_num = #{directReturnNum,jdbcType=DECIMAL},
+      straw_utilize_num = #{strawUtilizeNum,jdbcType=DECIMAL},
+      syn_utilize_num = #{synUtilizeNum,jdbcType=DECIMAL},
+      status = #{status,jdbcType=TINYINT},
+      isreport = #{isreport,jdbcType=TINYINT},
+      create_user_id = #{createUserId,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      buy_other_num = #{buyOtherNum,jdbcType=DECIMAL},
+      export_num = #{exportNum,jdbcType=DECIMAL},
+      create_date = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <delete id="deleteCollectflow" parameterType="com.sofn.ducss.model.CollectFlow">
+    DELETE FROM collect_flow
+    WHERE
+    1=1
+    <if test="status!=null and status!=''">
+      AND status = #{status}
+    </if>
+    <if test="countyId!=null">
+      AND area_id=#{countyId}
+    </if>
+    <if test="year!=null">
+      AND year=#{year}
+    </if>
+    <if test="flowId!=null">
+      AND id=#{flowId}
+    </if>
+  </delete>
+
+  <insert id="insertOrUpdate" parameterType="com.sofn.ducss.model.CollectFlow">
+    insert into collect_flow (id,year,province_id,city_id, area_id,
+    level, theory_num, collect_num,
+    main_num, farmer_split_num, direct_return_num,
+    straw_utilize_num, syn_utilize_num, status,
+    isreport, create_user, create_date, buy_other_num, export_num
+    )
+    values (#{id,jdbcType=VARCHAR},#{year,jdbcType=VARCHAR},#{provinceId,jdbcType=VARCHAR},#{cityId,jdbcType=VARCHAR},
+     #{areaId,jdbcType=VARCHAR},#{level,jdbcType=TINYINT}, #{theoryNum,jdbcType=DECIMAL}, #{collectNum,jdbcType=DECIMAL},
+    #{mainNum,jdbcType=DECIMAL}, #{farmerSplitNum,jdbcType=DECIMAL}, #{directReturnNum,jdbcType=DECIMAL},
+    #{strawUtilizeNum,jdbcType=DECIMAL}, #{synUtilizeNum,jdbcType=DECIMAL}, #{status,jdbcType=TINYINT},
+    #{isreport,jdbcType=TINYINT}, #{createUser,jdbcType=VARCHAR}, #{createDate,jdbcType=DATE},#{buyOtherNum,jdbcType=DECIMAL},#{exportNum,jdbcType=DECIMAL}
+    ) on duplicate key UPDATE theory_num= #{theoryNum,jdbcType=DECIMAL},
+    collect_num=#{collectNum,jdbcType=DECIMAL},main_num=#{mainNum,jdbcType=DECIMAL},
+    farmer_split_num=#{farmerSplitNum,jdbcType=DECIMAL},direct_return_num=#{directReturnNum,jdbcType=DECIMAL},
+    straw_utilize_num=#{strawUtilizeNum,jdbcType=DECIMAL},syn_utilize_num=#{synUtilizeNum,jdbcType=DECIMAL},
+    buy_other_num=#{buyOtherNum,jdbcType=DECIMAL},export_num=#{exportNum,jdbcType=DECIMAL}
+  </insert>
+
+  <select id="getCollectFlowList" parameterType="java.util.Map" resultType="com.sofn.ducss.model.CollectFlow">
+    SELECT
+    a.id,
+    a.year,
+    a.area_id,
+    a.level,
+    a.theory_num,
+    a.collect_num,
+    a.main_num,
+    a.farmer_split_num,
+    a.direct_return_num,
+    a.straw_utilize_num,
+    a.syn_utilize_num,
+    a.buy_other_num,
+    a.export_num,
+    a.status,
+    a.isreport,
+    a.create_user,
+    a.create_date
+    FROM
+    collect_flow a
+    WHERE
+    1=1
+    <if test="status!=null and status!=''">
+      AND a.status in (#{status})
+    </if>
+    <if test="areaId!=null">
+      AND a.area_id=#{areaId}
+    </if>
+    <if test="year!=null">
+      AND a.year=#{year}
+    </if>
+    ORDER BY year desc
+  </select>
+
+  <select id="getWaitForExamineDataForCity" parameterType="java.util.Map" resultType="com.sofn.ducss.model.CollectFlow">
+    SELECT <include refid="Base_Column_List" />
+    FROM
+    collect_flow a
+    WHERE
+    1=1
+    <if test="status!=null and status!=''">
+      AND a.status in (#{status})
+    </if>
+    <if test="areaId!=null">
+      AND a.city_id=#{cityId}
+    </if>
+    <if test="year!=null">
+      AND a.year=#{year}
+    </if>
+    ORDER BY create_date desc
+  </select>
+
+  <select id="getWaitForExamineDataForProvince" parameterType="java.util.Map" resultType="com.sofn.ducss.model.CollectFlow">
+    SELECT <include refid="Base_Column_List" />
+    FROM
+    collect_flow a
+    WHERE
+    1=1
+    <if test="status!=null and status!=''">
+      AND a.status in (#{status})
+    </if>
+    <if test="areaId!=null">
+      AND a.province_id=#{provinceId}
+    </if>
+    <if test="year!=null">
+      AND a.year=#{year}
+    </if>
+    ORDER BY create_date desc
+  </select>
+
+  <select id="getForAreaId" parameterType="java.util.Map" resultType="com.sofn.ducss.model.CollectFlow">
+    SELECT <include refid="Base_Column_List" />
+    FROM
+    collect_flow a
+    WHERE
+    1=1
+    <if test="status!=null and status!=''">
+      AND a.status in (#{status})
+    </if>
+    <if test="areaId!=null">
+      AND a.area_id=#{areaId}
+    </if>
+    <if test="year!=null">
+      AND a.year=#{year}
+    </if>
+    AND a.status not in(0,4)
+    ORDER BY create_date desc
+  </select>
+
+  <select id="selectDucCollectFlow" parameterType="java.util.Map" resultType="com.sofn.ducss.model.CollectFlow">
+    SELECT
+    a.id,
+    a.year,
+    a.area_id,
+    a.level,
+    a.theory_num,
+    a.collect_num,
+    a.main_num,
+    a.farmer_split_num,
+    a.direct_return_num,
+    a.straw_utilize_num,
+    a.syn_utilize_num,
+    a.buy_other_num,
+    a.export_num,
+    a.status,
+    a.isreport,
+    a.create_user,
+    a.create_date
+    FROM
+    collect_flow a
+    WHERE
+    1=1
+    <if test="status!=null and status!=''">
+      AND a.status in (#{status})
+    </if>
+    <if test="areaId!=null">
+      AND a.area_id=#{areaId}
+    </if>
+    <if test="year!=null">
+      AND a.year=#{year}
+    </if>
+  </select>
+    <select id="selectAreaIdByIdsAndStatus" resultType="java.lang.String">
+      select area_id from collect_flow where area_id in (${areaIds}) and year=#{year} and status = #{status}
+    </select>
+
+    <update id="updateCollectflow" parameterType="com.sofn.ducss.vo.UpdateStatusVo">
+    update collect_flow set status=#{status} where id=#{flowId}
+  </update>
+
+  <update id="updateRefreshSuperCollectFlowDataById">
+    <!--update  collect_flow dcf
+
+    set theory_num=a.tn,
+    collect_num=a.cn,
+    main_num=a.mn,
+    farmer_split_num=a.fsn,
+    direct_return_num=a.drn,
+    straw_utilize_num=a.sun,
+    buy_other_num=a.bon,
+    export_num=a.en,
+    syn_utilize_num=case when a.cn is not null and a.cn>0 then (a.sun-a.bon+a.en)*100/a.cn else 0 end
+    from (
+    select #{areaId} area_id , #{year} as year,COALESCE(sum(dcf1.theory_num),0) tn,COALESCE(sum(dcf1.collect_num),0) cn,COALESCE(sum(dcf1.main_num),0) mn
+    ,COALESCE(sum(dcf1.farmer_split_num),0) fsn,COALESCE(sum(dcf1.direct_return_num),0) drn,COALESCE(sum(dcf1.straw_utilize_num),0) sun,COALESCE(sum(dcf1.buy_other_num),0) bon
+    ,COALESCE(sum(dcf1.export_num),0) en
+    from collect_flow dcf1 where
+     dcf1.status = 5 and dcf1.year = #{year} and dcf1.area_id in
+     <foreach collection="ids" item="idq" open="(" close=")" separator=",">
+       #{idq}
+     </foreach>
+    ) a
+    where dcf.id = #{id} and dcf.area_id = a.area_id and dcf.year = a.year-->
+    update  collect_flow dcf,(select #{areaId} area_id , #{year} as year,COALESCE(sum(dcf1.theory_num),0) tn,COALESCE(sum(dcf1.collect_num),0) cn,COALESCE(sum(dcf1.main_num),0) mn
+    ,COALESCE(sum(dcf1.farmer_split_num),0) fsn,COALESCE(sum(dcf1.direct_return_num),0) drn,COALESCE(sum(dcf1.straw_utilize_num),0) sun,COALESCE(sum(dcf1.buy_other_num),0) bon
+    ,COALESCE(sum(dcf1.export_num),0) en
+    from collect_flow dcf1 where
+    dcf1.status = 5 and dcf1.year = #{year} and dcf1.area_id in
+    <foreach collection="ids" item="idq" open="(" close=")" separator=",">
+      #{idq}
+    </foreach>
+    ) a
+    set dcf.theory_num=a.tn,
+    dcf.collect_num=a.cn,
+    dcf.main_num=a.mn,
+    dcf.farmer_split_num=a.fsn,
+    dcf.direct_return_num=a.drn,
+    dcf.straw_utilize_num=a.sun,
+    dcf.buy_other_num=a.bon,
+    dcf.export_num=a.en,
+    dcf.syn_utilize_num=case when a.cn is not null and a.cn>0 then (a.sun-a.bon+a.en)*100/a.cn else 0 end
+    where dcf.id = #{id} and dcf.area_id = a.area_id and dcf.year = a.year
+  </update>
+
+  <select id="countReported" resultType="java.lang.Integer">
+    select count(*)
+    from collect_flow t1
+    where 1=1
+    and t1.area_id in (${ids})
+    and t1.year=#{year}
+    and t1.status=#{status}
+  </select>
+
+
+  <select id="countReportAndAudit" resultType="java.lang.Integer">
+    select count(*)
+    from collect_flow
+    <where>
+      <if test="year != null and year != ''">
+        year = #{year}
+      </if>
+      <if test="areaIds != null and areaIds.size() > 0">
+        and area_id in
+        <foreach collection="areaIds" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+      </if>
+      <if test="statues != null and statues.size() > 0">
+        and status in
+        <foreach collection="statues" item="item" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+    </where>
+  </select>
+
+  <select id="getCountyByCondition" resultType="java.lang.String">
+    select area_id
+    from collect_flow
+    <where>
+      <if test="year != null and year != ''">
+        year = #{year}
+      </if>
+      <if test="areaIds != null and areaIds.size() > 0">
+        and area_id in
+        <foreach collection="areaIds" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+      </if>
+      <if test="statues != null and statues.size() > 0">
+        and status in
+        <foreach collection="statues" item="item" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+    </where>
+  </select>
+  <!--查询全国任何一个县下有无  上报 ，已读，通过的数据-->
+  <select id="selectPass" resultType="java.lang.Integer" parameterType="map">
+    SELECT count(*) FROM collect_flow WHERE year = #{year} and status in
+    <foreach collection="statues" item="item" open="(" close=")" index="index" separator=",">
+      #{item}
+    </foreach>
+
+  </select>
+
+  <select id="getProvinceListByCondition" resultType="java.lang.String">
+    SELECT area_id FROM "collect_flow"
+    <where>
+      <if test="year != null and year != ''">
+        year = #{year}
+      </if>
+      <if test="level != null and level != ''">
+        and level = #{level}
+      </if>
+      <if test="status != null and status != ''">
+        and status = #{status}
+      </if>
+    </where>
+
+  </select>
+
+</mapper>

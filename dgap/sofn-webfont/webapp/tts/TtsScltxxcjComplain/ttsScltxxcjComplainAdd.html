@@ -1,0 +1,105 @@
+<link rel="stylesheet" href="assets/css/tts/complain/myComplain.css">
+<div class="gui-breadcrumbs">
+    <span>投诉举报</span>
+</div>
+<div class="gui-section">
+    <ul class="gui-tab">
+        <li class="active" id="active"><a ui-sref="index.content.tts/TtsScltxxcjComplain/ttsScltxxcjComplainAdd">我要投诉</a></li>
+        <li><a id="inlist" ui-sref="index.content.tts/TtsScltxxcjComplain/TtsScltxxcjComplainlist">投诉反馈</a></li>
+    </ul>
+    <form id="attributeForm" method="post" class="form-horizontal" data-bv-message="This value is not valid">
+        <div class="ovh">
+            <ul class="gui-list">
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title">问题类型</label>
+                        <div class="gui-select">
+                            <select name="type" class="form-control">
+                                <option value="质量问题">质量问题</option>
+                                <option value="违规操作">违规操作</option>
+                                <option value="信息虚假">信息虚假</option>
+                                <option value="其他">其他</option>
+                                <!--<option ng-repeat="x in types" value="{{x.id}}">{{x.site}}</option>-->
+                            </select>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title">被投诉主体</label>
+                        <input type="hidden" class="form-control" id="beEntityIdcode" ng-model="ttsScltxxcjComplain.beEntityIdcode" name="beEntityIdcode">
+                        <input type="hidden" class="form-control" id="beUserIdcode" ng-model="ttsScltxxcjComplain.beUserIdcode" name="beUserIdcode">
+                        <input type="text" class="gui-input form-control" id="complaintEntName" ng-model="ttsScltxxcjComplain.complaintEntName" name="complaintEntName" placeholder="请选择要投诉的主体" ng-click="findEntityInfo()" readonly="readonly" style="background-color : #FFFFFF">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title">投诉标题</label>
+                        <input type="text" class="gui-input form-control" id="complaintTitle" ng-model="ttsScltxxcjComplain.complaintTitle" name="complaintTitle" placeholder="请输入投诉标题" data-bv-notempty="true" data-bv-notempty-message="请填写投诉标题!" data-bv-stringlength="true" data-bv-stringlength-min="2" data-bv-stringlength-max="20" data-bv-stringlength-message="投诉标题必须在2到20个字之间!">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title">内 容</label>
+                        <textarea class="gui-textarea form-control" id="content" ng-model="ttsScltxxcjComplain.content" name="content" placeholder="请输入投诉内容（300字）" rows="8" data-bv-notempty="true" data-bv-notempty-message="请输入变更原因!" data-bv-stringlength="true" data-bv-stringlength-min="1" data-bv-stringlength-max="300" data-bv-stringlength-message="投诉内容必须在1到300个字之间!">
+                        </textarea>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title">附 件</label>
+                        <input type="text" id="fileName" name="fileName" class="gui-input" ng-click="myModal61()" readonly>
+                    </div>
+                </li>
+            </ul>
+            <div class="text-center">
+                <button id="compexit" class="gui-btn" ui-sref="index.content.tts/TtsScltxxcjComplain/TtsScltxxcjComplainlist">取消</button>
+                <button id="miting" ng-click="addTtsScltxxcjComplain()" class="gui-btn">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel1">附件上传</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <form enctype="multipart/form-data">
+                        <input style="display: inline;width: 225px" id="file-1" multiple="true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="1" type="file">
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" ng-click="setFileInput();" data-dismiss="modal">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="select_Entity" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemd">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel"> 主体信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="gui-form-group form-group">
+                    <input type="text" class="gui-input" id="keywords" name="keywords" placeholder="请输入要举报的主体信息">
+                    <button type="button" class="gui-btn" ng-click="findEntity()">搜索</button>
+                </div>
+                <div>
+                    <table id="entityList" class="gui-table">
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer ">
+                <button type="button" class="gui-btn" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>

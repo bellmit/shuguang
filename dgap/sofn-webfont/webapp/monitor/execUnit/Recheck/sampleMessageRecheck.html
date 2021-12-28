@@ -1,0 +1,67 @@
+<link rel="stylesheet" href="../../assets/css/monitor/cq.css"/>
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+<link rel="stylesheet" href="../../assets/css/monitor/task.css"/>
+<link rel="stylesheet" href="../../assets/css/monitor/subjSvList.css"/>
+<link rel="stylesheet" href="assets/css/sys/sysBase/baseInfoList.css"/>
+<div class="gui-breadcrumbs">
+    <a href="">{{monitorClass}}</a>&gt;
+    <span>抽样</span>
+</div>
+<div class="gui-section">
+    <ul class="gui-tab">
+        <li role="presentation" class="pointer"><a ng-click="taskDetail()">任务详情</a></li>
+        <li role="presentation" class="active"><a ng-click="sampleMessage()">抽样</a></li>
+        <li role="presentation" class="pointer"><a ng-click="test()">检测</a></li>
+        <li role="presentation" class="pointer"><a ng-click="routineMonitorList()">检测信息汇总</a></li>
+        <li role="presentation" class="pointer"><a ng-click="routineReportUpload()">报告上传</a></li>
+    </ul>
+</div>
+<div class="gui-section">
+            <div class="gui-form-group">
+                <span >年份</span>
+                <input class="gui-input" type="text" name="sampleDate" ng-model="sampleDate">
+                <span >样品编码</span>
+                <input class="gui-input" type="text" name="sampleCode" ng-model="sampleCode">
+                <span >样品名称</span>
+                <input class="gui-input" type="text" name="" ng-model="sampleName" >
+                <!--<span class="gui-btn btn bg-primary pull-right" ng-click="reback()">返回详情页</span>-->
+            </div>
+            <div class="gui-form-group" style="display: none">
+                <span style="display: none">任务名称</span>
+                <span class="gui-select" style="display: none">
+                     <select id="taskName" class="combobox" data-style="btn-info" ng-model="taskName" style="width: 350px;">
+                     </select>
+                </span>
+                <span>检测单位</span>
+                <span class="gui-select">
+                    <select id="sampleOrgan" class="combobox" data-style="btn-info" >
+                    </select>
+                </span>
+            </div>
+            <div class="gui-form-group" >
+                <span class="" style="display: none">样品来源</span>
+                <span class="gui-select" style="display: none">
+                     <select id="producingAreaName" class="combobox" data-style="btn-info" >
+                         <option>全部</option>
+                        <option value="自产">自产</option>
+                        <option value="其他">其他</option>
+                     </select>
+                </span>
+                <span class="gui-btn btn bg-primary" ng-click="toCheck()">查询</span>
+                <span class="gui-btn btn bg-primary" ng-click="reset()">重置</span>
+
+            </div>
+            <div class="gui-form-group">
+                <label>抽样任务数:{{numbers}}</label>&nbsp;&nbsp;
+                <label>上报数:{{sampleFinishNum}}</label>&nbsp;&nbsp;
+                <label>抽样上报截至时间:{{deadline}}</label>
+            </div>
+            <div class="gui-actions">
+                <span class="gui-btn pull-right" ng-click="exportExcel()" data-toggle="tooltip" data-placement="top" title="导出信息"><i class="gui-icon icon-export"></i>导出</span></span>
+            </div>
+            <div class="mt15 tb NewsSize col-lg-12 col-xs-12 col-sm-12 col-md-12">
+                <table id="grid" class="gui-table mt15" style="width: 100%">
+                </table>
+            </div>
+</div>
+

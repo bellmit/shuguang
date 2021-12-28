@@ -1,0 +1,49 @@
+<div class="gui-breadcrumbs">
+    <a href="">内部管理</a>&gt;
+    <a href="">基地信息管理</a>&gt;
+    <span>查看</span>
+</div>
+<div class="gui-section">
+    <div class="gui-page-head">
+        <h3>查看基地信息</h3>
+    </div>
+    <div class="ovh">
+        <ul class="gui-list clearfix">
+            <li>
+                <div class="form-item"><span class="title">基地名称</span>
+                    <input readonly="readonly" type="text" ng-model="name" name="name" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">基地地址</span>
+                    <input readonly="readonly" type="text" ng-model="address" name="address" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">基地主要产品</span>
+                    <input readonly="readonly" type="text" ng-model="productNames" name="productNames" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">基地负责人</span>
+                    <input readonly="readonly" type="text" ng-model="manager" name="manager" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">联系方式</span>
+                    <input readonly="readonly" type="text" ng-model="phone" name="phone" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">基地图片</span>
+                    <img id="picture" ng-model="picture" name="picture" class="mr15" src="" width="220" height="159">
+                    <img id="pictureTwo" src="" ng-model="pictureTwo" name="pictureTwo" width="220" height="159">
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="text-center">
+        <button class="gui-btn" ng-click="removeLocalStorage()" ui-sref="index.content.tts/TtsScltxxcjBase/TtsScltxxcjBaselist">关闭</button>
+    </div>
+</div>

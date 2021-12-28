@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.CountryTaskMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.ducss.model.CountryTask" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="year" property="year" jdbcType="VARCHAR" />
+    <result column="province_id" property="provinceId" jdbcType="VARCHAR" />
+    <result column="city_id" property="cityId" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaId" jdbcType="VARCHAR" />
+    <result column="expect_num" property="expectNum" jdbcType="INTEGER" />
+    <result column="fact_num" property="factNum" jdbcType="INTEGER" />
+    <result column="main_num" property="mainNum" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="is_report" property="isReport" jdbcType="TINYINT" />
+    <result column="task_level" property="taskLevel" jdbcType="VARCHAR" />
+    <result column="create_user_id" property="createUserId" jdbcType="VARCHAR" />
+    <result column="create_user_name" property="createUserName" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, year, province_id, city_id, area_id, peasant_total, expect_num, fact_num, main_num, 
+    status, is_report,task_level, create_user_id, create_user_name, create_date
+  </sql>
+
+  <select id="getTaskByPage" resultType="com.sofn.ducss.model.CountryTask" parameterType="java.util.Map">
+    select t1.*
+    ,COALESCE((select count(1) from disperse_utilize where area_id = t1.area_id and year = t1.year),0) sum_fact_num
+    ,COALESCE((select count(1) from straw_utilize where area_id = t1.area_id and year = t1.year),0) sum_main_num
+    from country_task t1 WHERE area_id = #{countyId,jdbcType=VARCHAR}
+    <if test="year != null and year != ''">
+      and year= #{year}
+    </if>
+    order by t1.year DESC
+  </select>
+
+    <select id="getMinistryTaskByPage" resultType="com.sofn.ducss.model.CountryTask" parameterType="java.util.Map">
+        select t1.*
+        from country_task t1 WHERE task_level = #{task_level,jdbcType=VARCHAR}
+      <if test="year != null and year != ''">
+        and year= #{year}
+      </if>
+      order by t1.year DESC
+    </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from country_task
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from country_task
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <update id="updateByPrimaryKey" parameterType="com.sofn.ducss.model.CountryTask" >
+    update country_task
+    set year = #{year,jdbcType=VARCHAR},
+      province_id = #{provinceId,jdbcType=VARCHAR},
+      city_id = #{cityId,jdbcType=VARCHAR},
+      area_id = #{areaId,jdbcType=VARCHAR},
+      peasant_total = #{peasantTotal,jdbcType=INTEGER},
+      expect_num = #{expectNum,jdbcType=INTEGER},
+      fact_num = #{factNum,jdbcType=INTEGER},
+      main_num = #{mainNum,jdbcType=INTEGER},
+      status = #{status,jdbcType=TINYINT},
+      is_report = #{isReport,jdbcType=TINYINT},
+      create_user_id = #{createUserId,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getCountryTaskByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM country_task
+    <where>
+      1=1
+      <if test="year != null and year != ''">
+        and year= #{year}
+      </if>
+      <if test="years != null and years.size()>0">
+        and year in
+        <foreach collection="years" item="year" open="(" separator="," close=")">
+          #{year}
+        </foreach>
+      </if>
+      <if test="provinceId != null and provinceId != ''">
+        and province_id= #{provinceId}
+      </if>
+      <if test="cityId != null and cityId != ''">
+        and city_id= #{cityId}
+      </if>
+      <if test="areaId != null and areaId != ''">
+        and area_id= #{areaId}
+      </if>
+      <if test="createUser != null and createUser != ''">
+        and create_user_id= #{createUser}
+      </if>
+      <if test="taskLevel != null and taskLevel != ''">
+        and task_level = #{taskLevel}
+      </if>
+      <if test="statusList != null and statusList.size()>0">
+        and status in
+        <foreach collection="statusList" item="status" open="(" separator="," close=")">
+          #{status}
+        </foreach>
+      </if>
+    </where>
+  </select>
+
+  <update id="updateByCondition" parameterType="com.sofn.ducss.model.CountryTask" >
+    update country_task
+    set
+    <if test="expectNum != null">
+     expect_num = #{expectNum,jdbcType=INTEGER}
+    </if>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateMinistryByCondition" parameterType="com.sofn.ducss.model.CountryTask" >
+    update country_task
+    set
+    <if test="expectNum != null">
+      expect_num = #{expectNum,jdbcType=INTEGER}
+    </if>
+    <if test="year != null">
+      , year = #{year,jdbcType=VARCHAR}
+    </if>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateTaskFactMainNum" parameterType="java.util.Map">
+    update country_task t1 set
+    fact_num = COALESCE((select count(1) from disperse_utilize where area_id = t1.area_id and year = t1.year),0),
+    main_num = COALESCE((select count(1) from straw_utilize where area_id = t1.area_id and year = t1.year),0)
+    where
+    t1.year = #{year}
+    and t1.area_id = #{areaId}
+  </update>
+
+  <select id="getTasks" resultType="com.sofn.ducss.model.CountryTask" parameterType="java.util.Map">
+    select t1.*
+    ,COALESCE((select count(1) from disperse_utilize where area_id = t1.area_id and year = t1.year),0) sum_fact_num
+    ,COALESCE((select count(1) from straw_utilize where area_id = t1.area_id and year = t1.year),0) sum_main_num
+    from country_task t1
+    where 1=1
+    <if test="status!=null and status!=''">
+      AND t1.status in (#{status})
+    </if>
+    <if test="areaId!=null">
+      AND t1.area_id=#{areaId}
+    </if>
+    <if test="year!=null">
+      AND t1.year=#{year}
+    </if>
+  </select>
+
+  <update id="updateDynamicNumById" >
+    UPDATE country_task SET
+    ID = #{id}
+    <if test="factChgNum!=null and factChgNum!=0">
+      ,FACT_NUM = case when  (FACT_NUM + #{factChgNum}) &lt; 0 then 0
+      else (FACT_NUM + #{factChgNum}) end
+    </if>
+    <if test="mainChgNum!=null and mainChgNum!=0">
+      ,MAIN_NUM =case when (MAIN_NUM+#{mainChgNum})  &lt; 0 then 0
+        else (MAIN_NUM+#{mainChgNum}) end
+    </if>
+    WHERE ID = #{id}
+  </update>
+
+  <update id="updateTaskStatus">
+    UPDATE country_task SET status = #{status}
+    WHERE
+    year = #{year}
+    and
+    area_id = #{areaId}
+  </update>
+
+  <insert id="insertCountryTask" parameterType="com.sofn.ducss.model.CountryTask">
+    insert into
+    country_task(id,year,province_id,city_id,area_id,expect_num,
+    status,is_report,create_user_id) values
+    (#{id,jdbcType=VARCHAR},#{year,jdbcType=VARCHAR},#{provinceId,jdbcType=VARCHAR},#{cityId,jdbcType=VARCHAR},
+    #{areaId,jdbcType=VARCHAR},#{expectNum,jdbcType=INTEGER},
+    #{status,jdbcType=TINYINT},#{isReport,jdbcType=TINYINT},#{createUserId,jdbcType=VARCHAR})
+  </insert>
+
+  <insert id="insertMinistryTask" parameterType="com.sofn.ducss.model.CountryTask">
+    insert into
+    country_task(id,year,expect_num,task_level,
+    status,create_user_id,create_user_name,create_date) values
+    (#{id,jdbcType=VARCHAR},#{year,jdbcType=VARCHAR},#{expectNum,jdbcType=INTEGER},#{taskLevel,jdbcType=VARCHAR},
+    #{status,jdbcType=TINYINT},#{createUserId,jdbcType=VARCHAR},#{createUserName,jdbcType=VARCHAR},#{createDate,jdbcType=TIMESTAMP})
+  </insert>
+
+  <update id="updateStatus" parameterType="java.util.Map">
+    UPDATE country_task SET
+    status = #{status}
+    WHERE ID = #{id}
+  </update>
+
+  <select id="selectOneByBean" parameterType="com.sofn.ducss.model.CountryTask" resultType="com.sofn.ducss.model.CountryTask">
+    select * from country_task
+    where 1=1
+    <if test="year!=null">
+      and year = #{year,jdbcType=VARCHAR}
+    </if>
+    <if test="areaId!=null">
+      and area_id = #{areaId,jdbcType=VARCHAR}
+    </if>
+    limit 1
+  </select>
+
+  <select id="getCountryTaskYearList" parameterType="com.sofn.ducss.model.CountryTask" resultType="java.lang.String">
+    select year from country_task
+    <where>
+      <if test="statusList!=null and statusList.size()>0">
+        and status in
+        <foreach collection="statusList" item="status" open="(" separator="," close=")">
+          #{status}
+        </foreach>
+      </if>
+      <if test="taskLevel!=null and taskLevel != '' ">
+        and task_level = #{taskLevel,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+</mapper>

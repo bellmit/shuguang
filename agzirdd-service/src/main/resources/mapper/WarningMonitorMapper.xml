@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agzirdd.mapper.WarningMonitorMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.agzirdd.model.WarningMonitor" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="BELONG_YEAR" property="belongYear" jdbcType="VARCHAR" />
+    <result column="SPECIES_NAME" property="speciesName" jdbcType="VARCHAR" />
+    <result column="LONGITUDE" property="longitude" jdbcType="VARCHAR" />
+    <result column="LATITUDE" property="latitude" jdbcType="VARCHAR" />
+    <result column="CLASSIFICATION_ID" property="classificationId" jdbcType="VARCHAR" />
+    <result column="CLASSIFICATION_NAME" property="classificationName" jdbcType="VARCHAR" />
+    <result column="AMOUNT" property="amount" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="SPECIES_ID" property="speciesId" jdbcType="VARCHAR" />
+    <result column="PROVINCE_ID" property="provinceId" jdbcType="VARCHAR" />
+    <result column="CITY_ID" property="cityId" jdbcType="VARCHAR" />
+    <result column="COUNTY_ID" property="countyId" jdbcType="VARCHAR" />
+    <result column="COMPANY" property="company" jdbcType="VARCHAR" />
+    <result column="MONITOR" property="monitor" jdbcType="VARCHAR" />
+    <result column="LATIN_NAME" property="latinName" jdbcType="VARCHAR" />
+    <result column="NUM" property="num" jdbcType="VARCHAR" />
+    <result column="COVER_RATIO" property="coverRatio" jdbcType="VARCHAR" />
+    <result column="WORK_IMG" property="workImg" jdbcType="VARCHAR" />
+    <result column="SPECIES_IMG" property="speciesImg" jdbcType="VARCHAR" />
+    <result column="SUMMARY" property="summary" jdbcType="VARCHAR" />
+    <result column="SPECIES_MONITOR_ID" property="speciesMonitorId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, BELONG_YEAR, SPECIES_NAME, LONGITUDE, LATITUDE, CLASSIFICATION_ID, CLASSIFICATION_NAME,
+    AMOUNT, CREATE_TIME, SPECIES_ID,COUNTY_ID,CITY_ID,PROVINCE_ID,COMPANY,MONITOR,COVER_RATIO,WORK_IMG,
+    LATIN_NAME,NUM,SPECIES_IMG,SUMMARY,SPECIES_MONITOR_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from WARNING_MONITOR
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from WARNING_MONITOR
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.sofn.agzirdd.model.WarningMonitor" >
+    update WARNING_MONITOR
+    <set >
+      <if test="belongYear != null" >
+        BELONG_YEAR = #{belongYear,jdbcType=VARCHAR},
+      </if>
+      <if test="speciesName != null" >
+        SPECIES_NAME = #{speciesName,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null" >
+        LONGITUDE = #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null" >
+        LATITUDE = #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="classificationId != null" >
+        CLASSIFICATION_ID = #{classificationId,jdbcType=VARCHAR},
+      </if>
+      <if test="classificationName != null" >
+        CLASSIFICATION_NAME = #{classificationName,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        AMOUNT = #{amount,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="speciesId != null" >
+        SPECIES_ID = #{speciesId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sofn.agzirdd.model.WarningMonitor" >
+    update WARNING_MONITOR
+    set BELONG_YEAR = #{belongYear,jdbcType=VARCHAR},
+      SPECIES_NAME = #{speciesName,jdbcType=VARCHAR},
+      LONGITUDE = #{longitude,jdbcType=VARCHAR},
+      LATITUDE = #{latitude,jdbcType=VARCHAR},
+      CLASSIFICATION_ID = #{classificationId,jdbcType=VARCHAR},
+      CLASSIFICATION_NAME = #{classificationName,jdbcType=VARCHAR},
+      AMOUNT = #{amount,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      SPECIES_ID = #{speciesId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByCondition" resultMap="BaseResultMap">
+    select
+    wm.ID, wm.BELONG_YEAR, wm.SPECIES_NAME, wm.LONGITUDE, wm.LATITUDE, wm.CLASSIFICATION_ID, wm.CLASSIFICATION_NAME,
+    wm.AMOUNT, wm.CREATE_TIME, wm.SPECIES_ID,wm.COUNTY_ID,wm.CITY_ID,wm.PROVINCE_ID,wm.COMPANY,wm.MONITOR,wm.COVER_RATIO,wm.WORK_IMG,
+    wm.LATIN_NAME,wm.NUM,SPECIES_IMG,wm.SUMMARY,wm.SPECIES_MONITOR_ID
+    from WARNING_MONITOR wm
+    left join species_monitor sm on sm.id = wm.SPECIES_MONITOR_ID
+    where 1=1
+    <if test="belongYear != null" >
+      and wm.BELONG_YEAR = #{belongYear,jdbcType=VARCHAR}
+    </if>
+    <if test="classificationId != null" >
+      and wm.CLASSIFICATION_ID = #{classificationId}
+    </if>
+    <if test="classificationName!=null and classificationName!=''">
+      and wm.CLASSIFICATION_NAME = #{classificationName}
+    </if>
+    <if test="speciesName != null" >
+      and wm.SPECIES_NAME = '${speciesName}'
+    </if>
+    <if test="provinceId != null" >
+      and wm.PROVINCE_ID = '${provinceId}'
+    </if>
+    <if test="cityId != null" >
+      and wm.CITY_ID = '${cityId}'
+    </if>
+    <if test="countyId != null" >
+      and wm.COUNTY_ID = '${countyId}'
+    </if>
+    <if test="createTime != null" >
+      and to_char(wm.CREATE_TIME, 'yyyy-MM-dd') = #{createTime,jdbcType=VARCHAR}
+    </if>
+    <if test="status!=null">
+      and sm.status = #{status}
+    </if>
+    <if test="isNew!=null">
+      and sm.is_new = #{isNew}
+    </if>
+    <if test="roleCode!=null and roleCode!=''">
+      and sm.role_code = #{roleCode}
+    </if>
+    ORDER BY wm.CREATE_TIME
+
+    <!--select
+    <include refid="Base_Column_List" />
+    from WARNING_MONITOR
+    where 1=1
+    <if test="belongYear != null" >
+     and BELONG_YEAR = #{belongYear,jdbcType=VARCHAR}
+    </if>
+    <if test="classificationId != null" >
+     and CLASSIFICATION_ID = #{classificationId}
+    </if>
+    <if test="classificationName!=null and classificationName!=''">
+      and CLASSIFICATION_NAME = #{classificationName}
+    </if>
+    <if test="speciesName != null" >
+     and SPECIES_NAME = '${speciesName}'
+    </if>
+    <if test="provinceId != null" >
+      and PROVINCE_ID = '${provinceId}'
+    </if>
+    <if test="cityId != null" >
+      and CITY_ID = '${cityId}'
+    </if>
+    <if test="countyId != null" >
+      and COUNTY_ID = '${countyId}'
+    </if>
+    <if test="createTime != null" >
+      and  to_char(CREATE_TIME, 'yyyy-MM-dd') = #{createTime,jdbcType=VARCHAR}
+    </if>
+    ORDER BY CREATE_TIME-->
+  </select>
+  <select id="selectListYearData" resultType="com.sofn.agzirdd.vo.WelcomeTableDBVo">
+    select wm.belong_year dataYear,sum(to_number(wm.amount,'99999999999999999D9999')) dataVal
+    <if test="groupCol!=''">,wm.${groupCol} areaId</if>
+    from warning_monitor wm
+    left join SPECIES_MONITOR sm on sm.id = wm.SPECIES_MONITOR_ID
+    <where>
+      sm.status = '7' and wm.belong_year &gt; #{startYear} and wm.belong_year &lt;= #{endYear}
+      <if test="speciesName!=null and speciesName!=''">
+        and wm.species_name = #{speciesName}
+      </if>
+      <if test="classificationName!=null and classificationName!=''">
+        and wm.classification_name= #{classificationName}
+      </if>
+      <if test="provinceId!=null and provinceId!=''">
+        and wm.province_id = #{provinceId}
+      </if>
+      <if test="cityId!=null and cityId!=''">
+        and wm.city_id = #{cityId}
+      </if>
+      <if test="countyId!=null and countyId!=''">
+        and wm.county_id=#{countyId}
+      </if>
+
+    </where>
+    group by wm.belong_year <if test="groupCol!=null and groupCol!=''">,wm.${groupCol}</if>
+  </select>
+  <select id="selectOneEffectiveSpeciesName" resultType="java.lang.String">
+    select wm.species_name from warning_monitor wm
+    left join SPECIES_MONITOR sm on sm.id = wm.SPECIES_MONITOR_ID
+    where sm.status = '7' and sm.is_new = '1' and wm.belong_year = #{year} and wm.classification_name = #{clName}
+    order by wm.amount desc
+    limit 1
+  </select>
+
+  <delete id="deleteByCondition" >
+    delete
+    from WARNING_MONITOR
+    where 1=1
+    <if test="belongYear != null" >
+      and BELONG_YEAR = #{belongYear,jdbcType=VARCHAR}
+    </if>
+    <if test="speciesMonitorId!=null">
+      and SPECIES_MONITOR_ID = #{speciesMonitorId}
+    </if>
+    <if test="classificationId != null" >
+      and CLASSIFICATION_NAME = '发生面积'
+    </if>
+    <if test="speciesName != null" >
+      and SPECIES_NAME = '${speciesName}'
+    </if>
+    <if test="speciesId != null" >
+      and SPECIES_ID = '${speciesId}'
+    </if>
+    <if test="provinceId != null" >
+      and PROVINCE_ID = '${provinceId}'
+    </if>
+    <if test="cityId != null" >
+      and CITY_ID = '${cityId}'
+    </if>
+    <if test="countyId != null" >
+      and COUNTY_ID = '${countyId}'
+    </if>
+    <if test="createTime != null" >
+      and  to_char(CREATE_TIME, 'yyyy-MM-dd') = #{createTime,jdbcType=VARCHAR}
+    </if>
+  </delete>
+</mapper>

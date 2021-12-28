@@ -1,0 +1,89 @@
+/* 帮助列表样式*/
+.help .modal-header {
+    padding: 0px;
+}
+
+.help .modal-header h2 {
+    font-size: 16px;
+    color: #228a3a;
+    font-weight: 400;
+    line-height: 50px;
+    padding: 0 15px;
+}
+
+.help .modal-header .close {
+    margin-right: 0px;
+    padding-top: 12px;
+    width: 50px;
+}
+
+
+.help .message-list {
+    width: 100%;
+    padding: 0 36px;
+    box-sizing: border-box;
+}
+
+.help .message-list> div {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #f28613;
+    position: absolute;
+    top: 40%;
+    left: -6px;
+}
+
+.help .message-list li {
+    margin-top: 16px;
+    padding: 8px 0;
+    border-bottom: 1px dashed #ccc;
+    position: relative;
+    text-indent: 4px;
+    zoom: 1;
+    color: #666;
+    font-weight: 900;
+    overflow: hidden;
+}
+
+.help .message-list li a {
+    float: left;
+    display: inline-block;
+    color: inherit;
+    cursor: pointer;
+}
+
+.help .message-list li em {
+    font-style: normal;
+    float: right;
+    color: #999;
+    font-weight: 100;
+    margin-right: 20px;
+}
+
+.help .message-list li:after, .message-list li:before {
+    display: table;
+    content: " ";
+}
+
+
+.help .modal-content {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.help .modal-body {
+    overflow-y: scroll;
+    position: absolute;
+    top: 50px;
+    bottom: 65px;
+    width: 100%;
+}
+
+.help .modal-footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}

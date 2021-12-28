@@ -1,0 +1,135 @@
+<link rel="stylesheet" href="../../assets/styles/common/area.css" />
+<style>
+	.result-item{
+		padding: 8px 15px 15px 15px;
+	}
+	.title{
+		font-size: 16px;
+		color: #000;
+		margin-bottom: 3px;
+
+	}
+	.tableName{
+		font-size: 16px;
+		color:#5db9f8;
+		font-weight: 400;
+		display: inline-block;
+		cursor: pointer;
+	}
+	.desc{
+		font-size: 12px;
+	}
+	#businessData{
+		border-collapse: collapse;
+	    width: 100%;
+	    font-size: 12px;
+	}
+	#businessData td{
+	    color: #333;
+	    padding: 6px 5px;
+	    font-weight: normal;
+	    vertical-align: middle;
+	    word-break: break-all;
+	    white-space: normal;
+	}
+	.gui-table{
+		margin: 0;
+	}
+	input.export{
+		margin-left: 20px;
+	}
+	.list-checkboxs li{
+		width: auto;
+		min-width: 150px;
+	}
+	.list-checkboxs label{
+		cursor: pointer;
+	}
+	.list-checkboxs  input[type=checkbox]{
+		margin:-2px 5px 0 0;
+		cursor: pointer;
+	}
+</style>
+<script src="../../../assets/scripts/area.js"></script>
+<div class="gui-mainBc">
+    <div class="gui-breadcrumbs">
+        <a href="">查询系统</a>&gt;
+        <a href="">主体信息查询</a>&gt;
+        <span>监管机构主体</span>
+    </div>
+    
+    <div class="gui-section">
+        <div class="gui-form-group" style="padding:0 15px 15px">
+            <form class="mt15" id="searchForm">
+                <div class="clearfix gov-h">
+                    <div class="gui-mediaInline clearfix gov-h">
+                        <input class="gui-input" maxlength="30" type="text" placeholder="请输入关键字" name="searchKey" ng-keyup="enterSearch($event)" ng-model="keyWord" style="width:250px" />
+                        <span>时间：</span>
+                        <input id="dateBegin" ng-model="startDate" name="dateBegin" style="cursor: pointer;min-width: 120px;max-width: 100px;width: 100px;"  class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('dateEnd');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateEnd\')}'})"/>
+                        --
+                        <input id="dateEnd" name="dateEnd"  ng-model="endDate" class="Wdate gui-input" style="cursor: pointer;min-width: 120px;max-width: 100px;width: 100px;margin-left:10px"  type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'dateBegin\')}'})"/>
+                        <button type="button" class="gui-btn" ng-click="querySubjSvList()">查询</button>
+                        <button type="button" class="gui-btn" type="reset" ng-click="reloadArea()">重置</button>
+                    </div>
+                </div>
+                <div class="mt15">
+
+                	<div class="gui-area-wrap" ng-click="cancelBubble($event)">
+                		<span class="float-left">区域：</span>
+                        <input readonly="readonly" value="{{state.num > 0 ? '已选取' + state.num + '个区县' : '请选择'}}" class="gui-input text-center">
+                        <area></area>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <table id="businessData"
+               class="mt15" style="width: 100%">
+        </table>
+    </div>
+</div>
+<!--infoModel-->
+<div class="modal fade" id="TaskInfoModel" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-stylesm" style="width: 85%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">
+                    <span>搜索详情</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <table id="businessInfo" class="gui-table" style="width: 100%">
+		        </table>
+            </div>
+            <div class="modal-footer mt15">
+                <button class="gui-btn" type="button" data-dismiss="modal">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--exportModel-->
+<div class="modal fade" id="TaskExportModel" tabindex="-2" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-stylesm" style="width: 65%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button> -->
+                <h4 class="modal-title">
+                    <span>选择字段</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+		        <ul class="gui-list list-checkboxs">
+		        	<li ng-repeat="item in exportCheckboxs">
+						<label><input type="checkbox" name="selectItems" value="{{item.flag}}" checked = "checked" />{{item.title}}</label>
+		        	</li>
+		        </ul>
+            </div>
+            <div class="modal-footer mt15">
+                <button class="gui-btn" type="button" data-dismiss="modal">确认</button>
+            </div>
+        </div>
+    </div>
+</div>

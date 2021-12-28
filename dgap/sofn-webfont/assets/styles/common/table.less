@@ -1,0 +1,138 @@
+.gui-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 12px;
+  background-color: #fff;
+  // border-top: 2px solid #20944d;
+  margin-bottom: 10px;
+  border-radius: 3px;
+
+  thead {
+    color: #313131;
+    tr {
+      th {
+        background-color: #f7f7f7;
+        border-bottom: none;
+        font-weight: 700;
+      }
+    }
+  }
+  td,
+  th {
+    font-size: 13px;
+    color:rgba(0, 0, 0, 0.85);
+    padding: 6px 5px;
+    border: 1px solid #e4e4e4;
+    font-weight: normal;
+    vertical-align: middle;
+    background-color: #fff;
+    word-break: break-all;
+    white-space: normal;
+  }
+  tbody {
+    tr {
+      &:nth-child(even) {
+        td {
+          background-color: #fcfcfc;
+        }
+      }
+      &:hover {
+        td {
+          //color: #FFF;
+          background-color: #f9fffb;
+          a {
+            //color: #FFF;
+          }
+        }
+      }
+    }
+  }
+  td {
+    color: rgba(0, 0, 0, 0.65);
+  }
+  &.table-nowrap {
+    td,
+    th {
+      white-space: nowrap;
+    }
+  }
+}
+
+.dataTables_wrapper .bottom {
+  overflow: hidden;
+  padding: 8px 0;
+}
+
+.dataTables_paginate {
+  float: right;
+  .pagination {
+    margin: 0 auto;
+  }
+}
+
+.dataTables_info,
+.dataTables_length {
+  float: left;
+}
+
+.pagination > .active > a,
+.pagination > .active > a:focus,
+.pagination > .active > a:hover,
+.pagination > .active > span,
+.pagination > .active > span:focus,
+.pagination > .active > span:hover {
+  z-index: 2;
+  color: #fff;
+  cursor: default;
+  background-color: #20944d;
+  border-color: #1b8243;
+}
+
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > li > span:focus,
+.pagination > li > span:hover {
+  z-index: 3;
+  color: #20944d;
+  background-color: #eee;
+  border-color: #ddd;
+}
+
+.pagination > li > a,
+.pagination > li > span {
+  position: relative;
+  float: left;
+  font-size: 13px;
+  padding: 4px 10px;
+  margin-left: -1px;
+  line-height: 1.42857143;
+  color: #20944d;
+  text-decoration: none;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  outline: none;
+}
+
+.dataTables_length,
+.dataTables_info {
+  line-height: 32px;
+  margin-right: 10px;
+  color: #999;
+  font-size: 13px;
+}
+
+.dataTables_processing {
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  color: #fff;
+  padding: 10px 25px;
+  line-height: 1.5;
+  border-radius: 4px;
+  min-width: 200px;
+  text-align: center;
+  margin-left: -100px;
+  // background-color: rgba(0, 0, 0, .5);
+  background: none;
+  box-shadow: none;
+}

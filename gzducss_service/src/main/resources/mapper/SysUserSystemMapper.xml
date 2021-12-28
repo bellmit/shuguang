@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.SysUserSystemMapper" >
+    <resultMap id="customResultMap" type="com.sofn.ducss.model.SysUserSystem">
+        <result column="ID" property="id" jdbcType="VARCHAR"></result>
+        <result column="SYSTEM_ID" property="systemId" jdbcType="VARCHAR"></result>
+        <result column="USER_ID" property="userId" jdbcType="VARCHAR"></result>
+        <result column="APP_ID" property="appId" jdbcType="VARCHAR"></result>
+        <result column="VIEW_URL" property="viewUrl" jdbcType="VARCHAR"></result>
+        <result column="SYSTEM_NAME" property="systemName" jdbcType="VARCHAR"></result>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE"></result>
+    </resultMap>
+    <sql id="Base_Column_List">
+      ID,SYSTEM_ID,USER_ID,APP_ID,VIEW_URL,SYSTEM_NAME,UPDATE_TIME
+    </sql>
+    <select id="getListByConditions" resultMap="customResultMap" parameterType="java.util.Map" >
+        select <include refid="Base_Column_List" /> FROM SYS_USER_SYSTEM
+        <where>
+          1=1
+            <if test="userId != null and userId != ''" >
+               and  USER_ID = #{userId}
+            </if>
+            <if test="systemId != null and systemId !=''" >
+               and  SYSTEM_ID = #{systemId}
+            </if>
+
+        </where>
+        order by UPDATE_TIME desc
+    </select>
+</mapper>

@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysRoleMapper" >
+
+    <resultMap id="customResultMap" type="com.sofn.sys.model.SysRole" >
+        <id column="ID" property="id" jdbcType="VARCHAR" />
+        <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+        <result column="DESCRIBE" property="describe" jdbcType="VARCHAR" />
+        <result column="CREATE_USER_ID" property="createUserId" jdbcType="VARCHAR" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="DATE" />
+        <result column="STATUS" property="status" jdbcType="VARCHAR" />
+        <result column="UPDATE_USER_ID" property="updateUserId" jdbcType="VARCHAR" />
+        <result column="SUBSYSTEM_ID" property="subsystemId" jdbcType="VARCHAR" />
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE" />
+        <result column="DEL_FLAG" property="delFlag" jdbcType="VARCHAR" />
+        <result column="ROLE_CODE" property="roleCode" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+      ID, ROLE_NAME, DESCRIBE,SUBSYSTEM_ID,CREATE_USER_ID,STATUS, CREATE_TIME, UPDATE_USER_ID, UPDATE_TIME,
+      DEL_FLAG,ROLE_CODE
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="customResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from SYS_ROLE
+        where ID = #{id,jdbcType=VARCHAR} and DEL_FLAG != 'Y'
+    </select>
+    <select id="selectRolesByIds" resultMap="customResultMap" >
+        select
+        <include refid="Base_Column_List" />
+        from SYS_ROLE
+        where ID in
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND DEL_FLAG != 'Y'
+    </select>
+    <insert id="insertSelective" parameterType="com.sofn.sys.model.SysRole" >
+        insert into SYS_ROLE
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                ID,
+            </if>
+            <if test="roleName != null" >
+                ROLE_NAME,
+            </if>
+            <if test="describe != null" >
+                DESCRIBE,
+            </if>
+            <if test="createUserId != null" >
+                CREATE_USER_ID,
+            </if>
+            <if test="createTime != null" >
+                CREATE_TIME,
+            </if>
+            <if test="subsystemId != null" >
+                SUBSYSTEM_ID,
+            </if>
+            <if test="updateUserId != null" >
+                UPDATE_USER_ID,
+            </if>
+            <if test="updateTime != null" >
+                UPDATE_TIME,
+            </if>
+            <if test="delFlag != null" >
+                DEL_FLAG,
+            </if>
+            <if test="status != null" >
+                STATUS,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="roleName != null" >
+                #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="describe != null" >
+                #{describe,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserId != null" >
+                #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=DATE},
+            </if>
+            <if test="subsystemId != null" >
+                #{subsystemId,jdbcType=VARCHAR},
+            </if>
+            <if test="updateUserId != null" >
+                #{updateUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=DATE},
+            </if>
+            <if test="delFlag != null" >
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                #{status,jdbcType=VARCHAR},
+            </if>
+
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.sofn.sys.model.SysRole" >
+        update SYS_ROLE
+        <set >
+            <if test="roleName != null" >
+                ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="describe != null" >
+                DESCRIBE = #{describe,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserId != null" >
+                CREATE_USER_ID = #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                CREATE_TIME = #{createTime,jdbcType=DATE},
+            </if>
+            <if test="subsystemId != null" >
+                SUBSYSTEM_ID = #{subsystemId,jdbcType=VARCHAR},
+            </if>
+            <if test="updateUserId != null" >
+                UPDATE_USER_ID = #{updateUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null" >
+                UPDATE_TIME = #{updateTime,jdbcType=DATE},
+            </if>
+            <if test="delFlag != null" >
+                DEL_FLAG = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                STATUS = #{status,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="getSysRoleByCondition" parameterType="java.util.Map" resultMap="customResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM SYS_ROLE
+        <where> 1=1
+            <if test="delFlag != null and delFlag != ''">
+                and DEL_FLAG= #{delFlag}
+            </if>
+            <if test="subsystemId != null and subsystemId != ''">
+                and SUBSYSTEM_ID= #{subsystemId}
+            </if>
+            <if test="roleCode != null and roleCode != ''">
+                and ROLE_CODE= #{roleCode}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                and (DESCRIBE like '%' || #{keyword} || '%'
+                or ROLE_NAME like '%' || #{keyword} || '%'
+                )
+            </if>
+            and STATUS ='1' and DEL_FLAG != 'Y'
+        </where>
+    </select>
+
+    <select id="selectRolesByUserId" resultMap="customResultMap">
+        SELECT
+            r.*
+        FROM SYS_ROLE r
+        LEFT JOIN SYS_USER_ROLE ur ON ur.ROLE_ID = r.ID
+        WHERE ur.USER_ID = #{userId} AND R.DEL_FLAG != 'Y'
+  </select>
+
+    <select id="getSysRoleByName" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT count(1) from SYS_ROLE a where 1 =1
+        <if test="roleName != null and roleName != ''">
+            and ROLE_NAME = #{roleName}
+        </if>
+        <if test="subsystemId != null and subsystemId != ''">
+            and SUBSYSTEM_ID = #{subsystemId}
+        </if>
+        <if test="id != null and id != ''">
+            and ID = #{id}
+        </if>
+        and a.DEL_FLAG != 'Y'
+    </select>
+
+    <sql id="selectUserHasRoleSql">
+            SR.ID  id,
+            SR.ROLE_NAME roleName,
+            SR.DESCRIBE describe,
+            SR.STATUS status,
+            SR.SUBSYSTEM_ID SubsystemId,
+            SR.ROLE_CODE roleCode,
+            SS.SUBSYSTEM_NAME SubsystemName,
+			sr.create_time createTime,
+			SS.APP_ID subsystemAppId
+    </sql>
+
+    <select id="selectUserHasRole" parameterType="java.util.Map" resultType="com.sofn.sys.vo.SysRoleVo">
+        select A.id,
+        A.roleName,
+        A.describe,
+        A.status,
+        A.SubsystemId,
+        A.roleCode,
+        A.SubsystemName,
+        A.subsystemAppId from (
+        select DISTINCT
+        <include refid="selectUserHasRoleSql"></include>
+        from SYS_ROLE SR
+        LEFT JOIN SYS_SUBSYSTEM SS ON SR.SUBSYSTEM_ID = SS.ID AND SS.DEL_FLAG != 'Y'
+        WHERE SR.DEL_FLAG != 'Y'
+        <if test="status != null and status != ''">
+            and SR.STATUS = #{status,jdbcType=VARCHAR}
+        </if>
+        <if test="subsystemId != null and subsystemId != ''">
+            and SR.SUBSYSTEM_ID = #{subsystemId,jdbcType=VARCHAR}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            and (POSITION (#{keyword,jdbcType=VARCHAR} in SR.ROLE_NAME)>0 or POSITION (#{keyword,jdbcType=VARCHAR} in SR.ROLE_CODE)>0)
+        </if>
+
+        <if test="ids != null and ids.size > 0">
+            and SR.ID NOT IN
+            <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+
+        <if test="userId != null and userId != ''">
+            and SR.ID IN (
+            -- 查詢用户有的角色
+            SELECT ROLE_ID FROM SYS_USER_ROLE SUR WHERE SUR.USER_ID = #{userId,jdbcType=VARCHAR}
+            -- 查询角色组有的角色
+            <if test="unionGroup != null and  'Y'.toString() == unionGroup">
+                union
+                (
+                select srg.ROLE_ID from SYS_USER_GROUP sug
+                inner join SYS_ROLE_GROUP srg on SRG.GROUP_ID = SUG.GROUP_ID
+                left join sys_group sgrrr on srg.GROUP_ID = sgrrr.id
+                where (SUG.USER_ID=#{userId,jdbcType=VARCHAR} or sgrrr.create_user_id = #{userId,jdbcType=VARCHAR})
+                )
+            </if>
+            )
+            union
+            select
+            DISTINCT <include refid="selectUserHasRoleSql"></include>
+            from SYS_ROLE SR
+            LEFT JOIN SYS_SUBSYSTEM SS ON SR.SUBSYSTEM_ID = SS.ID AND SS.DEL_FLAG != 'Y'
+            WHERE SR.CREATE_USER_ID = #{userId,jdbcType=VARCHAR} AND SR.DEL_FLAG != 'Y'
+            <if test="subsystemId != null and subsystemId != ''">
+                and SR.SUBSYSTEM_ID = #{subsystemId,jdbcType=VARCHAR}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                and (POSITION (#{keyword,jdbcType=VARCHAR} in SR.ROLE_NAME)>0 or POSITION (#{keyword,jdbcType=VARCHAR} in SR.ROLE_CODE)>0)
+            </if>
+            <if test="status != null and status != ''">
+                and SR.STATUS = #{status,jdbcType=VARCHAR}
+            </if>
+            <if test="ids != null and ids.size > 0">
+                and SR.ID NOT IN
+                <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+
+        </if>
+        ) A order by createTime desc,id desc
+    </select>
+
+
+    <select id="selectUserHasRoleAndNotIncludeUserCreate" parameterType="java.util.Map" resultType="com.sofn.sys.vo.SysRoleVo">
+        select id,
+        roleName,
+        describe,
+        status,
+        SubsystemId,
+        roleCode,
+        SubsystemName,
+        subsystemAppId from (
+        select DISTINCT
+        <include refid="selectUserHasRoleSql"></include>
+        from SYS_ROLE SR
+        LEFT JOIN SYS_SUBSYSTEM SS ON SR.SUBSYSTEM_ID = SS.ID AND SS.DEL_FLAG != 'Y'
+        WHERE SR.DEL_FLAG != 'Y'
+        <if test="status != null and status != ''">
+            and SR.STATUS = #{status,jdbcType=VARCHAR}
+        </if>
+        <if test="subsystemId != null and subsystemId != ''">
+            and SR.SUBSYSTEM_ID = #{subsystemId,jdbcType=VARCHAR}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            and (POSITION(#{keyword,jdbcType=VARCHAR} in SR.ROLE_NAME)>0 or POSITION(#{keyword,jdbcType=VARCHAR} in SR.ROLE_CODE)>0)
+        </if>
+
+        <if test="ids != null and ids.size > 0">
+            and SR.ID NOT IN
+            <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+
+        <if test="userId != null and userId != ''">
+            and SR.ID IN (
+            -- 查詢用户有的角色
+            SELECT ROLE_ID FROM SYS_USER_ROLE SUR WHERE SUR.USER_ID = #{userId,jdbcType=VARCHAR}
+            -- 查询角色组有的角色
+            <if test="unionGroup != null and  'Y'.toString() == unionGroup">
+                union
+                (
+                select srg.ROLE_ID from SYS_USER_GROUP sug
+                inner join SYS_ROLE_GROUP srg on SRG.GROUP_ID = SUG.GROUP_ID
+                left join sys_group sgrrr on srg.GROUP_ID = sgrrr.id
+                where SUG.USER_ID=#{userId,jdbcType=VARCHAR}
+                )
+            </if>
+            )
+        </if>
+        ) as sys order by createTime desc,id desc
+    </select>
+
+
+    <select id="getRoleListByAppId" resultMap="customResultMap">
+        SELECT SR.* FROM SYS_ROLE SR LEFT JOIN SYS_SUBSYSTEM SS ON SR.SUBSYSTEM_ID=SS.ID
+        <where>
+            <if test="appId != null and appId != ''">
+                and SS.APP_ID=#{appId}
+            </if>
+            and sr.del_flag != 'Y'
+        </where>
+    </select>
+
+    <select id="getRoleHasPermission" resultType="java.util.HashMap">
+        select
+            SRR.ROLE_ID ROLEID,
+            SRO.ROLE_CODE ROLECODE,
+            SR.PERMISSION PERMISSION
+         from SYS_ROLE SRO
+        LEFT JOIN SYS_ROLE_RESOURCE SRR ON SRO.ID = SRR.ROLE_ID
+        LEFT JOIN  SYS_RESOURCE SR ON SR.ID = SRR.RESOURCE_ID AND SR.DEL_FLAG != 'Y'
+        WHERE
+        SRO.DEL_FLAG != 'Y' AND SRO.STATUS = '1'  AND SR.PERMISSION IS NOT NULL
+			ORDER BY SRR.ROLE_ID
+    </select>
+
+
+
+    <resultMap id="userHaveRoleMapper" type="com.sofn.sys.vo.UserHaveRoleVo" >
+
+        <result column="user_id" property="userId" jdbcType="VARCHAR" />
+        <collection property="sysRoles" ofType="com.sofn.sys.model.SysRole">
+            <id column="ID" property="id" jdbcType="VARCHAR" />
+            <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+            <result column="DESCRIBE" property="describe" jdbcType="VARCHAR" />
+            <result column="CREATE_USER_ID" property="createUserId" jdbcType="VARCHAR" />
+            <result column="CREATE_TIME" property="createTime" jdbcType="DATE" />
+            <result column="STATUS" property="status" jdbcType="VARCHAR" />
+            <result column="UPDATE_USER_ID" property="updateUserId" jdbcType="VARCHAR" />
+            <result column="SUBSYSTEM_ID" property="subsystemId" jdbcType="VARCHAR" />
+            <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE" />
+            <result column="DEL_FLAG" property="delFlag" jdbcType="VARCHAR" />
+            <result column="ROLE_CODE" property="roleCode" jdbcType="VARCHAR" />
+        </collection>
+
+    </resultMap>
+
+    <select id="getUserHaveRole" parameterType="java.util.Map" resultMap="userHaveRoleMapper">
+        select b.user_id,a.* from sys_role a left join SYS_USER_ROLE b on a.id = b.ROLE_ID where a.DEL_FLAG = 'N' and b.USER_ID in
+        <foreach collection="userIds" item="userId" open="(" close=")" separator=",">
+            #{userId}
+        </foreach>
+        union
+        select sug.user_id,SR.* from SYS_ROLE sr
+        left join SYS_ROLE_GROUP srg on srg.role_id = sr.id
+        left join SYS_USER_GROUP sug on SUG.GROUP_ID = srg.GROUP_ID
+        where sr.DEL_FLAG = 'N' and sug.USER_ID in
+        <foreach collection="userIds" item="userId" open="(" close=")" separator=",">
+            #{userId}
+        </foreach>
+    </select>
+
+    <select id="getSystemAndRoleInfo" parameterType="java.util.Map" resultType="com.sofn.sys.vo.SystemRoleVo">
+        select
+        SS.APP_ID systemAppId,
+        SS.ID systemId,
+        SS.SUBSYSTEM_NAME systemName,
+        SR.ID roleId,
+        SR.ROLE_NAME roleName,
+        SR.ROLE_CODE roleCode
+        from SYS_ROLE sr
+        left join SYS_SUBSYSTEM ss on SR.SUBSYSTEM_ID = SS.ID
+        where 1=1
+        <if test="userId != null and userId != ''">
+            AND SR.ID IN (
+            <include refid="com.sofn.sys.mapper.CommonMapper.getUserHaveRoleIds">
+                <property name="userId" value="#{userId}"/>
+            </include>
+            )
+        </if>
+        <if test="keyword != null and keyword != ''">
+            AND (SR.ROLE_NAME like '%' || #{keyword} ||'%'
+            OR SS.SUBSYSTEM_NAME like '%' || #{keyword} ||'%'
+            OR SS.APP_ID like '%' || #{keyword} ||'%'
+            OR SR.ROLE_CODE  like '%' || #{keyword} ||'%')
+        </if>
+
+        <if test="roleIds != null and roleIds.size() > 0">
+            AND SR.ID IN
+            <foreach collection="roleIds" item="roleId" separator="," open="(" close=")">
+                #{roleId}
+            </foreach>
+        </if>
+
+        <if test="userId != null and userId != ''">
+            OR sr.CREATE_USER_ID = #{userId}
+
+        </if>
+
+    </select>
+
+</mapper>

@@ -1,0 +1,68 @@
+.section{
+    /*width: 100%;*/
+    padding: 0px 200px;
+    position: relative;
+}
+.section div:first-child{
+    width: 1340px;
+    margin: 100px auto;
+}
+.section_item{
+    width: 100%;
+    font-size: 25px;
+}
+.section_item>button{
+    font-size: 25px;
+    color: blue;
+    padding: 0px 20px;
+    outline: none;
+    cursor: pointer;
+    border: 1px solid #9d9d9d;
+    border-radius: 5px;
+    background-color: white;
+}
+.section div:first-child table{
+    width: 100%;
+}
+.section div:first-child table th,td{
+    text-align: left;
+    font-size: 22px;
+    padding: 10px 0px;
+    border: 1px solid black;
+}
+/*批量导入*/
+.section_item input{
+    font-size: 25px;
+
+}
+.section_item span{
+    color: blue;
+    cursor: pointer;
+    margin-left: 15px;
+}
+.section_button{
+    font-size: 18px;
+    padding: 5px 10px;
+    margin-left: 200px;
+    background-color: #4BA0D6;
+    outline: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-right: 100px;
+}
+@font-face {
+    font-family: close;
+    src: url('../../../lib/fonts/iconfont.eot'); /* IE9*/
+    src: url("../../../lib/fonts/iconfont.woff");
+}
+.section_close{
+    position: absolute;
+    right: 100px;
+    top: -80px;
+    cursor: pointer;
+    font-family: close;
+    font-size: 35px;
+    color: #4BA0D6;
+}

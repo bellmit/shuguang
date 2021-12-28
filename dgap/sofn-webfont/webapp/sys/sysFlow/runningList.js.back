@@ -1,0 +1,106 @@
+var myapp=angular.module("myapp",[]);
+myapp.controller("runningList",function($scope,$http,$state){
+    $("#ToCheck").click(function(){
+        $("#grid").dataTable().api().ajax.reload();
+    });
+
+	/**
+	 * 分页展示数据
+	 */
+    $(function() {
+        //bootstrap表格
+        $("#grid").dataTable({
+            processing : true, // 加载时提示
+            serverSide : false, // 分页，是否服务器端处理
+            ordering : false,
+            searching : false,
+            bProcessing: true,
+            bAutoWidth:true,
+            // sScrollY : "auto",
+            dom : '<"top">rt<"bottom"pli><"clear">',
+            autoWidth : false,
+            ajax : {
+                url : "/sofn-ssa-web/process/getRunningList",
+                dataSrc:function(json){
+                   
+                         return json;
+                },
+                data : function(params) {
+                	//分页条件查询，不实现，自己写
+                    //params.name = $("input[name='in_name']").val();
+                    //params.tel =  $("input[name='in_tel']").val();
+//                  params.flowName = $("input[name='flowName']").val();
+//                  params.status = $("select[name='status']").val();
+                },
+                type:"post"
+            },
+            columns : [
+            
+            	{
+            		data: "id",
+            		title: "执行IDssss"
+            	},
+            
+            	{
+            		data: "processInstanceId",
+            		title: "流程实例ID"
+            	},
+            	{
+            		data: "processDefinitionId",
+            		title: "流程定义ID"
+            	},
+            	{
+            		data: "name",
+            		title: "当前节点"
+            	},
+            	{
+            		data: "isSuspended",
+            		title: "是否挂起"
+            	},
+//              {
+//                  data : "id",
+//                  title : "操作",
+//                  render : function(data, type, row) { 
+//                  	// 数据操作选择项
+////                      var look_a = '<a style="margin-right: 10px;cursor: pointer" class="Check-report"  onclick="lookView(\''+data+'\')">查看</a>';
+////                      var update_a = '<a style="margin-right: 10px;cursor: pointer" onclick="updateData(\''+data+'\')">修改</a>';
+//                      var delete_a = '<a style="cursor: pointer" onclick="deleteData(\''+data+'\')">挂起</a>';
+//                      return delete_a;
+//                  }
+//              },
+            ],
+            language : {
+                "sProcessing" : "处理中...",
+                "sLengthMenu" : "显示 _MENU_ 项结果",
+                "sZeroRecords" : "没有匹配结果",
+                "sInfo" : "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                "sInfoEmpty" : "显示第 0 至 0 项结果，共 项",
+                "sInfoFiltered" : "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix" : "",
+                "sSearch" : "搜索:",
+                "sUrl" : "",
+                "sEmptyTable" : "表中数据为空",
+                "sLoadingRecords" : "载入中...",
+                "sInfoThousands" : ",",
+                "oPaginate" : {
+                    "sFirst" : "首页",
+                    "sPrevious" : "上页",
+                    "sNext" : "下页",
+                    "sLast" : "末页"
+                },
+                "oAria" : {
+                    "sSortAscending" : ": 以升序排列此列",
+                    "sSortDescending" : ": 以降序排列此列"
+                }
+            },
+            sPaginationType : "full_numbers"
+        });
+        //导航展开
+        $("#collapseThree").attr("class","panel-collapse collapse in");
+        $("#collapseThree li:nth-of-type(1)").css("background-color","#64ABDB").addClass("Sup_contain_side_nav_item_after").siblings().css("background-color","#3695D4").removeClass("Sup_contain_side_nav_item_after");
+    });
+    
+    
+
+})
+

@@ -1,0 +1,70 @@
+    <div class="gui-breadcrumbs">
+        <a href="javascript:void(0)">监管系统</a>&gt;
+        <a href="" ng-click="backTaskList()">监测任务</a>&gt;
+        <span>报告列表</span>
+    </div>
+<div class="gui-section">
+    <div class="gui-form-group">
+        <div class="gui-select" name="CdUnitSpan" style="display: none">
+            <select   name = "CdUnit" onchange="selectCdUnit()">
+                <option value="">承担单位</option>
+                <option ng-repeat="unit in CdUnit" value="{{unit.superviseBearUnitId}}">{{unit.leadUnitName}}</option>
+            </select>
+        </div>
+        <span>年份</span>
+        <input name="years" style="width: 100px;"  onfocus="WdatePicker({skin:'default',dateFmt:'yyyy'})" class="Wdate gui-input"/>
+        任务名称
+        <input class="gui-input" style="width: 135px;" type="text" placeholder="请输入查找内容" name="monitorTask"/>
+        <button class="gui-btn" id="ToCheck">查询</button>
+    </div>
+    <div class="gui-actions">
+        <button class="gui-btn fr mr15 mr15" ng-click="backTaskList()">
+            <i class="gui-icon icon-back"></i>返回任务列表</button>
+    </div>
+    <table id="grid" class="gui-table mt15" style="width: 100%">
+    </table>
+</div>
+    <!--TaskInfoModel-->
+    <div class="modal fade"  id="ReturnReportModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-stylesm" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">
+                        <span>承担单位报告退回</span>
+                    </h4>
+                </div>
+                <div class="modal-body clearfix gov-h">
+                    <form class="bs-example bs-example-form" role="form">
+                        <div class="row">
+                            <div  class="col-lg-12 col-sm-12 col-md-12">
+                                <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">任务名称&nbsp;:</label>
+                                <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="taskInfo.taskName"></span>
+                            </div>
+                            <div  class="col-lg-12 col-sm-12 col-md-12 mt15">
+                                <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">任务开始时间&nbsp;:</label>
+                                <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="taskInfo.taskBeginTime"></span>
+                            </div>
+                            <div  class="col-lg-12 col-sm-12 col-md-12 mt15">
+                                <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">任务结束时间&nbsp;:</label>
+                                <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="taskInfo.taskEndTime"></span>
+                            </div>
+                            <div  class="col-lg-12 col-sm-12 col-md-12 mt15">
+                                <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">提交报告单位:</label>
+                                <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="taskInfo.taskReleaseUnit"></span>
+                            </div>
+
+                            <div  class="col-lg-12 col-sm-12 col-md-12 mt15">
+                                <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">退回原因&nbsp;<span style="color: red">*</span>:</label>
+                                <textarea id="returnReason" class="gui-input" style="width:220px;height: 60px;max-height: 100px;max-width: 270px;" maxlength="300"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer mt15" style="text-align: center;">
+                    <button class="gui-btn" type="button" data-dismiss="modal">关闭</button>
+                    <button class="gui-btn" type="button" ng-click="saveReturnReportReason()">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>

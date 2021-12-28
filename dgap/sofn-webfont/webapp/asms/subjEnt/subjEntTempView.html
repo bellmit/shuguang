@@ -1,0 +1,81 @@
+<link rel="stylesheet" href="assets/css/asms/subjEnt/subjEntView.css"/>
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">监管系统</a>&gt;
+    <a ui-sref="index.content.asms/subjEnt/subjEntList">主体管理</a>&gt;
+    <a ui-sref="index.content.asms/subjEnt/subjEntTempList">临时注册主体</a>&gt;
+    <span>查看</span>
+</div>
+<div class="Sup_contain_section_contain  gui-section gui-section-wid">
+    <!--第一部分  企业/个体工商户、合作社的内容-->
+    <div id="printContent">
+        <ul id="firstContent">
+            <li>主体信息</li>
+            <li style="border-top: 1px solid #9d9d9d;padding-top: 10px;">
+                <ul class="Sup_contain_section_contain_show">
+                    <li class="fl">
+                        <ul><li class="fl">主体名称：</li><li class="fl"><span ng-bind="subjEntTemp.entityName"></span></li></ul>
+                        <ul ng-show="subjEntTemp.identityCode"><li class="fl">主体身份码：</li><li class="fl"><span ng-bind="subjEntTemp.identityCode"></span></li></ul>
+                        <ul><li class="fl">组织形式：</li><li class="fl"><span ng-bind="subjEntTemp.entityScale"></span></li></ul>
+                        <ul><li class="fl">主体类型：</li><li class="fl"><span ng-bind="subjEntTemp.entityType"></span></li></ul>
+                        <ul><li class="fl">所属行业：</li><li class="fl"><span ng-bind="subjEntTemp.entityIndustry"></span></li></ul>
+                        <ul id="credType"><li class="fl">证件类型：</li><li class="fl"><span ng-bind="subjEntTemp.credType"></span></li></ul>
+                        <ul><li class="fl">证件号码：</li><li class="fl"><span ng-bind="subjEntTemp.orgCode"></span></li></ul>
+                        <ul id="organizationCode"><li class="fl">组织机构代码：</li><li class="fl"><span ng-bind="subjEntTemp.organizationCode"></span></li></ul>
+                        <ul><li class="fl">注册地所在：</li><li class="fl"><span ng-bind="subjEntTemp.areaId"></span></li></ul>
+                        <ul><li class="fl">详情地址：</li><li class="fl"><span ng-bind="subjEntTemp.address"></span></li></ul>
+                    </li>
+                    <li class="fl">
+                        <ul>
+                            <li class="fl" id="businessLicenceimgF">
+                                <p class="fl">企业证件照：</p> <br/>
+                                <span class="fl" id="businessLicenceimg"></span>
+                            </li>
+                            <li id="organizationCertificateimgF" class="fl">
+                                <p>组织机构代码照：</p> <br/>
+                                <span id="organizationCertificateimg"></span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <!-- 第四部分 企业/个体工商户、合作社的法人、联系人信息-->
+        <div id="fourthContent" >
+            <ul>
+                <li>联系人信息</li>
+                <li style="border-top: 1px solid #9d9d9d;padding-top: 10px;">
+                    <ul class="Sup_contain_section_contain_show">
+                        <li class="fl Sup_contain_section_contain_show_FR">
+                            <ul><li class="fl">姓名：</li><li class="fl"><span ng-bind="subjEntTemp.contactName"></span></li></ul>
+                            <ul><li class="fl">联系电话：</li><li class="fl"><span ng-bind="subjEntTemp.contactPhone"></span></li></ul>
+                            <ul><li class="fl">邮箱：</li><li class="fl"><span>{{subjEntTemp.contactEmail||'无'}}</span></li></ul>
+                        </li>
+                        <li class="fl Sup_contain_section_contain_show_TW">
+                            <ul>
+                                <li class="fl">
+                                    <p class="fl">身份证正面照：</p> <br/>
+                                    <span class="fl" id="positiveIdcardeimg"></span>
+                                </li>
+                                <li class="fl">
+                                    <p>身份证反面照：</p> <br/>
+                                    <span id="negativeIdcardimg"></span>
+                                </li>
+                                <li class="fl">
+                                    <p>手持身份证照：</p> <br/>
+                                    <span id="handIdcardimg"></span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--按钮-->
+    <div class="Sup_contain_section_contain_show_buton">
+
+        <button class="gui-btn" onclick="javascript:history.back(1);">关闭</button>
+        <a class="gui-btn" href="/sofn-asms-web/subjEnt/exportSubjEntTempWord/{{subjEntTemp.id}}" target="_blank">下载</a>
+    </div>
+
+</div>

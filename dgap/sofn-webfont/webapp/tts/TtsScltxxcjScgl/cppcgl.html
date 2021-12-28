@@ -1,0 +1,217 @@
+<link rel="stylesheet" href="assets/css/tts/base/baseInfoList.css">
+<div class="gui-breadcrumbs">
+    <a href="">生产管理</a>&gt;
+    <a href="">产品批次管理</a>&gt;
+    <span>产品批次管理</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group">
+        <span class="gui-select">
+            <select ng-model="ttsScltxxcjScgl.ptype" name="ptype" id="ptype">
+                <option value="">产品种类</option>
+            </select>
+        </span>
+        <span class="important">单位</span>
+        <span class="gui-select">
+                <select ng-model="ttsScltxxcjScgl.harvestUnit" name="in_harvestUnit" id="units">
+                    <option value="">计量单位</option>
+                    <!-- <option ng-repeat="x in units" value="{{x.id}}">{{x.dictName}}</option> -->
+                </select>
+            </span>
+        <span class="important">销售状态</span>
+        <span class="gui-select">
+                <select ng-model="ttsScltxxcjScgl.status" name="in_status">
+                    <option value="">当前状态</option>
+                    <option value="1">未卖出</option>
+                    <option value="2">未卖完</option>
+                    <option value="3">已卖完</option>
+                </select>
+            </span>
+        <span class="important">产品名称</span>
+        <!--<input type="hidden" ng-model="ttsScltxxcjScgl.productId" name="in_productId" />
+        <input type="text" class="gui-input" ng-model="ttsScltxxcjScgl.productName" name="in_productName" placeholder="请输入产品名称" readonly="readonly" ng-click="findProduct()" />-->
+        <input type="text" class="gui-input" ng-model="ttsScltxxcjScgl.productName" name="in_productName" placeholder="请输入产品名称">
+    </div>
+    <div class="gui-form-group">
+        <span class="important">时间</span>
+        <input id="startDate" name="startDate" readonly="readonly" class="gui-input Wdate" type="text" onfocus="var endDate=$dp.$('endDate');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'endDate\')}'})">至
+        <input id="endDate" name="endDate" class="gui-input Wdate" readonly="readonly" type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}'})">
+        <button class="gui-btn" id="ToCheck">查询</button>
+        <button class="gui-btn" id="ToClean">清空</button>
+    </div><div class="gui-actions"></div>
+    <div>
+        <table id="grid" class="gui-table">
+        </table>
+    </div>
+</div>
+
+<!-- 选择产品信息  start -->
+<div class="modal fade" id="product_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel1"> 产品信息</h4>
+            </div>
+            <div class="modal-body">
+                <table id="productList" class="gui-table">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  选择产品信息 end -->
+<!-- 合成产品信息 start -->
+<div class="modal fade" id="cphc_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel"> 产品信息</h4>
+            </div>
+            <div class="modal-body">
+                <table id="cphcList" class="gui-table">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  选择产品信息 end -->
+
+<div class="modal fade" id="product_informition" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">
+                    产品详情
+                </h4>
+            </div>
+            <div class=" modal-body">
+                <!-- 表格部分 -->
+                <div class="  tb">
+                    <table id="product_inform" class="gui-table">
+                        <!--<div id="pro_kh" >-->
+                        <!--<tr>-->
+                        <!--<td colspan="4">-->
+                        <!--上游主体信息-->
+                        <!--</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                        <!--<td>主体身份码</td>-->
+                        <!--<td>-->
+                        <!--<span id="s_entitycode"></span>-->
+                        <!--</td>-->
+                        <!--<td>主体用户码</td>-->
+                        <!--<td>-->
+                        <!--<span id="s_useridcode"></span>-->
+                        <!--</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                        <!--<td>单位名称</td>-->
+                        <!--<td>-->
+                        <!--<span id="s_ztmc1"></span>-->
+                        <!--</td>-->
+                        <!--<td>客户名称</td>-->
+                        <!--<td>-->
+                        <!--<span id="s_lxr1"></span>-->
+                        <!--</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                        <!--<td>主体地址</td>-->
+                        <!--<td>-->
+                        <!--<span id="s_ztdz1"></span>-->
+                        <!--</td>-->
+                        <!--<td>联系电话</td>-->
+                        <!--<td>-->
+                        <!--<span id="s_lxdh1"></span>-->
+                        <!--</td>-->
+                        <!--</tr>-->
+                        <!--</div>-->
+                        <!--<div  id="pro_info">-->
+                        <tr>
+                            <td colspan="4">
+                                产品信息
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>收获基地</td>
+                            <td>
+                                <span id="s_ztmc"></span>
+                            </td>
+                            <td>当前数量</td>
+                            <td>
+                                <span id="s_lxr"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>收获时间</td>
+                            <td>
+                                <span id="s_ztdz"></span>
+                            </td>
+                            <td>质检情况</td>
+                            <td>
+                                <span id="s_lxdh"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                产品名称
+                            </td>
+                            <td>
+                                <span id="product_name"></span>
+                            </td>
+                            <td>
+                                产品种类
+                            </td>
+                            <td>
+                                <span id="product_sort"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                质检结论
+                            </td>
+                            <td>
+                                <span id="cpzsm2"></span>
+                            </td>
+                            <td>
+                                收获单位
+                            </td>
+                            <td>
+                                <span id="cpzsm3"></span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                产品来源
+                            </td>
+                            <td>
+                                <span id="xssl"></span>
+                            </td>
+                            <td id="code">
+                                产品批次
+                            </td>
+                            <td>
+                                <span id="cpzsm"></span>
+                            </td>
+                        </tr>
+                        <!--</div>-->
+                    </table>
+                    <input type="hidden" id="xsid">
+                </div>
+            </div>
+            <!-- /.modal-body -->
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>

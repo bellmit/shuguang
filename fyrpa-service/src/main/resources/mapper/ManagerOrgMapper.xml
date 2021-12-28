@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fyrpa.mapper.ManagerOrgMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.fyrpa.model.ManagerOrg" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="manager_org_name" property="managerOrgName" jdbcType="VARCHAR" />
+    <result column="org_formation_dept" property="orgFormationDept" jdbcType="VARCHAR" />
+    <result column="dept_approve_number" property="deptApproveNumber" jdbcType="VARCHAR" />
+    <result column="manager_org_level" property="managerOrgLevel" jdbcType="VARCHAR" />
+    <result column="manager_org_quality" property="managerOrgQuality" jdbcType="VARCHAR" />
+    <result column="jurisdiction_relation" property="jurisdictionRelation" jdbcType="VARCHAR" />
+    <result column="manager_org_staff_formation" property="managerOrgStaffFormation" jdbcType="VARCHAR" />
+    <result column="manager_staff_amout" property="managerStaffAmout" jdbcType="VARCHAR" />
+    <result column="technology_staff_amout" property="technologyStaffAmout" jdbcType="VARCHAR" />
+    <result column="is_funds" property="isFunds" jdbcType="VARCHAR" />
+    <result column="funds_source" property="fundsSource" jdbcType="VARCHAR" />
+    <result column="fixed_funds" property="fixedFunds" jdbcType="VARCHAR" />
+    <result column="manager_org_addr" property="managerOrgAddr" jdbcType="VARCHAR" />
+    <result column="manager_org_post_code" property="managerOrgPostCode" jdbcType="VARCHAR" />
+    <result column="manager_org_phone" property="managerOrgPhone" jdbcType="VARCHAR" />
+    <result column="manager_org_portraiture" property="managerOrgPortraiture" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="DATE" />
+    <result column="is_del" property="isDel" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, manager_org_name, org_formation_dept, dept_approve_number, manager_org_level, 
+    manager_org_quality, jurisdiction_relation, manager_org_staff_formation, manager_staff_amout, 
+    technology_staff_amout, is_funds, funds_source, fixed_funds, manager_org_addr, manager_org_post_code, 
+    manager_org_phone, manager_org_portraiture, email, status, create_time, is_del
+  </sql>
+
+</mapper>

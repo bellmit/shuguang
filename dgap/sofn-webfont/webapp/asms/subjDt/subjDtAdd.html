@@ -1,0 +1,308 @@
+<link rel="stylesheet" href="assets/css/asms/subjSv/subjSvAdd.css"/>
+<div class="gui-breadcrumbs">
+    <a href="">监管系统</a>&gt;
+    <a href="">主体管理</a>&gt;
+    <a href="">检测机构</a>&gt;
+    <a ui-sref="index.content.asms/subjDt/subjDtList">检测机构主体信息</a>&gt;
+    <span>新增</span>
+</div>
+<!--<p class="col-lg-1 col-xs-1 col-sm-1 col-md-1"> </p>-->
+<div class="Sup_contain_section_contain_head gui-section">
+    <p>新增注册</p>
+    <form id="addDtForm" name="addDtForm"
+          data-bv-message="不能为空"
+          data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+          data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+          data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+    <ul>
+        <li>
+            <div class="form-group">
+                <span class="col-lg-3 col-sm-3 col-md-3 control-label">机构名称<span style="color:red;">*</span></span>
+                <div class="col-lg-6 col-sm-6 col-md-6">
+                    <input type="text" ng-model="subjDt.dtName" name="dtName" placeholder="请输入机构名称"
+                           class="form-control"
+                           data-bv-notempty="true"
+                           data-bv-notempty-message="机构名称不能为空"
+                           data-bv-stringlength="true"
+                           data-bv-stringlength-max="50"
+                           data-bv-stringlength-message="机构名称不能超过50个字符" />
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group">
+                <span class="col-lg-3 col-sm-3 col-md-3 control-label">机构代码<span style="color:red;">*</span></span>
+                <div class="col-lg-6 col-sm-6 col-md-6">
+                    <input type="text" ng-model="subjDt.dtCode" name="dtCode" placeholder="请输入机构代码"
+                           class="form-control"
+                           data-bv-notempty="true"
+                           data-bv-notempty-message="机构代码不能为空"
+                           data-bv-stringlength="true"
+                           data-bv-stringlength-max="50"
+                           data-bv-stringlength-message="机构代码不能超过50个字符"/>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group">
+                <span class="col-lg-3 col-sm-3 col-md-3 control-label">机构类别<span style="color:red;">*</span></span>
+                <div class="col-lg-6 col-sm-6 col-md-6">
+                    <div class="gui-select">
+                        <select name="dtTypeId"
+                                class="form-control"
+                                data-bv-notempty="true"
+                                data-bv-notempty-message="机构类别不能为空">
+                            <!--<option value='' disabled selected style='display:none;'>请选择机构类别</option>-->
+                            <!--<option ng-repeat="x in orgType" value="{{x.id}}">{{x.dictName}}</option>-->
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group">
+                <span class="col-lg-3 col-sm-3 col-md-3 control-label">机构性质<span style="color:red;">*</span></span>
+                <div class="col-lg-6 col-sm-6 col-md-6">
+                    <div class="gui-select">
+                        <select ng-model="subjDt.dtNatureId" name="dtNatureId" class="form-control"
+                                data-bv-notempty="true"
+                                data-bv-notempty-message="机构性质不能为空">
+                            <option value='' disabled selected style='display:none;'>请选择机构性质</option>
+                            <option ng-repeat="x in nature" value="{{x.id}}">{{x.dictName}}</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group">
+                <span class="col-lg-3 col-sm-3 col-md-3 control-label">资质<span style="color:red;">*</span></span>
+                <div class="col-lg-6 col-sm-6 col-md-6">
+                    <div class="gui-select">
+                        <select ng-model="subjDt.dtQualificationsId" name="dtQualificationsId"  class="form-control"
+                                data-bv-notempty="true"
+                                data-bv-notempty-message="资质不能为空">
+                            <option value='' disabled selected style='display:none;'>请选择资质</option>
+                            <option ng-repeat="x in qualifications" value="{{x.id}}">{{x.dictName}}</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group">
+                <span class="col-lg-3 col-sm-3 col-md-3 control-label">依托单位<span style="color:red;">*</span></span>
+                <div class="col-lg-6 col-sm-6 col-md-6">
+                    <input type="text" ng-model="subjDt.dtRelyOnUnit" name="dtRelyOnUnit" placeholder="请输入依托单位"
+                           class="form-control"
+                           data-bv-stringlength="true"
+                           data-bv-stringlength-max="50"
+                           data-bv-stringlength-message="依托单位不能超过50个字符"/>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group">
+                <span class="col-lg-3 col-sm-3 col-md-3 control-label">机构级别<span style="color:red;">*</span></span>
+                <div class="col-lg-6 col-sm-6 col-md-6">
+                    <div class="gui-select">
+                        <select ng-model="subjDt.dtLevelId" name="dtLevelId" ng-change="limitArea()"
+                                class="form-control"
+                                data-bv-notempty="true"
+                                data-bv-notempty-message="机构级别不能为空">
+                           <!--<option value='' disabled selected style='display:none;'>请选择机构级别</option>-->
+                            <option ng-repeat="x in orgLevel" value="{{x.id}}" dictVal="{{x.dictValue}}">{{x.dictName}}</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group">
+                <span class="col-lg-3 col-sm-3 col-md-3 control-label">所属区域</span>
+                <div class="col-lg-6 col-sm-6 col-md-6" style="text-align: left">
+                    <div class="gui-select">
+                        <select id="sheng" class="mr15">
+                            <option value="">--省--</option>
+                        </select>
+                    </div>
+               <div class="gui-select mt15">
+                   <select id="shi" class="mr15 ml15">
+                       <option value="">--市--</option>
+                   </select>
+               </div>
+                <div class="gui-select mt15">
+                    <select id="xian" class="ml15">
+                        <option value="">--区/县--</option>
+                    </select>
+                </div>
+
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group">
+                <span class="col-lg-3 col-sm-3 col-md-3 control-label">通讯地址<span style="color:red;">*</span></span>
+                <div class="col-lg-6 col-sm-6 col-md-6">
+                    <input type="text" ng-model="subjDt.dtAddress" name="dtAddress" placeholder="请输入通讯地址"
+                           class="form-control"
+                           data-bv-notempty="true"
+                           data-bv-notempty-message="通讯地址不能为空"
+                           data-bv-stringlength="true"
+                           data-bv-stringlength-max="50"
+                           data-bv-stringlength-message="通讯地址不能超过50个字符"/>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group">
+                <span class="col-lg-3 col-sm-3 col-md-3 control-label">法人<span style="color:red;">*</span></span>
+                <div class="col-lg-6 col-sm-6 col-md-6">
+                    <input type="text" ng-model="subjDt.dtLegalMan" name="dtLegalMan" placeholder="请输入法人"
+                           class="form-control"
+                           data-bv-notempty="true"
+                           data-bv-notempty-message="法人不能为空"
+                           data-bv-stringlength="true"
+                           data-bv-stringlength-max="50"
+                           data-bv-stringlength-message="法人不能超过50个字符"/>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group">
+                <span class="col-lg-3 col-sm-3 col-md-3 control-label">负责人<span style="color:red;">*</span></span>
+                <div class="col-lg-6 col-sm-6 col-md-6">
+                    <input type="text" ng-model="subjDt.dtLeader" name="dtLeader" placeholder="请输入负责人"
+                           class="form-control"
+                           data-bv-notempty="true"
+                           data-bv-notempty-message="负责人不能为空"
+                           data-bv-stringlength="true"
+                           data-bv-stringlength-max="50"
+                           data-bv-stringlength-message="负责人不能超过50个字符"/>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group">
+                <span class="col-lg-3 col-sm-3 col-md-3 control-label">负责人电话<span style="color:red;">*</span></span>
+                <div class="col-lg-6 col-sm-6 col-md-6">
+                    <input type="text" ng-model="subjDt.dtLeaderPhone" name="dtLeaderPhone" class="form-control"
+                           data-bv-isTelephone="true"/>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group">
+                <span class="col-lg-3 col-sm-3 col-md-3 control-label">联系人<span style="color:red;">*</span></span>
+                <div class="col-lg-6 col-sm-6 col-md-6">
+                    <input type="text" ng-model="subjDt.dtContact" name="dtContact" placeholder="请输入联系人"
+                           class="form-control"
+                           data-bv-notempty="true"
+                           data-bv-notempty-message="联系人不能为空"
+                           data-bv-stringlength="true"
+                           data-bv-stringlength-max="50"
+                           data-bv-stringlength-message="联系人不能超过50个字符"/>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group">
+                <span class="col-lg-3 col-sm-3 col-md-3 control-label">联系人电话<span style="color:red;">*</span></span>
+                <div class="col-lg-6 col-sm-6 col-md-6">
+                    <input type="text" ng-model="subjDt.dtContactPhone" name="dtContactPhone" placeholder="请输入联系人电话"
+                           class="form-control"
+                           data-bv-notempty="true"
+                           data-bv-notempty-message="联系人电话不能为空"
+                           data-bv-isTelephone="true"/>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group">
+                <span class="col-lg-3 col-sm-3 col-md-3 control-label">联系人QQ</span>
+                <div class="col-lg-6 col-sm-6 col-md-6">
+                    <input type="text" ng-model="subjDt.dtContactQQ" name="dtContactQQ" class="form-control"
+                           data-bv-regexp="true"
+                           data-bv-regexp-regexp="^\d{5,11}$"
+                           data-bv-regexp-message="只能输入5到11位的数字"/>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group">
+                <span class="col-lg-3 col-sm-3 col-md-3 control-label">电子邮箱</span>
+                <div class="col-lg-6 col-sm-6 col-md-6">
+                    <input type="text" ng-model="subjDt.dtContactEmail" name="dtContactEmail" class="form-control"
+                           data-bv-stringlength="true"
+                           data-bv-stringlength-max="50"
+                           data-bv-stringlength-message="电子邮箱不能超过50个字符"
+                           data-bv-emailaddress="true"
+                           data-bv-emailaddress-message="输入不是一个有效的电子邮件地址"/>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group">
+                <span class="col-lg-3 col-sm-3 col-md-3 control-label">邮编</span>
+                <div class="col-lg-6 col-sm-6 col-md-6">
+                    <input type="text" ng-model="subjDt.dtPostcode" name="dtPostcode" class="form-control"
+                           data-bv-isZipcode="true"
+                           data-bv-isZipcode-message="邮编只能为6位数字" />
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group">
+                <span class="col-lg-3 col-sm-3 col-md-3 control-label">技术负责人</span>
+                <div class="col-lg-6 col-sm-6 col-md-6">
+                    <input type="text" ng-model="subjDt.dtTechnicalDirector" name="dtTechnicalDirector" class="form-control"
+                           data-bv-stringlength="true"
+                           data-bv-stringlength-max="50"
+                           data-bv-stringlength-message="技术负责人不能超过50个字符"/>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group">
+                <span class="col-lg-3 col-sm-3 col-md-3 control-label">质量负责人</span>
+                <div class="col-lg-6 col-sm-6 col-md-6">
+                    <input type="text" ng-model="subjDt.dtQualityDirector" name="dtQualityDirector" class="form-control"
+                           data-bv-stringlength="true"
+                           data-bv-stringlength-max="50"
+                           data-bv-stringlength-message="质量负责人不能超过50个字符"/>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group">
+                <span class="col-lg-3 col-sm-3 col-md-3 control-label">参数</span>
+                <div class="col-lg-6 col-sm-6 col-md-6">
+                    <input type="text" ng-model="subjDt.dtParameter" name="dtParameter" class="form-control"
+                           data-bv-stringlength="true"
+                           data-bv-stringlength-max="50"
+                           data-bv-stringlength-message="参数不能超过50个字符"/>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group">
+                <span class="col-lg-3 col-sm-3 col-md-3 control-label">产品范围</span>
+                <div class="col-lg-6 col-sm-6 col-md-6 ">
+                    <input type="text" ng-model="subjDt.dtProductRange" name="dtProductRange" class="form-control"
+                           data-bv-stringlength="true"
+                           data-bv-stringlength-max="50"
+                           data-bv-stringlength-message="产品范围不能超过50个字符"/>
+                </div>
+            </div>
+        </li>
+    </ul>
+    </form>
+    <div style="text-align: center;width: 100%" class="mt15 mb25">
+        <button class="gui-btn mr15" ui-sref="index.content.asms/subjDt/subjDtList">取消</button>
+        <button class="gui-btn ml15" ng-click="addSubjDt()">提交</button>
+    </div>
+</div>

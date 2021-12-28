@@ -1,0 +1,99 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+<!--<link rel="stylesheet" href="assets/css/asms/check/cheRoutine.css"/>-->
+    <div class="gui-breadcrumbs">
+        <a href="">监测系统</a>&gt;
+        <a href="">牵头单位</a>&gt;
+        <a href="">专项监测</a>&gt;
+        <span>已接收任务</span>
+    </div>
+<div class="gui-section">
+    <ul class="gui-tab" role="tablist">
+        <!--<li role="presentation" class="pointer"><a id="newTask" role="tab" data-toggle="tab">新任务</a></li>-->
+        <li role="presentation" class="active"><a id="supTask" role="tab" data-toggle="tab">已接受任务</a></li>
+        <li role="presentation" class="pointer"><a id="bePubTask" role="tab" data-toggle="tab">待发布任务</a></li>
+        <li role="presentation" class="pointer"><a id="historyTask" role="tab" data-toggle="tab">历史任务</a></li>
+    </ul>
+                <div class="gui-mediaInline">
+                    <div class="gui-form-group">
+                   <!-- <input name="queryYear" style="width: 50px" onfocus="WdatePicker({skin:'default',dateFmt:'yyyy'})" class="Wdate gui-input"
+                           placeholder="&#45;&#45;年份&#45;&#45;"/>-->
+                    <span>时间</span>
+                    <input id="datebegin" style="cursor: pointer;width: 100px;" name="datebegin" class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('dateend');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateend\')}'})"/>
+                    至
+                    <input id="dateend" class="Wdate gui-input" name="dateend" style="cursor: pointer;width: 100px;" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'datebegin\')}'})"/>
+                    <input class="gui-input" type="text" name="smName" onblur="check(this)" style="width: 80px" placeholder="请输入任务名称"/>
+                    <button id="ToCheck" data-toggle="tooltip" class="gui-btn" data-placement="right" title="根据输入条件检索列表">查询</button>
+                    </div>
+                </div>
+
+        <table id="grid" class="gui-table mt15"
+               style="width: 100%">
+        </table>
+</div>
+
+<!--infoModel-->
+<div class="modal fade" id="TaskInfoModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-stylemid" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>查看</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <form class="bs-example bs-example-form" role="form">
+                    <div class="row">
+                        <div class="">
+                            <div class="clearfix gov-h">
+                                <label class="col-lg-4 col-md-4 col-sm-4" style="text-align: right;padding-right: 10px">任务名称：</label>
+                                <span class="col-lg-8 col-md-8 col-sm-8" ng-bind="specialMonitor.smName"></span>
+                            </div>
+                            <div class="clearfix gov-h mt15">
+                                <label class="col-lg-4 col-md-4 col-sm-4" style="text-align: right;padding-right: 10px">监测类型：</label>
+                                <span class="col-lg-8 col-md-8 col-sm-8" ng-bind="specialMonitor.smType"></span>
+                            </div>
+                            <div class="clearfix gov-h mt15">
+                                <label class="col-lg-4 col-md-4 col-sm-4" style="text-align: right;padding-right: 10px">年度：</label>
+                                <span class="col-lg-8 col-md-8 col-sm-8" ng-bind="specialMonitor.smYear"></span>
+                            </div>
+                            <div class="clearfix gov-h mt15">
+                                <label class="col-lg-4 col-md-4 col-sm-4" style="text-align: right;padding-right: 10px">批次：</label>
+                                <span class="col-lg-8 col-md-8 col-sm-8" ng-bind="specialMonitor.smBatch"></span>
+                            </div>
+                            <div class="clearfix gov-h mt15">
+                                <label class="col-lg-4 col-md-4 col-sm-4" style="text-align: right;padding-right: 10px">任务时间：</label>
+                                <div class="col-lg-8 col-md-8 col-sm-8">
+                                    <span class="" ng-bind="specialMonitor.smDateBegin"></span>&nbsp;&nbsp;至&nbsp;&nbsp;
+                                    <span ng-bind="specialMonitor.smDateEnd"></span>
+                                </div>
+
+                            </div>
+                            <div class="clearfix gov-h mt15">
+                                <label class="col-lg-4 col-md-4 col-sm-4" style="text-align: right;padding-right: 10px">发布单位：</label>
+                                <span class="col-lg-8 col-md-8 col-sm-8" ng-bind="specialMonitor.smReleaseUnit"></span>
+                            </div>
+                            <div class="clearfix gov-h mt15">
+                                <label class="col-lg-4 col-md-4 col-sm-4" style="text-align: right;padding-right: 10px">牵头单位：</label>
+                                <span class="col-lg-8 col-md-8 col-sm-8" ng-bind="specialMonitor.qtName"></span>
+                            </div>
+                            <div class="clearfix gov-h mt15" id="File">
+                            </div>
+                            <div class="clearfix gov-h mt15">
+                                <label class="col-lg-4 col-md-4 col-sm-4" style="text-align: right;padding-right: 10px">文件号：</label>
+                                <span class="col-lg-8 col-md-8 col-sm-8" ng-bind="specialMonitor.smFileNum"></span>
+                            </div>
+                            <div class="clearfix gov-h mt15">
+                                <label class="col-lg-4 col-md-4 col-sm-4" style="text-align: right;padding-right: 10px">备注：</label>
+                                <span class="col-lg-8 col-md-8 col-sm-8" ng-bind="specialMonitor.smRemark"></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" data-dismiss="modal">返回</button>
+            </div>
+        </div>
+    </div>
+</div>

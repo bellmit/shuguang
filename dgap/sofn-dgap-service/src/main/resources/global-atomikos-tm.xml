@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+    <bean id="dbPasswordCallback" class="com.sofn.core.config.DBPasswordCallback">
+        <description>数据库连接回调密码解密</description>
+    </bean>
+    <bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter" lazy-init="true">
+        <description>状态过滤器</description>
+        <property name="slowSqlMillis" value="3000" />
+        <property name="logSlowSql" value="true" />
+        <property name="mergeSql" value="true" />
+    </bean>
+    <bean id="log-filter" class="com.alibaba.druid.filter.logging.Log4jFilter">
+        <property name="resultSetLogEnabled" value="false" />
+        <property name="statementExecutableSqlLogEnable" value="true" />
+    </bean>
+    <bean id="xaDataSource" class="com.alibaba.druid.pool.xa.DruidXADataSource"
+          destroy-method="close" init-method="init" lazy-init="true">
+        <property name="driverClassName" value="${db.driver}" />
+        <property name="url" value="${db.writer.url}" />
+        <property name="username" value="${db.writer.username}" />
+        <property name="password" value="${db.writer.password}" />
+        <property name="connectionProperties" value="password=${db.writer.password}" />
+        <property name="passwordCallback" ref="dbPasswordCallback" />
+    </bean>
+    <!--
+    <bean id="dataSource" class="com.atomikos.jdbc.AtomikosDataSourceBean"
+          init-method="init" destroy-method="close">
+        <property name="uniqueResourceName" value="dataSource" />
+        <property name="xaDataSource" ref="xaDataSource" />
+        <property name="maxPoolSize" value="100" />
+        <property name="borrowConnectionTimeout" value="30" />
+        <property name="testQuery" value="select 1" />
+        <property name="maintenanceInterval" value="60" />
+    </bean>
+    -->
+    <bean id="dataSource" class="com.atomikos.jdbc.AtomikosDataSourceBean"
+          init-method="init" destroy-method="close">
+        <property name="uniqueResourceName" value="dataSource"/>
+        <property name="xaDataSourceClassName" value="oracle.jdbc.xa.client.OracleXADataSource"/>
+        <property name="xaProperties">
+            <props>
+                <prop key="URL">${db.writer.url}</prop>
+                <prop key="user">${db.writer.username}</prop>
+                <prop key="password">12345678</prop>
+            </props>
+        </property>
+        <property name="poolSize" value="1"/>
+        <property name="maxPoolSize" value="30"/>
+    </bean>
+
+    <bean class="org.springframework.jdbc.core.JdbcTemplate">
+        <constructor-arg ref="dataSource" />
+    </bean>
+
+    <!-- pre and dw settings -->
+
+    <!-- mybatis settings -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <description>spring和MyBatis完美整合，不需要mybatis的配置映射文件</description>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:mybatis-config.xml" />
+        <!-- 自动扫描mapping.xml文件 -->
+        <property name="mapperLocations" value="classpath:mappers/*/*.xml" />
+    </bean>
+
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+        <property name="basePackage" value="com.sofn" />
+        <property name="annotationClass"
+                  value="com.sofn.core.annotation.MyBatisDao" />
+    </bean>
+
+    <!-- 数据仓库和前置机数据库的数据源配置-->
+    <bean id="dwXaDataSource" class="com.alibaba.druid.pool.xa.DruidXADataSource"
+          destroy-method="close" init-method="init" lazy-init="true">
+        <description>数据仓库数据源配置</description>
+        <property name="driverClassName" value="${db.dw.driver}" />
+        <property name="proxyFilters">
+            <list>
+                <ref bean="stat-filter" />
+                <ref bean="log-filter"/>
+            </list>
+        </property>
+        <property name="url" value="${db.dw.url}" />
+        <property name="username" value="${db.dw.username}" />
+        <property name="password" value="${db.dw.password}" />
+        <property name="connectionProperties" value="password=${db.dw.password};remarksReporting=true" />
+        <property name="passwordCallback" ref="dbPasswordCallback" />
+    </bean>
+
+    <bean id="preXaDataSource" class="com.alibaba.druid.pool.xa.DruidXADataSource"
+          destroy-method="close" init-method="init" lazy-init="true">
+        <description>前置数据库连接</description>
+        <property name="driverClassName" value="${db.pre.driver}" />
+        <property name="proxyFilters">
+            <list>
+                <ref bean="stat-filter" />
+                <ref bean="log-filter"/>
+            </list>
+        </property>
+        <property name="url" value="${db.pre.url}" />
+        <property name="username" value="${db.pre.username}" />
+        <property name="password" value="${db.pre.password}" />
+        <property name="connectionProperties" value="password=${db.pre.password};remarksReporting=true" />
+        <property name="passwordCallback" ref="dbPasswordCallback" />
+    </bean>
+
+    <!--
+    <bean id="dwDataSource" class="com.atomikos.jdbc.AtomikosDataSourceBean"
+          init-method="init" destroy-method="close">
+        <property name="uniqueResourceName" value="dwXaDataSource" />
+        <property name="xaDataSource" ref="dwXaDataSource" />
+        <property name="maxPoolSize" value="100" />
+        <property name="borrowConnectionTimeout" value="30" />
+        <property name="testQuery" value="select 1" />
+        <property name="maintenanceInterval" value="60" />
+    </bean>
+
+    <bean id="preDataSource" class="com.atomikos.jdbc.AtomikosDataSourceBean"
+          init-method="init" destroy-method="close">
+        <property name="uniqueResourceName" value="preXaDataSource" />
+        <property name="xaDataSource" ref="preXaDataSource" />
+        <property name="maxPoolSize" value="100" />
+        <property name="borrowConnectionTimeout" value="30" />
+        <property name="testQuery" value="select 1" />
+        <property name="maintenanceInterval" value="60" />
+    </bean>
+    -->
+    <bean id="dwDataSource" class="com.atomikos.jdbc.AtomikosDataSourceBean"
+          init-method="init" destroy-method="close">
+        <property name="uniqueResourceName" value="dwDataSource"/>
+        <property name="xaDataSourceClassName" value="oracle.jdbc.xa.client.OracleXADataSource"/>
+        <property name="xaProperties">
+            <props>
+                <prop key="URL">${db.dw.url}</prop>
+                <prop key="user">${db.dw.username}</prop>
+                <prop key="password">12345678</prop>
+            </props>
+        </property>
+        <property name="poolSize" value="1"/>
+        <property name="maxPoolSize" value="30"/>
+    </bean>
+
+    <bean id="preDataSource" class="com.atomikos.jdbc.AtomikosDataSourceBean"
+          init-method="init" destroy-method="close">
+        <property name="uniqueResourceName" value="preDataSource"/>
+        <property name="xaDataSourceClassName" value="oracle.jdbc.xa.client.OracleXADataSource"/>
+        <property name="xaProperties">
+            <props>
+                <prop key="URL">${db.pre.url}</prop>
+                <prop key="user">${db.pre.username}</prop>
+                <prop key="password">12345678</prop>
+            </props>
+        </property>
+        <property name="poolSize" value="1"/>
+        <property name="maxPoolSize" value="30"/>
+    </bean>
+
+    <!-- 配置jdbcTemplate -->
+    <bean id="dwJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dwDataSource"></property>
+    </bean>
+    <bean id="preJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="preDataSource"></property>
+    </bean>
+
+    <!-- atomitos事务管理器 -->
+    <bean id="atomitosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager"
+          init-method="init" destroy-method="close">
+        <property name="forceShutdown" value="true" />
+    </bean>
+
+    <!-- atomitos事务 -->
+    <bean id="atomikosTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
+        <property name="transactionTimeout" value="600" />
+    </bean>
+
+    <!-- Spring JTA事务管理器 -->
+    <bean id="jtaTransactManager" name="dataImportManager"
+          class="org.springframework.transaction.jta.JtaTransactionManager">
+        <property name="transactionManager" ref="atomitosTransactionManager" />
+        <property name="userTransaction" ref="atomikosTransaction" />
+        <property name="allowCustomIsolationLevels" value="true" />
+        <property name="globalRollbackOnParticipationFailure" value="true" />
+    </bean>
+
+    <tx:annotation-driven transaction-manager="jtaTransactManager" proxy-target-class="true" />
+
+</beans>

@@ -1,0 +1,25 @@
+<link rel="stylesheet" href="assets/css/tts/base/baseInfoList.css">
+<link rel="stylesheet" href="assets/css/tts/base/baseAdd.css">
+<!-- 引入 echarts.js -->
+<script src="libs/eCharts/echarts-all.js"></script>
+<div class="gui-breadcrumbs">
+    <a href="">查询系统</a>&gt;
+    <a href="">监管信息查询</a>&gt;
+    <span>农产品追溯信息查询</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group">
+        <input name="zsm" id="zsm" ng-model="zsm" class="gui-input" type="text" placeholder="请输入追溯码或批次码查询"
+               onkeyup="this.value=this.value.replace(/\s+/g,' ')">
+        <button class="gui-btn" ng-click="query()">查询</button>
+        <button class="gui-btn" ng-click="clean()">清空</button>
+    </div>
+    <div class="gui-actions"></div>
+    <div ng-show="isShow" class="Sup_contain_section_contain_01">
+        <div>
+            <!-- 关系图 树图-->
+            <div id="myChart" style="height: 520px;">
+            </div>
+        </div>
+    </div>
+</div>

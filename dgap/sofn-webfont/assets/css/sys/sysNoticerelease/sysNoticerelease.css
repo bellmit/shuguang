@@ -1,0 +1,7 @@
+.gui-list{
+  padding: 50px 10px;
+  overflow: hidden;
+}
+.gui-list > li{
+    width: 50%;
+}

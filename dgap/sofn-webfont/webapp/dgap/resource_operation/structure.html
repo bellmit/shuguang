@@ -1,0 +1,144 @@
+<link rel="stylesheet" href="assets/css/dgap/resource/resourceMa.css">
+<link rel="stylesheet" href="/libs/bootstrap/bootstrap-3.3.5-dist/css/bootstrap-switch.min.css">
+<style>
+    /*#reDir_wrapper{*/
+    /*overflow: scroll;*/
+    /*}*/
+    .gui-table td, .gui-table th{
+        word-break: normal;
+        white-space: nowrap;
+        overflow: visible;
+    }
+</style>
+<div class="gui-breadcrumbs">
+    <a href="">数据共享系统</a>&gt;
+    <a href="">资源管理</a>&gt;
+    <span>资源发布</span>
+</div>
+<div class="gui-section">
+    <div class="gui-tree-sidebar">
+        <div class="dropdown">
+            <form>
+                <div class="gui-form-group form-group clearfix">
+                    <span class="color-gray">仓库表:</span>
+                    <input class="gui-input form_input"  style="width: 40px" type="text" id="keyWord" name="tableName" placeholder="仓库表名"
+                           maxlength="30">
+                    <br>
+                </span>
+                    <button class="gui-btn submit-btn" style="float: right" ng-click="queryTableName();">查询</button>
+                </div>
+            </form>
+            <ul class="gui-list">
+                <!--<li ng-click="treeshow($event)"><a>资源发布</a></li>-->
+                <li ng-click="treeshow($event)"><a>仓库表</a></li>
+                <li role="presentation" ng-click="treeMainLi(n.id, $event)" ng-repeat="n in resourcePublis">
+                    <a>{{n.text}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="gui-tree-content">
+
+        <div class="gui-actions">
+            <span class="gui-btn fr authority ml15" ng-click="selectData()"><i class="gui-icon "></i>查询仓库表数据</span>
+        </div>
+        <table id="resource" class="gui-table">
+        </table>
+        <div align="center">
+            <button class="gui-btn submit-btn" style="float: initial" ng-click="pushResource();">发布成资源</button>
+        </div>
+
+    </div>
+</div>
+<!-- 模态框（Modal）仓库表数据列表 -->
+<div class="modal fade " id="dataModal" tabindex="-1" role="dialog" aria-labelledby="resDirAddLabel" aria-hidden="true">
+    <div class="modal-dialog" style="padding-top:15px;height:600px; width:900px;" >
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">仓库表</h4>
+            </div>
+            <div id="entDiv">
+                <div class="gui-section" >
+                    <div class="">
+                        <table id="dataGrid" style="width: 100%;" class="gui-table">
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 模态框（Modal）发布资源 -->
+<div class="modal fade " id="pushModal" tabindex="-1" role="dialog" aria-labelledby="resDirAddLabel" aria-hidden="true">
+    <div class="modal-dialog" style="padding-top:15px;">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">资源发布</h4>
+            </div>
+            <div class="modal-body">
+                <div id="pushForm" style="text-align: center">
+                    <div class="form-item form-group">
+                        <label>资源目录<i class="gui-colorRed">*</i></label>
+                        <span class="gui-select">
+                        <select name="resourceDirName" class="gui-select form-control" data-bv-notempty="true"
+                                data-bv-notempty-message="资源所属目录不能为空">
+                            <option value="">--资源所属目录--</option>
+                            <option ng-repeat="x in resourceDir" value="{{x.id}}" ng-bind="x.text"></option>
+                        </select>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>资源名称<i class="gui-colorRed">*</i></label>
+                        <input ng-model="resourceName" type="text" class="gui-input form-control"
+                               data-bv-notempty="true" data-bv-notempty-message="资源名称不能为空" name="ame"
+                               data-bv-stringlength="true" data-bv-stringlength-max="30"
+                               data-bv-stringlength-message="资源名称不超过30个字符">
+                    </div>
+                    <div class="form-item form-group">
+                        <label>资源URL<i class="gui-colorRed">*</i></label>
+                        <input ng-model="reourceURL" type="text" class="gui-input form-control" data-bv-notempty="true"
+                               data-bv-notempty-message="资源URL不能为空" name="redme" data-bv-stringlength="true"
+                               data-bv-stringlength-max="100" data-bv-stringlength-message="资源URL不超过100个字符">
+                    </div>
+                    <div class="form-item form-group">
+                        <label>资源状态<i class="gui-colorRed">*</i></label>
+                        <span class="gui-select">
+                            <select name="resourceFlag" class="gui-select form-control" data-bv-notempty="true"
+                                    data-bv-notempty-message="资源状态不能为空">
+                                <option value="">--资源状态--</option>
+                                <option value="A">可用</option>
+                                <option value="N">不可用</option>
+                            </select>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>文件路径&nbsp</label>
+                        <input ng-model="reourceFilePath" type="text" class="gui-input form-control"
+                               name="redmef" data-bv-stringlength="true"
+                               data-bv-stringlength-max="100" data-bv-stringlength-message="文件路径不超过100个字符">
+                    </div>
+                    <div class="form-item form-group">
+                        <label>资源描述<i class="gui-colorRed">*</i></label>
+                        <textarea class="gui-textarea form-control" data-bv-notempty="true"
+                                  data-bv-notempty-message="资源描述不能为空" name="description" data-bv-stringlength="true"
+                                  data-bv-stringlength-max="300"
+                                  data-bv-stringlength-message="资源描述不超过300个字符"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <span type="button" class="gui-btn glyphicon glyphicon-remove" data-dismiss="modal">取消</span>
+                    <span ng-click="pushResources()" class="gui-btn glyphicon glyphicon-ok pushResources">
+                        发布
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

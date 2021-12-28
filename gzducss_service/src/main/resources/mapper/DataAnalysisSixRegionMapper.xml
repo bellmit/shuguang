@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sofn.ducss.mapper.DataAnalysisSixRegionMapper">
+  <resultMap id="BaseResultMap" type="com.sofn.ducss.model.DataAnalysisSixArea">
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="year" jdbcType="VARCHAR" property="year" />
+    <result column="six_area_id" jdbcType="VARCHAR" property="sixAreaId" />
+    <result column="straw_type" jdbcType="VARCHAR" property="strawType" />
+    <result column="grain_yield" jdbcType="DECIMAL" property="grainYield" />
+    <result column="grass_valley_ratio" jdbcType="DECIMAL" property="grassValleyRatio" />
+    <result column="collection_ratio" jdbcType="DECIMAL" property="collectionRatio" />
+    <result column="seed_area" jdbcType="DECIMAL" property="seedArea" />
+    <result column="return_area" jdbcType="DECIMAL" property="returnArea" />
+    <result column="export_yield" jdbcType="DECIMAL" property="exportYield" />
+    <result column="theory_resource" jdbcType="DECIMAL" property="theoryResource" />
+    <result column="collect_resource" jdbcType="DECIMAL" property="collectResource" />
+    <result column="market_ent" jdbcType="DECIMAL" property="marketEnt" />
+    <result column="fertilizes" jdbcType="DECIMAL" property="fertilizes" />
+    <result column="feeds" jdbcType="DECIMAL" property="feeds" />
+    <result column="fuelleds" jdbcType="DECIMAL" property="fuelleds" />
+    <result column="base_mats" jdbcType="DECIMAL" property="baseMats" />
+    <result column="materializations" jdbcType="DECIMAL" property="materializations" />
+    <result column="reuse" jdbcType="DECIMAL" property="reuse" />
+    <result column="fertilisingd" jdbcType="DECIMAL" property="fertilisingd" />
+    <result column="foraged" jdbcType="DECIMAL" property="foraged" />
+    <result column="fueld" jdbcType="DECIMAL" property="fueld" />
+    <result column="based" jdbcType="DECIMAL" property="based" />
+    <result column="materiald" jdbcType="DECIMAL" property="materiald" />
+    <result column="return_resource" jdbcType="DECIMAL" property="returnResource" />
+    <result column="other" jdbcType="DECIMAL" property="other" />
+    <result column="fertilize" jdbcType="DECIMAL" property="fertilize" />
+    <result column="feed" jdbcType="DECIMAL" property="feed" />
+    <result column="fuelled" jdbcType="DECIMAL" property="fuelled" />
+    <result column="base_mat" jdbcType="DECIMAL" property="baseMat" />
+    <result column="materialization" jdbcType="DECIMAL" property="materialization" />
+    <result column="straw_utilization" jdbcType="DECIMAL" property="strawUtilization" />
+    <result column="totol_rate" jdbcType="DECIMAL" property="totolRate" />
+    <result column="compr_util_index" jdbcType="DECIMAL" property="comprUtilIndex" />
+    <result column="indu_util_index" jdbcType="DECIMAL" property="induUtilIndex" />
+    <result column="area_name" jdbcType="VARCHAR" property="areaName"/>
+    <result column="straw_name" jdbcType="VARCHAR" property="strawName"/>
+    <result column="yield_all_num" jdbcType="VARCHAR" property="yieldAllNum"/>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, year, sixAreaId, straw_type, grain_yield, grass_valley_ratio, collection_ratio,
+    seed_area, return_area, export_yield, theory_resource, collect_resource, market_ent, 
+    fertilizes, feeds, fuelleds, base_mats, materializations, reuse, fertilisingd, foraged, 
+    fueld, based, materiald, return_resource, other, fertilize, feed, fuelled, base_mat, 
+    materialization, straw_utilization, totol_rate, compr_util_index, indu_util_index,area_name,straw_name
+  </sql>
+  <insert id="insertList">
+    insert into data_analysis_six_area( year, six_area_id,
+    straw_type, grain_yield, grass_valley_ratio,
+    collection_ratio, seed_area, return_area,
+    export_yield, theory_resource, collect_resource,
+    market_ent, fertilizes, feeds,
+    fuelleds, base_mats, materializations,
+    reuse, fertilisingd, foraged,
+    fueld, based, materiald,
+    return_resource, other, fertilize,
+    feed, fuelled, base_mat,
+    materialization, straw_utilization, totol_rate,
+    compr_util_index, indu_util_index,area_name,straw_name,yield_all_num)
+    values
+    <foreach collection="list" item="detail" index="index" separator=",">
+      (
+      #{detail.year},
+      #{detail.sixAreaId},
+      #{detail.strawType},
+      #{detail.grainYield},
+      #{detail.grassValleyRatio},
+      #{detail.collectionRatio},
+      #{detail.seedArea},
+      #{detail.returnArea},
+      #{detail.exportYield},
+      #{detail.theoryResource},
+      #{detail.collectResource},
+      #{detail.marketEnt},
+      #{detail.fertilizes},
+      #{detail.feeds},
+      #{detail.fuelleds},
+      #{detail.baseMats},
+      #{detail.materializations},
+      #{detail.reuse},
+      #{detail.fertilisingd},
+      #{detail.foraged},
+      #{detail.fueld},
+      #{detail.based},
+      #{detail.materiald},
+      #{detail.returnResource},
+      #{detail.other},
+      #{detail.fertilize},
+      #{detail.feed},
+      #{detail.fuelled},
+      #{detail.baseMat},
+      #{detail.materialization},
+      #{detail.strawUtilization},
+      #{detail.totolRate},
+      #{detail.comprUtilIndex},
+      #{detail.induUtilIndex},
+      #{detail.areaName},
+      #{detail.strawName},
+      #{detail.yieldAllNum}
+      )
+    </foreach>
+  </insert>
+</mapper>

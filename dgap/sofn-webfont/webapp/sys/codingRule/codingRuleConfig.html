@@ -1,0 +1,113 @@
+<style>
+    .newCodeRule{
+    	float: right;
+    }
+    .newCodeRule button{
+    	border:1px solid #ccc;
+    	padding: 5px 10px;
+    	border-radius:5px;
+    	background: #fff;
+    	margin-bottom: 10px;
+    	margin-right: 30px;
+    }
+    .codeManage{
+    	margin-top: 20px;
+    }
+    .tac{
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    th,tr>td{
+    	text-align: left;
+        padding: 5px 30px;
+    }
+    td .codeManage_a{
+    	color: blue;
+    }
+    .mt15{
+        margin-bottom: 15px;
+    }
+    .mt15 input{
+        margin-right: 50px;
+    }
+    .mr15{
+        margin-left: -20px;
+        margin-right: 20px;
+    }
+    input{
+        max-width: 150px;
+    }
+    #cloneNode{
+        display: none;
+    }
+    .codeIcon{
+        width: 22px;
+        height: 22px;
+        cursor: pointer;
+    }
+</style>
+<div class="gui-mainBc">
+    <div class="gui-breadcrumbs">
+        <a href="javascript:void(0)">系统管理</a>&gt;
+        <span>编码管理</span>&gt;
+        <span>修改编码值</span>
+    </div>
+    <div class="gui-section" style="min-height: 640px;">
+	    <div class="codeManage">
+	    	<p class="tac">修改编码值</p>
+	    	<div class="CodeRule_main">
+	    		<table class="">
+	    			<thead>
+	    				<tr>
+	    					<th>码段名称</th>
+	    					<th>码段位数</th>
+	    					<th>生成方式</th>
+                            <th>
+                                <span>值/范围</span>
+                                <span style="margin-left: 150px;">含义</span>
+                            </th>
+	    					<th></th>
+	    				</tr>
+	    			</thead>
+	    			<tbody>
+	    				<tr ng-repeat="codesegment in codesegments">
+                            <td>
+                                <input disabled type="text" value="{{codesegment.segmentName}}">
+                            </td>
+                            <td>
+                                <input disabled type="text" value="{{codesegment.length}}">
+                            </td>
+                            <td>
+                                <div class="gui-select">
+                                    <select disabled class="gui-disabled" ng-model="codesegment.generateMode">
+                                        <option value="配置固定值">配置固定值</option>
+                                        <option value="获取参数值">获取参数值</option>
+                                        <option value="固定日期格式">固定日期格式</option>
+                                        <option value="顺序生成">顺序生成</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <div ng-if="codingRuleName == '主体身份码' || codingRuleName == '产品追溯码'" class="mt15" ng-repeat="segmentValue in codesegment.sysCodeSegmentValues track by $index">
+                                    <input type="text" ng-model="segmentValue.value" ng-disabled="codesegment.segmentName != '产品追溯码类型代码' && codesegment.segmentName != '生产经营者类型代码'" placeholder="值/范围（必填）" maxlength="{{codesegment.length}}">
+                                    <input type="text" ng-model="segmentValue.descr" ng-disabled="codesegment.segmentName != '产品追溯码类型代码' && codesegment.segmentName != '生产经营者类型代码'" placeholder="含义（必填）" maxlength="50">
+                                    <span ng-if="$index > 1" class="mr15 addConfig" ng-click="addValue(codesegment.sysCodeSegmentValues, codesegment.id)"><img class="codeIcon" src="../../../assets/imgs/icon/add.png" alt=""></span>
+                                    <span ng-if="$index > 1 && segmentValue.enableDelete == 'Y'" class="removeConfig" ng-click="deleteValue(codesegment.sysCodeSegmentValues, $index)"><img class="codeIcon" src="../../../assets/imgs/icon/reduce.png" alt=""></span>
+                                </div>
+                                <div ng-if="codingRuleName != '主体身份码' && codingRuleName != '产品追溯码'" class="mt15" ng-repeat="segmentValue in codesegment.sysCodeSegmentValues track by $index">
+                                    <input type="text" ng-model="segmentValue.value" placeholder="值/范围（必填）" maxlength="{{codesegment.length}}">
+                                    <input type="text" ng-model="segmentValue.descr"  placeholder="含义（必填）" maxlength="50">
+                                    <span ng-if="codesegment.generateMode == '配置固定值'" class="mr15 addConfig" ng-click="addValue(codesegment.sysCodeSegmentValues, codesegment.id)"><img class="codeIcon" src="../../../assets/imgs/icon/add.png" alt=""></span>
+                                    <span ng-if="codesegment.generateMode == '配置固定值' && $index > 0 && segmentValue.enableDelete == 'Y'" class="removeConfig" ng-click="deleteValue(codesegment.sysCodeSegmentValues, $index)"><img class="codeIcon" src="../../../assets/imgs/icon/reduce.png" alt=""></span>
+                                </div>
+                            </td>
+                        </tr>
+	    			</tbody>
+	    		</table>
+	    	</div>
+	    </div>
+        <div class="gui-actions">
+            <button class="gui-btn fr" ng-click="saveValues()"><i class="gui-icon icon-add"></i>保存</button>
+        </div>
+	</div>
+</div>

@@ -1,0 +1,58 @@
+spring:
+  datasource:
+    driver-class-name: dm.jdbc.driver.DmDriver
+    url: jdbc:dm://47.94.214.55:5236/FDPI?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf-8
+    username: ENC(hOhbxzstcrceOnrgxX6csw==)
+    password: ENC(EER6QynRESh/oizUSKCGmYsFfuaZ8NEY)
+
+    druid:
+      async-init: true
+      initial-size: 15
+      max-active: 30
+      min-idle: 10
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      filter:
+        config:
+          enabled: true
+
+#  redis:
+#    redisson:
+#      file: classpath:config/redisson-fdpi.yaml
+
+#  redis:
+#    cluster:
+#      nodes: 10.0.50.103:7000,10.0.50.103:7001,10.0.50.103:7002
+#    timeout: 6000ms
+#    lettuce:
+#      pool:
+#        max-active: 100
+#        max-wait: -1ms
+#        max-idle: 10
+#    database: 0
+
+  redis:
+    database: 0
+    host: 47.93.97.50
+    port: 9060
+
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
+
+eureka:
+  instance:
+    hostname: ${spring.cloud.client.ip-address}
+    instance-id: ${eureka.instance.hostname}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://47.94.214.55:8880/eureka/
+
+workflow: N

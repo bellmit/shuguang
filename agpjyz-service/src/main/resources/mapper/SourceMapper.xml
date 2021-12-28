@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agpjyz.mapper.SourceMapper">
+
+    <sql id="base_Column_List">
+      ID, SURVEY, INVESTIGATOR, PHONE, SPEC_VALUE, LATIN, COMMON_NAME, PROVINCE_NAME, CITY_NAME, COUNTY_NAME, ALTITUDE,
+      DISTRIBUTION, AMOUNT, FEATURES, CHARACTERISTIC, ENDANGERED_VALUE, THREATEN, TEMPERATURE, GREATER, PRECIPITATION,
+      SUNSHINE, EVAPORATION, VEGETATION_VALUE, VEGETATION_COVERAGE, SOIL_VALUE, SOIL_FERTILITY, PROTECTION_UTILIZATION,
+      SUGGEST, STATUS, EXPERT_REPORT
+    </sql>
+
+    <sql id="base_Column_List_s">
+      s.ID,  s.SURVEY,  s.INVESTIGATOR,  s.PHONE,  s.SPEC_VALUE,  s.LATIN,  s.COMMON_NAME,  s.PROVINCE_NAME,
+      s.CITY_NAME,  s.COUNTY_NAME,  s.ALTITUDE, s.DISTRIBUTION,  s.AMOUNT,  s.FEATURES,  s.CHARACTERISTIC,
+      s.ENDANGERED_VALUE,  s.THREATEN,  s.TEMPERATURE,  s.GREATER,  s.PRECIPITATION, s.SUNSHINE,  s.EVAPORATION,
+      s.VEGETATION_VALUE,  s.VEGETATION_COVERAGE,  s.SOIL_VALUE,  s.SOIL_FERTILITY,  s.PROTECTION_UTILIZATION,
+      s.SUGGEST,  s.STATUS,  s.EXPERT_REPORT
+    </sql>
+
+    <select id="listByParams" parameterType="java.util.Map" resultType="com.sofn.agpjyz.model.Source">
+        select
+        <include refid="base_Column_List_s"/>
+        from SOURCE s left join HABITAT_TYPE ht on ht.source_id = s.id
+        <where>
+            s.DEL_FLAG = 'N'
+            <if test="specId != null and specId != ''">
+                and s.SPEC_ID = #{specId}
+            </if>
+            <if test="province != null and province != ''">
+                and s.PROVINCE = #{province}
+            </if>
+            <if test="city != null and city != ''">
+                and s.CITY = #{city}
+            </if>
+            <if test="county != null and county != ''">
+                and s.COUNTY = #{county}
+            </if>
+            <if test="habitatId != null and habitatId != ''">
+                and ht.HABITAT_ID = #{habitatId}
+            </if>
+            <if test="status != null and status != ''">
+                and s.STATUS = #{status}
+            </if>
+            <if test="investigator != null and investigator != ''">
+                and s.INVESTIGATOR like '%' || #{investigator} || '%'
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND s.SURVEY &lt;= #{endTime}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                AND s.SURVEY &gt;= #{startTime}
+            </if>
+            <if test="createUserId != null and createUserId != ''">
+                and s.CREATE_USER_ID = #{createUserId}
+            </if>
+            <choose>
+                <!--市级查看权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.agpjyz.constants.Constants@REGION_TYPE_COUNTY">
+                    and (case when s.EXPERT_REPORT = 'Y' then 0 else 1 end) = 1
+                </when>
+                <!--市级审核权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.agpjyz.constants.Constants@REGION_TYPE_CITY">
+                    and (s.STATUS > '1' and (case when s.EXPERT_REPORT = 'Y' then 0 else 1 end) = 1)
+                </when>
+                <!--省级审核权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.agpjyz.constants.Constants@REGION_TYPE_PROVINCE">
+                    and (s.STATUS > '3' and (case when s.EXPERT_REPORT = 'Y' then 0 else 1 end) = 1)
+                </when>
+                <!--总站审核权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.agpjyz.constants.Constants@REGION_TYPE_MINISTRY">
+                    and (s.STATUS > '5' or (case when s.EXPERT_REPORT = 'Y' and s.STATUS = '2' then 0 else 1 end) = 0)
+                </when>
+            </choose>
+        </where>
+        order by s.CREATE_TIME desc
+    </select>
+
+    <update id="updateFeatures">
+        update SOURCE
+        set FEATURES = FEATURES || #{features}
+        where ID = #{id}
+    </update>
+
+    <update id="updateCharacteristic">
+        update SOURCE
+        set CHARACTERISTIC = CHARACTERISTIC || #{characteristic}
+        where ID = #{id}
+    </update>
+
+    <update id="updateThreaten">
+        update SOURCE
+        set THREATEN = THREATEN || #{threaten}
+        where ID = #{id}
+    </update>
+
+    <update id="updateProtectionUtilization">
+        update SOURCE
+        set PROTECTION_UTILIZATION = PROTECTION_UTILIZATION || #{protectionUtilization}
+        where ID = #{id}
+    </update>
+
+    <update id="updateSuggest">
+        update SOURCE
+        set SUGGEST = SUGGEST || #{suggest}
+        where ID = #{id}
+    </update>
+
+    <select id="listSpecName" parameterType="java.util.Map" resultType="com.sofn.agpjyz.model.Source">
+        select t2.id, t2.spec_value
+        from (select max (update_time) as update_time, spec_id from source
+        <where>
+            del_flag = 'N' and status = '8' and expert_report = 'N'
+            <if test="provinces != null">
+                and PROVINCE in
+                <foreach collection="provinces" item="province" open="(" close=")" separator=",">
+                    #{province,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="citys != null">
+                and CITY in
+                <foreach collection="citys" item="city" open="(" close=")" separator=",">
+                    #{city,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="countys != null">
+                and COUNTY in
+                <foreach collection="countys" item="county" open="(" close=")" separator=",">
+                    #{county,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="year != null and year != ''">
+                and to_char(update_time,'YYYY') = #{year}
+            </if>
+        </where>
+        group by spec_id ) t1 left join source t2 on t1.spec_id = t2.spec_id and t1.update_time = t2.update_time
+        order by t2.spec_value
+    </select>
+
+    <select id="listTrend" parameterType="java.util.Map" resultType="com.sofn.agpjyz.vo.TrendVo">
+        select to_char( t4.survey, 'YYYY' ) as year, t4.distribution, t4.amount
+        from (select max ( t1.create_time ) as create_time, t1. county from source t1 right join (
+        select max (survey) as survey from source
+        <where>
+            del_flag = 'N' and status = '8' and expert_report = 'N' and spec_id = #{specId}
+            and update_time &gt;= #{startDate}
+            and update_time &lt;= #{endDate}
+            <if test="provinces != null">
+                and PROVINCE in
+                <foreach collection="provinces" item="province" open="(" close=")" separator=",">
+                    #{province, jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="citys != null">
+                and CITY in
+                <foreach collection="citys" item="city" open="(" close=")" separator=",">
+                    #{city, jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <if test="countys != null">
+                and COUNTY in
+                <foreach collection="countys" item="county" open="(" close=")" separator=",">
+                    #{county, jdbcType=VARCHAR}
+                </foreach>
+            </if>
+        </where>
+        group by to_char( survey, 'YYYY' ), county ) t2 on t1.survey = t2.survey
+        group by to_char( t2.survey, 'YYYY' ), t1.county) t3 left join source t4 on t3.create_time = t4.create_time
+        order by t4.create_time asc
+    </select>
+</mapper>

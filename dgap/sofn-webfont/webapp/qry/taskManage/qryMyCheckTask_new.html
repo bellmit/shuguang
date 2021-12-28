@@ -1,0 +1,226 @@
+<link rel="stylesheet" href="assets/css/ales/taskManage/myCheckTask.css" />
+<style>
+.table-bordered tr th,
+td {
+    text-align: left;
+}
+</style>
+<div class="gui-mainBc">
+    <div class="gui-breadcrumbs">
+        <a href="">查询系统</a>&gt;
+        <a href="">执法信息查询</a>&gt;
+        <span>承担任务查询</span>
+    </div>
+    <div class="gui-TabCut">
+        <ul class="clearfix gov-h">
+            <li class="fl gp-r gui-TabCheck">监督抽查任务</li>
+            <li class="fl gp-r qrySubjSvList" ui-sref="index.content.qry/taskManage/qryEntrustDetection_new">委托检测任务</li>
+        </ul>
+        <div class="gui-botLine"></div>
+    </div>
+    <div class="gui-section">
+        <!--任务查询-->
+        <div class="tab-pane fade in active" id="ypinfo">
+            <div class="gui-form-group">
+                <div class="condition-item">
+                    <span>任务名称</span>
+                    <input maxlength="30" class="gui-input" type="text" name="History_Task_NAME" style="max-width: 120px" placeholder="请输入任务名称" />
+                </div>
+                <div class="condition-item">
+                    <span>任务状态</span>
+                    <div class="gui-select">
+                        <select name="isSample">
+                            <option value="">不限</option>
+                            <option value="0">未提交</option>
+                            <option value="1">已提交</option>
+                            <option value="2">部分提交</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="condition-item">
+                    <span>年度</span>
+                    <input id="Ddl_Year" name="taskYear" type="text" runat="server" onfocus="WdatePicker({skin:'default',dateFmt:'yyyy',minDate:'2010',maxDate:'%y'})" class="Wdate gui-input" style=" width:80px;margin-right: 30px;cursor: pointer" readonly="readonly" />
+                </div>
+                <div class="condition-item">
+                    <span>开始时间</span>
+                    <input id="History_Task_Date_Begin" name="History_Task_Date_Begin" style="cursor: pointer;width: 120px;margin-right: 0px;" readonly="readonly" class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('History_Task_Date_BeginEnd');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'History_Task_Date_BeginEnd\')}'})" /> 至
+                    <input id="History_Task_Date_BeginEnd" name="History_Task_Date_BeginEnd" class="Wdate gui-input" style="cursor: pointer;width: 120px;" readonly="readonly" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'History_Task_Date_Begin\')}'})" />
+                    <span>结束时间</span>
+                    <input id="History_Task_Date_EndBegin" name="History_Task_Date_EndBegin" style="cursor: pointer;width: 120px;margin-right: 0px;" readonly="readonly" class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('History_Task_Date_End');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'History_Task_Date_End\')}'})" /> 至
+                    <input id="History_Task_Date_End" name="History_Task_Date_End" class="Wdate gui-input" style="cursor: pointer;width: 120px;" readonly="readonly" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'History_Task_Date_EndBegin\')}'})" />
+                </div>
+                <div class="condition-item">
+                    <span>所属区域</span>
+                    <div class="gui-select">
+                        <select id="sheng">
+                            <option value="">省</option>
+                        </select>
+                    </div>
+                    <div class="gui-select">
+                        <select id="shi">
+                            <option value="">市</option>
+                        </select>
+                    </div>
+                    <div class="gui-select">
+                        <select id="xian">
+                            <option value="">区/县</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="condition-item condition-custom" data-control="text" ng-show="visibletaskReleaseUnit">
+                    <span>任务发布单位</span>
+                    <input class="gui-input" ng-model="taskReleaseUnit" maxlength="80" type="text" placeholder="请输入任务发布单位" name="taskReleaseUnit" />
+                </div>
+                <div class="condition-item condition-custom" data-control="text" ng-show="visiblecyUnitName">
+                    <span>抽样单位</span>
+                    <input class="gui-input" ng-model="cyUnitName" maxlength="80" type="text" placeholder="请输入抽样单位" name="cyUnitName" />
+                </div>
+                <div class="condition-item condition-custom" data-control="text" ng-show="visibleJdUnitName">
+                    <span>监督执法单位</span>
+                    <input class="gui-input" ng-model="JdUnitName" maxlength="80" type="text" placeholder="请输入监督执法单位" name="JdUnitName" />
+                </div>
+                <div class="condition-item condition-custom" data-control="text" ng-show="visiblejcUnitName">
+                    <span>检测单位</span>
+                    <input class="gui-input" ng-model="jcUnitName" maxlength="80" type="text" placeholder="请输入检测单位" name="jcUnitName" />
+                </div>
+                <!--                 <div class="condition-item condition-custom" data-control="text" ng-show="visiblecreditCode">
+                    <span>抽样组织单位</span>
+                    <input class="gui-input" ng-model="creditCode" maxlength="80" type="text" placeholder="请输入企业注册号" name="creditCode" />
+                </div>
+                <div class="condition-item condition-custom" data-control="text" ng-show="visiblecreditCode">
+                    <span>检测标准</span>
+                    <input class="gui-input" ng-model="creditCode" maxlength="80" type="text" placeholder="请输入企业注册号" name="creditCode" />
+                </div> -->
+                <div class="condition-item condition-custom" data-control="text" ng-show="visibledetectionStandard">
+                    <span>判定标准</span>
+                    <input class="gui-input" ng-model="detectionStandard" maxlength="80" type="text" placeholder="请输入判定标准" name="detectionStandard" />
+                </div>
+                <!-- <div class="condition-item condition-custom" data-control="text" ng-show="visiblecreditCode">
+                    <span>检测对象</span>
+                    <input class="gui-input" ng-model="creditCode" maxlength="80" type="text" placeholder="请输入企业注册号" name="creditCode" />
+                </div>
+                <div class="condition-item condition-custom" data-control="text" ng-show="visiblecreditCode">
+                    <span>检测项目</span>
+                    <input class="gui-input" ng-model="creditCode" maxlength="80" type="text" placeholder="请输入企业注册号" name="creditCode" />
+                </div> -->
+                <div class="condition-item condition-custom" data-control="text" ng-show="visiblefileCode">
+                    <span>文件号</span>
+                    <input class="gui-input" ng-model="fileCode" maxlength="80" type="text" placeholder="请输入文件号" name="fileCode" />
+                </div>
+                <span href="#modalCondition" data-toggle="modal" class="custom-condition">自定义条件</span>
+                <button id="History_Task_ToCheck" class="gui-btn">查询</button>
+                <button class="gui-btn" ng-click="cleanSelectModelQuery()">重置</button>
+            </div>
+        </div>
+        <div class="gui-table-panel clearfix">
+            <p class="table-total">符合条件的数据总计: {{tableTotal}} 项</p>
+            <button ng-click="exportData()" class="fr gui-btn fr ml15">导出</button>
+        </div>
+        <table id="grid" class="gui-table mt15" style="width: 100%"></table>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalCondition" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">请选择自定义条件</h4>
+            </div>
+            <div class="modal-body">
+                <form novalidate="novalidate">
+                    <div class="list-head">
+                        <label>
+                            <input type="checkbox" class="condition-checked-all" />全选
+                        </label>
+                    </div>
+                    <ul class="gui-list list-condition">
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled />任务年度
+                            </label>
+                        </li>
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled>任务名称
+                            </label>
+                        </li>
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled>任务状态
+                            </label>
+                        </li>
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled>开始时间
+                            </label>
+                        </li>
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled>结束时间
+                            </label>
+                        </li>
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled>所属区域
+                            </label>
+                        </li>
+                        <li data-key="taskReleaseUnit">
+                            <label>
+                                <input type="checkbox">任务发布单位
+                            </label>
+                        </li>
+                        <li data-key="cyUnitName">
+                            <label>
+                                <input type="checkbox">抽样单位
+                            </label>
+                        </li>
+                        <li data-key="JdUnitName">
+                            <label>
+                                <input type="checkbox">监督执法单位
+                            </label>
+                        </li>
+                        <li data-key="jcUnitName">
+                            <label>
+                                <input type="checkbox">检测单位
+                            </label>
+                        </li>
+                        <!--                         <li>
+                            <label>
+                                <input type="checkbox">抽样组织单位
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="checkbox">检测标准
+                            </label>
+                        </li> -->
+                        <li data-key="detectionStandard">
+                            <label>
+                                <input type="checkbox">判定标准
+                            </label>
+                        </li>
+                        <!-- <li data-key="creditCode">
+                            <label>
+                                <input type="checkbox">检测对象
+                            </label>
+                        </li>
+                        <li data-key="organizationCode">
+                            <label>
+                                <input type="checkbox">检测项目
+                            </label>
+                        </li> -->
+                        <li data-key="fileCode">
+                            <label>
+                                <input type="checkbox">文件号
+                            </label>
+                        </li>
+                    </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="gui-btn" ng-click="confirmCondition()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>

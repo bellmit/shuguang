@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ahhdp.mapper.ZoneApplyMapper">
+
+    <sql id="base_Column_List">
+      ID, CODE, AREA_NAME, COMPANY, AREA_RANGE, NEW_NAME, NEW_COMPANY, NEW_RANGE,
+      AUDIT_STATUS, OPERATOR, CHANGE_TIME, OPINION, AUDITOR, AUDIT_TIME
+    </sql>
+
+    <select id="listByParams" resultType="com.sofn.ahhdp.model.ZoneApply">
+        select
+        <include refid="base_Column_List"/>
+        from ZONE_APPLY
+        <where>
+            <if test="areaName != null and areaName != ''">
+                and (AREA_NAME like '%'||#{areaName}||'%' or NEW_NAME like '%'||#{areaName}||'%')
+            </if>
+            <if test="company != null and company != ''">
+                and (COMPANY like '%'||#{company}||'%' or NEW_COMPANY like '%'||#{company}||'%')
+            </if>
+            <if test="auditStatus != null and auditStatus != ''">
+                and AUDIT_STATUS = #{auditStatus}
+            </if>
+            <if test="auditStatus2 != null and auditStatus2 != ''">
+                and AUDIT_STATUS is null
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND CHANGE_TIME &lt;= #{endTime}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                AND CHANGE_TIME &gt;= #{startTime}
+            </if>
+        </where>
+        order by CHANGE_TIME desc
+    </select>
+
+    <!--<select id="listByParams" resultType="com.sofn.ahhdp.model.ZoneApply">
+        select
+        ID,
+        CODE,
+        <if test="type == 'manage'">
+            (case when STATUS = '1' then OLD_NAME when STATUS = '0' then (
+            case when NEW_NAME is null then OLD_NAME when NEW_NAME = '' then OLD_NAME else NEW_NAME end
+            ) else OLD_NAME end) OLD_NAME,
+
+            (case when STATUS = '1' then OLD_COMPANY when STATUS = '0' then (
+            case when NEW_COMPANY is null then OLD_COMPANY when NEW_COMPANY = '' then OLD_COMPANY else NEW_COMPANY end
+            ) else OLD_COMPANY end) OLD_COMPANY,
+            (case when STATUS = '1' then OLD_RANGE when STATUS = '0' then (
+            case when NEW_RANGE is null then OLD_RANGE when NEW_RANGE = '' then OLD_RANGE else NEW_RANGE end
+            )else OLD_RANGE end) OLD_RANGE,
+        </if>
+        <if test="type == 'apply'">
+            OLD_NAME, NEW_NAME, OLD_COMPANY, NEW_COMPANY, OLD_RANGE, NEW_RANGE,
+        </if>
+        AUDIT_STATUS,
+        OPERATOR,
+        IMPORT_TIME,
+        CHANGE_TIME,
+        OPINION,
+        AUDITOR,
+        AUDIT_TIME from ZONE
+        <where>
+            <if test="oldName != null and oldName != ''">
+                and OLD_NAME like '%'||#{oldName}||'%'
+            </if>
+            <if test="newName != null and newName != ''">
+                and NEW_NAME like '%'||#{newName}||'%'
+            </if>
+            <if test="oldCompany != null and oldCompany != ''">
+                and OLD_COMPANY like '%'||#{oldCompany}||'%'
+            </if>
+            <if test="newCompany != null and newCompany != ''">
+                and NEW_COMPANY like '%'||#{newCompany}||'%'
+            </if>
+            <if test="auditStatus != null and auditStatus != ''">
+                and AUDIT_STATUS = #{auditStatus}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND CHANGE_TIME &lt;= #{endTime}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                AND CHANGE_TIME &gt;= #{startTime}
+            </if>
+        </where>
+        order by CHANGE_TIME desc
+    </select>-->
+</mapper>

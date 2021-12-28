@@ -1,0 +1,29 @@
+<!--<link rel="stylesheet" href="../../assets/css/monitor/task.css"/>-->
+<!--<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>-->
+<!--<link rel="stylesheet" href="../../assets/css/monitor/subjSvList.css"/>-->
+<div class="col-lg-8 col-xs-8 col-sm-8 col-md-8 col-lg-offset-2 col-xs-offset-2 col-sm-offset-2 col-md-offset-2">
+    <div style="text-align: center">
+        <h3 style="margin-top: 50px;margin-bottom: 50px">打印抽样条码</h3>
+    </div>
+    <table style="width: 80%;border: 1px solid silver;margin: auto">
+        <tr style="text-align:left">
+            <td rowspan="3">
+                <div title="二维码">
+                    <p align="center">
+                        <img src="" id="code" style="height: 100px;width:100px;padding-top: 10px"/></p>
+                </div>
+            </td>
+            <td height="40px"><h4>{{data.taskName}}</h4></td>
+        </tr>
+        <tr style="text-align:left">
+            <td><h4>{{data.startTime}}</h4></td>
+        </tr>
+        <tr style="text-align:left">
+            <td><h4>样品编码:{{sampleCode}}</h4></td>
+        </tr>
+    </table>d
+    <div style="margin-top: 50px;width: 100%;text-align: center">
+        <span class="gui-btn" ng-click="back()"> 取消 </span>
+        <span class="gui-btn" ng-click="printArea()"> 打印 </span>
+    </div>
+</div>

@@ -1,0 +1,37 @@
+react-component *{
+	font-size: 14px;
+}
+.ant-btn-primary:not([disabled]):hover{
+	background-color: #2fd6a0;
+}
+.ant-btn-primary{
+	background-color: #47b995; border: 1px solid #30aa81;
+}
+.ant-btn-primary span,a.ant-btn-primary{
+	padding: 5px 15px;
+}
+.ant-menu .anticon{
+	display: none;
+}
+.ant-menu .ant-menu-submenu{
+	color: #666; font-weight: bold;
+}
+.ant-menu .ant-menu-submenu-title:hover{
+	background-color: #e3e5e4;
+}
+.ant-menu .ant-menu-submenu-title:hover,.ant-menu .ant-menu-submenu-title span:hover{
+	color: #666;
+}
+.ant-menu .ant-menu-submenu-title[aria-expanded="true"]{
+	background-color: #47b995; color: #fff;
+}
+.ant-menu .ant-menu-item{
+	border-bottom: 1px solid #e3e5e4;
+}
+.ant-menu .ant-menu-item:hover{
+	background-color: #e3e5e4;
+}
+.ant-menu .ant-menu-item a:hover{
+	color: #666;
+}
+

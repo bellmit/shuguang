@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.StatisticMapper">
+    <select id="statisticSpeciesTypeList" parameterType="java.lang.String" resultType="com.sofn.fdpi.vo.StatisticVo">
+        select s.PARENT_IDS,s.REGION_CODE,S.PARENT_NAMES,s.REGION_NAME
+        ,coalesce(a.TOTAL_NUMBER,0) AS TOTAL_NUMBER
+        from sys_region s
+        left join
+        (
+            select
+            ${groupBySqlStr}
+            -- a.COMP_PROVINCE,a.COMP_CITY,a.COMP_DISTRICT
+            ,coalesce(SUM (b.CH_NUM),0) AS TOTAL_NUMBER
+            FROM COMP_SPE_STOCKFLOW b
+            inner join TB_COMP a on b.COMP_ID=a.ID
+            where a.COMP_STATUS='1' AND a.DEL_FLAG='N'
+                <if test="provinceCode!=null and provinceCode!=''">
+                    AND a.COMP_PROVINCE=#{provinceCode}
+                </if>
+                <if test="cityCode!=null and cityCode!=''">
+                    AND a.COMP_CITY=#{cityCode}
+                </if>
+                <if test="areaCode!=null and areaCode!=''">
+                    AND a.COMP_DISTRICT=#{areaCode}
+                </if>
+                <if test="startDate!=null and startDate !=''">
+                    and b.CH_TIME &gt;=to_timestamp(#{startDate},'yyyy-MM-dd HH24:MI:SS')
+                </if>
+                <if test="endDate!=null and endDate !=''">
+                    and b.CH_TIME &lt;=to_timestamp(#{endDate},'yyyy-MM-dd HH24:MI:SS')
+                </if>
+                <if test="speciesId!=null and speciesId !=''">
+                    and b.SPECIES_ID=#{speciesId}
+                </if>
+            GROUP BY ${groupBySqlStr}
+        ) a on ${regionJoinOnSqlStr} --s.region_code=a.COMP_DISTRICT
+        <where>
+            1=1
+            <choose>
+                <when test='regionType=="1"'>
+                    and s.parent_ids='/100000'
+                    <if test="provinceCode!=null and provinceCode!=''">
+                        and s.region_code=#{provinceCode}
+                    </if>
+                </when>
+                <when test='regionType=="2"'>
+                    and s.parent_ids='/100000/' || #{provinceCode}
+                    <if test="cityCode!=null and cityCode!=''">
+                        and s.region_code=#{cityCode}
+                    </if>
+                </when>
+                <otherwise>
+                    and s.parent_ids='/100000/' || #{provinceCode} || '/' || #{cityCode}
+                    <if test="areaCode!=null and areaCode!=''">
+                        and s.region_code=#{areaCode}
+                    </if>
+                </otherwise>
+            </choose>
+        </where>
+        ORDER BY TOTAL_NUMBER DESC,REGION_CODE ASC
+    </select>
+    <select id="statisticSpeciesSignboardList" parameterType="java.lang.String" resultType="com.sofn.fdpi.vo.StatisticVo">
+        select s.PARENT_IDS,s.REGION_CODE,S.PARENT_NAMES,s.REGION_NAME
+        ,coalesce(a.TOTAL_NUMBER,0) AS TOTAL_NUMBER
+        from sys_region s
+        left join
+        (
+        select ${groupBySqlStr}
+        ,COUNT(0) TOTAL_NUMBER
+        from SIGNBOARD b
+        LEFT JOIN TB_COMP a ON b.COMP_ID=a.ID
+        <where>
+            b.DEL_Flag='N' AND b.STATUS!='3' AND a.DEL_Flag='N'
+            <if test="speciesId!=null and speciesId !=''">
+                    AND b.SPE_ID=#{speciesId}
+                </if>
+                <if test="provinceCode!=null and provinceCode!=''">
+                    AND a.COMP_PROVINCE=#{provinceCode}
+                </if>
+                <if test="cityCode!=null and cityCode!=''">
+                    AND a.COMP_CITY=#{cityCode}
+                </if>
+                <if test="areaCode!=null and areaCode!=''">
+                    AND a.COMP_DISTRICT=#{areaCode}
+                </if>
+                AND b.UPDATE_TIME &lt;=to_timestamp(#{endDate},'yyyy-MM-dd HH24:MI:SS')
+            </where>
+            GROUP BY ${groupBySqlStr}
+        ) a on ${regionJoinOnSqlStr} --s.region_code=a.COMP_DISTRICT
+        <where>
+            1=1
+            <choose>
+                <when test='regionType=="1"'>
+                    and s.parent_ids='/100000'
+                    <if test="provinceCode!=null and provinceCode!=''">
+                        and s.region_code=#{provinceCode}
+                    </if>
+                </when>
+                <when test='regionType=="2"'>
+                    and s.parent_ids='/100000/' || #{provinceCode}
+                    <if test="cityCode!=null and cityCode!=''">
+                        and s.region_code=#{cityCode}
+                    </if>
+                </when>
+                <otherwise>
+                    and s.parent_ids='/100000/' || #{provinceCode} || '/' || #{cityCode}
+                    <if test="areaCode!=null and areaCode!=''">
+                        and s.region_code=#{areaCode}
+                    </if>
+                </otherwise>
+            </choose>
+        </where>
+        ORDER BY TOTAL_NUMBER DESC,REGION_CODE ASC
+    </select>
+
+    <select id="statisticRegisterCompList"  parameterType="java.lang.String" resultType="com.sofn.fdpi.vo.StatisticVo">
+        select s.PARENT_IDS,s.REGION_CODE,S.PARENT_NAMES,s.REGION_NAME
+        ,coalesce(a.TOTAL_NUMBER,0) AS TOTAL_NUMBER
+        from sys_region s
+        left join
+        (
+                select ${groupBySqlStr}
+                    ,COUNT(0) TOTAL_NUMBER
+                from TB_COMP a
+                <where>
+                   <if test="startDate!=null and startDate!=''">
+                       a.UPDATE_TIME &gt;=to_timestamp(#{startDate},'yyyy-MM-dd HH24:MI:SS')
+                   </if>
+                    <if test="provinceCode!=null and provinceCode!=''">
+                        AND a.COMP_PROVINCE=#{provinceCode}
+                    </if>
+                    <if test="cityCode!=null and cityCode!=''">
+                        AND a.COMP_CITY=#{cityCode}
+                    </if>
+                    <if test="areaCode!=null and areaCode!=''">
+                        AND a.COMP_DISTRICT=#{areaCode}
+                    </if>
+                    and a.UPDATE_TIME &lt;=to_timestamp(#{endDate},'yyyy-MM-dd HH24:MI:SS')
+                    and a.DEL_FLAG='N' and a.COMP_STATUS='1'
+                </where>
+                GROUP BY ${groupBySqlStr}
+        ) a on ${regionJoinOnSqlStr} --s.region_code=a.COMP_DISTRICT
+        <where>
+            1=1
+            <choose>
+                <when test='regionType=="1"'>
+                    and s.parent_ids='/100000'
+                    <if test="provinceCode!=null and provinceCode!=''">
+                        and s.region_code=#{provinceCode}
+                    </if>
+                </when>
+                <when test='regionType=="2"'>
+                    and s.parent_ids='/100000/' || #{provinceCode}
+                    <if test="cityCode!=null and cityCode!=''">
+                        and s.region_code=#{cityCode}
+                    </if>
+                </when>
+                <otherwise>
+                    and s.parent_ids='/100000/' || #{provinceCode} || '/' || #{cityCode}
+                    <if test="areaCode!=null and areaCode!=''">
+                        and s.region_code=#{areaCode}
+                    </if>
+                </otherwise>
+            </choose>
+        </where>
+        ORDER BY TOTAL_NUMBER DESC,REGION_CODE ASC
+    </select>
+</mapper>

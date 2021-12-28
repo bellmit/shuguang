@@ -1,0 +1,79 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css">
+
+<div class="Sup_contain_section col-lg-12 col-xs-12 col-sm-12 col-md-12">
+    <div class="Sup_contain_section_head col-lg-12 col-xs-12 col-sm-12 col-md-12 " style="background-color: white">
+        <h2 id="Sup_contain_section_head_h2">
+            <a href=""><span>监测系统  > </span></a>
+            <a href=""><span>监测模型管理 > </span></a>
+            <span>编辑 </span>
+        </h2>
+    </div>
+    <div class="Sup_contain_section_contain col-lg-12 col-xs-12 col-sm-12 col-md-12">
+        <p class="col-lg-1 col-xs-0 col-sm-1 col-md-1"></p>
+        <div class="Sup_contain_section_contain_head col-lg-10 col-xs-12 col-sm-10 col-md-10">
+
+            <!-- 左侧菜单 -->
+            <div class="col-md-2">
+                <div class="panel-group list-group-panel">
+                    <div class="panel panel-default">
+                        <div class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div class="list-group" style="margin-bottom:0px;">
+                                    <a href="#" ng-click="edit()" class="list-group-item line-20">修改模型</a>
+                                    <a href="#" class="list-group-item active line-20">编辑种类</a>
+                                    <a href="#" ng-click="editSampleLink()" class="list-group-item line-20">编辑抽样环节</a>
+                                    <a href="#" ng-click="editCheckObject()" class="list-group-item line-20">编辑检测对象</a>
+                                    <a href="#" ng-click="editJudgeStandard()" class="list-group-item line-20">编辑判定标准</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1">
+            </div>
+            <!--<div class="col-md-1">
+            </div>-->
+            <!-- 右侧内容 -->
+            <div class="col-md-10">
+                <!--<div class="well" style="background-color:white;">-->
+                <div class="tab-content">
+                    <div class="text-left pd-20 mg-auto">
+                        <form class="form-inline well well-sm">
+                            <div class="form-group">
+                                <input type="text" id="nameS" name="nameS" placeholder="请输入种类名称">
+                            </div>
+                            <button id="seachTask">查询</button>
+                            <button class="pull-right" ng-click="addAdsModel()">添加种类</button>
+                            <button class="pull-right mgr-10" onclick="delAdsModelAttributeMapping()">删除种类</button>
+                        </form>
+                        <table id="grid" class="table table-bordered table-striped table-hover data-table col-lg-12 col-xs-12 col-sm-12 col-md-12">
+                        </table>
+                    </div>
+                </div>
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 新增种类model -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: center">模型添加种类</h4>
+            </div>
+            <div class="modal-body" style="min-height: 100px;">
+                <table id="itemGrid" class="table table-bordered table-striped table-hover data-table col-lg-12 col-xs-12 col-sm-12 col-md-12">
+                </table>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <button type="button" data-dismiss="modal">取消</button>
+                <button type="button" ng-click="addAdsModelAttributeMapping()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>

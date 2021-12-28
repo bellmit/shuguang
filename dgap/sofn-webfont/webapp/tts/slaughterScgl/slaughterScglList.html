@@ -1,0 +1,50 @@
+<div class="gui-breadcrumbs">
+    <a href="">追溯系统</a>&gt;
+    <span>生产屠宰登记</span>
+</div>
+<div class="gui-section">
+    <ul class="gui-tab">
+        <li class="active"><a ui-sref="index.content.tts/slaughterScgl/slaughterScglAdd" id="compl">产品登记</a></li>
+        <li><a ui-sref="#">产品管理</a></li>
+    </ul>
+    <div class="gui-form-group">
+        <!--自定义条件分页查询，结合controller 自己写，不生成
+            <input name="in_name" type="text" placeholder="姓名"/>
+            <input name="in_tel" type="text" placeholder="电话号码"/>
+            -->
+        <div class="gui-select">
+            <select name="status">
+                <option value="">选择产品分类</option>
+                <option value="不限">不限</option>
+                <option value="启用">启用</option>
+                <option value="停用">停用</option>
+            </select>
+        </div>
+        <div class="gui-select">
+            <select name="status">
+                <option value="">选择产品名称</option>
+                <option value="不限">不限</option>
+                <option value="启用">启用</option>
+                <option value="停用">停用</option>
+            </select>
+        </div>
+        <div class="gui-select">
+            <select name="status">
+                <option value="">选择当前状态</option>
+                <option value="不限">不限</option>
+                <option value="启用">启用</option>
+                <option value="停用">停用</option>
+            </select>
+        </div>
+    </div>
+    <div class="gui-form-group">
+        <input type="text" class="gui-input" name="harvestTime" readonly="readonly" onclick="SelectDate(this)">至
+        <input type="text" class="gui-input" name="harvestTime" readonly="readonly" onclick="SelectDate(this)">
+        <input name="keyWord" type="text" class="gui-input" placeholder="请输入关键字">
+        <button class="gui-btn" id="ToCheck">查询</button>
+    </div><div class="gui-actions"></div>
+    <div>
+        <table id="grid" class="gui-table">
+        </table>
+    </div>
+</div>

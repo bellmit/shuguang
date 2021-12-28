@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agpjyz.mapper.SpecimenMapper">
+    <sql id="base_Column_List">
+       sp.ID,sp.COLLECTION_NUMBER,sp.COLLECTION_DATE,sp.COLLECTION_ID,
+       sp.COLLECTION_VALUE,sp.COLLECTIONER,sp.CHINESE_ID,sp.CHINESE_VALUE,
+       sp.LATIN_NAME,sp.SCIENTIFIC_NAME,sp.GENERIC_NAME,
+       sp.COMMON_NAME,sp.PROVINCE,sp.CITY,sp.COUNTY, sp.ALTITUDE,
+       sp.PLANT_HEIGHT, sp.DIAMETER,sp.STATUS,
+       sp.PROVINCE_NAME,sp.CITY_NAME,sp.COUNTY_NAME,sp.EXPERT_REPORT,sp.AUDIT_FLAG,
+       sp.TREE_YEAR
+    </sql>
+    <sql id="base_Column_List1">
+        ch.string_agg
+    </sql>
+    <select id="listByParams" parameterType="java.util.Map" resultType="com.sofn.agpjyz.model.Specimen">
+        select
+        <include refid="base_Column_List"/>, <include refid="base_Column_List1"/>
+        from SPECIMEN sp
+        LEFT
+        JOIN
+        (
+        SELECT
+        specimen_id,
+        string_agg (character_value, '、' )
+        FROM
+        CHARACTER
+        GROUP BY
+        specimen_id
+        ) ch
+        ON sp.ID = ch.specimen_id
+        <where>
+            sp.DEL_FLAG = 'N'
+            <if test="chineseId != null and chineseId != ''">
+                and sp.CHINESE_ID = #{chineseId}
+            </if>
+            <if test="collectionNumber != null and collectionNumber != ''">
+                and sp.COLLECTION_NUMBER  like '%' || #{collectionNumber} || '%'
+            </if>
+            <if test="province != null and province != ''">
+                and sp.PROVINCE = #{province}
+            </if>
+            <if test="city != null and city != ''">
+                and sp.CITY = #{city}
+            </if>
+            <if test="county != null and county != ''">
+                and sp.COUNTY = #{county}
+            </if>
+            <if test="status != null and status != ''">
+                and sp.STATUS = #{status}
+            </if>
+            <if test="collectioner != null and collectioner != ''">
+                and sp.COLLECTIONER like '%' || #{collectioner} || '%'
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND sp.COLLECTION_DATE &lt;= #{endTime}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                AND sp.COLLECTION_DATE &gt;= #{startTime}
+            </if>
+            <if test="createUserId != null and createUserId != ''">
+                and sp.CREATE_USER_ID = #{createUserId}
+            </if>
+            <choose>
+                <!--市级审核权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.agpjyz.constants.Constants@REGION_TYPE_CITY">
+                    and (sp.STATUS > '1' and (case when sp.EXPERT_REPORT = 'Y' then 0 else 1 end) = 1)
+                </when>
+                <!--省级审核权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.agpjyz.constants.Constants@REGION_TYPE_PROVINCE">
+                    and (sp.STATUS > '3' and (case when sp.EXPERT_REPORT = 'Y' then 0 else 1 end) = 1)
+                </when>
+                <!--总站审核权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.agpjyz.constants.Constants@REGION_TYPE_MINISTRY">
+                    and (sp.STATUS > '5' or (case when sp.EXPERT_REPORT = 'Y' and sp.STATUS = '2' then 0 else 1 end) = 0)
+                </when>
+            </choose>
+        </where>
+        order by CREATE_TIME desc
+    </select>
+</mapper>

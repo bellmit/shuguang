@@ -1,0 +1,64 @@
+spring:
+  datasource:
+    driver-class-name: dm.jdbc.driver.DmDriver
+    url: jdbc:dm://172.16.7.141:5236/FDPI?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf-8
+    username: FDPI
+    password: 123456789
+#    url: jdbc:dm://47.94.214.55:5236/FDPI?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf-8
+#    username: ENC(hOhbxzstcrceOnrgxX6csw==)
+#    password: ENC(EER6QynRESh/oizUSKCGmYsFfuaZ8NEY)
+#    driver-class-name: com.uxsino.uxdb.Driver
+#    url: jdbc:uxdb://192.168.21.62:5432/fdpi_test?stringtype=unspecified
+#    username: uxdb
+#    password: sofn@123
+#    url: jdbc:dm://192.168.21.36:5236/SYSDBA?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf-8
+#    username: SYSDBA
+#    password: SYSDBA
+#    driver-class-name: oracle.jdbc.OracleDriver
+#    url: jdbc:oracle:thin:@10.0.52.7:1521:orcl
+#    username: FDPI_TEST
+#    password: TcH4P2AadnOi6x3HGE50SCmQwpu5640jSWVjOAeSawZglUDNc+AYDXtV3qQHli6XqSnyWDqIkFtLKcn7Ab5I0g==
+#    publicKey: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAItqdfGG8XYAkX59PE6R9PxFG5igPqs4xxj19VMd0jeeXPojJveMxoPLLKR1CONKRaNOxcu93P0PgY19FUCUEkcCAwEAAQ==
+
+#    driver-class-name: oracle.jdbc.driver.OracleDriver
+#    username: eep
+#    password: eep
+#    url: jdbc:oracle:thin:@192.168.0.219:1521:orcl
+
+    druid:
+      async-init: true
+      initial-size: 15
+      max-active: 30
+      min-idle: 10
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+#      validation-query: SELECT 1 FROM DUAL
+#      connection-properties: config.decrypt=true;config.decrypt.key=${spring.datasource.publicKey}
+      filter:
+        config:
+          enabled: true
+
+  redis:
+    redisson:
+      file: classpath:config/redisson-test.yaml
+
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
+
+eureka:
+  instance:
+    hostname: ${spring.cloud.client.ip-address}
+    instance-id: ${eureka.instance.hostname}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://10.0.50.103:8880/eureka/
+
+workflow: N

@@ -1,0 +1,27 @@
+<div class="gui-breadcrumbs">
+    <a href="">追溯系统</a>&gt;
+    <a href="">内部管理</a>&gt;
+    <a href="">产品品种管理管理</a>&gt;
+    <span>查看</span>
+</div>
+<div class="gui-section">
+    <div class="ovh">
+        <ul class="gui-list">
+            <li>
+                <div class="form-item"> <span class="title">品种名称</span>
+                    <input ng-model="name" readonly="readonly" type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"> <span class="title">品种状态</span>
+                    <input ng-model="status" readonly="readonly" type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="text-center">
+                    <button class="gui-btn" ng-click="removeLocalStorage()" ui-sref="index.content.tts/ttsScltxxcjProductType/TtsScltxxcjProductTypelist">关闭</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

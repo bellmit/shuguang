@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.StrawUtilizeMapper">
+    <resultMap id="BaseResultMap" type="com.sofn.ducss.model.StrawUtilize">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="fill_no" property="fillNo" jdbcType="VARCHAR"/>
+        <result column="year" property="year" jdbcType="VARCHAR"/>
+        <result column="province_id" property="provinceId" jdbcType="VARCHAR"/>
+        <result column="city_id" property="cityId" jdbcType="VARCHAR"/>
+        <result column="area_id" property="areaId" jdbcType="VARCHAR"/>
+        <result column="report_area" property="reportArea" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="main_no" property="mainNo" jdbcType="VARCHAR"/>
+        <result column="main_name" property="mainName" jdbcType="VARCHAR"/>
+        <result column="corporation_name" property="corporationName" jdbcType="VARCHAR"/>
+        <result column="company_phone" property="companyPhone" jdbcType="VARCHAR"/>
+        <result column="mobile_phone" property="mobilePhone" jdbcType="VARCHAR"/>
+        <result column="create_user_name" property="createUserName" jdbcType="VARCHAR"/>
+        <result column="create_user_id" property="createUserId" jdbcType="VARCHAR"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id, fill_no, year, province_id, city_id, area_id, report_area, address, main_no, 
+    main_name, corporation_name, company_phone, mobile_phone, create_user_name, create_user_id,create_date
+  </sql>
+
+    <select id="getStrawUtilizeByPage" parameterType="java.util.Map"
+            resultType="com.sofn.ducss.model.StrawUtilize">
+        select t1.*
+        from straw_utilize t1
+        where 1=1
+        and t1.area_id=#{countyId}
+        <if test="year!=null and year!=''">
+            and t1.year=#{year}
+        </if>
+        <if test="years !=null and years.size()>0">
+            and t1.year in
+            <foreach collection="years" item="year" open="(" separator="," close=")">
+                #{year}
+            </foreach>
+        </if>
+        <if test="mainName!=null and mainName!=''">
+            AND t1.main_name like '%'||#{mainName}||'%'
+        </if>
+        <if
+                test="dateBegin!=null and dateBegin!='' and dateEnd!=null and dateEnd!=''">
+            <![CDATA[
+			AND t1.create_date>=#{dateBegin} and t1.create_date<=#{dateEnd}
+			]]>
+        </if>
+        order by t1.create_time desc,t1.id DESC
+    </select>
+
+    <select id="getStrawUtilize" parameterType="java.util.Map" resultType="com.sofn.ducss.model.StrawUtilize">
+        select t1.*
+        from straw_utilize t1
+        where 1=1
+        <if test="year!=null and year!=''">
+            and t1.year=#{year}
+        </if>
+        <if test="years !=null and years.size()>0">
+            and t1.year in
+            <foreach collection="years" item="year" open="(" separator="," close=")">
+                #{year}
+            </foreach>
+        </if>
+        <if test="provinceId !=null and provinceId !=''">
+            and t1.province_id = #{provinceId}
+        </if>
+        <if test="countyIds != null and countyIds.size()>0">
+            and t1.area_id in
+            <foreach collection="countyIds" item="countyId" open="(" close=")" separator=",">
+                #{countyId}
+            </foreach>
+        </if>
+        ORDER BY t1.year desc, t1.create_time DESC, t1.id DESC
+    </select>
+
+    <select id="selectStrawUtilizeById" parameterType="java.lang.String" resultType="com.sofn.ducss.model.StrawUtilize">
+    select * from straw_utilize where id=#{id}
+  </select>
+
+    <select id="selectFarmerNo" resultType="java.lang.String">
+    select SEQUENCE_NO(#{year},#{areaId},#{type}) from dual
+  </select>
+
+    <insert id="insertStrawUtilize" parameterType="com.sofn.ducss.model.StrawUtilize">
+    insert into
+    straw_utilize(id,fill_no,year,province_id,city_id,area_id,report_area,
+    create_user_name,create_user_id,create_date,address,main_no,main_name,corporation_name,
+    company_phone,mobile_phone,create_time) values
+    (#{id,jdbcType=VARCHAR},#{fillNo,jdbcType=VARCHAR},#{year,jdbcType=VARCHAR},#{provinceId,jdbcType=VARCHAR},#{cityId,jdbcType=VARCHAR},
+    #{areaId,jdbcType=VARCHAR},#{reportArea,jdbcType=VARCHAR},
+    #{createUserName,jdbcType=VARCHAR},#{createUserId,jdbcType=VARCHAR},#{createDate,jdbcType=TIMESTAMP}
+    ,#{address,jdbcType=VARCHAR},#{mainNo,jdbcType=VARCHAR}
+    ,#{mainName,jdbcType=VARCHAR},#{corporationName,jdbcType=VARCHAR}
+    ,#{companyPhone,jdbcType=VARCHAR},#{mobilePhone,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
+  </insert>
+
+    <update id="updateStrawUtilize" parameterType="com.sofn.ducss.model.StrawUtilize">
+    update straw_utilize set report_area=#{reportArea},address=#{address},
+    main_no=#{mainNo},main_name=#{mainName},corporation_name=#{corporationName},
+    company_phone=#{companyPhone},mobile_phone=#{mobilePhone}
+    where id = #{id}
+  </update>
+
+    <delete id="deleteById" parameterType="java.lang.String">
+    delete from straw_utilize where id=#{id}
+  </delete>
+
+    <select id="selectStrawUtilizeDetailIdByYear" parameterType="java.util.Map" resultType="java.lang.String">
+    SELECT id FROM straw_utilize WHERE area_id=#{countyId} and main_name = #{mainName} ORDER BY create_time DESC LIMIT 1
+  </select>
+
+    <resultMap id="mainUtilizeMap" type="com.sofn.ducss.vo.MainUtilizeResVo">
+        <result column="year" property="year" jdbcType="VARCHAR"/>
+        <result column="area_id" property="areaId" jdbcType="VARCHAR"/>
+        <result column="area_name" property="areaName" jdbcType="VARCHAR"/>
+        <result column="main_id" property="mainId" jdbcType="VARCHAR"/>
+        <result column="main_name" property="mainName" jdbcType="VARCHAR"/>
+        <result column="fertilising" property="fertilising" jdbcType="DECIMAL"/>
+        <result column="forage" property="forage" jdbcType="DECIMAL"/>
+        <result column="fuel" property="fuel" jdbcType="DECIMAL"/>
+        <result column="base" property="base" jdbcType="DECIMAL"/>
+        <result column="material" property="material" jdbcType="DECIMAL"/>
+        <result column="own_source" property="ownSource" jdbcType="DECIMAL"/>
+        <result column="other" property="otherSource" jdbcType="DECIMAL"/>
+        <result column="total" property="total" jdbcType="DECIMAL"/>
+    </resultMap>
+    <select id="selectMainUtilizeIdByRegionCode" parameterType="java.util.Map" resultType="com.sofn.ducss.vo.MainUtilizeVo">
+        select s.id utilize_id,s.year,s.area_id ,'' area_name,s.id main_id,s.main_name
+        from straw_utilize s
+        left join country_task t on t.year=s.year and t.area_id=s.area_id and t.status=5
+        where s.year=#{year} and t.id is not null
+        <if test="provinceId!=null">
+            and s.province_id=#{provinceId}
+        </if>
+        <if test="cityId!=null">
+            and s.city_id=#{cityId}
+        </if>
+        <if test="areaId!=null">
+            and s.area_id=#{areaId}
+        </if>
+        order by area_id
+    </select>
+
+    <select id="selectMainUtilizeIdByAreaIds" resultType="com.sofn.ducss.vo.MainUtilizeVo">
+    select id utilize_id,su.year,su.area_id,'' area_name,su.id main_id,su.main_name
+    from straw_utilize su
+    where su.year = #{year} and su.area_id in (${areaIds})
+    order by su.area_id
+  </select>
+
+    <select id="getStrawUtilizeTotalCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(*)
+    from straw_utilize t1
+    where 1=1
+    and t1.area_id=#{areaId}
+    and t1.year=#{year}
+  </select>
+
+    <select id="getStrawUtilizeCountByCondition" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(*)
+        from straw_utilize
+        <where>
+            <if test="year != null and year != ''">
+                year = #{year}
+            </if>
+            <if test="areaIds != null and areaIds.size() > 0">
+                and area_id in
+                <foreach collection="areaIds" item="item" open="(" separator="," close=")">
+                       #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="getStrawUtilizeCountGroupByArea" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(*)
+        from straw_utilize
+        <where>
+            <if test="year != null and year != ''">
+                year = #{year}
+            </if>
+            <if test="areaIds != null and areaIds.size() > 0">
+                and area_id in
+                <foreach collection="areaIds" item="item" open="(" separator="," close=")">
+                     #{item}
+                </foreach>
+            </if>
+        </where>
+        group by area_id
+    </select>
+
+    <select id="getMainNames" resultType="string">
+        select distinct main_name from straw_utilize
+        <where>
+            area_id = #{countyId}
+        </where>
+    </select>
+
+    <select id="getCompanyCountByCondition" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(*)
+        from straw_utilize  where  1=1
+        <if test="year != null and year != ''">
+            and  year = #{year}
+        </if>
+        <if test="provinceId != null and provinceId != ''">
+            and province_id = #{provinceId}
+        </if>
+
+    </select>
+
+    <select id="listGroupByYearAndAreaId" resultType="com.sofn.ducss.model.StrawUtilize">
+        select year
+        <if test="groupBy != null and groupBy != ''">
+            ,${groupBy} as "lastCode"
+            <if test="groupBy == 'area_id'">
+                ,id,area_id,main_name,corporation_name,mobile_phone,province_id,city_id
+            </if>
+            <if test="groupBy == 'city_id'">
+                ,province_id,city_id
+            </if>
+        </if>
+        <if test="groupBy == null">
+            ,province_id,province_id as "lastCode"
+        </if>
+        from straw_utilize
+        <where>
+            <if test="years !=null and years.size()>0">
+                and year in
+                <foreach collection="years" item="year" open="(" separator="," close=")">
+                    #{year}
+                </foreach>
+            </if>
+            <if test="cityIds != null and cityIds.size()>0">
+                and city_id in
+                <foreach collection="cityIds" item="cityId" open="(" separator="," close=")">
+                    #{cityId}
+                </foreach>
+            </if>
+            <if test="provinceIds != null and provinceIds.size()>0">
+                and province_id in
+                <foreach collection="provinceIds" item="provinceId" open="(" separator="," close=")">
+                    #{provinceId}
+                </foreach>
+            </if>
+        </where>
+        group by year
+        <if test="groupBy != null and groupBy !=''">
+            ,${groupBy}
+            <if test="groupBy == 'area_id'">
+                ,id,main_name,corporation_name,mobile_phone,province_id,city_id
+            </if>
+            <if test="groupBy == 'city_id'">
+                ,province_id
+            </if>
+        </if>
+        <if test="groupBy == null">
+            ,province_id
+        </if>
+        ORDER BY year desc
+        <if test="groupBy != null and groupBy != ''">
+            ,${groupBy} asc
+        </if>
+    </select>
+
+</mapper>

@@ -1,0 +1,130 @@
+spring:
+  kafka:
+    bootstrap-servers: 10.0.50.103:9092
+    producer:
+      batch-size: 16384
+      buffer-memory: 33554432
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  rabbitmq:
+    password: guest
+    username: guest
+    port: 5672
+    addresses: 10.0.50.103
+    #开启发送失败返回
+    publisher-returns: true
+    #开启发送确认
+    publisher-confirms: true
+    listener:
+      simple:
+        #指定最小的消费者数量
+        concurrency: 2
+        #指定最大的消费者数量
+        max-concurrency: 2
+        #开启ack
+        acknowledge-mode: auto
+      #开启ack
+      direct:
+        acknowledge-mode: auto
+    #支持消息的确认与返回
+    template:
+      mandatory: true
+  dubbo:
+    application:
+      id: user-center-dubbo-prodiver
+      name: user-center-dubbo-prodiver
+    registry:
+      address: zookeeper://192.168.21.105:2181
+    server: true
+    protocol:
+      name: dubbo
+      port: 20880
+  datasource:
+    driver-class-name: com.uxsino.uxdb.Driver
+    url: jdbc:uxdb://192.168.21.62:5432/sys_test?stringtype=unspecified
+    username: uxdb
+    password: sofn@123
+#    driver-class-name: com.uxsino.uxdb.Driver
+#    url: jdbc:uxdb://192.168.21.62:5432/sys_test?stringtype=unspecified
+#    username: uxdb
+#    password: jE/wRPGrCdoiOLQWkeepj3uJWcIsvIyOFUfuJeS1HLDQzW249WZxN+QaDYCY7p7A1KltorXju28rps7etYaErg==
+#    publicKey: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKXikrU4e4jBdyC+3zS+qoHco+fUp3PJAXLsGxFdTFwwDYLtYFLaaPq34sW4bbB3MQIOwZxT4KM39fMgCnybAVkCAwEAAQ==
+
+    #    driver-class-name: oracle.jdbc.driver.OracleDriver
+    #    username: eep
+    #    password: eep
+    #    url: jdbc:oracle:thin:@192.168.0.219:1521:orcl
+
+    druid:
+      async-init: true
+      initial-size: 15
+      max-active: 30
+      min-idle: 10
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      #validation-query: SELECT 1 FROM DUAL
+#      connection-properties: config.decrypt=true;config.decrypt.key=${spring.datasource.publicKey}
+      filter:
+        config:
+          enabled: true
+
+  redis:
+    redisson:
+      file: classpath:config/redisson-test.yaml
+
+eureka:
+  instance:
+    hostname: ${spring.cloud.client.ip-address}
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://10.0.50.103:8880/eureka/
+
+
+xxl:
+  job:
+    admin:
+      addresses: http://10.0.50.103:8653/xxl-job-admin
+    executor:
+      appname: sys-job-executor
+      port: 8651
+      ip:
+      logpath: /data/applogs/xxl-job/jobhandler
+      logretentiondays: 30
+    accessToken:
+
+proxy:
+  user:
+    username: share_api
+    password: e10adc3949ba59abbe56e057f20f883e
+
+sofn:
+  cleardata:
+    enable: false
+  enableRemoveSpace:
+    enable: true
+  rabbitmq:
+    enable: true
+  fineReport:
+    enable: true
+    password: 123456
+    #reportUrl: http://218.89.222.119:8080/webroot/decision/view/report?viewlet=
+    reportUrl: http://192.168.21.132:8080/webroot/decision/view/report?viewlet=
+  inforFlow:
+    enable: true
+    processModelUrl: http://218.89.222.119:8088/ProcessModeler/
+  elasticsearch:
+    ip: 192.168.21.128
+    host: 9200
+    userName: elastic
+    password: ENC(F3eynbkZ+McMbYA35aAm2paSPEaj/ag1)
+   
+jasypt:
+  encryptor:
+    password: sofn@2021

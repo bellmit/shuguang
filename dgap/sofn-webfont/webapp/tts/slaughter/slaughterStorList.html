@@ -1,0 +1,55 @@
+<div class="gui-breadcrumbs">
+    <a href="">追溯系统</a>&gt;
+    <a href="">屠宰管理</a>&gt;
+    <span>产品批次管理</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group">
+        <div class="gui-select">
+            <select id="proType" name="productType">
+                <option value="">选择产品种类</option>
+            </select>
+        </div>
+        <!-- <select id="proName" name="productName">
+                    <option value="">选择产品名称</option>
+                </select> -->
+        <input name="productName" class="gui-input" type="text" placeholder="请输入产品名称">
+        <div class="gui-select">
+            <select name="status">
+                <option value="">选择当前状态</option>
+                <option value="1">未卖出</option>
+                <option value="2">未卖完</option>
+                <option value="3">已卖完</option>
+            </select>
+        </div>
+    </div>
+    <div class="gui-form-group">
+        日期
+        <input id="startDate" name="startDate" readonly="readonly" class="gui-input Wdate" type="text" onfocus="var endDate=$dp.$('endDate');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'endDate\')}'})"><span style="margin-right: 10px">--</span>
+        <input id="endDate" name="endDate" class="gui-input Wdate" readonly="readonly" type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}'})">
+        <input name="keyWord" class="gui-input" type="text" placeholder="请输入关键字">
+        <button type="button" class="gui-btn" id="ToCheck">查询</button>
+    </div><div class="gui-actions"></div>
+    <div>
+        <table id="grid" class="gui-table">
+        </table>
+    </div>
+</div>
+<!-- 合成产品信息 start -->
+<div class="modal fade" id="cphc_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-style">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel"> 产品信息</h4>
+            </div>
+            <div class="modal-body">
+                <table id="cphcList" class="gui-table"></table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  选择产品信息 end -->

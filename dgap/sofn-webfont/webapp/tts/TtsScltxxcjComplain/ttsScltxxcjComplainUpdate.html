@@ -1,0 +1,127 @@
+<div class="gui-breadcrumbs">
+    <a href="">投诉举报</a>&gt;
+    <span>修改</span>
+</div>
+<div class="gui-section">
+    <div class="ovh">
+        <ul class="gui-list">
+            <li>
+                <div class="form-item">
+                    <span class="title">投诉主体身份码<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjComplain.entityIdcode" name="entityIdcode" placeholder="请输入投诉主体身份码" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">投诉主体用户码<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjComplain.userIdcode" name="userIdcode" placeholder="请输入投诉主体用户码" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">被投诉主体身份码<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjComplain.beEntityIdcode" name="beEntityIdcode" placeholder="请输入被投诉主体身份码" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">被投诉主体用户码<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjComplain.beUserIdcode" name="beUserIdcode" placeholder="请输入被投诉主体用户码" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">受理主体身份码<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjComplain.accEntityIdcode" name="accEntityIdcode" placeholder="请输入受理主体身份码" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">受理主体用户码<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjComplain.accUserIdcode" name="accUserIdcode" placeholder="请输入受理主体用户码" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">投诉时间<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjComplain.complaintTime" name="complaintTime" class="gui-input" style="width: 130px;" readonly="readonly" onclick="SelectDate(this)">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">投诉标题<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjComplain.complaintTitle" name="complaintTitle" placeholder="请输入投诉标题" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">投诉内容<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjComplain.content" name="content" placeholder="请输入投诉内容" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">问题类型<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjComplain.type" name="type" placeholder="请输入问题类型" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">投诉信息状态<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjComplain.status" name="status" placeholder="请输入投诉信息状态" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">受理意见<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjComplain.acceptance" name="acceptance" placeholder="请输入受理意见" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">所属区域ID<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjComplain.areaId" name="areaId" placeholder="请输入所属区域ID" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">受理时间<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjComplain.accTime" name="accTime" class="gui-input" style="width: 130px;" readonly="readonly" onclick="SelectDate(this)">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">附件名称<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjComplain.attachmentName" name="attachmentName" placeholder="请输入附件名称" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">被投诉主体名称<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjComplain.complaintEntName" name="complaintEntName" placeholder="请输入被投诉主体名称" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">附件路径<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjComplain.attachmentPath" name="attachmentPath" placeholder="请输入附件路径" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">投诉主体名称<span class="this-after">*</span></span>
+                    <input type="text" ng-model="ttsScltxxcjComplain.complaintCopName" name="complaintCopName" placeholder="请输入投诉主体名称" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="text-center">
+                    <button class="gui-btn" ui-sref="index.content.tts/TtsScltxxcjComplain/TtsScltxxcjComplainlist">取消</button>
+                    <button class="gui-btn" ng-disabled="myform.JGname.$dirty&&myform.JGname.$invalid" ng-click="updateTtsScltxxcjComplain()">提交</button>
+                </div>
+            </li>
+            <input type="hidden" ng-model="ttsScltxxcjComplain.delFlag" name="delFlag">
+            <input type="hidden" ng-model="ttsScltxxcjComplain.createBy" name="createBy">
+            <input type="hidden" ng-model="ttsScltxxcjComplain.createTime" name="createTime">
+        </ul>
+    </div>
+</div>

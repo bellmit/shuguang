@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agpjpm.mapper.PictureAttMapper">
+
+    <update id="deleteLogicBySourceId">
+        update picture_att set del_flag = 'Y'
+        where del_flag = 'N'
+        and source_id = #{sourceId}
+    </update>
+
+    <update id="deleteBySourceIdAndFileUse">
+        update picture_att set del_flag = 'Y'
+        where del_flag = 'N'
+        and source_id = #{sourceId}
+        and file_use = #{fileUse}
+    </update>
+</mapper>

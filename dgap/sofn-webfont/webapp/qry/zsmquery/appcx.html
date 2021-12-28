@@ -1,0 +1,313 @@
+<link rel="stylesheet" href="assets/styles/tree.css" />
+<style>
+    .gui-mid-wrapper {
+        display: none;
+        padding: 0;
+        border: none;
+        height: 0;
+        min-height: inherit;
+        margin: 0;
+    }
+</style>
+<div class="gui-section">
+    <div class="tree-root">
+        <div class="clearfix">
+            <div class="tree-tips text-right">
+                <span>图标说明：</span>
+                <span>
+                <span class="gui-icon icon-ico_produce1"></span> 生产
+                </span>
+                <span>
+                <span class="gui-icon icon-ico_circulate1"></span> 流通
+                </span>
+                <span>
+                <span class="gui-icon icon-ico_store1"></span> 入市
+                </span>
+            </div>
+        </div>
+        <ul class="tree-wrap clearfix">
+            <li class="ui-tree tree-hidden" ng-show="rootUp.children.length">
+                <ul class="root clearfix">
+                    <li class="root-li">
+                        <div class="block root-block">
+                            <!--<i class="ui-icon icon-ico_produce1"></i>-->
+                            <div class="block-inner">
+                                <span class="block-text">{{rootUp.subjectName}}</span>
+                                <i ng-class="{'ui-icon': true, 'icon-ico_store1': rootUp.category == 2, 'icon-ico_circulate1': rootUp.category == 1 || rootUp.category == 0, 'icon-ico_produce1': rootUp.category == 3}"></i>
+                                <dl class="list-detail">
+                                    <dd>
+                                        <div class="title"><span class="gui-icon icon-cppcm"></span>产品名称：</div>
+                                        <div class="text">{{rootUp.productName}}</div>
+                                    </dd>
+                                    <dd>
+                                        <div class="title"><span class="gui-icon icon-cplb"></span>产品类型：</div>
+                                        <div class="text">{{rootUp.productType}}</div>
+                                    </dd>
+                                    <dd>
+                                    <div class="title"><span class="gui-icon icon-sl"></span>数量：</div>
+                                    <div class="text">{{rootUp.salesNum+rootUp.salesUnit}}</div>
+                                </dd>
+                                    <dd>
+                                        <div class="title"><span class="gui-icon icon-ztsfm"></span>主体身份码：</div>
+                                        <div class="text">{{rootUp.subjectIdentityCode}}</div>
+                                    </dd>
+                                    <dd>
+                                        <div class="title"><span class="gui-icon icon-ztmc"></span>主体名称：</div>
+                                        <div class="text">{{rootUp.subjectName}}</div>
+                                    </dd>
+                                    <dd>
+                                        <div class="title"><span class="gui-icon icon-ztdz"></span>主体地址：</div>
+                                        <div class="text">{{rootUp.subjectAddress}}</div>
+                                    </dd>
+                                    <dd>
+                                        <div class="title"><span class="gui-icon icon-frxm"></span>联系人姓名：</div>
+                                        <div class="text">{{rootUp.contactName || rootUp.legalName}}</div>
+                                    </dd>
+                                    <dd>
+                                        <div class="title"><span class="gui-icon icon-lxfs"></span>联系方式：</div>
+                                        <div class="text">{{rootUp.contactInformation}}</div>
+                                    </dd>
+                                    <dd>
+                                        <!--bug 2017/5/11 “产品批次码”改为才“产品追溯码” start-->
+                                        <!--<div class="title"><span class="gui-icon icon-cppcm"></span>产品批次码：</div>-->
+                                        <div class="title"><span class="gui-icon icon-cppcm"></span>产品追溯码：</div>
+                                        <!--bug 2017/5/11 “产品批次码”改为才“产品追溯码” end-->
+                                        <div class="text">{{rootUp.productBatchCode}}</div>
+                                    </dd>
+                                </dl>
+                            </div>
+
+                        </div>
+                        <ul class="sub-content">
+                            <li ng-repeat="rootUp in rootUp.children" ng-include="'rootUpTpl'"></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="ui-tree tree-hidden" ng-show="rootDown.children.length">
+                <ul class="root clearfix">
+                    <li class="root-li">
+                        <div class="block root-block" ng-show="rootUp.children.length <= 0">
+                            <!--<i class="ui-icon icon-ico_produce1"></i>-->
+                            <div class="block-inner">
+                                <span class="block-text">{{rootDown.subjectName}}</span>
+                                <i class="ui-icon icon-ico_produce1" ng-if="rootUp.children.length <= 0"></i>
+                                <i class="ui-icon icon-ico_circulate1" ng-if="rootUp.children.length"></i>
+                                <!--<i ng-class="{'ui-icon': true, 'icon-ico_store1': rootUp.category == 2, 'icon-ico_circulate1': rootUp.category == 1, 'icon-ico_produce1': rootUp.category == 3, 'icon-ico_produce1': rootUp.category == 0}"></i>-->
+                                <dl class="list-detail">
+                                    <dd>
+                                        <div class="title"><span class="gui-icon icon-cppcm"></span>产品名称：</div>
+                                        <div class="text">{{rootDown.productName}}</div>
+                                    </dd>
+                                    <dd>
+                                        <div class="title"><span class="gui-icon icon-cplb"></span>产品类型：</div>
+                                        <div class="text">{{rootDown.productType}}</div>
+                                    </dd>
+                                    <!--<dd>
+                                    <div class="title"><span class="gui-icon icon-sl"></span>数量：</div>
+                                    <div class="text">{{rootUp.salesNum+rootUp.salesUnit}}</div>
+                                </dd>-->
+                                    <dd>
+                                        <div class="title"><span class="gui-icon icon-ztsfm"></span>主体身份码：</div>
+                                        <div class="text">{{rootDown.subjectIdentityCode}}</div>
+                                    </dd>
+                                    <dd>
+                                        <div class="title"><span class="gui-icon icon-ztmc"></span>主体名称：</div>
+                                        <div class="text">{{rootDown.subjectName}}</div>
+                                    </dd>
+                                    <dd>
+                                        <div class="title"><span class="gui-icon icon-ztdz"></span>主体地址：</div>
+                                        <div class="text">{{rootDown.subjectAddress}}</div>
+                                    </dd>
+                                    <dd>
+                                        <div class="title"><span class="gui-icon icon-frxm"></span>联系人姓名：</div>
+                                        <div class="text">{{rootDown.contactName || rootDown.legalName}}</div>
+                                    </dd>
+                                    <dd>
+                                        <div class="title"><span class="gui-icon icon-lxfs"></span>联系方式：</div>
+                                        <div class="text">{{rootDown.contactInformation}}</div>
+                                    </dd>
+                                    <dd>
+                                        <!--bug 2017/5/11 “产品批次码”改为才“产品追溯码” start-->
+                                        <!--<div class="title"><span class="gui-icon icon-cppcm"></span>产品批次码：</div>-->
+                                        <div class="title"><span class="gui-icon icon-cppcm"></span>产品追溯码：</div>
+                                        <!--bug 2017/5/11 “产品批次码”改为才“产品追溯码” end-->
+                                        <div class="text">{{rootDown.productBatchCode}}</div>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                        <ul class="sub-content">
+                            <li ng-repeat="rootDown in rootDown.children" ng-include="'rootDownTpl'"></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="ui-tree tree-hidden" ng-show="!rootUp.children.length && !rootDown.children.length">
+                <ul class="root clearfix">
+                    <li class="root-li">
+                        <div class="block root-block">
+                            <!--<i class="ui-icon icon-ico_produce1"></i>-->
+                            <div class="block-inner">
+                                <span class="block-text">{{rootUp.subjectName}}</span>
+                                <i ng-class="{'ui-icon': true, 'icon-ico_store1': rootUp.category == 2, 'icon-ico_circulate1': rootUp.category == 1 || rootUp.category == 0, 'icon-ico_produce1': rootUp.category == 3}"></i>
+                                <dl class="list-detail">
+                                    <dd>
+                                        <div class="title"><span class="gui-icon icon-cppcm"></span>产品名称：</div>
+                                        <div class="text">{{rootUp.productName}}</div>
+                                    </dd>
+                                    <dd>
+                                        <div class="title"><span class="gui-icon icon-cplb"></span>产品类型：</div>
+                                        <div class="text">{{rootUp.productType}}</div>
+                                    </dd>
+                                    <dd>
+                                    <div class="title"><span class="gui-icon icon-sl"></span>数量：</div>
+                                    <div class="text">{{rootUp.salesNum+rootUp.salesUnit}}</div>
+                                </dd>
+                                    <dd>
+                                        <div class="title"><span class="gui-icon icon-ztsfm"></span>主体身份码：</div>
+                                        <div class="text">{{rootUp.subjectIdentityCode}}</div>
+                                    </dd>
+                                    <dd>
+                                        <div class="title"><span class="gui-icon icon-ztmc"></span>主体名称：</div>
+                                        <div class="text">{{rootUp.subjectName}}</div>
+                                    </dd>
+                                    <dd>
+                                        <div class="title"><span class="gui-icon icon-ztdz"></span>主体地址：</div>
+                                        <div class="text">{{rootUp.subjectAddress}}</div>
+                                    </dd>
+                                    <dd>
+                                        <div class="title"><span class="gui-icon icon-frxm"></span>联系人姓名：</div>
+                                        <div class="text">{{rootUp.contactName || rootUp.legalName}}</div>
+                                    </dd>
+                                    <dd>
+                                        <div class="title"><span class="gui-icon icon-lxfs"></span>联系方式：</div>
+                                        <div class="text">{{rootUp.contactInformation}}</div>
+                                    </dd>
+                                    <dd>
+                                        <!--bug 2017/5/11 “产品批次码”改为才“产品追溯码” start-->
+                                        <!--<div class="title"><span class="gui-icon icon-cppcm"></span>产品批次码：</div>-->
+                                        <div class="title"><span class="gui-icon icon-cppcm"></span>产品追溯码：</div>
+                                        <!--bug 2017/5/11 “产品批次码”改为才“产品追溯码” end-->
+                                        <div class="text">{{rootUp.productBatchCode}}</div>
+                                    </dd>
+                                </dl>
+                            </div>
+
+                        </div>
+                        <ul class="sub-content">
+                            <li ng-repeat="rootUp in rootUp.children" ng-include="'rootUpTpl'"></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script type="text/ng-template" id="rootUpTpl">
+    <div class="block">
+        <div class="block-inner">
+            <span class="block-text">{{rootUp.subjectName}}</span>
+            <i ng-class="{'ui-icon': true, 'icon-ico_store1': rootUp.category == 2, 'icon-ico_circulate1': rootUp.category == 1 || rootUp.category == 0, 'icon-ico_produce1': rootUp.category == 3}"></i>
+            <dl class="list-detail">
+                <dd ng-show="{{rootUp.category != 2}}">
+                    <div class="title"><span class="gui-icon icon-cppcm"></span>产品名称：</div>
+                    <div class="text">{{rootUp.productName}}</div>
+                </dd>
+                <dd ng-show="{{rootUp.category != 2}}">
+                    <div class="title"><span class="gui-icon icon-cplb"></span>产品类型：</div>
+                    <div class="text">{{rootUp.productType}}</div>
+                </dd>
+                <!--<dd>
+                <div class="title"><span class="gui-icon icon-sl"></span>数量：</div>
+                <div class="text">{{rootUp.salesNum+rootUp.salesUnit}}</div>
+            </dd>-->
+                <dd ng-show="{{rootUp.category != 2}}">
+                    <div class="title"><span class="gui-icon icon-ztsfm"></span>主体身份码：</div>
+                    <div class="text">{{rootUp.subjectIdentityCode}}</div>
+                </dd>
+                <dd>
+                    <div class="title"><span class="gui-icon icon-ztmc"></span>主体名称：</div>
+                    <div class="text">{{rootUp.subjectName}}</div>
+                </dd>
+                <dd>
+                    <div class="title"><span class="gui-icon icon-ztdz"></span>主体地址：</div>
+                    <div class="text">{{rootUp.subjectAddress}}</div>
+                </dd>
+                <dd>
+                    <div class="title"><span class="gui-icon icon-frxm"></span>联系人姓名：</div>
+                    <div class="text">{{rootUp.contactName || rootUp.legalName}}</div>
+                </dd>
+                <dd>
+                    <div class="title"><span class="gui-icon icon-lxfs"></span>联系方式：</div>
+                    <div class="text">{{rootUp.contactInformation}}</div>
+                </dd>
+                <dd ng-show="{{rootUp.category != 2}}">
+                    <!--bug 2017/5/11 “产品批次码”改为才“产品追溯码” start-->
+                    <!--<div class="title"><span class="gui-icon icon-cppcm"></span>产品批次码：</div>-->
+                    <div class="title"><span class="gui-icon icon-cppcm"></span>产品追溯码：</div>
+                    <!--bug 2017/5/11 “产品批次码”改为才“产品追溯码” end-->
+                    <div class="text">{{rootUp.productBatchCode}}</div>
+                </dd>
+            </dl>
+        </div>
+
+    </div>
+    <ul>
+        <li ng-repeat="rootUp in rootUp.children" ng-include="'rootUpTpl'"></li>
+    </ul>
+</script>
+
+<script type="text/ng-template" id="rootDownTpl">
+    <div class="block">
+        <div class="block-inner">
+            <span class="block-text">{{rootDown.subjectName}}</span>
+            <i ng-class="{'ui-icon': true, 'icon-ico_store1': rootDown.category == 2, 'icon-ico_circulate1': rootDown.category == 1 || rootDown.category == 0, 'icon-ico_produce1': rootDown.category == 3}"></i>
+            <dl class="list-detail">
+                <dd ng-show="{{rootDown.category != 2}}">
+                    <div class="title"><span class="gui-icon icon-cppcm"></span>产品名称：</div>
+                    <div class="text">{{rootDown.productName}}</div>
+                </dd>
+                <dd ng-show="{{rootDown.category != 2}}">
+                    <div class="title"><span class="gui-icon icon-cplb"></span>产品类型：</div>
+                    <div class="text">{{rootDown.productType}}</div>
+                </dd>
+                <!--<dd>
+                <div class="title"><span class="gui-icon icon-sl"></span>数量：</div>
+                <div class="text">{{rootDown.salesNum+rootDown.salesUnit}}</div>
+            </dd>-->
+                <dd ng-show="{{rootDown.category != 2}}">
+                    <div class="title"><span class="gui-icon icon-ztsfm"></span>主体身份码：</div>
+                    <div class="text">{{rootDown.subjectIdentityCode}}</div>
+                </dd>
+                <dd>
+                    <div class="title"><span class="gui-icon icon-ztmc"></span>主体名称：</div>
+                    <div class="text">{{rootDown.subjectName}}</div>
+                </dd>
+                <dd>
+                    <div class="title"><span class="gui-icon icon-ztdz"></span>主体地址：</div>
+                    <div class="text">{{rootDown.subjectAddress}}</div>
+                </dd>
+                <dd>
+                    <div class="title"><span class="gui-icon icon-frxm"></span>联系人姓名：</div>
+                    <div class="text">{{rootDown.contactName || rootDown.legalName}}</div>
+                </dd>
+                <dd>
+                    <div class="title"><span class="gui-icon icon-lxfs"></span>联系方式：</div>
+                    <div class="text">{{rootDown.contactInformation}}</div>
+                </dd>
+                <dd ng-show="{{rootDown.category != 2}}">
+                    <!--bug 2017/5/11 “产品批次码”改为才“产品追溯码” start-->
+                    <!--<div class="title"><span class="gui-icon icon-cppcm"></span>产品批次码：</div>-->
+                    <div class="title"><span class="gui-icon icon-cppcm"></span>产品追溯码：</div>
+                    <!--bug 2017/5/11 “产品批次码”改为才“产品追溯码” end-->
+                    <div class="text">{{rootDown.productBatchCode}}</div>
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <ul>
+        <li ng-repeat="rootDown in rootDown.children" ng-include="'rootDownTpl'"></li>
+    </ul>
+</script>

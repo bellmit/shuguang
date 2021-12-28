@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.DisperseUtilizeDetailMapper">
+    <resultMap id="BaseResultMap" type="com.sofn.ducss.model.DisperseUtilizeDetail">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="utilize_id" property="utilizeId" jdbcType="VARCHAR"/>
+        <result column="straw_type" property="strawType" jdbcType="VARCHAR"/>
+        <result column="straw_name" property="strawName" jdbcType="VARCHAR"/>
+        <result column="fertilising" property="fertilising" jdbcType="DECIMAL"/>
+        <result column="forage" property="forage" jdbcType="DECIMAL"/>
+        <result column="fuel" property="fuel" jdbcType="DECIMAL"/>
+        <result column="base" property="base" jdbcType="DECIMAL"/>
+        <result column="material" property="material" jdbcType="DECIMAL"/>
+        <result column="sown_area" property="sownArea" jdbcType="DECIMAL"/>
+        <result column="yield_per_mu" property="yieldPerMu" jdbcType="DECIMAL"/>
+        <result column="reuse" property="reuse" jdbcType="DECIMAL"/>
+        <result column="application" property="application" jdbcType="VARCHAR"/>
+        <result column="disperse_fertilising" property="disperseFertilisingData" jdbcType="DECIMAL"/>
+        <result column="disperse_forage" property="disperseForageData" jdbcType="DECIMAL"/>
+        <result column="disperse_fuel" property="disperseFuelData" jdbcType="DECIMAL"/>
+        <result column="disperse_base" property="disperseBaseData" jdbcType="DECIMAL"/>
+        <result column="disperse_material" property="disperseMaterialData" jdbcType="DECIMAL"/>
+        <result column="yield_all_num" property="yieldAllNumData" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <resultMap id="BaseResultMapByMe" type="com.sofn.ducss.vo.DataAnalysis.IndexDataVo">
+        <result column="area_id" property="area_id" jdbcType="VARCHAR"/>
+        <result column="province_id" property="province_id" jdbcType="VARCHAR"/>
+        <result column="city_id" property="city_id" jdbcType="VARCHAR"/>
+        <result column="year" property="year" jdbcType="VARCHAR"/>
+        <result column="straw_name" property="straw_name" jdbcType="VARCHAR"/>
+        <result column="sown_area" property="sown_area" jdbcType="DECIMAL"/>
+        <result column="reuse" property="reuse" jdbcType="DECIMAL"/>
+        <result column="fertilising" property="fertilising" jdbcType="DECIMAL"/>
+        <result column="forage" property="forage" jdbcType="DECIMAL"/>
+        <result column="fuel" property="fuel" jdbcType="DECIMAL"/>
+        <result column="base" property="base" jdbcType="DECIMAL"/>
+        <result column="material" property="material" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id, utilize_id, straw_type,straw_name, fertilising, forage, fuel, base, material, sown_area,
+    yield_per_mu, reuse, application,disperse_fertilising,disperse_forage,disperse_fuel,disperse_base,disperse_material,yield_all_num
+  </sql>
+    <select id="getDisperseUtilizeDetail" parameterType="java.lang.String"
+            resultType="com.sofn.ducss.model.DisperseUtilizeDetail">
+    SELECT
+    t1.*
+    FROM
+    disperse_utilize_detail t1
+    where t1.utilize_id=#{disperseUtilizeId}
+  </select>
+
+    <insert id="insertList" parameterType="java.util.List">
+        insert into disperse_utilize_detail(id,utilize_id,straw_type,straw_name,fertilising,forage,fuel
+        ,base,material,sown_area,yield_per_mu,reuse,application,disperse_fertilising,disperse_forage,disperse_fuel,disperse_base,disperse_material,yield_all_num)
+        values
+        <foreach collection="list" item="detail" index="index" separator=",">
+            (
+            #{detail.id},
+            #{detail.utilizeId},
+            #{detail.strawType},
+            #{detail.strawName},
+            #{detail.fertilising},
+            #{detail.forage},
+            #{detail.fuel},
+            #{detail.base},
+            #{detail.material},
+            #{detail.sownArea},
+            #{detail.yieldPerMu},
+            #{detail.reuse},
+            #{detail.application},
+            #{detail.disperseFertilisingData},
+            #{detail.disperseForageData},
+            #{detail.disperseFuelData},
+            #{detail.disperseBaseData},
+            #{detail.disperseMaterialData},
+            #{detail.yieldAllNumData}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateList" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update disperse_utilize_detail
+            <set>
+                fertilising = #{item.fertilising},
+                forage = #{item.forage},
+                fuel = #{item.fuel},
+                base = #{item.base},
+                material = #{item.material},
+                sown_area = #{item.sownArea},
+                yield_per_mu = #{item.yieldPerMu},
+                reuse = #{item.reuse},
+                application = #{item.application},
+                disperse_fertilising = #{item.disperseFertilisingData},
+                disperse_forage = #{item.disperseForageData},
+                disperse_fuel = #{item.disperseFuelData},
+                disperse_base = #{item.disperseBaseData},
+                disperse_material = #{item.disperseMaterialData},
+                yield_all_num = #{item.yieldAllNumData}
+            </set>
+            where id=#{item.id}
+        </foreach>
+    </update>
+
+    <delete id="deleteByDisperseUtilizeId" parameterType="java.lang.String">
+    delete from disperse_utilize_detail where utilize_id=#{farmerReuseId}
+  </delete>
+<!--需分表-->
+    <select id="selectDetailByAreaId"
+            resultType="com.sofn.ducss.model.DisperseUtilizeDetail">
+		 select *,(t1.disperse_base+t1.disperse_fertilising+t1.disperse_forage+t1.disperse_fuel+t1.disperse_material) as disperse_sum_all from (
+			SELECT
+				t.straw_type,
+				ROUND(sum(t.yieldAllNum),10)as yield_all_num,
+				ROUND(sum((t.yieldAllNum * t.fertilising * 0.01) + (case application when '0' then t.reuse when '肥料化' then t.reuse else 0 end)),10) AS disperse_fertilising,
+			    ROUND(sum((t.yieldAllNum * t.forage * 0.01) + (case application when '1' then t.reuse when '饲料化' then t.reuse else 0 end)),10) AS disperse_forage,
+				ROUND(sum((t.yieldAllNum * t.fuel * 0.01) + (case application when '2' then t.reuse when '燃料化' then t.reuse else 0 end)),10) AS disperse_fuel,
+				ROUND(sum((t.yieldAllNum * t.base * 0.01) + (case application when '3' then t.reuse when '基料化' then t.reuse else 0 end)),10) AS disperse_base,
+				ROUND(sum((t.yieldAllNum * t.material * 0.01) + (case application when '4' then t.reuse when '原料化' then t.reuse else 0 end)),10) AS disperse_material
+
+			FROM
+				(
+					SELECT
+						b.straw_type,
+						(
+							b.sown_area * b.yield_per_mu * d.grass_valley_ratio * d.collection_ratio / 1000
+						) AS yieldAllNum,
+						b.fertilising,
+						b.forage,
+						b.fuel,
+						b.base,
+						b.material,
+						b.sown_area,
+						b.yield_per_mu,
+						b.reuse,
+						b.application
+					FROM
+						disperse_utilize a
+					INNER JOIN disperse_utilize_detail b ON a.id = b.utilize_id
+					LEFT JOIN pro_still c ON a.area_id = c.area_id
+					AND a.year = c.year
+					LEFT JOIN pro_still_detail d ON c.id = d.pro_still_id
+					AND b.straw_type = d.straw_type
+					where a.id=b.utilize_id and a.year=#{year} and a.area_id = #{areaId}
+				) t GROUP BY t.straw_type
+			) t1
+
+	</select>
+    <select id="selectDetailByAreaIdStatus"
+            resultType="com.sofn.ducss.model.DisperseUtilizeDetail">
+		 select *,(t1.disperse_base+t1.disperse_fertilising+t1.disperse_forage+t1.disperse_fuel+t1.disperse_material) as disperse_sum_all from (
+			SELECT
+				t.straw_type,
+				ROUND(sum(t.yieldAllNum),10)as yield_all_num,
+				ROUND(sum((t.yieldAllNum * t.fertilising * 0.01) + (case application when '0' then t.reuse when '肥料化' then t.reuse else 0 end)),10) AS disperse_fertilising,
+			    ROUND(sum((t.yieldAllNum * t.forage * 0.01) + (case application when '1' then t.reuse when '饲料化' then t.reuse else 0 end)),10) AS disperse_forage,
+				ROUND(sum((t.yieldAllNum * t.fuel * 0.01) + (case application when '2' then t.reuse when '燃料化' then t.reuse else 0 end)),10) AS disperse_fuel,
+				ROUND(sum((t.yieldAllNum * t.base * 0.01) + (case application when '3' then t.reuse when '基料化' then t.reuse else 0 end)),10) AS disperse_base,
+				ROUND(sum((t.yieldAllNum * t.material * 0.01) + (case application when '4' then t.reuse when '原料化' then t.reuse else 0 end)),10) AS disperse_material
+
+			FROM
+				(
+					SELECT
+						b.straw_type,
+						(
+							b.sown_area * b.yield_per_mu * d.grass_valley_ratio * d.collection_ratio / 1000
+						) AS yieldAllNum,
+						b.fertilising,
+						b.forage,
+						b.fuel,
+						b.base,
+						b.material,
+						b.sown_area,
+						b.yield_per_mu,
+						b.reuse,
+						b.application
+					FROM
+						disperse_utilize a
+					INNER JOIN disperse_utilize_detail b ON a.id = b.utilize_id
+					LEFT JOIN pro_still c ON a.area_id = c.area_id
+					AND a.year = c.year
+					LEFT JOIN pro_still_detail d ON c.id = d.pro_still_id
+					AND b.straw_type = d.straw_type
+					 LEFT JOIN collect_flow cf on cf.area_id=a.area_id and cf.year=a.year
+					where a.id=b.utilize_id and a.year=#{year} and a.area_id = #{areaId}
+                    <if test="status != null and status.size() > 0">
+                        and cf.status in
+                        <foreach collection="status" item="item" separator="," open="(" close=")">
+                            #{item}
+                        </foreach>
+                    </if>
+				) t GROUP BY t.straw_type
+			) t1
+
+	</select>
+
+    <select id="findDetailByAreaIdAndYear"
+            resultType="com.sofn.ducss.model.DisperseUtilizeDetail">
+        SELECT
+        t1.farmer_name AS farmer_name,
+        t2.*,
+        t3.dict_value AS straw_str,
+        t4.name AS country_name
+        FROM
+        disperse_utilize AS t1
+        LEFT JOIN disperse_utilize_detail AS t2 ON t1.id = t2.utilize_id
+        JOIN sys_dictionary AS t3 ON t2.straw_type = t3.dict_key
+        LEFT JOIN sys_area t4 ON t1.area_id =t4.id
+        where t1.area_id =#{areaId}
+        <if test="year!= null">
+            AND t1.year = #{year}
+        </if>
+        ORDER BY
+        t2.utilize_id,
+        t3.order_no ASC;
+    </select>
+
+    <select id="findExportDetailByCondion"
+            resultType="com.sofn.ducss.model.DisperseUtilizeDetail" parameterType="java.util.Map">
+        SELECT
+        t1.fill_no AS farmerNo,
+        t1.farmer_phone as farmerPhone,
+        t1.farmer_name AS farmer_name,
+        t1.address as countryName,
+        t2.*
+        FROM
+        disperse_utilize AS t1
+        LEFT JOIN disperse_utilize_detail AS t2 ON t1.id = t2.utilize_id
+        <where>
+            <if test="areaId !=null and areaId !=''">
+                t1.area_id =#{areaId}
+            </if>
+            <if test="year!= null">
+                AND t1.year = #{year}
+            </if>
+            <if test="userName != null and userName !='' and 'null'.toString() !=userName">
+                and t1.farmer_name like concat('%',#{userName},'%')
+            </if>
+            <if test="dateBegin != null and dateBegin != '' and 'null'.toString() !=dateBegin        and dateEnd != null and dateEnd != '' and 'null'.toString() !=dateEnd ">
+                <![CDATA[
+			AND t1.create_date>=#{dateBegin} and t1.create_date<=#{dateEnd}
+			]]>
+            </if>
+        </where>
+        ORDER BY t2.utilize_id ASC
+    </select>
+
+    <select id="getListByCondition" resultMap="BaseResultMapByMe"
+            parameterType="com.sofn.ducss.vo.DataAnalysisQueryVo">
+        SELECT
+        du.province_id,
+        du.year,
+        dud.straw_name,
+        sum( dud.yield_all_num ) as yieldAllNumData,
+        sum( dud.disperse_fertilising ) as disperseFertilisingData,
+        sum( dud.disperse_forage ) as disperseForageData,
+        sum( dud.disperse_fuel ) as disperseFuelData,
+        sum( dud.disperse_base ) as disperseBaseData,
+        sum( dud.disperse_material ) as disperseMaterialData,
+        sum(dud.sown_area) as sown_area,
+        sum(dud.reuse) as reuse,
+        sum(dud.fertilising) as fertilising,
+        sum(dud.forage) as forage,
+        sum(dud.fuel) as fuel,
+        sum(dud.base) as base,
+        sum(dud.material) as material
+        FROM
+        disperse_utilize_detail dud
+        LEFT JOIN disperse_utilize du ON du.id = dud.utilize_id
+        WHERE
+        du.YEAR IN
+        <foreach collection="dataAnalysisQueryVo.year" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and du.province_id not in("")
+        <if test="dataAnalysisQueryVo.cropType != null and dataAnalysisQueryVo.cropType.size > 0 ">
+            AND dud.straw_type IN
+            <foreach collection="dataAnalysisQueryVo.cropType" item="item" index="index" open="(" separator=","
+                     close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY
+        dud.straw_name,du.province_id,du.year
+    </select>
+    <select id="getListByCondition2" resultMap="BaseResultMapByMe"
+            parameterType="com.sofn.ducss.vo.DataAnalysisQueryVo">
+        SELECT
+        du.city_id,
+        du.year,
+        dud.straw_name,
+        sum( dud.yield_all_num ) as yieldAllNumData,
+        sum( dud.disperse_fertilising ) as disperseFertilisingData,
+        sum( dud.disperse_forage ) as disperseForageData,
+        sum( dud.disperse_fuel ) as disperseFuelData,
+        sum( dud.disperse_base ) as disperseBaseData,
+        sum( dud.disperse_material ) as disperseMaterialData,
+        sum(dud.sown_area) as sown_area,
+        sum(dud.reuse) as reuse,
+        sum(dud.fertilising) as fertilising,
+        sum(dud.forage) as forage,
+        sum(dud.fuel) as fuel,
+        sum(dud.base) as base,
+        sum(dud.material) as material
+        FROM
+        disperse_utilize_detail dud
+        LEFT JOIN disperse_utilize du ON du.id = dud.utilize_id
+        WHERE
+        du.YEAR IN
+        <foreach collection="dataAnalysisQueryVo.year" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and du.city_id not in("")
+        <if test="dataAnalysisQueryVo.cropType != null and dataAnalysisQueryVo.cropType.size > 0 ">
+            AND dud.straw_type IN
+            <foreach collection="dataAnalysisQueryVo.cropType" item="item" index="index" open="(" separator=","
+                     close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY
+        dud.straw_name,du.city_id,du.year
+    </select>
+    <select id="getListByCondition3" resultMap="BaseResultMapByMe"
+            parameterType="com.sofn.ducss.vo.DataAnalysisQueryVo">
+        SELECT
+        du.area_id,
+        du.year,
+        dud.straw_name,
+        sum( dud.yield_all_num ) as yieldAllNumData,
+        sum( dud.disperse_fertilising ) as disperseFertilisingData,
+        sum( dud.disperse_forage ) as disperseForageData,
+        sum( dud.disperse_fuel ) as disperseFuelData,
+        sum( dud.disperse_base ) as disperseBaseData,
+        sum( dud.disperse_material ) as disperseMaterialData,
+        sum(dud.sown_area) as sown_area,
+        sum(dud.reuse) as reuse,
+        sum(dud.fertilising) as fertilising,
+        sum(dud.forage) as forage,
+        sum(dud.fuel) as fuel,
+        sum(dud.base) as base,
+        sum(dud.material) as material
+        FROM
+        disperse_utilize_detail dud
+        LEFT JOIN disperse_utilize du ON du.id = dud.utilize_id
+        WHERE
+        du.YEAR IN
+        <foreach collection="dataAnalysisQueryVo.year" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and du.area_id not in("")
+        <if test="dataAnalysisQueryVo.cropType != null and dataAnalysisQueryVo.cropType.size > 0 ">
+            AND dud.straw_type IN
+            <foreach collection="dataAnalysisQueryVo.cropType" item="item" index="index" open="(" separator=","
+                     close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY
+        dud.straw_name,du.area_id,du.year
+    </select>
+    <select id="getListByCondition4" resultMap="BaseResultMapByMe"
+            parameterType="com.sofn.ducss.vo.DataAnalysisQueryVo">
+        SELECT
+        du.province_id,
+        du.year,
+        dud.straw_name,
+        sum( dud.yield_all_num ) as yieldAllNumData,
+        sum( dud.disperse_fertilising ) as disperseFertilisingData,
+        sum( dud.disperse_forage ) as disperseForageData,
+        sum( dud.disperse_fuel ) as disperseFuelData,
+        sum( dud.disperse_base ) as disperseBaseData,
+        sum( dud.disperse_material ) as disperseMaterialData,
+        sum(dud.sown_area) as sown_area,
+        sum(dud.reuse) as reuse,
+        sum(dud.fertilising) as fertilising,
+        sum(dud.forage) as forage,
+        sum(dud.fuel) as fuel,
+        sum(dud.base) as base,
+        sum(dud.material) as material
+        FROM
+        disperse_utilize_detail dud
+        LEFT JOIN disperse_utilize du ON du.id = dud.utilize_id
+        WHERE
+        du.YEAR IN
+        <foreach collection="dataAnalysisQueryVo.year" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND du.province_id in
+        <foreach collection="dataAnalysisQueryVo.area" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <if test="dataAnalysisQueryVo.cropType != null and dataAnalysisQueryVo.cropType.size > 0 ">
+            AND dud.straw_type IN
+            <foreach collection="dataAnalysisQueryVo.cropType" item="item" index="index" open="(" separator=","
+                     close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY
+        dud.straw_name,du.province_id,du.year
+    </select>
+    <select id="getListByCondition5" resultMap="BaseResultMapByMe"
+            parameterType="com.sofn.ducss.vo.DataAnalysisQueryVo">
+        SELECT
+        du.city_id,
+        du.year,
+        dud.straw_name,
+        sum( dud.yield_all_num ) as yieldAllNumData,
+        sum( dud.disperse_fertilising ) as disperseFertilisingData,
+        sum( dud.disperse_forage ) as disperseForageData,
+        sum( dud.disperse_fuel ) as disperseFuelData,
+        sum( dud.disperse_base ) as disperseBaseData,
+        sum( dud.disperse_material ) as disperseMaterialData,
+        sum(dud.sown_area) as sown_area,
+        sum(dud.reuse) as reuse,
+        sum(dud.fertilising) as fertilising,
+        sum(dud.forage) as forage,
+        sum(dud.fuel) as fuel,
+        sum(dud.base) as base,
+        sum(dud.material) as material
+        FROM
+        disperse_utilize_detail dud
+        LEFT JOIN disperse_utilize du ON du.id = dud.utilize_id
+        WHERE
+        du.YEAR IN
+        <foreach collection="dataAnalysisQueryVo.year" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND du.city_id in
+        <foreach collection="dataAnalysisQueryVo.area" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <if test="dataAnalysisQueryVo.cropType != null and dataAnalysisQueryVo.cropType.size > 0 ">
+            AND dud.straw_type IN
+            <foreach collection="dataAnalysisQueryVo.cropType" item="item" index="index" open="(" separator=","
+                     close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY
+        dud.straw_name,du.city_id,du.year
+    </select>
+    <select id="getListByCondition6" resultMap="BaseResultMapByMe"
+            parameterType="com.sofn.ducss.vo.DataAnalysisQueryVo">
+        SELECT
+        du.area_id,
+        du.year,
+        dud.straw_name,
+        sum( dud.yield_all_num ) as yieldAllNumData,
+        sum( dud.disperse_fertilising ) as disperseFertilisingData,
+        sum( dud.disperse_forage ) as disperseForageData,
+        sum( dud.disperse_fuel ) as disperseFuelData,
+        sum( dud.disperse_base ) as disperseBaseData,
+        sum( dud.disperse_material ) as disperseMaterialData,
+        sum(dud.sown_area) as sown_area,
+        sum(dud.reuse) as reuse,
+        sum(dud.fertilising) as fertilising,
+        sum(dud.forage) as forage,
+        sum(dud.fuel) as fuel,
+        sum(dud.base) as base,
+        sum(dud.material) as material
+        FROM
+        disperse_utilize_detail dud
+        LEFT JOIN disperse_utilize du ON du.id = dud.utilize_id
+        WHERE
+        du.YEAR IN
+        <foreach collection="dataAnalysisQueryVo.year" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND du.area_id in
+        <foreach collection="dataAnalysisQueryVo.area" item="item" index="index" open="(" separator="," close=")">
+             #{item}
+        </foreach>
+        <if test="dataAnalysisQueryVo.cropType != null and dataAnalysisQueryVo.cropType.size > 0 ">
+            AND dud.straw_type IN
+            <foreach collection="dataAnalysisQueryVo.cropType" item="item" index="index" open="(" separator=","
+                     close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY
+        dud.straw_name,du.area_id,du.year
+    </select>
+    <select id="getPublicTableData" resultType="com.sofn.ducss.model.DisperseUtilizeDetail">
+        SELECT
+        a.id,
+        a.utilize_id,
+        a.straw_type,
+        a.straw_name,
+        a.fertilising,
+        a.forage,
+        a.fuel,
+        a.base,
+        a.material,
+        a.sown_area,
+        a.yield_per_mu,
+        a.reuse,
+        a.application,
+        a.disperse_fertilising,
+        a.disperse_forage,
+        a.disperse_fuel,
+        a.disperse_base,
+        a.disperse_material,
+        a.yield_all_num
+        FROM
+        disperse_utilize_detail a
+        LEFT JOIN disperse_utilize b ON a.utilize_id = b.id
+        WHERE
+        b.YEAR = #{year}
+        AND b.area_id = #{areaId}
+    </select>
+    <!--该方法废除-->
+    <update id="updateListByMe" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close=";" separator=";">
+            update disperse_utilize_detail
+            <set>
+                fertilize = #{item.fertilize},
+                feed = #{item.feed},
+                fuelled = #{item.fuelled},
+                base_mat = #{item.baseMat},
+                materialization = #{item.materialization},
+                straw_utilization = #{item.strawUtilization},
+                totol_rate = #{item.totolRate},
+                compr_util_index = #{item.comprUtilIndex},
+                indu_util_index = #{item.induUtilIndex}
+            </set>
+            where id=#{item.id}
+        </foreach>
+    </update>
+
+    <select id="disAssignment" resultType="com.sofn.ducss.model.DisperseUtilizeDetail">
+             select * from (
+			SELECT
+			T .straw_type,
+			ROUND(SUM(T .yieldAllNum), 10) AS yield_all_num,
+			ROUND(
+				SUM(
+					(
+						T .yieldAllNum * T .fertilising * 0.01
+					) +
+					case  when 	application = '0' or  application='肥料化' then T .reuse
+					else 0 end
+				),
+				10
+			) AS disperse_fertilising,
+			ROUND(
+				SUM(
+					(
+						T .yieldAllNum * T .forage * 0.01
+					) +
+					case when application = '1' OR application = '饲料化' then T .reuse else 	0 end
+				),
+				10
+			) AS disperse_forage,
+			ROUND(
+				SUM(
+					(T .yieldAllNum * T .fuel * 0.01) +
+				case when application = '2' OR application = '燃料化' then T .reuse else 0 end
+				),
+				10
+			) AS disperse_fuel,
+			ROUND(
+				SUM(
+					(T .yieldAllNum * T .base * 0.01) +
+					case when 	application = '3' OR application = '基料化' then  	T .reuse else 0 end
+				),
+				10
+			) AS disperse_base,
+			ROUND(
+				SUM(
+					(
+						T .yieldAllNum * T .material * 0.01
+					) +
+	case when 	application = '4' 	OR application = '原料化' then  	T .reuse else 0 end
+				),
+				10
+			) AS disperse_material
+			FROM
+				(
+					SELECT
+						b.straw_type,
+						(
+							b.sown_area * b.yield_per_mu * d.grass_valley_ratio * d.collection_ratio / 1000
+						) AS yieldAllNum,
+						b.fertilising,
+						b.forage,
+						b.fuel,
+						b.base,
+						b.material,
+						b.sown_area,
+						b.yield_per_mu,
+						b.reuse,
+						b.application
+					FROM
+						disperse_utilize a
+					INNER JOIN disperse_utilize_detail b ON a.id = b.utilize_id
+					LEFT JOIN pro_still c ON a.area_id = c.area_id
+					AND a.year = c.year
+					LEFT JOIN pro_still_detail d ON c.id = d.pro_still_id
+					AND b.straw_type = d.straw_type
+					where a.id=b.utilize_id and a.year=#{year} and a.area_id = #{areaId} and b.straw_type = #{strawType}
+				) t GROUP BY t.straw_type
+			) t1
+    </select>
+</mapper>

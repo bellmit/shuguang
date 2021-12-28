@@ -1,0 +1,18 @@
+{
+  "resourceId": "813b545d348b437ab08bf5d62376729edf4de846f3a64d08b41c3bc4186866fd"
+}
+{
+  "data": [
+    {
+      "id": "e01f36d439794e538e81a4c5a5db54820c6ee38269434e68aaa58a133662cb46",
+      "chineseName": "中文aaa",
+      "englishName": "aaa",
+      "type": "varchar2",
+      "len": 2,
+      "status": "NE"
+    }
+  ],
+  "httpCode": 200,
+  "msg": "OK",
+  "timestamp": 1481779178559
+}

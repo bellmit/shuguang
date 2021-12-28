@@ -1,0 +1,53 @@
+<link rel="stylesheet" href="assets/css/asms/subjSv/subjSvRevokeApply.css"/>
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">监管系统</a>&gt;
+    <a ui-sref="index.content.asms/subjDt/subjDtList">主体管理</a>&gt;
+    <a ui-sref="index.content.asms/subjDt/subjDtList">检测机构</a>&gt;
+    <span>注册撤销申请</span>
+</div>
+    <div class=" gui-section gui-section-wid" >
+        <h4 class="mt15 mb25">注册撤销申请</h4>
+        <form id="applyRevokeForm" name="applyRevokeForm">
+        <input ng-model="subjDtId" type="hidden"/>
+        <table class="ApplyTable">
+            <tbody>
+            <tr><td>机构名称</td><td><span ng-bind="subjDt.dtName"></span></td></tr>
+            <tr><td>机构代码</td><td><span ng-bind="subjDt.dtCode"></span></td></tr>
+            <tr><td>机构类别</td><td><span ng-bind="subjDt.dtType"></span></td></tr>
+            <tr><td>机构性质</td><td><span ng-bind="subjDt.dtNature"></span></td></tr>
+            <tr><td>资质</td><td><span ng-bind="subjDt.dtQualifications"></span></td></tr>
+            <tr><td>依托单位</td><td><span>{{subjDt.dtRelyOnUnit||'无'}}</span></td></tr>
+            <tr><td>机构级别</td><td><span ng-bind="subjDt.dtLevelName"></span></td></tr>
+            <tr><td>所属区域</td><td><span ng-bind="subjDt.dtArea"></span></td></tr>
+            <tr><td>通讯地址</td><td><span ng-bind="subjDt.dtAddress"></span></td></tr>
+            <tr><td>组织机构代码</td><td><span ng-bind="subjDt.dtCode"></span></td></tr>
+            <tr><td>法人</td><td><span ng-bind="subjDt.dtLegalMan"></span></td></tr>
+            <tr><td>负责人</td><td><span ng-bind="subjDt.dtLeader"></span></td></tr>
+            <tr><td>负责人电话</td><td><span>{{subjDt.dtLeaderPhone||'无'}}</span></td></tr>
+            <tr><td>联系人</td><td><span ng-bind="subjDt.dtContact"></span></td></tr>
+            <tr><td>联系人电话</td><td><span ng-bind="subjDt.dtContactPhone"></span></td></tr>
+            <tr><td>联系人QQ</td><td><span>{{subjDt.dtContactQQ||'无'}}</span></td></tr>
+            <tr><td>电子邮箱</td><td><span>{{subjDt.dtContactEmail||'无'}}</span></td></tr>
+            <tr><td>邮编</td><td><span>{{subjDt.dtPostcode||'无'}}</span></td></tr>
+            <tr><td>技术负责人</td><td><span>{{subjDt.dtTechnicalDirector||'无'}}</span></td></tr>
+            <tr><td>质量负责人</td><td><span>{{subjDt.dtQualityDirector||'无'}}</span></td></tr>
+            <tr><td>参数</td><td><span>{{subjDt.dtParameter||'无'}}</span></td></tr>
+            <tr><td>产品范围</td><td><span>{{subjDt.dtProductRange||'无'}}</span></td></tr>
+                <tr class="Sup_contain_section_contain_head_photo"><td style="vertical-align: middle;">撤销原因<span style="color:red;">*</span></td><td class="form-group">
+                    <textarea cols="50" rows="3" ng-model="applyReason" name="applyReason"
+                              class="form-control"
+                              data-bv-notempty="true"
+                              data-bv-notempty-message="撤销原因不能为空"
+                              data-bv-stringlength="true"
+                              data-bv-stringlength-max="300"
+                              data-bv-stringlength-message="撤销原因不能超过300个字符"></textarea>
+                </td></tr>
+            </tbody>
+        </table>
+        </form>
+        <div style="text-align: center" class="mt15 mb25">
+            <button class="gui-btn" ng-click="removeLocalStorage()">取消</button>
+            <button class="gui-btn" ng-click="applySubjDtRevoke()">确认</button>
+        </div>
+
+    </div>

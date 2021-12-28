@@ -1,0 +1,42 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/rabbit
+    http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd" >
+
+    <!-- 配置connetionFactoru 指定rabbit-server参数 -->
+    <rabbit:connection-factory id="connectionFactory2" username="${rabbitmq.username}" password="${rabbitmq.password}" host="${rabbitmq.host}" port="${rabbitmq.port}"/>
+
+    <!-- direct 一对一传输 -->
+    <!-- 定义队列 -->
+    <rabbit:queue name="directQueue" durable="true" auto-delete="false" exclusive="false"/>
+    <!-- 配置单点发送消息监听 -->
+    <bean id="directConsumer" class="com.sofn.service.mq.listener.DirectConsumer"/>
+    <rabbit:listener-container connection-factory="connectionFactory2">
+        <rabbit:listener queues="directQueue" ref="directConsumer"/>
+    </rabbit:listener-container>
+
+
+
+    <!-- fanout 一对多传输 -->
+    <!-- 定义队列 -->
+    <rabbit:queue name="fountQueueSofn-dgap" durable="true" auto-delete="false" exclusive="false"/>
+    <!-- 配置一对多发送消息监听 -->
+    <bean id="fountConsumer" class="com.sofn.service.mq.listener.FountConsumer"/>
+    <rabbit:listener-container connection-factory="connectionFactory2">
+        <rabbit:listener ref="fountConsumer" queues="fountQueueSofn-dgap"/>
+    </rabbit:listener-container>
+
+
+
+    <!-- topic 主题传输 -->
+    <!-- 定义队列 -->
+    <rabbit:queue name="topicQueueSofn-dgap" durable="true" auto-delete="false" exclusive="false"/>
+    <!-- 配置主题发送消息监听 -->
+    <bean id="topicConsumer" class="com.sofn.service.mq.listener.TopicConsumer"/>
+    <rabbit:listener-container connection-factory="connectionFactory2">
+        <rabbit:listener ref="topicConsumer" queues="topicQueueSofn-dgap" response-routing-key="sofn.dgap"/>
+    </rabbit:listener-container>
+</beans>

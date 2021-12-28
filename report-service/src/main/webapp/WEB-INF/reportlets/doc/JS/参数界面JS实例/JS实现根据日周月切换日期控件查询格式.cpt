@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WorkBook xmlVersion="20170720" releaseVersion="10.0.0">
+<Report class="com.fr.report.worksheet.WorkSheet" name="sheet1">
+<ReportPageAttr>
+<HR/>
+<FR/>
+<HC/>
+<FC/>
+</ReportPageAttr>
+<ColumnPrivilegeControl/>
+<RowPrivilegeControl/>
+<RowHeight defaultValue="723900">
+<![CDATA[723900,1143000,723900,723900,723900,723900,723900,723900,723900,723900,723900]]></RowHeight>
+<ColumnWidth defaultValue="2743200">
+<![CDATA[6305005,3901440,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200]]></ColumnWidth>
+<CellElementList>
+<C c="0" r="0">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="1" s="0">
+<O>
+<![CDATA[  您要查询的日期为：]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="1" s="1">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=$start]]></Attributes>
+</O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="2" r="1">
+<PrivilegeControl/>
+<Expand/>
+</C>
+</CellElementList>
+<ReportAttrSet>
+<ReportSettings headerHeight="0" footerHeight="0">
+<PaperSetting/>
+<Background name="ColorBackground" color="-1"/>
+</ReportSettings>
+</ReportAttrSet>
+<PrivilegeControl/>
+</Report>
+<ReportParameterAttr>
+<Attributes showWindow="true" delayPlaying="false" windowPosition="1" align="0" useParamsTemplate="false"/>
+<PWTitle>
+<![CDATA[参数]]></PWTitle>
+<ParameterUI class="com.fr.form.main.parameter.FormParameterUI">
+<Parameters/>
+<Layout class="com.fr.form.ui.container.WParameterLayout">
+<WidgetName name="para"/>
+<WidgetAttr description="">
+<PrivilegeControl/>
+</WidgetAttr>
+<Margin top="0" left="0" bottom="0" right="0"/>
+<Border>
+<border style="0" color="-723724" borderRadius="0" type="0" borderStyle="0"/>
+<WidgetTitle>
+<O>
+<![CDATA[新建标题]]></O>
+<FRFont name="SimSun" style="0" size="72"/>
+<Position pos="0"/>
+</WidgetTitle>
+<Alpha alpha="1.0"/>
+</Border>
+<Background name="ColorBackground" color="-526086"/>
+<LCAttr vgap="0" hgap="0" compInterval="0"/>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.DateEditor">
+<WidgetName name="start_day"/>
+<WidgetAttr description="">
+<PrivilegeControl/>
+</WidgetAttr>
+<DateAttr/>
+<widgetValue>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=today()]]></Attributes>
+</O>
+</widgetValue>
+</InnerWidget>
+<BoundsAttr x="349" y="20" width="110" height="30"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.DateEditor">
+<WidgetName name="start_month"/>
+<WidgetAttr invisible="true" description="">
+<PrivilegeControl/>
+</WidgetAttr>
+<DateAttr format="yyyy-MM-01"/>
+<widgetValue>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=DATEINWEEK(today()-1,1)]]></Attributes>
+</O>
+</widgetValue>
+</InnerWidget>
+<BoundsAttr x="349" y="20" width="110" height="30"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.Label">
+<WidgetName name="rp"/>
+<WidgetAttr invisible="true" description="">
+<PrivilegeControl/>
+</WidgetAttr>
+<widgetValue>
+<O>
+<![CDATA[day]]></O>
+</widgetValue>
+<LabelAttr verticalcenter="true" textalign="0" autoline="true"/>
+<FRFont name="SimSun" style="0" size="72"/>
+<border style="0" color="-723724"/>
+</InnerWidget>
+<BoundsAttr x="665" y="29" width="80" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.parameter.FormSubmitButton">
+<Listener event="click">
+<JavaScript class="com.fr.js.JavaScriptImpl">
+<Parameters/>
+<Content>
+<![CDATA[var rp=_g().parameterEl.getWidgetByName('rp').getValue();
+if(rp=="day"){
+	var start_day= _g().parameterEl.getWidgetByName('start_day').getValue();
+	_g().parameterEl.getWidgetByName('start').setValue(start_day);
+	
+}else if(rp=="week"){
+	var start_week= _g().parameterEl.getWidgetByName('start_week').getValue();
+	 _g().parameterEl.getWidgetByName('start').setValue(start_week);
+}else{
+	var start_month= _g().parameterEl.getWidgetByName('start_month').getValue();
+	_g().parameterEl.getWidgetByName('start').setValue(start_month);
+}]]></Content>
+</JavaScript>
+</Listener>
+<WidgetName name="formSubmit0"/>
+<WidgetAttr description="">
+<PrivilegeControl/>
+</WidgetAttr>
+<Text>
+<![CDATA[查询]]></Text>
+<Hotkeys>
+<![CDATA[enter]]></Hotkeys>
+</InnerWidget>
+<BoundsAttr x="531" y="20" width="90" height="30"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.DateEditor">
+<WidgetName name="start"/>
+<LabelName name="day"/>
+<WidgetAttr invisible="true" description="">
+<PrivilegeControl/>
+</WidgetAttr>
+<DateAttr/>
+<widgetValue>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=today()]]></Attributes>
+</O>
+</widgetValue>
+</InnerWidget>
+<BoundsAttr x="771" y="29" width="110" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.DateEditor">
+<Listener event="afterinit">
+<JavaScript class="com.fr.js.JavaScriptImpl">
+<Parameters/>
+<Content>
+<![CDATA[this._createCalendar = function(){
+    var o = this.options;  
+    var self = this;  
+    if (this.options.need2BuildConfig === true && this.options.data) {  
+        this.options.data.resetStatus(this.createDependencePara4Data());  
+        var data = this.options.data.getData();  
+        if (data[0]A.data) {  
+            if (data[0]A.data.startDate) {  
+                var sd = new Date(data[0]A.data.startDate);  
+                if (!FR.isInvalidDate(sd)) {  
+                    o.startDate = FR.date2Str(sd, 'yyyy-MM-dd');
+                    this.std = this._createStartDate(o.startDate, o.format, this.viewMode);  
+                }  
+            }  
+            if (data[0]A.data.endDate) {  
+                var ed = new Date(data[0]A.data.endDate);  
+                if (!FR.isInvalidDate(ed)) {  
+                    o.endDate = FR.date2Str(ed, 'yyyy-MM-dd');  
+                    this.edd = this._createEndDate(o.endDate, o.format, this.viewMode);  
+                }  
+            }  
+        }  
+        this.options.rebuildConfig = false;  
+    }  
+    this.datepicker = new FR.DatePicker({  
+        renderEl: this.$view,  
+        viewMode: this.viewMode,  
+        date: FR.str2Date(this.editComp.val(), o.format),  
+        dateFormat: o.format,  
+        startDate: this.std,  
+        endDate: this.edd,  
+        onDateUpdate:function(){  
+            if ($(':focus').length === 0) {  
+                self.editComp.focus();  
+            }  
+            self.editComp.val(FR.date2Str(this.getValue(), o.format));  
+            self.isValidateInput();  
+            self.fireEvent(FR.Events.AFTEREDIT);  
+        }  
+    });  
+    this.datepicker._loadDateData = function (table, date) {  
+        if (!date) {  
+            return;  
+        }  
+        var year = date.getFullYear(),  
+            month = date.getMonth(),  
+            day = date.getDate();  
+        var today = new Date(),  
+            TY = today.getFullYear(),  
+            TM = today.getMonth(),  
+            TD = today.getDate();  
+        this.cache.showYear = year;  
+        this.cache.showMonth = month;  
+        var std = this.options.startDate,  
+            edd = this.options.endDate;  
+        table.$title.text(Date._MN[month]A + ", " + year);  
+        var nextDay = new Date(date);  
+        nextDay.setDate(nextDay.getMonthDays() + 1);  
+        if ((edd && nextDay > edd) || nextDay.getFullYear() > this.CONSTS.MAXYEAR) {  
+            table.$nextm.addClass('disabled').removeClass('hover').data('disabled', true);  
+        } else {  
+            table.$nextm.removeClass('disabled').data('disabled', false);  
+        }  
+        var prevDay = new Date(date);  
+        prevDay.setDate(0);  
+        if ((std && prevDay < std) || prevDay.getFullYear() < this.CONSTS.MINYEAR) {  
+            table.$prevm.addClass('disabled').removeClass('hover').data('disabled', true);  
+        } else {  
+            table.$prevm.removeClass('disabled').data('disabled', false);  
+        }  
+        date.setDate(1);  
+        var day1 = (date.getDay() - this.CONSTS.FIRSTDAY) % 7;  
+        date.setDate(0 - day1);  
+        date.setDate(date.getDate() + 1);  
+        var $frow = table.find('tbody').children().eq(0);  
+        for (var i = 0; i < 6; i++) {  
+            if (!$frow.length) {  
+                break;  
+            }  
+            var $cell = $frow.children().eq(0);  
+            $cell.addClass('week wn').text(date.getWeekNumber());  
+            var iday;  
+            for (var j = 0; j < 7; ++j, date.setDate(iday + 1)) {  
+                $cell = $cell.next();  
+                $cell.removeClass().data('nav', this.CONSTS.NAV['day']A);  
+                if (!$cell.length) {  
+                    break;  
+                }  
+                iday = date.getDate();  
+                $cell.text(iday);  
+                var current_month = (date.getMonth() == month);  
+                if (!current_month || j !=1 ) {  
+                    $cell.addClass('oday').data('disabled',true);  
+                    continue;  
+                }  
+                var disabled = false;  
+                if ((std != null && std > date) || (edd != null && edd < date)) {  
+                    $cell.addClass('day disabled');  
+                    disabled = true;  
+                } else {  
+                    $cell.addClass('day');  
+                }  
+                $cell.data('disabled', disabled);  
+                if (!disabled) {  
+                    if (current_month && iday == day) {  
+                        this.cache.selectedDate && this.cache.selectedDate.removeClass('selected');  
+                        $cell.addClass('selected');  
+                        this.cache.selectedDate = $cell;  
+                        this.cache.showDay = iday;  
+                    }  
+                    if (date.getFullYear() == TY &&  
+                        date.getMonth() == TM &&  
+                        iday == TD) {  
+                        $cell.addClass('today');  
+                    }  
+                    var wday = date.getDay();  
+                    if ([0, 6]A.indexOf(wday) != -1) {  
+                        $cell.addClass("weekend");  
+                    }  
+                }  
+            }  
+            $frow = $frow.next();  
+        }  
+    }  
+  
+    if (FR.Browser.isIE8() && this.$view.css('visibility') == 'hidden') {  
+        this.$view.css("visibility", "visible");  
+    } else {  
+        this.$view.show();  
+    }  
+    $(document).bind('mousedown', this, this.collapseIf);  
+    this.modifyPosition();  
+      
+      
+    var tr = $('tbody>tr',this.datepicker.$datetable);  
+    for( var i=0; i<tr.length; i++ ){  
+        var $days = $('td[class!="week wn"]A',tr[i]A);
+        for( var j=0; j<$days.length; j++ ){  
+            var $day = $($days[j]A);  
+            if( 1 != j && !$day.hasClass('oday')){  
+                $day.data("disabled",true);  
+                $day.attr('class','oday');  
+            }  
+        }  
+    }  
+}  ]]></Content>
+</JavaScript>
+</Listener>
+<WidgetName name="start_week"/>
+<WidgetAttr invisible="true" description="">
+<PrivilegeControl/>
+</WidgetAttr>
+<DateAttr/>
+<widgetValue>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=DATEINWEEK(today(),1)]]></Attributes>
+</O>
+</widgetValue>
+</InnerWidget>
+<BoundsAttr x="349" y="20" width="110" height="30"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.FreeButton">
+<Listener event="click">
+<JavaScript class="com.fr.js.JavaScriptImpl">
+<Parameters/>
+<Content>
+<![CDATA[_g().parameterEl.getWidgetByName('rp').setValue("month");
+$("div[widgetname='START_MONTH']A").show();
+
+$("div[widgetname='START_DAY']A").hide();
+
+$("div[widgetname='START_WEEK']A").hide();
+
+var start_month= _g().parameterEl.getWidgetByName('start_month').getValue();
+
+_g().parameterEl.getWidgetByName('start').setValue(start_month);
+
+_g().parameterCommit();]]></Content>
+</JavaScript>
+</Listener>
+<WidgetName name="button1_c_c_c_c"/>
+<WidgetAttr description="">
+<PrivilegeControl/>
+</WidgetAttr>
+<Text>
+<![CDATA[月报]]></Text>
+</InnerWidget>
+<BoundsAttr x="220" y="20" width="90" height="30"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.FreeButton">
+<Listener event="click">
+<JavaScript class="com.fr.js.JavaScriptImpl">
+<Parameters/>
+<Content>
+<![CDATA[_g().parameterEl.getWidgetByName('rp').setValue("week");
+$("div[widgetname='START_MONTH']A").hide();
+
+$("div[widgetname='START_DAY']A").hide();
+
+$("div[widgetname='START_WEEK']A").show();
+
+var start_week= _g().parameterEl.getWidgetByName('start_week').getValue();
+
+_g().parameterEl.getWidgetByName('start').setValue(start_week);
+
+_g().parameterCommit();]]></Content>
+</JavaScript>
+</Listener>
+<WidgetName name="button1_c"/>
+<WidgetAttr description="">
+<PrivilegeControl/>
+</WidgetAttr>
+<Text>
+<![CDATA[周报]]></Text>
+</InnerWidget>
+<BoundsAttr x="120" y="20" width="90" height="30"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.FreeButton">
+<Listener event="click">
+<JavaScript class="com.fr.js.JavaScriptImpl">
+<Parameters/>
+<Content>
+<![CDATA[_g().parameterEl.getWidgetByName('rp').setValue("day");
+$("div[widgetname='START_MONTH']A").hide();
+
+$("div[widgetname='START_DAY']A").show();
+
+$("div[widgetname='START_WEEK']A").hide();
+
+var start_day= _g().parameterEl.getWidgetByName('start_day').getValue();
+
+_g().parameterEl.getWidgetByName('start').setValue(start_day);
+
+_g().parameterCommit();
+]]></Content>
+</JavaScript>
+</Listener>
+<WidgetName name="button0_c"/>
+<WidgetAttr description="">
+<PrivilegeControl/>
+</WidgetAttr>
+<Text>
+<![CDATA[日报]]></Text>
+</InnerWidget>
+<BoundsAttr x="20" y="20" width="90" height="30"/>
+</Widget>
+<Sorted sorted="false"/>
+<MobileWidgetList>
+<Widget widgetName="button0_c"/>
+<Widget widgetName="button1_c"/>
+<Widget widgetName="button1_c_c_c_c"/>
+<Widget widgetName="start_week"/>
+<Widget widgetName="formSubmit0"/>
+<Widget widgetName="start"/>
+</MobileWidgetList>
+<Display display="true"/>
+<DelayDisplayContent delay="false"/>
+<UseParamsTemplate use="false"/>
+<Position position="0"/>
+<Design_Width design_width="991"/>
+<NameTagModified>
+<TagModified tag="start" modified="true"/>
+</NameTagModified>
+<WidgetNameTagMap>
+<NameTag name="start_day" tag="日期："/>
+<NameTag name="start" tag="day"/>
+<NameTag name="start_month" tag="日期："/>
+<NameTag name="start_week" tag="日期："/>
+<NameTag name="button1_c" tag="day"/>
+</WidgetNameTagMap>
+<ParamAttr class="com.fr.report.mobile.DefaultMobileParamStyle"/>
+</Layout>
+<DesignAttr width="991" height="108"/>
+</ParameterUI>
+</ReportParameterAttr>
+<StyleList>
+<Style imageLayout="1">
+<FRFont name="SimSun" style="0" size="88"/>
+<Background name="NullBackground"/>
+<Border/>
+</Style>
+<Style imageLayout="1">
+<FRFont name="SimSun" style="0" size="88" foreground="-65536"/>
+<Background name="NullBackground"/>
+<Border/>
+</Style>
+</StyleList>
+<DesignerVersion DesignerVersion="KAA"/>
+<PreviewType PreviewType="1"/>
+<TemplateIdAttMark class="com.fr.base.iofile.attr.TemplateIdAttrMark">
+<TemplateIdAttMark TemplateId="27526486-8dca-4da2-a509-0db162ad91c9"/>
+</TemplateIdAttMark>
+</WorkBook>

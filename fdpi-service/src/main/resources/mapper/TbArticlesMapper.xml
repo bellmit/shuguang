@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.TbArticlesMapper">
+    <resultMap id="BaseResult" type="com.sofn.fdpi.model.TbArticles">
+        <id property="id" column="id"/>
+        <result property="cName" column="C_NAME"/>
+        <result property="essaytitle" column="ESSAYTITLE"/>
+        <result property="essayauthor" column="ESSAYAUTHOR"/>
+        <result property="essaycontent" column="ESSAYCONTENT"/>
+        <result property="essaydatetime" column="ESSAYDATETIME"/>
+        <result property="essaycount" column="ESSAYCOUNT"/>
+        <result property="essaystatus" column="ESSAYSTATUS"/>
+        <collection property="files" ofType="com.sofn.fdpi.model.FileManage">
+            <id column="exID" property="id"></id>
+            <result column="FILE_SOURCE_ID" property="fileSourceId"></result>
+        </collection>
+    </resultMap>
+    <sql id="Base_List">
+       a.ID,a.C_NAME,a.ESSAYTITLE,a.ESSAYAUTHOR,a.ESSAYCONTENT,a.ESSAYDATETIME,a.ESSAYCOUNT,a.ESSAYSTATUS
+    </sql>
+    <sql id="file">
+      b.ID as exID,b.FILE_SOURCE_ID
+  </sql>
+
+    <select id="getArticlesList" resultMap="BaseResult">
+        select
+        *
+        from TB_ARTICLES
+        <where>
+            DEL_FLAG = 'N'
+            <if test="cName != null and cName != ''">
+                and C_NAME = #{cName}
+            </if>
+            <if test="essaystatus != null and essaystatus != ''">
+                and ESSAYSTATUS = #{essaystatus}
+            </if>
+
+            <if test="startTime!=null">
+                and ESSAYDATETIME &gt;= to_timestamp(#{startTime},'yyyy-MM-dd HH24:MI:SS')
+            </if>
+            <if test="endTime!=null">
+                and ESSAYDATETIME &lt;= to_timestamp(#{endTime},'yyyy-MM-dd HH24:MI:SS')
+            </if>
+            <if test="essaytitle != null and essaytitle != ''">
+                and ESSAYTITLE like '%' || #{essaytitle} || '%'
+            </if>
+            order by CREATE_TIME desc
+        </where>
+    </select>
+    <update id="deleteArticlesInfo">
+        update
+        TB_ARTICLES
+        set
+        DEL_FLAG = 'Y',
+        UPDATE_TIME = #{updateTime},
+        UPDATE_USER_ID=#{updateUserId}
+        where
+        ID=#{id}
+    </update>
+    <update id="updatecount">
+        update TB_ARTICLES
+        set
+        ESSAYCOUNT = #{count}
+        where ID=#{id}
+    </update>
+
+    <select id="selectinfoByid" resultMap="BaseResult">
+        select
+        <include refid="Base_List"/>,
+        <include refid="file"/>
+        from TB_ARTICLES a left join FILE_MANAGE b on a.ID=b.FILE_SOURCE_ID
+        where a.ID=#{id}
+    </select>
+    <select id="getArticlesListNews" resultMap="BaseResult">
+        select
+        <include refid="Base_List"/>
+        from TB_ARTICLES a
+        where a.ESSAYSTATUS='1' and DEL_FLAG='N' order by CREATE_TIME desc
+    </select>
+
+    <select id="selectinfoByC" resultMap="BaseResult">
+        select
+         *
+        from TB_ARTICLES
+        where ESSAYTITLE=#{essaytitle}and DEL_FLAG='N'
+    </select>
+    <select id="getOne" resultType="com.sofn.fdpi.model.TbArticles">
+        select
+         *
+        from TB_ARTICLES
+        where ID=#{id}and DEL_FLAG='N'
+    </select>
+
+    <select id="getAllList" resultType="com.sofn.fdpi.vo.ArticleAllVo">
+   SELECT
+	ID,
+	ESSAYTITLE,
+	TYPE,
+    CREATE_TIME
+    FROM
+	(
+		SELECT
+			ID,
+			ESSAYTITLE,
+			'1' AS TYPE,
+		ESSAYCONTENT,
+        CREATE_TIME
+		FROM
+			TB_ARTICLES
+		WHERE
+			ESSAYSTATUS = '1'
+		AND DEL_FLAG = 'N'
+		UNION ALL
+			SELECT
+				ID,
+				ESSAYTITLE,
+				'2' AS TYPE,
+			ESSAYCONTENT,
+        CREATE_TIME
+			FROM
+				PICTURE_ARTICLE
+			WHERE
+				ESSAYSTATUS = '1'
+			AND DEL_FLAG = 'N'
+	)
+    WHERE
+    1=1
+        <if test="essaycontent != null and essaycontent != ''">
+            and ESSAYCONTENT LIKE '%' || #{essaycontent} || '%'
+        </if>
+        ORDER BY CREATE_TIME desc
+    </select>
+</mapper>

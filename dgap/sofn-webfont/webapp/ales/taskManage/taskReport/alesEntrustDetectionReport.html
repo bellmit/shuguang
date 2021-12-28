@@ -1,0 +1,33 @@
+<link rel="stylesheet" href="assets/css/asms/ass/assChecklist.css"/>
+<div class="gui-breadcrumbs">
+    <a ui-sref="index.content.ales/taskManage/alesEntrustDetection">执法系统</a>&gt;
+    <a ui-sref="index.content.ales/taskManage/alesEntrustDetection">日常执法管理</a>&gt;
+    <a ui-sref="index.content.ales/taskManage/alesEntrustDetection">委托检测任务</a>&gt;
+    <span>报告列表</span>
+</div>
+    <div class="gui-section">
+            <span name="CdUnitSpan" style="display: none">
+                <span>承担单位</span>
+                <span class="gui-select">
+                    <select name = "CdUnit" onchange="selectCdUnit()">
+                        <option value="">请选择</option>
+                        <option ng-repeat="unit in CdUnit" value="{{unit.superviseBearUnitId}}">{{unit.leadUnitName}}</option>
+                    </select>
+                </span>
+           </span>
+        <form class="gui-form-group">
+        <span>年份</span>
+        <input name="years" c onfocus="WdatePicker({skin:'default',dateFmt:'yyyy'})" class="Wdate gui-input" placeholder="--请选择年份--"/>
+        <span>任务名称</span>
+        <input class="gui-input" type="text" placeholder="请输入查找内容" name="monitorTask"/>
+        <button class="gui-btn" id="ToCheck">查询</button>
+            <button class="gui-btn" type="reset">重置</button>
+        </form>
+        <div class=" gui-section gui-section-wid clearfix gov-h">
+        <button ng-click="returnTaskList()" class=" fr gui-btn ml15">
+            <i class="gui-icon icon-return"></i>返回任务列表</button>
+        </div>
+        <table id="grid" class="gui-table mt15"
+               style="width: 100%">
+        </table>
+    </div>

@@ -1,0 +1,326 @@
+<link rel="stylesheet" href="assets/css/asms/baseInspection/inspectionList.css"/>
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">监管系统</a>&gt;
+    <a ui-sref="index.content.asms/ass/asmsKhTask">监督检查</a>&gt;
+    <span>考核任务</span>
+</div>
+<div class="gui-section">
+    <form class="gui-form-group">
+        <div >
+            <span>巡查区域</span>
+            <div class="gui-select">
+                <select id="querySheng" >
+                    <option value="">省</option>
+                </select>
+            </div>
+            <div class="gui-select">
+                <select id="queryShi" >
+                    <option value="">市</option>
+                </select>
+            </div>
+            <div class="gui-select">
+                <select id="queryXian" >
+                    <option value="">区/县</option>
+                </select>
+            </div>
+        </div>
+        <div class="  mt15 ">
+            <span>考核类型</span>
+        <div class="gui-select" style="width: 100px;min-width: 100px">
+            <select name="taskDateType" >
+                <option value="">全部</option>
+                <option value="年度">年度</option>
+                <option value="月度">月度</option>
+                <option value="季度">季度</option>
+            </select>
+        </div>
+        <span>任务类型</span>
+        <div class="gui-select" style="width: 100px;min-width: 100px">
+            <select name="taskType" >
+                <option value="">全部</option>
+                <option value="1">基地</option>
+                <option value="2">主体</option>
+                <option value="3">农资</option>
+                <option value="0">其他</option>
+            </select>
+        </div>
+            <button id="ToCheck" ng-disabled="!!btnDisabled"  class="gui-btn" >查询</button>
+            <button  class="gui-btn ML15" ng-click="cleanQueryPar()">重置</button>
+            </div>
+    </form>
+    <div class="gui-actions">
+        <button ng-click="cancel()" ng-show="{{iswrite==2}}" class="gui-btn  fr" data-toggle="tooltip" data-placement="top" title="删除考核任务">
+            <i class="gui-icon icon-disable"></i>删除</button>
+        <button ng-click="updateTask()" ng-show="{{iswrite==2}}" class="gui-btn   fr ml15 mr15" data-toggle="tooltip" data-placement="top" title="修改任务">
+            <i class="gui-icon icon-edit" ></i>修改</button>
+        <button ng-click="addTask()" ng-show="{{iswrite==2}}" class="gui-btn  fr" data-toggle="tooltip" data-placement="top" title="新增任务">
+            <i class="gui-icon icon-add"></i>新增</button>
+    </div>
+    <table id="grid" class="gui-table mt15"
+           style="width: 100%">
+    </table>
+</div>
+
+<!--TaskOprModel-->
+<div class="modal fade"  id="TaskOprModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">
+                    <span id="TaskOprModelTitle">操作</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <!--********************-->
+                <form id="attributeForm"  class="form-horizontal"
+                      data-bv-excluded>
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-3 col-md-3 control-label">任务名称&nbsp;<span style="color: red">*</span>&nbsp;:&nbsp;</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <input name="ObjTaskName" type="text" class="form-control gui-input" ng-model="examine.taskName"
+                                      maxlength="60" data-bv-notempty="true" data-bv-notempty-message="任务名称不能为空"
+                                      data-bv-stringlength-message="任务名称不超过60个字符" placeholder="任务名称不超过60个字符" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 col-sm-3 col-lg-3  control-label">任务类型&nbsp;<span style="color: red">*</span>：</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <div class="gui-checkbox" style="width: 100%">
+                                <!--原始设计为下拉-->
+                                <!--<select name="taskType" class="form-control " ng-model="examine.taskType"data-bv-notempty="true"-->
+                                        <!--data-bv-notempty-message="请选择任务类型">-->
+                                    <!--<option value="">&#45;&#45;任务类型&#45;&#45;</option>-->
+                                    <!--<option ng-repeat="x in KhTaskType" value="{{x.id}}">{{x.dictName}}</option>-->
+                                    <!--<option  value="基地">基地</option>-->
+                                    <!--<option value="主体">主体</option>-->
+                                    <!--<option value="农资">农资</option>-->
+                                    <!--<option value="其他">其他</option>-->
+                                <!--</select>-->
+                                <!--暂时修改为复选框的形式-->
+                                <!--<input  name="taskType" class="ThisType" ng-model="taskType.a"  type="checkbox" value="1" ng-required="taskType.a || taskType.b || taskType.c || taskType.d" /><span>基地</span>-->
+                                <!--<input  name="taskType" class="ThisType"  ng-model="taskType.b"  type="checkbox" value="2" ng-required="taskType.a || taskType.b || taskType.c || taskType.d" /><span>主体</span>-->
+                                <!--<input  name="taskType" class="ThisType"  ng-model="taskType.c"  type="checkbox" value="3" ng-required="taskType.a || taskType.b || taskType.c || taskType.d" /><span>农资</span>-->
+                                <!--<input  name="taskType" class="ThisType"  ng-model="taskType.d" type="checkbox" value="0" ng-required="taskType.a || taskType.b || taskType.c || taskType.d" /><span>其他</span>-->
+
+                                <input  name="taskType" required class="ThisType" type="checkbox" data-bv-notempty-message="请至少选中一个类型" value="1"  /><span>基地</span>
+                                <input  name="taskType" class="ThisType"  type="checkbox" value="2" /><span>主体</span>
+                                <input  name="taskType" class="ThisType"  type="checkbox" value="3" /><span>农资</span>
+                                <input  name="taskType" class="ThisType"  type="checkbox" value="0" /><span>其他</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-3 col-md-3 control-label">考核类型&nbsp;<span style="color: red">*</span>：</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <div class="gui-select" style="width: 100%">
+                                <select id="taskDateType" onChange="SdDateValid.cleanGLValid()" name="taskDateType" ng-change="taskDateType()" class="form-control" ng-model="examine.taskDateType"data-bv-notempty="true"
+                                        data-bv-notempty-message="请选择考核类型">
+                                    <option value="">--考核类型--</option>
+                                    <option  value="年度">年度</option>
+                                    <option value="季度">季度</option>
+                                    <option value="月度">月度</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-3 col-md-3 control-label">考核时间&nbsp;<span style="color: red">*</span>：</label>
+                        <div class="col-sm-6 col-lg-6 col-md-6">
+                            <input name="taskDateYear" onChange="SdDateValid.DataValid()" class="form-control" ng-model="examine.taskDateYear" onfocus="WdatePicker({skin:'default',dateFmt:'yyyy', minDate:'%y'})" class="gui-input" placeholder="--请选择年份--"/>
+                            <div class="DataValidTip" style="font-size: 12px;margin-top: 5px;color: #a94442;display: none">
+                                时间不能为空
+                            </div>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <select style="padding: 0 0px 0 26px;" onChange="SdDateValid.DataValid()" name="taskDateQuarter" class="form-control" ng-model="examine.taskDateQuarter">
+                                <option value="">--季度--</option>
+                                <option value="1">第一季度</option>
+                                <option value="2">第二季度</option>
+                                <option value="3">第三季度</option>
+                                <option value="4">第四季度</option>
+                            </select>
+                            <div class="DataValidTip" style="font-size: 12px;margin-top: 5px;color: #a94442;display: none">
+                                时间不能为空
+                            </div>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <select style="padding: 0 0px 0 26px;" onChange="SdDateValid.DataValid()" name="taskDateMonths" class="form-control" ng-model="examine.taskDateMonths">
+                                <option value="">--月份--</option>
+                                <option value="01">一月</option>
+                                <option value="02">二月</option>
+                                <option value="03">三月</option>
+                                <option value="04">四月</option>
+                                <option value="05">五月</option>
+                                <option value="06">六月</option>
+                                <option value="07">七月</option>
+                                <option value="08">八月</option>
+                                <option value="09">九月</option>
+                                <option value="10">十月</option>
+                                <option value="11">十一月</option>
+                                <option value="12">十二月</option>
+                            </select>
+                            <div class="DataValidTip" style="font-size: 12px;margin-top: 5px;color: #a94442;display: none">
+                                时间不能为空
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-3 col-md-3 control-label">指派巡查人员&nbsp;<span style="color: red">*</span>：</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <input type="text" onChange="SdDateValid.DataValid()" readonly name="ObjName" class="form-control" ng-click="selectPerson()" placeholder="请选择巡查人员"/>
+                            <div class="DataValidTip" style="font-size: 12px;margin-top: 5px;color: #a94442;display: none">
+                                巡查人员不能为空
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-3 col-md-3 control-label">巡查区域&nbsp;<span style="color: red">*</span>：</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <div class="gui-select" style="width: 100%;">
+                                <select name="ObjShen" id="ObjShen" class="form-control"
+                                        data-bv-notempty="true"
+                                        data-bv-notempty-message="巡查区域不能为空">
+                                    <option value="">--请选择省份--</option>
+                                </select>
+                                <!--<div class="DataValidTip" style="font-size: 12px;margin-top: 5px;color: #a94442;display: none">-->
+                                    <!--请选择省-->
+                                <!--</div>-->
+                            </div>
+                            <div class="gui-select mt15" style="width: 100%;">
+                                <select name="ObjShi" id="ObjShi" class="form-control">
+                                    <option value="">--请选择城市--</option>
+                                </select>
+                                <!--<div class="DataValidTip" style="font-size: 12px;margin-top: 5px;color: #a94442;display: none">-->
+                                    <!--请选择市-->
+                                <!--</div>-->
+                            </div>
+                            <div class="gui-select mt15" style="width: 100%;">
+                                <select name="ObjXian" id="ObjXian" class="form-control">
+                                    <option value="">--请选择区/县--</option>
+                                </select>
+                                <!--<div class="DataValidTip" style="font-size: 12px;margin-top: 5px;color: #a94442;display: none">-->
+                                    <!--请选择县-->
+                                <!--</div>-->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-3 col-md-3 control-label">巡查次数&nbsp;<span style="color: red">*</span>：</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <input name="ObjInspectionCount" type="text" class="form-control gui-input" ng-model="examine.inspectionCount" data-bv-notempty="true"
+                                   data-bv-notempty-message="请填写巡查次数"data-bv-integer="true"
+                                   data-bv-min="0"
+                                   data-bv-integer-message="请输入整数" maxlength="4"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-3 col-md-3 control-label">巡查内容&nbsp;:&nbsp;&nbsp;</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <textarea name="ObjDetailContent" type="text" class="form-control gui-input" ng-model="examine.detailContent"
+                                   maxlength="300"
+                                   data-bv-stringlength-message="具体内容不超过300个字符" placeholder="具体内容不超过300个字符" ></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-3 col-md-3 control-label">附件&nbsp;<span style="color: red">*</span>：</label>
+                        <div file-upload options="vm.uploadOptions" files="vm.files"></div>
+                    </div>
+
+                    </form>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn mt15" type="button" ng-click="saveTask()">确定</button>
+                <button class="gui-btn mt15" type="button" data-dismiss="modal" ng-click="cleanSelected()">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--personSelectList-->
+<div class="modal fade"  id="selectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">
+                    <span id="modalTitle">人员选择</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <input  class="gui-input mt15" type="text" name="selectQueryName" placeholder="请输入名称">
+                <button class="gui-btn " id="selectTocheck" ng-disabled="!!btnPersonDisabled" data-toggle="tooltip" data-placement="right" title="根据输入条件检索列表">查询</button>
+                <button class="gui-btn " data-toggle="tooltip" data-placement="right" ng-click="cleanSelectModelQuery()">重置</button>
+                <button class="gui-btn " data-toggle="tooltip" data-placement="right" ng-click="cleanSelected()">清空已选择</button>
+                <!--list-->
+                <table id="selectGrid" style="width: 100%;"class="gui-table mt15">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn mt15" type="button" ng-click="selectModalQdButt()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--TaskInfoModel-->
+<div class="modal fade"  id="TaskInfoModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm" style="width: 40%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">
+                    <span>查看</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <form class="bs-example bs-example-form" role="form">
+                    <div class="row">
+                        <div  class="col-lg-12 col-sm-12 col-md-12">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">任务名称&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="examineInfo.taskName"></span>
+                        </div>
+                        <div  class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">任务类型&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="examineInfo.taskTypeName"></span>
+                        </div>
+                        <div  class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">考核类型&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="examineInfo.taskDateType"></span>
+                        </div>
+                        <div  class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">考核时间&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="examineInfo.taskDate"></span>
+                        </div>
+                        <div  class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">指派巡查人员:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="examineInfo.person"></span>
+                        </div>
+                        <div  class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">巡查区域&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6"  ng-bind="examineInfo.inspectionAreaId"></span>
+                        </div>
+                        <div  class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">巡查次数&nbsp;:</label>
+                            <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="examineInfo.inspectionCount"></span>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">巡查内容&nbsp;:</label>
+                            <span type="text" class="col-lg-6 col-sm-6 col-md-6" ng-bind="examineInfo.detailContent"></span>
+                        </div>
+                        <div  class="col-lg-12 col-sm-12 col-md-12 mt15">
+                            <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">附件&nbsp;:</label>
+                            <a class="col-lg-6 col-sm-6 col-md-6"  style="cursor: pointer;" onclick="downloadFileName()"><span class="col-lg-12 col-sm-12 col-md-12" ng-bind="examineInfo.attachmentName"></span></a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer mt15">
+                <button class="gui-btn" type="button" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>

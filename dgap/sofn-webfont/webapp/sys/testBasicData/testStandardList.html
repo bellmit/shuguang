@@ -1,0 +1,154 @@
+<div class="gui-mainBc">
+    <div class="gui-breadcrumbs">
+        <a href="">系统管理</a>&gt;
+        <a href="">基础数据管理</a>&gt;
+        <span>检测基础数据</span>
+    </div>
+    <div class="gui-section ">
+        <ul class="gui-tab ng-scope">
+            <li class="active"><a ui-sref="index.content.sys/testBasicData/testStandardList">检测标准及检测项</a></li>
+            <li><a ui-sref="index.content.sys/testBasicData/testPesticideResiduesList">检测标准限量值</a></li>
+        </ul>
+        <div class="">
+            <div class="gui-form-group">
+                <form id="testStandardQueryForm">
+                    标准号:<input class="gui-input form_input" type="text" id="standardCode" ng-model="code" placeholder="请输入标准号关键字">
+                    标准名称:<input class="gui-input form_input" type="text" id="standardName" ng-model="name" placeholder="请输入标准名称关键字">
+                    <button class="gui-btn" ng-click="queryList();">查询</button>
+                </form>
+            </div>
+            <div class="gui-actions">
+                <button class="gui-btn fr ml15" ng-click="delete();" ng-if="menuAuthority == readWriteAuthority"><i class="gui-icon icon-remove"></i>删除</button>
+                <button class="gui-btn fr" ng-click="addModal();" ng-if="menuAuthority == readWriteAuthority"><i class="gui-icon icon-add"></i>新增</button>
+            </div>
+            <div>
+                <table id="grid" class="gui-table"></table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 模态框（Modal）新增 修改 查看-->
+    <div class="modal fade " id="add_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-stylesm" style="padding-top:15px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">{{myModalLabel}}</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="default_w_h modal-form form-horizontal" id="modalForm" method="post" style="text-align: center" data-bv-excluded="" action="" novalidate>
+                        <div class="form-item form-group">
+                            <input type="hidden" id="testStandardId" name="id" ng-model="id">
+                        </div>
+                        <div class="form-item form-group">
+                            <label class="required">标准号</label>
+                            <input type="text" id="standardCodeInput"  inputtype="standard" ng-model="standardCode" class="gui-input form-control" name="standardCode"  data-bv-notempty="true" data-bv-notempty-message="标准号不能是空" data-bv-stringlength="true" data-bv-stringlength-max="50" data-bv-stringlength-message="不超过50个字符">
+                        </div>
+                        <div class="form-item form-group">
+                            <label class="required">标准名称</label>
+                            <input type="text" id="standardNameInput"  inputtype="standard" ng-model="standardName" class="gui-input form-control" name="standardName" data-bv-notempty="true" data-bv-notempty-message="检测标准名称不能是空" data-bv-stringlength="true" data-bv-stringlength-max="85" data-bv-stringlength-message="不超过85个字符">
+                        </span>
+                        </div>
+                        <div class="form-item form-group">
+                            <label>说明</label>
+                            <textarea name="remark" id="remarkInput" inputtype="standard" ng-model="remark" class="gui-textarea form-control" data-bv-stringlength="true" data-bv-stringlength-max="85" data-bv-stringlength-message="不超过85个字符"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="gui-btn" ng-click="cancel()">取消</button>
+                    <button type="button" id="save" class="gui-btn" ng-click="save()">保存</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal -->
+    </div>
+    <!-- 模态框（Modal）检测项配置 -->
+    <div class="modal fade " id="test-items_modal" tabindex="-1" role="dialog" aria-labelledby="testItemsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-style">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="testItemsModalLabel">检测项配置</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="gui-form-group" style="margin-top:5px;">
+                        <form id="testItemQueryForm">
+                            检测项:
+                            <input class="gui-input form_input" type="text" id="testItemName" ng-model="itemNameQuery" placeholder="请输入检测项">
+                            所属行业:
+                                <span class="gui-select" style="width: 130px;">
+                                    <select id="suggestType" class="gui-select form-control" style="font-size: 13px;padding: 0 12px 4px 5px;max-width:100%;min-width:100%;" ng-model="industryTypeQuery">
+                                        <option value="">全部</option>
+                                        <option ng-repeat="o in industryTypeOptions" value="{{o.dictName}}">{{o.dictName}}</option>
+                                    </select>
+                                </span>
+                            <button class="gui-btn" ng-click="queryItemList();">查询</button>
+                        </form>
+                    </div>
+                    <div class="gui-actions">
+                        <button class="gui-btn fr ml15" ng-click="deleteTestItems();" ng-if="menuAuthority == readWriteAuthority"><i class="gui-icon icon-remove"></i>删除</button>
+                        <button class="gui-btn fr" ng-click="addTestItem();" ng-if="menuAuthority == readWriteAuthority"><i class="gui-icon icon-add"></i>新增</button>
+                    </div>
+                    <div>
+                        <table id="testItemsGrid" class="gui-table"></table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal -->
+    </div>
+    <!-- 模态框（Modal）检测项 新增 修改-->
+    <div class="modal fade " id="test-item_add_modal" tabindex="-1" role="dialog" aria-labelledby="testItemModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-stylemid" style="margin-top: 80px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="testItemModalTitle">{{testItemModalTitle}}</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="default_w_h modal-form form-horizontal" id="testItemModalForm" method="post" style="text-align: center" name="testItemForm" data-bv-excluded="" action="" novalidate>
+                        <div class="form-item form-group">
+                            <input type="hidden" id="testItemId" name="id" ng-model="itemId">
+                        </div>
+                        <div class="form-item form-group">
+                            <label class="required">标准号</label>
+                            <input type="text" id="itemstandardCodeInput"  ng-model="itemStandardCode" class="gui-input form-control" name="standardCode"  readonly="readonly">
+                        </div>
+                        <div class="form-item form-group">
+                            <label class="required">标准名称</label>
+                            <input type="text" id="itemstandardNameInput"  ng-model="itemStandardName" class="gui-input form-control" name="standardName" readonly="readonly">
+                        </div>
+                        <div class="form-item form-group">
+                            <label class="required">检测项</label>
+                            <input type="text" id="itemNameInput"  ng-model="itemName" class="gui-input form-control" name="itemName" data-bv-notempty="true" data-bv-notempty-message="检测项不能是空" data-bv-stringlength="true" data-bv-stringlength-max="70" data-bv-stringlength-message="不超过70个字符">
+                        </div>
+                        <div class="form-item form-group">
+                            <label class="required">行业</label>
+                            <span class="gui-select">
+                                <select class="gui-select form-control" style="min-width: 100%;" ng-model="itemIndustryType" name="industryType" data-bv-notempty="true" data-bv-notempty-message="行业不能是空">
+                                    <option value="">请选择</option>
+                                    <option ng-repeat="o in industryTypeOptions" value="{{o.dictName}}">{{o.dictName}}</option>
+                                </select>
+                            </span>
+                        </div>
+                        <div class="form-item form-group">
+                            <label>说明</label>
+                            <textarea name="remark" id="itemremarkInput" ng-model="itemRemark" class="gui-textarea form-control" data-bv-stringlength="true" data-bv-stringlength-max="85" data-bv-stringlength-message="不超过85个字符"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="gui-btn" ng-click="itemCancel()">取消</button>
+                    <button type="button" id="itemsave" class="gui-btn" ng-click="itemSave()">保存</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal -->
+    </div>
+</div>

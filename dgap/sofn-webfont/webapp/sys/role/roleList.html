@@ -1,0 +1,89 @@
+<link rel="stylesheet" href="assets/css/sys/role/roleList.css">
+<div class="gui-breadcrumbs">
+    <a href="">系统管理</a>&gt;
+    <span>角色管理</span>
+</div>
+<div class="gui-section">
+
+        <form id="roleQueryForm">
+            <div class="gui-form-group form-group" >
+                角色名称：
+                <input class="gui-input form_input" data-bv-stringlength="true" data-bv-stringlength-max="30" data-bv-stringlength-message="不能超过30个字符长度" type="text" id="keyWord" name="keyWord"  ng-model="keyWord" placeholder="请输入查询关键字">
+                <button class="gui-btn" ng-click="queryList()">查询</button>
+            </div>
+        </form>
+    <div class="gui-actions"><button class="gui-btn fr " ng-click="delete();"><i class="gui-icon icon-remove"></i>删除</button><button class="gui-btn fr" style="margin: 0px 15px" ng-click="updateAuth();"><i class="gui-icon icon-role"></i>角色授权</button><button class="gui-btn fr " ng-click="addModal();"><i class="gui-icon icon-add"></i>新增</button></div>
+    <div>
+        <table id="gridrole" class="gui-table">
+        </table>
+    </div>
+</div>
+
+<!-- 模态框（Modal）添加 新增-->
+<div class="modal fade " id="add_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm" style="padding-top:15px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body">
+                <form class="default_w_h modal-form form-horizontal" id="modalForm" method="post" style="text-align: center" data-bv-excluded="" action="" novalidate>
+                    <div class="form-item form-group">
+                        <input type="hidden" id="roleId" name="id">
+                        <input type="hidden" id="organizationId" name="organizationId">
+                        <input type="hidden" id="roleCode" name="roleCode">
+                        <label>所属机构</label>
+                        <span class="field-text " id="orgName"></span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label class="required">角色名称</label>
+                        <input type="text" id="roleName"  class="gui-input form-control" name="roleName" data-bv-notempty="true" data-bv-notempty-message="角色名称不能是空" data-bv-stringlength="true" data-bv-stringlength-max="50" data-bv-stringlength-message="不超过50个字符" placeholder="角色名称不能为空且不超过50个字符"
+                        >
+                    </div>
+                    <div class="form-item form-group">
+                        <label class="required">状态</label>
+                        <span class="gui-select">
+                          <select name="roleStatus" id="roleStatus" style="max-width: 100%;min-width: 100%;">
+                            <option value="1">正常</option><option value="0">禁用</option>
+                          </select>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>角色描述</label>
+                        <textarea name="roleDescribe" id="roleDescribe" class="gui-textarea form-control" data-bv-stringlength="true" data-bv-stringlength-max="300" data-bv-stringlength-message="不超过300个字符"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" ng-click="cancelMain()">取消</button>
+                <button type="button" id="save" class="gui-btn" ng-click="save()">保存</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+<!-- 模态框（Modal）添加 角色授权-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-style" style="width: 500px;">
+        <div class="modal-content" style="height: 500px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">角色授权</h4>
+            </div>
+            <div class="modal-body">
+                <div class="grid-tree">
+                    <table id="tb123" title="菜单集合" class="easyui-treegrid" style="width:470px;height:375px" data-options="method: 'get',animate:true">
+                        <thead frozen="true">
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" ng-click="cancelMainAuth()">关闭</button>
+                <button type="button" class="gui-btn" ng-click="saveAuth()">确认</button>
+            </div>
+        </div>
+    </div>
+</div>

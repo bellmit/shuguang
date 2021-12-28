@@ -1,0 +1,1 @@
+docker run -d -p 9999:9999 -p 7015:7015 -it --name test-01 sofn/test-service:latest

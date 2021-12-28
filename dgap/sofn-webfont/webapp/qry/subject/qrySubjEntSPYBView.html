@@ -1,0 +1,91 @@
+<link rel="stylesheet" href="assets/css/asms/subjEnt/subjEntView.css"/>
+<style type="text/css">
+    .Sup_contain_section_contain_show {
+        padding: 30px 0px 30px 0px;
+        width: 100%;
+        margin-bottom: 0px;
+    }
+</style>
+<div class="gui-breadcrumbs">
+    <div>
+        <a href="">查询系统</a>&gt;
+        <a href="">主体信息查询</a>&gt;
+        <a ui-sref="index.content.qry/subject/qrySubjEntSPYBList">三品一标主体</a>
+        <span>查看</span>
+    </div>
+</div>
+<div class="Sup_contain_section_contain  gui-section gui-section-wid">
+    <h4 id="noDataInfo" style="color: red;margin: 20px 100px 0px 100px;display: none">该主体暂无认证信息或已过期</h4>
+        <ul id="spybInfo" style="display: none" class="col-lg-12 col-xs-12 col-sm-12 col-md-12">
+            <li>认证情况</li>
+            <li style="border-top: 1px solid #9d9d9d;padding-top: 10px;">
+                <ul class="Sup_contain_section_contain_show" id="LSInfo" style="display: none;">
+                    <li style="font-size: 20px;text-align: left;margin-left:120px;margin-bottom: 0px;">绿色食品认证信息</li>
+                    <li>
+                        <ul><li class="fl">企业名称：</li><li class="fl"><span>{{greenFood.entNameCn}}</span></li></ul>
+                        <ul><li class="fl">统一社会信用代码：</li><li class="fl"><span>{{greenFood.unifiedInfo}}</span></li></ul>
+                        <ul><li class="fl">注册地址：</li><li class="fl"><span>{{greenFood.entRegAdd}}</span></li></ul>
+                        <ul><li class="fl">企业传真：</li><li class="fl"><span>{{greenFood.entFax}}</span></li></ul>
+                        <ul><li class="fl">企业邮箱：</li><li class="fl"><span>{{greenFood.entEmail}}</span></li></ul>
+                        <ul><li class="fl">联系地址：</li><li class="fl"><span>{{greenFood.entCommAdd}}</span></li></ul>
+                        <ul><li class="fl">联系人：</li><li class="fl"><span>{{greenFood.contactPerson}}</span></li></ul>
+                        <ul><li class="fl">联系电话：</li><li class="fl"><span>{{greenFood.contactPersonPhone}}</span></li></ul>
+                        <ul><li class="fl">省绿办：</li><li class="fl"><span>{{greenFood.grOrgName}}</span></li></ul>
+                        <ul><li class="fl">法定代表人／企业负责人：</li><li class="fl"><span>{{greenFood.legalPerson}}</span></li></ul>
+                        <ul><li class="fl">法人手机号：</li><li class="fl"><span>{{greenFood.legalPersonMobile}}</span></li></ul>
+                    </li>
+                </ul>
+                <ul class="Sup_contain_section_contain_show" id="YJInfo" style="display: none;margin-bottom: 0px;">
+                    <li style="font-size: 20px;text-align: left;margin-left:120px;">有机食品认证信息</li>
+                    <li>
+                        <ul><li class="fl">企业编号：</li><li class="fl"><span>{{organicFood.entBaseId}}</span></li></ul>
+                        <ul><li class="fl">企业名称：</li><li class="fl"><span>{{organicFood.entName}}</span></li></ul>
+                        <ul><li class="fl">曾用名：</li><li class="fl"><span>{{organicFood.entOldname}}</span></li></ul>
+                        <ul><li class="fl">组织机构代码：</li><li class="fl">{{organicFood.orgCode}}<span></span></li></ul>
+                        <ul><li class="fl">企业注册办公地址：</li><li class="fl"><span>{{organicFood.entAddr}}</span></li></ul>
+                        <ul><li class="fl">企业邮编：</li><li class="fl"><span>{{organicFood.entPostCode}}</span></li></ul>
+                        <ul><li class="fl">企业电话：</li><li class="fl"><span>{{organicFood.entTel}}</span></li></ul>
+                        <ul><li class="fl">企业传真：</li><li class="fl"><span>{{organicFood.fax}}</span></li></ul>
+                        <ul><li class="fl">企业电子邮箱：</li><li class="fl"><span>{{organicFood.entEmail}}</span></li></ul>
+                        <ul><li class="fl">注册资本：</li><li class="fl"><span>{{organicFood.regCap}}</span></li></ul>
+                        <ul><li class="fl">员工数：</li><li class="fl"><span>{{organicFood.staffNum}}</span></li></ul>
+                        <ul><li class="fl">法人姓名：</li><li class="fl"><span>{{organicFood.legRep}}</span></li></ul>
+                        <ul><li class="fl">法人手机：</li><li class="fl"><span>{{organicFood.legRepMobile}}</span></li></ul>
+                        <ul><li class="fl">法人电话：</li><li class="fl"><span>{{organicFood.legRepTel}}</span></li></ul>
+                        <ul><li class="fl">联系人姓名：</li><li class="fl"><span>{{organicFood.linkman}}</span></li></ul>
+                        <ul><li class="fl">联系人手机：</li><li class="fl"><span>{{organicFood.linkmanMobile}}</span></li></ul>
+                        <ul><li class="fl">邮寄联系人：</li><li class="fl"><span>{{organicFood.mailer}}</span></li></ul>
+                        <ul><li class="fl">邮寄联系人手机：</li><li class="fl"><span>{{organicFood.mailerTel}}</span></li></ul>
+                        <ul><li class="fl">邮寄联系人：</li><li class="fl"><span>{{organicFood.mailer}}</span></li></ul>
+                        <ul><li class="fl">邮寄地址：</li><li class="fl"><span>{{organicFood.mailAddr}}</span></li></ul>
+                        <ul><li class="fl">邮寄邮编：</li><li class="fl"><span>{{organicFood.postCode}}</span></li></ul>
+                        <ul><li class="fl">销售额：</li><li class="fl"><span>{{organicFood.sales}}</span></li></ul>
+                        <ul><li class="fl">出口额：</li><li class="fl"><span>{{organicFood.exportAm}}</span></li></ul>
+                        <ul><li class="fl">行政区划编号：</li><li class="fl"><span>{{organicFood.xzqhId}}</span></li></ul>
+                        <ul><li class="fl">记录时间：</li><li class="fl"><span>{{organicFood.recTime}}</span></li></ul>
+                    </li>
+                </ul>
+                <ul class="Sup_contain_section_contain_show" id="WGHInfo" style="display: none;margin-top: 20px;margin-bottom: 0px;">
+                    <li style="font-size: 20px;text-align: left;margin-left:120px;">无公害食品认证信息</li>
+                    <li class="fl">
+                        <ul><li class="fl">申请人全称：</li><li class="fl"><span>{{pollutionFreeAgricultureProducts.applicanter}}</span></li></ul>
+                        <ul><li class="fl">单位性质：</li><li class="fl"><span>{{pollutionFreeAgricultureProducts.corpType}}</span></li></ul>
+                        <ul><li class="fl">法定代表人：</li><li class="fl"><span>{{pollutionFreeAgricultureProducts.legalPerson}}</span></li></ul>
+                        <ul><li class="fl">法人手机：</li><li class="fl">{{pollutionFreeAgricultureProducts.legalPersonMobile}}<span></span></li></ul>
+                        <ul><li class="fl">联系人：</li><li class="fl"><span>{{pollutionFreeAgricultureProducts.linkPerson}}</span></li></ul>
+                        <ul><li class="fl">联系人手机：</li><li class="fl"><span>{{pollutionFreeAgricultureProducts.linkPersonMobile}}</span></li></ul>
+                        <ul><li class="fl">传真：</li><li class="fl"><span>{{pollutionFreeAgricultureProducts.fax}}</span></li></ul>
+                        <ul><li class="fl">email：</li><li class="fl"><span>{{pollutionFreeAgricultureProducts.fax}}</span></li></ul>
+                        <ul><li class="fl">申请人地址：</li><li class="fl"><span>{{pollutionFreeAgricultureProducts.applicantAdd}}</span></li></ul>
+                        <ul><li class="fl">获证单位（主体名称）：</li><li class="fl"><span>{{pollutionFreeAgricultureProducts.applicantFullname}}</span></li></ul>
+                        <ul><li class="fl">产地地址：</li><li class="fl"><span>{{pollutionFreeAgricultureProducts.productingareaAdd}}</span></li></ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    <!--按钮-->
+    <div class="Sup_contain_section_contain_show_buton col-lg-12 col-xs-12 col-sm-12 col-md-12">
+        <button class="gui-btn" ui-sref="index.content.qry/subject/qrySubjEntSPYBList">关闭</button>
+    </div>
+
+</div>

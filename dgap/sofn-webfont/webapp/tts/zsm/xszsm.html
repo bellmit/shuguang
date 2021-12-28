@@ -1,0 +1,89 @@
+<div class="gui-breadcrumbs">
+    <a href="">内部管理</a>&gt;
+    <span>产品批次追溯</span>
+</div>
+    <!-- 检测机构主体信息-->
+<div class=" ml25pr30" style="max-width: 1000px;margin: auto">
+    <div class="mt15">
+        <input name="zsm" class="gui-input" id="zsm" type="text" placeholder="追溯码">
+        <button class="gui-btn" id="ToCheck">查询</button>
+    </div>
+    <!-- 上游追溯信息-->
+    <div class="">
+        <div class="mt15">
+            <span style="color: red;">上游追溯信息</span>
+            <table id="upgrid" class="gui-table">
+            </table>
+        </div>
+    </div>
+    <!-- 本级追溯信息-->
+    <div class="">
+        <div class=" mt15">
+            <span style="color: red;">本级追溯信息</span>
+            <table id="basegrid" class="gui-table">
+            </table>
+        </div>
+    </div>
+    <!-- 下游追溯信息-->
+    <div class="">
+        <div class=" mt15">
+            <span style="color: red;">下游追溯信息</span>
+            <table id="up_grid" class="gui-table">
+                <tr>
+                    <td>主体身份码</td>
+                    <td>
+                        <span id="d_entityIdcode"></span>
+                    </td>
+                    <td>主体用户码</td>
+                    <td>
+                        <span id="d_userIdcode"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>单位名称</td>
+                    <td>
+                        <span id="d_ztmc"></span>
+                    </td>
+                    <td>客户名称</td>
+                    <td>
+                        <span id="d_lxr"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>主体地址</td>
+                    <td>
+                        <span id="d_ztdz"></span>
+                    </td>
+                    <td>联系电话</td>
+                    <td>
+                        <span id="d_lxdh"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        产品名称
+                    </td>
+                    <td>
+                        <span id="d_product_name"></span>
+                    </td>
+
+                    <td>
+                        产品种类
+                    </td>
+                    <td>
+                        <span id="d_product_sort"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        数量
+                    </td>
+                    <td>
+                        <span id="d_sl"></span>
+                    </td>
+                    <td></td><td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

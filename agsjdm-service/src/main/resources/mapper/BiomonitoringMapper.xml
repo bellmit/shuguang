@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agsjdm.mapper.BiomonitoringMapper">
+
+
+    <select id="getYears" resultType="String">
+        select distinct to_char(OPERATOR_TIME,'YYYY') from BIOMONITORING;
+    </select>
+
+    <select id="listByParams" resultType="com.sofn.agsjdm.model.Biomonitoring">
+        select * from BIOMONITORING
+        <where>
+            <if test="id != null and id != ''">
+                and ID != #{id}
+            </if>
+            <if test="wetlandId != null and wetlandId != ''">
+                and WETLAND_ID = #{wetlandId}
+            </if>
+            <if test="biologicalAxonomy != null and biologicalAxonomy != ''">
+                and BIOLOGICAL_AXONOMY = #{biologicalAxonomy}
+            </if>
+            <if test="year != null and year != ''">
+                and to_char(OPERATOR_TIME,'YYYY') = #{year}
+            </if>
+            <if test="chineseName != null and chineseName != ''">
+                and CHINESE_NAME like '%' || #{chineseName} || '%'
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND OPERATOR_TIME &lt;= #{endTime}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                AND OPERATOR_TIME &gt;= #{startTime}
+            </if>
+            <if test="province != null and province != ''">
+                and PROVINCE = #{province}
+            </if>
+            <if test="city != null and city != ''">
+                and CITY = #{city}
+            </if>
+            <if test="county != null and county != ''">
+                and COUNTY = #{county}
+            </if>
+        </where>
+        order by OPERATOR_TIME desc
+    </select>
+
+    <select id="getByParams" resultType="com.sofn.agsjdm.model.Biomonitoring">
+          select * from BIOMONITORING where WETLAND_ID = #{wetlandId} and CHINESE_NAME = #{chineseName} and to_char(OPERATOR_TIME,'YYYY') = #{year}
+    </select>
+</mapper>

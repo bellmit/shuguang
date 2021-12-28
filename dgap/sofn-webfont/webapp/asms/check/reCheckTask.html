@@ -1,0 +1,148 @@
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">监管系统</a>&gt;
+    <a ui-sref="index.content.asms/check/reCheckTask">监测任务</a>&gt;
+    <span>复检任务</span>
+</div>
+<div class="gui-section">
+    <form class="gui-form-group">
+        <span>年度</span>
+        <input style="width: 50px" name="queryYear" onfocus="WdatePicker({skin:'default',dateFmt:'yyyy'})"
+               class="Wdate gui-input"/>
+        <span>任务状态</span>
+        <div class="gui-select">
+            <select name="state">
+                <option value="">全部</option>
+                <option value="0">未发布</option>
+                <option value="1">已发布</option>
+                <option value="2">已废止</option>
+                <option value="3">执行中</option>
+                <option value="4">已结束,未完成</option>
+                <option value="5">已结束,已完成</option>
+            </select>
+        </div>
+        <span>任务时间</span>
+        <input id="datebegin" name="datebegin" style="width: 120px;cursor: pointer;margin-right: 0px"
+               class="Wdate gui-input" type="text"
+               onFocus="var endDate=$dp.$('dateend');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateend\')}'})"
+               onclick="SelectDate(this)"/>
+        <span style="margin: 0px 10px">--</span>
+        <input id="dateend" class="Wdate gui-input" name="dateend" style="width: 120px;cursor: pointer;"
+               type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'datebegin\')}'})"
+               onclick="SelectDate(this)"/>
+        <div class="mt15">
+            <span>任务名称</span>
+            <input style="width: 150px" class="gui-input" type="text" name="recheckTaskName" maxlength="30"/>
+            <button id="ToCheck" ng-disabled="!!btnDisabled" class="gui-btn">查询</button>
+            <button class="gui-btn" type="reset">重置</button>
+
+            <!--<button data-toggle="tooltip" class="gui-btn fr">导出</button>-->
+        </div>
+    </form>
+    <div class="gui-actions">
+
+        <button ng-click="del()" ng-show="{{iswrite==2}}" class="gui-btn fr ml15" data-placement="top" title="删除任务">
+            <i class="gui-icon icon-remove"></i>删除
+
+        <button ng-click="abo()" ng-show="{{iswrite==2}}" class="gui-btn fr ml15" >
+            <i class="gui-icon icon-disable"></i>废止</button>
+        </button>
+        <button ng-click="rel()" ng-show="{{iswrite==2}}" class="gui-btn fr ml15">
+            <i class="gui-icon icon-publish"></i>发布
+        </button>
+        <!--<button ng-click="upd()" class="gui-btn fr ml15" title="修改任务">-->
+            <!--<i class="gui-icon icon-edit"></i>修改-->
+        <!--</button>-->
+
+        <button ui-sref="index.content.asms/check/reCheckTaskAdd" ng-show="{{iswrite==2}}" ng-click="addTask()"
+                class="gui-btn fr "><i class="gui-icon icon-add"></i>新增
+        </button>
+    </div>
+    <table id="grid" class="gui-table mt15 " style="width: 100%">
+    </table>
+</div>
+
+
+<!--infoModel-->
+<div class="modal fade" id="TaskInfoModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">
+                    <span>查看</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <form class="mb25 " role="">
+                    <div class="" style="line-height: 30px">
+                        <ul>
+                            <li class="" style="border-bottom: 1px solid #e5e5e5;font-size: 16px;font-weight: 700">
+                                基本信息
+                            </li>
+                        </ul>
+                        <div class=" ">
+                            <div class="col-lg-12 col-md-12 col-sm-12 clearfix gov-h mt15">
+                                <label class="col-lg-5 col-md-5 col-sm-5" style="text-align: right;padding-right: 10px">初检任务类型：</label>
+                                <span class="col-lg-6 col-md-6 col-sm-6" ng-bind="reCheckTask.initTaskType"></span>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 clearfix gov-h mt15">
+                                <label class="col-lg-5 col-md-5 col-sm-5" style="text-align: right;padding-right: 10px">初检任务名称：</label>
+                                <span class="col-lg-6 col-md-6 col-sm-6" ng-bind="reCheckTask.initTaskName"></span>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 clearfix gov-h mt15">
+                                <label class="col-lg-5 col-md-5 col-sm-5" style="text-align: right;padding-right: 10px">复检任务名称：</label>
+                                <span class="col-lg-6 col-md-6 col-sm-6" ng-bind="reCheckTask.recheckTaskName"></span>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 clearfix gov-h mt15">
+                                <label class="col-lg-5 col-md-5 col-sm-5" style="text-align: right;padding-right: 10px">复检任务优先级：</label>
+                                <span class="col-lg-6 col-md-6 col-sm-6" ng-bind="(reCheckTask.recheckTaskPriority == '1'? '特急':false) ||(reCheckTask.recheckTaskPriority == '2'? '紧急':false) || (reCheckTask.recheckTaskPriority == '3'? '一般':false)||(reCheckTask.recheckTaskPriority ='无')"></span>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 clearfix gov-h mt15">
+                                <label class="col-lg-5 col-md-5 col-sm-5" style="text-align: right;padding-right: 10px">复检单位：</label>
+                                <span class="col-lg-6 col-md-6 col-sm-6" ng-bind="reCheckTask.recheckUnitName"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 clearfix gov-h mt15">
+                            <label class="col-lg-5 col-md-5 col-sm-5"
+                                   style="text-align: right;padding-right: 10px">年度：</label>
+                            <span class="col-lg-6 col-md-6 col-sm-6" ng-bind="reCheckTask.recheckTaskYear"></span>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 clearfix gov-h mt15">
+                            <label class="col-lg-5 col-md-5 col-sm-5" style="text-align: right;padding-right: 10px">任务时间：</label>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <span ng-bind="reCheckTask.recheckTaskBegin"></span>&nbsp;&nbsp;至&nbsp;&nbsp;
+                                <span ng-bind="reCheckTask.recheckTaskEnd"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    </table>
+                    <div class="tab-pane fade in active">
+                        <table id="Fjtable" class="gui-table mt15" style="width: 100%">
+                            <caption class="Bor_line"
+                                     style="border-bottom: 1px solid #e5e5e5;font-size: 16px;font-weight: 700">
+                                复检对象
+                            </caption>
+                            <thead>
+                            <tr>
+                                <th>复检样品</th>
+                                <th>复检样品编码</th>
+                                <th>复检企业名称</th>
+                            </tr>
+                            </thead>
+                            <tbody class="diy-input-nobody">
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="gui-btn" data-dismiss="modal">返回</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>

@@ -1,0 +1,43 @@
+
+.Sup_contain_section_contain_head{
+    text-align: center;
+    /*margin-left: 20%;*/
+    /*overflow: hidden;*/
+}
+.Sup_contain_section_contain_head p{
+    font-size: 25px;
+    margin:20px 0px 30px 20px;
+}
+.Sup_contain_section_contain_head_button{
+    width: 150px;
+    height: 40px;
+    font-size: 18px;
+    background: #4BA0D6;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    color: white;
+    margin: 0px 60px 0px 150px;
+}
+
+.ApplyTable{
+    width: 100%;
+}
+
+.ApplyTable tbody tr td{
+    width: 40%;
+    border: 1px solid #e3e3e3;
+    padding: 8px 5px;
+}
+.ApplyTable tbody tr td:nth-of-type(1){
+    width: 20%;
+}
+.ApplyTable tbody tr:nth-child(even){
+    background-color: #f6f6f6;
+}
+.ApplyTable tbody tr:nth-child(even) input{
+    background-color: #f6f6f6;
+}
+.Sup_contain_section_contain_head_photo{
+    height: 120px;
+}

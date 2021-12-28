@@ -1,0 +1,100 @@
+<link rel="stylesheet" href="../../assets/css/monitor/task.css"/>
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+<link rel="stylesheet" href="../../assets/css/monitor/subjSvList.css"/>
+<div id="daohang" class="gui-breadcrumbs">
+    <a href="#" ng-click="backHome()" id="title">例行监测</a>&gt;
+    <span>检测信息汇总</span>
+</div>
+<div class="gui-section">
+    <ul class="gui-tab">
+        <li role="presentation" class="pointer"><a ng-click="taskDetail()">任务详情</a></li>
+        <li role="presentation" class="pointer"><a ng-click="sampleMessage()">抽样</a></li>
+        <li role="presentation" class="pointer"><a ng-click="test()">检测</a></li>
+        <li role="presentation" class="active"><a ng-click="routineMonitorList()">检测信息汇总</a></li>
+        <li role="presentation" class="pointer"><a ng-click="routineReportUpload()">报告上传</a></li>
+    </ul>
+</div>
+    <div class="gui-section">
+        <div class="gui-form-group clearfix">
+            <label>样品名称</label>
+            <input name="sampleName" id="sampleName" class="gui-input" />
+            <label>判定结果</label>
+            <span class="gui-select">
+                <select name="result"id="result" class="gui-select">
+                    <option value="" >所有</option>
+                    <option value="1" >合格</option>
+                    <option value="0" >不合格</option>
+                    <option value="-1" >未检测</option>
+                </select>
+            </span>
+            <label>样品编码</label>
+            <input name="sampleCode" id="sampleCode"  placeholder="样品编码" class="gui-input" />
+        </div>
+        <div class="gui-form-group more clearfix">
+            <label class="more">抽样单位</label>
+            <input  name="sampleDeparment" id="sampleDeparment" class="more gui-input"  />
+            <label class="more">检测单位</label>
+            <input  name="checkOrgan" id="checkOrgan" class="more gui-input" />
+        </div>
+        <div class="gui-form-group more clearfix">
+            <label class="more">受检单位</label>
+            <input  name="testedDeparment" id="testedDeparment" class="more gui-input" />
+            <label class="more">检测环节</label>
+            <span class="more gui-select">
+                <select name="checkLink" id="checkLink" class="gui-select">
+                <option value="" >全部</option>
+                <option  ng-repeat="x in checkLink"  >{{x.checkLink}}</option>
+            </select>
+            </span>
+        </div>
+        <div class="gui-form-group more clearfix">
+            <label class="more">抽样区域</label>
+            <span class="more gui-select">
+                <select id="sheng1" class="gui-select">
+                    <option value="" >请选择省份</option>
+                </select>
+            </span>
+            <span class="more gui-select">
+                <select id="shi1" class="gui-select">
+                    <option value="" >请选择城市</option>
+                </select>
+            </span>
+            <span class="more gui-select">
+                <select id="xian1" class="gui-select">
+                    <option value="">请选择区/县</option>
+                </select>
+            </span>
+        </div>
+        <div class="gui-form-group more clearfix">
+            <label class="more">产地</label>
+            <span class="more gui-select">
+            <select id="sheng" class="gui-select">
+                <option value="" >请选择省份</option>
+            </select>
+        </span>
+            <span class="more gui-select">
+            <select id="shi" class="gui-select">
+                <option value="" >请选择城市</option>
+            </select>
+        </span>
+            <span class="more gui-select">
+            <select id="xian" class="gui-select">
+                <option value="">请选择区/县</option>
+            </select>
+        </span>
+            <label class="more"><span class="btn btn-link" ng-click="hideInput()">收起>></span></label>
+        </div>
+        <div class="gui-form-group clearfix" style="text-align: center;">
+            <label style="margin: auto;"><span class="gui-btn" ng-click="resetInput()">重置</span></label>
+            <label style="margin: auto;"><span class="gui-btn seachTask">查询</span></label>
+        </div>
+        <div class="gui-actions">
+            <span class="gui-btn fr" ng-click="exportExcel('s') "><i class="gui-icon icon-export"></i>导出</span>
+        </div>
+        <table id="grid" class="gui-table mt15" style="width: 100%">
+        </table>
+    </div>
+
+
+</div>
+

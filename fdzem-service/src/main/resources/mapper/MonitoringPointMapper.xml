@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sofn.fdzem.mapper.MonitoringPointMapper">
+
+
+    <!--分页+条件查询-->
+    <select id="selectListByQuery" resultType="com.sofn.fdzem.model.MonitoringPoint" parameterType="java.lang.String">
+        select
+        <include refid="Base_column_list"/>
+        from tb_monitoring_point
+
+                where  batch_management_id = #{batchManagementId}
+
+    </select>
+    <!--删除-->
+    <delete id="removeById" parameterType="java.lang.String">
+        delete from tb_monitoring_point where batch_management_id = #{batchManagementId}
+    </delete>
+    <!--更新-->
+    <update id="update" parameterType="com.sofn.fdzem.model.MonitoringPoint">
+        update tb_monitoring_point set
+        longitude = #{longitude},latitude = #{latitude},
+        type = #{type},name=#{name}
+        where id=#{id}
+    </update>
+
+    <!--添加-->
+    <insert id="insert" parameterType="com.sofn.fdzem.model.MonitoringPoint">
+        insert into tb_monitoring_point
+        (<include refid="Base_column_list"/>)
+        values
+        (#{id},#{batchManagementId},#{longitude},#{latitude},#{type},#{name})
+    </insert>
+
+    <sql id="Base_column_list">
+        id,batch_management_id,longitude,latitude,type,name
+    </sql>
+
+
+
+</mapper>

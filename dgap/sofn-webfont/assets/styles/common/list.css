@@ -1,0 +1,85 @@
+.gui-col-1 {
+  width: 100% !important;
+}
+.gui-col-2 {
+  width: 50% !important;
+}
+.gui-col-3 {
+  width: 33.33% !important;
+}
+.gui-col-4 {
+  width: 25% !important;
+}
+.gui-list {
+  max-width: 800px;
+  margin: 15px auto;
+  overflow: hidden;
+}
+.gui-list > li,
+.gui-list .list-item {
+  width: 100%;
+  padding: 5px 15px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  float: left;
+}
+.gui-list .form-item {
+  margin-bottom: 15px;
+  text-align: left;
+  padding-left: 95px;
+  padding-right: 15px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  overflow: hidden;
+}
+.gui-list .form-item .field-text,
+.gui-list .form-item .gui-btn,
+.gui-list .form-item .gui-input,
+.gui-list .form-item .gui-select,
+.gui-list .form-item .gui-textarea {
+  width: 100%;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin-right: 0;
+  vertical-align: top;
+}
+.gui-list .form-item .field-text label,
+.gui-list .form-item .gui-btn label,
+.gui-list .form-item .gui-input label,
+.gui-list .form-item .gui-select label,
+.gui-list .form-item .gui-textarea label {
+  margin: 0;
+  width: auto;
+  padding: 0;
+  text-align: left;
+  float: none;
+  color: #333;
+  vertical-align: middle;
+}
+.gui-list .form-item .field-text {
+  line-height: 30px;
+  display: inline-block;
+}
+.gui-list .form-item .title,
+.gui-list .form-item label {
+  margin-left: -95px;
+  width: 95px;
+  padding-right: 15px;
+  text-align: right;
+  display: inline-block;
+  font-weight: 400;
+  line-height: 30px;
+  float: left;
+  vertical-align: top;
+  color: #666;
+  word-break: break-all;
+  white-space: normal;
+}
+.gui-list .form-item .title.required:after,
+.gui-list .form-item label.required:after {
+  display: inline-block;
+  content: '*';
+  color: red;
+  font-size: 12px;
+  vertical-align: middle;
+}

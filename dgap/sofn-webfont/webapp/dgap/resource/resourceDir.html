@@ -1,0 +1,105 @@
+<link rel="stylesheet" href="assets/css/dgap/resource/resourceDir.css">
+<div class="gui-breadcrumbs">
+    <a href="">数据共享系统</a>&gt;
+    <a href="">资源管理</a>&gt;
+    <span>资源目录</span>
+</div>
+<div class="gui-section">
+    <form>
+        <div class="gui-form-group form-group clearfix">
+            <span class="color-gray">资源目录</span>
+            <input class="gui-input form_input" type="text" id="keyWord" name="dirName" placeholder="资源目录"
+                   maxlength="30">
+            <button class="gui-btn submit-btn" ng-click="resourceDirs();">查询</button>
+            <button class="gui-btn submit-btn" ng-click="cleanData();">重置</button>
+        </div>
+    </form>
+    <div class="gui-actions">
+        <span class="gui-btn fr" ng-click="deleteResourceDir()"><i class="gui-icon icon-remove"></i>批量删除</span>
+        <span class="gui-btn fr mr15" data-toggle="modal" data-target="#resDirAdd"><i
+                class="gui-icon icon-add"></i>新增</span>
+    </div>
+
+    <table id="reDir" class="gui-table">
+    </table>
+</div>
+<!-- 模态框（修改） -->
+<div class="modal fade" id="updates" tabindex="-1" role="dialog" aria-labelledby="resDirAdd1Label" aria-hidden="true"
+     style="color: black">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="resDirAdd1Label">
+                    资源目录修改
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="updateResoueceDirF" style="text-align: center">
+                    <div class="form-item form-group">
+                        <label>目录名称<i class="gui-colorRed">*</i></label>
+                        <input type="text" ng-model="updateList.name" name="dirName" class="gui-input form-control"
+                               data-bv-notempty="true" data-bv-notempty-message="目录名称不能为空" data-bv-stringlength="true"
+                               data-bv-stringlength-max="32" data-bv-stringlength-message="目录名称不超过32个字符">
+
+                    </div>
+                    <div class="form-item form-group">
+                        <label>目录描述<i class="gui-colorRed">*</i></label>
+                        <textarea ng-model="updateList.description" name="dirDesc" class="gui-textarea form-control"
+                                  data-bv-notempty="true" data-bv-notempty-message="目录描述不能为空"
+                                  data-bv-stringlength="true" data-bv-stringlength-max="200"
+                                  data-bv-stringlength-message="目录描述不超过200个字符"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <span type="button" class="gui-btn" data-dismiss="modal">取消</span>
+                    <span type="button" class="gui-btn updateResoueceDirSave" data-dismiss="modal"
+                          ng-click="updateSave()">保存
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 模态框（新增） -->
+<div class="modal fade" id="resDirAdd" tabindex="-1" role="dialog" aria-labelledby="resDirAddLabel" aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="resDirAddLabel">
+                    资源目录新增
+                </h4>
+            </div>
+            <div class="modal-body ">
+                <div id="attributeForm" style="text-align: center">
+                    <div class="form-item form-group">
+                        <label>目录名称<i class="gui-colorRed">*</i></label>
+                        <input name="dirNameype2" ng-model="dirName" class="gui-in
+                       put form-control" data-bv-notempty="true" data-bv-notempty-message="目录名称不能为空"
+                               data-bv-stringlength="true" data-bv-stringlength-max="32"
+                               data-bv-stringlength-message="目录名称不超过32个字符">
+
+                    </div>
+                    <div class="form-item form-group">
+                        <label>目录描述<i class="gui-colorRed">*</i></label>
+                        <textarea name="dirDesc" id="dirDesc" ng-model="dirDesc" class="gui-textarea form-control"
+                                  data-bv-notempty="true" data-bv-notempty-message="目录描述不能为空"
+                                  data-bv-stringlength="true" data-bv-stringlength-max="200"
+                                  data-bv-stringlength-message="目录描述不超过200个字符">
+                            </textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <span type="button" class="gui-btn" data-dismiss="modal">取消</span>
+                    <span type="button" class="gui-btn addRes" data-dismiss="modal" ng-click="addModal()">保存
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

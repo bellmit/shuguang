@@ -1,0 +1,165 @@
+<link rel="stylesheet" href="/assets/css/sys/sysCodeRule/sysCodeRuleEdit.css">
+<div class="Sup_contain_section col-lg-12 col-xs-12 col-sm-12 col-md-12 ">
+    <div class="Sup_contain_section_head  col-lg-12 col-xs-12 col-sm-12 col-md-12">
+        <h2 id="Sup_contain_section_head_h2" class="col-lg-12 col-xs-12 col-sm-12 col-md-12"><a href=""><span style="color: #4CA1D7">系统管理</span></a> > <a ui-sref="index.content.sys/sysCodeRule/sysCodeRule"><span style="color: #4CA1D7">编码规则管理</span></a><a href=""><span style="color: #4CA1D7">>编码规则管理</span></a>
+        </h2>
+    </div>
+    <div class="col-lg-12 col-xs-12 col-sm-12 col-md-12 ml25pr30 mt15">
+        <form>
+            <div class="Sup_contain_select">
+                <table style="text-align: center;width: 100%" class="table-striped">
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>业务类型</td>
+                        <td></td>
+                        <td>编码属性</td>
+                        <td></td>
+                        <td>备案类型</td>
+                        <td></td>
+                        <td>主体类型</td>
+                        <td></td>
+                        <td>组织类型</td>
+                        <td></td>
+                        <td>其他</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>编码规则设置</td>
+                        <td><input value="{{sysCodeRule.ios}}.{{sysCodeRule.area}}.{{sysCodeRule.country}}.{{sysCodeRule.industry}}.{{sysCodeRule.platformLevel}}"></td>
+                        <td>.</td>
+                        <td><input value="{{sysCodeRule.platformType}}"></td>
+                        <td>.</td>
+                        <td><input value="{{sysCodeRule.codeAttrs}}"></td>
+                        <td>.</td>
+                        <td><input value="{{sysCodeRule.caseType}}"></td>
+                        <td>.</td>
+                        <td><input value="{{sysCodeRule.mainType}}"></td>
+                        <td>.</td>
+                        <td><input value="{{sysCodeRule.organization}}"></td>
+                        <td>.</td>
+                        <td><input></td>
+                        <td>
+                            <button ng-click="saveCodeRule()">保存</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <hr>
+            <p class="col-lg-4 col-xs-0 col-sm-4 col-md-4"></p>
+            <div style="text-align: center" class="col-lg-8 col-xs-8 col-sm-8 col-md-8">
+                <table class="selectTable" border="1">
+                    <!-- 农业行业代码-->
+                    <tr>
+                        <td rowspan="4">农业行业代码</td>
+                        <td colspan="2">
+                            &nbspIOS
+                            <select ng-model="sysCodeRule.ios" name="ios">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            区域
+                            <select ng-model="sysCodeRule.area" name="area">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            国家
+                            <select ng-model="sysCodeRule.country" name="country">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            行业
+                            <select ng-model="sysCodeRule.industry" name="industry">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                    <!--平台级别-->
+                    <tr>
+                        <td>平台级别</td>
+                        <td colspan="2">
+                            &nbsp级别
+                            <select ng-model="sysCodeRule.platformLevel" name="platformLevel">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>平台业务类型</td>
+                        <td colspan="2">
+                            &nbsp类型
+                            <select ng-model="sysCodeRule.platformType" name="platformType">
+                                <option value="0">0/option>
+                                </option><option value="1">1</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <!--编码属性-->
+                    <tr>
+                        <td rowspan="4">编码属性</td>
+                        <td><input name="codeAttrs" ng-model="sysCodeRule.codeAttrs" value="0" type="radio"><span>0主体身份码</span></td>
+                        <td><input name="codeAttrs" ng-model="sysCodeRule.codeAttrs" value="1" type="radio"><span>1主体用户码</span></td>
+                    </tr>
+                    <tr>
+                        <td style="display: none"></td>
+                        <td><input name="codeAttrs" ng-model="sysCodeRule.codeAttrs" value="2" type="radio"><span>2产品批次码</span></td>
+                        <td><input name="codeAttrs" ng-model="sysCodeRule.codeAttrs" value="3" type="radio"><span>3产品追溯码</span></td>
+                    </tr>
+                    <tr>
+                        <td style="display: none"></td>
+                        <td><input name="codeAttrs" ng-model="sysCodeRule.codeAttrs" value="4" type="radio"><span>4主体临时身份码</span></td>
+                        <td><input name="codeAttrs" ng-model="sysCodeRule.codeAttrs" value="5" type="radio"><span>5产品临时码</span><br></td>
+                    </tr>
+                    <tr>
+                        <td style="display: none"></td>
+                        <td colspan="2"><input name="codeAttrs" ng-model="sysCodeRule.codeAttrs" value="6" type="radio"><span>6入市追溯码</span></td>
+                    </tr>
+
+                    <!--备案类型-->
+                    <tr>
+                        <td>备案类型</td>
+                        <td><input name="caseType" ng-model="sysCodeRule.caseType" value="0" type="radio"><span>0临时备案</span></td>
+                        <td><input name="caseType" ng-model="sysCodeRule.caseType" value="1" type="radio"><span>1正式备案</span></td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="2">主体类型</td>
+                        <td><input name="mainType" ng-model="sysCodeRule.mainType" value="0" type="radio"><span>0生产主体</span></td>
+                        <td><input name="mainType" ng-model="sysCodeRule.mainType" value="1" type="radio"><span>1经营主体</span></td>
+                    </tr>
+                    <tr>
+                        <td style="display: none"></td>
+                        <td colspan="2"><input name="mainType" ng-model="sysCodeRule.mainType" value="2" type="radio"><span>2生产经营主体</span></td>
+                        
+                    </tr>
+
+                    <!--组织类型-->
+                    <tr>
+                        <td>组织类型</td>
+                        <td><input name="organization" ng-model="sysCodeRule.organization" value="0" type="radio"><span>0企业</span></td>
+                        <td><input name="organization" ng-model="sysCodeRule.organization" value="1" type="radio"><span>1个人</span></td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+    <p class="col-lg-1 col-xs-0 col-sm-1 col-md-1"></p>
+</div>

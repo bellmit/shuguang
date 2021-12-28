@@ -1,0 +1,124 @@
+<style>
+    #eventForm .file-preview{
+        display: none;
+    }
+</style>
+<div class="gui-breadcrumbs">
+    <a href="">例行监测</a>&gt;
+    <span>检测上传</span>
+</div>
+    <!-- 左侧菜单 -->
+    <div class="col-md-2">
+        <div class="panel-group list-group-panel">
+            <div class="panel panel-default">
+                <div class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="list-group" style="margin-bottom:0px;">
+                            <a href="#" ng-click="taskDetail()" class="list-group-item line-15">任务详情</a>
+                            <a href="#" ng-click="sampelPrint()" class="list-group-item line-15">抽样</a>
+                            <a href="#" ng-click="test()" class="list-group-item line-15">检测结果录入</a>
+                            <a href="#" ng-click="import()" class="list-group-item line-15">检测结果导入</a>
+                            <a href="#" ng-click="routineMonitorList()" class="list-group-item line-15">检测信息汇总</a>
+                            <a href="#" ng-click="historyTaskList()" class="list-group-item line-15">报告上传</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--<div style="margin: 30px 30px 30px 30px">-->
+        <!--<button class="btn" ng-click="taskDetail()">任务详情</button>-->
+        <!--<button class="btn" ng-click="sampelPrint()">抽样</button>-->
+        <!--<button class="btn" ng-click="test()">检测结果录入</button>-->
+        <!--<button class="btn" ng-click="import()">检测结果导入</button>-->
+        <!--<button class="btn" ng-click="routineMonitorList()">检测信息汇总</button>-->
+        <!--<button class="btn" ng-click="historyTaskList()" >报告上传</button>-->
+    <!--</div>-->
+    <div class="col-md-10">
+    <div style="width: 500px;margin:10px 10px 10px 30px;">
+        <!--<form enctype="multipart/form-data" id="eventForm">-->
+        <!--<div>-->
+        <!--&lt;!&ndash;<input id="file-1"  type="file" name="file"  multiple=" true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="5">&ndash;&gt;-->
+        <!--<input type='text' name='textfield' id='textfield1' class='txt' />-->
+        <!--<button type='button' onclick="$('#fileField2').click()">选择文件</button>-->
+        <!--<input style="position:absolute; top:0; right:80px; height:24px; filter:alpha(opacity:0);opacity: 0;width:360px" type="file" name="image" class="file" id="fileField2" size="28" onchange="document.getElementById('textfield1').value=this.value" />-->
+        <!--<button id="fileupbtn" type="button" class="confirm">上传</button>-->
+        <!--</div>-->
+        <!--</form>-->
+
+        <form method="post" enctype="multipart/form-data" id="eventForm">
+            <input style="display: inline;width: 225px" id="file-1" multiple="true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="1" type="file"/>
+        </form>
+
+        <a href="webapp\monitor\execUnit\routineMonitor\导入测试.xls">导入模板</a>
+    </div>
+
+    <div id="myinfo" style="margin:30px 10px 10px 30px;" class="gui-actions">
+        <span class="gui-btn" id="update" onclick="update()"><i class="gui-icon icon-edit"></i>修改</span>&nbsp;&nbsp;&nbsp;
+        <span class="gui-btn" id="del" onclick="del()"><i class="gui-icon icon-remove"></i>删除</span>
+    </div>
+
+    <!-- 监测项目列表-->
+    <div class="Sup_contain_section_contain col-lg-10 col-xs-12 col-sm-10 col-md-10" style="margin:0px 10px 10px 30px;">
+        <!-- 检测机构主体信息-->
+        <div class="Sup_contain_section_contain_01">
+            <div  class=" tb NewsSize col-lg-12 col-xs-12 col-sm-12 col-md-12" >
+                <table id="mygrid" class="gui-table table data-table">
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="myHidden">
+        <input type="hidden" name="bannerid" id="bannerid" value="">
+    </div>
+<!--查看模态框-->
+    <div class="modal fade" id="product_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog modal-style" style="width: 800px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                    <h4 class="modal-title" id="myModalLabel1">查看检测信息详情</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <table id="productList" class="gui-table">
+
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <span type="button" class="gui-btn" data-dismiss="modal">确定</span>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--修改模态框-->
+    <div class="modal fade" id="product_info2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog modal-style" style="width: 800px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                    <h4 class="modal-title" id="myModalLabel12">修改产品检测结果</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="someInfo">
+
+                    </div>
+                    <div>
+                        <table id="productList2" class="gui-table">
+
+                        </table>
+                    </div>
+                </div>
+                <div id="myinfo2" style="margin:30px 10px 10px 30px;">
+                    <span class="gui-btn" id="cancel" onclick="cancel()">取消</span>&nbsp;&nbsp;&nbsp;
+                    <span class="gui-btn" id="save" onclick="uploadInfo()">保存</span>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+

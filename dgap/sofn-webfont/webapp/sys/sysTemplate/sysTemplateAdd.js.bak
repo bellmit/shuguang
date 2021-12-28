@@ -1,0 +1,28 @@
+var myapp=angular.module("myapp",[]).controller("sysTemplateAdd",function($scope,$http,$state){
+    //导航对齐
+    $("#collapseTwo").attr("class","panel-collapse collapse in");
+    $("#collapseTwo li:nth-of-type(2)").css("background-color","#64ABDB").addClass("Sup_contain_side_nav_item_after").siblings().css("background-color","#3695D4").removeClass("Sup_contain_side_nav_item_after")
+
+    //新增测试信息
+    $scope.addSysTemplate = function(){
+    
+    	 $scope.sysTemplate.templateName = $("input[name='templateName']").val();
+    	 $scope.sysTemplate.templateType = $("input[name='templateType']").val();
+    	 $scope.sysTemplate.templateFilename = $("input[name='templateFilename']").val();
+    	 $scope.sysTemplate.status = $("input[name='status']").val();
+    	 $scope.sysTemplate.delFlag = $("input[name='delFlag']").val();
+        $http({
+            url:"/sofn-sys-web/sysTemplate/addSysTemplate",
+            data:$scope.sysTemplate,
+            method:"post",
+            headers: {
+                post: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }
+        }).success(function(data){
+            alert("保存成功");
+            $state.go("index.content.sys/sysTemplate/list");
+        }).error(function(){
+            alert("保存失败");
+        })
+    }
+})

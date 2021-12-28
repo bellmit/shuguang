@@ -1,0 +1,109 @@
+.dashboard-feature {
+    padding: 15px 20px 50px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    li {
+        float: left;
+        display: inline-block;
+        width: 25%;
+        text-align: center;
+        padding: 30px 15px;
+        box-sizing: border-box;
+        position: relative;
+        &:after {
+            content: '';
+            display: block;
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            height: 18px;
+            width: 100%;
+            background: url(../../images/login/icon/bg_shadow.png) center center no-repeat;
+        }
+        a {
+            display: block;
+            width: 200px;
+            margin: 0 auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            color: #666;
+            cursor: pointer;
+            box-sizing: content-box;
+            text-decoration: none;
+            background-color: #f4f4f4;
+            &:hover {
+                border-color: #46b994;
+                box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+                -webkit-transform: translate3d(0, -2px, 0);
+                transform: translate3d(0, -2px, 0);
+                .highlight {
+                    transform: translate(0, 0);
+                    animation: wave-in .7s 0s 1 linear;
+                    // -webkit-animation-fill-mode: forwards;
+                    // animation-fill-mode: forwards;
+                }
+                .text {
+                    color: #FFF;
+                }
+                img {
+                    transform: scale(1.0);
+                }
+            }
+        }
+        .icon {
+            width: 100%;
+            height: 180px;
+            line-height: 180px;
+            text-align: center;
+            background-color: #FFF;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+        img {
+            display: inline-block;
+            vertical-align: middle;
+            transform: scale(0.9);
+            transition: transform ease-in-out .15s;
+        }
+    }
+    .bottom {
+        height: 60px;
+        overflow: hidden;
+        font-size: 16px;
+        position: relative;
+        .normal {
+            display: block;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background: url(../../images/login/icon/bg_block.png) 0 0 no-repeat;
+        }
+        .text {
+            line-height: 80px;
+            position: relative;
+            color: #333;
+            transition: color ease-out .65s;
+        }
+        .highlight {
+            display: block;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background: url(../../images/login/icon/bg_block_h.png) 0 0 no-repeat;
+            transform: translate(0, 100%);
+            transition: transform ease-out .65s;
+            display: inline-block;
+            -webkit-animation: wave-out 1s 0s infinite linear;
+            animation: wave-out .5s 0s infinite linear;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+        }
+    }
+}

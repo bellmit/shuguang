@@ -1,0 +1,34 @@
+spring:
+  datasource:
+    driver-class-name: com.uxsino.uxdb.Driver
+    url: jdbc:uxdb://192.168.21.62:5432/agsjsi_test?stringtype=unspecified
+    username: ENC(Qkglj0WcMhLJjTO9lGfM7g==)
+    password: ENC(7msRVqeIXAOUaNbSwHTfcJHToYMpXAAQ)
+    druid:
+      async-init: true
+      initial-size: 15
+      max-active: 30
+      min-idle: 10
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      filter:
+        config:
+          enabled: true
+
+  redis:
+    redisson:
+      file: classpath:config/redisson-chengdu.yaml
+
+eureka:
+  instance:
+    hostname: ${spring.cloud.client.ip-address}
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://192.168.21.38:8880/eureka/

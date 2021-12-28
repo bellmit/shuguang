@@ -1,0 +1,39 @@
+<div class="gui-breadcrumbs">
+    <a ui-sref="index.content.ales/taskManage/myCheckTask">执法系统</a>&gt;
+    <a ui-sref="index.content.ales/taskManage/sampleTask/sampleTaskList">监督抽查管理</a>&gt;
+    <a ui-sref="index.content.ales/taskManage/sampleTask/sampleTaskList">抽样任务</a>&gt;
+    <a ui-sref="index.content.ales/taskManage/sampleTask/taskInformation">任务信息</a>&gt;
+    <span>抽样单列表</span>
+</div>
+
+<div class="gui-section">
+    <div class="gui-actions">
+        <button class="gui-btn fr mr15 mr15" ng-click="singleSyncToAds()" name="sumButton" id="singleSyncToAdsId">上报抽样单</button>
+        <button class="gui-btn fr mr15 mr15" ng-click="upd()" name="updButton" id="updId">修改</button>
+        <button class="gui-btn fr mr15 mr15" ng-click="del()" name="delButton" id="delId">删除</button>
+        <button ng-click="add()" class="gui-btn fr mr15 mr15" name="addButton" ng-click="cleanCookie()" id="cleanCookieId">新增</button>
+        <button ng-click="previous()" class="gui-btn fr mr15 mr15">返回</button>
+    </div>
+    <table id="grid" class="gui-table">
+    </table>
+</div>
+<!--查看模态框-->
+<div class="modal fade" id="product_info2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-style" style="width: 800px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                <h4 class="modal-title" id="myModalLabel1">查看检测信息详情</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <table id="productList" class="gui-table">
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span type="button" class="gui-btn" data-dismiss="modal">返回</span>
+            </div>
+        </div>
+    </div>
+</div>

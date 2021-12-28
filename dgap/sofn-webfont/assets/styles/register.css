@@ -1,0 +1,53 @@
+.gui-mid-wrapper {
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+.map-wrapper {
+  width: 700px;
+  height: 500px;
+}
+.modal-style {
+  height: auto;
+}
+.modal-body {
+  padding-bottom: 15px;
+}
+.map-panel {
+  position: absolute;
+  left: 730px;
+  top: 15px;
+  bottom: 15px;
+  width: 253px;
+  overflow: auto;
+}
+.gui-section {
+  padding: 15px 20px 50px;
+  max-width: 1000px;
+  margin: 20px auto;
+  background: #FFF;
+  -webkit-box-shadow: 1px 1px 4px 1px rgba(204, 204, 204, 0.7);
+          box-shadow: 1px 1px 4px 1px rgba(204, 204, 204, 0.7);
+}
+.gui-section .gui-list {
+  max-width: 550px;
+  margin: 0 auto;
+}
+.gui-section .gui-list .form-item .title {
+  font-weight: 700;
+}
+.gui-section .gui-list .form-item .radio-item {
+  margin: 0;
+  width: auto;
+  display: inline-block;
+  cursor: pointer;
+  margin-right: 15px;
+}
+.gui-section .gui-list .form-item .radio-item input[type=radio],
+.gui-section .gui-list .form-item .radio-item input[type=checkbox] {
+  float: left;
+  margin: 8px 5px 0 0;
+}
+.gui-section .gui-list .form-item .radio-item span {
+  float: left;
+}

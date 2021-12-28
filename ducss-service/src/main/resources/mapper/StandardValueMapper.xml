@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.StandardValueMapper" >
+
+  <resultMap id="BaseResultMap" type="com.sofn.ducss.model.StandardValue" >
+    <result column="id" property="id" />
+    <result column="straw_type" property="strawType" />
+    <result column="grass_valley" property="grassValley" />
+    <result column="collect_coefficient" property="collectCoefficient" />
+    <result column="straw_name" property="strawName" />
+    <result column="year" property="year" />
+    <result column="area" property="area" />
+    <result column="area_id" property="areaId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+                id,
+                straw_type,
+                grass_valley,
+                collect_coefficient,
+                straw_name,
+                year,
+                area,
+                area_id
+    </sql>
+  <insert id="copystandardValue" parameterType="string">
+    INSERT into standard_value (id,
+                straw_type,
+                grass_valley,
+                collect_coefficient,
+                straw_name,
+                year,
+                area,
+                area_id)   SELECT UUID(),straw_type,
+                grass_valley,
+                collect_coefficient,
+                straw_name,
+                #{beYear},
+                area,
+                area_id FROM standard_value WHERE year=#{copyYear}
+
+  </insert>
+
+    <select id="selectAreaIdsByYear" resultType="java.lang.String">
+
+        select  area   from standard_value WHERE year= #{year} GROUP BY area
+
+    </select>
+
+
+</mapper>

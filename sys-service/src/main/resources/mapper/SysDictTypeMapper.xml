@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysDictTypeMapper" >
+    <resultMap id="BaseResultMap" type="com.sofn.sys.model.SysDictType" >
+        <id column="ID" jdbcType="VARCHAR" property="id" />
+        <result column="TYPENAME" jdbcType="VARCHAR" property="typename" />
+        <result column="TYPEVALUE" jdbcType="VARCHAR" property="typevalue" />
+        <result column="CREATE_USER_ID" jdbcType="VARCHAR" property="createUserId" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="UPDATE_USER_ID" jdbcType="VARCHAR" property="updateUserId" />
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="DEL_FLAG" jdbcType="VARCHAR" property="delFlag" />
+        <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+        <result column="ENABLE" jdbcType="VARCHAR" property="enable" />
+    </resultMap>
+    <select id="getDictTypeById" resultType="com.sofn.sys.model.SysDictType">
+        select id,typename,typevalue,create_user_id,create_time,update_user_id,update_time,del_flag,remark,enable from SYS_DICT_TYPE
+        where id = #{dicttypeid}
+    </select>
+    <select id="getDictTypeByName"  resultType="com.sofn.sys.model.SysDictType">
+        select id,typename,typevalue,create_user_id,create_time,update_user_id,update_time,del_flag,remark,enable from SYS_DICT_TYPE
+        WHERE 1=1
+        <if test="typename != null and typename != ''">
+            and POSITION (#{typename} in TYPENAME)>0
+        </if>
+        <if test="typevalue != null and typevalue != ''">
+            and TYPEVALUE = #{typevalue}
+        </if>
+    </select>
+    <select id="getDictTypeByName1"  resultType="com.sofn.sys.model.SysDictType">
+        select id,typename,typevalue,create_user_id,create_time,update_user_id,update_time,del_flag,remark,enable from SYS_DICT_TYPE
+        WHERE 1=1
+        <if test="typename != null and typename != ''">
+            and TYPENAME = #{typename}
+        </if>
+        <if test="typevalue != null and typevalue != ''">
+            and TYPEVALUE = #{typevalue}
+        </if>
+    </select>
+    <select id="getDictCurNodeBySubSystem" resultType="com.sofn.sys.model.SysDictType">
+        select id,typename,typevalue,create_user_id,create_time,update_user_id,update_time,del_flag,remark,enable from SYS_DICT_TYPE
+        WHERE 1=1
+        <if test="subsystemid != null and subsystemid != ''">
+            and ID in (select DICTTYPEID from SYS_SUBSYSTEM_DICT where SUBSYSTEMID = #{subsystemid})
+        </if>
+    </select>
+    <insert id="saveDictType">
+        insert into SYS_DICT_TYPE (ID,TYPENAME,TYPEVALUE,CREATE_USER_ID,CREATE_TIME,UPDATE_USER_ID,UPDATE_TIME,DEL_FLAG,REMARK,ENABLE)
+        values (#{id,jdbcType=VARCHAR},#{typename,jdbcType=VARCHAR},#{typevalue,jdbcType=VARCHAR},#{createUserId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+          #{updateUserId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},#{delFlag,jdbcType=VARCHAR},#{enable,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR})
+    </insert>
+    <insert id="saveSubSystemDict">
+        insert into SYS_SUBSYSTEM_DICT(ID,SUBSYSTEMID,DICTTYPEID)
+        values (#{subid,jdbcType=VARCHAR},#{subsystemid,jdbcType=VARCHAR},#{dictID,jdbcType=VARCHAR})
+    </insert>
+    <delete id="delDictType">
+            DELETE FROM SYS_DICT_TYPE WHERE ID = #{id}
+    </delete>
+    <delete id="delSubSystemDict">
+        DELETE FROM SYS_SUBSYSTEM_DICT WHERE DICTTYPEID = #{dictTypeId} AND SUBSYSTEMID = #{subsystemid}
+    </delete>
+    <update id="updateDictType">
+        update SYS_DICT_TYPE set UPDATE_TIME = #{updateTime},UPDATE_USER_ID = #{updateUserId},
+        <if test="typename != null and typename != ''">
+            TYPENAME = #{typename},
+        </if>
+        <if test="typevalue != null and typevalue != ''">
+            TYPEVALUE = #{typevalue}
+        </if>
+        WHERE ID = #{id}
+    </update>
+
+
+    <resultMap id="getDictTypeListByNameOrValueResultMap" type="com.sofn.sys.vo.SysDictTypeAndValueVo">
+        <result property="id" column="ID"></result>
+        <result property="typeName" column="TYPENAME"></result>
+        <result property="typeValue" column="TYPEVALUE"></result>
+        <collection property="sysDictForm" ofType="com.sofn.sys.vo.SysDictForm">
+            <result property="id" column="VID"></result>
+            <result property="dicttypeid" column="DICTTYPEID"></result>
+            <result property="dictname" column="DICTNAME"></result>
+            <result property="dictcode" column="DICTCODE"></result>
+            <result property="enable" column="ENABLE"></result>
+            <result property="remark" column="REMARK"></result>
+        </collection>
+    </resultMap>
+
+    <select id="getDictTypeListByKeyword" parameterType="java.util.Map" resultType="com.sofn.sys.vo.SysDictTypeAndValueVo">
+        SELECT
+        A.ID ,
+        A.TYPENAME,
+        A.TYPEVALUE
+        FROM SYS_DICT_TYPE A
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and (A.TYPENAME LIKE '%'|| #{keyword}||'%' OR A.TYPEVALUE LIKE '%'|| #{keyword}||'%' )
+            </if>
+        </where>
+        order by a.create_time desc,a.id desc
+    </select>
+</mapper>

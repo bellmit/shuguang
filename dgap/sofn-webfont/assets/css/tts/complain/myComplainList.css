@@ -1,0 +1,10 @@
+.Sup_contain_section_contain_01 table{
+    font-size: 14px;
+}
+.Sup_contain_section_contain_01 table td,th{
+    text-align: center;
+}
+.form-horizontal .form-group {
+    margin-right: 0px;
+    margin-left: 0px;
+}

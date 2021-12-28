@@ -1,0 +1,504 @@
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">监管系统</a>&gt;
+    <a ui-sref="index.content.asms/check/checkTask">检测任务</a>&gt;
+    <a ui-sref="index.content.asms/check/checkTask">监督抽查</a>&gt;
+    <span id="OprTitle">操作</span>
+</div>
+<style>
+    .gui-list .form-item{
+        padding-left: 120px;
+    }
+    .gui-list .form-item .title, .gui-list .form-item label{
+        margin-left: -120px;
+        width: 120px;
+    }
+</style>
+<div class=" gui-section gui-section-wid clearfix gov-h" >
+    <div id="JB_INFO" class="mt15">
+        <h3 style="text-align: center">监督抽查</h3>
+        <div class="gui-page-head"><h3>基本信息</h3></div>
+        <!--基本信息页签-->
+        <!--*********************************************-->
+        <form  name="myForm" id="myForm"  class="form-horizontal mt15" novalidate>
+            <div class="gui-list">
+                <div class="form-item form-group">
+                    <label class="title">上级任务</label>
+                    <input name="parentTaskName" ng-disabled="!!btnParentTaskReloadDisabled" class="gui-input" ng-click="parentTaskModel()" readonly ng-model="_checkTaskData.parentTaskName"/>
+                </div>
+                <div class="form-item form-group">
+                    <label class="title required">任务名称</label>
+                    <input type="text" name="taskName" class="gui-input" required maxlength="40" ng-model="_checkTaskData.taskName" placeholder="最长40位字符" />
+                </div>
+
+                <div class="form-item form-group">
+                    <label class="title required">任务优先级</label>
+                        <select name="taskPriority" class="form-control gui-input" ng-model="_checkTaskData.taskPriority" required>
+                            <option value='' disabled selected style='display:none;'>请选择</option>
+                            <option value="3">一般</option>
+                            <option value="2">紧急</option>
+                            <option value="1">特急</option>
+                        </select>
+                </div>
+
+                <div class="form-item form-group">
+                    <label class="title required">年度</label>
+                    <input name="taskyear" class="Wdate gui-input" required
+                           onfocus="WdatePicker({isShowToday:false,skin:'default',dateFmt:'yyyy', minDate:'%y'})"/>
+                </div>
+                <div class="form-item form-group">
+                    <label class="title required">行业</label>
+                    <select ng-model = "_checkTaskData.taskIndustry" id="taskIndustry" class="gui-input" required>
+                        <option value="" selected style="display: none"></option>
+                        <option ng-selected="{{x.id == _checkTaskData.taskIndustry}}" ng-repeat="x in industryType"  value="{{x.id}}">{{x.dictName}}</option>
+                    </select>
+                </div>
+                <div class="form-item form-group">
+                    <label class="title">受检区域</label>
+                    <div class="gui-select gui-col-4">
+                        <select id="sheng">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <div class="gui-select gui-col-4">
+                        <select id="shi">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <div class="gui-select gui-col-4">
+                        <select id="xian">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+                <!--<div class="form-item form-group">-->
+                <!--<label class="title">是否分离</label>-->
+                <!--<select name="taskIsSeparate" class="gui-input" ng-model="_checkTaskData.taskIsSeparate">-->
+                <!--<option value=""></option>-->
+                <!--<option value="1" selected="selected">是</option>-->
+                <!--<option value="0">否</option>-->
+                <!--</select>-->
+                <!--</div>-->
+                <div class="form-item form-group">
+                    <label class="title">是否分离</label>
+                    <input  class="gui-input" value="是" readonly/>
+                </div>
+                <div class="form-item form-group">
+                    <label class="title required">抽样单位</label>
+                    <input type="text" readonly name="cyUnit" class="gui-input" ng-click="selectCyUnits()" ng-model="_checkTaskData.cyUnitName" required>
+                </div>
+                <!--新增监督执法单位,非必填项-->
+                <div class="form-item form-group">
+                    <label class="title ">监督执法单位</label>
+                    <input type="text" readonly  name="jdUnit" class="gui-input" ng-click="selectJdUnits()" ng-model="_checkTaskData.jdUnitName" >
+                </div>
+                <div class="form-item form-group">
+                    <label class="title required">检测单位</label>
+                    <input type="text" readonly  name="jcUnit" class="gui-input" ng-click="selectJcUnits()" ng-model="_checkTaskData.jcUnitName" required>
+                </div>
+                <div class="form-item form-group">
+                    <label class="title required">任务时间</label>
+                    <div class="field-text">
+                        <input  type="text" name="taskBeginTime"  id="taskBeginTime"  class="Wdate gui-input gui-col-3"  readonly="readonly"
+                                onFocus="var endDate=$dp.$('taskEndTime');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'taskEndTime\')}', minDate:'%y-1-1', onpicked:pickedFunc, oncleared:clearedFunc})"
+                        />-
+                        <input  type="text"  name="taskEndTime"  id="taskEndTime" class="Wdate gui-input gui-col-3" readonly="readonly"
+                                onfocus="endDatePickerRule(this)"/>
+                    </div>
+                </div>
+                <div class="form-item form-group">
+                    <label class="title required">抽样组织单位</label>
+                    <input type="text" readonly name="taskReleaseUnit" class="gui-input" ng-model="_checkTaskData.taskReleaseUnit">
+                </div>
+
+                <div class="form-item form-group">
+                    <label class="title required">检测标准</label>
+                    <input type="text" readonly  name="detectionStandards" class="gui-input" ng-click="selectdetectionStandards()" ng-model="_checkTaskData.detectionStandards" required>
+                </div>
+
+                <div class="form-item form-group">
+                    <label class="title required">判定标准</label>
+                    <input type="text" readonly  name="judgeStandards" class="gui-input" ng-click="judgeStandardStandards()" ng-model="_checkTaskData.judgeStandards" required>
+                </div>
+
+                <div class="form-item form-group">
+                    <label class="title required">抽样截止时间</label>
+                    <input name="taskSampleDeadline" type="text" size="15" class="gui-input Wdate" id="taskSampleDeadline" readonly="readonly"
+                           onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'taskEndTime\')}', minDate:'#F{$dp.$D(\'taskBeginTime\')}'})"
+                           required/>
+                </div>
+                <!--预留备注字段-->
+                <!--<div class="form-item form-group">-->
+                <!--<label class="title">备注</label>-->
+                <!--<textarea type="text" name="taskName" class="gui-input" ng-model="_checkTaskData.remark"></textarea>-->
+                <!--</div>-->
+                <div class="form-item form-group">
+                    <label class="title required">文件号</label>
+                    <input type="text" name="taskName" class="gui-input" required maxlength="40" ng-model="_checkTaskData.fileNumber" placeholder="最长40位字符" />
+                </div>
+                <div class="form-item form-group">
+                    <label class="col-lg-1 col-md-1 col-sm-1 control-label required">&nbsp;&nbsp;&nbsp;&nbsp;附&nbsp;&nbsp;件</label>
+                    <div file-upload options="vm.uploadOptions" files="vm.files"></div>
+                </div>
+            </div>
+            <div align="center">
+                <button type="submit" class="gui-btn" ng-disabled="myForm.$invalid" disabled="disabled"  name="saveTaskButton"  ng-click="infoSave()" >保存</button>
+                <button class="gui-btn" ng-click="exitOpr()">取消</button>
+                <button class="gui-btn" name="nextStepButton"   ng-click="nextstep()" style="display: none">下一步</button>
+            </div>
+        </form>
+    </div>
+    <!--检测对象页签-->
+    <div id="JC_INFO" style="display: none">
+        <h3 style="text-align: center">监督抽查</h3>
+        <div style="border-bottom: 1px solid #9d9d9d">抽查对象</div>
+        <div class="mt15">
+            <button class="gui-btn" name="overStepButton" ng-click="overTek()" >上一步</button>
+            <button ui-sref="index.content.asms/check/checkTask" class="gui-btn">返回任务列表</button>
+            <button class="gui-btn" ng-click="addObj()" >新增</button>
+
+            <button class="gui-btn" ng-click="updObj()" >修改</button>
+
+            <button class="gui-btn" ng-click="delObj()" >删除</button>
+        </div>
+        <table id="JC_DX_LIST" class="gui-table mt15" style="width: 100%;">
+        </table>
+    </div>
+</div>
+
+<!--检测对象操作MODAL-->
+<div class="modal fade" id="MOB_INFO_MODEL" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    <span>检测对象</span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <!--********************-->
+                <form  name="jcdxModal"  class="form-horizontal mt15" novalidate>
+                    <div class="form-item form-group">
+                        <label class="title required">所属行业</label>
+                        <select ng-model = "monitorobject.industry"  class="gui-input" required ng-change="typeClean()">
+                            <option ng-repeat="x in industryType" ng-selected="x.dictValue == monitorobject.industry" value="{{x.dictValue}}">{{x.dictName}}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-item form-group">
+                        <label class="title required">产品名称</label>
+                        <input type="text" name="productName" class="gui-input" ng-model="monitorobject.productName" readonly ng-click="findProductInfo()" required/>
+                    </div>
+
+                    <div class="form-item form-group">
+                        <label class="title required">产品类型</label>
+                        <input type="text" name="productType" class="gui-input" ng-model="monitorobject.productType" readonly  required/>
+                    </div>
+
+                    <div class="form-item form-group">
+                        <label class="title required">抽样数量</label>
+                        <input type="text" name="monitorNum" ng-pattern="/^\+?[1-9]\d*$/" class="gui-input" maxlength="10" ng-model="monitorobject.monitorNum" placeholder="最长10位字符"  required/>
+                    </div>
+
+                    <div class="form-item form-group">
+                        <label class="title">受检区域</label>
+                        <div class="gui-select gui-col-4">
+                            <select id="objsheng">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="gui-select gui-col-4">
+                            <select id="objshi">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="gui-select gui-col-4">
+                            <select id="objxian">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-item form-group">
+                        <label class="title">受检单位</label>
+                        <input type="text" name="szUnits" class="gui-input"  ng-model="monitorobject.szUnits" ng-click="sJUnitStandards()" readonly/>
+                    </div>
+
+                    <div class="form-item form-group">
+                        <label class="title required">受检项目</label>
+                        <input type="text" name="detectionItemId" class="gui-input"  ng-model="monitorobject.crites" ng-click="criteCheck()" required readonly/>
+
+                        <!--<select ng-model = "monitorobject.detectionItemId"  class="gui-input" required>-->
+                        <!--<option value=""></option>-->
+                        <!--<option ng-repeat="x in JcXm" ng-selected="x.id == monitorobject.detectionItemId" value="{{x.id}}">{{x.dictName}}</option>-->
+                        <!--</select>-->
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" id="saveObjBtn" ng-disabled="jcdxModal.$invalid" disabled="disabled" ng-click="saveObj()" >保存</button>
+                <button class="gui-btn" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--抽样单位机构选择-->
+<div class="modal fade"  id="selectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid" style="width: 60%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">
+                    <span>抽样机构选择</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <form>
+                    <div class="gui-select" style="width: 30%;">
+                        <select id="selectQueryShen" style="width: 100px">
+                            <option value="">--省--</option>
+                        </select>
+                    </div>
+                    <div class="gui-select" style="width: 30%;">
+                        <select id="selectQueryShi" style="width: 100px">
+                            <option value="">--市--</option>
+                        </select>
+                    </div>
+                    <div class="gui-select" style="width: 30%;">
+                        <select id="selectQueryXian" style="width: 100px">
+                            <option value="">--县--</option>
+                        </select>
+                    </div>
+                    <input class="gui-input mt15" type="text" name="selectQueryName" placeholder="请输入名称">
+                    <button class="gui-btn mt15" id="selectTocheck" ng-disabled="!!btnZFDisabled" data-toggle="tooltip" data-placement="right" title="根据输入条件检索列表">查询</button>
+                    <button class="gui-btn mt15" data-toggle="tooltip" ng-disabled="!!btnZFReloadDisabled" data-placement="right" ng-click="cleanSelectModelQuery()">重置</button>
+                </form>
+                <!--list-->
+                <table id="selectGrid" style="width: 100%;" class="gui-table mt15">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--检测单位机构选择-->
+<div class="modal fade"  id="jcSelectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid" style="width: 60%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">
+                    <span>检测机构选择</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <form>
+                    <div class="gui-select" style="width: 30%;">
+                        <select id="jcSelectQueryShen" style="width: 100px">
+                            <option value="">--省--</option>
+                        </select>
+                    </div>
+                    <div class="gui-select" style="width: 30%;">
+                        <select id="jcSelectQueryShi" style="width: 100px">
+                            <option value="">--市--</option>
+                        </select>
+                    </div>
+                    <div class="gui-select" style="width: 30%;">
+                        <select id="jcSelectQueryXian" style="width: 100px">
+                            <option value="">--县--</option>
+                        </select>
+                    </div>
+                    <input class="gui-input mt15" type="text" name="jcSelectQueryName" placeholder="请输入名称">
+                    <button id="jcSelectTocheck" ng-disabled="!!btnJCDisabled" class="gui-btn mt15" data-toggle="tooltip" data-placement="right" title="根据输入条件检索列表">查询</button>
+                    <button data-toggle="tooltip" ng-disabled="!!btnJCReloadDisabled" class="gui-btn mt15" data-placement="right" ng-click="cleanJcSelectModelQuery()">重置</button>
+                </form>
+                <!--list-->
+                <table id="jcSelectGrid" style="width: 100%;" class="gui-table mt15">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--上级任务选择-->
+<div class="modal fade"  id="parent_Task_Model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid" style="width: 60%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">
+                    <span>上级任务</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <form class="gui-form-group">
+                    <div class="modal-body clearfix gov-h">
+                        <input class="gui-input" type="text" name="queryTaskName" placeholder="请输入任务名称">
+                        <button id="parentTaskSelectTocheck" ng-disabled="!!btnParenTaskDisabled" class="gui-btn" data-toggle="tooltip" data-placement="right" title="根据输入条件检索列表">查询</button>
+                        <button data-toggle="tooltip" class="gui-btn" data-placement="right" type="reset">重置</button>
+                        <button data-toggle="tooltip" class="gui-btn" data-placement="right" ng-click="cleanSelectModel()">清空已选择</button>
+                    </div>
+                </form>
+                <!--list-->
+                <table id="parentTaskGrid" style="width: 100%;" class="gui-table mt15">
+                </table>
+                <div class="modal-footer">
+                    <button class="gui-btn" type="button" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--检测标准选择-->
+<div class="modal fade"  id="detectionStandard_Model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid" style="width: 50%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">
+                    <span>检测标准</span>
+                </h4>
+            </div>
+            <!--list-->
+            <table id="detectionStandardTaskGrid" style="width: 100%;" class="gui-table mt15">
+            </table>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" ng-click="selectJCBzButt()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--判定标准选择-->
+<div class="modal fade"  id="judgeStandard_Model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid" style="width: 50%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">
+                    <span>判定标准</span>
+                </h4>
+            </div>
+            <!--list-->
+            <table id="judgeStandardTaskGrid" style="width: 100%;" class="gui-table mt15">
+            </table>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" ng-click="selectPDBzButt()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--受检单位选择-->
+<div class="modal fade"  id="sJUnit_Model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid" style="width: 60%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">
+                    <span>受检单位</span>
+                </h4>
+            </div>
+            <form class="gui-form-group">
+                <div class="modal-body clearfix gov-h">
+                    <div class="gui-select" style="width: 30%;">
+                        <select id="sjUnitShen" style="width: 100px">
+                            <option value="">--省--</option>
+                        </select>
+                    </div>
+                    <div class="gui-select" style="width: 30%;">
+                        <select id="sjUnitShi" style="width: 100px">
+                            <option value="">--市--</option>
+                        </select>
+                    </div>
+                    <div class="gui-select" style="width: 30%;">
+                        <select id="sjUnitXian" style="width: 100px">
+                            <option value="">--县--</option>
+                        </select>
+                    </div>
+                    <!--<input class="gui-input mt15" type="text" name="entIdCode" placeholder="请输入编码">-->
+                    <input class="gui-input mt15" type="text" name="sjUnitName" placeholder="请输入名称">
+                    <button id="sJUnitSelectTocheck" ng-disabled="!!btnSJDisabled" class="gui-btn" data-toggle="tooltip" data-placement="right" style="margin-top:15px;" title="根据输入条件检索列表">查询</button>
+                    <button data-toggle="tooltip" class="gui-btn" data-placement="right" ng-disabled="!!btnSJReloadDisabled" style="margin-top:15px;" ng-click="cleanSjUnitModelQuery()">重置</button>
+                </div>
+            </form>
+            <!--list-->
+            <table id="sJUnitTaskGrid" style="width: 100%;" class="gui-table mt15">
+            </table>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" ng-click="selectSzDwButt()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 产品选择框 -->
+<div class="modal fade" id="product_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                <h4 class="modal-title" id="myModalLabel1">产品信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="gui-form-group">
+                    <input name="keyWord" class="gui-input" type="text" placeholder="请输入名称关键字">
+                    <button class="gui-btn" ng-disabled="!!btnProductDisabled" id="ToCheck">查询</button>
+                </div>
+                <div>
+                    <table id="productList1" class="gui-table">
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 检测项选择框 -->
+<div  class="modal fade" id="crite_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm" style="width: 800px;">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">检测项</h4>
+            </div>
+            <form class="gui-form-group">
+                <div class="clearfix gov-h">
+                    <div class="gui-mediaInline">
+                        <span>检测标准:</span>
+                        <select style="width: 25%" ng-disabled="!!btnStandardCodeDisabled" class="gui-col-5 gui-select" name="standardCode" id="standardCode">
+
+                        </select>
+                        <span>检测项:</span>
+                        <input class="gui-input" style="width: 200px;" type="text" id="itemName" name="itemName" />
+                        <button data-toggle="tooltip" ng-disabled="!!btnCheckItemDisabled" class="gui-btn" ng-click="queryCheckItem()" data-placement="right">查询</button>
+                    </div>
+                </div>
+            </form>
+            <!--<div class="gui-form-group">-->
+            <!--<input name="keyWord" class="gui-input" type="text" placeholder="请输入名称关键字">-->
+            <!--<button class="gui-btn" id="criteToCheck">查询</button>-->
+            <!--</div>-->
+            <div>
+                <table id="criteList" style="width: 100%;" class="gui-table mt15">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" ng-click="selectCriteButt()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

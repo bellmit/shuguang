@@ -1,0 +1,73 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css">
+
+<div class="Sup_contain_section col-lg-12 col-xs-12 col-sm-12 col-md-12">
+    <div class="Sup_contain_section_head col-lg-12 col-xs-12 col-sm-12 col-md-12 " style="background-color: white">
+        <h2 id="Sup_contain_section_head_h2">
+            <a href=""><span>系统管理  > </span></a>
+            <span>检测模型管理  </span>
+        </h2>
+
+    </div>
+    <div class="col-lg-12 col-xs-12 col-sm-12 col-md-12 ml25pr30">
+        <div class="tab-content">
+            <div class="text-left  mg-auto">
+                <form class="form-inline well well-sm">
+                    <div class="form-group">
+                        <input type="text" id="modelNameS" name="modelNameS" placeholder="请输入模型名称">
+                    </div>
+                    <label class="col-sm-1 control-task">监测类型:</label>
+                    <div class="col-sm-2">
+                        <select id="monitorTypeS" name="monitorType" class="form-control">
+                            <option value="">全部</option>
+                            <option ng-repeat="x in monitorType">{{x}}</option>
+                        </select>
+                    </div>
+                    <button id="seachTask">查询</button>
+                    <button class="pull-right " ng-click="addAdsModel()">新增</button>
+                    <button class="pull-right  mgr-10" onclick="delAdsCheckModel()">删除</button>
+                </form>
+                <div class="NewsSize td col-lg-12 col-xs-12 col-sm-12 col-md-12">
+                    <table id="grid" class=" table-bordered table-striped table-hover data-table col-lg-12 col-xs-12 col-sm-12 col-md-12">
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 新增模型_检测模型model -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: center">新增模型_检测模型</h4>
+            </div>
+            <div class="modal-body" style="min-height: 80px;">
+                <form class="form-horizontal" id="addCheckModel" data-bv-excluded="">
+                    <div class="form-group line-20">
+                        <p></p>
+                        <label class="col-sm-5 control-task text-right">模型名称:&nbsp&nbsp</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input type="text" id="modelName" name="modelName" class="form-control text-height-28" data-bv-notempty="true" data-bv-notempty-message="内容不能是空">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-5 control-task text-right">行业:&nbsp&nbsp</label>
+                        <div class="col-sm-3">
+                            <select ng-model="selectedIndustry" id="industry" name="industry" class="form-control">
+                                <option ng-repeat="x in IndustryType">{{x.dictName}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <button type="button" data-dismiss="modal">取消</button>
+                <button type="button" ng-click="addAdsCheckModel()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>

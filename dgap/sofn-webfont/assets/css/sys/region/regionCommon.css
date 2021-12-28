@@ -1,0 +1,169 @@
+.modal-form {
+
+}
+
+.modal-form input {
+    /*margin: 0px 0px 0px 10px;*/
+    width: 150px
+}
+
+.modal-form textarea {
+    /*margin: 0px 0px 0px 0px;*/
+    /*width: 30%;*/
+    /*height: 60px;*/
+    overflow:hidden;
+    resize: none;
+    display: inline;
+}
+
+.modal-form label>span {
+    color: red;
+}
+
+.modal-form label {
+    margin-top: 0px;
+    width: 200px;
+}
+/*easyUi*/
+.easyUi .tree-title {
+    color: black;
+    font-size: 14px;
+}
+.easyUi .tree-title:hover{
+    color:#F6B747 ;
+}
+.easyUi .tree-expanded {
+    background: url('../../../imgs/icon/region_open.png') no-repeat!important;
+    width: 15px;
+    height: 15px;
+    margin-top: 8px;
+    background-size: 100% 100%;
+}
+.easyUi .tree-collapsed {
+    width: 15px;
+    height: 15px;
+    margin-top: 8px;
+    background-size: 100% 100%;
+    background: url('../../../imgs/icon/region_close.png') no-repeat !important;
+}
+.easyUi .tree-indent {
+    display: inline-block;
+    width:12px;
+    height: 12px;
+    vertical-align: top;
+    overflow: hidden;
+
+}
+.easyUiNav{
+    overflow: hidden;
+}
+/*�������ͽṹ*/
+.easyUi-Tree .textbox .textbox-text{
+    font-size: 12px;
+    border: 0;
+    margin: 0;
+    padding: 0px;
+    white-space: normal;
+    vertical-align: top;
+    outline-style: none;
+    resize: none;
+    -moz-border-radius: 0px 0px 0px 0px;
+    -webkit-border-radius: 0px 0px 0px 0px;
+    border-radius: 0px 0px 0px 0px;
+}
+.easyUi-Tree .textbox {
+    position: relative;
+    border: 1px solid #95B8E7;
+    background-color: #fff;
+    vertical-align: middle;
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 0;
+    padding: 0;
+    -moz-border-radius: 0px 0px 0px 0px;
+    -webkit-border-radius: 0px 0px 0px 0px;
+    border-radius: 0px 0px 0px 0px;
+}
+/*编辑列表样式*/
+.easyui-noneborr .textbox {
+    position: relative;
+    border: 1px solid grey;
+    background-color: #fff;
+    vertical-align: middle;
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 0;
+    padding: 0;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    border-radius: 0px 0px 0px 0px;
+}
+.easyui-ownTable{
+    font-size: 14px;
+}
+.easyui-ownTable tr td:first-child{
+    width: 40%;
+    font-weight: 600;
+    padding: 10px;
+    text-align: right;
+}
+.easyui-ownTable tr td:last-child{
+    width: 60%;
+    padding: 10px;
+    text-align: left;
+}
+.easyui-ownTable tr td:last-child input,select,textarea{
+    width: 150px;
+}
+
+.easyui-ownTable textarea{
+    height: 80px;
+}
+/*easyui自定义样式*/
+.easyui-Owndirevtive .tree-title {
+    font-size: 12px;
+    display: inline-block;
+    text-decoration: none;
+    vertical-align: top;
+    white-space: nowrap;
+    padding: 0 2px;
+    height: 18px;
+    color: black;
+    line-height: 18px;
+}
+.easyui-Owndirevtive .tree-folder {
+    background: url("") no-repeat 0px 0;
+}
+.easyui-Owndirevtive .tree-node {
+    height: 18px;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 0px 0px;
+    margin:0px 0px  10px 0px;
+}
+.easyui-Owndirevtiv div{
+    margin: 10px 0px;
+}
+.easyui-Owndirevtive .tree-file {
+    background: url("") no-repeat 0px 0;
+}
+.easyui-Owndirevtive .tree-lines .tree-collapsed, .tree-lines .tree-root-first .tree-collapsed {
+    background: url(../../../imgs/icon/region_close.png) no-repeat 0px 0;
+}
+.easyui-Owndirevtive .tree-lines .tree-expanded, .tree-lines .tree-root-first .tree-expanded {
+    background: url(../../../imgs/icon/region_open.png) no-repeat 0px 0;
+}
+/*清楚左侧导航浮动*/
+.sysMeneborder{
+    min-height: 600px;
+    border-right: 1px solid #B7B3B4
+}
+.sysMeneborder:after{
+    content: "";
+    font-size: 0px;
+    height: 0px;
+    clear: both;
+    display: table;
+}

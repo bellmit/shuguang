@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.SturgeonSubMapper">
+
+
+    <select id="listSignboardCodeByApplyId" resultType="com.sofn.fdpi.vo.SelectVo">
+       select ssd.signboard as key, ssd.label as val
+       from sturgeon_sub ss left join sturgeon_signboard_domestic ssd on ss.id = ssd.sturgeon_sub_id
+       where ss.sturgeon_id = #{applyId}
+    </select>
+</mapper>

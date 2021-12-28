@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.report.mapper.OrderMapper" >
+
+    <resultMap id="orderMap" type="com.sofn.report.model.TOrder">
+        <id column="order_id" jdbcType="BIGINT" property="orderId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="order_status" jdbcType="VARCHAR" property="orderStatus"/>
+        <result column="order_express" jdbcType="VARCHAR" property="orderExpress"/>
+        <result column="order_pay_way" jdbcType="VARCHAR" property="orderPayWay"/>
+        <result column="order_pay_datetime" jdbcType="DATE" property="orderPayDatetime"/>
+        <result column="order_place_datetime" jdbcType="DATE" property="orderPlaceDatetime"/>
+        <collection property="orderItemList" resultMap="orderItemMap"/>
+    </resultMap>
+
+    <resultMap id="orderItemMap" type="com.sofn.report.model.TOrderItem">
+        <id column="order_item_id" jdbcType="BIGINT" property="orderItemId"/>
+        <result column="order_id" jdbcType="BIGINT" property="orderId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="good_name" jdbcType="VARCHAR" property="goodName"/>
+    </resultMap>
+
+    <select id="selectOrderItemList" resultMap="orderMap">
+         select * from t_order o left join t_order_item oi on o.order_id=oi.order_id
+         <where>
+             <if test="orderId != null and orderId != ''">
+                and o.order_id = #{orderId}
+             </if>
+         </where>
+    </select>
+
+</mapper>

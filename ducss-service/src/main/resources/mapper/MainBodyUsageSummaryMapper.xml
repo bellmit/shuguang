@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.MainBodyUsageSummaryMapper">
+    
+    <resultMap id="mainBodyUsageSummaryResult" type="com.sofn.ducss.vo.MainBodyUsageSummaryVo">
+        <result column="year" property="year"/>
+        <result column="area" property="area"/>
+<!--        <result column="areaName" property="areaName"/>-->
+        <result column="mainBodyNameOrCount" property="mainBodyNameOrCount"/>
+        <result column="fertilising" property="fertilising" javaType="java.lang.String"/>
+        <result column="forage" property="forage" javaType="java.lang.String"/>
+        <result column="fuel" property="fuel" javaType="java.lang.String"/>
+        <result column="base" property="base" javaType="java.lang.String"/>
+        <result column="material" property="material" javaType="java.lang.String"/>
+        <result column="other" property="other" javaType="java.lang.String"/>
+        <result column="thisCount" property="thisCount" javaType="java.lang.String"/>
+        <result column="countSum" property="count" javaType="java.lang.String"/>
+    </resultMap>
+
+    <select id="getList" parameterType="java.util.Map" resultMap="mainBodyUsageSummaryResult">
+        select
+        #{year} as year,
+        su.area_id AS area,
+        COALESCE (su.main_fertilising, 0) fertilising,
+        COALESCE (su.main_forage, 0) forage,
+        COALESCE (su.main_fuel, 0) fuel,
+        COALESCE (su.main_base, 0) base,
+        COALESCE (su.main_material, 0) material,
+        COALESCE (su.main_total - su.main_total_other, 0) thisCount,
+        COALESCE (su.main_total_other, 0) other,
+        COALESCE ( su.main_total,0 ) countSum
+        from straw_utilize_sum_total su
+        left join collect_flow cf on su.area_id = cf.area_id and cf.year = #{year}
+        where su.year = #{year}
+        <if test="statusList != null and statusList.size()>0">
+            and cf.status in
+            <foreach collection="statusList" item="status" open="(" close=")" separator=",">
+                #{status}
+            </foreach>
+        </if>
+
+        <if test="areaIds != null and areaIds.size()>0">
+            and su.area_id in
+            <foreach collection="areaIds" open="(" close=")" separator="," item="areaId">
+                #{areaId}
+            </foreach>
+        </if>
+
+        <if test="orderBy == null">
+            order by su.area_id ASC
+        </if>
+        <if test="orderBy != null and orderBy != ''">
+            order by
+            <if test="'fertilising'.toString() == orderBy">
+                su.fertilising
+            </if>
+            <if test="'forage'.toString() == orderBy">
+                su.forage
+            </if>
+            <if test="'fuel'.toString() == orderBy">
+                su.fuel
+            </if>
+            <if test="'base'.toString() == orderBy">
+                su.base
+            </if>
+            <if test="'material'.toString() == orderBy">
+                su.material
+            </if>
+            <if test="'thisCount'.toString() == orderBy">
+                su.thisCount
+            </if>
+            <if test="'other'.toString() == orderBy">
+                su.other
+            </if>
+            <if test="'countSum'.toString() == orderBy">
+                su.countSum
+            </if>
+            <if test="isDesc != null and 'Y'.toString() == isDesc">
+                desc
+            </if>
+        </if>
+    </select>
+    
+    <select id="getListByCounty2"  parameterType="java.util.Map" resultMap="mainBodyUsageSummaryResult">
+        select
+            su.id as id,
+            su.year as year,
+            su.area_id area,
+            dr.region_name as areaName,
+            su.main_name mainBodyNameOrCount,
+            ROUND(sum(sud.fertilising),2) fertilising,
+            ROUND(sum(sud.forage),2) forage,
+            ROUND(sum(sud.fuel),2) fuel,
+            ROUND(sum(sud.base),2) base,
+            ROUND(sum(sud.material),2) material,
+            ROUND(sum(sud.other),2) other,
+            ROUND(sum(sud.fertilising) + sum(sud.forage) + sum(sud.fuel) + sum(sud.base)  + sum(sud.material )- sum(sud.other),2) thisCount,
+        ROUND(sum(sud.fertilising) + sum(
+
+
+
+
+
+        sud.forage) + sum(sud.fuel) + sum(sud.base)  + sum(sud.material )- sum(sud.other),2) + ROUND(sum(sud.other),2)   countSum
+        from straw_utilize su
+        left join straw_utilize_detail  sud on sud.utilize_id = su.id
+        left join ducss_region_copy_sys dr on dr.region_code = su.area_id and dr."year"  = #{regionYear}
+        where su.year = #{year}
+        and su.area_id = #{areaId}
+        group by su.id, su.year, area, mainBodyNameOrCount,dr.region_name
+
+        <if test="orderBy == null">
+            order by su.area_id ASC
+        </if>
+        <if test="orderBy != null and orderBy != ''">
+            order by
+            <if test="'fertilising'.toString() == orderBy">
+                fertilising
+            </if>
+            <if test="'forage'.toString() == orderBy">
+                forage
+            </if>
+            <if test="'fuel'.toString() == orderBy">
+                fuel
+            </if>
+            <if test="'base'.toString() == orderBy">
+                base
+            </if>
+            <if test="'material'.toString() == orderBy">
+                material
+            </if>
+            <if test="'thisCount'.toString() == orderBy">
+                thisCount
+            </if>
+            <if test="'other'.toString() == orderBy">
+                other
+            </if>
+            <if test="'countSum'.toString() == orderBy">
+                countSum
+            </if>
+            <if test="isDesc != null and 'Y'.toString() == isDesc">
+                desc
+            </if>
+        </if>
+    </select>
+
+
+   <select id="getListByCounty" parameterType="java.util.Map" resultMap="mainBodyUsageSummaryResult">
+        select
+            su.id id,
+            su.year as year,
+            su.area_id area,
+            su.main_name mainBodyNameOrCount,
+            ROUND(sum(sud.fertilising),2) fertilising,
+            ROUND(sum(sud.forage),2) forage,
+            ROUND(sum(sud.fuel),2) fuel,
+            ROUND(sum(sud.base),2) base,
+            ROUND(sum(sud.material),2) material,
+            ROUND(sum(sud.other),2) other,
+            ROUND(sum(sud.fertilising) + sum(sud.forage) + sum(sud.fuel) + sum(sud.base)  + sum(sud.material )- sum(sud.other),2) thisCount
+        from straw_utilize su
+        left join straw_utilize_detail  sud on sud.utilize_id = su.id
+        left join collect_flow cf on cf.area_id = su.area_id
+        where su.year = #{year} and cf.year = #{year}
+        and su.area_id = #{areaId}
+        group by year, area, mainBodyNameOrCount
+        order by su.area_id
+   </select>
+
+
+    <select id="getListByVerb" parameterType="java.util.Map" resultMap="mainBodyUsageSummaryResult">
+
+         select
+            su.id id,
+            su.year as year,
+            su.area_id area,
+            count(distinct su.main_name) mainBodyNameOrCount,
+            ROUND(sum(sud.fertilising),2) fertilising,
+            ROUND(sum(sud.forage),2) forage,
+            ROUND(sum(sud.fuel),2) fuel,
+            ROUND(sum(sud.base),2) base,
+            ROUND(sum(sud.material),2) material,
+            ROUND(sum(sud.other),2) other,
+            ROUND(sum(sud.fertilising) + sum(sud.forage) + sum(sud.fuel) + sum(sud.base)  + sum(sud.material )- sum(sud.other),2) thisCount
+        from straw_utilize su
+        left join straw_utilize_detail  sud on sud.utilize_id = su.id
+        left join collect_flow cf on cf.area_id = su.area_id
+        where su.year = #{year} and cf.year = #{year}
+        and su.province_id =  #{areaId}
+        group by year, area
+        order by su.area_id
+
+    </select>
+    
+    <select id="getListByCityCount" resultMap="mainBodyUsageSummaryResult" parameterType="java.util.Map">
+        select
+            su.year as year,
+            su.area_id area,
+            count(su.address) mainBodyNameOrCount,
+            COALESCE(sum(sud.fertilising), 0 ) fertilising,
+            COALESCE(sum(sud.forage), 0 ) forage,
+            COALESCE(sum(sud.fuel ), 0 ) fuel,
+            COALESCE(sum(sud.base), 0 ) base,
+            COALESCE(sum(sud.material), 0 ) material,
+            COALESCE(sum(sud.other), 0 ) other,
+            COALESCE(sum(sud.fertilising) + sum(sud.forage) +sum( sud.fuel) + sum(sud.base ) + sum(sud.material) - sum(sud.other ), 0 ) thisCount
+        from straw_utilize su
+        left join straw_utilize_detail  sud on sud.utilize_id = su.id
+        left join collect_flow cf on cf.area_id = su.area_id
+        where
+        su.year = #{year}
+        and cf.year = #{year}
+        and su.city_id = #{areaId}
+        -- and cf.level >= 3
+        group by area
+        order by area
+    </select>
+    
+    
+    <select id="getListByProvinceCount" resultMap="mainBodyUsageSummaryResult" parameterType="java.util.Map">
+        select
+            su.year as year,
+            su.city_id area,
+            count(su.address) mainBodyNameOrCount,
+            COALESCE(sum(sud.fertilising), 0 )  fertilising,
+            COALESCE(sum(sud.forage), 0 ) forage,
+            COALESCE(sum(sud.fuel ), 0 ) fuel,
+            COALESCE(sum(sud.base), 0 ) base,
+            COALESCE(sum(sud.material), 0 ) material,
+            COALESCE(sum(sud.other), 0 ) other,
+            COALESCE(sum(sud.fertilising) + sum(sud.forage) +sum( sud.fuel) + sum(sud.base ) + sum(sud.material) - sum(sud.other ), 0 ) thisCount
+        from straw_utilize su
+        left join straw_utilize_detail  sud on sud.utilize_id = su.id
+        left join collect_flow cf on cf.area_id = su.area_id
+        where
+        su.year =#{year}
+        and cf.year = #{year}
+        and su.province_id = #{areaId}
+        -- and cf.level >= 3
+        group by area
+        order by area
+    </select>
+    
+    
+    <select id="getListByChinaCount" resultMap="mainBodyUsageSummaryResult" parameterType="java.util.Map">
+        select
+            su.year as year,
+            su.province_id area,
+            count(su.address) mainBodyNameOrCount,
+            COALESCE(sum(sud.fertilising), 0 ) fertilising,
+            COALESCE(sum(sud.forage), 0 ) forage,
+            COALESCE(sum(sud.fuel ), 0 ) fuel,
+            COALESCE(sum(sud.base), 0 ) base,
+            COALESCE(sum(sud.material), 0 ) material,
+            COALESCE(sum(sud.other), 0 ) other,
+            COALESCE(sum(sud.fertilising) + sum(sud.forage) +sum( sud.fuel) + sum(sud.base ) + sum(sud.material) - sum(sud.other ), 0 ) thisCount
+		from straw_utilize su
+		left join straw_utilize_detail  sud on sud.utilize_id = su.id
+		left join collect_flow cf on cf.area_id = su.area_id
+		where
+		su.year = #{year}
+		and cf.year = #{year}
+		and su.province_id is not null
+		-- and cf.level >= 3
+		group by area
+		order by area
+    </select>
+    
+    <resultMap id="utilizeAndDetailInfoResult" type="com.sofn.ducss.vo.StrawUtilizeInfoAndDetailInfoVo">
+        <result column="mainName" property="mainName"></result>
+        <result column="year" property="year"></result>
+        <result column="corporationName" property="corporationName"></result>
+        <result column="mobilePhone" property="mobilePhone"></result>
+        <result column="address" property="address"></result>
+        <collection property="strawTypeVoList" ofType="com.sofn.ducss.vo.StrawTypeVo">
+            <result column="typeCode" property="typeCode"></result>
+            <result column="typeName" property="typeName"></result>
+            <result column="fertilising" property="fertilising"></result>
+            <result column="forage" property="forage"></result>
+            <result column="fuel" property="fuel"></result>
+            <result column="base" property="base"></result>
+            <result column="material" property="material"></result>
+            <result column="other" property="other"></result>
+            <result column="thisCount" property="thisCount"></result>
+        </collection>
+    </resultMap>
+    
+    <select id="getStrawUtilizeInfoAndDetailInfo" parameterType="java.util.Map" resultMap="utilizeAndDetailInfoResult">
+        select
+            su.main_name mainName,
+            su.year as year,
+            su.corporation_name corporationName,
+            su.mobile_phone mobilePhone,
+            su.address address,
+            sud.straw_type typeCode,
+            sud.straw_name typeName,
+            ROUND(sud.fertilising,2) fertilising,
+            ROUND(sud.forage,2) forage,
+            ROUND(sud.fuel,2) fuel,
+            ROUND(sud.base,2) base,
+            ROUND(sud.material,2) material,
+            ROUND(sud.other,2) other,
+            ROUND(sud.fertilising + sud.forage + sud.fuel + sud.base + sud.material - sud.other,2) thisCount
+        from straw_utilize su
+        left join straw_utilize_detail sud on sud.utilize_id = su.id
+        left join sys_dictionary sd on sud.straw_type = sd.dict_key and sd.dict_type = 'straw_type'
+        where su.id = #{utilizeId}
+         order by sd.order_no
+    </select>
+
+    
+    <select id="getExportInfo" parameterType="java.util.Map" resultType="com.sofn.ducss.vo.excelVo.MainBodyUsageSummaryExcelVo">
+        SELECT
+        su.fill_no,
+        su.year as year,
+        dr.parent_names area,
+        su.main_name mainBodyName,
+        su.address address,
+        su.corporation_name corporationName,
+        su.mobile_phone mobilePhone,
+        ROUND(SUM(sud.fertilising), 2) fertilising,
+        ROUND(SUM(sud.forage), 2) forage,
+        ROUND(SUM(sud.fuel), 2) fuel,
+        ROUND(SUM(sud.base), 2) base,
+        ROUND(SUM(sud.material), 2) material,
+        ROUND(SUM(sud.other), 2) other,
+        ROUND(
+        SUM (sud.fertilising) + SUM (sud.forage) + SUM (sud.fuel) + SUM (sud.base) + SUM (sud.material) - SUM (sud.other),
+        2
+        ) thisCount,
+        ROUND(
+        SUM (sud.fertilising) + SUM (sud.forage) + SUM (sud.fuel) + SUM (sud.base) + SUM (sud.material) - SUM (sud.other),
+        2
+        ) + ROUND(SUM(sud.other), 2) total
+        FROM
+        straw_utilize su
+        LEFT JOIN straw_utilize_detail sud ON sud.utilize_id = su. ID
+        LEFT JOIN ducss_region_copy_sys dr ON dr.region_code = su.area_id
+        AND dr."year" = #{regionYear}
+        WHERE
+        su. YEAR = #{year}
+        AND su.area_id in
+        <foreach collection="areaIds" item="areaId" open="(" close=")" separator=",">
+            #{areaId}
+        </foreach>
+        GROUP BY
+        su. ID,
+        su. YEAR,
+        dr.parent_names,
+        su.main_name,
+        dr.region_name,
+        su.fill_no,
+        su.address,
+        su.corporation_name,
+        su.mobile_phone
+        order by su.area_id asc, su.create_time desc
+    </select>
+
+
+</mapper>

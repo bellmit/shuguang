@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agzirdd.mapper.FacilityMaintenanceMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.agzirdd.model.FacilityMaintenance" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="MONITOR_ID" property="monitorId" jdbcType="VARCHAR" />
+    <result column="MONITOR_NAME" property="monitorName" jdbcType="VARCHAR" />
+    <result column="FACILITY_NAME" property="facilityName" jdbcType="VARCHAR" />
+    <result column="USE_DATE" property="useDate" jdbcType="TIMESTAMP" />
+    <result column="CREATE_USER_ID" property="createUserId" jdbcType="VARCHAR" />
+    <result column="CREATE_USER_NAME" property="createUserName" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, MONITOR_ID, MONITOR_NAME, FACILITY_NAME, USE_DATE, CREATE_USER_ID, CREATE_USER_NAME, 
+    CREATE_TIME
+  </sql>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from FACILITY_MAINTENANCE
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <update id="updateByPrimaryKey" parameterType="com.sofn.agzirdd.model.FacilityMaintenance" >
+    update FACILITY_MAINTENANCE
+    set MONITOR_ID = #{monitorId,jdbcType=VARCHAR},
+      MONITOR_NAME = #{monitorName,jdbcType=VARCHAR},
+      FACILITY_NAME = #{facilityName,jdbcType=VARCHAR},
+      USE_DATE = #{useDate,jdbcType=OTHER},
+      CREATE_USER_ID = #{createUserId,jdbcType=VARCHAR},
+      CREATE_USER_NAME = #{createUserName,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=OTHER}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="findFacilityByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM FACILITY_MAINTENANCE
+    <where>
+      1=1
+      <if test="monitorName != null and monitorName != ''">
+        and MONITOR_NAME = #{monitorName}
+      </if>
+      <if test="facilityName != null and facilityName != ''">
+        and FACILITY_NAME like '%'||#{facilityName,jdbcType=VARCHAR}||'%'
+      </if>
+      <if test="startTime != null and startTime != ''">
+        and USE_DATE &gt;= to_date(#{startTime},'yyyy-MM-dd')
+      </if>
+      <if test="endTime != null and endTime != ''">
+        and USE_DATE &lt;= to_date(#{endTime},'yyyy-MM-dd')
+      </if>
+    </where>
+    ORDER By CREATE_TIME DESC
+  </select>
+</mapper>

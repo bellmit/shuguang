@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.flow.mapper.ActMapper" >
+
+
+    <select id="getListByParams" parameterType="java.util.Map" resultType="com.sofn.flow.model.Act" >
+        select * from wr_activity wa
+        left join wr_activity_context wac on wa.id=wac.parentId
+        <where>
+            <if test="defId != null and defId != ''">
+                and wa.procDefId=#{defId}
+            </if>
+                ActMapper
+            <if test="instId != null and instId != ''">
+                and wa.procInstId=#{instId}
+            </if>
+
+            <if test="attrs != null and attrs.size != 0">
+                <foreach collection="attrs.entrySet()" index="key" item="value">
+                    <if test="key != null and key != ''">
+                        and wac.dataFieldId= #{key}
+                    </if>
+
+                    <if test="value != null and value != ''">
+                        and wac.value= #{value}
+                    </if>
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+        <resultMap id="processMap" type="com.sofn.flow.vo.ProcessVo">
+                <id column="wrp_id"  property="id"/>
+                <result column="wrp_name"  property="name"/>
+                <result column="wrp_createTime"  property="createTime"/>
+                <result column="wrp_creator" property="creator"/>
+                <result column="wrp_curState" property="curState"/>
+                <result column="wrp_startPerformer" property="startPerformer"/>
+                <result column="wrp_procModelId" property="procModelId"/>
+                <result column="wrp_procDefId" property="procDefId"/>
+                <collection property="processContextList" resultMap="processContextList"/>
+                <collection property="actList" resultMap="actList"/>
+                <collection property="workItemList" resultMap="workItemList"/>
+
+        </resultMap>
+
+        <resultMap id="processContextList" type="com.sofn.flow.vo.ProcessContextVo">
+                <id column="wrpc_id"  property="id"/>
+                <result column="wrpc_dataFieldId"  property="dataFieldId"/>
+                <result column="wrpc_value"  property="value"/>
+        </resultMap>
+
+        <resultMap id="actList" type="com.sofn.flow.vo.ActVo">
+                <id column="wra_id"  property="id"/>
+                <result column="wra_name"  property="name"/>
+                <result column="wra_procModelId"  property="procModelId"/>
+                <result column="wra_createTime"  property="createTime"/>
+                <result column="wra_startTime" property="startTime"/>
+                <result column="wra_activityLevel"  property="activityLevel"/>
+                <result column="wra_actor"  property="actor"/>
+                <result column="wra_activityType"  property="activityType"/>
+                <result column="wra_actorType"  property="actorType"/>
+                <result column="wra_actDefId"  property="actDefId"/>
+                <result column="wra_fromNodes"  property="fromNodes"/>
+                <result column="wra_isBack"  property="isBack"/>
+                <result column="wra_activityStarter"  property="activityStarter"/>
+                <result column="wra_procDefId"  property="procDefId"/>
+                <result column="wra_procInstId"  property="procInstId"/>
+                <collection property="actContextList" resultMap="actContextList"/>
+        </resultMap>
+
+        <resultMap id="actContextList" type="com.sofn.flow.vo.ActContextVo">
+                <id column="wrac_id"  property="id"/>
+                <result column="wrac_dataFieldId"  property="dataFieldId"/>
+                <result column="wrac_value"  property="value"/>
+        </resultMap>
+
+        <resultMap id="workItemList" type="com.sofn.flow.vo.WorkItemVo">
+                <id column="wrw_id"  property="id"/>
+                <result column="wrw_name"  property="name"/>
+                <result column="wrw_curState"  property="curState"/>
+                <result column="wrw_procModelId"  property="procModelId"/>
+                <result column="wrw_workitemStarter" property="workItemStarter"/>
+                <result column="wrw_actDefId"  property="actDefId"/>
+                <result column="wrw_actInstId"  property="actInstId"/>
+                <result column="wrw_createTime"  property="createTime"/>
+                <result column="wrw_participant"  property="participant"/>
+                <result column="wrw_completeTime"  property="completeTime"/>
+                <result column="wrw_receiveTime"  property="receiveTime"/>
+                <collection property="workItemContextList" resultMap="workItemContextList"/>
+        </resultMap>
+
+        <resultMap id="workItemContextList" type="com.sofn.flow.vo.WorkItemContextVo">
+                <id column="wrwc_id"  property="id"/>
+                <result column="wrwc_dataFieldId"  property="dataFieldId"/>
+                <result column="wrwc_value"  property="value"/>
+        </resultMap>
+
+
+    <select id="getProcessInstAllByAttr" parameterType="java.util.Map" resultMap="processMap">
+            select * from (
+            (SELECT
+            wr_process.id wrp_id,
+            wr_process.name wrp_name,
+            wr_process.createTime wrp_createTime,
+            wr_process.creator wrp_creator,
+            wr_process.startTime wrp_startTime,
+            wr_process.lastStateChangeTime wrp_changTime,
+            '运行中' as wrp_curState,
+            wr_process.startPerformer wrp_startPerformer,
+            wr_process.procModelId wrp_procModelId,
+            wr_process.procDefId wrp_procDefId,
+            wr_workitem.id wrw_id,
+            wr_workitem.name wrw_name,
+            wr_workitem.curState wrw_curState,
+            wr_workitem.procModelId wrw_procModelId,
+            wr_workitem.workitemStarter wrw_workitemStarter,
+            wr_workitem.actDefId wrw_actDefId,
+            wr_workitem.actInstId wrw_actInstId,
+            wr_workitem.createTime wrw_createTime,
+            wr_workitem.participant wrw_participant,
+            wr_workitem.completeTime wrw_completeTime,
+            wr_workitem.receiveTime wrw_receiveTime,
+            wr_activity.id wra_id,
+            wr_activity.name wra_name,
+            wr_activity.procModelId wra_procModelId,
+            wr_activity.createTime wra_createTime,
+            wr_activity.startTime wra_startTime,
+            wr_activity.activityLevel wra_activityLevel,
+            wr_activity.actor wra_actor,
+            wr_activity.activityType wra_activityType,
+            wr_activity.actorType wra_actorType,
+            wr_activity.actDefId wra_actDefId,
+            wr_activity.fromNodes wra_fromNodes,
+            wr_activity.isBack wra_isBack,
+            wr_activity.activityStarter wra_activityStarter,
+            wr_activity.procDefId wra_procDefId,
+            wr_activity.procInstId wra_procInstId,
+            wr_activity_context.id wrac_id,
+            wr_activity_context.dataFieldId wrac_dataFieldId,
+            wr_activity_context.value wrac_value,
+            wr_process_context.id wrpc_id,
+            wr_process_context.dataFieldId wrpc_dataFieldId,
+            wr_process_context.value wrpc_value,
+            wr_workitem_context.id wrwc_id,
+            wr_workitem_context.dataFieldId wrwc_dataFieldId,
+            wr_workitem_context.value wrwc_value
+            FROM
+            wr_process
+            LEFT JOIN
+            wr_workitem
+            ON
+            wr_process.id = wr_workitem.procInstId
+            LEFT JOIN
+            wr_activity
+            ON
+            wr_process.id = wr_activity.procInstId
+            LEFT JOIN
+            wr_process_context
+            ON
+            wr_process.id = wr_process_context.parentId
+            LEFT JOIN
+            wr_workitem_context
+            ON
+            wr_process.id = wr_workitem_context.procInstId
+            LEFT JOIN
+            wr_activity_context
+            ON
+            wr_process.id = wr_activity_context.procInstId
+            )
+            UNION ALL
+            (SELECT
+            wh_process.id whp_id,
+            wh_process.name whp_name,
+            wh_process.createTime whp_createTime,
+            wh_process.creator whp_creator,
+            wh_process.startTime whp_startTime,
+            wh_process.completeTime whp_changTime,
+            '运行完成' as wrp_curState,
+            wh_process.startPerformer whp_startPerformer,
+            wh_process.procModelId whp_procModelId,
+            wh_process.procDefId whp_procDefId,
+            wh_workitem.id whw_id,
+            wh_workitem.name whw_name,
+            wh_workitem.howClosed whw_curState,
+            wh_workitem.procModelId whw_procModelId,
+            wh_workitem.workitemStarter whw_workitemStarter,
+            wh_workitem.actDefId whw_actDefId,
+            wh_workitem.actInstId whw_actInstId,
+            wh_workitem.createTime whw_createTime,
+            wh_workitem.participant whw_participant,
+            wh_workitem.completeTime whw_completeTime,
+            wh_workitem.receiveTime whw_receiveTime,
+            wh_activity.id wha_id,
+            wh_activity.name wha_name,
+            wh_activity.procModelId wha_procModelId,
+            wh_activity.createTime wha_createTime,
+            wh_activity.startTime wha_startTime,
+            wh_activity.activityLevel wha_activityLevel,
+            wh_activity.actor wha_actor,
+            wh_activity.activityType wha_activityType,
+            wh_activity.actorType wha_actorType,
+            wh_activity.actDefId wha_actDefId,
+            wh_activity.fromNodes wha_fromNodes,
+            wh_activity.isBack wha_isBack,
+            wh_activity.activityStarter wha_activityStarter,
+            wh_activity.procDefId wha_procDefId,
+            wh_activity.procInstId wha_procInstId,
+            wh_activity_context.id whac_id,
+            wh_activity_context.dataFieldId whac_dataFieldId,
+            wh_activity_context.value whac_value,
+            wh_process_context.id whpc_id,
+            wh_process_context.dataFieldId whpc_dataFieldId,
+            wh_process_context.value whpc_value,
+            wh_workitem_context.id whwc_id,
+            wh_workitem_context.dataFieldId whwc_dataFieldId,
+            wh_workitem_context.value whwc_value
+            FROM
+            wh_process
+            LEFT JOIN
+            wh_workitem
+            ON
+            wh_process.id = wh_workitem.procInstId
+            LEFT JOIN
+            wh_activity
+            ON
+            wh_process.id = wh_activity.procInstId
+            LEFT JOIN
+            wh_process_context
+            ON
+            wh_process.id = wh_process_context.parentId
+            LEFT JOIN
+            wh_workitem_context
+            ON
+            wh_workitem.id = wh_workitem_context.parentId
+            LEFT JOIN
+            wh_activity_context
+            ON
+            wh_process.id = wh_activity_context.procInstId
+            )
+
+            ) kk
+            where
+            1 = 1
+
+            <if test="instanceParamVos != null and instanceParamVos.size() > 0">
+                    and (
+                            <foreach collection="instanceParamVos" item="paramVo" open="(" close=")" separator="or">
+                                    (wrac_dataFieldId = #{paramVo.key} and wrac_value in ( ${paramVo.value})) or
+                                    (wrpc_dataFieldId = #{paramVo.key} and wrpc_value in (${paramVo.value})) or
+                                    (wrwc_dataFieldId = #{paramVo.key} and wrwc_value in (${paramVo.value}))
+                            </foreach>
+                    )
+            </if>
+            <if test="startTime != null and startTime != ''">
+                    and kk.wrp_startTime >= #{startTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                    and kk.wrp_changTime >= #{endTime}
+            </if>
+            ORDER BY kk.wrp_curState
+    </select>
+        
+        <select id="getProcessInstAllByAttrByPage" parameterType="java.util.Map" resultMap="processMap">
+                select distinct  qqq.wrp_id from (
+                select * from (
+                (SELECT
+                wr_process.id wrp_id,
+                wr_process.name wrp_name,
+                wr_process.createTime wrp_createTime,
+                wr_process.creator wrp_creator,
+                wr_process.startTime wrp_startTime,
+                wr_process.lastStateChangeTime wrp_changTime,
+                '运行中' as wrp_curState,
+                wr_process.startPerformer wrp_startPerformer,
+                wr_process.procModelId wrp_procModelId,
+                wr_process.procDefId wrp_procDefId,
+                wr_workitem.id wrw_id,
+                wr_workitem.name wrw_name,
+                wr_workitem.curState wrw_curState,
+                wr_workitem.procModelId wrw_procModelId,
+                wr_workitem.workitemStarter wrw_workitemStarter,
+                wr_workitem.actDefId wrw_actDefId,
+                wr_workitem.actInstId wrw_actInstId,
+                wr_workitem.createTime wrw_createTime,
+                wr_workitem.participant wrw_participant,
+                wr_workitem.completeTime wrw_completeTime,
+                wr_workitem.receiveTime wrw_receiveTime,
+                wr_activity.id wra_id,
+                wr_activity.name wra_name,
+                wr_activity.procModelId wra_procModelId,
+                wr_activity.createTime wra_createTime,
+                wr_activity.startTime wra_startTime,
+                wr_activity.activityLevel wra_activityLevel,
+                wr_activity.actor wra_actor,
+                wr_activity.activityType wra_activityType,
+                wr_activity.actorType wra_actorType,
+                wr_activity.actDefId wra_actDefId,
+                wr_activity.fromNodes wra_fromNodes,
+                wr_activity.isBack wra_isBack,
+                wr_activity.activityStarter wra_activityStarter,
+                wr_activity.procDefId wra_procDefId,
+                wr_activity.procInstId wra_procInstId,
+                wr_activity_context.id wrac_id,
+                wr_activity_context.dataFieldId wrac_dataFieldId,
+                wr_activity_context.value wrac_value,
+                wr_process_context.id wrpc_id,
+                wr_process_context.dataFieldId wrpc_dataFieldId,
+                wr_process_context.value wrpc_value,
+                wr_workitem_context.id wrwc_id,
+                wr_workitem_context.dataFieldId wrwc_dataFieldId,
+                wr_workitem_context.value wrwc_value
+                FROM
+                wr_process
+                LEFT JOIN
+                wr_workitem
+                ON
+                wr_process.id = wr_workitem.procInstId
+                LEFT JOIN
+                wr_activity
+                ON
+                wr_process.id = wr_activity.procInstId
+                LEFT JOIN
+                wr_process_context
+                ON
+                wr_process.id = wr_process_context.parentId
+                LEFT JOIN
+                wr_workitem_context
+                ON
+                wr_process.id = wr_workitem_context.procInstId
+                LEFT JOIN
+                wr_activity_context
+                ON
+                wr_process.id = wr_activity_context.procInstId
+                )
+                UNION ALL
+                (SELECT
+                wh_process.id whp_id,
+                wh_process.name whp_name,
+                wh_process.createTime whp_createTime,
+                wh_process.creator whp_creator,
+                wh_process.startTime whp_startTime,
+                wh_process.completeTime whp_changTime,
+                '运行完成' as wrp_curState,
+                wh_process.startPerformer whp_startPerformer,
+                wh_process.procModelId whp_procModelId,
+                wh_process.procDefId whp_procDefId,
+                wh_workitem.id whw_id,
+                wh_workitem.name whw_name,
+                wh_workitem.howClosed whw_curState,
+                wh_workitem.procModelId whw_procModelId,
+                wh_workitem.workitemStarter whw_workitemStarter,
+                wh_workitem.actDefId whw_actDefId,
+                wh_workitem.actInstId whw_actInstId,
+                wh_workitem.createTime whw_createTime,
+                wh_workitem.participant whw_participant,
+                wh_workitem.completeTime whw_completeTime,
+                wh_workitem.receiveTime whw_receiveTime,
+                wh_activity.id wha_id,
+                wh_activity.name wha_name,
+                wh_activity.procModelId wha_procModelId,
+                wh_activity.createTime wha_createTime,
+                wh_activity.startTime wha_startTime,
+                wh_activity.activityLevel wha_activityLevel,
+                wh_activity.actor wha_actor,
+                wh_activity.activityType wha_activityType,
+                wh_activity.actorType wha_actorType,
+                wh_activity.actDefId wha_actDefId,
+                wh_activity.fromNodes wha_fromNodes,
+                wh_activity.isBack wha_isBack,
+                wh_activity.activityStarter wha_activityStarter,
+                wh_activity.procDefId wha_procDefId,
+                wh_activity.procInstId wha_procInstId,
+                wh_activity_context.id whac_id,
+                wh_activity_context.dataFieldId whac_dataFieldId,
+                wh_activity_context.value whac_value,
+                wh_process_context.id whpc_id,
+                wh_process_context.dataFieldId whpc_dataFieldId,
+                wh_process_context.value whpc_value,
+                wh_workitem_context.id whwc_id,
+                wh_workitem_context.dataFieldId whwc_dataFieldId,
+                wh_workitem_context.value whwc_value
+                FROM
+                wh_process
+                LEFT JOIN
+                wh_workitem
+                ON
+                wh_process.id = wh_workitem.procInstId
+                LEFT JOIN
+                wh_activity
+                ON
+                wh_process.id = wh_activity.procInstId
+                LEFT JOIN
+                wh_process_context
+                ON
+                wh_process.id = wh_process_context.parentId
+                LEFT JOIN
+                wh_workitem_context
+                ON
+                wh_workitem.id = wh_workitem_context.parentId
+                LEFT JOIN
+                wh_activity_context
+                ON
+                wh_process.id = wh_activity_context.procInstId
+                )
+
+                ) kk
+                where kk.wra_procDefId in
+                <foreach collection="defIds" item="defId" open="(" close=")" separator=",">
+                        #{defId}
+                </foreach>
+
+                <if test="instanceParamVos != null and instanceParamVos.size() > 0">
+                        and (
+                        <foreach collection="instanceParamVos" item="paramVo" open="(" close=")" separator="or">
+                                (wrac_dataFieldId = #{paramVo.key} and wrac_value in ( ${paramVo.value})) or
+                                (wrpc_dataFieldId = #{paramVo.key} and wrpc_value in ( ${paramVo.value})) or
+                                (wrwc_dataFieldId = #{paramVo.key} and wrwc_value in (${paramVo.value}))
+                        </foreach>
+                        )
+                </if>
+                <if test="startTime != null and startTime != ''">
+                        and kk.wra_startTime >= #{startTime}
+                </if>
+                <if test="endTime != null and endTime != ''">
+                        and kk.wrp_changTime >= #{endTime}
+                </if>
+                ORDER BY kk.wrp_curState
+                ) qqq
+        </select>
+
+
+        <resultMap id="ActivityDataMap" type="com.sofn.flow.vo.ActivityDataVo">
+                <id column="procInstId"  property="procInstId"/>
+                <result column="activityId"  property="activityId"/>
+                <result column="activityName"  property="activityName"/>
+                <result column="activityStarter"  property="activityStarter"/>
+                <result column="activityCompleteTime" property="activityCompleteTime"/>
+                <result column="activityCreateTime" property="activityCreateTime"/>
+                <result column="activityCurState" property="activityCurState"/>
+                <result column="unitKey" property="unitKey"/>
+                <result column="unitValue" property="unitValue"/>
+        </resultMap>
+    <select id="getActivityAllDataByName" resultMap="ActivityDataMap">
+    SELECT
+    DISTINCT
+    procInstId,
+    activityId,
+    activityName,
+    activityStarter,
+    activityCompleteTime,
+    activityCreateTime,
+    activityCurState,
+    unitKey,
+    unitValue,
+    startTime
+     FROM(
+	SELECT
+		wp.ID procInstId,
+		ww.id activityId,
+		ww.name activityName,
+        ww.activityStarter activityStarter,
+		ww.completeTime activityCompleteTime,
+		ww.createTime activityCreateTime,
+		ww.curState activityCurState,
+		wc.dataFieldId unitKey,
+		wc.value unitValue ,
+		wp.startTime startTime,
+        wa.dataFieldId waKey,
+        wa.value waValue
+	FROM
+		wr_activity ww
+		LEFT JOIN wr_process wp ON wp.id = ww.procInstId
+		LEFT JOIN wr_process_context wc ON wc.parentId = wp.id
+	  LEFT JOIN wr_activity_context wa ON wa.parentId = ww.id
+	WHERE
+        <if test="defId != null and defId != ''">
+            ww.procDefId= #{defId}
+        </if>
+        <if test="idAttrName != null and idAttrName != ''">
+           and wc.dataFieldId= #{idAttrName}
+        </if>
+        <if test="activityMaker != null and activityMaker != ''">
+            and ww.activityStarter= #{activityMaker}
+        </if>
+        <if test="idAttrValues != null and idAttrValues.size != 0">
+            and  wc.value in
+            <foreach collection="idAttrValues" item="paramVo" open="(" close=")" separator=",">
+               #{paramVo}
+            </foreach>
+        </if>
+            <if test="instanceParamVos != null and instanceParamVos.size() > 0">
+                    and (
+                    <foreach collection="instanceParamVos" item="paramVo" open="(" close=")" separator="or">
+                            wa.dataFieldId = #{paramVo.key}
+                            <if test="paramVo.values != null and paramVo.values.size != 0">
+                                    <if test="paramVo.valueIsIn != null and paramVo.valueIsIn = 'Y'.toString()">
+                                            and  wa.value in
+                                            <foreach collection="paramVo.values" item="param" open="(" close=")" separator=",">
+                                                    #{param}
+                                            </foreach>
+                                    </if>
+                                    <if test="paramVo.valueIsIn != null and paramVo.valueIsIn = 'N'.toString()">
+                                            and wa.value =
+                                            <foreach collection="paramVo.values" item="param" open="(" close=")" separator=",">
+                                                    #{param}
+                                            </foreach>
+                                    </if>
+                            </if>
+                    </foreach>
+                    )
+            </if>
+		AND WW.name NOT IN ( '开始', '结束' ) UNION
+	SELECT
+		wp.ID procInstId,
+		ww.id activityId,
+		ww.name activityName,
+		ww.activityStarter activityStarter,
+		ww.completeTime activityCompleteTime,
+		ww.createTime activityCreateTime,
+		ww.howClosed activityCurState,
+		wc.dataFieldId unitKey,
+		wc.value unitValue ,
+        wp.startTime startTime,
+        wa.dataFieldId waKey,
+        wa.value waValue
+	FROM
+		wh_activity ww
+		LEFT JOIN wh_process wp ON wp.id = ww.procInstId
+		LEFT JOIN wh_process_context wc ON wc.parentId = wp.id
+		LEFT JOIN wh_activity_context wa ON wa.parentId = ww.id
+	WHERE
+            <if test="defId != null and defId != ''">
+                    ww.procDefId= #{defId}
+            </if>
+            <if test="idAttrName != null and idAttrName != ''">
+                    and wc.dataFieldId= #{idAttrName}
+            </if>
+            <if test="activityMaker != null and activityMaker != ''">
+                    and ww.activityStarter= #{activityMaker}
+            </if>
+            <if test="idAttrValues != null and idAttrValues.size != 0">
+                    and  wc.value in
+                    <foreach collection="idAttrValues" item="paramVo" open="(" close=")" separator=",">
+                            #{paramVo}
+                    </foreach>
+            </if>
+            <if test="instanceParamVos != null and instanceParamVos.size() > 0">
+                    and (
+                    <foreach collection="instanceParamVos" item="paramVo" open="(" close=")" separator="or">
+                            wa.dataFieldId = #{paramVo.key}
+                            <if test="paramVo.values != null and paramVo.values.size != 0">
+                                    <if test="paramVo.valueIsIn != null and paramVo.valueIsIn = 'Y'.toString()">
+                                            and  wa.value in
+                                            <foreach collection="paramVo.values" item="param" open="(" close=")" separator=",">
+                                                    #{param}
+                                            </foreach>
+                                    </if>
+                                    <if test="paramVo.valueIsIn != null and paramVo.valueIsIn = 'N'.toString()">
+                                            and  wa.value =
+                                            <foreach collection="paramVo.values" item="param" open="(" close=")" separator=",">
+                                                    #{param}
+                                            </foreach>
+                                    </if>
+                            </if>
+                    </foreach>
+                    )
+            </if>
+		AND WW.name NOT IN ( '开始', '结束' )
+	) kkk
+    <where>
+            <if test="startTime != null and startTime != ''">
+                    kkk.activityCreateTime >= #{startTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                    and kkk.activityCompleteTime >= #{endTime}
+            </if>
+            and  activityCompleteTime is not null
+    </where>
+    ORDER BY
+    kkk.startTime DESC , kkk.activityCompleteTime DESC
+    </select>
+
+
+    <resultMap id="activityContextList" type="com.sofn.flow.vo.ActContextVo">
+        <id column="id"  property="id"/>
+        <result column="dataFieldId"  property="dataFieldId"/>
+        <result column="dataValue"  property="value"/>
+    </resultMap>
+
+    <select id="getAllFieldAndValue" resultMap="activityContextList">
+        SELECT * FROM
+        (SELECT
+            wac.id,
+            wac.dataFieldId,
+            wac.value dataValue,
+            wac.parentId
+        FROM
+            wr_activity_context wac
+        UNION ALL
+        SELECT
+            wac.id,
+            wac.dataFieldId,
+            wac.value dataValue,
+            wac.parentId
+        FROM
+            wh_activity_context wac) aa
+        WHERE
+            aa.parentId = #{actId}
+<!--            <if test="instanceParamVos != null and instanceParamVos.size() > 0">-->
+<!--                    and (-->
+<!--                    <foreach collection="instanceParamVos" item="paramVo" open="(" close=")" separator="or">-->
+<!--                            aa.dataFieldId = #{paramVo.key}-->
+<!--                            <if test="paramVo.values != null and paramVo.values.size != 0">-->
+<!--                                    <if test="paramVo.valueIsIn != null and paramVo.valueIsIn = 'Y'.toString()">-->
+<!--                                            and  aa.dataValue in-->
+<!--                                            <foreach collection="paramVo.values" item="param" open="(" close=")" separator=",">-->
+<!--                                                    #{param}-->
+<!--                                            </foreach>-->
+<!--                                    </if>-->
+<!--                                    <if test="paramVo.valueIsIn != null and paramVo.valueIsIn = 'N'.toString()">-->
+<!--                                            and  aa.dataValue =-->
+<!--                                            <foreach collection="paramVo.values" item="param" open="(" close=")" separator=",">-->
+<!--                                                    #{param}-->
+<!--                                            </foreach>-->
+<!--                                    </if>-->
+<!--                            </if>-->
+<!--                    </foreach>-->
+<!--                    )-->
+<!--            </if>-->
+    </select>
+</mapper>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.dao.dgap.TDgapAlertConfigExpandMapper">
+    <resultMap id="BaseResultMap" type="com.sofn.model.generator.TDgapAlertConfig">
+        <id column="ID" jdbcType="CHAR" property="id"/>
+        <result column="ALERT_TYPE" jdbcType="VARCHAR" property="alertType"/>
+        <result column="TARGET_ID" jdbcType="VARCHAR" property="targetId"/>
+        <result column="DESCRIPTION" jdbcType="VARCHAR" property="description"/>
+        <result column="THRESHOLD" jdbcType="VARCHAR" property="threshold"/>
+        <result column="NEED_SEND_ALERT" jdbcType="VARCHAR" property="needSendAlert"/>
+        <result column="CREATE_BY" jdbcType="VARCHAR" property="createBy"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_BY" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="DEL_FLAG" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="RESERVED_FIELD1" property="reservedField1" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD2" property="reservedField2" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD3" property="reservedField3" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD4" property="reservedField4" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD5" property="reservedField5" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD6" property="reservedField6" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD7" property="reservedField7" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD8" property="reservedField8" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD9" property="reservedField9" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD10" property="reservedField10" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD11" property="reservedField11" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD12" property="reservedField12" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD13" property="reservedField13" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD14" property="reservedField14" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD15" property="reservedField15" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD16" property="reservedField16" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD17" property="reservedField17" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD18" property="reservedField18" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD19" property="reservedField19" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD20" property="reservedField20" jdbcType="VARCHAR"/>
+    </resultMap>
+    <update id="batchDelete" parameterType="string">
+        UPDATE T_DGAP_ALERT_CONFIG set del_flag='Y'
+        where id in
+        <foreach collection="ids" index="index" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="getConfigList" resultType="java.util.Map">
+        SELECT * FROM
+        (SELECT M.*,ROWNUM rn
+        FROM(
+        SELECT DISTINCT
+        T.ID,
+        T.DESCRIPTION,
+        T.DEL_FLAG,
+        T.UPDATE_TIME,
+        TD.NAME AS DNAME,
+        TDR.NAME AS RNAME
+        FROM T_DGAP_ALERT_CONFIG T
+        LEFT JOIN T_DGAP_RESOURCE TD
+        ON T.TARGET_ID=TD.ID
+        LEFT JOIN
+        T_DGAP_RESOURCE_DIRECTORY TDR
+        ON
+        TD.DIRECTORY_ID = TDR.ID
+        WHERE 1 = 1 AND T.DEL_FLAG = 'N'
+        <if test="alertType !=null and alertType !=''">
+            AND T.ALERT_TYPE = #{alertType}
+        </if>
+        <if test="targetId !=null and targetId !=''">
+            AND T.TARGET_ID = #{targetId}
+        </if>
+        ORDER BY T.UPDATE_TIME DESC) M
+        )
+        WHERE rn BETWEEN 1+#{pageSize}*(#{pageNum}-1) AND #{pageSize}*#{pageNum}
+    </select>
+
+    <select id="getCount" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM T_DGAP_ALERT_CONFIG T
+        WHERE 1=1 AND T.DEL_FLAG='N'
+        <if test="alertType !=null and alertType !=''">
+            AND T.ALERT_TYPE = #{alertType}
+        </if>
+        <if test="targetId !=null and targetId !=''">
+            AND T.TARGET_ID = #{targetId}
+        </if>
+    </select>
+    <select id="getAlertById" resultType="java.util.Map">
+    SELECT TD.NAME AS DNAME,
+        TDR.NAME AS RNAME,TD.DIRECTORY_ID,D.ID,D.THRESHOLD,D.TARGET_ID AS TARGETID, D.DESCRIPTION,R.ID,R.RECEIPT_BY,R.ALERT_ID FROM T_DGAP_ALERT_CONFIG D
+    LEFT JOIN T_DGAP_RESOURCE TD ON D.TARGET_ID=TD.ID
+    LEFT JOIN T_DGAP_ALERT_RECEIPT R ON R.ALERT_ID=D.ID
+    LEFT JOIN T_DGAP_RESOURCE_DIRECTORY TDR ON TD.DIRECTORY_ID=TDR.ID
+    WHERE D.ID=#{id,jdbcType=VARCHAR} AND D.DEL_FLAG='N' AND R.DEL_FLAG='N'  AND TDR.DEL_FLAG='N'
+    </select>
+    <select id="getAllConfigs" resultType="com.sofn.model.generator.TDgapAlertConfig">
+          SELECT * FROM T_DGAP_ALERT_CONFIG WHERE DEL_FLAG='N'
+    </select>
+
+    <select id="countByResourceId" parameterType="string" resultType="int">
+        SELECT count(*) FROM T_DGAP_ALERT_CONFIG WHERE DEL_FLAG='N'
+        AND TARGET_ID=#{id}
+    </select>
+
+    <select id="countByResources" parameterType="string" resultType="int">
+        SELECT count(*) FROM T_DGAP_ALERT_CONFIG WHERE DEL_FLAG='N'
+        AND TARGET_ID IN
+        <foreach collection="ids" index="index" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+    <select id="checkRepeat"  parameterType="string" resultType="com.sofn.model.generator.TDgapCommon">
+    SELECT T.ID,T.ALERT_TYPE,T.TARGET_ID,T.DESCRIPTION,T.THRESHOLD,R.RECEIPT_BY,R.ALERT_ID FROM T_DGAP_ALERT_CONFIG T
+    LEFT JOIN T_DGAP_ALERT_RECEIPT R ON T.ID=R.ALERT_ID
+    WHERE T.DEL_FLAG='N'
+    <if test="targetId !=null and targetId !=''">
+        AND T.TARGET_ID=#{targetId}
+    </if>
+    <if test="id !=null and id !=''">
+        AND T.ID != #{id}
+    </if>
+</select>
+</mapper>

@@ -1,0 +1,75 @@
+    <link rel="stylesheet" href="assets/css/ales/etl/Check_report.css"/>
+
+    <div class="gui-breadcrumbs">
+        <a ui-sref="index.content.ales/etl/etlDailyEnforceLawlist">执法系统</a>&gt;
+        <a ui-sref="index.content.ales/etl/etlDailyEnforceLawlist">日常执法管理</a>&gt;
+        <span>日常执法详细信息</span>
+    </div>
+        <div class="Sup_contain_section_contain gui-section gui-section-wid" >
+            <h4 class="mt15 mb25" style="text-align:center;font-weight:bold;text-align: center">执法详细信息</h4>
+            <div class="">
+                <table class="ApplyTable">
+                    <tr>
+                        <td>
+                            任务名称
+                        </td>
+                        <td>
+                            <span ng-bind="reCord.taskName"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            执法时间
+                        </td>
+                        <td>
+                            从<span ng-bind="beginTime"></span>至
+                            <span ng-bind="endTime"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            被巡查对象
+                        </td>
+                        <td>
+                            <span ng-bind="reCord.enterpriseId"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            被巡查对象地址
+                        </td>
+                        <td>
+                            <span ng-bind="reCord.areaId"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            巡查人数
+                        </td>
+                        <td>
+                            <span ng-bind="reCord.taskPersonCount"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            执法人员
+                        </td>
+                        <td>
+                            <span ng-bind="reCord.taskPersonName"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            巡查结果
+                        </td>
+                        <td>
+                            <span ng-bind="reCord.enforceLawResult"></span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div align="center" class="mt15">
+                <button class="gui-btn" ng-click="RemoveLocal()">关闭</button>
+            </div>
+        </div>
+        <input id="ID" type="text" class="gui-input" style="visibility: hidden"/>

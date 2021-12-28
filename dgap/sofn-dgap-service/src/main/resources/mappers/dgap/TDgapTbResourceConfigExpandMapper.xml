@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.dao.dgap.TDgapTbResourceConFigExpandMapper" >
+    <resultMap id="BaseResultMap" type="com.sofn.model.generator.TDgapTbResourceConfig" >
+        <result column="ID" property="id" jdbcType="VARCHAR" />
+        <result column="RESOURCE_ID" property="resourceId" jdbcType="VARCHAR" />
+        <result column="TABLE_NAME" property="tableName" jdbcType="VARCHAR" />
+        <result column="TABLE_CN_NAME" property="tableCnName" jdbcType="VARCHAR" />
+        <result column="FIELD_NAME" property="fieldName" jdbcType="VARCHAR" />
+        <result column="FIELD_CN_NAME" property="fieldCnName" jdbcType="VARCHAR" />
+        <result column="LENGTH" property="length" jdbcType="DECIMAL" />
+        <result column="TYPE" property="type" jdbcType="VARCHAR" />
+        <result column="IS_CONDITION" property="isCondition" jdbcType="CHAR" />
+        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" />
+        <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" />
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="DEL_FLAG" property="delFlag" jdbcType="VARCHAR" />
+        <result column="RESERVED_FIELD1" property="reservedField1" jdbcType="VARCHAR" />
+        <result column="RESERVED_FIELD2" property="reservedField2" jdbcType="VARCHAR" />
+        <result column="RESERVED_FIELD3" property="reservedField3" jdbcType="VARCHAR" />
+        <result column="RESERVED_FIELD4" property="reservedField4" jdbcType="VARCHAR" />
+        <result column="RESERVED_FIELD5" property="reservedField5" jdbcType="VARCHAR" />
+        <result column="RESERVED_FIELD6" property="reservedField6" jdbcType="VARCHAR" />
+        <result column="RESERVED_FIELD7" property="reservedField7" jdbcType="VARCHAR" />
+        <result column="RESERVED_FIELD8" property="reservedField8" jdbcType="VARCHAR" />
+        <result column="RESERVED_FIELD9" property="reservedField9" jdbcType="VARCHAR" />
+        <result column="RESERVED_FIELD10" property="reservedField10" jdbcType="VARCHAR" />
+        <result column="RESERVED_FIELD11" property="reservedField11" jdbcType="VARCHAR" />
+        <result column="RESERVED_FIELD12" property="reservedField12" jdbcType="VARCHAR" />
+        <result column="RESERVED_FIELD13" property="reservedField13" jdbcType="VARCHAR" />
+        <result column="RESERVED_FIELD14" property="reservedField14" jdbcType="VARCHAR" />
+        <result column="RESERVED_FIELD15" property="reservedField15" jdbcType="VARCHAR" />
+        <result column="RESERVED_FIELD16" property="reservedField16" jdbcType="VARCHAR" />
+        <result column="RESERVED_FIELD17" property="reservedField17" jdbcType="VARCHAR" />
+        <result column="RESERVED_FIELD18" property="reservedField18" jdbcType="VARCHAR" />
+        <result column="RESERVED_FIELD19" property="reservedField19" jdbcType="VARCHAR" />
+        <result column="RESERVED_FIELD20" property="reservedField20" jdbcType="VARCHAR" />
+    </resultMap>
+    <select id="getPageCount" resultType="java.lang.Long">
+        SELECT
+          count(*)
+          FROM T_DGAP_TB_RESOURCE_CONFIG TT
+          LEFT JOIN T_DGAP_RESOURCE TR
+          ON TT.RESOURCE_ID=TR.ID
+          WHERE 1=1 AND TT.DEL_FLAG='N'
+        <if test="resourceId !=null and resourceId !=''">
+            AND TT.RESOURCE_ID LIKE '%' || #{resourceId} || '%'
+        </if>
+    </select>
+    <select id="getPagesList" resultType="java.util.Map">
+       SELECT * FROM(
+            SELECT
+                TT.ID ID,
+                TT.RESOURCE_ID RESOURCE_ID,
+                TT.TABLE_NAME TABLE_NAME,
+                TT.TABLE_CN_NAME TABLE_CN_NAME,
+                TT.FIELD_NAME FIELD_NAME,
+                TT.FIELD_CN_NAME FIELD_CN_NAME,
+                TT.LENGTH LENGTH,
+                TT.TYPE TYPE,
+                TT.IS_CONDITION,
+                TT.CREATE_DATE,
+                TR.NAME TRNAME,
+                ROWNUM as rn
+                  FROM T_DGAP_TB_RESOURCE_CONFIG TT
+                  LEFT JOIN T_DGAP_RESOURCE TR
+                  ON TT.RESOURCE_ID=TR.ID
+                  WHERE 1=1 AND TT.DEL_FLAG='N'
+                <if test="resourceId !=null and resourceId !=''">
+                    AND TT.RESOURCE_ID LIKE '%' || #{resourceId} || '%'
+                </if>
+                  )
+	  WHERE rn BETWEEN 1+#{pageSize}*(#{pageNum}-1) AND #{pageSize}*#{pageNum}
+    ORDER BY  CREATE_DATE DESC
+    </select>
+
+    <insert id="batchInsert" parameterType="list">
+      INSERT INTO T_DGAP_TB_RESOURCE_CONFIG
+      ID,RESOURCE_ID,TABLE_NAME,TABLE_CN_NAME,FIELD_NAME,FIELD_CN_NAME,LENGTH,TYPE,IS_CONDITION,CREATE_BY,CREATE_DATE,
+      UPDATE_BY,UPDATE_TIME,DEL_FLAG
+      VALUES
+      <foreach collection="list" item="tDgapTbResourceConfig" separator="," index="index">
+          (
+          #{tDgapTbResourceConfig.id},
+          #{tDgapTbResourceConfig.resourceId},
+          #{tDgapTbResourceConfig.tableName},
+          #{tDgapTbResourceConfig.tableCnName},
+          #{tDgapTbResourceConfig.fieldName},
+          #{tDgapTbResourceConfig.fieldCnName},
+          #{tDgapTbResourceConfig.length},
+          #{tDgapTbResourceConfig.type},
+          #{tDgapTbResourceConfig.isCondition},
+          #{tDgapTbResourceConfig.createDate},
+          #{tDgapTbResourceConfig.updateBy},
+          #{tDgapTbResourceConfig.updateTime},
+          N
+          )
+      </foreach>
+    </insert>
+
+    <select id="getByResourceId" resultType="com.sofn.model.generator.TDgapTbResourceConfig" parameterType="string">
+        select * from T_DGAP_TB_RESOURCE_CONFIG t where t.resource_id = #{resourceId}
+    </select>
+
+</mapper>

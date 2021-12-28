@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.SturgeonSignboardDomesticMapper">
+
+    <sql id="alias_Column_List_ssd">
+      ssd.ID, ssd.THIRD_PRINT, ssd.CASE_NUM, ssd.SIGNBOARD, ssd.STICKER_PRINT_STATUS, ssd.LABEL_PRINT_STATUS, ssd.PRINT_SUM
+    </sql>
+    <sql id="alias_Column_List_tc">
+      tc.COMP_NAME, tc.COMP_TYPE
+    </sql>
+    <sql id="alias_Column_List_s">
+      s.APPLY_CODE
+    </sql>
+    <select id="listByParams" resultType="com.sofn.fdpi.model.SturgeonSignboardDomestic">
+        select
+        <include refid="alias_Column_List_tc"/>,
+        <include refid="alias_Column_List_ssd"/>,
+        <include refid="alias_Column_List_s"/>
+        from STURGEON_SIGNBOARD_DOMESTIC ssd join TB_COMP tc on ssd.COMP_ID = tc.ID
+        left join STURGEON_SUB ss on ss.id = ssd.sturgeon_sub_id
+        left join STURGEON s on s.id = ss.sturgeon_id
+        <where>
+            tc.DEL_FLAG = 'N'
+            <if test="direclyId != null and direclyId != ''">
+                and tc.DIRECLY_ID = #{direclyId}
+            </if>
+            <if test="label != null and label != ''">
+                and ssd.LABEL = #{label}
+            </if>
+            <if test="thirdPrint != null and thirdPrint != ''">
+                and ssd.THIRD_PRINT = #{thirdPrint}
+            </if>
+            <if test="applyCode != null and applyCode != ''">
+                and s.APPLY_CODE = #{applyCode}
+            </if>
+            <if test="labelPrintStatus != null and labelPrintStatus != ''">
+                and ssd.LABEL_PRINT_STATUS = #{labelPrintStatus}
+            </if>
+            <if test="stickerPrintStatus != null and stickerPrintStatus != ''">
+                and ssd.STICKER_PRINT_STATUS = #{stickerPrintStatus}
+            </if>
+            <if test="compId != null and compId != ''">
+                and ssd.COMP_ID = #{compId}
+            </if>
+            <if test="compName != null and compName != ''">
+                and tc.COMP_NAME like '%' || #{compName} || '%'
+            </if>
+            <if test="caseNum != null and caseNum != ''">
+                and ssd.CASE_NUM = #{caseNum}
+            </if>
+            <if test="credentials != null and credentials != ''">
+                and ssd.CREDENTIALS like '%' || #{credentials} || '%'
+            </if>
+        </where>
+        order by ssd.CREATE_TIME desc, ssd.SIGNBOARD asc, ssd.CASE_NUM asc
+    </select>
+
+    <update id="print">
+        update STURGEON_SIGNBOARD_DOMESTIC
+        <set>
+            PRINT_SUM = PRINT_SUM + 1,
+            <choose>
+                <when test='label== "S"'>
+                    STICKER_PRINT_STATUS = 'Y'
+                </when>
+                <otherwise>
+                    LABEL_PRINT_STATUS = 'Y'
+                </otherwise>
+            </choose>
+        </set>
+        <where>
+            LABEL = #{label}
+            and ID in
+            <foreach collection="ids" item="id" separator="," open="(" close=")">
+                #{id}
+            </foreach>
+        </where>
+    </update>
+
+    <select id="getPrintNum" resultType="java.lang.Integer">
+        select count ( 1 )  from sturgeon s
+	    left join sturgeon_sub ss on s.id = ss.sturgeon_id
+	    left join sturgeon_signboard_domestic ssd on ss.id = ssd.sturgeon_sub_id
+        WHERE s.ID = #{signboardId}
+    </select>
+
+    <update id="updatePrintStatusBySturgeonSubIdAB">
+        update sturgeon_signboard_domestic
+        set label_print_status = 'Y', print_sum = print_sum +1
+        where sturgeon_sub_id = #{sturgeonSubId} and label in('A','B')
+    </update>
+    <update id="updatePrintStatusBySturgeonSubIdS">
+        update sturgeon_signboard_domestic
+        set sticker_print_status = 'Y', print_sum = print_sum +1
+        where sturgeon_sub_id = #{sturgeonSubId} and label = 'S'
+    </update>
+    <select id="getCaseNum" resultType="String">
+        select distinct ssd.CASE_NUM from sturgeon_signboard_domestic ssd join TB_COMP tc on ssd.COMP_ID = tc.ID
+        <where>
+            tc.DEL_FLAG = 'N'
+            <if test="label != null and label != ''">
+                and ssd.LABEL = #{label}
+            </if>
+            <if test="labelPrintStatus != null and labelPrintStatus != ''">
+                and ssd.LABEL_PRINT_STATUS = #{labelPrintStatus}
+            </if>
+            <if test="stickerPrintStatus != null and stickerPrintStatus != ''">
+                and ssd.STICKER_PRINT_STATUS = #{stickerPrintStatus}
+            </if>
+            <if test="compId != null and compId != ''">
+                and ssd.COMP_ID = #{compId}
+            </if>
+            <if test="compName != null and compName != ''">
+                and tc.COMP_NAME like '%' || #{compName} || '%'
+            </if>
+            <if test="credentials != null and credentials != ''">
+                and ssd.CREDENTIALS like '%' || #{credentials} || '%'
+            </if>
+        </where>
+        order by ssd.CASE_NUM
+    </select>
+</mapper>

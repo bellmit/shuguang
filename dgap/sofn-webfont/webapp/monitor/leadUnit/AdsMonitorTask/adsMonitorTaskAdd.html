@@ -1,0 +1,163 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css" />
+<div class="gui-breadcrumbs">
+    <a href="">监测系统</a>&gt;
+    <a href="">项目管理</a>&gt;
+    <a href="">监测任务</a>&gt;
+    <span>新增任务</span>
+</div>
+<div class="gui-section">
+    <ul class="gui-tab" role="tablist">
+        <li role="presentation" class="active"><a id="adsMonitorTaskAdd" role="tab" data-toggle="tab">基本信息</a></li>
+        <li role="presentation" class="pointer"><a id="organRegionTaskList" role="tab" data-toggle="tab">机构与地域</a></li>
+        <li role="presentation" class="pointer"><a id="overView" role="tab" data-toggle="tab">总览</a></li>
+    </ul>
+    <div id="addOrgTaskForm" class="col-md-10">
+        <form class="form-horizontal" role="form" id="addForm" name="addForm">
+            <div class="form-group line-20">
+                <p></p>
+                <label class="col-sm-6 control-task">发布单位<span class="this-after1">*</span></label>
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <input type="text" ng-model="adsMonitorTask.releaseUnit" id="releaseUnit" name="releaseUnit" class="gui-input text-height-28" data-bv-notempty="true" data-bv-notempty-message="请填写发布单位" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group line-20">
+                <label class="col-sm-6 control-task">任务名称<span class="this-after1">*</span></label>
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <input type="text" ng-model="adsMonitorTask.taskName" id="taskName" name="taskName" class="gui-input text-height-28" data-bv-notempty="true" data-bv-notempty-message="请填写任务名称" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group line-20">
+                <label class="col-sm-6 control-task">监测类型<span class="this-after1">*</span></label>
+                <div class="input-group">
+                    <select id="monitorClass" name="monitorClass" class="gui-select">
+                        <option ng-repeat="x in monitorClass">{{x}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group line-20">
+                <label class="col-sm-6 control-task">检测模型<span class="this-after1">*</span></label>
+                <div class="input-group">
+                    <select id="checkModel" name="checkModel" class="gui-select">
+                        <option ng-repeat="x in checkModel" value="{{x.ID}}">{{x.MODEL_NAME}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group line-20">
+                <label class="col-sm-6 control-task">年&nbsp&nbsp度<span class="this-after1">*</span></label>
+                <div class="col-md-2 controls">
+                    <select ng-model="selectedYear" id="year" name="year" class="gui-select">
+                        <option ng-repeat="x in year">{{x}}</option>
+                    </select>
+                </div>
+            </div>
+           <!-- <input type="hidden" id="batch" value="1" />-->
+            <div class="form-group line-20">
+                <label class="col-sm-6 control-task">批&nbsp&nbsp次<span class="this-after1">*</span></label>
+                <div class="col-md-2 controls">
+                    <select ng-model="selectedBatch" class="gui-select" id="batch" name="batch">
+                        <option ng-model="adsMonitorTask.batch" ng-repeat="x in batch" value="{{x.site}}">{{x.url}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group line-20">
+                <label class="col-sm-6 control-task">抽检分离<span class="this-after1">*</span></label>
+                <div class="col-md-2 controls">
+                    <select class="gui-select">
+                        <option ng-model="adsMonitorTask.separation" id="separation" name="separation" ng-repeat="x in separation">{{x}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-6 control-task">开始时间和结束时间<span class="this-after1">*</span></label>
+                <div class="input-group">
+                    <div class="col-sm-6">
+                        <input ng-model="adsMonitorTask.startTime" id="startTime" name="startTime" style="cursor: pointer" readonly="readonly" placeholder="请选择开始时间" class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('endTime');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'endTime\')}'})" />
+                    </div>
+                    <div class="col-sm-6">
+                        <input ng-model="adsMonitorTask.endTime" class="Wdate gui-input" style="cursor: pointer" id="endTime" name="endTime" readonly="readonly" type="text" placeholder="请选择结束时间" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startTime\')}'})" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group line-20">
+                <label class="col-sm-6 control-task">抽样信息上报截止时间<span class="this-after1">*</span></label>
+                <div class="col-sm-3">
+                    <div class="input-group text-height-28">
+                        <input ng-model="adsMonitorTask.deadline" id="deadline" name="deadline" type="text" size="30" class="Wdate gui-input" placeholder="请选择抽样信息上报截止时间" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd '}) " />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group line-20">
+                <label class="col-sm-6 control-task">附&nbsp&nbsp件</label>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="input-group text-height-28">
+                            <input type="text" ng-model="adsMonitorTask.attachment" class="gui-input" readonly="readonly" id="attachment" name="attachment" placeholder="请上传附件">
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <span class="gui-btn pull-right" style="margin-top: 5px;height: 28px;padding: 5px 4px" ng-click="loadFile()">上传</span>
+                        <a href="" id="view" class="gui-btn" style="color: white;padding: 5px 1px;margin-top: 3px;" target="_blank" ng-click="viewFile()">查看</a>
+                        <a id="down" download="" class="gui-btn" style="padding: 5px 1px;margin-top: 3px;" target="_blank" ng-click="downFile()">下载</a>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group line-20">
+                <label class="col-sm-6 control-task">文件号</label>
+                <div class="col-sm-5">
+                    <div class="input-group text-height-28">
+                        <input type="text" ng-model="adsMonitorTask.attachmentcode" class="gui-input" id="attachmentcode" name="attachmentcode" placeholder="请输入文件号">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group line-20">
+                <label class="col-sm-6 control-task">备&nbsp&nbsp注</label>
+                <textarea ng-model="adsMonitorTask.comment" rows="3" cols="40" id="comment" name="comment" placeholder="请输入备注" class="text_sketch gui-input"></textarea>
+            </div>
+            <span class="gui-btn pull-right mgt-20" ng-click="addAdsMonitorTask()">下一步</span>
+        </form>
+    </div>
+</div>
+<!-- 上传附件model -->
+<div class="modal fade" id="loadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: center">上传附件</h4>
+            </div>
+            <div class="modal-body" style="min-height: 300px;">
+                <form method="post" enctype="multipart/form-data" id="eventForm">
+                    <input style="display: inline;width: 225px" id="file-1" multiple="true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="1" type="file" />
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" type="button" data-dismiss="modal">关闭</span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 附件预览model -->
+<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: center">图片预览</h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <form method="post" enctype="multipart/form-data" id="veiwForm">
+                    <div align="center">
+                        <img id="viewImg" src="" class="img-thumbnail">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" type="button" data-dismiss="modal">关闭</span>
+            </div>
+        </div>
+    </div>
+</div>

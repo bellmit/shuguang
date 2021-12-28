@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agpjyz.mapper.ThreatFactorCollectMapper">
+
+    <select id="listByParams" parameterType="java.util.Map" resultType="com.sofn.agpjyz.model.ThreatFactor">
+        select
+        *
+        from THREAT_FACTOR
+        <where>
+            1 = 1
+            <if test="id != null and id != ''">
+                and ID != #{id}
+            </if>
+            <if test="protectId != null and protectId != ''">
+                and PROTECT_ID = #{protectId}
+            </if>
+            <if test="excavation != null and excavation != ''">
+                and EXCAVATION like '%' || #{excavation} || '%'
+            </if>
+            <if test="graze != null and graze != ''">
+                and GRAZE like '%' || #{graze} || '%'
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND INPUTER_TIME &lt;= #{endTime}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                AND INPUTER_TIME &gt;= #{startTime}
+            </if>
+        </where>
+        order by INPUTER_TIME desc
+    </select>
+    <select id="getNum"  resultType="com.sofn.agpjyz.model.ThreatFactor">
+         select
+        *
+        from THREAT_FACTOR where PROTECT_ID = #{protectId}
+    </select>
+    <update id="updateExcavation">
+        update THREAT_FACTOR set  EXCAVATION=null where id=#{id}
+    </update>
+</mapper>

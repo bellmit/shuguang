@@ -1,0 +1,275 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css" xmlns="http://www.w3.org/1999/html"/>
+<div class="gui-breadcrumbs">
+    <a href="">监测系统</a>&gt;
+    <a href="">监测模型</a>&gt;
+    <span>模型配置</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group clearfix">
+        <input type="text"id="modelNameS" name="modelNameS" class="gui-input" placeholder="请输入模型名称" ng-keyup="enterEvent($event)">
+        <select id="industry_name" name="industry" class="gui-select" style="padding-left:15px;padding-right: 15px;">
+            <option value="">请选择行业</option>
+            <option ng-repeat="x in IndustryType">{{x.dictName}}</option>
+        </select>
+        <span class="gui-btn" id="seachTask">查询</span>
+    </div>
+    <div class="gui-actions">
+        <span class="gui-btn fr" ng-if="disabled" style="background-color: grey"><i class="gui-icon icon-remove"></i>删除</span>
+        <span class="gui-btn fr" ng-if="!disabled" onclick="delAdsCheckModel()"><i class="gui-icon icon-remove"></i>删除</span>
+        <span class="gui-btn fr mr15" ng-if="disabled" style="background-color: grey"><i class="gui-icon icon-add"></i>新增</span>
+        <span class="gui-btn fr mr15" ng-if="!disabled" ng-click="addAdsModel()" ><i class="gui-icon icon-add"></i>新增</span>
+    </div>
+    <div class="clearfix gov-h">
+        <table id="grid" class="gui-table" >
+        </table>
+    </div>
+</div>
+
+
+<!-- 新增模型_检测模型model -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: left">新增模型配置</h4>
+            </div>
+            <div class="modal-body" style="min-height: 80px;">
+                <form class="form-horizontal" id="addCheckModel" data-bv-excluded>
+                    <div class="form-group line-20">
+                        <p></p>
+                        <label class="col-sm-5 control-task text-right">模型名称<span style="color: red">*</span>:&nbsp&nbsp</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input type="text" id="modelName" name="modelName" class="form-control gui-input text-height-28"
+                                       data-bv-notempty="true" data-bv-notempty-message="内容不能是空" style="height:28px;width: 200px" ng-keyup="enterAddEvent($event)"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-5 control-task text-right">行业<span style="color: red">*</span>:&nbsp&nbsp</label>
+                        <div class="col-sm-3">
+                            <input type="checkbox" id="c" value="种植业"/>种植业<br>
+                            <input type="checkbox" id="c1" value="畜牧业"/>畜牧业<br>
+                            <input type="checkbox" id="c2" value="渔业"/>渔业
+                            <!--<select ng-model="selectedIndustry" id="industry" name="industry" class="form-control" style="height:28px;width: 200px">-->
+                                <!--<option ng-repeat="x in IndustryType">{{x.dictName}}</option>-->
+                            <!--</select>-->
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" type="button" data-dismiss="modal">取消</span>
+                <span class="gui-btn" type="button" ng-click="addAdsCheckModel()">保存</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 编辑_检测模型model -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: left">编辑模型配置</h4>
+            </div>
+            <div class="modal-body" style="min-height: 80px;">
+                <form class="form-horizontal" id="editCheckModel" data-bv-excluded>
+                    <div class="form-group line-20">
+                        <p></p>
+                        <label class="col-sm-5 control-task text-right">模型名称:&nbsp&nbsp</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input type="text" id="modelNameu" name="modelName" ng-model="modelNameu" class="form-control gui-input text-height-28"
+                                       data-bv-notempty="true" data-bv-notempty-message="内容不能是空" style="height:28px;width: 200px" ng-keyup="enterEditEvent($event)"/>
+                            </div>
+                            <input type="hidden" name="modelId" id="modelId" value="{{modelId}}">
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-5 control-task text-right">行业:&nbsp&nbsp</label>
+                        <div class="col-sm-5">
+                            <select ng-model="industryu" id="industryu" name="industry" class="form-control">
+                                <option >{{industryu}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" type="button" data-dismiss="modal">取消</span>
+                <span class="gui-btn" type="button" ng-click="editAdsCheckModel()">保存</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 监测模型--模型配置-->
+<div class="modal fade" id="modelConfig" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content" style="min-width: 900px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: left">监测模型--模型配置</h4>
+            </div>
+            <div class="modal-body">
+                <div class="gui-actions" style="margin-right: 20px;">
+                    <label>注：“不得检出”只能填写为“ND”</label>
+                    <span class="gui-btn fr" onclick="delAdsCheckModelCongif()"><i class="gui-icon icon-remove"></i>删除</span>
+                    <span class="gui-btn fr mr15" ng-click="addProduct()" ><i class="gui-icon icon-add"></i>新增</span>
+                </div>
+                <div class="clearfix gov-h">
+                    <table id="configGrid" class="gui-table mt15" >
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" type="button" data-dismiss="modal">取消</span>
+                <span class="gui-btn" type="button" ng-click="addModelConfigValue()">保存</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--选择检测对象对话框-->
+<div class="modal fade" id="selectCheckObject" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-style" style="width: 800px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">关闭</span></button>
+                <h4 class="modal-title" id="myModalLabel2">选择检测对象</h4>
+            </div>
+            <div class="gui-section">
+                <ul class="gui-tab" role="tablist">
+                    <li role="presentation" class="active"><a href="#chooseCheckObject" role="tab" data-toggle="tab" ng-click="chooseCheckObject($event)">选择检测对象</a></li>
+                    <li role="presentation" class="pointer"><a href="#checkObjectPackage" role="tab" data-toggle="tab" ng-click="checkObjectPackage($event)">选择检测对象包</a></li>
+                </ul>
+                <div id="myTabContent1" class="tab-content">
+                    <div class="tab-pane fade in active" id="chooseCheckObject" style="margin-top: 20px;">
+                        <form class="form-horizontal" id="selectCheckObjects" data-bv-excluded>
+                            <div class="form-group" style="margin-left: 10px;">
+                                <input type="text" id="checkObjectName" class="gui-input" placeholder="请输入检测对象名称" />
+                                <span class="gui-btn" id="searchCheckObjects">查询</span>
+                            </div>
+                            <div class="modal-body" style="min-height: 100px;">
+                                <table id="objectGrid" class="gui-table table table-striped table-hover data-table" style="width: 765px;"></table>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="checkObjectPackage" class="tab-pane fade">
+                        <div class="gui-form-group clearfix">
+                            <input type="text"id="objectPackageName" class="gui-input" placeholder="请输入检测对象包名称" >
+                            <select id="industry_name2"  class="gui-select">
+                                <option value="">请选择行业</option>
+                                <option ng-repeat="x in IndustryType">{{x.dictName}}</option>
+                            </select>
+                            <span class="gui-btn" id="searchObjectPackage">查询</span>
+                        </div>
+                        <div class="clearfix gov-h">
+                            <table id="objectPackageGrid" class="gui-table mt15" style="width:765px;"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span class="gui-btn" data-dismiss="modal">关闭</span>
+                <span type="button" class="gui-btn" ng-click="saveCheckObjectConfig()">保存</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 选择选择检测项模态框-->
+<div class="modal fade" id="selectPackage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-style" style="width: 800px" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                <h4 class="modal-title" id="myModalLabel">选择检测项</h4>
+            </div>
+            <input type="hidden" id="productCode" name="productCode"/>
+            <input type="hidden" id="productName" name="name"/>
+            <input type="hidden" id ="modelId1" name="modelId"/>
+            <input type="hidden" id ="isEnable" name="isEnable"/>
+            <div class="gui-section">
+                <ul class="gui-tab" role="tablist">
+                    <li role="presentation" class="active"><a href="#chooseCheckItem" role="tab" data-toggle="tab" ng-click="chooseCheckItem($event)" >选择检测项</a></li>
+                    <li role="presentation" class="pointer" ><a href="#choosePackage" role="tab" data-toggle="tab" ng-click="choosePackage($event)">选择检测项包</a></li>
+                </ul>
+                    <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane fade in active" id="chooseCheckItem" style="margin-top: 20px;">
+                            <form class="form-horizontal" id="selectCheckItems" data-bv-excluded>
+                                <div class="form-group" style="margin-left: 10px;">
+                                    <input type="text"id="checkNames" name="checkNames" class="gui-input" placeholder="请输入检测项名称" >
+                                    <select id="check_item_industry" name="check_item_industry" class="gui-select">
+                                        <option value="">请选择行业</option>
+                                        <option ng-repeat="x in IndustryType">{{x.dictName}}</option>
+                                    </select>
+                                    <span class="gui-btn" id="seachTask1">查询</span>
+                                </div>
+                                <div class="modal-body" style="min-height: 100px;">
+                                    <table id="itemGrid" class="gui-table table table-striped table-hover data-table">
+                                    </table>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="choosePackage">
+                            <div class="gui-form-group clearfix">
+                                <input type="text"id="packageNames" name="packageName" class="gui-input" placeholder="请输入检测包名称" >
+                                <select id="industry_name1" name="industry" class="gui-select">
+                                    <option value="">请选择行业</option>
+                                    <option ng-repeat="x in IndustryType">{{x.dictName}}</option>
+                                </select>
+                                <span class="gui-btn" id="seachTask2">查询</span>
+                            </div>
+                            <div class="clearfix gov-h">
+                                <table id="packageGrid" class="gui-table mt15" >
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <span class="gui-btn" data-dismiss="modal">关闭</span>
+                <span type="button" class="gui-btn" ng-click="addModelConfig()">保存</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 监测模型--模型配置详情-->
+<div class="modal fade" id="modelConfigDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content" style="min-width: 700px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: left">监测模型详情</h4>
+            </div>
+            <div class="modal-body">
+                <div class="clearfix gov-h">
+                    <table id="detailGrid" class="gui-table mt15" >
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- 监测模型--显示正在处理中-->
+<div class="modal fade" id="process" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content" style="width: 400px;top:300px;">
+            <div class="modal-header">
+                <h4 class="modal-title" style="text-align: center">请稍候，正在处理中...</h4>
+            </div>
+        </div>
+    </div>
+</div>

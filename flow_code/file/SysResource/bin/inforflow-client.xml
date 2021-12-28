@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-lazy-init="true">
+<!-- The factory bean, which contains a method called createInstance -->
+	<bean id="localClient"
+	      class="com.cvicse.workflow.api.client.local.LocalClient" />
+
+	<bean id="rmiClient"
+	      class="com.cvicse.workflow.api.client.rmi.WfRMIClient"   init-method="init">
+		<property name="hostUrl">
+			<value>localhost</value>
+		</property>
+		<property name="hostPort">
+			<value>5501</value>
+		</property>
+		<property name="serviceName">
+			<value>WorkFlowService</value>
+		</property>
+	</bean>
+	
+	<!-- 若使用wsClient,需将axis.jar,axis-ant.jar,saaj.jar,jaxrpc.jar,commons-discovery.jar,wsdl4j.jar加入到客户端应用的classpath中 -->
+	<bean id="wsClient"
+	      class="com.cvicse.workflow.api.client.webservice.WebServiceClient"  init-method="init">
+		<property name="serviceAddress">
+			<value>http://localhost:6522/flowservice/services/WsClient</value>
+		</property>
+	</bean>
+
+	<bean id="InforFlowClient"
+	      class="com.cvicse.workflow.api.client.WfClientImpl" >
+		<constructor-arg><ref bean="localClient"/></constructor-arg>
+<!--		<constructor-arg><ref bean="rmiClient"/></constructor-arg> -->
+<!--		<constructor-arg><ref bean="wsClient"/></constructor-arg> -->
+	</bean>
+</beans>

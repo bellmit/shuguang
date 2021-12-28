@@ -1,0 +1,23 @@
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">查询系统</a>&gt;
+    <a href="" ng-click="back()">质量安全信息查询</a>&gt;
+    <span>牵头单位报告列表</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group">
+        <div class="gui-select" name="CdUnitSpan" style="display: none">
+            <select   name = "CdUnit" onchange="selectCdUnit()">
+                <option value="">承担单位</option>
+                <option ng-repeat="unit in CdUnit" value="{{unit.superviseBearUnitId}}">{{unit.leadUnitName}}</option>
+            </select>
+        </div>
+        <!--<span>年份</span>-->
+        <!--<input name="years" style="width: 100px;"  onfocus="WdatePicker({skin:'default',dateFmt:'yyyy'})" class="Wdate gui-input" placeholder="&#45;&#45;年份&#45;&#45;"/>-->
+        <!--任务名称-->
+        <!--<input class="gui-input" style="width: 135px;" type="text" placeholder="请输入查找内容" name="queryCon"/>-->
+        <!--<button class="gui-btn" id="ToCheck">查询</button>-->
+        <button ng-click="retrunDiskTop()" class="gui-btn">返回</button>
+    </div>
+    <table id="grid" class="gui-table mt15" style="width: 100%">
+    </table>
+</div>

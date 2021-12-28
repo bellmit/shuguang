@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sofn.fdzem.mapper.BatchManagementMapper">
+
+
+    <!--分页+条件查询-->
+    <select id="selectListByQuery" resultType="com.sofn.fdzem.model.BatchManagement" parameterType="java.util.Map">
+        select
+        <include refid="Base_column_list"/>
+        from tb_batch_management
+        <where> 1=1
+            <if test="name !=null">
+                and name like CONCAT('%',#{name, jdbcType=VARCHAR}::text,'%')
+            </if>
+
+            <if test="samplingTimeLeft != null and samplingTimeLeft != ''">
+                and sampling_time &gt;=(to_date(#{samplingTimeLeft},'yyyy-mm-dd hh24:mi:ss')+interval '1 D,-1 S')
+            </if>
+
+            <if test="samplingTimeRight != null and samplingTimeRight != ''">
+                and sampling_time &lt;=(to_date(#{samplingTimeRight},'yyyy-mm-dd hh24:mi:ss')+interval '1 D,-1 S')
+            </if>
+
+            <if test="submittedTimeLeft != null and submittedTimeLeft != ''">
+                and sampling_time &gt;=(to_date(#{submittedTimeLeft},'yyyy-mm-dd hh24:mi:ss')+interval '1 D,-1 S')
+            </if>
+
+            <if test="submittedTimeRight != null and submittedTimeRight != ''">
+                and sampling_time &lt;=(to_date(#{submittedTimeRight},'yyyy-mm-dd hh24:mi:ss')+interval '1 D,-1 S')
+            </if>
+
+            <if test="monitoringStationTaskId != null and monitoringStationTaskId != ''">
+                and monitoring_station_task_id = #{monitoringStationTaskId}
+            </if>
+
+        </where>
+        ORDER BY entry_time DESC
+    </select>
+    <!--删除-->
+    <delete id="removeById" parameterType="java.lang.String">
+        delete from tb_batch_management where id = #{id}
+    </delete>
+<!--更新-->
+    <update id="update" parameterType="com.sofn.fdzem.model.BatchManagement">
+        update tb_batch_management set
+        name = #{name},area = #{area},
+        sampling_time = #{samplingTime},submitted_time = #{submittedTime},sampling_person = #{samplingPerson},
+        monitor_person = #{monitorPerson},
+        entry_clerk = #{entryClerk},entry_time = #{entryTime},
+        check_one = #{checkOne}
+        where id=#{id}
+    </update>
+    <select id="view" resultType="com.sofn.fdzem.model.BatchManagement" parameterType="java.lang.String">
+        select <include refid="Base_column_list"/> from tb_batch_management where id = #{id}
+    </select>
+    <select id="list" resultType="com.sofn.fdzem.model.BatchManagement" parameterType="java.lang.String">
+        select <include refid="Base_column_list"/> from tb_batch_management where monitoring_station_task_id = #{monitoringStationTaskId}
+    </select>
+
+    <select id="total" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select count(*) from tb_batch_management where monitoring_station_task_id = #{monitoringStationTaskId, jdbcType=VARCHAR}
+    </select>
+
+    <!--添加-->
+    <insert id="insert1" parameterType="com.sofn.fdzem.model.BatchManagement">
+        insert into tb_batch_management
+        (<include refid="Base_column_list"/>)
+         values
+        (#{id},#{name},#{area},#{samplingTime},#{submittedTime},#{samplingPerson},#{monitorPerson},#{entryClerk},#{entryTime},#{checkOne},#{monitoringStationTaskId})
+    </insert>
+
+    <sql id="Base_column_list">
+        id,name,area,sampling_time,submitted_time,sampling_person,monitor_person,entry_clerk,entry_time,check_one,monitoring_station_task_id
+    </sql>
+
+
+</mapper>

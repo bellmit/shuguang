@@ -1,0 +1,714 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sofn.ducss.mapper.DataAnalysisAreaMapper">
+    <resultMap id="BaseResultMap" type="com.sofn.ducss.model.DataAnalysisArea">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="year" jdbcType="VARCHAR" property="year"/>
+        <result column="area_id" jdbcType="VARCHAR" property="areaId"/>
+        <result column="straw_type" jdbcType="VARCHAR" property="strawType"/>
+        <result column="grain_yield" jdbcType="DECIMAL" property="grainYield"/>
+        <result column="grass_valley_ratio" jdbcType="DECIMAL" property="grassValleyRatio"/>
+        <result column="collection_ratio" jdbcType="DECIMAL" property="collectionRatio"/>
+        <result column="seed_area" jdbcType="DECIMAL" property="seedArea"/>
+        <result column="return_area" jdbcType="DECIMAL" property="returnArea"/>
+        <result column="export_yield" jdbcType="DECIMAL" property="exportYield"/>
+        <result column="theory_resource" jdbcType="DECIMAL" property="theoryResource"/>
+        <result column="collect_resource" jdbcType="DECIMAL" property="collectResource"/>
+        <result column="market_ent" jdbcType="DECIMAL" property="marketEnt"/>
+        <result column="fertilizes" jdbcType="DECIMAL" property="fertilizes"/>
+        <result column="feeds" jdbcType="DECIMAL" property="feeds"/>
+        <result column="fuelleds" jdbcType="DECIMAL" property="fuelleds"/>
+        <result column="base_mats" jdbcType="DECIMAL" property="baseMats"/>
+        <result column="materializations" jdbcType="DECIMAL" property="materializations"/>
+        <result column="reuse" jdbcType="DECIMAL" property="reuse"/>
+        <result column="fertilisingd" jdbcType="DECIMAL" property="fertilisingd"/>
+        <result column="foraged" jdbcType="DECIMAL" property="foraged"/>
+        <result column="fueld" jdbcType="DECIMAL" property="fueld"/>
+        <result column="based" jdbcType="DECIMAL" property="based"/>
+        <result column="materiald" jdbcType="DECIMAL" property="materiald"/>
+        <result column="return_resource" jdbcType="DECIMAL" property="returnResource"/>
+        <result column="other" jdbcType="DECIMAL" property="other"/>
+        <result column="fertilize" jdbcType="DECIMAL" property="fertilize"/>
+        <result column="feed" jdbcType="DECIMAL" property="feed"/>
+        <result column="fuelled" jdbcType="DECIMAL" property="fuelled"/>
+        <result column="base_mat" jdbcType="DECIMAL" property="baseMat"/>
+        <result column="materialization" jdbcType="DECIMAL" property="materialization"/>
+        <result column="straw_utilization" jdbcType="DECIMAL" property="strawUtilization"/>
+        <result column="totol_rate" jdbcType="DECIMAL" property="totolRate"/>
+        <result column="compr_util_index" jdbcType="DECIMAL" property="comprUtilIndex"/>
+        <result column="indu_util_index" jdbcType="DECIMAL" property="induUtilIndex"/>
+        <result column="area_name" jdbcType="VARCHAR" property="areaName"/>
+        <result column="straw_name" jdbcType="VARCHAR" property="strawName"/>
+        <result column="yield_all_num" jdbcType="DECIMAL" property="yieldAllNum"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    id, year, area_id, straw_type, grain_yield, grass_valley_ratio, collection_ratio, 
+    seed_area, return_area, export_yield, theory_resource, collect_resource, market_ent, 
+    fertilizes, feeds, fuelleds, base_mats, materializations, reuse, fertilisingd, foraged, 
+    fueld, based, materiald, return_resource, other, fertilize, feed, fuelled, base_mat, 
+    materialization, straw_utilization, totol_rate, compr_util_index, indu_util_index,area_name,straw_name
+  </sql>
+    <insert id="insert" parameterType="com.sofn.ducss.model.DataAnalysisArea">
+    insert into data_analysis_area (id, year, area_id, 
+      straw_type, grain_yield, grass_valley_ratio, 
+      collection_ratio, seed_area, return_area, 
+      export_yield, theory_resource, collect_resource, 
+      market_ent, fertilizes, feeds, 
+      fuelleds, base_mats, materializations, 
+      reuse, fertilisingd, foraged, 
+      fueld, based, materiald, 
+      return_resource, other, fertilize, 
+      feed, fuelled, base_mat, 
+      materialization, straw_utilization, totol_rate, 
+      compr_util_index, indu_util_index)
+    values (#{id,jdbcType=VARCHAR}, #{year,jdbcType=VARCHAR}, #{areaId,jdbcType=VARCHAR}, 
+      #{strawType,jdbcType=VARCHAR}, #{grainYield,jdbcType=DECIMAL}, #{grassValleyRatio,jdbcType=DECIMAL}, 
+      #{collectionRatio,jdbcType=DECIMAL}, #{seedArea,jdbcType=DECIMAL}, #{returnArea,jdbcType=DECIMAL}, 
+      #{exportYield,jdbcType=DECIMAL}, #{theoryResource,jdbcType=DECIMAL}, #{collectResource,jdbcType=DECIMAL}, 
+      #{marketEnt,jdbcType=DECIMAL}, #{fertilizes,jdbcType=DECIMAL}, #{feeds,jdbcType=DECIMAL}, 
+      #{fuelleds,jdbcType=DECIMAL}, #{baseMats,jdbcType=DECIMAL}, #{materializations,jdbcType=DECIMAL}, 
+      #{reuse,jdbcType=DECIMAL}, #{fertilisingd,jdbcType=DECIMAL}, #{foraged,jdbcType=DECIMAL}, 
+      #{fueld,jdbcType=DECIMAL}, #{based,jdbcType=DECIMAL}, #{materiald,jdbcType=DECIMAL}, 
+      #{returnResource,jdbcType=DECIMAL}, #{other,jdbcType=DECIMAL}, #{fertilize,jdbcType=DECIMAL}, 
+      #{feed,jdbcType=DECIMAL}, #{fuelled,jdbcType=DECIMAL}, #{baseMat,jdbcType=DECIMAL}, 
+      #{materialization,jdbcType=DECIMAL}, #{strawUtilization,jdbcType=DECIMAL}, #{totolRate,jdbcType=DECIMAL}, 
+      #{comprUtilIndex,jdbcType=DECIMAL}, #{induUtilIndex,jdbcType=DECIMAL})
+  </insert>
+    <insert id="insertSelective" parameterType="com.sofn.ducss.model.DataAnalysisArea">
+        insert into data_analysis_area
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="year != null">
+                year,
+            </if>
+            <if test="areaId != null">
+                area_id,
+            </if>
+            <if test="strawType != null">
+                straw_type,
+            </if>
+            <if test="grainYield != null">
+                grain_yield,
+            </if>
+            <if test="grassValleyRatio != null">
+                grass_valley_ratio,
+            </if>
+            <if test="collectionRatio != null">
+                collection_ratio,
+            </if>
+            <if test="seedArea != null">
+                seed_area,
+            </if>
+            <if test="returnArea != null">
+                return_area,
+            </if>
+            <if test="exportYield != null">
+                export_yield,
+            </if>
+            <if test="theoryResource != null">
+                theory_resource,
+            </if>
+            <if test="collectResource != null">
+                collect_resource,
+            </if>
+            <if test="marketEnt != null">
+                market_ent,
+            </if>
+            <if test="fertilizes != null">
+                fertilizes,
+            </if>
+            <if test="feeds != null">
+                feeds,
+            </if>
+            <if test="fuelleds != null">
+                fuelleds,
+            </if>
+            <if test="baseMats != null">
+                base_mats,
+            </if>
+            <if test="materializations != null">
+                materializations,
+            </if>
+            <if test="reuse != null">
+                reuse,
+            </if>
+            <if test="fertilisingd != null">
+                fertilisingd,
+            </if>
+            <if test="foraged != null">
+                foraged,
+            </if>
+            <if test="fueld != null">
+                fueld,
+            </if>
+            <if test="based != null">
+                based,
+            </if>
+            <if test="materiald != null">
+                materiald,
+            </if>
+            <if test="returnResource != null">
+                return_resource,
+            </if>
+            <if test="other != null">
+                other,
+            </if>
+            <if test="fertilize != null">
+                fertilize,
+            </if>
+            <if test="feed != null">
+                feed,
+            </if>
+            <if test="fuelled != null">
+                fuelled,
+            </if>
+            <if test="baseMat != null">
+                base_mat,
+            </if>
+            <if test="materialization != null">
+                materialization,
+            </if>
+            <if test="strawUtilization != null">
+                straw_utilization,
+            </if>
+            <if test="totolRate != null">
+                totol_rate,
+            </if>
+            <if test="comprUtilIndex != null">
+                compr_util_index,
+            </if>
+            <if test="induUtilIndex != null">
+                indu_util_index,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="year != null">
+                #{year,jdbcType=VARCHAR},
+            </if>
+            <if test="areaId != null">
+                #{areaId,jdbcType=VARCHAR},
+            </if>
+            <if test="strawType != null">
+                #{strawType,jdbcType=VARCHAR},
+            </if>
+            <if test="grainYield != null">
+                #{grainYield,jdbcType=DECIMAL},
+            </if>
+            <if test="grassValleyRatio != null">
+                #{grassValleyRatio,jdbcType=DECIMAL},
+            </if>
+            <if test="collectionRatio != null">
+                #{collectionRatio,jdbcType=DECIMAL},
+            </if>
+            <if test="seedArea != null">
+                #{seedArea,jdbcType=DECIMAL},
+            </if>
+            <if test="returnArea != null">
+                #{returnArea,jdbcType=DECIMAL},
+            </if>
+            <if test="exportYield != null">
+                #{exportYield,jdbcType=DECIMAL},
+            </if>
+            <if test="theoryResource != null">
+                #{theoryResource,jdbcType=DECIMAL},
+            </if>
+            <if test="collectResource != null">
+                #{collectResource,jdbcType=DECIMAL},
+            </if>
+            <if test="marketEnt != null">
+                #{marketEnt,jdbcType=DECIMAL},
+            </if>
+            <if test="fertilizes != null">
+                #{fertilizes,jdbcType=DECIMAL},
+            </if>
+            <if test="feeds != null">
+                #{feeds,jdbcType=DECIMAL},
+            </if>
+            <if test="fuelleds != null">
+                #{fuelleds,jdbcType=DECIMAL},
+            </if>
+            <if test="baseMats != null">
+                #{baseMats,jdbcType=DECIMAL},
+            </if>
+            <if test="materializations != null">
+                #{materializations,jdbcType=DECIMAL},
+            </if>
+            <if test="reuse != null">
+                #{reuse,jdbcType=DECIMAL},
+            </if>
+            <if test="fertilisingd != null">
+                #{fertilisingd,jdbcType=DECIMAL},
+            </if>
+            <if test="foraged != null">
+                #{foraged,jdbcType=DECIMAL},
+            </if>
+            <if test="fueld != null">
+                #{fueld,jdbcType=DECIMAL},
+            </if>
+            <if test="based != null">
+                #{based,jdbcType=DECIMAL},
+            </if>
+            <if test="materiald != null">
+                #{materiald,jdbcType=DECIMAL},
+            </if>
+            <if test="returnResource != null">
+                #{returnResource,jdbcType=DECIMAL},
+            </if>
+            <if test="other != null">
+                #{other,jdbcType=DECIMAL},
+            </if>
+            <if test="fertilize != null">
+                #{fertilize,jdbcType=DECIMAL},
+            </if>
+            <if test="feed != null">
+                #{feed,jdbcType=DECIMAL},
+            </if>
+            <if test="fuelled != null">
+                #{fuelled,jdbcType=DECIMAL},
+            </if>
+            <if test="baseMat != null">
+                #{baseMat,jdbcType=DECIMAL},
+            </if>
+            <if test="materialization != null">
+                #{materialization,jdbcType=DECIMAL},
+            </if>
+            <if test="strawUtilization != null">
+                #{strawUtilization,jdbcType=DECIMAL},
+            </if>
+            <if test="totolRate != null">
+                #{totolRate,jdbcType=DECIMAL},
+            </if>
+            <if test="comprUtilIndex != null">
+                #{comprUtilIndex,jdbcType=DECIMAL},
+            </if>
+            <if test="induUtilIndex != null">
+                #{induUtilIndex,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+    <select id="getList" resultType="com.sofn.ducss.model.DataAnalysisArea" parameterType="Map">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        data_analysis_area
+        where
+        <foreach collection="paramMap.keys" index="index" item="item">
+            <if test="paramMap[item]!=null and paramMap[item]!=''">
+                <choose>
+                <when test="item=='year'">
+                    year in
+                    <foreach collection="paramMap[item]" item="course" open="(" separator="," close=")">
+                        #{course}
+                    </foreach>
+                </when>
+                </choose>
+            </if>
+        </foreach>
+        <foreach collection="paramMap.keys" index="index" item="item">
+            <if test="paramMap[item]!=null and paramMap[item]!=''">
+                <choose>
+                <when test="item=='area'">
+                    and area_id in
+                    <foreach collection="paramMap[item]" item="course" open="(" separator="," close=")">
+                          #{course}
+                    </foreach>
+                </when>
+                </choose>
+            </if>
+        </foreach>
+
+        <foreach collection="paramMap.keys" index="index" item="item">
+            <if test="paramMap[item]!=null and paramMap[item]!=''">
+                <choose>
+                <when test="item=='cropType'">
+                    and  straw_type in
+                    <foreach collection="paramMap[item]" item="course" open="(" separator="," close=")">
+                        #{course}
+                    </foreach>
+                </when>
+                </choose>
+            </if>
+        </foreach>
+
+    </select>
+    <select id="getLists" resultType="com.sofn.ducss.model.DataAnalysisArea" parameterType="Map">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        data_analysis_area
+        where
+        <foreach collection="paramMap.keys" index="index" item="item">
+            <if test="paramMap[item]!=null and paramMap[item]!=''">
+                <choose>
+                    <when test="item=='year'">
+                        year in
+                        <foreach collection="paramMap[item]" item="course" open="(" separator="," close=")">
+                            #{course}
+                        </foreach>
+                    </when>
+                </choose>
+            </if>
+        </foreach>
+        <foreach collection="paramMap.keys" index="index" item="item">
+            <if test="paramMap[item]!=null and paramMap[item]!=''">
+                <choose>
+                    <when test="item=='cropType'">
+                        and  straw_type in
+                        <foreach collection="paramMap[item]" item="course" open="(" separator="," close=")">
+                            #{course}
+                        </foreach>
+                    </when>
+                </choose>
+            </if>
+        </foreach>
+        limit #{paramMap[pageNum]},#{paramMap[pageSize]}
+    </select>
+    <select id="getListsForPage" resultType="java.lang.Integer" parameterType="Map">
+        select
+        count(*)
+        from
+        data_analysis_area
+        where
+        <foreach collection="paramMap.keys" index="index" item="item">
+            <if test="paramMap[item]!=null and paramMap[item]!=''">
+                <choose>
+                    <when test="item=='year'">
+                        year in
+                        <foreach collection="paramMap[item]" item="course" open="(" separator="," close=")">
+                            #{course}
+                        </foreach>
+                    </when>
+                </choose>
+            </if>
+        </foreach>
+        <foreach collection="paramMap.keys" index="index" item="item">
+            <if test="paramMap[item]!=null and paramMap[item]!=''">
+                <choose>
+                    <when test="item=='cropType'">
+                        and  straw_type in
+                        <foreach collection="paramMap[item]" item="course" open="(" separator="," close=")">
+                            #{course}
+                        </foreach>
+                    </when>
+                </choose>
+            </if>
+        </foreach>
+    </select>
+    <select id="getListsForAll" resultType="com.sofn.ducss.model.DataAnalysisArea" parameterType="Map">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        data_analysis_area
+        where
+        <foreach collection="paramMap.keys" index="index" item="item">
+            <if test="paramMap[item]!=null and paramMap[item]!=''">
+                <choose>
+                    <when test="item=='year'">
+                        year in
+                        <foreach collection="paramMap[item]" item="course" open="(" separator="," close=")">
+                            #{course}
+                        </foreach>
+                    </when>
+                </choose>
+            </if>
+        </foreach>
+    </select>
+    <select id="getListForAll" resultType="com.sofn.ducss.model.DataAnalysisArea" parameterType="Map">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        data_analysis_area
+        where
+        <foreach collection="paramMap.keys" index="index" item="item">
+            <if test="paramMap[item]!=null and paramMap[item]!=''">
+                <choose>
+                    <when test="item=='year'">
+                        year in
+                        <foreach collection="paramMap[item]" item="course" open="(" separator="," close=")">
+                            #{course}
+                        </foreach>
+                    </when>
+                </choose>
+            </if>
+        </foreach>
+        <foreach collection="paramMap.keys" index="index" item="item">
+            <if test="paramMap[item]!=null and paramMap[item]!=''">
+                <choose>
+                    <when test="item=='area'">
+                        and area_id in
+                        <foreach collection="paramMap[item]" item="course" open="(" separator="," close=")">
+                              #{course}
+                        </foreach>
+                    </when>
+                </choose>
+            </if>
+        </foreach>
+    </select>
+    <select id="getListByNoLimit" resultType="com.sofn.ducss.model.DataAnalysisArea" parameterType="Map">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        data_analysis_area
+        where
+        <foreach collection="paramMap.keys" index="index" item="item">
+            <if test="paramMap[item]!=null and paramMap[item]!=''">
+                <choose>
+                    <when test="item=='year'">
+                        year in
+                        <foreach collection="paramMap[item]" item="course" open="(" separator="," close=")">
+                            #{course}
+                        </foreach>
+                    </when>
+                </choose>
+            </if>
+        </foreach>
+        <foreach collection="paramMap.keys" index="index" item="item">
+            <if test="paramMap[item]!=null and paramMap[item]!=''">
+                <choose>
+                    <when test="item=='cropType'">
+                        and  straw_type in
+                        <foreach collection="paramMap[item]" item="course" open="(" separator="," close=")">
+                            #{course}
+                        </foreach>
+                    </when>
+                </choose>
+            </if>
+        </foreach>
+    </select>
+    <select id="findDataByAreaIdsAndYears" resultType="com.sofn.ducss.vo.StrawUsageVo">
+        SELECT
+            a.YEAR,
+            a.area_id,
+            a.straw_type,
+            a.straw_name,
+            a.seed_area,
+            a.theory_resource,
+            a.return_resource,
+            a.leave_number,
+            a.totol_rate,
+            a.return_type,
+            a.leaving_type,
+            a.transport_amount,
+            a.collect_resource,
+            a.straw_utilization,
+            a.fertilize,
+            a.feed,
+            a.fuelled,
+            a.base_mat,
+            a.materialization
+        FROM
+            data_analysis_area a
+            LEFT JOIN collect_flow b ON b.YEAR = a.YEAR
+            AND b.area_id = a.area_id
+        WHERE
+            b.STATUS IN ( '1', '5' )
+            <if test="years != null and years.size()>0 ">
+                and a.year in
+                <foreach collection="years" item="year" open="(" separator="," close=")">
+                    #{year}
+                </foreach>
+            </if>
+            <if test="areaIds != null and areaIds.size()>0">
+                AND a.area_id in
+                <foreach collection="areaIds" item="areaId" open="(" separator="," close=")">
+                    #{areaId}
+                </foreach>
+            </if>
+        GROUP BY a.YEAR, a.area_id, a.straw_type
+        <!--UNION
+        SELECT
+            c.YEAR,
+            c.city_id AS area_id,
+            c.straw_type,
+            c.straw_name,
+            c.seed_area,
+            c.theory_resource,
+            c.return_resource,
+            c.leave_number,
+            c.totol_rate,
+            c.return_type,
+            c.leaving_type,
+            c.transport_amount,
+            c.collect_resource,
+            c.straw_utilization,
+            c.fertilize,
+            c.feed,
+            c.fuelled,
+            c.base_mat,
+            c.materialization
+        FROM
+            data_analysis_city c
+            LEFT JOIN collect_flow b ON b.YEAR = c.YEAR
+            AND b.area_id = c.city_id
+        WHERE
+        b.STATUS IN ( '1', '5' )
+        <if test="years != null and years.size()>0 ">
+            and c.year in
+            <foreach collection="years" item="year" open="(" separator="," close=")">
+                #{year}
+            </foreach>
+        </if>
+        <if test="areaIds != null and areaIds.size()>0">
+            AND c.city_id in
+            <foreach collection="areaIds" item="areaId" open="(" separator="," close=")">
+                #{areaId}
+            </foreach>
+        </if>
+        GROUP BY c.YEAR, c.city_id, c.straw_type-->
+    </select>
+
+    <insert id="insertList" parameterType="java.util.List">
+        insert into data_analysis_area( year, area_id,
+        straw_type, grain_yield, grass_valley_ratio,
+        collection_ratio, seed_area, return_area,
+        export_yield, theory_resource, collect_resource,
+        market_ent, fertilizes, feeds,
+        fuelleds, base_mats, materializations,
+        reuse, fertilisingd, foraged,
+        fueld, based, materiald,
+        return_resource, other, fertilize,
+        feed, fuelled, base_mat,
+        materialization, straw_utilization, totol_rate,
+        compr_util_index, indu_util_index,area_name,straw_name,yield_all_num,leave_number,
+        return_type,leaving_type,transport_amount)
+        values
+        <foreach collection="list" item="detail" index="index" separator=",">
+            (
+            #{detail.year},
+            #{detail.areaId},
+            #{detail.strawType},
+            #{detail.grainYield},
+            #{detail.grassValleyRatio},
+            #{detail.collectionRatio},
+            #{detail.seedArea},
+            #{detail.returnArea},
+            #{detail.exportYield},
+            #{detail.theoryResource},
+            #{detail.collectResource},
+            #{detail.marketEnt},
+            #{detail.fertilizes},
+            #{detail.feeds},
+            #{detail.fuelleds},
+            #{detail.baseMats},
+            #{detail.materializations},
+            #{detail.reuse},
+            #{detail.fertilisingd},
+            #{detail.foraged},
+            #{detail.fueld},
+            #{detail.based},
+            #{detail.materiald},
+            #{detail.returnResource},
+            #{detail.other},
+            #{detail.fertilize},
+            #{detail.feed},
+            #{detail.fuelled},
+            #{detail.baseMat},
+            #{detail.materialization},
+            #{detail.strawUtilization},
+            #{detail.totolRate},
+            #{detail.comprUtilIndex},
+            #{detail.induUtilIndex},
+            #{detail.areaName},
+            #{detail.strawName},
+            #{detail.yieldAllNum},
+            #{detail.leaveNumber},
+            #{detail.returnType},
+            #{detail.leavingType},
+            #{detail.transportAmount}
+            )
+        </foreach>
+    </insert>
+
+    <select id="getProviceDataAllSum" resultType="java.lang.String">
+        SELECT
+        Sum( ${keyword} )
+        FROM
+        data_analysis_area
+        WHERE
+        year = #{year}
+        <if test="strawType != null and strawType != ''">
+            AND straw_type = #{strawType}
+        </if>
+    </select>
+
+    <select id="getProviceDataAllSumSpecial" resultType="java.util.Map">
+        SELECT
+        COALESCE (Sum( straw_utilization ),0) AS totol,
+        COALESCE (Sum( return_resource ),0) collectResource,
+        COALESCE (Sum( market_ent ), 0 ) marketEnt,
+        COALESCE (Sum( reuse ), 0 ) reuse,
+        COALESCE (Sum( return_resource ),0) returnResource
+        FROM
+        data_analysis_area
+        WHERE
+        year = #{year}
+        <if test="strawType != null and strawType != ''">
+            AND straw_type = #{strawType}
+        </if>
+    </select>
+</mapper>

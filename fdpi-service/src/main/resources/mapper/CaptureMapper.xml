@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.CaptureMapper" >
+    <sql id="base">
+ID,PAPERS_TYPE,PAPERS_NUMBER,
+CAP_UNIT,APP_NUM,DATA_START,
+DATA_CLOS,CAP_LOCAL,
+CAP_WAY,SPE_NAME,PRO_LEVEL,
+CAP_NUM,ISSUE_UNIT,ISSUE_DATE,
+DEL_FLAG,CAUSE,PROVINCE,CITY,AREA
+    </sql>
+<insert id="addCapture" parameterType="com.sofn.fdpi.model.Capture">
+    insert into CAPTURE
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="id != null">ID,</if>
+        <if test="papersType != null">PAPERS_TYPE,</if>
+        <if test="papersNumber != null">PAPERS_NUMBER,</if>
+        <if test="capUnit != null">CAP_UNIT,</if>
+        <if test="appNum != null">APP_NUM,</if>
+        <if test="dataStart != null">DATA_START,</if>
+        <if test="dataClos != null">DATA_CLOS,</if>
+        <if test="capLocal != null">CAP_LOCAL,</if>
+        <if test="capWay != null">CAP_WAY,</if>
+        <if test="speName != null">SPE_NAME,</if>
+        <if test="proLevel != null">PRO_LEVEL,</if>
+        <if test="capNum != null">CAP_NUM,</if>
+        <if test="issueUnit != null">ISSUE_UNIT,</if>
+        <if test="issueDate != null">ISSUE_DATE,</if>
+        <if test="delFlag != null">DEL_FLAG,</if>
+        <if test="createUserId != null">CREATE_USER_ID,</if>
+        <if test="createTime != null">CREATE_TIME,</if>
+        <if test="cause != null">CAUSE,</if>
+        <if test="province != null">PROVINCE,</if>
+        <if test="city != null">CITY,</if>
+        <if test="area != null">AREA,</if>
+
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <if test="id != null">#{id},</if>
+        <if test="papersType != null">#{papersType},</if>
+        <if test="papersNumber != null">#{papersNumber},</if>
+        <if test="capUnit != null">#{capUnit},</if>
+        <if test="appNum != null">#{appNum},</if>
+        <if test="dataStart != null">#{dataStart},</if>
+        <if test="dataClos != null">#{dataClos},</if>
+        <if test="capLocal != null">#{capLocal},</if>
+        <if test="capWay != null">#{capWay},</if>
+        <if test="speName != null">#{speName},</if>
+        <if test="proLevel != null">#{proLevel},</if>
+        <if test="capNum != null">#{capNum},</if>
+        <if test="issueUnit != null">#{issueUnit},</if>
+        <if test="issueDate != null">#{issueDate},</if>
+        <if test="delFlag != null">#{delFlag},</if>
+        <if test="createUserId != null">#{createUserId},</if>
+        <if test="createTime != null">#{createTime},</if>
+        <if test="cause != null">#{cause},</if>
+        <if test="province != null">#{province},</if>
+        <if test="city != null">#{city},</if>
+        <if test="area != null">#{area},</if>
+    </trim>
+</insert>
+    <resultMap id="captureInfo" type="com.sofn.fdpi.vo.CaptureForm">
+        <id column="ID" property="id"></id>
+        <result column="PAPERS_NUMBER" property="papersNumber" ></result>
+        <result column="CAP_UNIT" property="capUnit" ></result>
+        <result column="APP_NUM" property="appNum" ></result>
+        <result column="PAPERS_NUMBER" property="papersNumber" ></result>
+        <result column="DATA_START" property="dataStart"></result>
+        <result column="DATA_CLOS" property="dataClos" ></result>
+        <result column="CAP_LOCAL" property="capLocal"></result>
+        <result column="CAP_WAY" property="capWay" ></result>
+        <result column="SPE_NAME" property="speName"></result>
+        <result column="PRO_LEVEL" property="proLevel" ></result>
+        <result column="CAP_NUM" property="capNum" ></result>
+        <result column="ISSUE_UNIT" property="issueUnit" ></result>
+        <result column="ISSUE_DATE" property="issueDate" ></result>
+        <result column="CAUSE" property="cause" ></result>
+    </resultMap>
+    <select id="getCaptureBypapersNumber" resultType="com.sofn.fdpi.model.Capture">
+    SELECT
+        <include refid="base"></include>
+    FROM
+	CAPTURE
+        where PAPERS_NUMBER=#{papersNumber} and DEL_FLAG='N'
+    </select>
+    <resultMap id="CaptureList" type="com.sofn.fdpi.vo.CaptureForm">
+        <id column="ID" property="id"></id>
+        <result column="PAPERS_NUMBER" property="papersNumber" ></result>
+        <result column="CAP_UNIT" property="capUnit" ></result>
+        <result column="PAPERS_TYPE" property="papersType" ></result>
+        <result column="APP_NUM" property="appNum" ></result>
+        <result column="DATA_START" property="dataStart"></result>
+        <result column="DATA_CLOS" property="dataClos" ></result>
+        <result column="CAP_LOCAL" property="capLocal"></result>
+        <result column="SPE_NAME" property="speName"></result>
+        <result column="PRO_LEVEL" property="proLevel" ></result>
+        <result column="CAP_NUM" property="capNum" ></result>
+
+    </resultMap>
+
+    <select id="getCapture" resultType="com.sofn.fdpi.model.Capture">
+        SELECT
+        c.ID,c.CAP_LOCAL,c.PAPERS_TYPE,
+        (CASE c.IS_PRINT WHEN '0' THEN '未打印'
+        WHEN '1' THEN '已打印' END) as IS_PRINT
+        ,c.PAPERS_NUMBER,c.CAP_UNIT,c.PROVINCE,c.CITY,c.AREA,c.DATA_START,c.DATA_CLOS,b.SPE_NAME,b.PRO_LEVEL
+        FROM
+        CAPTURE c,TB_SPECIES b
+        where c.DEL_FLAG='N' and c.SPE_NAME=b.id
+        <if test="province != null and province != ''">
+            and    c.PROVINCE = #{province}
+        </if>
+        <if test="papersNumber != null and papersNumber != ''">
+            and    c.PAPERS_NUMBER like '%'||#{papersNumber}||'%'
+        </if>
+        <if test="isPrint != null and isPrint!=''">
+            and  c.IS_PRINT like '%'||#{isPrint}||'%'
+        </if>
+        <if test="speName != null and speName != ''">
+            and b.SPE_NAME like '%'||#{speName}||'%'
+        </if>
+        <if test="capUnit != null and capUnit!=''">
+            and c.CAP_UNIT like '%'||#{capUnit}||'%'
+        </if>
+        <if test="proLevel != null and proLevel!=''">
+            and b.PRO_LEVEL=#{proLevel}
+        </if>
+        ORDER BY
+        c.CREATE_TIME desc,c.PAPERS_NUMBER desc
+    </select>
+    <select id="list" resultType="com.sofn.fdpi.model.Capture">
+        SELECT
+        c.* ,(CASE c.IS_PRINT WHEN '0' THEN '未打印'  WHEN '1' THEN '已打印' END) as IS_PRINT,b.SPE_NAME,b.PRO_LEVEL
+        FROM
+        CAPTURE c,TB_SPECIES b
+        where c.DEL_FLAG='N' and c.SPE_NAME=b.id
+        <if test="province != null and province != ''">
+            and    c.PROVINCE = #{province}
+        </if>
+        <if test="papersNumber != null and papersNumber != ''">
+            and    c.PAPERS_NUMBER like '%'||#{papersNumber}||'%'
+        </if>
+        <if test="isPrint != null and isPrint!=''">
+            and  c.IS_PRINT like '%'||#{isPrint}||'%'
+        </if>
+        <if test="speName != null and speName != ''">
+            and b.SPE_NAME like '%'||#{speName}||'%'
+        </if>
+        <if test="capUnit != null and capUnit!=''">
+            and c.CAP_UNIT like '%'||#{capUnit}||'%'
+        </if>
+        <if test="proLevel != null and proLevel!=''">
+            and b.PRO_LEVEL=#{proLevel}
+        </if>
+        ORDER BY
+        c.CREATE_TIME desc,c.PAPERS_NUMBER desc
+    </select>
+    <update id="removeCapture">
+        update  CAPTURE set DEL_FLAG='Y' where id=#{id}
+    </update>
+    <update id="updateCapture" parameterType="com.sofn.fdpi.model.Capture">
+     update CAPTURE
+        <set>
+            <if test="papersNumber!= null and papersNumber != ''">
+                PAPERS_NUMBER=#{papersNumber},
+            </if>
+            <if test="capUnit != null and capUnit!= ''">
+                CAP_UNIT=#{capUnit},
+            </if>
+            <if test="appNum != null and appNum != ''">
+                APP_NUM=#{appNum},
+            </if>
+            <if test="capWay != null and capWay != ''">
+                CAP_WAY=#{capWay},
+            </if>
+            <if test="speName != null and speName!=''">
+                SPE_NAME=#{speName},
+            </if>
+            <if test="proLevel != null  and proLevel!=''">
+                PRO_LEVEL=#{proLevel},
+            </if>
+            <if test="province != null  and province!=''">
+                PROVINCE=#{province},
+            </if>
+            <if test="city != null  and city!=''">
+                CITY=#{city},
+            </if>
+            <if test="area != null  and area!=''">
+                AREA=#{area},
+            </if>
+            <if test="capNum != null ">
+                CAP_NUM=#{capNum},
+            </if>
+            <if test="issueUnit != null and issueUnit!=''">
+                ISSUE_UNIT=#{issueUnit},
+            </if>
+            <if test="issueDate != null ">
+                ISSUE_DATE=#{issueDate},
+            </if>
+            <if test="dataStart != null ">
+                DATA_START=#{dataStart},
+            </if>
+            <if test="dataClos != null ">
+                 DATA_CLOS=#{dataClos},
+            </if>
+            <if test="capLocal != null and capLocal != ''">
+                    CAP_LOCAL=#{capLocal},
+             </if>
+            <if test="cause != null and cause != ''">
+                CAUSE=#{cause},
+            </if>
+        </set>
+        where  ID=#{id}
+    </update>
+    <select id="getOneByNumber" resultType="com.sofn.fdpi.model.Capture">
+        select   <include refid="base"></include> from CAPTURE where  PAPERS_NUMBER=#{papersNumber} and id!=#{id} and DEL_FLAG='N'
+    </select>
+<update id="printCap">
+     update CAPTURE set IS_PRINT='1' where ID=#{id}
+</update>
+
+    <select id="getCapCache" resultType="com.sofn.fdpi.vo.CapCacheVo" >
+        select  id,PAPERS_NUMBER from  CAPTURE where DEL_FLAG='N'
+    </select>
+</mapper>

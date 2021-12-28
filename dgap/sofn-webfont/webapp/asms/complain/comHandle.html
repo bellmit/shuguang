@@ -1,0 +1,123 @@
+<link rel="stylesheet" href="assets/css/asms/complain/comHandle.css"/>
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">监管系统</a>&gt;
+    <a ui-sref="index.content.asms/complain/comComplain">投诉受理</a>&gt;
+    <span>受理投诉</span>
+</div>
+<div class="gui-section gui-section-wid">
+    <h3 class="mt15 mb25" style="text-align: center;width:85%">投诉受理</h3>
+    <form id="comHandleForm">
+        <div class="table-responsive">
+            <table class="ApplyTable" style="font-size: 15px;width: 80%;">
+                <tr style="background-color: #ffffff;">
+                    <td style="text-align: right; width: 36%;font-weight: bold;">
+                        投诉主体 :&nbsp;
+                    </td>
+                    <td style="text-align: left;">
+                        &nbsp;&nbsp;<a style="cursor: pointer;" onclick="selectEnterprideInfo()"><span
+                            ng-bind="reCord.enti_name"></span></a>
+                        <!--&nbsp;&nbsp;&nbsp;&nbsp;<button onclick="selectEnterprideInfo()" class="fr gui-btn" style="margin-right:20px;">查看详细信息</button>-->
+                        <!--</td>-->
+                </tr>
+                <tr style="background-color: #ffffff;">
+                    <td style="text-align: right;font-weight: bold;">
+                        被投诉主体 :&nbsp;
+                    </td>
+                    <td style="text-align: left;">
+                        &nbsp;&nbsp;<a style="cursor: pointer;" onclick="selectEnterprideInfoBe()"><span
+                            ng-bind="reCord.be_enti_name"></span></a>
+                        <!--&nbsp;&nbsp;&nbsp;&nbsp;<button onclick="selectEnterprideInfoBe()" class="fr gui-btn" style="margin-right:20px;">查看详细信息</button>-->
+                        <!--</td>-->
+                </tr>
+                <tr style="background-color: #ffffff;">
+                    <td style="text-align: right; width: 100px;font-weight: bold;">
+                        被投诉主体身份码 :&nbsp;
+                    </td>
+                    <td style="text-align: left;">
+                        &nbsp;&nbsp;<span ng-bind="reCord.beEntityIdcode"></span>
+                    </td>
+                </tr>
+                <tr style="background-color: #ffffff;">
+                    <td style="text-align: right;font-weight: bold;">
+                        被投诉主体区域 :&nbsp;
+                    </td>
+                    <td style="text-align: left;">
+                        &nbsp;&nbsp;<span ng-bind="areaId"></span>
+                    </td>
+                </tr>
+                <tr style="background-color: #ffffff;">
+                    <td style="text-align: right;font-weight: bold;">
+                        投诉时间 :&nbsp;
+                    </td>
+                    <td style="text-align: left;">
+                        &nbsp;&nbsp;<span ng-bind="reCord.complaintTime"></span>
+                    </td>
+                </tr>
+                <tr style="background-color: #ffffff;">
+                    <td style="text-align: right;font-weight: bold;">
+                        投诉主题 :&nbsp;
+                    </td>
+                    <td style="text-align: left;">
+                        &nbsp;&nbsp;<span ng-bind="reCord.complaintTitle" style="word-break: break-all;"></span>
+                    </td>
+                </tr>
+                <tr style="background-color: #ffffff;">
+                    <td style="text-align: right;font-weight: bold;">
+                        投诉内容 : &nbsp;
+                    </td>
+                    <td style="text-align: left;">
+                        &nbsp;&nbsp;<span ng-bind="reCord.content" style="word-break: break-all;"></span>
+                    </td>
+                </tr>
+                <tr style="background-color: #ffffff;">
+                    <td style="text-align: right;font-weight: bold;">
+                        附件 : &nbsp;
+                    </td>
+                    <td style="text-align: left;">
+                        &nbsp;&nbsp;<a onclick="downloadFile()" style="cursor: pointer"><span
+                            ng-bind="reCord.attachmentName"></span></a>
+                    </td>
+                </tr>
+                <tr style="background-color: #ffffff;">
+                    <td style="text-align: right;font-weight: bold;">
+                        受理人 :&nbsp;
+                    </td>
+                    <td style="text-align: left;">
+                        &nbsp;&nbsp;<span ng-bind="accEntityIdcode"></span>
+                    </td>
+                </tr>
+                <tr style="background-color: #ffffff;">
+                    <td style="text-align: right;font-weight: bold;">
+                        受理状态 :&nbsp;
+                    </td>
+                    <td style="text-align: left;">
+                        &nbsp;&nbsp;<span ng-bind="reCord.status"></span>
+                    </td>
+                </tr>
+                <tr style="background-color: #ffffff;">
+                    <td style="text-align: right;font-weight: bold;">
+                        受理意见<span style="color: red"> *</span> : &nbsp;
+                    </td>
+                    <td class="form-group">
+                        &nbsp;&nbsp;<textarea rows="3" name="acceptance"
+                                              style="max-width: 500px;background-color: #f6f6f6;width: 300px;"
+                                              class="gui-input"
+                                              data-bv-notempty="true"
+                                              data-bv-notempty-message="受理意见"
+                    ></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+    <div align="center">
+        <button class="gui-btn" ui-sref="index.content.asms/complain/comComplain" ng-click="RemoveLocal()">关闭
+        </button>
+        <button class="gui-btn" ng-click="complaintHandle()" style="">
+            提交受理
+        </button>
+    </div>
+
+</div>
+
+<input id="ID" class="gui-input" type="text" style="visibility: hidden"/>

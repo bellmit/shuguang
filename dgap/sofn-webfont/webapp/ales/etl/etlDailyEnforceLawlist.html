@@ -1,0 +1,403 @@
+<link rel="stylesheet" href="assets/css/ales/etl/etlDailyEnforceLawlist.css" />
+<div class="gui-breadcrumbs">
+    <a ui-sref="index.content.ales/etl/etlDailyEnforceLawlist">执法系统</a>&gt;
+    <a ui-sref="index.content.ales/etl/etlDailyEnforceLawlist">日常执法管理</a>&gt;
+    <span>现场巡查</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group">
+        <span>所属行业</span>
+        <input type="checkbox" value="" name="entityIndustryLimit" ng-click="limitCheckBox('entityIndustry','entityIndustryLimit')"><span class="checkedIndustryTypeText">不限</span>
+        <span ng-repeat="a in industryType">
+                    <input type="checkbox" value="{{a.id}}" name="entityIndustry" ng-click="limitCheckBox('entityIndustryLimit','entityIndustry')"><span class="checkedIndustryTypeText" ng-bind="a.dictName"></span>
+        </span>
+        <br>
+        <br>
+        <span>主体类型</span>
+        <input type="radio" value="" name="entityTypeLimit" ng-click="limitCheckBox('entityType','entityTypeLimit')"><span class="checkedIndustryTypeText">不限</span>
+        <span ng-repeat="a in entityType">
+                    <input type="radio" value="{{a.dictName}}" name="entityType" ng-click="limitCheckBox('entityTypeLimit','entityType')"><span class="checkedIndustryTypeText" ng-bind="a.dictName"></span>
+        </span>
+        <br>
+        <br>
+
+        <span>区域</span>
+        <div class="gui-select">
+            <select id="sheng" name="ObjShen" style="width: 122px;height: 27px;">
+                <option value="">省</option>
+            </select>
+        </div>
+        <div class="gui-select">
+            <select id="shi" name="ObjShi" style="width: 122px;height: 27px;">
+                <option value="">市</option>
+            </select>
+        </div>
+        <div class="gui-select">
+            <select id="xian" name="ObjXian" style="width: 122px;height: 27px;">
+                <option value="">区/县</option>
+            </select>
+        </div>
+        <span>年度</span>
+        <input id="Ddl_Year" name="taskYear" type="text" runat="server" onfocus="WdatePicker({skin:'default',dateFmt:'yyyy',minDate:'2010',maxDate:'%y'})" class="Wdate gui-input" style=" width:80px;margin-right: 30px;cursor: pointer" readonly="readonly" />
+        <span href="#modalCondition" data-toggle="modal" class="custom-condition">自定义条件</span>
+        <div>
+            <div class="condition-item">
+                <span>执法时间</span>
+                <input id="datebegin" name="datebegin" style="width: 120px;cursor: pointer" readonly="readonly" class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('dateend');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateend\')}'})" />
+                <input id="dateend" class="Wdate gui-input" name="dateend" style="width: 120px;cursor: pointer;" readonly="readonly" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'datebegin\')}'})" />
+            </div>
+            <div class="condition-item">
+                <span>执法结果</span>
+                <div class="gui-select">
+                    <select name="enforceLawResultFlag">
+                        <option value="">全部</option>
+                        <option value="1">合格</option>
+                        <option value="3">整改</option>
+                        <option value="2">不合格</option>
+                        <option value="4">其他</option>
+                    </select>
+                </div>
+            </div>
+           <!-- <div class="condition-item">
+                <span>关键字</span>
+                <input class="gui-input" type="text" style="width: 120px" id="queryConId" name="queryCon" placeholder="请输入查询条件" maxlength="30" />
+            </div>-->
+            <div class="condition-item condition-custom" data-control="text" ng-show="visibletaskName">
+                <span>任务名称</span>
+                <input class="gui-input" ng-model="taskName" maxlength="80" type="text"  name="taskName" />
+            </div>
+            <div class="condition-item condition-custom" data-control="text" ng-show="visibletaskPersonName">
+                <span>执法人员</span>
+                <input class="gui-input" ng-model="taskPersonName" maxlength="80" type="text" name="taskPersonName" />
+            </div>
+            <div class="condition-item">
+                <button class="gui-btn" ng-click="queryEnforceLawList($event)">查询</button>
+                <button class="gui-btn" ng-click="cleanSelectModelQuery($event)">重置</button>
+            </div>
+        </div>
+    </div>
+    <div class="gui-actions gui-table-panel clearfix">
+        <p class="table-total" ng-show="isListView">符合条件的数据总计: {{tableTotal}} 项</p>
+        <div class="view-type">展示方式
+            <i class="gui-icon icon-list highlight" ng-class="{'highlight': isListView}" ng-click="toggleView(true)" title="以列表视图展示"></i>
+            <i class="gui-icon icon-chart" ng-class="{'highlight': !isListView }" ng-click="toggleView(false)" title="以图形视图展示"></i>
+        </div>
+        <div class="gui-actions gui-table-panel clearfix">
+        <button ng-click="del()" class="fr gui-btn fr ml15" id="delId">
+            <i class="gui-icon icon-remove"></i>删除</button>
+        <button class="gui-btn fr ml15" ng-click="lawAdd()" ui-sref="index.content.ales/etl/etlAddDailyEnforceLaw" id="lawAddId">
+            <i class="gui-icon icon-add"></i>新增执法日志</button>
+        </div>
+    </div>
+    <!-- 图标区域 -->
+    <div class="gui-content-slide">
+        <div ng-style="{'transform': viewX}" class="content-wrap">
+            <div class="content-block">
+                <table id="grid" class="gui-table table-nowrap mt15" style="width: 100%">
+                </table>
+            </div>
+            <div class="content-block">
+                <div sg-chart options="vm.chartOptions" update="vm.chart"></div>
+            </div>
+        </div>
+    </div>
+    <!--<table id="grid" class="gui-table table-nowrap mt15" style="width: 100%">
+    </table>-->
+</div>
+<!--模态框-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog removeBor">打印
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabels" style="text-align: center">详细信息</h4>
+            </div>
+            <div class="modal-body clearfix gov-h" style="padding-left: 0px;padding-right: 0px;padding-top: 0px;">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td style="text-align: right; width: 260px">
+                                &nbsp;&nbsp;&nbsp;任务名称 :
+                            </td>
+                            <td title={{reCord.taskName}}>
+                                <!--&nbsp;&nbsp;<span ng-bind="reCord.taskName.substr(0,10)"></span>-->
+                                &nbsp;&nbsp;<span ng-bind="reCord.taskName"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                &nbsp;&nbsp;&nbsp;执法时间 :
+                            </td>
+                            <td>
+                                &nbsp;&nbsp;<span ng-bind="reCord.beginTime"><!--</span>至
+                                <span ng-bind="endTime">--></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                &nbsp;&nbsp;被巡查对象 :
+                            </td>
+                            <td title="{{reCord.enterpriseName}}">
+                                <!--&nbsp;&nbsp;<a style="cursor: pointer;" onclick="selectEnterpriseInfo()"><span ng-bind="reCord.enterpriseName.substr(0,10)"></span></a>-->
+                                &nbsp;&nbsp;<a style="cursor: pointer;" onclick="selectEnterpriseInfo()"><span ng-bind="reCord.enterpriseName"></span></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                被巡查对象地址 :
+                            </td>
+                            <td>
+                                &nbsp;&nbsp;<span ng-bind="reCord.areaId"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                详细地址 :
+                            </td>
+                            <td>
+                                &nbsp;&nbsp;<span ng-bind="reCord.address"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                负责人 :
+                            </td>
+                            <td title="{{reCord.peson}}">
+                                <!--&nbsp;&nbsp;<span ng-bind="reCord.peson.substr(0,10)"></span>-->
+                                &nbsp;&nbsp;<span ng-bind="reCord.peson"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                &nbsp;&nbsp;&nbsp;巡查人数 :
+                            </td>
+                            <td>
+                                &nbsp;&nbsp;<span ng-bind="reCord.taskPersonCount"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                &nbsp;&nbsp;&nbsp;执法人员 :
+                            </td>
+                            <td title="{{reCord.taskPersonName}}">
+                               <!-- &nbsp;&nbsp;<span ng-bind="reCord.taskPersonName.substr(0,10)"></span>-->
+                                &nbsp;&nbsp;<span ng-bind="reCord.taskPersonName"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                &nbsp;&nbsp;&nbsp;巡查结果 :
+                            </td>
+                            <td>
+                                &nbsp;&nbsp;<span ng-bind="reCord.enforceLawResultFlag"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                &nbsp;&nbsp;&nbsp;巡查意见 :
+                            </td>
+                            <td title="{{reCord.enforceLawResult}}">
+                              <!--  &nbsp;&nbsp;<span ng-bind="reCord.enforceLawResult.substr(0,40)"></span>-->
+                                &nbsp;&nbsp;<span ng-bind="reCord.enforceLawResult"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                &nbsp;&nbsp;&nbsp;现场照片 :
+                            </td>
+                            <td name="filesview" style="display:block" style="height: 80px;margin-left: 5px" class="form-group">
+                                <div class="_box" id="scenePictures" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                &nbsp;&nbsp;&nbsp;现场视频 :
+                            </td>
+                            <td name="filesview" style="display:block" style="height: 80px;margin-left: 5px" class="form-group">
+                                <div class="_box" id="sceneVideo" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                &nbsp;&nbsp;&nbsp;负责人签字照片 :
+                            </td>
+                            <td name="filesview" style="display:block" style="height: 80px;margin-left: 5px" class="form-group">
+                                <div class="_box" id="principalSignatures" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal" onclick="qinchuhuanchun()">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="printModal" tabindex="-1" role="dialog" aria-labelledby="printModalLabel" aria-hidden="true">
+    <div class="modal-dialog removeBor">
+        <div class="modal-content">
+            <div id="printInfo">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="printModalLabel" style="text-align: center">日常执法信息</h4>
+                </div>
+                <div class="modal-body clearfix gov-h" style="padding-left: 0px;padding-right: 0px;padding-top: 0px;">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td style="text-align: right; width: 260px">
+                                    &nbsp;&nbsp;&nbsp;任务名称 :
+                                </td>
+                                <td title="{{reCord.taskName}}">
+                                    &nbsp;&nbsp;<!--<span ng-bind="reCord.taskName.substr(0,10)"></span>-->
+                                    <span ng-bind="reCord.taskName"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">
+                                    &nbsp;&nbsp;&nbsp;执法时间 :
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;<span ng-bind="reCord.beginTime"></span>
+                                    <span ng-bind="endTime"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">
+                                    &nbsp;&nbsp;被巡查对象 :
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;<a style="cursor: pointer;" onclick="printEnterpriseInfo()"><span ng-bind="reCord.enterpriseName"></span></a>
+                                    <!--&nbsp;&nbsp;&nbsp;&nbsp;<button onclick="selectEnterpriseInfo()" class="fr gui-btn" style="margin-right:20px;">查看详细信息</button>-->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">
+                                    被巡查对象地址 :
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;<span ng-bind="reCord.areaId"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">
+                                    &nbsp;&nbsp;&nbsp;巡查人数 :
+                                </td>
+                                <td title="reCord.taskPersonCount">
+                                   <!-- &nbsp;&nbsp;<span ng-bind="reCord.taskPersonCount.substr(0,10)"></span>-->
+                                    &nbsp;&nbsp;<span ng-bind="reCord.taskPersonCount"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">
+                                    &nbsp;&nbsp;&nbsp;执法人员 :
+                                </td>
+                                <td title="{{reCord.taskPersonName}}">
+                                   <!-- &nbsp;&nbsp;<span ng-bind="reCord.taskPersonName.substr(0,10)"></span>-->
+                                    &nbsp;&nbsp;<span ng-bind="reCord.taskPersonName"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">
+                                    &nbsp;&nbsp;&nbsp;巡查结果 :
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;<span ng-bind="reCord.enforceLawResultFlag"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">
+                                    &nbsp;&nbsp;&nbsp;巡查意见 :
+                                </td>
+                                <td title="{{reCord.enforceLawResult}}">
+                                    <!--&nbsp;&nbsp;<span ng-bind="reCord.enforceLawResult.substr(0,10)"></span>-->
+                                    &nbsp;&nbsp;<span ng-bind="reCord.enforceLawResult"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">
+                                    &nbsp;&nbsp;&nbsp;负责人 :
+                                </td>
+                                <td title="{{reCord.principal}}">
+                                   <!-- &nbsp;&nbsp;<span ng-bind="reCord.principal.substr(0,10)"></span>-->
+                                    &nbsp;&nbsp;<span ng-bind="reCord.principal"></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="mt15 mb25" align="center">
+                <button type="button" class="gui-btn" data-dismiss="modal" onclick="qinchuhuanchun()">取消</button>
+                <button class="gui-btn" type="button" id="PrintArea" onclick="printArea()">打印</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalCondition" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">请选择自定义条件</h4>
+            </div>
+            <div class="modal-body">
+                <form novalidate="novalidate">
+                    <div class="list-head">
+                        <label>
+                            <input type="checkbox" class="condition-checked-all" />全选
+                        </label>
+                    </div>
+                    <ul class="gui-list list-condition">
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled />所属行业
+                            </label>
+                        </li>
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled>巡查结果
+                            </label>
+                        </li>
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled>年度
+                            </label>
+                        </li>
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled>日期
+                            </label>
+                        </li>
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled>所属区域
+                            </label>
+                        </li>
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled>主体类型
+                            </label>
+                        </li>
+                        <li data-key="taskName">
+                            <label>
+                                <input type="checkbox">任务名称
+                            </label>
+                        </li>
+                        <li data-key="taskPersonName">
+                            <label>
+                                <input type="checkbox">执法人员
+                            </label>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="gui-btn" ng-click="confirmCondition()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>

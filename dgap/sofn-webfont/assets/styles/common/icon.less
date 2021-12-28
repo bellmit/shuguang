@@ -1,0 +1,62 @@
+@import "sprite";
+//retina @2x
+// .sprite-width(@sprite) {
+//     width: extract(@sprite, 5)/2;
+// }
+
+// .sprite-height(@sprite) {
+//     height: extract(@sprite, 6)/2;
+// }
+
+// .sprite-position(@sprite) {
+//     @sprite-offset-x: extract(@sprite, 3)/2;
+//     @sprite-offset-y: extract(@sprite, 4)/2;
+//     background-position: @sprite-offset-x @sprite-offset-y;
+// }
+
+// .sprite-background-size(@spritesheet-width) {
+//     background-size: @spritesheet-width/2;
+// }
+
+// .sprite-image(@sprite) {
+//     @sprite-image: extract(@sprite, 9);
+//     @sprite-image-bare: ~`"@{sprite-image}".slice(1, -1)`;
+//     background-image: url(@sprite-image-bare);
+// }
+
+// .sprite(@sprite) {
+//     .sprite-image(@sprite);
+//     .sprite-position(@sprite);
+//     .sprite-width(@sprite);
+//     .sprite-height(@sprite);
+//     .sprite-background-size(@spritesheet-width);
+// }
+
+//合并图
+.gui-icon {
+    display: inline-block;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+}
+
+.sprites(@spritesheet-sprites);
+//自定义 非合并图
+.icon-chart{
+	width: 16px;
+	height: 16px;
+	background-image: url(../../imgs/dist/chart.png);
+	background-position: center center;
+	&.highlight{
+		background-image: url(../../imgs/dist/chart-highlight.png);
+	}
+}
+
+.icon-list{
+	width: 16px;
+	height: 16px;
+	background-image: url(../../imgs/dist/list.png);
+	background-position: center center;
+	&.highlight{
+		background-image: url(../../imgs/dist/list-highlight.png);
+	}
+}

@@ -1,0 +1,76 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+<link rel="stylesheet" href="../../assets/css/monitor/task.css"/>
+<div class="Sup_contain_section col-md-12">
+    <div class="Sup_contain_section_head  col-md-12" ></div>
+        <div class="col-md-11 col-md-offset-1" id="dayin">
+            <h3 style="margin: 0px 0px 30px 370px">检测任务单</h3>
+            <table style="height: 600px; width: 80%;font-size: small;line-height:150%" border="" >
+                <tr style="">
+                    <td style="width: 10%" >任务名称</td>
+                    <td id="name" style="" colspan="7"></td>
+                    <td style="width: 10%" >年度</td>
+                    <td id="year" style="" colspan="3"></td>
+                </tr>
+                <tr >
+                    <td>发布单位</td>
+                    <td id="danwei" colspan="7"></td>
+                    <td >检测单位</td>
+                    <td id="detectionOrgan" colspan="3"></td>
+                </tr>
+                <tr >
+                    <td>样品名称</td>
+                    <td id="yangp" colspan="7"></td>
+                    <td >样品数量</td>
+                    <td id="numbers" colspan="3"></td>
+                </tr>
+                <tr >
+                    <td>样品编号</td>
+                    <td id="bianh" colspan="7"></td>
+                    <td >制样要求</td>
+                    <td colspan="3"></td>
+                </tr>
+                <tr >
+                    <td >样品状态</td>
+                    <td colspan="7"></td>
+                    <td >检验依据</td>
+                    <td colspan="3"></td>
+                </tr>
+                <tr >
+                    <td >任务通知日期</td>
+                    <td id="tongz" colspan="7"></td>
+                    <td >要求完成日期</td>
+                    <td id="wanc" colspan="3"></td>
+                </tr>
+                <tr >
+                    <td colspan="12">检测详情</td>
+                </tr>
+                <tr >
+                    <td colspan="12">
+                        <div>
+                            <table id="productList" class="gui-table">
+
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+                <tr >
+                    <td colspan="12">备注</td>
+                </tr>
+                <tr >
+                    <td height="80px" colspan="12"></td>
+                </tr>
+                <tr >
+                    <td>经办人</td>
+                    <td colspan="7"></td>
+                    <td >实际完成日期</td>
+                    <td colspan="3"></td>
+                </tr>
+            </table>
+        </div>
+        <div style="margin: 20px 0px 20px 0px;text-align: center" >
+            <p>
+                <span type="button" class="gui-btn btn btn-default btn-sm" onclick="downFile()">下载</span>
+                <span type="button" class="gui-btn btn btn-default btn-sm " id="printArea">打印</span>
+            </p>
+        </div>
+</div>

@@ -1,0 +1,63 @@
+<link rel="stylesheet" href="assets/css/asms/ass/Assess.css"/>
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">监管系统</a>&gt;
+    <a ui-sref="index.content.asms/ass/Assess">监督检查</a>&gt;
+    <a ui-sref="index.content.asms/ass/Assess">巡查人员考核</a>&gt;
+    <span>报告列表</span>
+</div>
+<div class="gui-section">
+    <form name="searchForm" id="searchForm" class="gui-form-group">
+        <div class="gui-select">
+            <select id="sheng">
+                <option value="">--省--</option>
+            </select>
+        </div>
+       <div class="gui-select">
+           <select id="shi">
+               <option value="">--市--</option>
+           </select>
+       </div>
+       <div class="gui-select">
+           <select id="xian">
+               <option value="">--区/县--</option>
+           </select>
+       </div>
+        <div class="gui-select">
+            <select name="inspectionResult">
+                <option value="">选择巡查结果</option>
+                <option ng-repeat="x in inspectionResults" value="{{x.dictValue}}">{{x.dictName}}</option>
+            </select>
+        </div>
+
+        <div class="gui-select">
+            <select name="inspectionType">
+                <option value="">选择任务类型</option>基地,主体,农资,其他
+                <option value="1">基地</option>
+                <option value="2">主体</option>
+                <option value="3">农资</option>
+                <option value="0">其他</option>
+            </select>
+        </div>
+        <div class="mt15">
+            <!--<div class="gui-select">-->
+                <!--<select name="enterpriseIndustry">-->
+                    <!--<option value="">选择行业</option>-->
+                    <!--<option ng-repeat="x in industryType" value="{{x.id}}">{{x.dictName}}</option>-->
+                <!--</select>-->
+            <!--</div>-->
+            <span>日期</span>
+            <input id="dateBegin" style="cursor: pointer;width: 130px;" name="dateBegin"  class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('dateEnd');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateEnd\')}'})"/>
+            <!--<input class="gui-input " name="dateBegin" date style="width: 130px;"  readonly="readonly" id="dateBegin" onclick="SelectDate(this)" />-->
+            <span style="margin: 10px 0px;display: inline-block">--</span>
+            <input id="dateEnd" name="dateEnd" class="Wdate gui-input" style="cursor: pointer;width: 130px;margin-left:10px;" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'dateBegin\')}'})"/>
+            <!--<input class="gui-input " name="dateEnd" date style="width: 130px;"  readonly="readonly" id="dateEnd" onclick="SelectDate(this)"/>-->
+            <input class="gui-input" name="enterpriseName" type="text" placeholder="请输入主体名称"/>
+            <button class="gui-btn " ng-disabled="!!btnDisabled" ng-click="queryBaseInspection()">查询</button>
+        </div>
+
+        <!--<button ui-sref="index.content.asms/baseInspection/inspectionAdd">新增</button>-->
+    </form>
+    <table id="grid" class="gui-table mt15"
+           style="width: 100%">
+    </table>
+</div>

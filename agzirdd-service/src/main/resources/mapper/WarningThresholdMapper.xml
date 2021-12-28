@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agzirdd.mapper.WarningThresholdMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.agzirdd.model.WarningThreshold" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="SPECIES_NAME" property="speciesName" jdbcType="VARCHAR" />
+    <result column="CLASSIFICATION_ID" property="classificationId" jdbcType="VARCHAR" />
+    <result column="CLASSIFICATION_NAME" property="classificationName" jdbcType="VARCHAR" />
+    <result column="CREATE_USER_NAME" property="createUserName" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="SPECIES_ID" property="speciesId" jdbcType="VARCHAR" />
+    <result column="PUSH_WAY" property="pushWay" jdbcType="VARCHAR" />
+    <result column="IS_SUBMIT_ZONG_ZHAN" property="isSubmitZongZhan" jdbcType="VARCHAR" />
+    <result column="SPECIES_TYPE_NAME" property="speciesTypeName" jdbcType="VARCHAR" />
+    <result column="SPECIES_TYPE" property="speciesType" jdbcType="VARCHAR" />
+    <result column="PROVINCE_ID" property="provinceId" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <resultMap id="ExcelResultMap" type="com.sofn.agzirdd.excelmodel.WarningThresholdExcel" >
+    <result column="SPECIES_NAME" property="speciesName" jdbcType="VARCHAR" />
+    <result column="CLASSIFICATION_NAME" property="classificationName" jdbcType="VARCHAR" />
+    <result column="CREATE_USER_NAME" property="createUserName" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="PUSH_WAY" property="pushWay" jdbcType="VARCHAR" />
+    <result column="CONDITION1" property="condition1" jdbcType="VARCHAR" />
+    <result column="CONDITION2" property="condition2" jdbcType="VARCHAR" />
+    <result column="VALUE1" property="value1" jdbcType="VARCHAR" />
+    <result column="VALUE2" property="value2" jdbcType="VARCHAR" />
+    <result column="RISK_LEVEL" property="riskLevel" jdbcType="VARCHAR" />
+    <result column="COLOR" property="color" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ID, SPECIES_NAME, CLASSIFICATION_ID, CLASSIFICATION_NAME, CREATE_USER_NAME, CREATE_TIME,
+    SPECIES_ID, PUSH_WAY, IS_SUBMIT_ZONG_ZHAN, SPECIES_TYPE_NAME, SPECIES_TYPE, PROVINCE_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from WARNING_THRESHOLD
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+    <select id="getWarningThresholdByCondition" resultMap="BaseResultMap" parameterType="java.util.Map">
+      select
+      <include refid="Base_Column_List" />
+      from WARNING_THRESHOLD
+      where
+       1=1
+      <if test="classificationId != null" >
+      and CLASSIFICATION_ID = #{classificationId,jdbcType=VARCHAR}
+      </if>
+      <if test="speciesId != null" >
+      and  SPECIES_ID = #{speciesId,jdbcType=VARCHAR}
+      </if>
+      <if test="isSubmit != null" >
+        and IS_SUBMIT_ZONG_ZHAN = #{isSubmit,jdbcType=VARCHAR}
+      </if>
+      <if test="speciesName != null" >
+        and  SPECIES_NAME = #{speciesName,jdbcType=VARCHAR}
+      </if>
+      <if test="classificationName != null" >
+        and CLASSIFICATION_NAME = #{classificationName,jdbcType=VARCHAR}
+      </if>
+      <if test="provinceId != null" >
+        and PROVINCE_ID = #{provinceId,jdbcType=VARCHAR}
+      </if>
+      order by CREATE_TIME DESC
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from WARNING_THRESHOLD
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.sofn.agzirdd.model.WarningThreshold" >
+    update WARNING_THRESHOLD
+    <set >
+      1=1
+      <if test="speciesName != null" >
+        , SPECIES_NAME = #{speciesName,jdbcType=VARCHAR}
+      </if>
+      <if test="classificationId != null" >
+        , CLASSIFICATION_ID = #{classificationId,jdbcType=VARCHAR}
+      </if>
+      <if test="classificationName != null" >
+        , CLASSIFICATION_NAME = #{classificationName,jdbcType=VARCHAR}
+      </if>
+      <if test="createUserName != null" >
+        , CREATE_USER_NAME = #{createUserName,jdbcType=VARCHAR}
+      </if>
+      <if test="createTime != null" >
+        , CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="speciesId != null" >
+        , SPECIES_ID = #{speciesId,jdbcType=VARCHAR}
+      </if>
+      <if test="pushWay != null" >
+        , PUSH_WAY = #{pushWay,jdbcType=VARCHAR}
+      </if>
+      <if test="isSubmitZongZhan != null" >
+        , IS_SUBMIT_ZONG_ZHAN = #{isSubmitZongZhan,jdbcType=VARCHAR}
+      </if>
+      <if test="speciesTypeName != null" >
+        , SPECIES_TYPE_NAME = #{speciesTypeName,jdbcType=VARCHAR}
+      </if>
+      <if test="speciesType != null" >
+        , SPECIES_TYPE = #{speciesType,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sofn.agzirdd.model.WarningThreshold" >
+    update WARNING_THRESHOLD
+    set SPECIES_NAME = #{speciesName,jdbcType=VARCHAR},
+      CLASSIFICATION_ID = #{classificationId,jdbcType=VARCHAR},
+      CLASSIFICATION_NAME = #{classificationName,jdbcType=VARCHAR},
+      SPECIES_ID = #{speciesId,jdbcType=VARCHAR},
+      PUSH_WAY = #{pushWay,jdbcType=VARCHAR},
+      IS_SUBMIT_ZONG_ZHAN = #{isSubmitZongZhan,jdbcType=VARCHAR},
+      SPECIES_TYPE_NAME = #{speciesTypeName,jdbcType=VARCHAR},
+      SPECIES_TYPE = #{speciesType,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getWarningThresholdExcelByCondition" resultMap="ExcelResultMap" parameterType="java.util.Map">
+    SELECT
+    SPECIES_NAME,
+    CLASSIFICATION_NAME,
+    CREATE_USER_NAME,
+    CREATE_TIME,
+    PUSH_WAY,
+    CONDITION1,
+    VALUE1,
+    CONDITION2,
+    VALUE2,
+    RISK_LEVEL,
+    COLOR
+    FROM
+    WARNING_THRESHOLD a
+    JOIN THRESHOLD_VALUE b ON a.ID = b.WT_ID
+    where
+    1=1
+    <if test="classificationId != null" >
+      and a.CLASSIFICATION_ID = #{classificationId,jdbcType=VARCHAR}
+    </if>
+    <if test="speciesId != null" >
+      and  a.SPECIES_ID = #{speciesId,jdbcType=VARCHAR}
+    </if>
+    <if test="provinceId != null" >
+      and a.PROVINCE_ID = #{provinceId,jdbcType=VARCHAR}
+    </if>
+    order by a.CREATE_TIME DESC
+  </select>
+
+</mapper>

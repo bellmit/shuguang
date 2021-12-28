@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.StrawUtilizeSumTotalMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.ducss.model.StrawUtilizeSumTotal" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="year" property="year" jdbcType="VARCHAR" />
+    <result column="province_id" property="provinceId" jdbcType="VARCHAR" />
+    <result column="city_id" property="cityId" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaId" jdbcType="VARCHAR" />
+    <result column="main_fertilising" property="mainFertilising" jdbcType="DECIMAL" />
+    <result column="main_forage" property="mainForage" jdbcType="DECIMAL" />
+    <result column="main_fuel" property="mainFuel" jdbcType="DECIMAL" />
+    <result column="main_base" property="mainBase" jdbcType="DECIMAL" />
+    <result column="main_material" property="mainMaterial" jdbcType="DECIMAL" />
+    <result column="main_total" property="mainTotal" jdbcType="DECIMAL" />
+    <result column="main_total_other" property="mainTotalOther" jdbcType="DECIMAL" />
+    <result column="disperse_fertilising" property="disperseFertilising" jdbcType="DECIMAL" />
+    <result column="disperse_forage" property="disperseForage" jdbcType="DECIMAL" />
+    <result column="disperse_fuel" property="disperseFuel" jdbcType="DECIMAL" />
+    <result column="disperse_base" property="disperseBase" jdbcType="DECIMAL" />
+    <result column="disperse_material" property="disperseMaterial" jdbcType="DECIMAL" />
+    <result column="disperse_total" property="disperseTotal" jdbcType="DECIMAL" />
+    <result column="pro_straw_utilize" property="proStrawUtilize" jdbcType="DECIMAL" />
+    <result column="return_ratio" property="returnRatio" jdbcType="DECIMAL" />
+    <result column="comprehensive" property="comprehensive" jdbcType="DECIMAL" />
+    <result column="comprehensive_index" property="comprehensiveIndex" jdbcType="DECIMAL" />
+    <result column="industrialization_index" property="industrializationIndex" jdbcType="DECIMAL" />
+    <result column="collect_resource" property="collectResource" jdbcType="DECIMAL" />
+    <result column="yield_all_num" property="yieldAllNum" jdbcType="DECIMAL" />
+    <result column="theory_resource" property="theoryResource" jdbcType="DECIMAL" />
+    <result column="export_yield_total" property="exportYieldTotal" jdbcType="DECIMAL" />
+    <result column="fertilising" property="fertilising" jdbcType="DECIMAL" />
+    <result column="forage" property="forage" jdbcType="DECIMAL" />
+    <result column="fuel" property="fuel" jdbcType="DECIMAL" />
+    <result column="base" property="base" jdbcType="DECIMAL" />
+    <result column="material" property="material" jdbcType="DECIMAL" />
+    <result column="grass_valley_ratio" property="grassValleyRatio" jdbcType="DECIMAL" />
+    <result column="return_resource" property="returnResource" jdbcType="DECIMAL" />
+    <result column="collection_ratio" property="collectionRatio" jdbcType="DECIMAL" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, year, province_id, city_id, area_id, main_fertilising, main_forage, main_fuel,
+    main_base, main_material, main_total, main_total_other, disperse_fertilising, disperse_forage,
+    disperse_fuel, disperse_base, disperse_material, disperse_total, pro_straw_utilize,
+    return_ratio, comprehensive, comprehensive_index, industrialization_index, collect_resource,
+    yield_all_num, theory_resource, export_yield_total, fertilising, forage, fuel, base,
+    material, grass_valley_ratio, return_resource, collection_ratio
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from straw_utilize_sum_total
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from straw_utilize_sum_total
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <update id="updateByPrimaryKey" parameterType="com.sofn.ducss.model.StrawUtilizeSumTotal" >
+    update straw_utilize_sum_total
+    set year = #{year,jdbcType=VARCHAR},
+      province_id = #{provinceId,jdbcType=VARCHAR},
+      city_id = #{cityId,jdbcType=VARCHAR},
+      area_id = #{areaId,jdbcType=VARCHAR},
+      main_fertilising = #{mainFertilising,jdbcType=DECIMAL},
+      main_forage = #{mainForage,jdbcType=DECIMAL},
+      main_fuel = #{mainFuel,jdbcType=DECIMAL},
+      main_base = #{mainBase,jdbcType=DECIMAL},
+      main_material = #{mainMaterial,jdbcType=DECIMAL},
+      main_total = #{mainTotal,jdbcType=DECIMAL},
+      main_total_other = #{mainTotalOther,jdbcType=DECIMAL},
+      disperse_fertilising = #{disperseFertilising,jdbcType=DECIMAL},
+      disperse_forage = #{disperseForage,jdbcType=DECIMAL},
+      disperse_fuel = #{disperseFuel,jdbcType=DECIMAL},
+      disperse_base = #{disperseBase,jdbcType=DECIMAL},
+      disperse_material = #{disperseMaterial,jdbcType=DECIMAL},
+      disperse_total = #{disperseTotal,jdbcType=DECIMAL},
+      pro_straw_utilize = #{proStrawUtilize,jdbcType=DECIMAL},
+      return_ratio = #{returnRatio,jdbcType=DECIMAL},
+      comprehensive = #{comprehensive,jdbcType=DECIMAL},
+      comprehensive_index = #{comprehensiveIndex,jdbcType=DECIMAL},
+      industrialization_index = #{industrializationIndex,jdbcType=DECIMAL},
+      collect_resource = #{collectResource,jdbcType=DECIMAL},
+      yield_all_num = #{yieldAllNum,jdbcType=DECIMAL},
+      theory_resource = #{theoryResource,jdbcType=DECIMAL},
+      export_yield_total = #{exportYieldTotal,jdbcType=DECIMAL},
+      fertilising = #{fertilising,jdbcType=DECIMAL},
+      forage = #{forage,jdbcType=DECIMAL},
+      fuel = #{fuel,jdbcType=DECIMAL},
+      base = #{base,jdbcType=DECIMAL},
+      material = #{material,jdbcType=DECIMAL},
+      grass_valley_ratio = #{grassValleyRatio,jdbcType=DECIMAL},
+      return_resource = #{returnResource,jdbcType=DECIMAL},
+      collection_ratio = #{collectionRatio,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <delete id="deleteStrawUtilizeSum" parameterType="com.sofn.ducss.model.StrawUtilizeSum">
+    delete from straw_utilize_sum_total where year=#{year} and area_id=#{areaId}
+  </delete>
+
+    <select id="selectProduceUtilizeByAreaIds" resultMap="BaseResultMap">
+      select
+        a.id, a.year, a.province_id, a.city_id, a.area_id, a.main_fertilising, a.main_forage, a.main_fuel,
+        a.main_base, a.main_material, a.main_total, a.main_total_other, a.disperse_fertilising, a.disperse_forage,
+        a.disperse_fuel, a.disperse_base, a.disperse_material, a.disperse_total, a.pro_straw_utilize,
+        a.return_ratio, a.comprehensive, a.comprehensive_index, a.industrialization_index, collect_resource,
+        a.yield_all_num, a.theory_resource, a.export_yield_total, a.fertilising, a.forage, a.fuel, a.base,
+        a.material,a.grass_valley_ratio, a.return_resource, a.collection_ratio
+      from straw_utilize_sum_total a,collect_flow c
+      WHERE a.area_id in
+
+       <foreach collection="childrenIds" item="areaId" open="(" close=")" separator=",">
+         #{areaId}
+       </foreach>
+       and c.area_id = a.area_id and c.year=a.year
+      and a.year = #{year}
+      and c.status = #{status}
+    </select>
+
+  <select id="selectProduceUtilizeByAreaIds2" resultMap="BaseResultMap">
+    select
+    a.id, a.year, a.province_id, a.city_id, a.area_id, a.main_fertilising, a.main_forage, a.main_fuel,
+    a.main_base, a.main_material, a.main_total, a.main_total_other, a.disperse_fertilising, a.disperse_forage,
+    a.disperse_fuel, a.disperse_base, a.disperse_material, a.disperse_total, a.pro_straw_utilize,
+    a.return_ratio, a.comprehensive, a.comprehensive_index, a.industrialization_index, collect_resource,
+    a.yield_all_num, a.theory_resource, a.export_yield_total, a.fertilising, a.forage, a.fuel, a.base,
+    a.material,a.grass_valley_ratio, a.return_resource, a.collection_ratio
+    from straw_utilize_sum_total a,collect_flow c
+    WHERE a.area_id in
+
+    <foreach collection="childrenIds" item="areaId" open="(" close=")" separator=",">
+      #{areaId}
+    </foreach>
+    and c.area_id = a.area_id and c.year=a.year
+    and a.year = #{year}
+    and c.status in
+    <foreach collection="statusAll" item="status" open="(" close=")" separator=",">
+      #{status}
+    </foreach>
+  </select>
+
+    <select id="selectProduceUtilizeByAreaIds3" resultMap="BaseResultMap">
+        select
+        a.id, a.year, a.province_id, a.city_id, a.area_id, a.main_fertilising, a.main_forage, a.main_fuel,
+        a.main_base, a.main_material, a.main_total, a.main_total_other, a.disperse_fertilising, a.disperse_forage,
+        a.disperse_fuel, a.disperse_base, a.disperse_material, a.disperse_total, a.pro_straw_utilize,
+        a.return_ratio, a.comprehensive, a.comprehensive_index, a.industrialization_index, collect_resource,
+        a.yield_all_num, a.theory_resource, a.export_yield_total, a.fertilising, a.forage, a.fuel, a.base,
+        a.material,a.grass_valley_ratio, a.return_resource, a.collection_ratio
+        from straw_utilize_sum_total a
+        left join collect_flow c ON c.area_id = a.area_id and c.year=a.year
+        LEFT JOIN ducss_region_copy_sys dr ON dr.region_code = a.area_id
+        WHERE dr.level = 'county'
+        and dr.year =   #{regionYear}
+        and a.year = #{year}
+        and c.status in
+        <foreach collection="statusAll" item="status" open="(" close=")" separator=",">
+            #{status}
+        </foreach>
+    </select>
+
+    <insert id="insertStrawUtilizeSumTotal" parameterType="com.sofn.ducss.model.StrawUtilizeSum">
+    insert into straw_utilize_sum_total (id,year, area_id,
+    main_fertilising, main_forage, main_fuel,
+    main_base, main_material, main_total,
+    main_total_other, disperse_fertilising, disperse_forage,
+    disperse_fuel, disperse_base, disperse_material,
+    disperse_total,pro_straw_utilize,return_ratio, comprehensive,
+    comprehensive_index, industrialization_index,
+    collect_resource, yield_all_num, theory_resource,
+    fertilising, forage, fuel,
+    base, material, grass_valley_ratio,
+    return_resource, collection_ratio,export_yield_total)
+    values (#{id,jdbcType=VARCHAR},#{year,jdbcType=VARCHAR}, #{areaId,jdbcType=VARCHAR},
+    #{mainFertilising,jdbcType=BIGINT}, #{mainForage,jdbcType=BIGINT}, #{mainFuel,jdbcType=BIGINT},
+    #{mainBase,jdbcType=BIGINT}, #{mainMaterial,jdbcType=BIGINT}, #{mainTotal,jdbcType=BIGINT},
+    #{mainTotalOther,jdbcType=BIGINT}, #{disperseFertilising,jdbcType=BIGINT}, #{disperseForage,jdbcType=BIGINT},
+    #{disperseFuel,jdbcType=BIGINT}, #{disperseBase,jdbcType=BIGINT}, #{disperseMaterial,jdbcType=BIGINT},
+    #{disperseTotal,jdbcType=BIGINT}, #{proStrawUtilize,jdbcType=BIGINT},#{returnRatio,jdbcType=BIGINT}, #{comprehensive,jdbcType=BIGINT},
+    #{comprehensiveIndex,jdbcType=BIGINT}, #{industrializationIndex,jdbcType=BIGINT},
+    #{collectResource,jdbcType=BIGINT}, #{yieldAllNum,jdbcType=BIGINT}, #{theoryResource,jdbcType=BIGINT},
+    #{fertilising,jdbcType=BIGINT}, #{forage,jdbcType=BIGINT}, #{fuel,jdbcType=BIGINT},
+    #{base,jdbcType=BIGINT}, #{material,jdbcType=BIGINT}, #{grassValleyRatio,jdbcType=BIGINT},
+    #{returnResource,jdbcType=BIGINT}, #{collectionRatio,jdbcType=BIGINT},#{yieldAllExport,jdbcType=DECIMAL})
+  </insert>
+
+  <select id="selectSumTotalByConditions"  parameterType="java.util.Map"  resultMap="BaseResultMap">
+      select
+        a.id, a.year, a.province_id, a.city_id, a.area_id, a.main_fertilising, a.main_forage, a.main_fuel,
+        a.main_base, a.main_material, a.main_total, a.main_total_other, a.disperse_fertilising, a.disperse_forage,
+        a.disperse_fuel, a.disperse_base, a.disperse_material, a.disperse_total, a.pro_straw_utilize,
+        a.return_ratio, a.comprehensive, a.comprehensive_index, a.industrialization_index, collect_resource,
+        a.yield_all_num, a.theory_resource, a.export_yield_total, a.fertilising, a.forage, a.fuel, a.base,
+        a.material,a.grass_valley_ratio, a.return_resource, a.collection_ratio
+      from straw_utilize_sum_total a,collect_flow c
+      WHERE c.area_id = a.area_id and c.year=a.year
+      <if test="level != null and level != ''">
+       and a.level = #{level}
+      </if>
+      <if test="year != null and year != ''">
+        and a.year = #{year}
+      </if>
+      <if test="status != null and status != ''">
+        and c.status = #{status}
+      </if>
+      <if test="areaId != null and areaId != ''">
+        and c.area_id = #{areaId}
+      </if>
+
+    </select>
+
+</mapper>

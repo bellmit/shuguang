@@ -1,0 +1,257 @@
+<link rel="stylesheet" href="assets/css/ales/etl/etlDailyEnforceLawlist.css" />
+<div class="gui-breadcrumbs">
+    <a href="">查询系统</a>&gt;
+    <a href="">执法信息查询</a>&gt;
+    <span>日常执法查询</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group">
+        <span>所属行业</span>
+        <input type="checkbox" value="" name="entityIndustryLimit" ng-click="limitCheckBox('entityIndustry','entityIndustryLimit')"><span class="checkedIndustryTypeText">不限</span>
+        <span ng-repeat="a in industryType">
+                    <input type="checkbox" value="{{a.id}}" name="entityIndustry" ng-click="limitCheckBox('entityIndustryLimit','entityIndustry')"><span class="checkedIndustryTypeText" ng-bind="a.dictName"></span>
+        </span>
+        <br>
+        <br>
+        <span>主体类型</span>
+        <input type="checkbox" value="" name="entityTypeLimit" ng-click="limitCheckBox('entityType','entityTypeLimit')"><span class="checkedIndustryTypeText">不限</span>
+        <span ng-repeat="a in entityType">
+                    <input type="checkbox" value="{{a.dictName}}" name="entityType" ng-click="limitCheckBox('entityTypeLimit','entityType')"><span class="checkedIndustryTypeText" ng-bind="a.dictName"></span>
+        </span>
+        <br>
+        <br>
+        <span>区域</span>
+        <div class="gui-select">
+            <select id="sheng" name="ObjShen" style="width: 122px;height: 27px;">
+                <option value="">省</option>
+            </select>
+        </div>
+        <div class="gui-select">
+            <select id="shi" name="ObjShi" style="width: 122px;height: 27px;">
+                <option value="">市</option>
+            </select>
+        </div>
+        <div class="gui-select">
+            <select id="xian" name="ObjXian" style="width: 122px;height: 27px;">
+                <option value="">区/县</option>
+            </select>
+        </div>
+        <span>年度</span>
+        <input id="Ddl_Year" name="taskYear" type="text" runat="server" onfocus="WdatePicker({skin:'default',dateFmt:'yyyy',minDate:'2010',maxDate:'%y'})" class="Wdate gui-input" style=" width:80px;margin-right: 30px;cursor: pointer" readonly="readonly" />
+        <span href="#modalCondition" data-toggle="modal" class="custom-condition">自定义条件</span>
+    </div>
+    <div class="gui-form-group">
+        <div class="condition-item">
+            <span>巡查结果</span>
+            <div class="gui-select">
+                <select name="enforceLawResult">
+                    <option value="">全部</option>
+                    <option value="1">合格</option>
+                    <option value="3">整改</option>
+                    <option value="2">不合格</option>
+                </select>
+            </div>
+        </div>
+        <div class="condition-item">
+            <span>执法时间</span>
+            <input id="datebegin" name="datebegin" style="width: 120px;cursor: pointer" readonly="readonly" class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('dateend');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateend\')}'})" /> --
+            <input id="dateend" class="Wdate gui-input" name="dateend" style="width: 120px;cursor: pointer;" readonly="readonly" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'datebegin\')}'})" />
+        </div>
+<!--         <div class="condition-item">
+            <span>关键字</span>
+            <input class="gui-input" maxlength="30" type="text" style="width: 120px" id="queryCon" name="queryCon" placeholder="请输入查询条件" maxlength="30" />
+        </div> -->
+        <div class="condition-item condition-custom" data-control="text" ng-show="visibletaskName">
+            <span>任务名称</span>
+            <input class="gui-input" ng-model="taskName" maxlength="80" type="text" placeholder="请输入任务名称" name="taskName" />
+        </div>
+        <div class="condition-item condition-custom" data-control="text" ng-show="visibletaskPersonName">
+            <span>执法人员</span>
+            <input class="gui-input" ng-model="taskPersonName" maxlength="80" type="text" placeholder="请输入执法人员" name="taskPersonName" />
+        </div>
+        <div class="condition-item">
+            <button class="gui-btn" id="ToCheck"  ng-disabled="!!btnDisabled" ng-click="queryDailyEnforceLawList($event)" >查询</button>
+            <button class="gui-btn" ng-click="cleanSelectModelQuery($event)">重置</button>
+        </div>
+    </div>
+    <div class="gui-table-panel clearfix">
+        <p class="table-total">符合条件的数据总计: {{tableTotal}} 项</p>
+        <!-- 切换视图展示 -->
+        <div class="view-type">展示方式
+            <i class="gui-icon icon-list highlight" ng-class="{'highlight': isListView}" ng-click="toggleView(true)" title="以列表视图展示"></i>
+            <i class="gui-icon icon-chart" ng-class="{'highlight': !isListView }" ng-click="toggleView(false)" title="以图形视图展示"></i>
+        </div>
+        <button ng-click="exportData()" class="fr gui-btn fr ml15">导出</button>
+    </div>
+    <!-- 图表区域 -->
+    <div class="gui-content-slide">
+        <div ng-style="{'transform': viewX}" class="content-wrap">
+            <div class="content-block">
+                <table id="grid" class="gui-table table-nowrap mt15" style="width: 100%">
+                </table>
+            </div>
+            <div class="content-block">
+                <div sg-chart options="vm.chartOptions" update="vm.chart"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--模态框-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog removeBor">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel" style="text-align: center">详细信息</h4>
+            </div>
+            <div class="modal-body clearfix gov-h" style="padding-left: 0px;padding-right: 0px;padding-top: 0px;">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td style="text-align: right; width: 260px">
+                                &nbsp;&nbsp;&nbsp;任务名称 :
+                            </td>
+                            <td>
+                                &nbsp;&nbsp;<span ng-bind="reCord.TASK_NAME">{{reCord.TASK_NAME}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right; width: 260px">
+                                &nbsp;&nbsp;&nbsp;所属行业 :
+                            </td>
+                            <td>
+                                &nbsp;&nbsp;<span ng-bind="reCord.ENTITY_INDUSTRY_NAME"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                &nbsp;&nbsp;&nbsp;执法时间 :
+                            </td>
+                            <td>
+                                &nbsp;&nbsp;<span ng-bind="reCord.TASK_BEGIN_TIME">
+                               <!-- &nbsp;&nbsp;从<span ng-bind="reCord.TASK_BEGIN_TIME"></span>至
+                                <span ng-bind="reCord.TASK_END_TIME"></span>-->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                &nbsp;&nbsp;被巡查对象 :
+                            </td>
+                            <td>
+                                &nbsp;&nbsp;<span ng-bind="reCord.ENTERPRISE_NAME"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                被巡查对象区域 :
+                            </td>
+                            <td>
+                                &nbsp;&nbsp;<span ng-bind="areaId"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                被巡查对象地址 :
+                            </td>
+                            <td>
+                                &nbsp;&nbsp;<span ng-bind="reCord.ENTERPRISE_ADDRESS"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                &nbsp;&nbsp;&nbsp;巡查人数 :
+                            </td>
+                            <td>
+                                &nbsp;&nbsp;<span ng-bind="reCord.TASK_PERSON_COUNT"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                &nbsp;&nbsp;&nbsp;执法人员 :
+                            </td>
+                            <td>
+                                &nbsp;&nbsp;<span ng-bind="reCord.TASK_PERSON_NAME"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                &nbsp;&nbsp;&nbsp;巡查意见 :
+                            </td>
+                            <td>
+                                &nbsp;&nbsp;<span ng-bind="reCord.ENFORCE_LAW_RESULT"></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalCondition" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">请选择自定义条件</h4>
+            </div>
+            <div class="modal-body">
+                <form novalidate="novalidate">
+                    <div class="list-head">
+                        <label>
+                            <input type="checkbox" class="condition-checked-all" />全选
+                        </label>
+                    </div>
+                    <ul class="gui-list list-condition">
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled />所属行业
+                            </label>
+                        </li>
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled>巡查结果
+                            </label>
+                        </li>
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled>年度
+                            </label>
+                        </li>
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled>日期
+                            </label>
+                        </li>
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled>所属区域
+                            </label>
+                        </li>
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled>主体类型
+                            </label>
+                        </li>
+                        <li data-key="taskPersonName">
+                            <label>
+                                <input type="checkbox">执法人员
+                            </label>
+                        </li>
+                        <li data-key="taskName">
+                            <label>
+                                <input type="checkbox">任务名称
+                            </label>
+                        </li>
+                    </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="gui-btn" ng-click="confirmCondition()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>

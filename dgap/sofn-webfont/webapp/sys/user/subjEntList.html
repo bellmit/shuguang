@@ -1,0 +1,79 @@
+<link rel="stylesheet" href="assets/css/asms/subjSv/subjSvList.css"/>
+<div class="gui-mainBc">
+    <div class="gui-breadcrumbs">
+        <a href="">系统管理</a>&gt;
+        <a href="">用户管理</a>&gt;
+        <span>机构用户管理</span>
+    </div>
+    <div class="gui-section ">
+        <ul class="gui-tab ng-scope">
+            <li class="active"><a ui-sref="index.content.sys/user/subjEntList">生产经营主体</a></li>
+            <li><a ui-sref="index.content.sys/user/subjSvList">监管机构</a></li>
+            <li><a ui-sref="index.content.sys/user/subjDtList">检测机构</a></li>
+            <li><a ui-sref="index.content.sys/user/subjElList">执法机构</a></li>
+        </ul>
+        <div class="">
+            <form id="queryForm" class=" gui-form-group " style="">
+                <span>组织形式</span>
+                <div class="gui-select">
+                    <select name="entityScale">
+                        <option value="">全部</option>
+                        <option ng-repeat="x in orgMode" value="{{x.id}}">{{x.dictName}}</option>
+                    </select>
+                </div>
+                <span>主体类别</span>
+                <div class="gui-select">
+                    <select name="entityType">
+                        <option value="">全部</option>
+                        <option ng-repeat="x in subjType" value="{{x.id}}">{{x.dictName}}</option>
+                    </select>
+                </div>
+                <div class="mt15">
+                    <span id="AnyArea">所属区域</span>
+                    <div class="gui-select">
+                        <select id="sheng" >
+                            <option value="">省</option>
+                        </select>
+                    </div>
+                    <div class="gui-select">
+                        <select id="shi" >
+                            <option value="">市</option>
+                        </select>
+                    </div>
+                    <div class="gui-select">
+                        <select id="xian" >
+                            <option value="">区/县</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mt15">
+                    <span>所属行业</span>
+                    <div class="gui-select">
+                        <select name="entityIndustry">
+                            <option value="">全部</option>
+                            <option ng-repeat="x in industryType" value="{{x.id}}">{{x.dictName}}</option>
+                        </select>
+                    </div>
+                    <span>不良记录</span>
+                    <div class="gui-select">
+                        <select name="badRecord">
+                            <option value="">全部</option>
+                            <option value="0">无</option>
+                            <option value="1">有</option>
+                        </select>
+                    </div>
+                    <span>主体名称</span>
+                    <input class="gui-input" type="text" style="width: 150px;" placeholder="请输入主体名称" name="entName"/>
+                    <button class="gui-btn" ng-click="querySubjEntList()">查询</button>
+                    <button class="gui-btn" ng-click="reloadArea()">
+                       重置</button>
+                </div>
+            </form>
+            <table id="entGrid"
+                   class="gui-table mt15" >
+            </table>
+        </div>
+    </div>
+
+
+</div>

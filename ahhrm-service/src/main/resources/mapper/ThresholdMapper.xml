@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ahhrm.mapper.ThresholdMapper">
+    <select id="existThreshold" resultType="com.sofn.ahhrm.model.Threshold">
+        select * from threshold
+        <where>
+            1=1
+            <if test="variety != null and variety != ''">
+                and variety = #{variety}
+            </if>
+            <if test="indexPar != null and indexPar != ''">
+                and index_par = #{indexPar}
+            </if>
+        </where>
+    </select>
+
+    <select id="repeatThreshold" resultType="com.sofn.ahhrm.model.Threshold">
+        select * from threshold
+        <where>
+            1=1
+            <if test=" id!= null and id != ''">
+                and id!=#{id}
+            </if>
+            <if test="variety != null and variety != ''">
+                and variety = #{variety}
+            </if>
+            <if test="indexPar != null and indexPar != ''">
+                and index_par = #{indexPar}
+            </if>
+        </where>
+    </select>
+    <select id="listByParams" resultType="com.sofn.ahhrm.model.Threshold">
+        select c.* from threshold c,(SELECT
+        b.variety
+        FROM
+        baseinfo a,
+        baseinfo_sub b
+        WHERE
+        a.status ='8' AND a.del_flag='N'
+        AND a.id = b.base_id
+        <if test=" pointName!= null and pointName != ''">
+            and a.point_name=#{pointName}
+        </if>
+        GROUP BY variety) d
+        <where>
+            c.variety=d.variety
+            <if test="variety != null and variety != ''">
+                and c.variety = #{variety}
+            </if>
+            <if test="indexPar != null and indexPar != ''">
+                and c.index_par = #{indexPar}
+            </if>
+        </where>
+    </select>
+    <resultMap id="rs1" type="com.sofn.ahhrm.vo.DropDownVo">
+        <id column="variety" property="id" jdbcType="VARCHAR"></id>
+    </resultMap>
+    <select id="listName" resultMap="rs1">
+ 	SELECT
+    DISTINCT(
+			b.variety
+			)
+		FROM
+			baseinfo a,
+			baseinfo_sub b
+		WHERE
+			a.status = '8'
+			and a.del_flag='N'
+		AND a.id = b.base_id
+    </select>
+</mapper>

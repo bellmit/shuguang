@@ -1,0 +1,1024 @@
+<link rel="stylesheet" href="assets/styles/register.css">
+<script type="text/javascript" src="assets/js/tts/register/maps.js"></script>
+<script type="text/javascript" src="assets/js/tts/register/service.js"></script>
+<header class="gui-header clearfix">
+    <div class="section-logo">
+        <img src="/assets/imgs/icon/logo.png" alt="国家农产品质量安全追溯管理信息平台（政务办公）" class="logo">
+        <h1>国家农产品质量安全追溯管理信息平台<em></em></h1>
+    </div>
+</header>
+<div class="gui-section">
+    <div class="ovh">
+        <div class="gui-page-head">
+            <h3>合作社备案申请</h3>
+        </div>
+        <form id="attributeForm" method="post" class="form-horizontal">
+            <ul class="gui-list">
+                <li>
+                    <div class="form-item form-group">
+                        <span class="title">合作社名称</span>
+                        <input type="text" class="form-control" id="enterpriseName" ng-model="enterpriseName" name="enterpriseName" placeholder="请输入合作社名称" data-bv-notempty="" data-bv-notempty-message="合作社名称不能为空" data-bv-stringlength="" data-bv-stringlength-min="6" data-bv-stringlength-max="18" data-bv-stringlength-message="合作社必须超过6，不超过18个字符">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <span class="title">证件类型</span>
+                        <div class="text-field">
+                            <label class="radio-item">
+                                <input type="radio" id="independent" name="cardType" ng-click="getRadio()" value="三证合一营业执照（无独立组织机构代码证）" checked><span>三证合一营业执照（无独立组织机构代码证）</span>
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" id="noindependent" name="cardType" ng-click="getRadio()" value="普通营业执照（有独立组织机构代码证）"><span>普通营业执照（有独立组织机构代码证）</span>
+                            </label>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <span class="title">企业工商注册号</span>
+                        <input type="text" class="form-control gui-input" id="creditCode" ng-model="creditCode" name="creditCode" placeholder="请输入企业工商注册号" onblur="queryByCreditCode2()">
+                        <div style="color:#a94442;margin-top: 5px;font-size: 12px;display: none" id="msg"></div>
+                    </div>
+                </li>
+                <li id="orgcode" hidden>
+                    <div class="form-item form-group">
+                        <span class="title">组织机构代码</span>
+                        <input type="text" class="form-control gui-input" id="organizationCode" ng-model="organizationCode" name="organizationCode"
+                               placeholder="请输入组织机构代码" onblur="queryByorgCode()">
+                        <div style="color:#a94442;margin-top: 5px;font-size: 12px;display: none" id="omsg"></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <span class="title">营业期限</span>
+                        <input id="dateBegin" class="form-control gui-input Wdate gui-col-3" ng-model="dateBegin" name="dateBegin" readonly="readonly" type="text" onfocus="var endDate=$dp.$('dateEnd');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateEnd\')}'})">
+                        <span class="">至</span>
+                        <input id="dateEnd" class="form-control gui-input Wdate gui-col-3" ng-model="dateEnd" name="dateEnd" readonly="readonly" type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'dateBegin\')}'})">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <span class="title">年产量</span>
+                        <input type="text" class="form-control gui-input gui-col-3" id="annualOutput" ng-model="annualOutput" name="annualOutput" placeholder="请输入年产量" data-bv-numeric="true" data-bv-numeric-message="请输入数字" data-bv-stringlength="" data-bv-stringlength-min="1" data-bv-stringlength-max="12" data-bv-stringlength-message="年产量必须超过1，不超过12个字符">
+                        <span>单位</span>
+                        <div class="gui-select gui-col-3">
+                            <select ng-model="selectedSiteUnit" id="selectedSiteUnit" class="form-control">
+                                <option ng-repeat="x in units" value="{{x.id}}">{{x.dictName}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <span class="title">所属区域</span>
+                        <div class="gui-select gui-col-4">
+                            <select id="selectedSiteProvince" class="form-control">
+                                <option value="">--请选择省份--</option>
+                                <!--<option ng-repeat="x in provinces" value="{{x.id}}">{{x.site}}</option>-->
+                            </select>
+                        </div>
+                        <div class="gui-select gui-col-4">
+                            <select id="selectedSiteCity" class="form-control">
+                                <option value="">--请选择市份--</option>
+                                <!--<option ng-repeat="x in citys" value="{{x.id}}">{{x.site}}</option>-->
+                            </select>
+                        </div>
+                        <div class="gui-select gui-col-4">
+                            <select id="selectedSiteArea" class="form-control">
+                                <option value="">--请选择区县--</option>
+                                <!--<option ng-repeat="x in areas" value="{{x.id}}">{{x.site}}</option>-->
+                            </select>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <span class="title">详情地址</span>
+                        <input type="text" class="form-control" id="address" ng-model="address" name="address" placeholder="请输入详情地址" data-bv-notempty="" data-bv-notempty-message="详情地址不能为空" data-bv-stringlength="" data-bv-stringlength-min="10" data-bv-stringlength-max="40" data-bv-stringlength-message="详情地址必须超过10，不超过40个字符">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <span class="title">经纬度</span>
+                        <input type="text" class="form-control gui-input gui-col-4" id="lonLatName" ng-model="lonLatName" name="lonLatName" placeholder="请输入经纬度名称" readonly onclick="gis()">
+                        <input type="text" class="form-control gui-input gui-col-4" id="lon" ng-model="lon" name="lon" placeholder="请输入经度" readonly onclick="gis()">
+                        <input type="text" class="form-control gui-input gui-col-4" id="lat" ng-model="lat" name="lat" placeholder="请输入纬度" readonly onclick="gis()">
+                    </div>
+                </li>
+            </ul>
+            <div class="gui-page-head">
+                <h3>法定代表人信息</h3>
+            </div>
+            <ul class="gui-list">
+                <li>
+                    <div class="form-item form-group">
+                        <span class="title">法定代表人姓名</span>
+                        <input type="text" class="form-control" id="legalName" ng-model="legalName" name="legalName" placeholder="请输入法定代表人姓名" data-bv-notempty="" data-bv-notempty-message="法定代表人姓名不能为空" data-bv-stringlength="" data-bv-stringlength-min="2" data-bv-stringlength-max="8" data-bv-stringlength-message="法定代表人姓名必须超过2，不超过8个字符">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <span class="title">法人身份证号</span>
+                        <input type="text" class="form-control" id="legalIdNumber" ng-model="legalIdNumber" name="legalIdNumber" placeholder="请输入法人身份证号" data-bv-notempty="true" data-bv-notempty-message="身份证号不能是空" data-bv-idderactive="true" data-bv-idderactive-message="身份证号不正确">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <span class="title">法人联系电话</span>
+                        <input type="text" class="form-control" id="legalPhone" ng-model="legalPhone" name="legalPhone" placeholder="请输入法人联系电话" data-bv-isphone="true" data-bv-isphone-message="请输入有效的手机号码">
+                    </div>
+                </li>
+            </ul>
+            <div class="gui-page-head">
+                <h3>联系人信息</h3>
+            </div>
+            <ul class="gui-list">
+                <li>
+                    <div class="form-item form-group">
+                        <span class="title">联系人姓名</span>
+                        <input type="text" class="form-control" id="contactName" ng-model="contactName" name="contactName" placeholder="请输入联系人姓名" data-bv-notempty="" data-bv-notempty-message="联系人姓名不能为空" data-bv-stringlength="" data-bv-stringlength-min="2" data-bv-stringlength-max="8" data-bv-stringlength-message="联系人姓名必须超过2，不超过8个字符">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <span class="title">联系人电话</span>
+                        <input type="text" class="form-control" id="contactPhone" ng-model="contactPhone" name="contactPhone" placeholder="请输入联系人电话" data-bv-notempty="" data-bv-notempty-message="联系电话不能为空" data-bv-isphone="true" data-bv-isphone-message="请输入有效的手机号码">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <span class="title">联系人电子邮箱</span>
+                        <input type="text" class="form-control" id="contactEmail" ng-model="contactEmail" name="contactEmail" placeholder="请输入电子邮箱" data-bv-notempty="" data-bv-notempty-message="电子邮箱不能为空" data-bv-emailaddress="true" data-bv-emailaddress-message="输入不是一个有效的电子邮件地址" data-bv-stringlength="" data-bv-stringlength-min="6" data-bv-stringlength-max="30" data-bv-stringlength-message="邮箱必须超过6，不超过30个字符">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <span class="title">联系人传真号码</span>
+                        <input type="text" class="form-control" id="faxNumber" ng-model="faxNumber" name="faxNumber" placeholder="请输入传真号码" data-bv-isbyvalue="true" data-bv-isbyvalue-message="请输入有效的传真号">
+                    </div>
+                </li>
+            </ul>
+            <div class="gui-page-head">
+                <h3>生产经营主体企业证照上传 (照片或电子扫描文档)</h3>
+            </div>
+            <ul class="gui-list">
+                <li>
+                    <div class="field-text">
+                        <div class="fl mr15" style="width:200px;">
+                            <img ng-src="{{img41}}" src="images/register/add.jpg" isupload="N" class="mr15" id="img41" ng-model="img41" width="200" height="120" ng-click="myModal41()">
+                            <div class="text-center" style="width:200px;" id="img21Text">营业执照</div>
+                        </div>
+                        <div class="fl mr15" style="width:200px;" id="img22div">
+                            <img ng-src="{{img42}}" src="images/register/add.jpg" isupload="N" class="mr15" id="img42" ng-model="img42" width="200" height="120" ng-click="myModal42()">
+                            <div class="text-center" style="width:200px;">组织机构代码证</div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div class="gui-page-head">
+                <h3>法人资料</h3>
+            </div>
+            <ul class="gui-list">
+                <li>
+                    <div class="field-text">
+                        <div class="fl mr15" style="width:200px;">
+                            <img ng-src="{{img43}}" src="images/register/add.jpg" isupload="N" class="mr15" id="img43" width="200" height="120" ng-click="myModal43()">
+                            <div class="text-center" style="width:200px;">身份证正面</div>
+                        </div>
+                        <div class="fl mr15" style="width:200px;">
+                            <img ng-src="{{img44}}" src="images/register/add.jpg" isupload="N" class="mr15" id="img44" width="200" height="120" ng-click="myModal44()">
+                            <div class="text-center" style="width:200px;">身份证反面</div>
+                        </div>
+                        <div class="fl mr15" style="width:200px;">
+                            <img ng-src="{{img45}}" src="images/register/add.jpg" isupload="N" class="mr15" id="img45" width="200" height="120" ng-click="myModal45()">
+                            <div class="text-center" style="width:200px;">手持身份证</div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="text-center mt15">
+                        <button class="gui-btn" ng-click="cooperationReNextStep()">上一步</button>
+                        <button ng-click="cooperationNextStep()" class="gui-btn">申请备案</button>
+                    </div>
+                </li>
+            </ul>
+        </form>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal41" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel41">营业执照</h4>
+            </div>
+            <div class="modal-body">
+                <p>营业执照</p>
+                <div>
+                    <p>{{imgsrc}}</p>
+                    <form enctype="multipart/form-data">
+                        <input id="file4-1" type="file" name="file" multiple=" true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="1">
+                        <br>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="gui-btn">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal42" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel42">组织机构代码证</h4>
+            </div>
+            <div class="modal-body">
+                <p>组织机构代码证</p>
+                <div>
+                    <p>{{imgsrc}}</p>
+                    <form enctype="multipart/form-data">
+                        <input id="file4-2" type="file" name="file" multiple=" true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="1">
+                        <br>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="gui-btn">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal43" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel43">身份证正面</h4>
+            </div>
+            <div class="modal-body">
+                <p>身份证正面</p>
+                <div>
+                    <p>{{imgsrc}}</p>
+                    <form enctype="multipart/form-data">
+                        <input id="file4-3" type="file" name="file" multiple=" true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="1">
+                        <br>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="gui-btn">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal44" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel44">身份证反面</h4>
+            </div>
+            <div class="modal-body">
+                <p>身份证反面</p>
+                <div>
+                    <p>{{imgsrc}}</p>
+                    <form enctype="multipart/form-data">
+                        <input id="file4-4" type="file" name="file" multiple=" true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="1">
+                        <br>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="gui-btn">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal45" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel45">手持身份证</h4>
+            </div>
+            <div class="modal-body">
+                <p>手持身份证</p>
+                <div>
+                    <p>{{imgsrc}}</p>
+                    <form enctype="multipart/form-data">
+                        <input id="file4-5" type="file" name="file" multiple=" true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="1">
+                        <br>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="gui-btn">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 弹出层 -->
+<div class="modal fade" id="gis" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-style">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">经纬度</h4>
+            </div>
+            <div class="modal-body" style="padding: 0px 2px;">
+                <div id="mapDiv" class="map-wrapper"></div>
+                <div class="map-panel">
+                    <!-- 搜索面板 -->
+                    <div class="search">搜索内容：</div>
+                    <!-- 提示词面板 -->
+                    <div id="promptDiv" class="prompt"></div>
+                    <!-- 统计面板 -->
+                    <div id="statisticsDiv" class="statistics"></div>
+                    <!-- 建议词面板 -->
+                    <div id="suggestsDiv" class="suggests"></div>
+                    <!-- 公交提示面板 -->
+                    <div id="lineDataDiv" class="lineData" ></div>
+                    <!-- 搜索结果面板 -->
+                    <div id="resultDiv" class="result" style="display:none">
+                        <div id="searchDiv"></div>
+                        <div id="pageDiv">
+                            <button class="gui-btn btn-small mb15" onclick="localsearch.firstPage()">首页</button>
+                            <button class="gui-btn btn-small mb15" onclick="localsearch.previousPage()">上页</button>
+                            <button class="gui-btn btn-small mb15" onclick="localsearch.nextPage()">下页</button>
+                            <button class="gui-btn btn-small mb15" onclick="localsearch.lastPage()">尾页</button>
+                            <br>转到第
+                            <input class="gui-input mb15" type="text" id="pageId" style="width:120px;">页
+                            <button class="gui-btn btn-small mb15" onclick="localsearch.gotoPage(parseInt(document.getElementById('pageId').value));">跳转</button>
+                        </div>
+                    </div>
+                    <!-- 无搜索结果面板 -->
+                    <div id="noResultDiv" class="result" style="display:none">没有搜索到相关的结果。</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="toolbar" style="height:32px;border-top: 0px solid #999999;border-bottom: 1px solid #999999;min-width: 700px;background-color: white;display: none;">
+    <div style="float:left; display:inline; line-height:26px;">
+        <div id="areaCity">
+            <span class="title">所属区域</span>：
+            <select class="gui-select" id="provsel" style="width:60px;height: 26px;margin-right: 2px;" ochange="doChangeArea(1)"><option value="">--省份--</option></select>
+            <select class="gui-select" id="citysel" style="width:60px;height: 26px;margin-right: 2px;" onchange="doChangeArea(2)"><option value="">--市区--</option></select>
+            <select class="gui-select" id="areasel" style="width:60px;height: 26px;margin-right: 2px;" onchange="doChangeArea(3)"><option value="">--区/县--</option></select>
+        </div>
+    </div>
+    <div style="float: right;display: inline;line-height: 26px;margin-top:0px;margin-right:5px;">
+        <div class="input-group">
+            <input type="text" class="gui-input mb15" id="keyWord" value="" style="width:200px;height: 26px;" placeholder="关键字搜索">
+            <button class="gui-btn btn-small mb15" onclick="doLocalSearch($('#keyWord').val())">搜索</button>
+            <button class="gui-btn btn-small mb15" onclick="addTMarker()">标记</button>
+        </div>
+    </div>
+</div>
+
+<div id="lngLatv" style="display: none;font-family:宋体;font-size: 12px;">
+    经度：<span id="lngv"></span>&nbsp;纬度：<span id="latv"></span>
+</div>
+
+<!--<div class="modal fade" id="gis" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"-->
+<!--aria-hidden="true" style="background-color: white">-->
+<!-- -->
+<!-- -->
+<!--</div>-->
+<script>
+
+    //地图GIS
+    var map;
+    var zoom = 12;
+    var localsearch;
+    var geocode;
+
+    function onLoad() {
+        //初始化地图对象
+        map = new TMap("mapDiv");
+        //设置显示地图的中心点和级别
+        map.centerAndZoom(new TLngLat(116.40969, 39.89945), zoom);
+        //允许鼠标滚轮缩放地图
+        map.enableHandleMouseScroll();
+        //允许双击地图放大
+        map.enableDoubleClickZoom();
+        //允许地图惯性拖拽
+        map.enableInertia();
+        //允许键盘操作
+        map.enableHandleKeyboard();
+
+        var opts = {
+            pageCapacity: 12, //每页显示的数量
+            onSearchComplete: localSearchResult //接收数据的回调函数
+        };
+        //创建搜索对象
+        localsearch = new TLocalSearch(map, opts);
+        geocode = new TGeocoder();
+
+        //创建自定义控件，并添加到地图上
+        var toolbarHtml = document.getElementById("toolbar");
+        var toolbarControl = new THtmlElementControl(toolbarHtml);
+        toolbarControl.setLeft(0);
+        toolbarControl.setTop(0);
+        map.addControl(toolbarControl);
+        document.getElementById("toolbar").style.display = "block";
+
+        //经纬度动态显示
+        var lngLatHtml = document.getElementById("lngLatv");
+        var lngLatControl = new THtmlElementControl(lngLatHtml);
+        lngLatControl.setRight(10);
+        lngLatControl.setBottom(5);
+        map.addControl(lngLatControl);
+        document.getElementById("lngLatv").style.display = "block";
+
+        //添加骨头棒控件，可以缩放和移动地图
+        var config = {
+            type : "TMAP_NAVIGATION_CONTROL_LARGE",
+            anchor : "TMAP_ANCHOR_TO_LEFT",
+            offset : [0,0],
+            showZoomInfo : true
+        };
+        var control = new TNavigationControl(config);
+        control.setTop(50);
+        map.addControl(control);
+
+        //注册地图事件
+        TEvent.addListener(map, "mousemove", function(pixel){
+            var lnglat=map.fromContainerPixelToLngLat(pixel);
+            $("#lngv").html(lnglat.getLng());
+            $("#latv").html(lnglat.getLat());
+        });
+
+    }
+
+    //打开事件是否已执行过一次
+    var isTged2showEvt =  false;
+    //关闭事件是否已执行过一次
+    var isTged2hideEvt =  false;
+    //行政区域数据是否已初始化(初始化期间不执行联动change事件)
+    var isTged2initEvt =  false;
+    //地图展示
+    function gis() {
+        //初始化事件参数
+        isTged2showEvt =  false;
+        isTged2hideEvt =  false;
+        isTged2initEvt =  false;
+        $("#gis").on('shown.bs.modal', function(){//当模态框对用户可见时触发（将等待 CSS 过渡效果完成）。
+            //alert("是否已打开处理："+isTged2showEvt);
+            if(isTged2showEvt){//防止事件多次监听重复处理[即限定每次打开只做一次监听处理]
+                return;
+            }
+
+            //alert("开始打开处理");
+            isTged2showEvt = true;
+            if(isExistMap()){
+                //地图自适合大小调整
+                map.checkResize();
+            }else{
+                //初始化图层
+                onLoad();
+            }
+            //初始化行政区域
+            initArea();
+
+            //当前地图信息展示
+            var lngLatName = $("#lonLatName").val();
+            var lng = $("#lon").val();
+            var lat = $("#lat").val();
+            if(lng && lat ){
+                var lnglat = new TLngLat(lng, lat);
+                //恢复当前地图中心点和级别(默认16)
+                map.panTo(lnglat,16);
+                //创建标注对象
+                var marker = new TMarker(lnglat);
+                //标注可拽
+                marker.enableDragging();
+                //地图上添加标注点
+                map.addOverLay(marker);
+                //坐标解析
+                geocode.getLocation(lnglat,function(result){
+                    geocodeResult(result,marker);
+                });
+                //事件注册
+                TEvent.addListener(marker, "dragstart", function(lnglat){
+                    marker.closeInfoWindow();
+                });
+                TEvent.addListener(marker, "drag", function(lnglat){
+                    $("#lngv").html(lnglat.getLng());
+                    $("#latv").html(lnglat.getLat());
+                });
+                TEvent.addListener(marker, "dragend", function(lnglat){
+                    geocode.getLocation(lnglat,function(result){
+                        geocodeResult(result,marker);
+                    });
+                });
+            }else{
+                //默认搜索关键字
+                $("#keyWord").val(($("#address").val()||""));
+                //初始定位
+                doLocalSearch();
+            }
+        }).on('hide.bs.modal', function(){
+            //alert("是否已关闭处理："+isTged2hideEvt);
+            if(isTged2hideEvt){//防止事件多次监听重复处理[即限定每次关闭只做一次监听处理]
+                return;
+            }
+            //alert("开始关闭处理");
+            isTged2hideEvt = true;
+            //回填行政区域数据
+            callBackArea();
+            //清空地图及搜索列表
+            clearAll();
+
+        }).modal("show");
+    }
+
+    //初始化行政区域
+    function initArea(){
+        $.fn.mycity("provsel","citysel","areasel");
+        $("#provsel").val($("#selectedSiteProvince option:selected").val()||"");
+        $("#provsel").trigger("change");
+        $("#citysel").val($("#selectedSiteCity option:selected").val()||"");
+        $("#citysel").trigger("change");
+        $("#areasel").val($("#selectedSiteArea option:selected").val()||"");
+        //初始化结束打开触发事件
+        isTged2initEvt=true;
+    }
+
+    //回填区域数据
+    function callBackArea(){
+        if($("#mapDiv").data("lon")){
+            var callBackInf = "您已选择："
+                    + "\n\n地点：" + $("#mapDiv").data("lonLatName")
+                    + "\n经纬度：" + $("#mapDiv").data("lon") + ", " + $("#mapDiv").data("lat")
+                    + "\n地址：" + $("#mapDiv").data("address")
+                    + "\n\n是否确定退出！"
+            alert(callBackInf);
+            $("#selectedSiteProvince").val($("#provsel option:selected").val()||"");
+            $("#selectedSiteProvince").trigger("change");
+            $("#selectedSiteCity").val($("#citysel option:selected").val()||"");
+            $("#selectedSiteCity").trigger("change");
+            $("#selectedSiteArea").val($("#areasel option:selected").val()||"");
+            $("#lon").val($("#mapDiv").data("lon"));
+            $("#lat").val($("#mapDiv").data("lat"));
+            $("#lonLatName").val($("#mapDiv").data("address"));
+            //$("#lonLatName").val($("#mapDiv").data("lonLatName"));
+            //$("#address").val($("#mapDiv").data("address"));
+        }else{
+            alert("尚未选择经纬度是否退出！");
+        }
+
+    }
+
+    function addTMarker2(){
+        //创建标注对象
+        var marker = new TMarker(map.getCenter());
+        //标注可拽
+        marker.enableDragging();
+        //地图上添加标注点
+        map.addOverLay(marker);
+        marker.refresh(true);
+        //事件注册
+        TEvent.addListener(marker, "dragstart", function(lnglat){
+            marker.closeInfoWindow();
+        });
+        TEvent.addListener(marker, "drag", function(lnglat){
+            $("#lngv").html(lnglat.getLng());
+            $("#latv").html(lnglat.getLat());
+        });
+        TEvent.addListener(marker, "dragend", function(lnglat){
+            geocode.getLocation(lnglat,function(result){
+                geocodeResult(result,marker);
+            });
+        });
+    }
+
+    function addTMarker(){
+        //创建标注对象
+        var marker = new TMarker(map.getCenter());
+        //标注可拽
+        marker.enableDragging();
+        //地图上添加标注点
+        map.addOverLay(marker);
+        //事件注册
+        TEvent.addListener(marker, "dragstart", function(lnglat){
+            marker.closeInfoWindow();
+        });
+        TEvent.addListener(marker, "drag", function(lnglat){
+            $("#lngv").html(lnglat.getLng());
+            $("#latv").html(lnglat.getLat());
+        });
+        TEvent.addListener(marker, "dragend", function(lnglat){
+            geocode.getLocation(lnglat,function(result){
+                geocodeResult(result,marker);
+            });
+        });
+    }
+
+    /**
+     * 占位处理
+     */
+    function str2format(str,arg){
+        if(arg instanceof Array){
+            for(var i=0;i<arg.length;i++) {
+                str=str.replace(new RegExp("\\{"+i+"\\}","g"),arg[i]);
+            }
+        }
+        return str;
+    }
+
+    function doChangeArea(type){
+        if(!isTged2initEvt){
+            //alert("-未打开不执行-"+type);
+            return;
+        }
+        switch (type) {
+            case 1:
+                //省级
+                var provVal = $("#provsel option:selected").val(), provTxt = $('#provsel option:selected').text();
+                if( !provVal||(provTxt.indexOf("请选择")>-1)){
+                    provTxt = "";
+                }
+                localsearch.search(provTxt);
+                break;
+            case 2:
+                //城市级
+                var provVal = $("#provsel option:selected").val(), provTxt = $('#provsel option:selected').text();
+                if( !provVal||(provTxt.indexOf("请选择")>-1)){
+                    provTxt = "";
+                }
+                var cityVal = $("#citysel option:selected").val(), cityTxt = $('#citysel option:selected').text();
+                if( !cityVal||(cityTxt==="市辖区")||(cityTxt==="县")||(cityTxt.indexOf("请选择")>-1)){
+                    cityTxt = "";
+                }
+                localsearch.search(provTxt+cityTxt);
+                break;
+            case 3:
+                //区/县级
+                doLocalSearch();
+                break;
+        }
+    }
+
+    function doLocalSearch(keyword){
+        var searchTxt = "";
+        if(!keyword){
+            var provVal = $("#provsel option:selected").val(), provTxt = $('#provsel option:selected').text();
+            if( !provVal||(provTxt.indexOf("请选择")>-1)){
+                provTxt = "";
+            }
+            var cityVal = $("#citysel option:selected").val(), cityTxt = $('#citysel option:selected').text();
+            if( !cityVal||(cityTxt==="市辖区")||(cityTxt==="县")||(cityTxt.indexOf("请选择")>-1)){
+                cityTxt = "";
+            }
+            var areaVal = $("#areasel option:selected").val(), areaTxt = $('#areasel option:selected').text();
+            if( !areaVal||(areaTxt==="市辖区")||(areaTxt.indexOf("请选择")>-1)){
+                areaTxt = "";
+            }
+            searchTxt = provTxt + cityTxt + areaTxt;
+        }else{
+            searchTxt = keyword || "";
+        }
+        localsearch.search(searchTxt);
+    }
+
+    function geocodeResult(result,marker) {
+        //反坐标解析
+        var poi="",lacPoint="", address="";
+        if(result.getStatus() == 0) {
+            var addressCompt = result.getAddressComponent();
+            poi = addressCompt.poi;
+            address = result.getAddress();
+            lacPoint = result.getLocationPoint();
+            getLngLat(poi,lacPoint.getLng(),lacPoint.getLat(),address);
+        }else{
+            result.getMsg();
+        }
+        showPosition(marker, poi, address);
+        //区域反查询
+        var mapBounds = map.getBounds();
+        var lonlatWest = mapBounds.getSouthWest();
+        var lonlatEast = mapBounds.getNorthEast();
+        var remoteReqStr = "{"
+                + "'lonlat':  '{0},{1}',"
+                + "'level': '5',"
+                + "'bound': '{2},{3},{4},{5}',"
+                + "'zoom': '{6}',"
+                + "'layers': ''," //map.getLayers()
+                + "'projection': ''"
+                + "}";
+        remoteReqStr = str2format(remoteReqStr,[
+            lacPoint.getLng(),lacPoint.getLat(),
+            lonlatWest.getLng(),lonlatWest.getLat(),lonlatEast.getLng(),lonlatEast.getLat(),
+            map.getZoom()
+        ])
+        //alert(remoteReqStr);
+        $.post("http://map.tianditu.com/query.shtml",
+                {  type: "changeCity",
+                    postStr: remoteReqStr
+                },
+                function(data){
+                    if(data){
+                        var gbcode = data.gbcode||"";
+                        if(gbcode.length==9){
+                            var countyCode = gbcode.substring(0,3);
+                            if(countyCode=='156'){//中国
+                                var provCode=gbcode.substring(3,5);
+                                var cityCode=gbcode.substring(5,7);
+                                var areaCode=gbcode.substring(7,9);
+                                isTged2initEvt=false;
+                                $("#provsel").val(provCode);
+                                $("#provsel").trigger("change");
+                                $("#citysel").val(provCode+cityCode);
+                                $("#citysel").trigger("change");
+                                $("#areasel").val(provCode+cityCode+areaCode);
+                                isTged2initEvt=true;
+                            }else{
+                                isTged2initEvt=false;
+                                $("#provsel").val("");
+                                $("#provsel").trigger("change");
+                                isTged2initEvt=true;
+                            }
+                        }
+                    }
+                },
+                "json");
+    }
+
+    function localSearchResult(result) {
+        //清空地图及搜索列表
+        clearAll();
+
+        //添加提示词
+        prompt(result);
+
+        ///alert(parseInt(result.getResultType()));
+        //根据返回类型解析搜索结果
+        switch (parseInt(result.getResultType())) {
+            case 1:
+                //解析点数据结果
+                pois(result.getPois());
+                break;
+            case 2:
+                //解析推荐城市
+                statistics(result.getStatistics());
+                break;
+            case 3:
+                //解析行政区划边界
+                area(result.getArea());
+                break;
+            case 4:
+                //解析建议词信息
+                suggests(result.getSuggests());
+                break;
+            case 5:
+                //解析公交信息
+                lineData(result.getLineData());
+                break;
+        }
+
+    }
+
+    //解析提示词
+    function prompt(obj) {
+        var prompts = obj.getPrompt();
+        if (prompts) {
+            var promptHtml = "";
+            for (var i = 0; i < prompts.length; i++) {
+                var prompt = prompts[i];
+                var promptType = prompt.type;
+                var promptAdmins = prompt.admins;
+                var meanprompt = prompt.DidYouMean;
+                if (promptType == 1) {
+                    promptHtml += "<p>您是否要在" + promptAdmins[0].name + "</strong>搜索更多包含<strong>" + obj.getKeyword() + "</strong>的相关内容？<p>";
+                } else if (promptType == 2) {
+                    promptHtml += "<p>在<strong>" + promptAdmins[0].name + "</strong>没有搜索到与<strong>" + obj.getKeyword() + "</strong>相关的结果。<p>";
+                    if (meanprompt) {
+                        promptHtml += "<p>您是否要找：<font weight='bold' color='#035fbe'><strong>" + meanprompt + "</strong></font><p>";
+                    }
+                } else if (promptType == 3) {
+                    promptHtml += "<p style='margin-bottom:3px;'>有以下相关结果，您是否要找：</p>"
+                    for (i = 0; i < promptAdmins.length; i++) {
+                        promptHtml += "<p>" + promptAdmins[i].name + "</p>";
+                    }
+                }
+            }
+            if (promptHtml != "") {
+                document.getElementById("promptDiv").style.display = "block";
+                document.getElementById("promptDiv").innerHTML = promptHtml;
+            }
+        }else{
+            document.getElementById("noResultDiv").style.display = "block";
+        }
+    }
+
+    //获取经纬度方法
+    function getLngLat(name, lon, lat, address) {
+        map.panTo(new TLngLat(lon, lat),16);
+        $("#lngv").html(lon);
+        $("#latv").html(lat);
+        $("#mapDiv").data("lon",lon);
+        $("#mapDiv").data("lat",lat);
+        $("#mapDiv").data("lonLatName",name);
+        $("#mapDiv").data("address",address);
+        $("#mapDiv").data("zoom",map.getZoom());
+    }
+
+    //解析点数据结果
+    function pois(obj) {
+        if (obj) {
+            //显示搜索列表
+            var divMarker = document.createElement("div");
+            //坐标数组，设置最佳比例尺时会用到
+            var zoomArr = [];
+            for (var i = 0; i < obj.length; i++) {
+                //闭包
+                (function(i) {
+                    //名称
+                    var name = obj[i].name;
+                    //地址
+                    var address = obj[i].address;
+                    //坐标
+                    var lnglatArr = obj[i].lonlat.split(" ");
+                    var lnglat = new TLngLat(lnglatArr[0], lnglatArr[1]);
+                    var winHtml = "地址:" + address;
+                    //创建标注对象
+                    var marker = new TMarker(lnglat);
+                    //地图上添加标注点
+                    map.addOverLay(marker);
+                    //注册标注点的点击事件
+                    TEvent.bind(marker, "click", marker, function() {
+                        geocode.getLocation(lnglat,function(result){
+                            geocodeResult(result,marker);
+                        });
+                    });
+                    zoomArr.push(lnglat);
+
+                    //在页面上显示搜索的列表
+                    var a = document.createElement("a");
+                    a.href = "JavaScript:void(0);";
+                    a.innerHTML = name;
+                    a.onclick = function() {
+                        geocode.getLocation(lnglat,function(result){
+                            geocodeResult(result,marker);
+                        });
+                    }
+                    divMarker.appendChild(document.createTextNode((i + 1) + "."));
+                    divMarker.appendChild(a);
+                    divMarker.appendChild(document.createElement("br"));
+                })(i);
+            }
+            //显示地图的最佳级别
+            map.setViewport(zoomArr);
+            //显示搜索结果
+            divMarker.appendChild(document.createTextNode('共' + localsearch.getCountNumber() + '条记录，分' + localsearch.getCountPage() + '页,当前第' + localsearch.getPageIndex() + '页'));
+            document.getElementById("searchDiv").appendChild(divMarker);
+            document.getElementById("resultDiv").style.display = "block";
+        }else{
+            document.getElementById("noResultDiv").style.display = "block";
+        }
+    }
+
+    //显示信息框
+    function showPosition(marker, name, address) {
+        var posHtml = "详细地址：" + address;
+        var tipsWin = marker.openInfoWinHtml(posHtml);
+        tipsWin.setTitle(name);
+    }
+
+    //解析推荐城市
+    function statistics(obj) {
+        if (obj) {
+            //坐标数组，设置最佳比例尺时会用到
+            var pointsArr = [];
+            var priorityCitysHtml = "";
+            var allAdminsHtml = "";
+            var priorityCitys = obj.priorityCitys;
+            if (priorityCitys) {
+                //推荐城市显示
+                priorityCitysHtml += "在中国以下城市有结果<ul>";
+                for (var i = 0; i < priorityCitys.length; i++) {
+                    priorityCitysHtml += "<li>" + priorityCitys[i].name + "(" + priorityCitys[i].count + ")</li>";
+                }
+                priorityCitysHtml += "</ul>";
+            }
+
+            var allAdmins = obj.allAdmins;
+            if (allAdmins) {
+                allAdminsHtml += "更多城市<ul>";
+                for (var i = 0; i < allAdmins.length; i++) {
+                    allAdminsHtml += "<li>" + allAdmins[i].name + "(" + allAdmins[i].count + ")";
+                    var childAdmins = allAdmins[i].childAdmins;
+                    if (childAdmins) {
+                        for (var m = 0; m < childAdmins.length; m++) {
+                            allAdminsHtml += "<blockquote>" + childAdmins[m].name + "(" + childAdmins[m].count + ")</blockquote>";
+                        }
+                    }
+                    allAdminsHtml += "</li>"
+                }
+                allAdminsHtml += "</ul>";
+            }
+            document.getElementById("statisticsDiv").style.display = "block";
+            document.getElementById("statisticsDiv").innerHTML = priorityCitysHtml + allAdminsHtml;
+        }
+    }
+
+    //解析行政区划边界
+    function area(obj) {
+        if (obj) {
+            var level = obj.level;
+            var lonlatStr = obj.lonlat;
+            var loglatArr = lonlatStr.split(",");
+            var loglat = new TLngLat(loglatArr[0], loglatArr[1]);
+            //坐标数组，设置最佳比例尺时会用到
+            var pointsArr = [];
+            var points = obj.points;
+            for (var i = 0; i < points.length; i++) {
+                var regionLngLats = [];
+                var regionArr = points[i].region.split(",");
+                for (var m = 0; m < regionArr.length; m++) {
+                    var lnglatArr = regionArr[m].split(" ");
+                    var lnglat = new TLngLat(lnglatArr[0], lnglatArr[1]);
+                    regionLngLats.push(lnglat);
+                    pointsArr.push(lnglat);
+                }
+                //创建线对象
+                var line = new TPolyline(regionLngLats, {
+                    strokeColor: "blue",
+                    strokeWeight: 3,
+                    strokeOpacity: 1,
+                    strokeStyle: "dashed"
+                });
+                //向地图上添加线
+                //map.addOverLay(line);
+            }
+            //显示最佳比例尺
+            map.setViewport(pointsArr);
+            map.panTo(loglat,parseInt(level));
+        }
+    }
+
+
+    //解析建议词信息
+    function suggests(obj) {
+        if (obj) {
+            //建议词提示，如果搜索类型为公交规划建议词或公交站搜索时，返回结果为公交信息的建议词。
+            var suggestsHtml = "建议词提示<ul>";
+            for (var i = 0; i < obj.length; i++) {
+                suggestsHtml += "<li>" + obj[i].name + "&nbsp;&nbsp;<font style='color:#666666'>" + obj[i].address + "</font></li>";
+            }
+            suggestsHtml += "</ul>";
+            document.getElementById("suggestsDiv").style.display = "block";
+            document.getElementById("suggestsDiv").innerHTML = suggestsHtml;
+        }
+    }
+
+    //解析公交信息
+    function lineData(obj) {
+        if (obj) {
+            //公交提示
+            var lineDataHtml = "公交提示<ul>";
+            for (var i = 0; i < obj.length; i++) {
+                lineDataHtml += "<li>" + obj[i].name + "&nbsp;&nbsp;<font style='color:#666666'>共" + obj[i].stationNum + "站</font></li>";
+            }
+            lineDataHtml += "</ul>";
+            document.getElementById("lineDataDiv").style.display = "block";
+            document.getElementById("lineDataDiv").innerHTML = lineDataHtml;
+        }
+    }
+
+    //是否已存在地图
+    function isExistMap() {
+        var mapDiv = document.getElementById("mapDiv").innerHTML;
+        if( !map || !mapDiv ){
+            return false;
+        }
+        return true;
+    }
+
+    //清空地图及搜索列表
+    function clearAll() {
+        map&&map.clearOverLays();
+        document.getElementById("keyWord").innerHTML = "";
+        document.getElementById("searchDiv").innerHTML = "";
+        document.getElementById("resultDiv").style.display = "none";
+        document.getElementById("noResultDiv").style.display = "none";
+        document.getElementById("statisticsDiv").innerHTML = "";
+        document.getElementById("statisticsDiv").style.display = "none";
+        document.getElementById("promptDiv").innerHTML = "";
+        document.getElementById("promptDiv").style.display = "none";
+        document.getElementById("suggestsDiv").innerHTML = "";
+        document.getElementById("suggestsDiv").style.display = "none";
+        document.getElementById("lineDataDiv").innerHTML = "";
+        document.getElementById("lineDataDiv").style.display = "none";
+    }
+</script>

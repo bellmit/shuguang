@@ -1,0 +1,176 @@
+<link rel="stylesheet" href="assets/css/dgap/resource/resourceDir.css">
+<div class="gui-breadcrumbs">
+    <a href="">数据共享系统</a>&gt;
+    <a href="">资源管理</a>&gt;
+    <span>资源目录</span>
+</div>
+<div class="gui-section">
+    <div class="gui-actions">
+        <span class="gui-btn " data-toggle="modal" data-target="#resDirAdd"><i
+                class="gui-icon icon-add"></i>新增字段</span>
+        <button class="gui-btn ml15 submit-btn" ng-click="returnMenu()">返回</button>
+        <button class="gui-btn fr" ng-disabled="!!btnDisabled" ng-click="deleteTable()"><i class="gui-icon icon-remove"></i>删除表</button>
+        <button class="gui-btn fr mr15" ng-disabled="!!btnDisabled" ng-click="creatTable()"><i class="gui-icon icon-add"></i>生成表</button>
+    </div>
+        <input type="text" ng-model="tableName" name="tableName" class="gui-input form-control" disabled="disabled" >
+        <input type="text" ng-model="tableEnglishName" name="tableEnglishName" class="gui-input form-control" disabled="disabled" >
+    <table id="reDir" class="gui-table">
+    </table>
+</div>
+<!-- 模态框（修改） -->
+<div class="modal fade" id="updates" tabindex="-1" role="dialog" aria-labelledby="resDirAdd1Label" aria-hidden="true"
+     style="color: black">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="resDirAdd1Label">
+                    字段设计
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="updateResoueceDirF" style="text-align: center">
+                    <div class="form-item form-group">
+                        <label>英文字段名<i class="gui-colorRed">*</i></label>
+                        <input name="englishName" ng-model="updateList.englishName"  maxlength="20" class="gui-in
+                       put form-control" data-bv-notempty="true" data-bv-notempty-message="英文字段名不能为空"
+                               data-bv-stringlength="true" data-bv-stringlength-max="20"
+                               data-bv-stringlength-message="英文字母、数字、下划线，并以英文字母开头。">
+
+                    </div>
+                    <div class="form-item form-group">
+                        <label>中文字段名<i class="gui-colorRed">*</i></label>
+                        <input name="chineseName" ng-model="updateList.chineseName" maxlength="20" class="gui-in
+                       put form-control" data-bv-notempty="true" data-bv-notempty-message="中文字段名不能为空"
+                               data-bv-stringlength="true" data-bv-stringlength-max="20"
+                               data-bv-stringlength-message="中文、数字、下划线，并以中文开头。">
+
+                    </div>
+                    <div class="form-item form-group">
+                        <label>字段类型<i class="gui-colorRed">*</i></label>
+                        <select name="typeUpdate" class="gui-select form-control" data-bv-notempty="true"
+                                data-bv-notempty-message="字段类型不能为空">
+                            <option value="">--字段类型--</option>
+                            <option value="{{x.type}}" ng-repeat="x in filedType" ng-bind="x.name"></option>
+                        </select>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>字段长度<i class="gui-colorRed">*</i></label>
+                        <input name="len" ng-model="updateList.len" class="gui-in
+                       put form-control" data-bv-notempty="true" data-bv-notempty-message="字段长度不能为空"
+                               data-bv-stringlength="true" data-bv-stringlength-max="32">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <span type="button" class="gui-btn" data-dismiss="modal">取消</span>
+                    <span type="button" class="gui-btn updateResoueceDirSave" data-dismiss="modal"
+                          ng-click="updateSave()">保存
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 模态框（新增） -->
+<div class="modal fade" id="resDirAdd" tabindex="-1" role="dialog" aria-labelledby="resDirAddLabel" aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="resDirAddLabel">
+                  字段设计
+                </h4>
+            </div>
+            <div class="modal-body ">
+                <div id="attributeForm" style="text-align: center">
+                    <div class="form-item form-group">
+                        <label>英文字段名<i class="gui-colorRed">*</i></label>
+                        <input name="englishName" ng-model="englishName" class="gui-input form-control" maxlength="20"
+                               ng-change="toChangename()"  onKeyUp="value=value.replace(/[\W]/g,'') "
+
+                               data-bv-notempty="true" data-bv-notempty -message="英文字段名不能为空"
+                               data-bv-stringlength="true" data-bv-stringlength-max="20"
+                               data-bv-stringlength-message="英文字母、数字、下划线，并以英文字母开头。">
+
+                    </div>
+                    <div class="form-item form-group">
+                        <label>中文字段名<i class="gui-colorRed">*</i></label>
+                        <input name="chineseName" ng-model="chineseName" class="gui-input form-control" maxlength="20"
+                        data-bv-notempty="true" data-bv-notempty-message="中文字段名不能为空"
+                               data-bv-stringlength="true" data-bv-stringlength-max="20"
+                               data-bv-stringlength-message="中文、数字、下划线，并以中文开头。">
+
+                    </div>
+                    <div class="form-item form-group">
+                        <label>字段类型<i class="gui-colorRed">*</i></label>
+                        <select name="type" ng-model="filedTypes"  ng-change="lengthContorl()"
+                                class="gui-select form-control" data-bv-notempty="true"
+                                data-bv-notempty-message="字段类型不能为空"  >
+                            <option value="">--字段类型--</option>
+                            <option value="{{x.type}}" ng-repeat="x in filedType" ng-bind="x.name"></option>
+                        </select>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>字段长度<i class="gui-colorRed">*</i></label>
+                        <input name="len" id="len" ng-model="len"   data-bv-notempty-message="字段长度不能为空"
+                               data-bv-stringlength="true" data-bv-stringlength-max="32" ng-change="toChangeValue()" class="gui-input form-control" >
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <span type="button" class="gui-btn" data-dismiss="modal">取消</span>
+                    <span type="button" class="gui-btn addRes" data-dismiss="modal" ng-click="addModal()">保存
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 模态框（新增表设计） -->
+<div class="modal fade" id="tableAdd" tabindex="-1" role="dialog" aria-labelledby="resDirAdd1Label" aria-hidden="true"
+     style="color: black">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="tableNameLabel">
+                    表名设计
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="tableNameDesign" style="text-align: center">
+                    <div class="form-item form-group">
+                        <label>英文表名<i class="gui-colorRed">*</i></label>
+                        <input name="englishTabeleName" ng-model="englishTabeleName" maxlength="20" class="gui-input form-control"
+                               ng-change="toChangeTablename()"
+                               data-bv-notempty="true" data-bv-notempty-message="英文表名不能为空"
+                               data-bv-stringlength="true" data-bv-stringlength-max="20"
+                               data-bv-stringlength-message="英文字母、数字、下划线，并以英文字母开头。">
+
+                    </div>
+                    <div class="form-item form-group">
+                        <label>中文表名<i class="gui-colorRed">*</i></label>
+                        <input name="chineseTableName" ng-model="chineseTableName" maxlength="20" class="gui-in
+                       put form-control" data-bv-notempty="true" data-bv-notempty-message="中文表名不能为空"
+                               data-bv-stringlength="true" data-bv-stringlength-max="20"
+                               data-bv-stringlength-message="中文、数字、下划线，并以中文开头。">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <span type="button" class="gui-btn updateResoueceDirSave" data-dismiss="modal"
+                          ng-click="tableNameDesign()">下一步
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

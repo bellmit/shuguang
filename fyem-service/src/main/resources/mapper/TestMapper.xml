@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fyem.mapper.TestMapper" >
+
+    <resultMap id="rs1" type="com.sofn.fyem.model.Test" >
+        <id property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+    </resultMap>
+    <select id="getTests" resultMap="rs1">
+        select
+         id,
+         name
+        FROM test
+    </select>
+
+
+</mapper>

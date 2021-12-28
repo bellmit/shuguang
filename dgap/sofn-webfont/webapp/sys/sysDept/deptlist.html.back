@@ -1,0 +1,207 @@
+<link rel="stylesheet" href="assets/css/sys/sysBase/baseInfoList.css" />
+<div class="gui-breadcrumbs">
+    <a href="">追溯系统</a>&gt;
+    <a href="">内部管理</a>&gt;
+    <span>部门管理</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group clearfix">
+        <label>部门名称</label>
+        <input class="gui-input" name="deptName7" type="text" placeholder="部门名称" />
+        <label>状态</label>
+        <span class="gui-select">
+      <select name="status7">
+        <option value="">全部</option>
+        <option value="0">可用</option>
+        <option value="1">禁用</option>
+        <option value="2">注销</option>
+      </select>
+    </span>
+        <button class="gui-btn" id="ToCheck">查询</button>
+        <button ng-click="listDele()" class="gui-btn fr ml15">删除</button>
+        <button class="gui-btn fr" ng-click="listAdd()">新增</button>
+    </div>
+    <div>
+        <table id="grid" class="gui-table" style="width: 100%">
+        </table>
+    </div>
+</div>
+
+<!--add Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">新增部门管理信息</h4>
+            </div>
+            <form class="default_w_h col-md-12 modal-form" id="modalForm" method="post" action="">
+                <div class="modal-body">
+                    <div class="form-item">
+                      <label>机构名称</label>
+                      <input type="text" class="gui-input" ng-model="sysDept.reservedField1" name="reservedField1" placeholder="请输入机构名称" disabled="true" />
+                    </div>
+                    <div class="form-item">
+                      <label>机构类别</label>
+                      <input type="text" class="gui-input" ng-model="sysDept.deptType" name="deptType" placeholder="请输入机构名称" disabled="true" />
+                    </div>
+                    <div class="form-item">
+                      <label>机构级别</label>
+                      <input type="text" class="gui-input" ng-model="sysDept.deptLevel" name="deptLevel" placeholder="请输入机构级别" disabled="true" />
+                    </div>
+                    <div class="form-item">
+                      <label>所属区域</label>
+                      <input type="text" class="gui-input" ng-model="sysDept.regionId" name="regionId" placeholder="请输入所属区域" disabled="true" />
+                    </div>
+                    <div class="form-item">
+                      <label>部门名称</label>
+                      <input type="text" class="gui-input" ng-model="sysDept.deptName" name="deptName0" placeholder="请输入部门名称" required notSpecial/>
+                    </div>
+                    <p/>
+                    <div class="form-item">
+                      <label>部门负责人</label>
+                      <input type="text" class="gui-input" ng-model="sysDept.deptManager" name="deptManager0" placeholder="请输入部门负责人" />
+                    </div>
+                    <div class="form-item">
+                      <label>联系电话</label>
+                      <input type="text" class="gui-input" ng-model="sysDept.phone" name="phone0" placeholder="请输入联系电话" />
+                    </div>
+                    <div class="form-item">
+                      <label>状态</label>
+                      <span class="gui-select">
+                        <select name="status0" ng-model="sysDept.status" style="width: 131px;">
+        									<option value="0">可用</option>
+        									<option value="1">禁用</option>
+        									<option value="2">注销</option>
+                				</select>
+                      </span>
+                    </div>
+                    <input type="hidden" name="regionId0" value="" />
+                </div>
+            </form>
+            <div class="modal-footer">
+              <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+              <button type="button" class="gui-btn" ng-disabled="myform.JGname.$dirty&&myform.JGname.$invalid" ng-click="addSysDept()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--update Modal -->
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel3">修改部门管理信息</h4>
+            </div>
+            <form class="default_w_h col-md-12 modal-form" id="modalForm0" method="post" action="">
+                <div class="modal-body">
+                  <div class="form-item">
+                    <label>机构名称</label>
+                    <input type="text" class="gui-input" ng-model="sysDept.reservedField1" name="reservedField1" placeholder="请输入机构名称" disabled="true" />
+                  </div>
+                  <div class="form-item">
+                    <label>机构类别</label>
+                    <input type="text" class="gui-input" ng-model="sysDept.deptType" name="deptType" placeholder="请输入机构名称" disabled="true" />
+                  </div>
+                  <div class="form-item">
+                    <label>机构级别</label>
+                    <input type="text" class="gui-input" ng-model="sysDept.deptLevel" name="deptLevel" placeholder="请输入机构级别" disabled="true" />
+                  </div>
+                  <div class="form-item">
+                    <label>所属区域</label>
+                    <input type="text" class="gui-input" ng-model="sysDept.regionId" name="regionId" placeholder="请输入所属区域" disabled="true" />
+                  </div>
+                  <div class="form-item">
+                    <label>部门名称</label>
+                    <input type="text" class="gui-input" ng-model="sysDept.deptName" name="deptName1" placeholder="请输入部门名称" required notSpecial/>
+                  </div>
+                  <div class="form-item">
+                    <label>部门负责人</label>
+                    <input type="text" class="gui-input" ng-model="sysDept.deptManager" name="deptManager1" placeholder="请输入部门负责人" />
+                  </div>
+                  <div class="form-item">
+                    <label>联系电话</label>
+                    <input type="text" class="gui-input" ng-model="sysDept.phone" name="phone1" placeholder="请输入联系电话" />
+                  </div>
+                  <div class="form-item">
+                    <label>状态</label>
+                    <span class="gui-select">
+                      <select ng-model="sysDept.status" name="status1" style="width: 131px;">
+      									<option value="0">可用</option>
+      									<option value="1">禁用</option>
+      									<option value="2">注销</option>
+                      </select>
+                    </span>
+                  </div>
+                    <input type="hidden" name="id" value="" />
+                    <input type="hidden" name="regionId01" value="" />
+                </div>
+            </form>
+
+            <div class="modal-footer">
+              <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+              <button type="button" class="gui-btn" ng-disabled="myform.JGname.$dirty&&myform.JGname.$invalid" ng-click="updateSysDept()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--look Modal -->
+<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel3">部门管理信息</h4>
+            </div>
+            <div class="modal-body">
+              <div class="form-item">
+                <label>机构名称</label>
+                <input type="text" class="gui-input" ng-model="sysDept.reservedField1" name="reservedField1" placeholder="请输入机构名称" disabled="disabled" />
+              </div>
+              <div class="form-item">
+                <label>机构类别</label>
+                <input type="text" class="gui-input" ng-model="sysDept.deptType" name="deptType" placeholder="请输入机构名称" disabled="disabled" />
+              </div>
+              <div class="form-item">
+                <label>机构级别</label>
+                <input type="text" class="gui-input" ng-model="sysDept.deptLevel" name="deptLevel" placeholder="请输入机构级别" disabled="disabled" />
+              </div>
+              <div class="form-item">
+                <label>所属区域</label>
+                <input type="text" class="gui-input" ng-model="sysDept.regionId" name="regionId" placeholder="请输入所属区域" disabled="disabled" />
+              </div>
+              <div class="form-item">
+                <label>部门名称</label>
+                <input type="text" class="gui-input" ng-model="sysDept.deptName" name="deptName1" placeholder="请输入部门名称" disabled="disabled"/>
+              </div>
+              <div class="form-item">
+                <label>部门负责人</label>
+                <input type="text" class="gui-input" ng-model="sysDept.deptManager" name="deptManager1" placeholder="请输入部门负责人" disabled="disabled"/>
+              </div>
+              <div class="form-item">
+                <label>联系电话</label>
+                <input type="text" class="gui-input" ng-model="sysDept.phone" name="phone1" placeholder="请输入联系电话" disabled="disabled"/>
+              </div>
+              <div class="form-item">
+                <label>状态</label>
+                <span class="gui-select disabled">
+                  <select ng-model="sysDept.status" name="status1" disabled="disabled">
+                      <option value="">全部</option>
+          						<option value="0">可用</option>
+          						<option value="1">禁用</option>
+          						<option value="2">注销</option>
+          				</select>
+                </span>
+              </div>
+                <input type="hidden" name="id" value="" />
+                <input type="hidden" name="regionId01" value="" />
+            </div>
+            <div class="modal-footer">
+                <!--<button type="button" class="" ng-disabled="myform.JGname.$dirty&&myform.JGname.$invalid" ng-click="updateSysDept()">保存</button>-->
+                <button type="button" class="gui-btn" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>

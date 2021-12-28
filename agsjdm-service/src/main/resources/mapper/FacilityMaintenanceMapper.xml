@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agsjdm.mapper.FacilityMaintenanceMapper">
+
+    <select id="listPage" resultType="com.sofn.agsjdm.model.FacilityMaintenance">
+        select * from FACILITY_MAINTENANCE
+        <where>
+            <if test="wetlandId != null and wetlandId != ''">
+                and WETLAND_ID = #{wetlandId}
+            </if>
+            <if test="road != null and road != ''">
+            and ROAD like '%' || #{road} || '%'
+            </if>
+            <if test="personSit != null and personSit != ''">
+                and PERSON_SIT like '%' || #{personSit} || '%'
+            </if>
+
+            <if test="endTime != null and endTime != ''">
+                AND OPERATOR_TIME &lt;= #{endTime}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                AND OPERATOR_TIME &gt;= #{startTime}
+            </if>
+            <if test="province != null and province != ''">
+                and PROVINCE = #{province}
+            </if>
+            <if test="city != null and city != ''">
+                and CITY = #{city}
+            </if>
+            <if test="county != null and county != ''">
+                and COUNTY = #{county}
+            </if>
+        </where>
+    </select>
+
+</mapper>

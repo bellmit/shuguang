@@ -1,0 +1,183 @@
+<style>
+    .gui-list .form-item{
+        padding-left: 115px;
+    }
+    .gui-list .form-item .title, .gui-list .form-item label{
+        margin-left: -115px;
+        width: 115px;
+    }
+</style>
+<div class="gui-breadcrumbs">
+    <a ui-sref="index.content.ales/taskManage/samplePlan/samplePlanList">执法系统</a>&gt;
+    <a ui-sref="index.content.ales/taskManage/samplePlan/samplePlanList">监督抽查管理</a>&gt;
+    <span>抽样计划</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group">
+        <div class="">
+              <span>计划名称</span>
+            <input class="gui-input" type="text"  ng-model="planName" id="planNameId" name="planName"  placeholder="请输入计划名称" maxlength="50" />
+           <!-- <span>任务名称</span>
+            <input class="gui-input" type="text"  ng-model="taskName" id="taskNameId" name="taskName"   placeholder="请输入任务名称" maxlength="50"/>-->
+            <span>状态</span>
+            <div class="gui-select">
+                <select ng-init="planSource=''" ng-model="planSource" name="planSource">
+                    <option value="" ng-selected="true">全部</option>
+                    <option value="0">未发布</option>
+                    <option value="1">已发布</option>
+                    <option value="2">执行中</option>
+                    <option value="3">已结束</option>
+                </select>
+                </div>
+            <div class="condition-item">
+                <button class="gui-btn" id="ToCheck" style="">查询</button>
+                <button class="gui-btn" ng-click="reset()" style="">重置</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 图表面板 -->
+    <div class="gui-table-panel clearfix">
+       <!-- <p class="table-total" ng-show="isListView">符合条件的数据总计: {{tableTotal}} 项</p>
+        &lt;!&ndash; 切换视图展示 &ndash;&gt;
+        <div class="view-type">展示方式
+            <i class="gui-icon icon-list highlight" ng-class="{'highlight': isListView}" ng-click="toggleView(true)" title="以列表视图展示"></i>
+            <i class="gui-icon icon-chart" ng-class="{'highlight': !isListView }" ng-click="toggleView(false)" title="以图形视图展示"></i>
+        </div>-->
+        <div class="gui-actions no-margin fr">
+            <button ng-click="delPlan()" class="fr gui-btn fr ml15" id="delId">
+                <i class="gui-icon icon-remove"></i>删除</button>
+            <button ng-click="issue()" class="fr gui-btn fr ml15" id="issueId">
+                <i class="gui-icon icon-publish"></i>发布</button>
+            <button ng-click="add()"class="gui-btn fr ml15" id="newId"><i class="gui-icon icon-add"></i>新增</button>
+        </div>
+    </div>
+   <table id="grid" class="gui-table table-nowrap mt15" style="width: 100%"></table>
+</div>
+<!--新增计划-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog removeBor">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    <span>新增抽样计划</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h " style="padding-left: 0px;padding-right: 0px;background-color: white;">
+                <div class="table-responsive">
+                    <form id="attributeForm" class="mt15" onsubmit="return false;">
+                        <ul class="gui-list">
+                            <li>
+                                <div class="form-item">
+                                    <span class="title">抽样计划名称 <span style="color: red"> *</span>:</span>
+                                    <div class="field-text"><input type="text"  ng-model="planNames" id="planNameIds" name="planNames" style="width: 80%;left: 10px;" placeholder="抽样计划名称" class="form-control gui-input" data-bv-notempty="true" data-bv-notempty-message="请写任务名称" data-bv-stringlength="true" data-bv-stringlength-max="30" data-bv-stringlength-message="任务名称不能超过30个汉字或60个字符" />
+                                        <div class="objErro" style="display: none;color: #a94442;font-size: 12px">
+                                            任务名称已存在 请重新输入
+                                        </div></div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="gui-list">
+                            <li>
+                                <div class="form-item">
+                                    <span class="title">关联任务名称 <span style="color: red"> *</span>:</span>
+                                    <div class="field-text"><input type="text"  ng-click="selectModalQdButt()"
+                                      ng-model="taskNames" id="taskNameIds" readonly name="taskNames" style="width: 80%;left: 10px;" placeholder="关联任务名称" class="form-control gui-input" data-bv-notempty="true" data-bv-notempty-message="请写任务名称" data-bv-stringlength="true" data-bv-stringlength-max="30" data-bv-stringlength-message="任务名称不能超过30个汉字或60个字符" />
+                                        <div class="objErro" style="display: none;color: #a94442;font-size: 12px">
+                                            任务名称已存在 请重新输入
+                                        </div></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" ng-disabled="jcdxModal.$invalid" disabled="disabled" ng-click="addPlan()">保存
+                </button>
+                <button class="gui-btn" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--修改抽样计划-->
+<div class="modal fade" id="myModals" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog removeBor">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabels">
+                    <span>修改抽样计划</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h " style="padding-left: 0px;padding-right: 0px;background-color: white;">
+                <div class="table-responsive">
+                    <form id="attributeForms" class="mt15" onsubmit="return false;">
+                        <ul class="gui-list">
+                            <li>
+                                <div class="form-item">
+                                    <span class="title">抽样计划名称 <span style="color: red"> *</span>:</span>
+                                    <div class="field-text"><input type="text" ng-model="planNames"  name="planNames" style="width: 80%;left: 10px;" placeholder="抽样计划名称"
+                                                                   class="form-control gui-input" data-bv-notempty="true" data-bv-notempty-message="请写任务名称" data-bv-stringlength="true" data-bv-stringlength-max="30" data-bv-stringlength-message="任务名称不能超过30个汉字或60个字符" />
+                                        <div class="objErro" style="display: none;color: #a94442;font-size: 12px">
+                                            任务名称已存在 请重新输入
+                                        </div></div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="gui-list">
+                            <li>
+                                <div class="form-item">
+                                    <span class="title">关联任务名称 <span style="color: red"> *</span>:</span>
+                                    <div class="field-text"><input type="text"  readonly ng-model="taskNames"  name="taskNames" style="width: 80%;left: 10px;" placeholder="关联任务名称" class="form-control gui-input" data-bv-notempty="true" data-bv-notempty-message="请写任务名称" data-bv-stringlength="true" data-bv-stringlength-max="30" data-bv-stringlength-message="任务名称不能超过30个汉字或60个字符" />
+                                        <div class="objErro" style="display: none;color: #a94442;font-size: 12px">
+                                            任务名称已存在 请重新输入
+                                        </div></div>
+                                    <!--ng-click="selectModalQdButt()"-->
+                                </div>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" ng-disabled="jcdxModal.$invalid" disabled="disabled" ng-click="updatePlan()">保存
+                </button>
+                <button class="gui-btn" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="selectModal" tabindex="1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabe">
+                    <span id="modalTitle">关联任务</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+               <!-- <form>
+                    <div class="mt15">
+                        <input type="text" class="gui-input" name="selectQueryName" placeholder="请输入名称">
+                        <button id="selectTocheck" class="gui-btn">查询</button>
+                    </div>
+                </form>-->
+                <!--list-->
+                <table id="selectGrid" style="width: 100%;" class="gui-table mt15">
+                </table>
+                <div class="modal-footer">
+                    <button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>

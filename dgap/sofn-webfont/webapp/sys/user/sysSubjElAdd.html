@@ -1,0 +1,245 @@
+<link rel="stylesheet" href="assets/css/asms/subjSv/subjSvAdd.css"/>
+<div class="gui-breadcrumbs">
+    <a href="">系统管理</a>&gt;
+    <a ui-sref="index.content.sys/user/sysSubjEntList">用户管理</a>&gt;
+    <a ui-sref="index.content.sys/user/sysSubjElList">机构用户管理</a>&gt;
+    <a ui-sref="index.content.sys/user/sysSubjElList">执法机构</a>&gt;
+    <span>新增</span>
+</div>
+    <div class="Sup_contain_section_contain_head  gui-section">
+        <p style="font-size: 20px;margin: 0;">新增注册</p>
+        <form id="addElForm" name="addElForm"
+              data-bv-message="不能为空"
+              data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+              data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+              data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+        <ul>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-md-3 col-sm-3 control-label">机构名称<span style="color:red;">*</span></span>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <input type="text" ng-model="subjEl.elName" name="elName" placeholder="请输入机构名称"
+                               class="form-control"
+                               data-bv-notempty="true"
+                               data-bv-notempty-message="机构名称不能为空"
+                               data-bv-stringlength="true"
+                               data-bv-stringlength-max="50"
+                               data-bv-stringlength-message="机构名称不能超过50个字符"
+                               data-bv-regexp="true"
+                               data-bv-regexp-regexp="^[\u4e00-\u9fa5]+$"
+                               data-bv-regexp-message="机构名称只能输入中文"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-md-3 col-sm-3 control-label">机构代码<span style="color:red;">*</span></span>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <input type="text" ng-model="subjEl.elCode" name="elCode" placeholder="请输入机构代码"
+                               class="form-control"
+                               data-bv-notempty="true"
+                               data-bv-notempty-message="机构代码不能为空"
+                               data-bv-stringlength="true"
+                               data-bv-stringlength-max="50"
+                               data-bv-stringlength-message="机构代码不能超过50个字符"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-md-3 col-sm-3 control-label">机构类别<span style="color:red;">*</span></span>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div style="width: 100%" class="gui-select">
+                            <select name="elTypeId"
+                                    class="form-control"
+                                    data-bv-notempty="true"
+                                    data-bv-notempty-message="机构类别不能为空">
+                                <!--<option ng-repeat="x in orgType" value="{{x.id}}">{{x.dictName}}</option>-->
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-md-3 col-sm-3 control-label">机构级别<span style="color:red;">*</span></span>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="gui-select" style="width: 100%">
+                            <!--ng-change="limitArea()"-->
+                            <select ng-model="subjEl.elLevelId" name="elLevelId"
+                                    class="form-control"
+                                    data-bv-notempty="true"
+                                    data-bv-notempty-message="机构级别不能为空">
+                               <option ng-repeat="x in orgLevel" value="{{x.id}}" dictVal="{{x.dictValue}}">{{x.dictName}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-md-3 col-sm-3 control-label">所属区域<span style="color:red;">*</span></span>
+                    <div class="col-lg-6 col-md-6 col-sm-6" style="text-align: left">
+                        <div class="gui-select" style="width: 100%">
+                            <select id="sheng" class="mr15">
+                                <option value="">--省--</option>
+                            </select>
+                        </div>
+                      <div class="gui-select mt15" style="width: 100%">
+                          <select id="shi" class="mr15 ml15">
+                              <option value="">--市--</option>
+                          </select>
+                      </div>
+                       <div class="gui-select mt15" style="width: 100%">
+                           <select name="xian" id="xian" class="form-control ml15"
+                                   data-bv-notempty="true"
+                                   data-bv-notempty-message="省、市、县必须全选">
+                               <option value="">--区/县--</option>
+                           </select>
+                       </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-md-3 col-sm-3 control-label">通讯地址<span style="color:red;">*</span></span>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <input type="text" ng-model="subjEl.elAddress" name="elAddress" placeholder="请详细填写乡镇、街道、社区、楼牌号等信息"
+                               class="form-control"
+                               data-bv-notempty="true"
+                               data-bv-notempty-message="通讯地址不能为空"
+                               data-bv-stringlength="true"
+                               data-bv-stringlength-max="50"
+                               data-bv-stringlength-message="通讯地址不能超过50个字符"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-md-3 col-sm-3 control-label">负责人<span style="color:red;">*</span></span>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <input type="text" ng-model="subjEl.elLeader" name="elLeader" placeholder="请输入负责人"
+                               class="form-control"
+                               data-bv-notempty="true"
+                               data-bv-notempty-message="负责人不能为空"
+                               data-bv-stringlength="true"
+                               data-bv-stringlength-max="50"
+                               data-bv-stringlength-message="负责人不能超过50个字符"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-md-3 col-sm-3 control-label">负责人电话<span>&nbsp;&nbsp;</span></span>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <input type="text" ng-model="subjEl.elLeaderPhone" name="elLeaderPhone" class="form-control"
+                               data-bv-isTelephone="true"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-md-3 col-sm-3 control-label">联系人<span style="color:red;">*</span></span>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <input type="text" ng-model="subjEl.elContact" name="elContact" placeholder="请输入联系人"
+                               class="form-control"
+                               data-bv-notempty="true"
+                               data-bv-notempty-message="联系人不能为空"
+                               data-bv-stringlength="true"
+                               data-bv-stringlength-max="50"
+                               data-bv-stringlength-message="联系人不能超过50个字符"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-md-3 col-sm-3 control-label">联系人电话<span style="color:red;">*</span></span>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <input type="text" ng-model="subjEl.elContactPhone" name="elContactPhone" placeholder="请输入联系人电话"
+                               class="form-control"
+                               data-bv-notempty="true"
+                               data-bv-notempty-message="联系人电话不能为空"
+                               data-bv-isTelephone="true"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-md-3 col-sm-3 control-label">联系人QQ<span>&nbsp;&nbsp;</span></span>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <input type="text" ng-model="subjEl.elContactQQ" name="elContactQQ" class="form-control"
+                               data-bv-regexp="true"
+                               data-bv-regexp-regexp="^\d{5,11}$"
+                               data-bv-regexp-message="只能输入5到11位的数字"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-md-3 col-sm-3 control-label">电子邮箱<span>&nbsp;&nbsp;</span></span>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <input type="text" ng-model="subjEl.elContactEmail" name="elContactEmail" class="form-control"
+                               data-bv-stringlength="true"
+                               data-bv-stringlength-max="50"
+                               data-bv-stringlength-message="电子邮箱不能超过50个字符"
+                               data-bv-emailaddress="true"
+                               data-bv-emailaddress-message="输入不是一个有效的电子邮件地址" />
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-md-3 col-sm-3 control-label">邮编<span>&nbsp;&nbsp;</span></span>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <input type="text" ng-model="subjEl.elPostcode" name="elPostcode" class="form-control"
+                               data-bv-regexp="true"
+                               data-bv-regexp-regexp="^\d{6}$"
+                               data-bv-regexp-message="邮编只能为6位数字" />
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-md-3 col-sm-3 control-label">单位性质<span>&nbsp;&nbsp;</span></span>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <input type="text" ng-model="subjEl.elUnitNature" name="elUnitNature" class="form-control"
+                               data-bv-stringlength="true"
+                               data-bv-stringlength-max="50"
+                               data-bv-stringlength-message="单位性质不能超过50个字符"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-md-3 col-sm-3 control-label">具体办事机构<span>&nbsp;&nbsp;</span></span>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <input type="text" ng-model="subjEl.elWorkBody" name="elWorkBody" class="form-control"
+                               data-bv-stringlength="true"
+                               data-bv-stringlength-max="50"
+                               data-bv-stringlength-message="具体办事机构不能超过50个字符"/>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group">
+                    <span class="col-lg-3 col-md-3 col-sm-3 control-label">执法人数<span>&nbsp;&nbsp;</span></span>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <input type="text" ng-model="subjEl.elPeopleNum" name="elPeopleNum" class="form-control"
+                               data-bv-integer="true"
+                               data-bv-integer-message="请输入整数"
+                               data-bv-stringlength="true"
+                               data-bv-stringlength-max="10"
+                               data-bv-stringlength-message="执法人数不能超过10个字符"/>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        </form>
+        <div style="text-align: center" class="mt15 mb25">
+            <button class="gui-btn mr15" ui-sref="index.content.sys/user/sysSubjElList">取消</button>
+            <button class="gui-btn ml15" ng-click="addSubjEl()">提交</button>
+        </div>
+
+
+    </div>

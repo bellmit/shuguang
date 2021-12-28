@@ -1,0 +1,113 @@
+.Sup_contain_section_contain_head{
+    width: 1100px;
+    text-align: center;
+    font-size: 16px;
+    overflow: hidden;
+}
+.Sup_contain_section_news{
+    width:100%;
+    margin:30px 0px  20px 0px;
+    font-size: 16px;
+    height: 60px;
+    text-align: left;
+    border-bottom: 2px solid #4BA0D6;
+}
+.Sup_contain_section_news span{
+    position: relative;
+    bottom: -25px;
+    left: -60px;
+    font-size: 16px;
+}
+.Sup_contain_section_news button{
+    border-radius: 5px;
+    background-color: white;
+    border: 1px solid #4BA0D6;
+    margin-left: 20px;
+    outline: none;
+    position: relative;
+    cursor: pointer;
+    bottom: -10px;
+    width: 180px;
+    height: 40px;
+}
+.Sup_contain_section_news button:hover{
+    background-color: #4BA0D6;
+    color: white;
+}
+.Sup_contain_section_contain_head ul li{
+    font-size: 16px;
+    clear: both;
+    margin-bottom: 10px;
+}
+.Sup_contain_section_contain_head ul li textarea{
+    font-size: 16px;
+}
+.Sup_contain_section_contain_head span{
+    margin-right: 50px;
+    display: inline-block;
+    width: 150px;
+    text-align: right;
+}
+.Sup_contain_section_contain_head select{
+    width: 145px;
+    outline: none;
+    cursor: pointer;
+}
+.Sup_contain_section_contain_input{
+    width: 450px;
+    outline: none;
+    /*height: 30px;*/
+}
+.Sup_contain_section_contain_head_button{
+    width: 120px;
+    height: 30px;
+    font-size: 18px;
+    background: white;
+    border-radius: 5px;
+    border: 1px solid #4BA0D6;
+    outline: none;
+    margin: 0px 60px 0px 150px;
+
+}
+.Sup_contain_section_contain_head_button:hover{
+    background-color: #4BA0D6;
+    color: white;
+    cursor: pointer;
+    border: none;
+}
+/*�޸�����*/
+.Sup_contain_changpw{
+    position: fixed;
+    left: 0px;
+    top:-1000%;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+}
+.Sup_contain_changpw div{
+    width: 500px;
+    height: 450px;
+    border-radius: 5px;
+    margin: 5% auto;
+    text-align: center;
+    font-size: 18px;
+    padding-top: 50px;
+    background-color: #4BA0D6;
+}
+.Sup_contain_changpw input{
+    width: 200px;
+    outline: none;
+    margin: 20px 0px 30px 20px;
+}
+.Sup_contain_changpw button{
+    width: 100px;
+    margin: 20px 50px 0px 80px;
+    border: 1px solid black;
+    background-color: white;
+    border-radius: 5px;
+}
+.Sup_contain_changpw button:hover{
+    background-color: #9d9d9d;
+    border: none;
+    color: white;
+}

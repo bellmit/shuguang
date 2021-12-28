@@ -1,0 +1,65 @@
+<div class="gui-breadcrumbs">
+    <a href="">生产管理</a>&gt;
+    <a href="">二维码打印</a>&gt;
+    <span>二维码打印</span>
+</div>
+<div class="gui-section">
+    <div class="ovh">
+        <ul class="gui-list clearfix">
+            <li>
+                <div class="text-center">
+                    <span id="ewm"></span>
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">产品名称</span>
+                    <input ng-model="productName" disabled type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">质检情况</span>
+                    <input ng-model="mediCheck" disabled type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">质检结论</span>
+                    <input ng-model="mediResult" disabled type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">收获数量</span>
+                    <input ng-model="productAmount" disabled type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">收获单位</span>
+                    <input ng-model="harvestUnit" disabled type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">收获时间</span>
+                    <input ng-model="harvestTime" disabled type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title" id="content">产品批次</span>
+                    <input ng-model="productPc" disabled type="text" id="productPc" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">主体用户码</span>
+                    <input ng-model="userIdcode" disabled type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">打印份数</span>
+                    <input type="text" class="gui-input"><span>份</span></div>
+            </li>
+            <li>
+                <div class="text-center">
+                    <button class="gui-btn" ng-click="removeLocalStorage()" ui-sref="index.content.tts/ttsScltxxcjScgl/cppcgl">关闭</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

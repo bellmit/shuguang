@@ -1,0 +1,6 @@
+# 该配置文件解决logback日志存放目录和日志文件名称未定义的问题
+spring:
+  profiles:
+    active: @active.profile@
+  application:
+    name: @project.artifactId@

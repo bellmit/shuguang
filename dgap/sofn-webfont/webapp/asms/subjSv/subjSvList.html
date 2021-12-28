@@ -1,0 +1,268 @@
+<link rel="stylesheet" href="assets/css/asms/subjSv/subjSvList.css"/>
+<div class="gui-mainBc">
+    <div class="gui-breadcrumbs">
+        <a href="javascript:void(0)">监管系统</a>&gt;
+        <a ui-sref="index.content.asms/subjSv/subjSvList">主体管理</a>&gt;
+        <span>监管机构</span>
+    </div>
+    <div class="  gui-TabCut ">
+        <ul class="clearfix gov-h">
+            <li id="" class="fl gp-r gui-TabCheck">监管机构主体信息</li>
+            <li class="fl gp-r subjSvChangeList" style="display: none" ui-sref="index.content.asms/subjSv/subjSvChangeList">注册变更待审核<span class="news" ng-show="changeToAuditCount>0">{{changeToAuditCount}}</span></li>
+            <li class="fl gp-r subjSvCancelList" style="display: none" ui-sref="index.content.asms/subjSv/subjSvCancelList">注册注销待审核<span class="news" ng-show="cancelToAuditCount>0">{{cancelToAuditCount}}</span></li>
+            <li class="fl gp-r subjSvRevokeList" style="display: none" ui-sref="index.content.asms/subjSv/subjSvRevokeList">注册撤销待审核<span class="news" ng-show="revokeToAuditCount>0">{{revokeToAuditCount}}</span></li>
+        </ul>
+        <div class="gui-botLine"></div>
+    </div>
+    <div class="gui-section">
+        <div class="gui-form-group">
+            <span>所属行业</span>
+            <input type="checkbox" value="" checked name="entityIndustryLimit" ng-click="limitCheckBoxAll('entityIndustry','entityIndustryLimit')"><span class="checkedIndustryTypeText">不限</span>
+            <span ng-repeat="a in industryType">
+                <input type="checkbox" value="{{a.id}}" name="entityIndustry" ng-click="limitCheckBox('entityIndustryLimit','entityIndustry')"><span class="checkedIndustryTypeText" ng-bind="a.dictName"></span>
+            </span>
+            <div class="mt15">
+                <span>机构级别</span>
+                <input type="checkbox" value="" checked name="svLevelLimit" ng-click="limitCheckBoxAll('svLevel','svLevelLimit')"><span class="checkedIndustryTypeText">不限</span>
+                <apan ng-repeat="a in svLevel">
+                    <input type="checkbox" value="{{a.dictValue}}" name="svLevel" ng-click="limitCheckBox('svLevelLimit','svLevel')"><span class="checkedIndustryTypeText" ng-bind="a.dictName"></span>
+                </apan>
+            </div>
+            <div class="mt15">
+                <span>主体状态</span>
+                <input type="checkbox" value="" checked name="statuslLimit" ng-click="limitCheckBoxAll('status','statuslLimit')"><span class="checkedIndustryTypeText">不限</span>
+                    <input type="checkbox" value="0" name="status" ng-click="limitCheckBox('statuslLimit','status')"><span class="checkedIndustryTypeText">正常</span>
+                    <input type="checkbox" value="1" name="status" ng-click="limitCheckBox('statuslLimit','status')"><span class="checkedIndustryTypeText">变更申请中</span>
+                    <input type="checkbox" value="2" name="status" ng-click="limitCheckBox('statuslLimit','status')"><span class="checkedIndustryTypeText">注销申请中</span>
+                    <input type="checkbox" value="3" name="status" ng-click="limitCheckBox('statuslLimit','status')"><span class="checkedIndustryTypeText">撤销申请中</span>
+                    <input type="checkbox" value="4" name="status" ng-click="limitCheckBox('statuslLimit','status')"><span class="checkedIndustryTypeText">已注销</span>
+                    <input type="checkbox" value="5" name="status" ng-click="limitCheckBox('statuslLimit','status')"><span class="checkedIndustryTypeText">已撤销</span>
+            </div>
+            <div class="mt15">
+                <span id="AnyArea">所属区域</span>
+                <div class="gui-select">
+                    <select id="sheng">
+                        <option value="">省</option>
+                    </select>
+                </div>
+                <div class="gui-select">
+                    <select id="shi">
+                        <option value="">市</option>
+                    </select>
+                </div>
+                <div class="gui-select">
+                    <select id="xian">
+                        <option value="">区/县</option>
+                    </select>
+                </div>
+            </div>
+            <form autocomplete="off">
+                <div class="clearfix gov-h">
+                    <div class="gui-mediaInline clearfix gov-h">
+                        <div class="condition-item">
+                            <span>注册日期</span>
+                            <input id="dateBegin" name="dateBegin" style="cursor: pointer;min-width: 120px;" class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('dateEnd');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateEnd\')}'})" /> --
+                            <input id="dateEnd" name="dateEnd" class="Wdate gui-input" style="cursor: pointer;min-width: 120px;margin-left:10px" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'dateBegin\')}'})" />
+                        </div>
+                        <div class="condition-item">
+                            <span>机构名称</span>
+                            <input class="gui-input" maxlength="30" type="text" placeholder="请输入机构名称" name="svName" />
+                        </div>
+                        <div class="condition-item">
+                            <span>机构负责人</span>
+                            <input class="gui-input" maxlength="30" type="text" placeholder="请输入机构负责人" name="svLeader" />
+                        </div>
+                        <div class="condition-item condition-custom" data-control="text" ng-show="visiblesvAddress">
+                            <span>通讯地址</span>
+                            <input class="gui-input" ng-model="svAddress" maxlength="80" type="text" placeholder="请输入通讯地址" name="svAddress" />
+                        </div>
+                        <div class="condition-item condition-custom" data-control="text" ng-show="visiblesvCode">
+                            <span>机构代码</span>
+                            <input class="gui-input" ng-model="svCode" maxlength="80" type="text" placeholder="请输入机构代码" name="svCode" />
+                        </div>
+                        <div class="condition-item condition-custom" data-control="text" ng-show="visiblesvLeaderPhone">
+                            <span>负责人电话</span>
+                            <input class="gui-input" ng-model="svLeaderPhone" maxlength="80" type="text" placeholder="请输入负责人电话" name="svLeaderPhone" />
+                        </div>
+                        <div class="condition-item condition-custom" data-control="text" ng-show="visiblesvContact">
+                            <span>联系人</span>
+                            <input class="gui-input" ng-model="svContact" maxlength="80" type="text" placeholder="请输入联系人" name="svContact" />
+                        </div>
+                        <div class="condition-item condition-custom" data-control="text" ng-show="visiblesvContactPhone">
+                            <span>联系人电话</span>
+                            <input class="gui-input" ng-model="svContactPhone" maxlength="80" type="text" placeholder="请输入联系人电话" name="svContactPhone" />
+                        </div>
+                        <div class="condition-item condition-custom" data-control="text" ng-show="visiblesvContactQQ">
+                            <span>联系人QQ</span>
+                            <input class="gui-input" ng-model="svContactQQ" maxlength="80" type="text" placeholder="请输入联系人QQ" name="svContactQQ" />
+                        </div>
+                        <div class="condition-item condition-custom" data-control="text" ng-show="visiblesvContactEmail">
+                            <span>电子邮箱</span>
+                            <input class="gui-input" ng-model="svContactEmail" maxlength="80" type="text" placeholder="请输入电子邮箱" name="svContactEmail" />
+                        </div>
+                        <div class="condition-item condition-custom" data-control="text" ng-show="visiblesvPostcode">
+                            <span>邮编</span>
+                            <input class="gui-input" ng-model="svPostcode" maxlength="80" type="text" placeholder="请输入邮编" name="svPostcode" />
+                        </div>
+                        <div style="padding-top: 15px;">
+                            <button class="gui-btn" ng-disabled="!!btnDisabled" ng-click="querySubjSvList($event)">查询</button>
+                            <button class="gui-btn" type="reset" ng-click="reloadArea($event)">重置</button>
+                        </div>
+                    </div>
+                </div>
+                <span href="#modalCondition" data-toggle="modal" class="custom-condition">自定义条件</span>
+            </form>
+        </div>
+        <!-- 图表面板 -->
+        <div class="gui-table-panel clearfix">
+            <p class="table-total" ng-show="isListView">符合条件的数据总计: {{tableTotal}} 项</p>
+            <!-- 切换视图展示 -->
+            <div class="view-type">展示方式
+                <i class="gui-icon icon-list highlight" ng-class="{'highlight': isListView}" ng-click="toggleView(true)" title="以列表视图展示"></i>
+                <i class="gui-icon icon-chart" ng-class="{'highlight': !isListView }" ng-click="toggleView(false)" title="以图形视图展示"></i>
+            </div>
+        </div>
+        <!-- 图表区域 -->
+        <div class="gui-content-slide">
+            <div ng-style="{'transform': viewX}" class="content-wrap">
+                <div class="content-block">
+                    <table id="svGrid" class="gui-table table-nowrap mt15" style="width: 100%">
+                    </table>
+                </div>
+                <div class="content-block">
+                    <div sg-chart options="vm.chartOptions" update="vm.chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade " id="importModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">批量导入监管机构</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div style="width: 500px">
+                        <form enctype="multipart/form-data">
+                            <input id="file-1"  type="file" name="file"  multiple=" true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="5">
+                            <br>
+                        </form>
+                        <a href="webapp\asms\subjSv\jgdrModel.xlsx" style="color:#0000FF;">监管导入模板</a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" data-dismiss="modal">关闭</button>
+                <button class="gui-btn" type="button" id="save" ng-click="importSubjSv()">提交</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalCondition" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">请选择自定义条件</h4>
+            </div>
+            <div class="modal-body">
+                <form novalidate="novalidate">
+                    <div class="list-head">
+                        <label>
+                            <input type="checkbox" class="condition-checked-all" />全选
+                        </label>
+                    </div>
+                    <ul class="gui-list list-condition">
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled />所属行业
+                            </label>
+                        </li>
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled>机构级别
+                            </label>
+                        </li>
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled>所属区域
+                            </label>
+                        </li>
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled>主体状态
+                            </label>
+                        </li>
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled>注册日期
+                            </label>
+                        </li>
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled>机构名称
+                            </label>
+                        </li>
+                        <li class="disabled">
+                            <label>
+                                <input type="checkbox" checked disabled>机构负责人
+                            </label>
+                        </li>
+                        <li data-key="svAddress">
+                            <label>
+                                <input type="checkbox">通讯地址
+                            </label>
+                        </li>
+                        <li data-key="svCode">
+                            <label>
+                                <input type="checkbox">机构代码
+                            </label>
+                        </li>
+                        <li data-key="svLeaderPhone">
+                            <label>
+                                <input type="checkbox">负责人电话
+                            </label>
+                        </li>
+                        <li data-key="svContact">
+                            <label>
+                                <input type="checkbox">联系人
+                            </label>
+                        </li>
+                        <li data-key="svContactPhone">
+                            <label>
+                                <input type="checkbox">联系人电话
+                            </label>
+                        </li>
+                        <li data-key="svContactQQ">
+                            <label>
+                                <input type="checkbox">联系人QQ
+                            </label>
+                        </li>
+                        <li data-key="svContactEmail">
+                            <label>
+                                <input type="checkbox">电子邮箱
+                            </label>
+                        </li>
+                        <li data-key="svPostcode">
+                            <label>
+                                <input type="checkbox">邮编
+                            </label>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="gui-btn" ng-click="confirmCondition()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>

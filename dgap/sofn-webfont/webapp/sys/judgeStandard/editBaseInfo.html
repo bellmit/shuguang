@@ -1,0 +1,26 @@
+<div class="gui-breadcrumbs">
+    <a href="">监测系统</a>&gt;
+    <a href="">检测模型</a>&gt;
+    <a href="">判定标准</a>&gt;
+    <span>基本信息</span>
+</div>
+<div class="gui-section">
+    <ul class="gui-tab ng-scope">
+        <li class="active"><a ui-sref="index.content.sys/judgeStandard/editBaseInfo">基本信息</a></li>
+        <li><a ui-sref="index.content.sys/judgeStandard/editFile">上传附件</a></li>
+    </ul>
+    <form class="form-horizontal" role="form" id="editBaseInfo">
+    <ul class="gui-list">
+        <li>
+            <div class="form-item form-group">
+                <label class="title required">标准名称</label>
+                <input type="text" class="gui-input" name="name" placeholder="请输入判定标准名称" value="" data-bv-notempty="true" data-bv-notempty-message="内容不能是空" data-bv-stringlength="true" data-bv-stringlength-max="60" data-bv-stringlength-message="不能超过60个字符长度">
+            </div>
+        </li>
+    </ul>
+    </form>
+    <div class="text-center">
+        <button class="gui-btn" type="button" ng-click="updateInfo()">保存</button>
+        <button class="gui-btn mgl-30" ng-click="goJudgeList()">返回</button>
+    </div>
+</div>

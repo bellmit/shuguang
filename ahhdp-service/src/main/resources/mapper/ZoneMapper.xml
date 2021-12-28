@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ahhdp.mapper.ZoneMapper">
+    <sql id="base_Column_List">
+      ID, CODE, AREA_NAME, COMPANY, AREA_RANGE, OPERATOR, CHANGE_TIME, IMPORT_TIME
+    </sql>
+
+    <select id="listByParams" resultType="com.sofn.ahhdp.model.Zone">
+        select
+        <include refid="base_Column_List"/>
+        from ZONE
+        <where>
+            <if test="year != null and year != ''">
+                and  (to_char(CHANGE_TIME,'YYYY')= #{year} or to_char(IMPORT_TIME,'YYYY')= #{year} )
+            </if>
+            <if test="areaName != null and areaName != ''">
+                and AREA_NAME like '%'||#{areaName}||'%'
+            </if>
+
+            <if test="company != null and company != ''">
+                and COMPANY like '%'||#{company}||'%'
+            </if>
+        </where>
+        order by CHANGE_TIME desc, IMPORT_TIME desc
+    </select>
+</mapper>

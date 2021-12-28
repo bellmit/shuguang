@@ -1,0 +1,56 @@
+<link rel="stylesheet" href="assets/css/tts/base/baseInfoList.css">
+<link rel="stylesheet" href="assets/css/tts/base/baseAdd.css">
+<form id="attributeForm" method="post" class="form-horizontal" data-bv-message="This value is not valid" data-bv-feedbackicons-valid="glyphicon glyphicon-ok" data-bv-feedbackicons-invalid="glyphicon glyphicon-remove" data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+    <div class="Sup_contain_section_head col-lg-12 col-xs-12 col-sm-12 col-md-12">
+        <h2 id="Sup_contain_section_head_h2">
+            <a href=""><span>追溯系统  > </span></a>
+            <a href=""><span>内部管理  > </span></a>
+            <span>登录  </span>
+        </h2>
+    </div>
+    <div class="Sup_contain_section col-lg-12 col-xs-12 col-sm-12 col-md-12" align="left">
+        <div class="Sup_contain_section col-lg-2 col-xs-2 col-sm-2 col-md-2"></div>
+        <div class="Sup_contain_section col-lg-8 col-xs-8 col-sm-8 col-md-8">
+            <div class="form-group">
+                <h2 class="page-header"><label>用户登录</label></h2>
+                <div class="col-lg-2 col-xs-2 col-sm-2 col-md-2" align="left">
+                    <label class="control-label">用户名</label>
+                </div>
+                <div class="col-lg-10 col-xs-10 col-sm-10 col-md-10">
+                    <input type="text" class="form-control" id="loginName" ng-model="loginName" name="loginName" placeholder="请输入用户名" data-bv-notempty="true" data-bv-notempty-message="请填写用户名" data-bv-stringlength="true" data-bv-stringlength-min="4" data-bv-stringlength-max="18" data-bv-stringlength-message="用户名必须超过6，不超过18个字符">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-2 col-xs-2 col-sm-2 col-md-2" align="left">
+                    <label class="control-label">密码</label>
+                </div>
+                <div class="col-lg-10 col-xs-10 col-sm-10 col-md-10">
+                    <input type="password" class="form-control" id="password" ng-model="password" name="password" placeholder="请输入密码" data-bv-notempty="true" data-bv-notempty-message="请填写用户名" data-bv-stringlength="true" data-bv-stringlength-min="3" data-bv-stringlength-max="18" data-bv-stringlength-message="用户名必须超过6，不超过18个字符">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-2 col-xs-2 col-sm-2 col-md-2" align="left">
+                    <label class="control-label">验证码</label>
+                </div>
+                <div class="col-lg-5 col-xs-5 col-sm-5 col-md-5">
+                    <input type="text" ng-blur="$scope.checkImg()" class="form-control" id="validateCode" ng-model="validateCode" name="validateCode" placeholder="请输入验证码" data-bv-notempty="true" data-bv-notempty-message="请填写验证码" data-bv-stringlength="true" data-bv-stringlength-min="4" data-bv-stringlength-max="4" data-bv-stringlength-message="验证码6位">
+                </div>
+                <div class="col-lg-5 col-xs-5 col-sm-5 col-md-5">
+                    <span class="y_yzimg"><img id="codeValidateImg" ng-click="flushValidateCodes()" src="" width="100%" height="100%"></span>
+                </div>
+
+            </div>
+        </div>
+        <div class="Sup_contain_section col-lg-12 col-xs-12 col-sm-12 col-md-12">
+            <h5 class="page-header"></h5>
+            <div class="Sup_contain_section col-lg-3 col-xs-3 col-sm-3 col-md-3"></div>
+            <div class="Sup_contain_section col-lg-3 col-xs-3 col-sm-3 col-md-3">
+                <button ng-click="ttsLogin()" id="ToCheck">登录</button>
+            </div>
+            <div class="Sup_contain_section col-lg-3 col-xs-3 col-sm-3 col-md-3">
+                <button ui-sref="index.content.tts/demo/demoAdd">取消</button>
+            </div>
+            <div class="Sup_contain_section col-lg-3 col-xs-3 col-sm-3 col-md-3"></div>
+        </div>
+    </div>
+</form>

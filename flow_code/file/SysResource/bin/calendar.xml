@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<calendars xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	
+<!--
+日工作日历，用于定义每工作日的固定工作时间，定义时的取值范围为：0:00 - 23:59。"split"节点的个数必须为1个或者两个。
+-->
+	<daily-calendar>
+		<split from="8:30" to="12:00" />
+		<split from="13:00" to="17:30" />	
+	</daily-calendar>
+
+<!--
+周工作日历,用于定义每周的非工作日，定义时的取值范围为：Monday、Tuesday、Wednesday、Thursday、Friday、Saturday、Sunday，（其意思分别是周一、周二、周三、周四、周五、周六、周日。
+basecalendar属性的值只能是"daily-calendar"和""中的一个，前者表示在日工作日历的基础上定义周日历，即周日历自动包含日工作日历；后者或者其他值则表示该周作日历是从零开始定义的
+-->
+	<weekly-calendar basecalendar="daily-calendar">
+		<excluds>
+			<excluded>Saturday</excluded>
+			<excluded>Sunday</excluded>
+		</excluds>
+	</weekly-calendar>
+
+<!--
+年度日历，年度日历用于定义每年的固定节假日，填写格式为："月.日"，如"10.1"代表每年的十月一日，即国庆节。
+basecalendar属性的值只能是"weekly-calendar"、"daily-calendar"或""中的一个，"weekly-calendar"表示在周工作日历的基础上定义年度日历，即年度日历自动包含周工作日历；"daily-calendar"表示在日工作日历的基础上定义年度日历，即年度日历自动包含日工作日历；""或者其他值则表示该年度日历是从零开始定义的。"basecalendar"属性可以逐级继承。
+-->
+	<annual-calendar basecalendar="weekly-calendar">
+		<!--固定节假日列表-->
+		<excluds>
+			<excluded>1.1</excluded>
+			<excluded>1.2</excluded>
+			<excluded>1.3</excluded>
+			<excluded>5.1</excluded>
+			<excluded>5.2</excluded>
+			<excluded>5.3</excluded>
+			<excluded>5.4</excluded>
+			<excluded>5.5</excluded>
+			<excluded>5.6</excluded>
+			<excluded>5.7</excluded>
+			<excluded>10.1</excluded>
+			<excluded>10.2</excluded>
+			<excluded>10.3</excluded>
+			<excluded>10.4</excluded>
+			<excluded>10.5</excluded>
+			<excluded>10.6</excluded>
+			<excluded>10.7</excluded>
+		</excluds>
+		<!--因为固定节假日而需要在非工作日中加班的日期列表，如国庆节前后的周末等。该部分定义强制包括的部分，不受周日历的影响-->
+		<includs>
+			<included>4.28</included>
+			<included>4.29</included>
+			<included>9.29</included>
+			<included>9.30</included>
+			<included>12.29</included>
+			<included>12.30</included>
+		</includs>
+	</annual-calendar>	
+<!--配置InforFlow中使用哪一个日历，默认情况下，InforFlow中应使用年度日历，而年度日历应该基于周日历,即自动包含周日历，进而自动包含日工作日历，所以年度日历的排除规则为年度日历、周日历和日工作日历所排除日期(时间)的总和减去年度日历中所强制包括的非工作日部分。
+-->
+	<calendar>
+		<bean id="annual-calendar" name="flowClendar" update="true"/>
+	</calendar>
+</calendars>

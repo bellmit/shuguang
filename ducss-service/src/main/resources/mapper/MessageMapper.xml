@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.MessageMapper">
+
+    <select id="getMinistryNotices" parameterType="com.sofn.ducss.vo.message.NoticePageParam" resultType="com.sofn.ducss.vo.message.MessageVo">
+        SELECT
+            id                  ,
+            text                ,
+            send_object         ,
+            issued_person       ,
+            message_type        ,
+            status              ,
+            send_status         ,
+            send_time           ,
+            user_id             ,
+            user_name           ,
+            area_id             ,
+            audit_person        ,
+            user_level          ,
+            user_area_id        ,
+            audit_status        ,
+            audit_opinion       ,
+            create_time         ,
+            create_by as createBy,
+            update_time         ,
+            update_by
+        FROM message
+        <where>
+            message_type = '1'
+            <if test="sendObject!=null and sendObject!=''">
+                and send_object=#{sendObject}
+            </if>
+            <if test="startTime != null ">
+                and send_time &gt;= #{startTime}
+            </if>
+            <if test="endTime != null ">
+                and send_time &lt;= #{endTime}
+            </if>
+            order by  create_time desc
+        </where>
+    </select>
+
+    <select id="getNotices" parameterType="com.sofn.ducss.vo.message.MessagePageParam" resultType="com.sofn.ducss.vo.message.MessageVo">
+        SELECT * FROM message
+        <where>
+            <if test="messageType!=null and messageType!=''">
+                message_type = #{messageType}
+            </if>
+            <if test="status!=null and status!=''">
+                and status=#{status}
+            </if>
+            <if test="userId!=null and userId!=''">
+                and user_id=#{userId}
+            </if>
+            <if test="areaId!=null and areaId!=''">
+                and area_id=#{areaId}
+            </if>
+            <if test="startTime != null ">
+                and send_time &gt;= #{startTime}
+            </if>
+            <if test="endTime != null ">
+                and send_time &lt;= #{endTime}
+            </if>
+        </where>
+            ORDER BY status asc,send_time desc
+    </select>
+
+    <select id="getMessages" parameterType="com.sofn.ducss.vo.message.MessagePageParam" resultType="com.sofn.ducss.vo.message.MessageVo">
+        SELECT * FROM message
+        <where>
+            <if test="messageType!=null and messageType!=''">
+                message_type = #{messageType}
+            </if>
+            <if test="status!=null and status!=''">
+                and status=#{status}
+            </if>
+            <if test="userId!=null and userId!=''">
+                and user_id=#{userId}
+            </if>
+            <if test="areaId!=null and areaId!=''">
+                and area_id=#{areaId}
+            </if>
+            <if test="startTime != null ">
+                and create_time &gt;= #{startTime}
+            </if>
+            <if test="endTime != null ">
+                and create_time &lt;= #{endTime}
+            </if>
+        </where>
+        ORDER BY status asc,create_time desc
+    </select>
+
+    <select id="getUnReadMessageOrNoticeNum" resultType="java.lang.Integer">
+        SELECT count(1) FROM "message"
+        <where>
+            <if test="userId != null and userId != '' ">
+                user_id = #{userId}
+            </if>
+            <if test="messageTypes != null and messageTypes.size() > 0">
+                and message_type in
+                <foreach collection="messageTypes" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="status!=null and status!=''">
+                and status=#{status}
+            </if>
+        </where>
+    </select>
+</mapper>

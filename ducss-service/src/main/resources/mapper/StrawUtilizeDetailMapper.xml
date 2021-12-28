@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.StrawUtilizeDetailMapper">
+    <resultMap id="BaseResultMap" type="com.sofn.ducss.model.StrawUtilizeDetail">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="utilize_id" property="utilizeId" jdbcType="VARCHAR"/>
+        <result column="straw_type" property="strawType" jdbcType="VARCHAR"/>
+        <result column="straw_name" property="strawName" jdbcType="VARCHAR"/>
+        <result column="fertilising" property="fertilising" jdbcType="DECIMAL"/>
+        <result column="forage" property="forage" jdbcType="DECIMAL"/>
+        <result column="fuel" property="fuel" jdbcType="DECIMAL"/>
+        <result column="base" property="base" jdbcType="DECIMAL"/>
+        <result column="material" property="material" jdbcType="DECIMAL"/>
+        <result column="other" property="other" jdbcType="DECIMAL"/>
+        <result column="market_ent" property="marketEnt" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <resultMap id="BaseResultMapByMe" type="com.sofn.ducss.vo.DataAnalysis.IndexDataVo">
+        <result column="area_id" property="area_id" jdbcType="VARCHAR"/>
+        <result column="province_id" property="province_id" jdbcType="VARCHAR"/>
+        <result column="city_id" property="city_id" jdbcType="VARCHAR"/>
+        <result column="year" property="year" jdbcType="VARCHAR"/>
+        <result column="straw_name" property="straw_name" jdbcType="VARCHAR"/>
+        <result column="fertilising" property="fertilising" jdbcType="DECIMAL"/>
+        <result column="forage" property="forage" jdbcType="DECIMAL"/>
+        <result column="fuel" property="fuel" jdbcType="DECIMAL"/>
+        <result column="base" property="base" jdbcType="DECIMAL"/>
+        <result column="material" property="material" jdbcType="DECIMAL"/>
+        <result column="market_ent" property="market_ent" jdbcType="DECIMAL"/>
+        <result column="other" property="other" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id, utilize_id, straw_type,straw_name, fertilising, forage, fuel, base, material, other,market_ent
+  </sql>
+
+    <select id="getStrawUtilizeDetail" parameterType="java.lang.String"
+            resultType="com.sofn.ducss.model.StrawUtilizeDetail">
+    SELECT
+    t1.*
+    FROM
+    straw_utilize_detail t1
+    where t1.utilize_id=#{id}
+  </select>
+
+    <insert id="insertList" parameterType="java.util.List">
+        insert into straw_utilize_detail(id,utilize_id,straw_type,straw_name,fertilising,forage,fuel
+        ,base,material,other,market_ent)
+        values
+        <foreach collection="list" item="detail" index="index" separator=",">
+            (
+            #{detail.id},
+            #{detail.utilizeId},
+            #{detail.strawType},
+            #{detail.strawName},
+            #{detail.fertilising},
+            #{detail.forage},
+            #{detail.fuel},
+            #{detail.base},
+            #{detail.material},
+            #{detail.other},
+            #{detail.marketEnt}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateList" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update straw_utilize_detail
+            <set>
+                fertilising = #{item.fertilising},
+                forage = #{item.forage},
+                fuel = #{item.fuel},
+                base = #{item.base},
+                material = #{item.material},
+                other = #{item.other},
+                market_ent = #{item.marketEnt}
+            </set>
+            where id=#{item.id}
+        </foreach>
+    </update>
+
+    <delete id="deleteByStrawUtilizeId" parameterType="java.lang.String">
+    delete from straw_utilize_detail where utilize_id=#{id}
+  </delete>
+
+
+    <select id="selectDetailSumByAreaId"
+            resultType="com.sofn.ducss.model.StrawUtilizeDetail">
+		SELECT
+		b.straw_type,
+		COALESCE(sum(b.fertilising),0) fertilising,
+		COALESCE(sum(b.forage),0) forage,
+		COALESCE(sum(b.fuel),0) fuel,
+		COALESCE(sum(b.base),0) base,
+		COALESCE(sum(b.material),0) material,
+		COALESCE(sum(b.other),0)  other
+		FROM  straw_utilize a,straw_utilize_detail b
+		where a.id=b.utilize_id and a.year=#{year}
+				and a.area_id = #{areaId}
+		group by 	b.straw_type
+	</select>
+
+    <select id="selectDetailSumByAreaIdStatus"
+            resultType="com.sofn.ducss.model.StrawUtilizeDetail">
+		SELECT
+		b.straw_type,
+		COALESCE(sum(b.fertilising),0) fertilising,
+		COALESCE(sum(b.forage),0) forage,
+		COALESCE(sum(b.fuel),0) fuel,
+		COALESCE(sum(b.base),0) base,
+		COALESCE(sum(b.material),0) material,
+		COALESCE(sum(b.other),0)  other
+		FROM  straw_utilize a,straw_utilize_detail b,collect_flow cf
+		where a.id=b.utilize_id and a.year=#{year} and a.year=cf.year and a.area_id=cf.area_id
+				and a.area_id = #{areaId}
+			  <if test="status !=null and status.size()>0 ">
+                 and  cf.status in
+                  <foreach collection="status" item="item" open="(" close=")" separator=",">
+                      #{item}
+                  </foreach>
+              </if>
+		group by 	b.straw_type
+	</select>
+
+    <select id="selectCombinVoByCondition"
+            resultType="com.sofn.ducss.vo.StrawUtilizeCombinVo">
+        SELECT a.*,b.id,b.utilize_id,b.straw_type,b.straw_name,
+        ROUND( b.fertilising,5 ) as fertilising,
+        ROUND( b.forage, 5 ) as forage,
+        ROUND( b.fuel, 5 ) as fuel,
+        ROUND( b.base,5 ) as base,
+        ROUND( b.material, 5 ) as material,
+        ROUND( b.other, 5 ) as other FROM
+        straw_utilize a
+        LEFT JOIN straw_utilize_detail b
+        ON a.id = b.utilize_id
+        <where>
+            <if test="years != null and years.size()>0">
+                AND a.year in
+                <foreach collection="years" item="year" open="(" separator="," close=")">
+                    #{year}
+                </foreach>
+            </if>
+            <if test="areaIds != null and areaIds.size()>0">
+                and a.area_id in
+                <foreach collection="areaIds" item="areaId" open="(" separator="," close=")">
+                    #{areaId}
+                </foreach>
+            </if>
+            <if test="cityIds != null and cityIds.size()>0">
+                and a.city_id in
+                <foreach collection="cityIds" item="cityId" open="(" separator="," close=")">
+                    #{cityId}
+                </foreach>
+            </if>
+            <if test="provinceIds != null and provinceIds.size()>0">
+                and a.province_id in
+                <foreach collection="provinceIds" item="provinceId" open="(" separator="," close=")">
+                    #{provinceId}
+                </foreach>
+            </if>
+            <if test="mainName!=null and mainName!=''">
+                and a.mainName=#{mainName}
+            </if>
+            <if test="dateBegin!=null and dateBegin!='' and dateEnd!=null and dateEnd!=''">
+                <![CDATA[
+			AND a.create_date>=#{dateBegin} and a.create_date<=#{dateEnd}
+			]]>
+            </if>
+        </where>
+        order by a.year desc,a.area_id asc,a.id desc
+    </select>
+    <sql id="mainUtilizeInfo">
+        select '' year,'' areaId, '' areaName,'' mainId,'' mainName,a.utilize_id
+        ,a.fertilising,a.forage,a.fuel,a.base,a.material,a.own_source,a.other_source,a.total
+        from (
+        select
+        d.utilize_id
+        ,sum(d.fertilising) fertilising,sum(d.forage) forage,sum(d.fuel) fuel,sum(d.base) base,sum(d.material)
+        material,sum(d.other) other_source
+        ,sum(d.fertilising+d.forage+d.fuel+d.base+d.material) total
+        ,sum(d.fertilising+d.forage+d.fuel+d.base+d.material-other) own_source
+        from straw_utilize_detail d
+        where d.utilize_id in
+        <foreach collection="utilizeIds" item="item" separator="," open="(" close=")" index="">
+            #{item}
+        </foreach>
+        group by d.utilize_id
+        ) a
+        order by ''
+        <if test="qvo.fertilisingSort!=null and qvo.fertilisingSort==1">
+            ,a.fertilising asc
+        </if>
+        <if test="qvo.fertilisingSort!=null and qvo.fertilisingSort==2">
+            ,a.fertilising desc
+        </if>
+        <if test="qvo.forageSort!=null and qvo.forageSort==1">
+            ,a.forage asc
+        </if>
+        <if test="qvo.forageSort!=null and qvo.forageSort==2">
+            ,a.forage desc
+        </if>
+        <if test="qvo.fuelSort!=null and qvo.fuelSort==1">
+            ,a.fuel asc
+        </if>
+        <if test="qvo.fuelSort!=null and qvo.fuelSort==2">
+            ,a.fuel desc
+        </if>
+        <if test="qvo.baseSort!=null and qvo.baseSort==1">
+            ,a.base asc
+        </if>
+        <if test="qvo.baseSort!=null and qvo.baseSort==2">
+            ,a.base desc
+        </if>
+        <if test="qvo.materialSort!=null and qvo.materialSort==1">
+            ,a.material asc
+        </if>
+        <if test="qvo.materialSort!=null and qvo.materialSort==2">
+            ,a.material desc
+        </if>
+        <if test="qvo.ownSourceSort!=null and qvo.ownSourceSort==1">
+            ,a.own_source asc
+        </if>
+        <if test="qvo.ownSourceSort!=null and qvo.ownSourceSort==2">
+            ,a.own_source desc
+        </if>
+        <if test="qvo.otherSourceSort!=null and qvo.otherSourceSort==1">
+            ,a.other_source asc
+        </if>
+        <if test="qvo.otherSourceSort!=null and qvo.otherSourceSort==2">
+            ,a.other_source desc
+        </if>
+        <if test="qvo.totalSort!=null and qvo.totalSort==1">
+            ,a.total asc
+        </if>
+        <if test="qvo.totalSort!=null and qvo.totalSort==2">
+            ,a.total desc
+        </if>
+    </sql>
+    <select id="selectMainUtilizeInfoByUtilizeIds" resultType="com.sofn.ducss.vo.MainUtilizeResVo">
+        <include refid="mainUtilizeInfo"/>
+    </select>
+    <select id="selectMainUtilizeInfoByUtilizeIdsPage" resultType="com.sofn.ducss.vo.MainUtilizeResVo">
+        <include refid="mainUtilizeInfo"/>
+        limit #{qvo.pageNo},#{qvo.pageSize}
+    </select>
+
+    <select id="getListByCondition" resultMap="BaseResultMapByMe"
+            parameterType="com.sofn.ducss.vo.DataAnalysisQueryVo">
+        SELECT
+        du.province_id,
+        du.YEAR,
+        dud.straw_name,
+        sum( dud.market_ent ) AS market_ent,
+        sum( dud.other ) AS other
+        FROM
+        straw_utilize_detail dud
+        LEFT JOIN straw_utilize du ON du.id = dud.utilize_id
+        WHERE
+        du.YEAR IN
+        <foreach collection="dataAnalysisQueryVo.year" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND du.province_id NOT IN ( "" )
+        <if test="dataAnalysisQueryVo.cropType != null and dataAnalysisQueryVo.cropType.size > 0 ">
+            AND dud.straw_type IN
+            <foreach collection="dataAnalysisQueryVo.cropType" item="item" index="index" open="("
+                     separator="," close=")">#{item}
+            </foreach>
+        </if>
+        GROUP BY
+        dud.straw_name,
+        du.province_id,
+        du.YEAR
+    </select>
+
+    <select id="getListByCondition2" resultMap="BaseResultMapByMe"
+            parameterType="com.sofn.ducss.vo.DataAnalysisQueryVo">
+        SELECT
+        du.city_id,
+        du.YEAR,
+        dud.straw_name,
+        sum( dud.market_ent ) AS market_ent,
+        sum( dud.other ) AS other
+        FROM
+        straw_utilize_detail dud
+        LEFT JOIN straw_utilize du ON du.id = dud.utilize_id
+        WHERE
+        du.YEAR IN
+        <foreach collection="dataAnalysisQueryVo.year" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND du.city_id NOT IN ( "" )
+        <if test="dataAnalysisQueryVo.cropType != null and dataAnalysisQueryVo.cropType.size > 0 ">
+            AND dud.straw_type IN
+            <foreach collection="dataAnalysisQueryVo.cropType" item="item" index="index" open="("
+                     separator="," close=")">#{item}
+            </foreach>
+        </if>
+        GROUP BY
+        dud.straw_name,
+        du.city_id,
+        du.YEAR
+    </select>
+
+    <select id="getListByCondition3" resultMap="BaseResultMapByMe"
+            parameterType="com.sofn.ducss.vo.DataAnalysisQueryVo">
+        SELECT
+        du.area_id,
+        du.YEAR,
+        dud.straw_name,
+        sum( dud.market_ent ) AS market_ent,
+        sum( dud.other ) AS other
+        FROM
+        straw_utilize_detail dud
+        LEFT JOIN straw_utilize du ON du.id = dud.utilize_id
+        WHERE
+        du.YEAR IN
+        <foreach collection="dataAnalysisQueryVo.year" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND du.area_id NOT IN ( "" )
+        <if test="dataAnalysisQueryVo.cropType != null and dataAnalysisQueryVo.cropType.size > 0 ">
+            AND dud.straw_type IN
+            <foreach collection="dataAnalysisQueryVo.cropType" item="item" index="index" open="("
+                     separator="," close=")">#{item}
+            </foreach>
+        </if>
+        GROUP BY
+        dud.straw_name,
+        du.area_id,
+        du.YEAR
+    </select>
+
+    <select id="getListByCondition4" resultMap="BaseResultMapByMe"
+            parameterType="com.sofn.ducss.vo.DataAnalysisQueryVo">
+      SELECT
+        du.province_id,
+        du.YEAR,
+        dud.straw_name,
+        sum( dud.market_ent ) AS market_ent,
+        sum( dud.other ) AS other
+        FROM
+        straw_utilize_detail dud
+        LEFT JOIN straw_utilize du ON du.id = dud.utilize_id
+        WHERE
+        du.YEAR IN
+        <foreach collection="dataAnalysisQueryVo.year" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND du.province_id in
+        <foreach collection="dataAnalysisQueryVo.area" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <if test="dataAnalysisQueryVo.cropType != null and dataAnalysisQueryVo.cropType.size > 0 ">
+            AND dud.straw_type IN
+            <foreach collection="dataAnalysisQueryVo.cropType" item="item" index="index" open="("
+                     separator="," close=")">#{item}
+            </foreach>
+        </if>
+        GROUP BY
+        dud.straw_name,
+        du.province_id,
+        du.YEAR
+    </select>
+    <select id="getListByCondition5" resultMap="BaseResultMapByMe"
+            parameterType="com.sofn.ducss.vo.DataAnalysisQueryVo">
+      SELECT
+        du.city_id,
+        du.YEAR,
+        dud.straw_name,
+        sum( dud.market_ent ) AS market_ent,
+        sum( dud.other ) AS other
+        FROM
+        straw_utilize_detail dud
+        LEFT JOIN straw_utilize du ON du.id = dud.utilize_id
+        WHERE
+        du.YEAR IN
+        <foreach collection="dataAnalysisQueryVo.year" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND du.city_id in
+        <foreach collection="dataAnalysisQueryVo.area" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <if test="dataAnalysisQueryVo.cropType != null and dataAnalysisQueryVo.cropType.size > 0 ">
+            AND dud.straw_type IN
+            <foreach collection="dataAnalysisQueryVo.cropType" item="item" index="index" open="("
+                     separator="," close=")">#{item}
+            </foreach>
+        </if>
+        GROUP BY
+        dud.straw_name,
+        du.city_id,
+        du.YEAR
+    </select>
+    <select id="getListByCondition6" resultMap="BaseResultMapByMe"
+            parameterType="com.sofn.ducss.vo.DataAnalysisQueryVo">
+      SELECT
+        du.area_id,
+        du.YEAR,
+        dud.straw_name,
+        sum( dud.market_ent ) AS market_ent,
+        sum( dud.other ) AS other
+        FROM
+        straw_utilize_detail dud
+        LEFT JOIN straw_utilize du ON du.id = dud.utilize_id
+        WHERE
+        du.YEAR IN
+        <foreach collection="dataAnalysisQueryVo.year" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND du.area_id in
+        <foreach collection="dataAnalysisQueryVo.area" item="item" index="index" open="(" separator="," close=")">
+              #{item}
+        </foreach>
+        <if test="dataAnalysisQueryVo.cropType != null and dataAnalysisQueryVo.cropType.size > 0 ">
+            AND dud.straw_type IN
+            <foreach collection="dataAnalysisQueryVo.cropType" item="item" index="index" open="("
+                     separator="," close=")">#{item}
+            </foreach>
+        </if>
+        GROUP BY
+        dud.straw_name,
+        du.area_id,
+        du.YEAR
+    </select>
+    <select id="getPublicTableData" resultType="com.sofn.ducss.model.StrawUtilizeDetail">
+        SELECT
+        a.id,
+        a.utilize_id,
+        a.straw_type,
+        a.straw_name,
+        a.fertilising,
+        a.forage,
+        a.fuel,
+        a.base,
+        a.material,
+        a.other,
+        a.market_ent
+        FROM
+        straw_utilize_detail a
+        LEFT JOIN straw_utilize b ON a.utilize_id = b.id
+        WHERE
+        b.YEAR = #{year}
+        AND b.area_id = #{areaId}
+    </select>
+
+    <select id="getCountByCondition" resultType="java.lang.Integer">
+        SELECT COUNT(1)  FROM (
+           SELECT a.utilize_id, SUM(market_ent)
+           FROM straw_utilize_detail a LEFT JOIN straw_utilize b ON a.utilize_id = b.id
+           WHERE b.YEAR = #{year} and province_id = #{provinceId}
+           GROUP BY a.utilize_id HAVING SUM(market_ent)> #{marketEnt})t;
+    </select>
+
+    <select id="getCountByConditionV2" resultType="com.sofn.ducss.model.StrawUtilize">
+        SELECT
+            a.utilize_id,
+            SUM(market_ent) as "marketEnt"
+        FROM
+            straw_utilize_detail a
+        LEFT JOIN straw_utilize b ON a.utilize_id = b.id
+        WHERE b.YEAR = #{year} and province_id = #{provinceId}
+        GROUP BY a.utilize_id
+    </select>
+</mapper>

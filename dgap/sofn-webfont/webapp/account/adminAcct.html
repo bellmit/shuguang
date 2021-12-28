@@ -1,0 +1,406 @@
+<link rel="stylesheet" href="assets/css/monitor/acctInfo/adminAcct.css"/>
+<header class="gui-header clearfix">
+    <div class="section-logo" ui-sref="login/login">
+        <img src="/assets/imgs/icon/logo.png" alt="国家农产品质量安全追溯管理信息平台（政务办公）" class="logo">
+        <h1>国家农产品质量安全追溯管理信息平台<em></em></h1>
+    </div>
+    <div class="section-nav">
+        <span class="gui-dropdown">
+      <span class="current">
+        <img src="../assets/imgs/icon/img_11.png" alt=""/>
+        <span class="text">admin</span>
+        </span>
+        <ul class="dropdown-list clearfix" id="oUl">
+            <li><a name="个人中心">个人中心</a></li>
+            <li><a name="退出登录">退出登录</a></li>
+            <li><a name="注销登录">注销登录</a></li>
+        </ul>
+        </span>
+    </div>
+</header>
+    <div class="gui-breadcrumbs">
+        <a href="">系统管理</a>&gt;
+        <a href="">账号信息</a>&gt;
+        <span>管理员账号</span>
+        <button class="gui-btn fr mr15" ng-click="callBack()" style="margin-top: 4px;">关闭</button>
+
+    </div>
+<div class="gui-section">
+    <p c style="padding: 10px 10px">
+        <span>账号信息</span>
+        <span class="gui-btn fr" ng-click="updateModal()" style="margin-right: 100px">机构信息变更</span>
+    </p>
+
+    <form class="form-group" style="padding-left: 20px;padding-top: 0px">
+        <div class=" col-lg-6 col-xs-6 col-sm-6 col-md-6 ">
+            <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4 important">机构名称</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" ng-model="subjDt.dtName" type="text"/></span>
+            <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4 important ">机构类别</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" ng-model="subjDt.dtType" type="text"/></span>
+            <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4 important ">资质</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" ng-model="subjDt.dtQualifications" type="text"/></span>
+            <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4 important ">机构级别</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" ng-model="subjDt.dtLevel" type="text"/></span>
+            <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4 important ">通讯地址</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" ng-model="subjDt.dtAddress" type="text"/></span>
+            <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4 important ">负责人</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" ng-model="subjDt.dtLeader" type="text"/></span>
+            <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4 important ">联系人</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" ng-model="subjDt.dtContact" type="text"/></span>
+            <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4 important ">技术负责人</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" ng-model="subjDt.dtTechnicalDirector" type="text"/></span>
+            <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4 important ">参数</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" ng-model="subjDt.dtParameter" type="text"/></span>
+            <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4 important ">联系人QQ</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" ng-model="subjDt.dtContactQQ" type="text"/></span>
+            <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4 important ">邮编</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" ng-model="subjDt.dtPostcode" type="text"/></span>
+        </div>
+
+        <div class=" col-lg-6 sol-xs-6 col-sm-6 col-md-6">
+            <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4">机构代码</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" ng-model="subjDt.dtCode" type="text"/></span>
+            <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4">机构性质</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" ng-model="subjDt.dtNature" type="text"/></span>
+            <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4">依托单位</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" ng-model="subjDt.dtRelyOnUnit" type="text"/></span>
+            <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4">所属区域</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" ng-model="subjDt.dtAreaValue" type="text"/></span>
+            <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4">法人</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" ng-model="subjDt.dtLegalMan" type="text"/></span>
+            <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4">负责人电话</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" ng-model="subjDt.dtLeaderPhone" type="text"/></span>
+            <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4">联系人电话</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" ng-model="subjDt.dtContactPhone" type="text"/></span>
+            <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4">质量负责人</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" ng-model="subjDt.dtQualityDirector" type="text"/></span>
+            <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4">产品范围</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" ng-model="subjDt.dtProductRange" type="text"/></span>
+            <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4">电子邮箱</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" ng-model="subjDt.dtContactEmail" type="text"/></span>
+            <!--<label class="col-lg-4 col-xs-4 col-sm-4 col-md-4">证书</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><img src="" alt="证书" width="120" height="120" class="img-thumbnail"></span>-->
+        </div>
+    </form>
+    <div class="col-lg-12 col-xs-12 col-sm-12 col-md-12">
+        <span>机构变更历史</span>
+        <table id="grid" class="gui-table mt15" style="width: 100%">
+        </table>
+    </div>
+</div>
+
+        <!-- 模态框（Modal）添加 -->
+        <div class="modal fade " id="add_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-style" style="width: 870px" >
+                <div class="modal-content" >
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">{{title}}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <form id="modalForm" class="form-group" style="padding-left: 20px;">
+                                <!--<p class=" col-lg-2 col-xs-2 col-sm-2 col-md-2 "></p>-->
+                                <div class=" col-lg-5 col-xs-5 col-sm-5 col-md-5 ">
+                                    <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4 important">机构名称</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input name="dtName" ng-model="subjDt.dtName" style="border: none" readonly="readonly"  type="text"/></span>
+                                    <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4 important ">机构类别</label>
+                                    <span class="col-lg-8 col-xs-8 col-sm-8 col-md-8">
+                                        <input name="dtType" ng-model="subjDt.dtType" type="hidden"/>
+                                        <select class="col-lg-10 col-xs-10 col-sm-10 col-md-10 gui-select" name="dtTypeId"  ng-model="selectOrgType">
+                                            <option ng-repeat="x in orgtype" name="{{x.name}}" value="{{x.val}}">{{x.title}}</option>
+                                        </select>
+                                    </span>
+                                    <label class="col-md-4 important ">资质</label>
+                                    <span class="col-md-8">
+                                        <input name="dtQualifications" ng-model="subjDt.dtQualifications" type="hidden"/>
+                                        <select class="gui-select" name="dtQualificationsId"  ng-model="selectQualifications">
+                                            <option ng-repeat="x in qualifications" name="{{x.name}}" value="{{x.val}}">{{x.title}}</option>
+                                        </select>
+                                    </span>
+                                    <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4 important ">机构级别</label>
+                                    <span class="col-lg-8 col-xs-8 col-sm-8 col-md-8">
+                                        <input name="dtLevel" ng-model="subjDt.dtLevel" class="gui-input" type="hidden"/>
+                                        <select class="col-lg-10 col-xs-10 col-sm-10 col-md-10 gui-select" name="dtLevelId"  ng-model="selectLevel" type="text">
+                                            <option ng-repeat="x in level" name="{{x.name}}" value="{{x.val}}">{{x.title}}</option>
+                                        </select>
+                                    </span>
+                                    <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4 important ">通讯地址</label>
+                                    <span class="col-lg-8 col-xs-8 col-sm-8 col-md-8">
+                                        <input name="dtAddress" ng-model="subjDt.dtAddress" type="text" class="gui-input"
+                                         data-bv-notempty="true"
+                                         data-bv-notempty-message="内容不能是空"/>
+                                    </span>
+                                    <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4 important ">负责人</label>
+                                    <span class="col-lg-8 col-xs-8 col-sm-8 col-md-8">
+                                        <input name="dtLeader" ng-model="subjDt.dtLeader" type="text" class="gui-input"
+                                            data-bv-notempty="true"
+                                            data-bv-notempty-message="内容不能是空"/>
+                                    </span>
+                                    <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4 important ">联系人</label>
+                                    <span class="col-lg-8 col-xs-8 col-sm-8 col-md-8">
+                                        <input name="dtContact" ng-model="subjDt.dtContact" type="text" class="gui-input"
+                                            data-bv-notempty="true"
+                                            data-bv-notempty-message="内容不能是空"/>
+                                    </span>
+                                    <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4 important ">技术负责人</label>
+                                    <span class="col-lg-8 col-xs-8 col-sm-8 col-md-8">
+                                        <input name="dtTechnicalDirector" ng-model="subjDt.dtTechnicalDirector" type="text" class="gui-input"/>
+                                    </span>
+                                    <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4 important ">参数</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" name="dtParameter" ng-model="subjDt.dtParameter" type="text"/></span>
+                                    <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4 important ">联系人QQ</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" name="dtContactQQ" ng-model="subjDt.dtContactQQ" type="text"/></span>
+                                    <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4 important ">邮编</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" name="dtPostcode" ng-model="subjDt.dtPostcode" type="text"/></span>
+                                </div>
+
+                                <div class=" col-lg-5 sol-xs-5 col-sm-5 col-md-5">
+                                    <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4">机构代码</label>
+                                    <span class="col-lg-8 col-xs-8 col-sm-8 col-md-8">
+                                        <input class="gui-input" name="dtCode" ng-model="subjDt.dtCode" style="border: none" readonly="readonly"  type="text"/>
+                                    </span>
+                                    <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4">机构性质</label>
+                                    <span class="col-lg-8 col-xs-8 col-sm-8 col-md-8">
+                                        <select class="gui-select col-lg-10 col-xs-10 col-sm-10 col-md-10" name="dtNatureId"  ng-model="selectNature" type="text">
+                                            <option ng-repeat="x in nature" name="{{x.name}}" value="{{x.val}}">{{x.title}}</option>
+                                        </select>
+                                    </span>
+                                    <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4">依托单位</label><span class="col-md-8"><input name="dtRelyOnUnit" ng-model="subjDt.dtRelyOnUnit" class="gui-input" type="text"/></span>
+                                    <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4">所属区域</label>
+                                    <span class="col-md-8">
+                                        <input name="dtAreaId" ng-model="subjDt.dtAreaId" type="hidden"/>
+                                        <input name="dtArea" ng-model="subjDt.dtArea" type="hidden"/>
+                                        <select class="gui-select" style="width: 31%"  id="sheng" >
+                                            <option value="0">--请选择省份--</option>
+                                        </select>
+                                        <select class="gui-select" style="width: 31%" id="shi">
+                                            <option value="0">--请选择城市--</option>
+                                        </select>
+                                        <select class="gui-select" style="width: 31%" id="xian">
+                                            <option value="0">--请选择区/县--</option>
+                                        </select>
+                                    </span>
+                                    <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4">法人</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" name="dtLegalMan" ng-model="subjDt.dtLegalMan" type="text"
+                                                                                                                                                                                            data-bv-notempty="true"
+                                                                                                                                                                                            data-bv-notempty-message="内容不能是空"/></span>
+                                    <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4">负责人电话</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" name="dtLeaderPhone" ng-model="subjDt.dtLeaderPhone" type="text"
+                                                                                                                                                             data-bv-isPhone="true"
+                                                                                                                                                             data-bv-isPhone-message="请输入有效的手机号码"/></span>
+                                    <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4">联系人电话</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" name="dtContactPhone" ng-model="subjDt.dtContactPhone" type="text"
+                                                                                                                                                                                               data-bv-notempty="true"
+                                                                                                                                                                                               data-bv-notempty-message="内容不能是空"
+                                                                                                                                                                                               data-bv-isPhone="true"
+                                                                                                                                                                                               data-bv-isPhone-message="请输入有效的手机号码"/></span>
+                                    <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4">质量负责人</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" name="dtQualityDirector" ng-model="subjDt.dtQualityDirector" type="text"/></span>
+                                    <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4">产品范围</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" name="dtProductRange" ng-model="subjDt.dtProductRange" type="text"/></span>
+                                    <label class="col-lg-4 col-xs-4 col-sm-4 col-md-4">电子邮箱</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><input class="gui-input" name="dtContactEmail" ng-model="subjDt.dtContactEmail" type="text"
+                                                                                                                                                            data-bv-emailaddress="true"
+                                                                                                                                                            data-bv-emailaddress-message="输入不是一个有效的电子邮件地址"/></span>
+                                    <!--<label class="col-lg-4 col-xs-4 col-sm-4 col-md-4">证书</label><span class="col-lg-8 col-xs-8 col-sm-8 col-md-8"><img src="" alt="证书" width="120" height="120" class="img-thumbnail"></span>-->
+                                </div>
+                                <div class="col-md-10">
+                                    <label class="col-sm-2">变更原因</label>
+                                    <div class="col-sm-10">
+                                        <textarea style="height: 60px;width: 100%;" name="applyReason" class="gui-input"
+                                                  data-bv-notempty="true"
+                                                  data-bv-notempty-message="内容不能是空"></textarea>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer mt15">
+                        <span class="gui-btn" type="button" style="padding-top: 2px;"  ng-click="cancelMain()">取消</span>
+                        <span class="gui-btn" type="button" id="save"  style="padding-top: 2px;">申请变更</span>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal -->
+    </div>
+
+        <!-- 模态框（Modal）查看变更记录 -->
+        <div class="modal fade" id="dModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+            <div class="modal-dialog modal-style" style="width: 690px" >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="modalTitle">机构变更历史</h4>
+                    </div>
+                    <div class="modal-body" style="min-height: 400px;">
+                        <div class="table-responsive" style="margin-top:20px;text-align:center;">
+                            <table class="table table-bordered" style="width:70%;margin:auto;" >
+                                <tr>
+                                    <th style="text-align: center;">
+                                        主体信息
+                                    </th>
+                                    <th style="text-align: center;">
+                                        变更前
+                                    </th>
+                                    <th style="text-align: center;">
+                                        变更后
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        机构名称
+                                    </td>
+                                    <td>
+                                        <span ng-bind="before.dtName"></span>
+                                    </td>
+                                    <td>
+                                        <span ng-bind="after.dtName"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        机构代码
+                                    </td>
+                                    <td>
+                                        <span ng-bind="before.dtCode"></span>
+                                    </td>
+                                    <td>
+                                        <span ng-bind="after.dtCode"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        机构级别
+                                    </td>
+                                    <td>
+                                        <span ng-bind="before.dtLevel"></span>
+                                    </td>
+                                    <td>
+                                        <span ng-bind="after.dtLevel"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        所属区域
+                                    </td>
+                                    <td>
+                                        <span ng-bind="before.dtAreaId"></span>
+                                    </td>
+                                    <td>
+                                        <span ng-bind="after.dtAreaId"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        通讯地址
+                                    </td>
+                                    <td>
+                                        <span ng-bind="before.dtAddress"></span>
+                                    </td>
+                                    <td>
+                                        <span ng-bind="after.dtAddress"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        负责人
+                                    </td>
+                                    <td>
+                                        <span ng-bind="before.dtLeader"></span>
+                                    </td>
+                                    <td>
+                                        <span ng-bind="after.dtLeader"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        负责人电话
+                                    </td>
+                                    <td>
+                                        <span ng-bind="before.dtLeaderPhone"></span>
+                                    </td>
+                                    <td>
+                                        <span ng-bind="after.dtLeaderPhone"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        联系人
+                                    </td>
+                                    <td>
+                                        <span ng-bind="before.dtContact"></span>
+                                    </td>
+                                    <td>
+                                        <span ng-bind="after.dtContact"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        联系人电话
+                                    </td>
+                                    <td>
+                                        <span ng-bind="before.dtContactPhone"></span>
+                                    </td>
+                                    <td>
+                                        <span ng-bind="after.dtContactPhone"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        联系人QQ
+                                    </td>
+                                    <td>
+                                        <span ng-bind="before.dtContactQQ"></span>
+                                    </td>
+                                    <td>
+                                        <span ng-bind="after.dtContactQQ"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        电子邮箱
+                                    </td>
+                                    <td>
+                                        <span ng-bind="before.dtContactEmail"></span>
+                                    </td>
+                                    <td>
+                                        <span ng-bind="after.dtContactEmail"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        邮编
+                                    </td>
+                                    <td>
+                                        <span ng-bind="before.dtPostcode"></span>
+                                    </td>
+                                    <td>
+                                        <span ng-bind="after.dtPostcode"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        单位性质
+                                    </td>
+                                    <td>
+                                        <span ng-bind="before.dtUnitNature"></span>
+                                    </td>
+                                    <td>
+                                        <span ng-bind="after.dtUnitNature"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        具体办事机构
+                                    </td>
+                                    <td>
+                                        <span ng-bind="before.dtWorkBody"></span>
+                                    </td>
+                                    <td>
+                                        <span ng-bind="after.dtWorkBody"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        变更原因
+                                    </td>
+                                    <td colspan="2">
+                                        <span ng-bind="after.applyReason"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        审核状态
+                                    </td>
+                                    <td colspan="2">
+                                        <span ng-bind="after.auditState"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        审核意见
+                                    </td>
+                                    <td colspan="2">
+                                        <span ng-bind="after.auditSuggestion"></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer mgt-15">
+                        <span class="gui-btn"  data-dismiss="modal">关闭</span>
+                    </div>
+                </div>
+            </div>
+        </div>

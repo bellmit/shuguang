@@ -1,0 +1,61 @@
+<link rel="stylesheet" href="assets/css/asms/badrecode/badrecodeCheckreport.css"/>
+<div class="gui-breadcrumbs">
+    <a href="">执法系统</a>&gt;
+    <span>主体信息</span>
+</div>
+        <div class="Sup_contain_section_contain gui-section gui-section-wid" >
+            <ul >
+                <li class="Bor_line">主体信息</li>
+                <li>
+                    <ul>
+                        <li>主体名称：<span ng-bind="enterprise.enterpriseName"></span></li>
+                        <li>组织形式：<span ng-bind="enterprise.entityScaleName"></span></li>
+                        <li>主体类型：<span ng-bind="enterprise.entityTypeName"></span></li>
+                        <li>所属行业：<span ng-bind="enterprise.entityIndustryName"></span></li>
+                        <li>证件类型：<span ng-bind="enterprise.cardType"></span></li>
+                        <li>企业注册号：<span ng-bind="enterprise.code"></span></li>
+                        <li>组织机构代码：<span ng-bind="enterprise.code"></span></li>
+                        <li>营业期限/有效期：<span ng-bind="enterprise.businessOperation"></span></li>
+                        <li>所属区域：<span ng-bind="area"></span></li>
+
+                    </ul>
+                </li>
+                <li class="Bor_line">
+                    三品一标信息
+                </li>
+                <li class="_box">
+                    <img src="assets/imgs/photo/实例图片.png" alt=""/>
+                    <img src="assets/imgs/photo/实例图片.png" alt=""/>
+                    <img src="assets/imgs/photo/实例图片.png" alt=""/>
+                    <img src="assets/imgs/photo/实例图片.png" alt=""/>
+                </li>
+                <li class="Bor_line">
+                    法定代表人信息
+                </li>
+                <li>
+                    <ul>
+                        <li>姓名：<span ng-bind="enterprise.legalName"></span></li>
+                        <li>身份证号：<span ng-bind="enterprise.idcode"></span></li>
+                        <li>联系电话：<span ng-bind="enterprise.legalPhone"></span></li>
+                    </ul>
+                </li>
+                <li class="Bor_line">
+                    联系人信息
+                </li>
+                <li>
+                    <ul>
+                        <li>姓名：<span ng-bind="enterprise.contactName"></span></li>
+                        <li>联系电话：<span ng-bind="enterprise.contactPhone"></span></li>
+                        <li>邮箱：<span ng-bind="enterprise.contactEmail"></span></li>
+                    </ul>
+                </li>
+                <li>
+                </li>
+            </ul>
+            <p align="center" style="border-top: 1px solid #9d9d9d;padding-top: 15px;">
+                <button class="gui-btn" ng-click="RemoveLocal()" ui-sref="index.content.ales/punish/produceAdminPunishAdd" style="">关闭</button>
+            </p>
+        </div>
+
+
+        <input id="ID" type="text" style="visibility: hidden"/>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.SturgeonSignboardMapper">
+    <sql id="alias_Column_List_ss">
+      ss.ID, ss.CREDENTIALS, ss.CASE_NUM, ss.SIGNBOARD, ss.STICKER_PRINT_STATUS, ss.LABEL_PRINT_STATUS, ss.PRINT_SUM
+    </sql>
+    <sql id="alias_Column_List_tc">
+      tc.COMP_NAME, tc.COMP_TYPE
+    </sql>
+
+    <select id="listByParams" resultType="com.sofn.fdpi.model.SturgeonSignboard">
+        select
+        <include refid="alias_Column_List_tc"/>,
+        <include refid="alias_Column_List_ss"/>
+        from STURGEON_SIGNBOARD ss join TB_COMP tc on ss.COMP_ID = tc.ID
+        <where>
+            tc.DEL_FLAG = 'N'
+            <if test="label != null and label != ''">
+                and ss.LABEL = #{label}
+            </if>
+            <if test="labelPrintStatus != null and labelPrintStatus != ''">
+                and ss.LABEL_PRINT_STATUS = #{labelPrintStatus}
+            </if>
+            <if test="stickerPrintStatus != null and stickerPrintStatus != ''">
+                and ss.STICKER_PRINT_STATUS = #{stickerPrintStatus}
+            </if>
+            <if test="compId != null and compId != ''">
+                and ss.COMP_ID = #{compId}
+            </if>
+            <if test="compName != null and compName != ''">
+                and tc.COMP_NAME like '%' || #{compName} || '%'
+            </if>
+            <if test="caseNum != null and caseNum != ''">
+                and ss.CASE_NUM = #{caseNum}
+            </if>
+            <if test="credentials != null and credentials != ''">
+                and ss.CREDENTIALS like '%' || #{credentials} || '%'
+            </if>
+        </where>
+        order by ss.CREATE_TIME desc, ss.SIGNBOARD asc, ss.CASE_NUM asc
+    </select>
+
+    <select id="listSignboardsByParams" resultType="String">
+        select c.SIGNBOARD from STURGEON a
+        left join STURGEON_SUB b ON a.ID = b.STURGEON_ID
+        left join STURGEON_SIGNBOARD c ON b.ID = c.STURGEON_SUB_ID
+        <where>
+            a.DEL_FLAG = 'N' and a.SOURCE = #{source} and a.ORIGIN = #{origin} and a.HANDLE = #{handle}
+            and a.ISSUE_ADDR = #{issueAddr} and b.VARIETY = #{variety}
+            and c.CREDENTIALS = #{credentials}
+            <if test="startNum != null and startNum != '' and endNum != null and endNum != ''">
+                and c.SERIAL between #{startNum} and #{endNum}
+            </if>
+            <if test="signboard != null and signboard != ''">
+                and c.SIGNBOARD = #{signboard}
+            </if>
+        </where>
+        order by c.CREATE_TIME desc, c.SIGNBOARD desc
+    </select>
+
+    <select id="listSignboardsByParams2" resultType="String">
+        select c.SERIAL from STURGEON a
+        left join STURGEON_SUB b ON a.ID = b.STURGEON_ID
+        left join STURGEON_SIGNBOARD c ON b.ID = c.STURGEON_SUB_ID
+        <where>
+            a.DEL_FLAG = 'N'
+            <if test="year != null and year != ''">
+                and  to_char(c.create_time,'yyyy')  = #{year}
+            </if>
+            <if test="startNum != null and startNum != '' and endNum != null and endNum != ''">
+                and c.SERIAL between #{startNum} and #{endNum}
+            </if>
+        </where>
+        order by c.CREATE_TIME desc, c.SIGNBOARD desc
+    </select>
+
+    <update id="print">
+        update STURGEON_SIGNBOARD
+        <set>
+            PRINT_SUM = PRINT_SUM + 1,
+            <choose>
+                <when test='label== "S"'>
+                    STICKER_PRINT_STATUS = 'Y'
+                </when>
+                <otherwise>
+                    LABEL_PRINT_STATUS = 'Y'
+                </otherwise>
+            </choose>
+        </set>
+        <where>
+            LABEL = #{label}
+            and ID in
+            <foreach collection="ids" item="id" separator="," open="(" close=")">
+                #{id}
+            </foreach>
+        </where>
+    </update>
+
+    <select id="getCaseNum" resultType="String">
+        select distinct ss.CASE_NUM from STURGEON_SIGNBOARD ss join TB_COMP tc on ss.COMP_ID = tc.ID
+        <where>
+            tc.DEL_FLAG = 'N'
+            <if test="label != null and label != ''">
+                and ss.LABEL = #{label}
+            </if>
+            <if test="labelPrintStatus != null and labelPrintStatus != ''">
+                and ss.LABEL_PRINT_STATUS = #{labelPrintStatus}
+            </if>
+            <if test="stickerPrintStatus != null and stickerPrintStatus != ''">
+                and ss.STICKER_PRINT_STATUS = #{stickerPrintStatus}
+            </if>
+            <if test="compId != null and compId != ''">
+                and ss.COMP_ID = #{compId}
+            </if>
+            <if test="compName != null and compName != ''">
+                and tc.COMP_NAME like '%' || #{compName} || '%'
+            </if>
+            <if test="credentials != null and credentials != ''">
+                and ss.CREDENTIALS like '%' || #{credentials} || '%'
+            </if>
+        </where>
+        order by ss.CASE_NUM
+    </select>
+
+    <insert id="insertSturgeonSignboardBatch" useGeneratedKeys="false" parameterType="list">
+        insert      into STURGEON_SIGNBOARD (ID,SERIAL,SIGNBOARD,STURGEON_SUB_ID)
+        VALUES
+        <foreach collection="list" item="sturgeonSignboard" separator=",">
+            (#{sturgeonSignboard.id},#{sturgeonSignboard.serial},
+            #{sturgeonSignboard.signboard},#{sturgeonSignboard.sturgeonSubId})
+        </foreach>
+
+    </insert>
+
+    <update id="updateSturgeonSignboardInfo">
+        update STURGEON_SIGNBOARD
+            set CREATE_TIME = #{sturgeonSignboard.createTime}, CASE_NUM = #{sturgeonSignboard.caseNum},
+        COMP_ID = #{sturgeonSignboard.compId}, CREDENTIALS = #{sturgeonSignboard.credentials},
+        LABEL = #{sturgeonSignboard.label}, LABEL_PRINT_STATUS = #{sturgeonSignboard.labelPrintStatus},
+        TYPE = #{sturgeonSignboard.type}, PRINT_SUM = #{sturgeonSignboard.printSum}
+        where STURGEON_SUB_ID = #{sturgeonSubId}
+    </update>
+
+</mapper>

@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fyem.mapper.MinisterAuditMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.fyem.model.MinisterAudit" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="BELONG_YEAR" property="belongYear" jdbcType="VARCHAR" />
+    <result column="PROVINCE_ID" property="provinceId" jdbcType="VARCHAR" />
+    <result column="CITY_ID" property="cityId" jdbcType="VARCHAR" />
+    <result column="COUNTY_ID" property="countyId" jdbcType="VARCHAR" />
+    <result column="ORGANIZATION_ID" property="organizationId" jdbcType="VARCHAR" />
+    <result column="ORGANIZATION_NAME" property="organizationName" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="ROLE_CODE" property="roleCode" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="CREATE_USER_ID" property="createUserId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, belong_year, province_id, city_id, county_id, organization_id, organization_name,
+    status, remark, role_code, create_time, create_user_id
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from MINISTER_AUDIT
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <insert id="insert" parameterType="com.sofn.fyem.model.MinisterAudit" >
+    insert into MINISTER_AUDIT (id, belong_year, province_id,
+      city_id, county_id, organization_id,
+      organization_name, status, remark,
+      role_code, create_time, create_user_id)
+    values (#{id,jdbcType=VARCHAR}, #{belongYear,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR},
+      #{cityId,jdbcType=VARCHAR}, #{countyId,jdbcType=VARCHAR}, #{organizationId,jdbcType=VARCHAR},
+      #{organizationName,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
+      #{roleCode,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR})
+  </insert>
+
+  <select id="selectByParams" resultType="com.sofn.fyem.model.MinisterAudit" parameterType="java.util.Map">
+  select
+  <include refid="Base_Column_List" />
+  from  MINISTER_AUDIT
+  <where>
+    1=1
+    <if test="id != null and belongYear != ''">
+      and  id = #{id}
+    </if>
+    <if test="belongYear != null and belongYear != ''">
+      and  belong_year = #{belongYear}
+    </if>
+    <if test="provinceId != null and provinceId != ''">
+      and  province_id = #{provinceId}
+    </if>
+    <if test="cityId != null and cityId != ''">
+      and  city_id = #{cityId}
+    </if>
+    <if test="countyId != null and countyId != ''">
+      and  county_id = #{countyId}
+    </if>
+    <if test="organizationId != null and organizationId != ''">
+      and  organization_id = #{organizationId}
+    </if>
+    <if test="organizationName != null and organizationName != ''">
+      and  organization_name = #{organizationName}
+    </if>
+    <if test="status != null and status != ''">
+      and  status = #{status}
+    </if>
+    <if test="remark != null and remark != ''">
+      and  remark = #{remark}
+    </if>
+    <if test="roleCode != null and roleCode != ''">
+      and  role_code = #{roleCode}
+    </if>
+    <if test="createTime != null and createTime != ''">
+      and  create_time = #{createTime}
+    </if>
+    <if test="createUserId != null and createUserId != ''">
+      and create_user_id = #{createUserId}
+    </if>
+  </where>
+</select>
+
+  <select id="selectListByParams" resultType="com.sofn.fyem.model.MinisterAudit" parameterType="java.util.Map">
+    select
+    <include refid="Base_Column_List" />
+    from  MINISTER_AUDIT
+    <where>
+      1=1
+      <if test="id != null and belongYear != ''">
+        and  id = #{id}
+      </if>
+      <if test="belongYear != null and belongYear != ''">
+        and  belong_year = #{belongYear}
+      </if>
+      <if test="provinceId != null and provinceId != ''">
+        and  province_id = #{provinceId}
+      </if>
+      <if test="cityId != null and cityId != ''">
+        and  city_id = #{cityId}
+      </if>
+      <if test="countyId != null and countyId != ''">
+        and  county_id = #{countyId}
+      </if>
+      <if test="organizationId != null and organizationId != ''">
+        and  organization_id = #{organizationId}
+      </if>
+      <if test="organizationName != null and organizationName != ''">
+        and  organization_name = #{organizationName}
+      </if>
+      <if test="status != null and status != ''">
+        and  status = #{status}
+      </if>
+      <if test="remark != null and remark != ''">
+        and  remark = #{remark}
+      </if>
+      <if test="roleCode != null and roleCode != ''">
+        and  role_code = #{roleCode}
+      </if>
+      <if test="createTime != null and createTime != ''">
+        and  create_time = #{createTime}
+      </if>
+      <if test="createUserId != null and createUserId != ''">
+        and create_user_id = #{createUserId}
+      </if>
+    </where>
+    order by create_time asc
+  </select>
+
+   <select id="listMinisterAuditsByBelongYear" resultType="com.sofn.fyem.vo.MinisterAuditVo" parameterType="java.util.Map">
+    select id, province_id, city_id, county_id, belong_year, organization_name, role_code, status
+    from  MINISTER_AUDIT
+    <where>
+      1=1
+      <if test="belongYear != null and belongYear != ''" >
+        and  belong_year = #{belongYear}
+      </if>
+      <if test="orgName != null and orgName != ''" >
+        and  organization_name like '%'||#{orgName}||'%'
+      </if>
+      <if test="organizationIdList != null and !organizationIdList.isEmpty()">
+        <foreach collection="organizationIdList" item="organizationId" open="and organization_id in (" close=")" separator=",">
+          #{organizationId}
+        </foreach>
+      </if>
+    </where>
+  </select>
+
+  <select id="selectByBelongYearAndProvId" resultType="com.sofn.fyem.model.MinisterAudit" parameterType="java.util.Map">
+    select
+    <include refid="Base_Column_List" />
+    from MINISTER_AUDIT
+    <where>
+      1=1
+      <if test="belongYear != null and belongYear != ''" >
+        and  belong_year = #{belongYear}
+      </if>
+      <if test="provinceId != null and provinceId != ''" >
+        and  province_id = #{provinceId}
+      </if>
+      <if test="organizationIdList != null and !organizationIdList.isEmpty()">
+        <foreach collection="organizationIdList" item="organizationId" open="and organization_id in (" close=")" separator=",">
+          #{organizationId}
+        </foreach>
+      </if>
+      <if test="organizationName != null and organizationName != ''">
+        and organization_name = #{organizationName}
+      </if>
+      <if test="roleCode != null and roleCode != ''">
+        and  role_code = #{roleCode}
+      </if>
+    </where>
+    limit 1
+  </select>
+
+  <update id="updateStatus" parameterType="java.util.Map">
+    update MINISTER_AUDIT
+    <set>
+      <if test=" status != null and  status != '' " >
+        status = #{status}
+      </if>
+      <if test=" remark != null" >
+        ,remark = #{remark}
+      </if>
+    </set>
+    <where>
+      1=1
+      <if test="belongYear != null and belongYear != '' and belongYear != '0'" >
+        and  belong_year = #{belongYear}
+      </if>
+      <if test="provinceId != null and provinceId != '' and provinceId != '0'" >
+        and  province_id = #{provinceId}
+      </if>
+      <if test="cityId != null and cityId != '' and cityId != '0'" >
+        and  city_id = #{cityId}
+      </if>
+      <if test="countyId != null and countyId != '' and countyId != '0'" >
+        and  county_id = #{countyId}
+      </if>
+      <if test="organizationId != null and organizationId != ''">
+        and organization_id = #{organizationId}
+      </if>
+      <if test="organizationName != null and organizationName != ''">
+        and organization_name = #{organizationName}
+      </if>
+      <if test="roleCode != null and roleCode != ''">
+        and  role_code = #{roleCode}
+      </if>
+      <trim prefix="and (" suffix=")" prefixOverrides="and|or">
+        <if test=" statusConditionFirst != null and  statusConditionFirst != '' " >
+          status = #{statusConditionFirst}
+        </if>
+        <if test=" statusConditionSecond != null and  statusConditionSecond != '' " >
+          or  status = #{statusConditionSecond}
+        </if>
+      </trim>
+    </where>
+  </update>
+
+
+  <select id="getInfoByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM MINISTER_AUDIT
+    <where>
+      1=1
+      <if test="belongYear != null and belongYear != ''">
+        and belong_year = #{belongYear}
+      </if>
+      <if test="provinceId != null and provinceId != ''">
+        and province_id = #{provinceId}
+      </if>
+      <if test="cityId != null and cityId != ''">
+        and city_id = #{cityId}
+      </if>
+      <if test="countyId != null and countyId != ''">
+        and county_id = #{countyId}
+      </if>
+      <if test="statusList.size()>0">
+        and status not in
+        <foreach item="item" index="index" collection="statusList"
+                 open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+      <if test="createUserId != null and createUserId != ''">
+        and create_user_id = #{createUserId}
+      </if>
+    </where>
+    ORDER BY create_time desc
+  </select>
+</mapper>

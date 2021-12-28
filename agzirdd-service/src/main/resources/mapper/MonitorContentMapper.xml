@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agzirdd.mapper.MonitorContentMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.agzirdd.model.MonitorContent" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="SPECIES_MONITOR_ID" property="speciesMonitorId" jdbcType="VARCHAR" />
+    <result column="AREA" property="area" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+    <result column="TYPE_NAME" property="typeName" jdbcType="VARCHAR" />
+    <result column="HARM_OBJECT" property="harmObject" jdbcType="VARCHAR" />
+    <result column="HARM_METHOD" property="harmMethod" jdbcType="VARCHAR" />
+    <result column="DAMAGE_DEGREE" property="damageDegree" jdbcType="VARCHAR" />
+    <result column="ECONOMIC_LOSS" property="economicLoss" jdbcType="VARCHAR" />
+    <result column="HAS_MEASURES" property="hasMeasures" jdbcType="VARCHAR" />
+    <result column="PREVENTION_AREA" property="preventionArea" jdbcType="NUMERIC" />
+    <result column="PREVENTION_COST" property="preventionCost" jdbcType="NUMERIC" />
+    <result column="DESCRIBE" property="describe" jdbcType="VARCHAR" />
+    <result column="RESULT" property="result" jdbcType="VARCHAR" />
+    <result column="RESULT_IMG" property="resultImg" jdbcType="VARCHAR" />
+    <result column="HAS_UTILIZE" property="hasUtilize" jdbcType="VARCHAR" />
+    <result column="UTILIZE_DESCRIPTION" property="utilizeDescription" jdbcType="VARCHAR" />
+    <result column="UTILIZE_MANNER" property="utilizeManner" jdbcType="VARCHAR" />
+    <result column="UTILIZE_IMG" property="utilizeImg" jdbcType="VARCHAR" />
+    <result column="WORK_IMG" property="workImg" jdbcType="VARCHAR" />
+    <result column="SPECIES_IMG" property="speciesImg" jdbcType="VARCHAR" />
+    <result column="SUMMARY" property="summary" jdbcType="VARCHAR" />
+    <result column="PROPOSAL" property="proposal" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ID, SPECIES_MONITOR_ID, AREA, TYPE, TYPE_NAME,HARM_OBJECT, HARM_METHOD,
+    DAMAGE_DEGREE, ECONOMIC_LOSS, HAS_MEASURES, PREVENTION_AREA, PREVENTION_COST, DESCRIBE, 
+    RESULT, RESULT_IMG, HAS_UTILIZE,UTILIZE_DESCRIPTION,UTILIZE_MANNER,UTILIZE_IMG, WORK_IMG, SPECIES_IMG, SUMMARY, PROPOSAL,
+    CREATE_TIME
+  </sql>
+
+  <select id="getMonitorContentBySpeciesMonitorId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from MONITOR_CONTENT
+    where SPECIES_MONITOR_ID = #{speciesMonitorId}
+  </select>
+
+  <delete id="deleteMonitorContent" parameterType="java.lang.String">
+    delete
+    from MONITOR_CONTENT
+    where
+    SPECIES_MONITOR_ID = #{speciesMonitorId}
+  </delete>
+
+</mapper>

@@ -1,0 +1,63 @@
+//    angularjs数据传输
+//var myapp=angular.module("myapp",[]);
+var mytype="";
+var myend="";
+var myapp=angular.module("myapp",[]).controller("updateSysFlow",function($scope,$http,$state){
+  
+		$scope.id=window.localStorage.getItem("sys_sysFlow_id");
+		$http({
+			url:"/sofn-sys-web/sysFlow/findDeptById",
+			method:"post",
+			data:{
+				id:$scope.id
+			}
+		}).success(function(data){
+	    	$("input[name='flowName']").val(data.sysFlow.flowName);
+	    	$("input[name='flowFlag']").val(data.sysFlow.flowFlag);
+	    	$("input[name='flowUrl']").val(data.sysFlow.flowUrl);
+	    	$("input[name='flowFile']").val(data.sysFlow.flowFile);
+	    	$("input[name='flowImg']").val(data.sysFlow.flowImg);
+	    	
+	    	$("select[name='status']").val(data.sysFlow.status);
+	    	//public filed
+	    	$("input[name='delFlag']").val(data.sysFlow.delFlag);
+	    	$("input[name='createBy']").val(data.sysFlow.createBy);
+	    	$("input[name='createTime']").val(data.sysFlow.createTime);
+		});
+		//
+        $scope.updatesysFlow = function(){
+	    	 $scope.sysFlow.flowName = $("input[name='flowName']").val();
+	    	 $scope.sysFlow.flowFlag = $("input[name='flowFlag']").val();
+	    	 $scope.sysFlow.flowUrl = $("input[name='flowUrl']").val();
+	    	 $scope.sysFlow.flowFile = $("input[name='flowFile']").val();
+	    	 $scope.sysFlow.flowImg = $("input[name='flowImg']").val();
+	    	 
+	    	
+	    	 $scope.sysFlow.status = $("select[name='status']").val();
+	    	 $scope.sysFlow.delFlag = $("input[name='delFlag']").val();
+	    	 $scope.sysFlow.createBy = $("input[name='createBy']").val();
+	    	 $scope.sysFlow.createTime = $("input[name='createTime']").val();
+	    	 $scope.sysFlow.id = $scope.id;
+            $http({
+                    url:"/sofn-sys-web/sysFlow/updateSysFlow",
+                    data:$scope.sysFlow,
+                    method:"post",
+                    //post传输方式   头信息
+                    headers: {
+                        post: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    }
+                }).success(function(data){
+                alert("修改成功");
+                $state.go("index.content.sys/sysFlow/flowlist");
+            }).
+            error(function(){
+				alert("修改失败");
+            })
+        };
+		//清楚缓存
+		$scope.RemoveLocal=function(){
+			window.localStorage.removeItem("id");
+		};
+    });
+
+

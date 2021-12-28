@@ -1,0 +1,13 @@
+spring:
+  redis:
+    redisson:
+      file: classpath:config/redisson-dev.yaml
+# password:
+
+eureka:
+  instance:
+    hostname: ${spring.cloud.client.ip-address}
+    instance-id: ${eureka.instance.hostname}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://10.0.50.101:8880/eureka/

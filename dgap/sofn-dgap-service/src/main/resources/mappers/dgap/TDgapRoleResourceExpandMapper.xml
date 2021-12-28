@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.dao.dgap.TDgapRoleResourceExpandMapper">
+    <resultMap id="BaseResultMap" type="com.sofn.model.generator.TDgapRoleResource">
+        <id column="ID" property="id" jdbcType="VARCHAR"/>
+        <result column="ROLE_ID" property="roleId" jdbcType="VARCHAR"/>
+        <result column="RESOURCE_ID" property="resourceId" jdbcType="VARCHAR"/>
+        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="DEL_FLAG" property="delFlag" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD1" property="reservedField1" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD2" property="reservedField2" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD3" property="reservedField3" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD4" property="reservedField4" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD5" property="reservedField5" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD6" property="reservedField6" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD7" property="reservedField7" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD8" property="reservedField8" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD9" property="reservedField9" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD10" property="reservedField10" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD11" property="reservedField11" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD12" property="reservedField12" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD13" property="reservedField13" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD14" property="reservedField14" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD15" property="reservedField15" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD16" property="reservedField16" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD17" property="reservedField17" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD18" property="reservedField18" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD19" property="reservedField19" jdbcType="VARCHAR"/>
+        <result column="RESERVED_FIELD20" property="reservedField20" jdbcType="VARCHAR"/>
+    </resultMap>
+    <!--  资源权限设置表不分页作用在下拉列表里面-->
+    <select id="getListAll" resultType="java.util.Map">
+      SELECT
+       T.ID,
+       T.RESOURCE_ID,
+       T.ROLE_ID,/*角色信息ID*/
+       TDR.TRNAME,/*资源名称*/
+       TDR.TDNAME,/*资源目录名称*/
+       ROWNUM as rn
+    FROM T_DGAP_ROLE_RESOURCE T,
+      (SELECT
+       TR.ID TRID,
+       TR.NAME TRNAME,
+       TD.NAME TDNAME
+      FROM T_DGAP_RESOURCE TR
+       LEFT JOIN T_DGAP_RESOURCE_DIRECTORY TD
+       ON TR.DIRECTORY_ID=TD.ID) TDR
+    WHERE 1=1 AND T.RESOURCE_ID=TDR.TRID AND T.DEL_FLAG='N'
+
+</select>
+    <!--  资源权限设置表分页展示-->
+
+    <select id="getPagesList" resultType="java.util.Map">
+        SELECT * FROM
+        (SELECT M.*,ROWNUM rn
+        FROM(
+        SELECT
+        T.ID,
+        T.UPDATE_TIME,
+        T.RESOURCE_ID,
+        T.ROLE_ID,/*角色信息ID*/
+        TR.NAME AS TRNAME,/*资源名称*/
+        TD.NAME AS TDNAME/*资源目录名称*/
+        FROM T_DGAP_ROLE_RESOURCE T
+        LEFT JOIN T_DGAP_RESOURCE TR
+        ON T.RESOURCE_ID = TR.ID
+        LEFT JOIN T_DGAP_RESOURCE_DIRECTORY TD
+        ON TR.DIRECTORY_ID=TD.ID
+        WHERE 1=1 AND T.DEL_FLAG='N'
+        <if test="reosurceDirectoryName !=null and reosurceDirectoryName !=''">
+            AND TD.ID LIKE '%' || #{reosurceDirectoryName} || '%'
+        </if>
+        <if test="reosurceName !=null and reosurceName !=''">
+            AND TR.NAME LIKE '%' || #{reosurceName} || '%'
+        </if>
+        <if test="roleId !=null and roleId !=''">
+            AND T.ROLE_ID LIKE '%' || #{roleId} || '%'
+        </if>
+        <if test="roleList !=null and roleList !=''">
+            AND T.ROLE_ID in (${roleList})
+        </if>
+        ORDER BY T.UPDATE_TIME DESC) M
+        )
+        WHERE rn BETWEEN 1+#{pageSize}*(#{pageNum}-1) AND #{pageSize}*#{pageNum}
+    </select>
+    <select id="getPageCount" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM T_DGAP_ROLE_RESOURCE T
+        LEFT JOIN T_DGAP_RESOURCE TR
+        ON T.RESOURCE_ID = TR.ID
+        LEFT JOIN T_DGAP_RESOURCE_DIRECTORY TD
+        ON TR.DIRECTORY_ID=TD.ID
+        WHERE 1=1 AND T.DEL_FLAG='N'
+        <if test="reosurceDirectoryName !=null and reosurceDirectoryName !=''">
+            AND TD.ID LIKE '%' || #{reosurceDirectoryName} || '%'
+        </if>
+        <if test="reosurceName !=null and reosurceName !=''">
+            AND TR.NAME LIKE '%' || #{reosurceName} || '%'
+        </if>
+        <if test="roleId !=null and roleId !=''">
+            AND T.ROLE_ID LIKE '%' || #{roleId} || '%'
+        </if>
+        <if test="roleList !=null and roleList !=''">
+            AND T.ROLE_ID in (${roleList})
+        </if>
+
+    </select>
+    <select id="checkRepetition" resultType="com.sofn.model.generator.TDgapRoleResource">
+      SELECT ID,ROLE_ID,RESOURCE_ID FROM T_DGAP_ROLE_RESOURCE
+      WHERE ROLE_ID=#{roleId} AND DEL_FLAG='N'
+    </select>
+
+</mapper>

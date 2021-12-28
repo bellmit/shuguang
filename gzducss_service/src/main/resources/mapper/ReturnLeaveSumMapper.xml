@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.ReturnLeaveSumMapper" >
+
+    <resultMap id="BaseResultMap" type="com.sofn.ducss.model.ReturnLeaveSum" >
+        <result column="id" property="id" />
+        <result column="year" property="year" />
+        <result column="area_id" property="areaId" />
+        <result column="straw_type" property="strawType" />
+        <result column="pro_still_field" property="proStillField" />
+        <result column="return_ratio" property="returnRatio" />
+        <result column="all_total" property="allTotal" />
+        <result column="disperse_total" property="disperseTotal" />
+        <result column="main_total" property="mainTotal" />
+        <result column="collect_resource" property="collectResource" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+              id,
+                year,
+                area_id,
+                straw_type,
+                pro_still_field,
+                return_ratio,
+                all_total,
+                disperse_total,
+                main_total,
+                collect_resource
+    </sql>
+
+
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.sofn.ducss.model.ReturnLeaveSum">
+        INSERT INTO return_leave_sum
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != year'>
+                year,
+            </if>
+            <if test ='null != areaId'>
+                area_id,
+            </if>
+            <if test ='null != strawType'>
+                straw_type,
+            </if>
+            <if test ='null != proStillField'>
+                pro_still_field,
+            </if>
+            <if test ='null != returnRatio'>
+                return_ratio,
+            </if>
+            <if test ='null != allTotal'>
+                all_total,
+            </if>
+            <if test ='null != disperseTotal'>
+                disperse_total,
+            </if>
+            <if test ='null != mainTotal'>
+                main_total,
+            </if>
+            <if test ='null != mainTotal'>
+                main_total,
+            </if>
+            <if test ='null != collectResource'>
+                collect_resource
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != year'>
+                #{year},
+            </if>
+            <if test ='null != areaId'>
+                #{areaId},
+            </if>
+            <if test ='null != strawType'>
+                #{strawType},
+            </if>
+            <if test ='null != proStillField'>
+                #{proStillField},
+            </if>
+            <if test ='null != returnRatio'>
+                #{returnRatio},
+            </if>
+            <if test ='null != allTotal'>
+                #{allTotal},
+            </if>
+            <if test ='null != disperseTotal'>
+                #{disperseTotal},
+            </if>
+            <if test ='null != collectResource'>
+                #{collectResource}
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertBatchReturnLeaveSum" parameterType="list">
+        insert into  return_leave_sum (<include refid="Base_Column_List"></include>) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.id,jdbcType=VARCHAR},
+            #{item.year,jdbcType=VARCHAR},
+            #{item.areaId,jdbcType=VARCHAR},
+            #{item.strawType,jdbcType=VARCHAR},
+            #{item.proStillField,jdbcType=DECIMAL},
+            #{item.returnRatio,jdbcType=DECIMAL},
+            #{item.allTotal,jdbcType=DECIMAL},
+            #{item.disperseTotal,jdbcType=DECIMAL},
+            #{item.mainTotal,jdbcType=DECIMAL},
+            #{item.collectResource,jdbcType=DECIMAL}
+            )
+        </foreach>
+    </insert>
+
+
+    <delete id="deleteStrawUtilizeSum" parameterType="com.sofn.ducss.model.StrawUtilizeSum">
+        delete from return_leave_sum where year =#{year} and area_id= #{areaId}
+    </delete>
+
+    <select id="getReturnLeaveSumByAreaId" resultType="com.sofn.ducss.model.ReturnLeaveSum">
+        select
+        id,
+        year,
+        area_id,
+        straw_type,
+        pro_still_field,
+        pro_still_field/collect_resource as return_ratio,
+        all_total,
+        disperse_total,
+        main_total,
+        collect_resource
+        from return_leave_sum
+        where
+        <if test="year!=null and year!=''">
+            and year =#{year}
+        </if>
+        <if test="areaId!=null and areaId!=''">
+            and area_id = #{areaId}
+        </if>
+
+    </select>
+
+    <select id="getReturnLeaveSumByChildrenIdsAndYear" resultType="com.sofn.ducss.model.ReturnLeaveSum">
+        select
+        a.year,
+        a.straw_type,
+        SUM(a.pro_still_field) as pro_still_field,
+        case SUM(a.collect_resource) when 0 then 0
+        else ROUND(SUM(a.pro_still_field) / SUM(a.collect_resource) * 100, 10) end   return_ratio,
+        sum(a.all_total) as all_total,
+        sum(a.disperse_total) as disperse_total ,
+        sum(a.main_total) as main_total,
+        sum(a.collect_resource) as collectResource
+        from return_leave_sum a  LEFT JOIN collect_flow c on
+        c.area_id = a.area_id and c.year=a.year
+        <where>
+            <if test="year!=null and year!=''">
+                a.year =#{year}
+            </if>
+            <if test="childrenIds !=null and childrenIds.size() > 0 ">
+               and a.area_id in
+               <foreach collection="childrenIds" item="areaId" open="(" close=")" separator=",">
+                   #{areaId}
+               </foreach>
+            </if>
+            <if test="status != null and status.size() > 0">
+                and c.status in
+                <foreach collection="status" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+        </where>
+        group by
+        a.year,
+        a.straw_type;
+    </select>
+
+</mapper>

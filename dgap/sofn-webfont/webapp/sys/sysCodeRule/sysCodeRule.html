@@ -1,0 +1,32 @@
+<link rel="stylesheet" href="/assets/css/sys/sysCodeRule/sysCodeRule.css">
+<div class="gui-breadcrumbs">
+    <a href="">系统管理</a>&gt;<span>编码管理</span>
+</div>
+<!-- 开发人员只需要在跟换下面这个div里面内容即可   begin-->
+<div class="gui-section">
+<div class="gui-actions"><button class="gui-btn fr" ng-click="deleteCodeRule()"><i class="gui-icon icon-remove"></i>删除</button><a class="gui-btn fr mr15" href="#" ng-click="addCodeRule()"><i class="gui-icon icon-add"></i>新增</a></div>
+  <div>
+      <table id="grid" class="gui-table">
+      </table>
+  </div>
+</div>
+<div class="modal fade" id="popupModal" tabindex="-1" role="dialog" aria-labelledby="previewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-style">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="previewModalLabel">{{modalTitle}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <iframe width="830" height="458" style="" scrolling="yes" width="99.6%" src="{{codeRuleModifyURL}}" frameborder="0"></iframe>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>

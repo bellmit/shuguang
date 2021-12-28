@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysBaseDataTypeMapper" >
+    <resultMap id="BaseResultMap" type="com.sofn.sys.model.SysBaseDataType" >
+        <id column="ID" jdbcType="VARCHAR" property="id" />
+        <result column="TYPENAME" jdbcType="VARCHAR" property="typename" />
+        <result column="TYPEVALUE" jdbcType="VARCHAR" property="typevalue" />
+        <result column="CREATE_USER_ID" jdbcType="VARCHAR" property="createUserId" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="UPDATE_USER_ID" jdbcType="VARCHAR" property="updateUserId" />
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="DEL_FLAG" jdbcType="VARCHAR" property="delFlag" />
+        <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+        <result column="ENABLE" jdbcType="VARCHAR" property="enable" />
+    </resultMap>
+    <select id="getBaseDataTypeById" resultType="com.sofn.sys.model.SysBaseDataType">
+        select id,typename,typevalue,create_user_id,create_time,update_user_id,update_time,del_flag,remark,enable from SYS_BASEDATA_TYPE
+        where id = #{baseDataTypeid}
+    </select>
+    <select id="getBaseDataTypeByName"  resultType="com.sofn.sys.model.SysBaseDataType">
+        select id,typename,typevalue,create_user_id,create_time,update_user_id,update_time,del_flag,remark,enable from SYS_BASEDATA_TYPE
+        <where>
+            <if test="typename != null and typename != ''">
+                and POSITION (#{typename} in TYPENAME)>0
+            </if>
+            <if test="typevalue != null and typevalue != ''">
+                and TYPEVALUE = #{typevalue}
+            </if>
+        </where>
+    </select>
+    <select id="getBaseDataTypeByName1"  resultType="com.sofn.sys.model.SysBaseDataType">
+        select id,typename,typevalue,create_user_id,create_time,update_user_id,update_time,del_flag,remark,enable from SYS_BASEDATA_TYPE
+        WHERE 1=1
+        <if test="typename != null and typename != ''">
+            and TYPENAME = #{typename}
+        </if>
+        <if test="typevalue != null and typevalue != ''">
+            and TYPEVALUE = #{typevalue}
+        </if>
+    </select>
+    <select id="getBaseDataCurNodeBySubSystem" resultType="com.sofn.sys.model.SysBaseDataType">
+        select id,typename,typevalue,create_user_id,create_time,update_user_id,update_time,del_flag,remark,enable from SYS_BASEDATA_TYPE
+        WHERE 1=1
+        <if test="subsystemid != null and subsystemid != ''">
+            and ID in (select baseDataTypeID from SYS_SUBSYSTEM_BASEDATA where SUBSYSTEMID = #{subsystemid})
+        </if>
+    </select>
+    <insert id="saveBaseDataType">
+        insert into SYS_BASEDATA_TYPE (ID,TYPENAME,TYPEVALUE,CREATE_USER_ID,CREATE_TIME,UPDATE_USER_ID,UPDATE_TIME,DEL_FLAG,REMARK,ENABLE)
+        values (#{id,jdbcType=VARCHAR},#{typename,jdbcType=VARCHAR},#{typevalue,jdbcType=VARCHAR},#{createUserId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+          #{updateUserId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},#{delFlag,jdbcType=VARCHAR},#{enable,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR})
+    </insert>
+    <insert id="saveSubSystemBaseData">
+        insert into SYS_SUBSYSTEM_BASEDATA(ID,SUBSYSTEMID,BASEDATATYPEID)
+        values (#{subid,jdbcType=VARCHAR},#{subsystemid,jdbcType=VARCHAR},#{basedataid,jdbcType=VARCHAR})
+    </insert>
+    <delete id="delBaseDataType">
+            DELETE FROM SYS_BASEDATA_TYPE WHERE ID = #{id}
+    </delete>
+    <delete id="delSubSystemBaseData">
+        DELETE FROM SYS_SUBSYSTEM_BASEDATA WHERE BaseDataTypeID = #{baseDataTypeId} AND SUBSYSTEMID = #{subsystemid}
+    </delete>
+
+    <delete id="delSubSystemBaseDataByType">
+        DELETE FROM SYS_SUBSYSTEM_BASEDATA WHERE BaseDataTypeID = #{baseDataTypeId}
+    </delete>
+
+    <update id="updateBaseDataType">
+        update SYS_BASEDATA_TYPE set UPDATE_TIME = #{updateTime},UPDATE_USER_ID = #{updateUserId},
+        <if test="typename != null and typename != ''">
+            TYPENAME = #{typename},
+        </if>
+        <if test="typevalue != null and typevalue != ''">
+            TYPEVALUE = #{typevalue}
+        </if>
+        WHERE ID = #{id}
+    </update>
+
+    <select id="getBaseDataTypeByKeyword" parameterType="java.util.Map" resultType="com.sofn.sys.model.SysBaseDataType">
+        SELECT
+        a.ID ,
+        a.TYPENAME typename,
+        a.TYPEVALUE typevalue,
+        a.REMARK remark,
+        a.ENABLE as enable
+        FROM
+        SYS_BASEDATA_TYPE A
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and (TYPENAME like '%'||#{keyword}||'%' or TYPEVALUE like '%'||#{keyword}||'%' )
+            </if>
+        </where>
+        ORDER BY A.CREATE_TIME DESC, A.ID DESC
+    </select>
+
+
+    <select id="getBaseDataTypeByCodes" parameterType="java.util.Map" resultType="com.sofn.sys.model.SysBaseDataType">
+
+        SELECT
+        a.ID ,
+        a.TYPENAME typename,
+        a.TYPEVALUE typevalue,
+        a.REMARK remark,
+        a.ENABLE as enable
+        FROM
+        SYS_BASEDATA_TYPE A
+        <where>
+            <if test="codes != null and codes.size  > 0">
+                and a.TYPEVALUE in
+                <foreach collection="codes" item="code" open="(" close=")" separator="," >
+                    #{code}
+                </foreach>
+            </if>
+        </where>
+
+    </select>
+</mapper>

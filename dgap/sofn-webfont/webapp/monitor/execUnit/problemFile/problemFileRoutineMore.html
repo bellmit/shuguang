@@ -1,0 +1,58 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+    <div class="gui-breadcrumbs">
+        <a href="">监测系统</a>&gt;
+        <a href="">承担单位</a>&gt;
+        <span>问题单据</span>
+    </div>
+        <p class="col-lg-1 col-xs-0 col-sm-1 col-md-1"></p>
+            <ul class="gui-tab" role="tablist">
+                <li role="presentation" class="active"><a id="routine" role="tab" data-toggle="tab">例行监测</a></li>
+                <li role="presentation" class="pointer"><a id="special" role="tab" data-toggle="tab">专项监测</a></li>
+                <li role="presentation" class="pointer"><a id="audit" role="tab" data-toggle="tab">监督抽查</a></li>
+                <li role="presentation" class="pointer"><a id="detection" role="tab" data-toggle="tab">受托检测</a></li>
+                <!--<li role="presentation" class="pointer"><a id="others" role="tab" data-toggle="tab">其它</a></li>-->
+            </ul>
+            <div id="abc"></div>
+            <div class="gui-section">
+                <div class="gui-form-group">
+                    <label class="control-task">年份:</label>
+                    <span class="gui-select">
+                        <select ng-model="selectedYear" id="year" name="year" class="form-control">
+                                <option ng-repeat="x in year">{{x}}</option>
+                            </select>
+                    </span>
+                    <label class="control-task">任务名称:</label>
+                    <span class="gui-select">
+                        <select id="monitorTask" name="monitorTask" class="form-control" style="width: 220px">
+                            <option value="">全部</option>
+                            <option ng-repeat="x in monitorTask">{{x.taskName}}</option>
+                        </select>
+                    </span>
+                    <span class="gui-btn" id="seachTask">查询</span>
+                    <span class="gui-btn" id="back">返回</span>
+                </div>
+                <table id="grid" class="gui-table table table-striped table-hover data-table">
+                </table>
+        </div>
+
+<!-- 附件预览model -->
+<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="text-align: center">图片预览</h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <form method="post" enctype="multipart/form-data" id="veiwForm">
+                    <div align="center">
+                        <img id="viewImg" src="" class="img-thumbnail">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <span class="gui-btn" type="button" data-dismiss="modal">关闭</span>
+            </div>
+        </div>
+    </div>
+</div>

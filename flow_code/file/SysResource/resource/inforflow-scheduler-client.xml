@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="localSchedulerClient"
+	     class="com.cvicse.workflow.api.client.local.LocalSchedulerClient" >
+	</bean>
+
+	<bean id="rmiSchedulerClient"
+	    class="com.cvicse.workflow.api.client.rmi.WfRMISchedulerClient"  init-method="init" lazy-init="true">
+		<property name="hostUrl">
+			<value>localhost</value>
+		</property>
+		<property name="hostPort">
+			<value>5501</value>
+		</property>
+		<property name="serviceName">
+			<value>InforFlowSchedulerClient</value>
+		</property>
+	</bean>
+	
+	<bean id="InforFlowSchedulerClient" parent="localSchedulerClient">	
+	<!--bean id="InforFlowSchedulerClient" parent="rmiSchedulerClient"-->	
+	</bean>
+</beans>

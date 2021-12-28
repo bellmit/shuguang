@@ -1,0 +1,118 @@
+/*��ý��*/
+.Sup_contain_section_MMC{
+    position: absolute;
+    line-height: 50px;
+    top: 110px;
+    right: 20px;
+    color: blue;
+    font-family: close;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+}
+/*n���ݲ���*/
+.Sup_contain_section_contain{
+    margin-top: 80px;
+    font-size: 16px;
+}
+.Sup_contain_section_contain>ul>li{
+    padding: 15px 50px;
+}
+.Bor_line{
+    padding: 0px 0px!important;
+    border-bottom: 1px solid #9d9d9d;
+}
+.Sup_contain_section_contain>ul>li div ul{
+    display: inline-block;
+    margin-left: -10px;
+}
+.Sup_contain_section_contain>ul>li div ul li:last-child{
+    color: blue;
+    cursor: pointer;
+    padding: 50px 0px;
+}
+.Sup_contain_section_contain>ul>li textarea{
+    text-align: left;
+    font-size: 16px;
+    line-height: 20px;
+}
+._box div{
+    display: inline-block;
+    margin-right: 30px;
+}
+.Sup_contain_section_contain>ul>li img{
+        width: 100px;
+    height: 110px;
+    /*margin-right: 30px;*/
+}
+.Sup_contain_section_contain>ul>li div input{
+    width: 150px;
+    color: black;
+    text-align: center;
+    margin-bottom: 10px;
+}
+.Sup_contain_section_contain>ul>li:last-child{
+    text-align: center;
+}
+.Sup_contain_section_contain>ul>li:last-child button{
+    /*width: 200px;*/
+    /*height: 50px;*/
+    padding: 5px 55px;
+    outline: none;
+    color: white;
+    background-color: #4CA1D7;
+    border-radius: 15px;
+    border: none;
+}
+/*�ύ������ʽ*/
+.Sup_contain_section_contain>ul>li:nth-of-type(2) p:first-child input{
+    margin-left: 30px;
+    width: 20px;
+    cursor: pointer;
+    height: 20px;
+}
+.Sup_contain_section_contain>ul>li:nth-of-type(2) p:first-child input:first-child{
+    margin-left: -10px;
+}
+.Sup_contain_section_contain>ul>li:nth-of-type(2) p:nth-of-type(2) button{
+    border-radius: 5px;
+    padding: 0px 30px;
+    background-color: white;
+    border: 1px solid #9d9d9d;
+}
+.Sup_contain_section_contain>ul>li:nth-of-type(2) p:nth-of-type(2) input{
+    width: 500px;
+    padding: 3px 0px;
+    font-size: 20px;
+}
+.Sup_contain_section_contain>ul>li:nth-of-type(2) p:nth-of-type(2) button:hover{
+    background-color: #9d9d9d;
+    color: white;
+}
+.Sup_contain_section_contain>ul>li:nth-of-type(4) select{
+    cursor: pointer;
+    outline: none;
+    margin-bottom: 20px;
+}
+.Sup_contain_section_contain>ul>li:nth-of-type(4) input{
+    width: 20px;
+    height: 20px;
+}
+.Add_img{
+    /*width: 100px!important;*/
+    /*height: 150px!important;*/
+    border: 3px dashed #9d9d9d;
+}
+/*�رհ�ť*/
+    #bt_close {
+    width: 100px;
+    height: 30px;
+    font-size: 20px;
+    outline: none;
+    cursor: pointer;
+    margin-left: 45%;
+        margin-bottom: 20px;
+    border-radius: 5px;
+    background-color: white;
+    border: 1px solid #4CA1D7;
+}

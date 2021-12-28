@@ -1,0 +1,66 @@
+
+.Sup_contain_section_contain_head{
+    width: 1000px;
+    text-align: center;
+    margin-left: 20%;
+    overflow: hidden;
+}
+.Sup_contain_section_contain_head p{
+    font-size: 25px;
+    margin:20px 0px 30px 20px;
+}
+.Sup_contain_section_contain_head_button{
+    width: 150px;
+    height: 40px;
+    font-size: 20px;
+    background: white;
+    border-radius: 5px;
+    border: 1px solid black;
+    outline: none;
+    margin: 0px 60px 0px 150px;
+}
+.Sup_contain_section_contain_head_button:hover{
+    color: white;
+    border: transparent;
+    background-color: #EDEDED;
+}
+.Sup_contain_section_contain_head table{
+    width: 100%;
+    margin-bottom: 40px;
+}
+.Sup_contain_section_contain_head table tr td{
+    border: 2px solid #EDEDED;
+    text-align: center;
+    font-size: 22px;
+    height: 40px;
+    width: 33%;
+    text-align: left;
+    line-height: 40px;
+}
+.Sup_contain_section_contain_head table tr td:first-child{
+    text-align: left;
+}
+.Sup_contain_section_contain_head_photo{
+    height: 120px;
+}
+.Sup_contain_section_contain_head_photo textarea{
+    border: none;
+    line-height: 30px;
+    outline: none;
+    text-align: left;
+    font-size: 18px;
+}
+
+.Sup_contain_section_close{
+    position: absolute;
+    top: 100px;
+    right: 50px;
+    cursor: pointer;
+    font-family: close;
+    font-size: 35px;
+    color: black;
+}
+.Sup_contain_section_close:hover{
+    text-decoration: none;
+    color: inherit;
+}

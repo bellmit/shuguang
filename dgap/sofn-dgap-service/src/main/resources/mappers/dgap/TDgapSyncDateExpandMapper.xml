@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.dao.dgap.TDgapSyncDateExpandMapper">
+    <resultMap id="BaseResultMap" type="com.sofn.model.generator.TDgapSyncDate">
+        <result column="ID" property="id" jdbcType="VARCHAR"/>
+        <result column="DATA" property="data" jdbcType="VARCHAR"/>
+        <result column="LAST_SYNC_DATE" property="lastSyncDate" jdbcType="VARCHAR"/>
+        <result column="MARK" property="mark" jdbcType="VARCHAR" />
+    </resultMap>
+    <select id="getLastSyncDate" resultType="java.lang.String" parameterType="java.lang.String">
+        SELECT DISTINCT LAST_SYNC_DATE
+        FROM T_DGAP_SYNC_DATE
+        WHERE DATA = #{data,jdbcType=VARCHAR}
+    </select>
+    <update id="updateByData" parameterType="map">
+        UPDATE T_DGAP_SYNC_DATE
+        SET
+        LAST_SYNC_DATE = #{lastSyncDate}
+        WHERE
+        DATA = #{data}
+    </update>
+    <insert id="insertByData">
+        INSERT INTO T_DGAP_SYNC_DATE (ID, DATA ,LAST_SYNC_DATE,MARK) VALUES (#{id}, #{data},#{lastSyncDate},#{mark})
+    </insert>
+    <select id="getMark" resultType="java.lang.String" parameterType="java.lang.String">
+        SELECT mark
+        FROM T_DGAP_SYNC_DATE
+        WHERE DATA = #{dataSourceType,jdbcType=VARCHAR}
+    </select>
+    <update id="updateMark" parameterType="java.lang.String" >
+        UPDATE T_DGAP_SYNC_DATE
+        SET
+        MARK = #{updateMark,jdbcType=VARCHAR}
+        WHERE
+        DATA = #{dataSourceType,jdbcType=VARCHAR}
+    </update>
+
+
+    <select id="getData" resultType="com.sofn.model.generator.TDgapSyncDate">
+        SELECT * FROM T_DGAP_SYNC_DATE
+    </select>
+
+</mapper>

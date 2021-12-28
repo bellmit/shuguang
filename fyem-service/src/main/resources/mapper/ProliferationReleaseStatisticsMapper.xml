@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fyem.mapper.ProliferationReleaseStatisticsMapper" >
+
+  <resultMap id="BaseResultMap" type="com.sofn.fyem.model.ProliferationReleaseStatistics" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="belong_year" property="belongYear" jdbcType="VARCHAR" />
+    <result column="species_type" property="speciesType" jdbcType="VARCHAR" />
+    <result column="repor_management_id" property="reporManagementId" jdbcType="VARCHAR" />
+    <result column="province_id" property="provinceId" jdbcType="VARCHAR" />
+    <result column="city_id" property="cityId" jdbcType="VARCHAR" />
+    <result column="county_id" property="countyId" jdbcType="VARCHAR" />
+    <result column="plan_release_capital" property="planReleaseCapital" jdbcType="DOUBLE" />
+    <result column="plan_release_amount" property="planReleaseAmount" jdbcType="DOUBLE" />
+    <result column="practical_release_capital" property="practicalReleaseCapital" jdbcType="DOUBLE" />
+    <result column="practical_release_amount" property="practicalReleaseAmount" jdbcType="DOUBLE" />
+    <result column="year_release_capital" property="yearReleaseCapital" jdbcType="DOUBLE" />
+    <result column="year_release_amount" property="yearReleaseAmount" jdbcType="DOUBLE" />
+    <result column="role_code" property="roleCode" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_user_id" property="createUserId" jdbcType="VARCHAR" />
+    <result column="organization_name" property="organizationName" jdbcType="VARCHAR" />
+    <result column="organization_id" property="organizationId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, belong_year, species_type, repor_management_id,province_id, city_id, county_id, plan_release_capital, plan_release_amount,
+    practical_release_capital,
+    practical_release_amount, year_release_capital, year_release_amount, role_code, status,
+    create_user_id, organization_name, organization_id, create_time
+  </sql>
+
+  <select id="getProliferationReleaseStatisticsList" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    from PROLIFERATION_RELEASE_STATISTICS
+    <where>
+      1=1
+      <if test="belongYear != null and belongYear != ''">
+        and belong_year = #{belongYear}
+      </if>
+      <if test="reporManagementId != null and reporManagementId != ''">
+        and repor_management_id = #{reporManagementId}
+      </if>
+      <if test="provinceId != null and provinceId != ''">
+        and province_id = #{provinceId}
+      </if>
+      <if test="cityId != null and cityId != ''">
+        and city_id = #{cityId}
+      </if>
+      <if test="countyId != null and countyId != ''">
+        and county_id = #{countyId}
+      </if>
+      <if test="roleCode != null and roleCode != ''">
+        and role_code = #{roleCode}
+      </if>
+      <if test="organizationId != null and organizationId != ''">
+        and organization_id = #{organizationId}
+      </if>
+      <if test="createUserId != null and createUserId != ''">
+        AND create_user_id = #{createUserId}
+      </if>
+      <if test="organizationName != null and organizationName != ''">
+        and organization_name = #{organizationName}
+      </if>
+      <if test="roleCode != null and roleCode != ''">
+        and  role_code = #{roleCode}
+      </if>
+    </where>
+    ORDER BY create_time desc
+  </select>
+
+  <select id="getProliferationReleaseStatistics" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from PROLIFERATION_RELEASE_STATISTICS
+    <where>
+      1=1
+      <if test="belongYear != null and belongYear != ''">
+        and belong_year = #{belongYear}
+      </if>
+      <if test="reporManagementId != null and reporManagementId != ''">
+        and repor_management_id = #{reporManagementId}
+      </if>
+      <if test="speciesType != null and speciesType != ''">
+        and species_type = #{speciesType}
+      </if>
+      <if test="provinceId != null and provinceId != ''">
+        and province_id = #{provinceId}
+      </if>
+      <if test="cityId != null and cityId != ''">
+        and city_id = #{cityId}
+      </if>
+      <if test="countyId != null and countyId != ''">
+        and county_id = #{countyId}
+      </if>
+      <if test="roleCode != null and roleCode != ''">
+        and role_code = #{roleCode}
+      </if>
+      <if test="organizationId != null and organizationId != ''">
+        and organization_id = #{organizationId}
+      </if>
+      <if test="createUserId != null and createUserId != ''">
+        AND create_user_id = #{createUserId}
+      </if>
+    </where>
+  </select>
+
+  <!--修改监测点基本信息状态-->
+  <update id="updateStatus" parameterType="java.util.Map">
+    update PROLIFERATION_RELEASE_STATISTICS
+    <set >
+      <if test=" status != null and  status != '' " >
+        status = #{status}
+      </if>
+    </set>
+    <where>
+      1=1
+      <if test="belongYear != null and belongYear != ''">
+        and belong_year = #{belongYear}
+      </if>
+      <if test="organizationId != null and organizationId != ''">
+        and organization_id = #{organizationId}
+      </if>
+      <if test="createUserId != null and createUserId != ''">
+        AND create_user_id = #{createUserId}
+      </if>
+      <if test="provinceId != null and provinceId != ''" >
+        and  province_id = #{provinceId}
+      </if>
+      <if test="cityId != null and cityId != ''" >
+        and  city_id = #{cityId}
+      </if>
+      <if test="countyId != null and countyId != ''" >
+        and  county_id = #{countyId}
+      </if>
+      <if test="organizationName != null and organizationName != ''">
+        and organization_name = #{organizationName}
+      </if>
+      <if test="roleCode != null and roleCode != ''">
+        and  role_code = #{roleCode}
+      </if>
+      <trim prefix="and (" suffix=")" prefixOverrides="and|or">
+        <if test=" statusConditionFirst != null and  statusConditionFirst != '' " >
+          status = #{statusConditionFirst}
+        </if>
+        <if test=" statusConditionSecond != null and  statusConditionSecond != '' " >
+          or  status = #{statusConditionSecond}
+        </if>
+      </trim>
+    </where>
+  </update>
+
+  <delete id="deleteProliferationReleaseStatistics" parameterType="java.util.Map">
+    delete
+    from PROLIFERATION_RELEASE_STATISTICS
+    <where>
+      1=1
+      <if test="belongYear != null and belongYear != ''">
+        and belong_year = #{belongYear}
+      </if>
+      <if test="reporManagementId != null and reporManagementId != ''">
+        and repor_management_id = #{reporManagementId}
+      </if>
+      <if test="organizationId != null and organizationId != ''">
+        and organization_id = #{organizationId}
+      </if>
+      <if test="createUserId != null and createUserId != ''">
+        AND create_user_id = #{createUserId}
+      </if>
+    </where>
+  </delete>
+
+  <select id="countProliferationReleaseStatistics" resultType="java.lang.Integer" parameterType="java.util.Map">
+    select count(id)
+    from PROLIFERATION_RELEASE_STATISTICS
+    <where>
+      1=1
+      <if test="belongYear != null and belongYear != ''" >
+        and  belong_year = #{belongYear}
+      </if>
+      <if test="countyId != null and countyId != ''">
+        and  county_id = #{countyId}
+      </if>
+      <if test="status != null and status != ''" >
+        and  status = #{status}
+      </if>
+      <if test="createUserId != null and createUserId != ''">
+        and create_user_id = #{createUserId}
+      </if>
+    </where>
+  </select>
+
+
+  <!--***************************************************************-->
+  <select id="getReleaseStatisticsCount" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    sum(plan_release_capital) as PLAN_RELEASE_CAPITAL,
+    sum(plan_release_amount) as PLAN_RELEASE_AMOUNT,
+    sum(practical_release_capital) as PRACTICAL_RELEASE_CAPITAL,
+    sum(practical_release_amount) as PRACTICAL_RELEASE_AMOUNT,
+    sum(year_release_capital) as YEAR_RELEASE_CAPITAL,
+    sum(year_release_amount)as YEAR_RELEASE_AMOUNT
+    from PROLIFERATION_RELEASE_STATISTICS
+    <where>
+      1=1
+      <if test="speciesType != null and speciesType != ''">
+        and species_type = #{speciesType}
+      </if>
+      <if test="belongYear != null and belongYear != ''">
+        and belong_year = #{belongYear}
+      </if>
+      <if test="provinceId != null and provinceId != ''">
+        and province_id = #{provinceId}
+      </if>
+      <if test="cityId != null and cityId != ''">
+        and city_id = #{cityId}
+      </if>
+      <if test="countyId != null and countyId != ''">
+        and county_id = #{countyId}
+      </if>
+      <if test="roleCode != null and roleCode != ''">
+        and role_code = #{roleCode}
+      </if>
+      <if test="organizationId != null and organizationId != ''">
+        and organization_id = #{organizationId}
+      </if>
+    </where>
+  </select>
+
+  <select id="getReleaseStatisticsCountByProvince" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    sum(plan_release_capital) as PLAN_RELEASE_CAPITAL,
+    sum(plan_release_amount) as PLAN_RELEASE_AMOUNT,
+    sum(practical_release_capital) as PRACTICAL_RELEASE_CAPITAL,
+    sum(practical_release_amount) as PRACTICAL_RELEASE_AMOUNT,
+    sum(year_release_capital) as YEAR_RELEASE_CAPITAL,
+    sum(year_release_amount)as YEAR_RELEASE_AMOUNT,
+    species_type as SPECIES_TYPE,
+    province_id as PROVINCE_ID
+    from PROLIFERATION_RELEASE_STATISTICS
+    <where>
+      1=1
+      <if test="speciesType != null and speciesType != ''">
+        and species_type = #{speciesType}
+      </if>
+      <if test="belongYear != null and belongYear != ''">
+        and belong_year = #{belongYear}
+      </if>
+      <if test="provinceId != null and provinceId != ''">
+        and province_id = #{provinceId}
+      </if>
+      <if test="cityId != null and cityId != ''">
+        and city_id = #{cityId}
+      </if>
+      <if test="countyId != null and countyId != ''">
+        and county_id = #{countyId}
+      </if>
+    </where>
+    GROUP BY species_type,province_id
+  </select>
+
+  <select id="getReleaseStatisticsCountByCity" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    sum(plan_release_capital) as PLAN_RELEASE_CAPITAL,
+    sum(plan_release_amount) as PLAN_RELEASE_AMOUNT,
+    sum(practical_release_capital) as PRACTICAL_RELEASE_CAPITAL,
+    sum(practical_release_amount) as PRACTICAL_RELEASE_AMOUNT,
+    sum(year_release_capital) as YEAR_RELEASE_CAPITAL,
+    sum(year_release_amount)as YEAR_RELEASE_AMOUNT,
+    species_type as SPECIES_TYPE,
+    city_id as CITY_ID
+    from PROLIFERATION_RELEASE_STATISTICS
+    <where>
+      1=1
+      <if test="speciesType != null and speciesType != ''">
+        and species_type = #{speciesType}
+      </if>
+      <if test="belongYear != null and belongYear != ''">
+        and belong_year = #{belongYear}
+      </if>
+      <if test="provinceId != null and provinceId != ''">
+        and province_id = #{provinceId}
+      </if>
+      <if test="cityId != null and cityId != ''">
+        and city_id = #{cityId}
+      </if>
+      <if test="countyId != null and countyId != ''">
+        and county_id = #{countyId}
+      </if>
+    </where>
+    GROUP BY species_type,city_id
+  </select>
+
+  <select id="getReleaseStatisticsCountByCounty" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    sum(plan_release_capital) as PLAN_RELEASE_CAPITAL,
+    sum(plan_release_amount) as PLAN_RELEASE_AMOUNT,
+    sum(practical_release_capital) as PRACTICAL_RELEASE_CAPITAL,
+    sum(practical_release_amount) as PRACTICAL_RELEASE_AMOUNT,
+    sum(year_release_capital) as YEAR_RELEASE_CAPITAL,
+    sum(year_release_amount)as YEAR_RELEASE_AMOUNT,
+    species_type as SPECIES_TYPE,
+    county_id as COUNTY_ID
+    from PROLIFERATION_RELEASE_STATISTICS
+    <where>
+      1=1
+      <if test="speciesType != null and speciesType != ''">
+        and species_type = #{speciesType}
+      </if>
+      <if test="belongYear != null and belongYear != ''">
+        and belong_year = #{belongYear}
+      </if>
+      <if test="provinceId != null and provinceId != ''">
+        and province_id = #{provinceId}
+      </if>
+      <if test="cityId != null and cityId != ''">
+        and city_id = #{cityId}
+      </if>
+      <if test="countyId != null and countyId != ''">
+        and county_id = #{countyId}
+      </if>
+      <if test="createUserId != null and createUserId != ''">
+        and create_user_id = #{createUserId}
+      </if>
+    </where>
+    GROUP BY species_type,county_id
+  </select>
+
+  <!--*****************************************************************-->
+
+</mapper>

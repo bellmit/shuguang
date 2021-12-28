@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+<!-- The factory bean, which contains a method called
+     createInstance -->
+     
+	<bean id="localManagerClient"
+	     class="com.cvicse.workflow.api.client.local.LocalManagerClient" >
+	</bean>
+
+	<bean id="rmiManagerClient"
+	    class="com.cvicse.workflow.api.client.rmi.WfRMIManagerClient"  init-method="init" lazy-init="true">
+		<property name="hostUrl">
+			<value>localhost</value>
+		</property>
+		<property name="hostPort">
+			<value>5501</value>
+		</property>
+		<property name="serviceName">
+			<value>InforFlowManagerClient</value>
+		</property>
+	</bean>
+	
+	<bean id="InforFlowManagerClient" parent="localManagerClient">	
+	<!--bean id="InforFlowManagerClient" parent="rmiManagerClient"-->	
+	</bean>
+	
+	<bean id="WorkflowUtil" class="com.cvicse.workflow.util.WorkflowUtil" init-method="init" lazy-init="true">
+		<property name="xpdlRepository">
+			<value>xpdl</value>
+		</property>
+		<property name="auto_create_db">
+			<value>true</value>
+		</property>
+	</bean>
+	
+</beans>

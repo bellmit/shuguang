@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fyem.mapper.ReporManagementMapper" >
+
+  <resultMap id="BaseResultMap" type="com.sofn.fyem.model.ReporManagement" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="belong_year" property="belongYear" jdbcType="VARCHAR" />
+    <result column="province_id" property="provinceId" jdbcType="VARCHAR" />
+    <result column="city_id" property="cityId" jdbcType="VARCHAR" />
+    <result column="county_id" property="countyId" jdbcType="VARCHAR" />
+    <result column="has_basic_proliferation_release" property="hasBasicProliferationRelease" jdbcType="VARCHAR" />
+    <result column="has_proliferation_release_statistics" property="hasProliferationReleaseStatistics" jdbcType="VARCHAR" />
+    <result column="organization_name" property="organizationName" jdbcType="VARCHAR" />
+    <result column="organization_id" property="organizationId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="role_code" property="roleCode" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="create_user_id" property="createUserId" jdbcType="VARCHAR" />
+    <result column="create_user_name" property="createUserName" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, belong_year, province_id, city_id, county_id, has_basic_proliferation_release, has_proliferation_release_statistics,
+    organization_name, organization_id, status, role_code, remark, create_user_id, create_user_name,
+    create_time
+  </sql>
+
+  <select id="getReporManagementByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM REPOR_MANAGEMENT
+    <where>
+      1=1
+      <if test="belongYear != null and belongYear != ''">
+        and belong_year = #{belongYear}
+      </if>
+      <if test="provinceId != null and provinceId != ''">
+        and province_id = #{provinceId}
+      </if>
+      <if test="cityId != null and cityId != ''">
+        and city_id = #{cityId}
+      </if>
+      <if test="countyId != null and countyId != ''">
+        and county_id = #{countyId}
+      </if>
+      <if test="status != null and status != ''">
+        and status = #{status}
+      </if>
+      <if test="roleCode != null and roleCode != ''">
+        and role_code = #{roleCode}
+      </if>
+      <if test="organizationId != null and organizationId != ''">
+        and organization_id = #{organizationId}
+      </if>
+      <if test="createUserId != null and createUserId != ''">
+        and create_user_id = #{createUserId}
+      </if>
+
+    </where>
+    ORDER BY create_time desc
+  </select>
+
+  <select id="getReporManagementByCondition2" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM REPOR_MANAGEMENT
+    <where>
+      1=1
+      <if test="belongYear != null and belongYear != ''">
+        and belong_year = #{belongYear}
+      </if>
+      <if test="provinceId != null and provinceId != ''">
+        and province_id = #{provinceId}
+      </if>
+      <if test="cityId != null and cityId != ''">
+        and city_id = #{cityId}
+      </if>
+      <if test="countyId != null and countyId != ''">
+        and county_id = #{countyId}
+      </if>
+      <if test="statusList != null and statusList.size()>0">
+        and status not in
+        <foreach item="item" index="index" collection="statusList"
+                 open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+
+      <if test="roleCode != null and roleCode != ''">
+        and role_code = #{roleCode}
+      </if>
+      <if test="organizationId != null and organizationId != ''">
+        and organization_id = #{organizationId}
+      </if>
+      <if test="createUserId != null and createUserId != ''">
+        and create_user_id = #{createUserId}
+      </if>
+
+    </where>
+    ORDER BY create_time desc
+  </select>
+
+
+  <!--修改上报信息状态-->
+  <update id="updateStatus" parameterType="java.util.Map">
+    update REPOR_MANAGEMENT
+    <set >
+      <if test=" status != null and  status != '' " >
+        status = #{status}
+      </if>
+      <if test=" remark != null" >
+        ,remark = #{remark,jdbcType=VARCHAR}
+      </if>
+    </set>
+    <where>
+      1=1
+      <if test="id != null and id != ''">
+        and id = #{id}
+      </if>
+      <if test="belongYear != null and belongYear != ''" >
+        and  belong_year = #{belongYear}
+      </if>
+      <if test="provinceId != null and provinceId != ''" >
+        and  province_id = #{provinceId}
+      </if>
+      <if test="cityId != null and cityId != ''" >
+        and  city_id = #{cityId}
+      </if>
+      <if test="countyId != null and countyId != ''" >
+        and  county_id = #{countyId}
+      </if>
+      <if test="createUserId != null and createUserId != ''">
+        and create_user_id = #{createUserId}
+      </if>
+      <if test="organizationName != null and organizationName != ''">
+        and organization_name = #{organizationName}
+      </if>
+      <if test="roleCode != null and roleCode != ''">
+        and  role_code = #{roleCode}
+      </if>
+      <if test="organizationId != null and organizationId != ''">
+        and organization_id = #{organizationId}
+      </if>
+      <trim prefix="and (" suffix=")" prefixOverrides="and|or">
+        <if test=" statusConditionFirst != null and  statusConditionFirst != '' " >
+          status = #{statusConditionFirst}
+        </if>
+        <if test=" statusConditionSecond != null and  statusConditionSecond != '' " >
+          or  status = #{statusConditionSecond}
+        </if>
+      </trim>
+    </where>
+  </update>
+
+  <delete id="deleteByParams" parameterType="java.util.Map">
+    delete
+    from REPOR_MANAGEMENT
+    <where>
+      1=1
+      <if test="belongYear != null and belongYear != ''" >
+        and  belong_year = #{belongYear}
+      </if>
+      <if test="countyId != null and countyId != ''">
+        and  county_id = #{countyId}
+      </if>
+      <if test="status != null and status != ''" >
+        and  status = #{status}
+      </if>
+      <if test="createUserId != null and createUserId != ''">
+        and create_user_id = #{createUserId}
+      </if>
+    </where>
+  </delete>
+
+</mapper>

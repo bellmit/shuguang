@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ahhdp.mapper.ZoneRedordMapper">
+
+    <select id="listByParams" resultType="com.sofn.ahhdp.model.ZoneRecord">
+        select * from ZONE_RECORD
+        <where>
+            <if test="areaName != null and areaName != ''">
+                and (AREA_NAME like '%'||#{areaName}||'%'or NEW_NAME like '%'||#{areaName}||'%')
+            </if>
+            <if test="company != null and company != ''">
+                and (COMPANY like '%'||#{company}||'%'or NEW_COMPANY like '%'||#{company}||'%')
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND CHANGE_TIME &lt;= #{endTime}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                AND CHANGE_TIME &gt;= #{startTime}
+            </if>
+        </where>
+        order by CHANGE_TIME desc
+    </select>
+
+    <select id="listByParamsForPublish" resultType="com.sofn.ahhdp.model.ZoneRecord">
+        select
+        CODE,
+        AREA_NAME,
+        (case when NEW_NAME is null then AREA_NAME when NEW_NAME = '' then AREA_NAME else NEW_NAME end) NEW_NAME,
+        COMPANY,
+        (case when NEW_COMPANY is null then COMPANY when NEW_COMPANY = '' then COMPANY else NEW_COMPANY end) NEW_COMPANY,
+        AREA_RANGE,
+        (case when NEW_RANGE is null then AREA_RANGE when NEW_RANGE = '' then AREA_RANGE else NEW_RANGE end) NEW_RANGE
+        from ZONE_RECORD
+        <where>
+            to_char(CHANGE_TIME,'YYYY')= #{year}
+            <if test="type == 'name'">
+                and NEW_NAME != '' and NEW_NAME is not null
+            </if>
+            <if test="type == 'company'">
+                and NEW_COMPANY != '' and NEW_COMPANY is not null
+            </if>
+            <if test="type == 'range'">
+                and NEW_RANGE != '' and NEW_RANGE is not null
+            </if>
+        </where>
+        order by CHANGE_TIME desc
+    </select>
+
+    <select id="getYears" resultType="String">
+         select distinct to_char(CHANGE_TIME,'YYYY') from ZONE_RECORD;
+    </select>
+</mapper>

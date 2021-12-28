@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+	在启动带有工作流的应用时，应由WorkflowConfig初始化该xml
+	典型的web应用，可使用web.xml加载servlet的方式，如下
+	  <servlet>
+	    <servlet-name>InitServlet</servlet-name>
+	    <servlet-class>com.cvicse.workflow.web.InitialServlet</servlet-class>
+	    <init-param>
+	      <param-name>SystemConfigFilePath</param-name>
+	      <param-value>/WEB-INF/inforflow.xml</param-value>
+	      <description>InforFlow配置文件路径</description>
+	    </init-param>
+	    <load-on-startup>1</load-on-startup>
+	  </servlet>
+
+	其中com.cvicse.workflow.web.InitialServlet有装载该xml的方法，如下：
+	WorkflowConfig.initBeanFactory(new File(cfAbsolutePath));
+
+
+	工作流启动时除了需要装载inforflow.xml，还需要初始化客户端：
+	WfClientManager.getInstance().init();
+	现阶段，初始化客户端主要依赖于com.cvicse.workflow.api.client.inforflow-client.xml文件
+
+
+	若基于工作流开发的应用在做有关工作流实现的单元测试时，也应该首先初始化这两个方法
+
+-->
+<!--
+	InforFlow解析此xml的过程，具体参照com.cvicse.workflow.util.WorkflowConfig的initBeanFactory()方法：
+	(1)首先使用dom4j将此xml转化为内存对象com.cvicse.workflow.util.ConfigElement
+	(2)创建Spring框架的DefaultListableBeanFactory，将内存对象加载配置到DefaultListableBeanFactory中
+
+	DefaultListableBeanFactory所包含的bean对象以及相关依赖可参照 com.cvicse.workflow-config.xml
+
+	更新配置内容，涉及修改inforflow.xml，可按照此过程进行修改，并相应更新workflow-config.xml
+-->
+<!--
+		iconsRepository路径，即在使用引擎提供的运行时图片展示功能时所使用的图片文件夹的路径
+		现阶段，工作流通过DOS命令形式的import程序将XPDL导入到数据库表WR_Model中时，
+		应使用NoTxWorkflowContext，即工作流内部获取数据库连接
+
+	    工作流引擎是否进行授权，若关闭请在auth处填写"false"
+	    工作流引擎是否记录审计信息,若关闭请在audit处填写"false"
+	    现阶段，工作流尚未实现授权和审计信息
+
+	    servicePort和serviceName为实现RMI服务形式启动的工作流配置预留
+
+	    supportScheduler表示引擎是否开启调度服务，true则支持调度，否则不支持，不配置默认为true。
+	    modelInitType，引擎初始化流程定义模型时的加载方式，有“all”，“lazy”两种方式，不在配置则默认为all。
+	    1)all模式下所有流程定义都加载到内存中;
+	    2)lazy模式下仅加载最新版本的模板。
+-->
+<inforflow iconsRepository="icons" isAuth="true" isAudit="true" hostname="" servicePort="5501" serviceName="WorkFlowService" clustering="false" supportScheduler="true" modelInitType="lazy">
+  <engine name="Engine" class="com.cvicse.workflow.core.WorkflowEngine" depend="CoreEngine">
+    <engineProperties>
+      <prop key="connectValidate">true</prop>
+    </engineProperties>
+  </engine>
+  <engine name="AuthenticationEngine" class="com.cvicse.workflow.authentication.AuthenticationEngine" depend="CoreEngine">
+    <engineProperties>
+      <prop key="file">conf/authentication.xml</prop>
+    </engineProperties>
+  </engine>
+  <engine name="CoreEngine" class="com.cvicse.workflow.core.CoreEngineAdapter"/>
+  <storage name="MemoryStorage" class="com.cvicse.workflow.datastore.memory.WorkflowEntityMemoryManager"/>
+  <storage name="DBStorage" class="com.cvicse.workflow.datastore.db.WorkflowEntityPersistentManager"/>
+  <!--
+	在defaultTxType处定义默认的事务类型，其值的含义为：
+	"NoTxWorkflowContext":不使用事务，适用于对事务要求不严格的项目开发，或者产品测试阶段
+	"SeparateTxWorkflowContext":事务分离类型,工作流事务事务独立于应用的事务，工作流使用内部的数据库连接池
+	"TransConnTxWorkflowContext":应用向工作流传递数据库连接，由应用管理统一事务
+	"JTAWorkflowContext":JTA事务
+	-->
+  <transaction defaultTxType="NoTxWorkflowContext">
+    <!--
+			在使用无事务和独立事务情况下使用，如工作流的演示程序HelloWorld即使用此配置
+			在工作流单元测试阶段中，测试大部分方法应均使用此配置
+			在此可配置工作流数据库连接数据库驱动，数据库URL，用户名和密码
+			工作流内部数据库连接池实现为Apach DBCP，故相应参数也可参照DBCP的org.apache.commons.dbcp.BasicDataSource的bean配置
+			bean配置参照网页：http://jakarta.apache.org/commons/dbcp/apidocs/org/apache/commons/dbcp/BasicDataSource.html
+	-->
+    <!--<dataBaseProperties>
+     <prop key="driverClassName">org.gjt.mm.mysql.Driver</prop>
+      <prop key="url">jdbc:mysql://localhost:3306/jr0805?useUnicode=true&characterEncoding=utf-8</prop>
+      <prop key="username">root</prop>
+      <prop key="password"></prop>
+    </dataBaseProperties>-->
+
+    <!-- <dataBaseProperties>
+      <prop key="driverClassName">com.oscar.Driver</prop>
+      <prop key="url">jdbc:oscar://172.16.1.90/DK54S</prop>
+      <prop key="username">SYSDBA</prop>
+      <prop key="password">szoscar55</prop>
+    </dataBaseProperties>  -->
+
+
+
+    <!--<dataBaseProperties>
+       <prop key = "driverClassName" >org.apache.derby.jdbc.ClientDriver</prop>
+       <prop key = "url">jdbc:derby://localhost:1527/FlowSystemDataSource;create=true</prop>
+       <prop key = "username">APP</prop>
+       <prop key = "password">APP</prop>
+   </dataBaseProperties> -->
+    <!-- <dataBaseProperties>
+         <prop key="driverClassName">oracle.jdbc.driver.OracleDriver</prop>
+         <prop key="url">jdbc:oracle:thin:@192.168.55.14:1521:XE</prop>
+         <prop key="username">JR0805</prop>
+         <prop key="password">cvicse</prop>
+        </dataBaseProperties> 	-->
+    <!--			<dataBaseProperties>
+                <prop key = "driverClassName" >com.microsoft.jdbc.sqlserver.SQLServerDriver</prop>
+                <prop key = "url" >jdbc:microsoft:sqlserver://192.168.51.187;databaseName=flow</prop>
+                <prop key = "username">sa</prop>
+                <prop key = "password">cvicse</prop>
+            </dataBaseProperties>-->
+    <!--<dataBaseProperties>
+        <prop key = "driverClassName" >org.apache.derby.jdbc.ClientDriver</prop>
+        <prop key = "url">jdbc:derby://localhost:1527/FlowSystemDataSource;create=true</prop>
+        <prop key = "username">APP</prop>
+        <prop key = "password">APP</prop>
+    </dataBaseProperties> -->
+
+    <dataBaseProperties>
+      <prop key="driverClassName">com.uxsino.uxdb.Driver</prop>
+      <prop key="url">jdbc:uxdb://192.168.21.62:5432/infor_dev</prop>
+      <prop key="username">uxdb</prop>
+      <prop key="password">sofn@123</prop>
+    </dataBaseProperties>
+
+
+    <!--以下为一些常用的数据库配置参数-->
+    <!-- JNDI 数据源 -->
+    <!--
+		<dataBaseProperties>
+			<prop key="jndiName">ORACLE2</prop>
+			<prop key="resourceRef">false</prop>
+			<jndiEnvironment>
+				<prop key="java.naming.provider.url">t3://localhost:7001</prop>
+				<prop key="java.naming.factory.initial">weblogic.jndi.WLInitialContextFactory</prop>
+				<prop key="java.naming.security.principal">weblogic</prop>
+				<prop key="java.naming.security.credentials">weblogic</prop>
+			</jndiEnvironment>
+		</dataBaseProperties>
+		-->
+    <!-- JDBC数据源 -->
+    <!--
+		<dataBaseProperties>
+			<prop key = "driverClassName" >COM.ibm.db2.jdbc.net.DB2Driver</prop>
+			<prop key = "url" >jdbc:db2://localhost/flow</prop>
+			<prop key = "username">db2admin</prop>
+			<prop key = "password">db2</prop>
+		</dataBaseProperties>
+
+		<dataBaseProperties>
+			<prop key = "driverClassName" >org.apache.derby.jdbc.ClientDriver</prop>
+			<prop key = "url">jdbc:derby://localhost:1527/aa;create=true</prop>
+			<prop key = "username">APP</prop>
+			<prop key = "password">APP</prop>
+		</dataBaseProperties>
+
+		<dataBaseProperties>
+			<prop key = "driverClassName" >org.gjt.mm.mysql.Driver</prop>
+			<prop key = "url">jdbc:mysql://localhost/flow</prop>
+			<prop key = "username">root</prop>
+			<prop key = "password"></prop>
+		</dataBaseProperties>
+
+		<dataBaseProperties>
+			<prop key = "driverClassName" >com.microsoft.jdbc.sqlserver.SQLServerDriver</prop>
+			<prop key = "url" >jdbc:microsoft:sqlserver://localhost;databaseName=flow</prop>
+			<prop key = "username">sa</prop>
+			<prop key = "password">sa</prop>
+		</dataBaseProperties>
+
+		<dataBaseProperties>
+			<prop key = "driverClassName" >sun.jdbc.odbc.JdbcOdbcDriver</prop>
+			<prop key = "url" >jdbc:odbc:flow</prop>
+			<prop key = "username">sa</prop>
+			<prop key = "password"></prop>
+		</dataBaseProperties>
+
+		<dataBaseProperties>
+			<prop key = "driverClassName" >com.sybase.jdbc2.jdbc.SybDriver</prop>
+			<prop key = "url" >jdbc:sybase:Tds:localhost:5000/flow?charset=eucgb</prop>
+			<prop key = "username">sa</prop>
+			<prop key = "password"></prop>
+		</dataBaseProperties>
+
+		<dataBaseProperties>
+			<prop key = "driverClassName" >com.sybase.jdbc.SybDriver</prop>
+			<prop key = "url" >jdbc:sybase:Tds:localhost:5000/flow?charset=eucgb</prop>
+			<prop key = "username">sa</prop>
+			<prop key = "password"></prop>
+		</dataBaseProperties>
+
+		<dataBaseProperties>
+			<prop key = "driverClassName" >oracle.jdbc.driver.OracleDriver</prop>
+			<prop key = "url" >jdbc:oracle:thin:@localhost:1521:flow</prop>
+			<prop key = "username">scott</prop>
+			<prop key = "password">tiger</prop>
+		</dataBaseProperties>
+
+		<dataBaseProperties>
+			<prop key = "driverClassName" >oracle.jdbc.driver.OracleDriver</prop>
+			<prop key = "url" >jdbc:oracle:oci8:@flow</prop>
+			<prop key = "username">scott</prop>
+			<prop key = "password">tiger</prop>
+		</dataBaseProperties>
+		-->
+    <!--无事务-->
+    <workflowContext txType="NoTxWorkflowContext">
+      <hibernateProperties>
+        <!--在此配置Hibernate properties的参数-->
+        <!--一般情况下不应定义hibernate.hbm2ddl.auto参数-->
+        <!--其他配置请参照Hibernate Reference:
+				http://www.hibernate.org/hib_docs/v3/reference/zh-cn/html/session-configuration.html#configuration-optional-->
+        <prop key="hibernate.dialect">org.hibernate.dialect.UXSQLDialect</prop>
+        <prop key="hibernate.show_sql">false</prop>
+        <prop key="hibernate.connection.useUnicode">true</prop>
+        <prop key="hibernate.connection.characterEncoding">UTF-8</prop>
+        <!-- 下面的默认词法分析器是采用的Hibernate 3.x的词法分析器，
+					如果您将嵌入时应用部署到WebLogic应用服务器上，需要将应用lib目录下antlr.jar(实际文件名可能还包括版本号等信息)删除掉，
+					并且将该文件放%WEBLOGIC_HOME%/server/lib下,并将其路径添加到Weblogic启动的CLASSPATH的最前面，即可正常使用，否则会有jar包冲突。也可以将该词法分析器换成Hibernate 2.x的词法分析器也可正常运行。 -->
+        <prop key="hibernate.query.factory_class">org.hibernate.hql.ast.ASTQueryTranslatorFactory</prop>
+        <!-- 下面是Hibernate 2.x的词法分析器，考虑到对性能和稳定性的影响，不推荐使用该设置。 -->
+        <!-- <prop key = "hibernate.query.factory_class">org.hibernate.hql.classic.ClassicQueryTranslatorFactory</prop> -->
+      </hibernateProperties>
+    </workflowContext>
+    <!--事务分离类型-->
+    <workflowContext txType="SeparateTxWorkflowContext">
+      <hibernateProperties>
+        <!--在此配置Hibernate properties的参数-->
+        <!--其他配置请参照Hibernate Reference:
+				http://www.hibernate.org/hib_docs/v3/reference/zh-cn/html/session-configuration.html#configuration-optional-->
+        <prop key="hibernate.dialect">org.hibernate.dialect.DB2Dialect</prop>
+        <prop key="hibernate.show_sql">false</prop>
+        <!-- 下面的默认词法分析器是采用的Hibernate 3.x的词法分析器，
+					如果您将嵌入时应用部署到WebLogic应用服务器上，需要将应用lib目录下antlr.jar(实际文件名可能还包括版本号等信息)删除掉，
+					并且将该文件放%WEBLOGIC_HOME%/server/lib下,并将其路径添加到Weblogic启动的CLASSPATH的最前面，即可正常使用，否则会有jar包冲突。也可以将该词法分析器换成Hibernate 2.x的词法分析器也可正常运行。 -->
+        <prop key="hibernate.query.factory_class">org.hibernate.hql.ast.ASTQueryTranslatorFactory</prop>
+        <!-- 下面是Hibernate 2.x的词法分析器，考虑到对性能和稳定性的影响，不推荐使用该设置。 -->
+        <!-- <prop key = "hibernate.query.factory_class">org.hibernate.hql.classic.ClassicQueryTranslatorFactory</prop> -->
+      </hibernateProperties>
+    </workflowContext>
+    <!--传递连接-->
+    <workflowContext txType="TransConnTxWorkflowContext">
+      <hibernateProperties>
+        <!--在此配置Hibernate properties的参数-->
+        <!--其他配置请参照Hibernate Reference:
+				http://www.hibernate.org/hib_docs/v3/reference/zh-cn/html/session-configuration.html#configuration-optional-->
+        <prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop>
+        <prop key="hibernate.show_sql">false</prop>
+        <!-- 下面的默认词法分析器是采用的Hibernate 3.x的词法分析器，
+					如果您将嵌入时应用部署到WebLogic应用服务器上，需要将应用lib目录下antlr.jar(实际文件名可能还包括版本号等信息)删除掉，
+					并且将该文件放%WEBLOGIC_HOME%/server/lib下,并将其路径添加到Weblogic启动的CLASSPATH的最前面，即可正常使用，否则会有jar包冲突。也可以将该词法分析器换成Hibernate 2.x的词法分析器也可正常运行。 -->
+        <prop key="hibernate.query.factory_class">org.hibernate.hql.ast.ASTQueryTranslatorFactory</prop>
+        <!-- 下面是Hibernate 2.x的词法分析器，考虑到对性能和稳定性的影响，不推荐使用该设置。 -->
+        <!-- <prop key = "hibernate.query.factory_class">org.hibernate.hql.classic.ClassicQueryTranslatorFactory</prop> -->
+      </hibernateProperties>
+    </workflowContext>
+    <!--JTA事务-->
+    <workflowContext txType="JTAWorkflowContext">
+      <hibernateProperties>
+        <!--在此配置Hibernate properties的参数-->
+        <!--其他配置请参照Hibernate Reference:
+				http://www.hibernate.org/hib_docs/v3/reference/zh-cn/html/session-configuration.html#configuration-optional-->
+        <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+        <prop key="hibernate.show_sql">false</prop>
+        <prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JTATransactionFactory</prop>
+        <prop key="jta.UserTransaction">javax.transaction.UserTransaction</prop>
+        <!--若JTA资源由额外的JNDI应用服务器提供:-->
+        <prop key="hibernate.jndi.url">t3://localhost:7001</prop>
+        <prop key="hibernate.jndi.class">weblogic.jndi.WLInitialContextFactory</prop>
+        <!-- 下面的默认词法分析器是采用的Hibernate 3.x的词法分析器，
+					如果您将嵌入时应用部署到WebLogic应用服务器上，需要将应用lib目录下antlr.jar(实际文件名可能还包括版本号等信息)删除掉，
+					并且将该文件放%WEBLOGIC_HOME%/server/lib下,并将其路径添加到Weblogic启动的CLASSPATH的最前面，即可正常使用，否则会有jar包冲突。也可以将该词法分析器换成Hibernate 2.x的词法分析器也可正常运行。 -->
+        <prop key="hibernate.query.factory_class">org.hibernate.hql.ast.ASTQueryTranslatorFactory</prop>
+        <!-- 下面是Hibernate 2.x的词法分析器，考虑到对性能和稳定性的影响，不推荐使用该设置。 -->
+        <!-- <prop key = "hibernate.query.factory_class">org.hibernate.hql.classic.ClassicQueryTranslatorFactory</prop> -->
+      </hibernateProperties>
+    </workflowContext>
+  </transaction>
+  <!--
+		若使用自定义实体类型的相关数据，请配置XML以及实体的包路径
+		若无，保持内容为空，如下：
+		<externalReferenceDataField></externalReferenceDataField>
+
+		注意：如果在此配置了包类路径，而在classpath并不存在此类，Inforflow启动时会有异常产生
+	-->
+  <externalReferenceDataField/>
+  <!--
+		资源管理，系统提供两种默认类型的资源管理方式，分别为
+		从用户数据库中获取资源信息：
+		应用系统可以扩展自己所需要的资源管理器，扩展时需实现com.cvicse.workflow.api.resource.AbstractResourceProvider
+		如果应用需要配置参数可以在resourceProperties指定
+
+		HelloWorld应用演示使用com.cvicse.workflow.examples.resource.AppResourceProvider，
+		所有的定义信息均在内存中存在，不需要配置resourceProperties下的参数
+	-->
+  <resourceManager class="com.sofn.infroflow.resources.SysResourceProvider" proxyClass="com.cvicse.workflow.examples.resource.AppResourceProxyProvider"/>
+  <executionLimit>
+    <mailProperties>
+      <prop key="isAuth">false</prop>
+      <!--邮件服务器是否需要身份验证，若为true，则需要配置用户名(authUser)和口令(authPassword)-->
+      <prop key="authUser">test</prop>
+      <prop key="authPassword">test</prop>
+      <prop key="sender">inforflow@cvicse.com</prop>
+      <!--发送邮件的邮箱地址-->
+      <prop key="host">192.168.2.21</prop>
+      <!--发送邮件的邮件服务器地址-->
+    </mailProperties>
+    <!--短信发送设备与计算机连接的串口号-->
+    <mobileProperties>
+      <prop key="comName">COM1</prop>
+      <prop key="mobileManagerClass">com.cvicse.workflow.core.scheduler.MobileEvent</prop>
+      <!--Windows平台，如"COM1"，"COM2"等-->
+      <!--prop key = "comName">/dev/ttyS0</prop-->
+      <!--Linux、Unix等平台，如"/dev/ttyS0"，"/dev/ttyS1"等-->
+    </mobileProperties>
+  </executionLimit>
+  <!--以下配置选项为JMS消息中心配置，
+		如果引擎需要发送消息，发送消息前必须启动消息中心，消息提醒客户端通过消息中心注册并接收消息-->
+  <messager default="false">
+    <!--是否向已注册客户端消息提醒的用户发送消息-->
+    <messagerProperties>
+      <prop key="url">localhost</prop>
+      <!--消息中心的地址-->
+      <prop key="port">61616</prop>
+      <!--消息中心公开的端口号-->
+      <prop key="isPersistent">true</prop>
+      <!--发送的消息是否需要持久化-->
+    </messagerProperties>
+  </messager>
+  <!--配置工作日历的管理类路径，该日历可在定时启动、执行期限、计算工作流实例对象除去非工作时间的运行时间等操作时使用。
+		用户可以通过修改classes/calendar.xml文件配置符合本公司习惯的日历，也可以通过编码开发自己的日历对象、日历管理类，或者单独开发自定义的日历管理类。该日历功能仅对相对时间和周期时间有效，对绝对时间无效。
+		在使用日历时,相对时间的定时启动、执行期限会根据日历按照工作时间跨度计算出下一次执行时间。周期定时启动时，如果触发时间点遇到非工作日时间，则会抛弃此次启动事件.
+		"useCaleandar"属性表示是否在工作流引擎中使用日历，取值为"true"或"false"，"class"属性为日历管理类的类路径，此路径可以是InforFlow 引擎默认的日历管理实现类，也可以是用户自定义的日历管理实现类。
+	-->
+  <calendarManager useCalendar="true" class="com.cvicse.workflow.calendar.CalendarDBManagerImpl" >
+    <prop key="useCalendarInStartJob">true</prop>
+    <!-- 是否在定时启动的调度中使用日历功能-->
+    <prop key="useCalendarInScheduleJob">true</prop>
+    <!-- 是否在执行期限的调度中使用日历功能 -->
+  </calendarManager>
+  <!--  支持用户配置时间管理类，用于生成系统的时间，便于多个系统之间系统同步。扩展时需实现com.cvicse.workflow.api.time.TimeManager-->
+  <timeManager class="com.cvicse.workflow.examples.time.AppTimeManager"/>
+
+  <!--  监控工作流引擎的管理类，用于管理工作流的配置文件，扩展时需实现com.cvicse.workflow.api.monitor.FlowMonitorManager-->
+  <monitorManager class="com.cvicse.workflow.examples.monitor.AppFlowMonitorManager"/>
+</inforflow>

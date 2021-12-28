@@ -1,0 +1,97 @@
+<div class="gui-mainBc">
+    <div class="gui-breadcrumbs">
+        <a href="">系统管理</a>&gt;
+        <span>优化建议</span>
+    </div>
+    <div class="gui-section ">
+        <div class="gui-form-group">
+            <span>所属区域 </span>
+            <span class="gui-select" style="width: 130px;">
+                <select id="provinceSelect" class="gui-select form-control" style="font-size: 13px;padding: 0 12px 4px 5px;max-width:100%;min-width:100%;">
+                    <option value="">请选择省份</option>
+                </select>
+            </span>
+            <span class="gui-select" style="width: 130px;">
+                <select id="citySelect" class="gui-select form-control" style="font-size: 13px;padding: 0 12px 4px 5px;max-width:100%;min-width:100%;">
+                    <option value="">请选择城市</option>
+                </select>
+            </span>
+            <span class="gui-select" style="width: 130px;">
+                <select id="countySelect" class="gui-select form-control" style="font-size: 13px;padding: 0 12px 4px 5px;max-width:100%;min-width:100%;">
+                    <option value="">请选择区/县</option>
+                </select>
+            </span>
+            <span>建议类别 </span>
+            <span class="gui-select" style="width: 130px;">
+                <select id="suggestType" class="gui-select form-control" style="font-size: 13px;padding: 0 12px 4px 5px;max-width:100%;min-width:100%;" ng-model="queryCondition.suggestionType">
+                    <option value="">请选择类别</option>
+                    <option value="平台界面优化">平台界面优化</option>
+                    <option value="平台应用性优化">平台应用性优化</option>
+                    <option value="平台易用性优化">平台易用性优化</option>
+                </select>
+            </span>
+            <span>反馈时间 </span>
+            <input class="gui-input form_input" type="text" id="feedbackTimeBeginning" placeholder="请选择起始时间" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd', onpicked:timeBeginningOnPicked, oncleared:timeBeginningOnCleared, maxDate:'#F{$dp.$D(\'feedbackTimeEnding\')}'})" ng-model="queryCondition.feedbackTimeBeginning">
+            <!--<input class="gui-input form_input" type="text" id="suggestType" placeholder="请输入标准名称关键字">-->
+            <span>至 </span>
+            <input class="gui-input form_input" type="text" id="feedbackTimeEnding" placeholder="请选择截止时间" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd', onpicked:timeEndingOnPicked, oncleared:timeEndingOnCleared, minDate:'#F{$dp.$D(\'feedbackTimeBeginning\')}'})" ng-model="queryCondition.feedbackTimeEnding">
+            <button class="gui-btn" ng-click="queryList();">查询</button>
+        </div>
+        <div>
+            <table id="grid" class="gui-table"></table>
+        </div>
+    </div>
+
+    <!-- 模态框（Modal）新增 修改 查看-->
+    <div class="modal fade " id="view_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-stylesm" style="padding-top:15px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">查看建议</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="default_w_h modal-form form-horizontal" id="modalForm" method="post" style="text-align: center" data-bv-excluded="" action="" novalidate>
+                        <div class="form-item form-group">
+                            <label>主体名称</label>
+                            <input type="text" id="enterpriseName" class="gui-input form-control" ng-model="queryResult.enterpriseName" readonly="readonly">
+                        </div>
+                        <div class="form-item form-group">
+                            <label>所属区域</label>
+                            <input type="text" id="area" class="gui-input form-control" ng-model="queryResult.area" readonly="readonly">
+                            </span>
+                        </div>
+                        <div class="form-item form-group">
+                            <label>建议时间</label>
+                            <input type="text" id="suggestionTime" class="gui-input form-control" ng-model="queryResult.time" readonly="readonly">
+                            </span>
+                        </div>
+                        <div class="form-item form-group">
+                            <label>建议类别</label>
+                            <input type="text" id="suggestionType" class="gui-input form-control" ng-model="queryResult.type" readonly="readonly">
+                            </span>
+                        </div>
+                        <div class="form-item form-group">
+                            <label>标题</label>
+                            <input type="text" id="suggestionTitle" class="gui-input form-control" ng-model="queryResult.title" readonly="readonly">
+                            </span>
+                        </div>
+                        <div class="form-item form-group">
+                            <label>内容</label>
+                            <textarea id="suggestionContent" class="gui-textarea form-control" ng-model="queryResult.content" readonly="readonly"></textarea>
+                        </div>
+                        <div class="form-item form-group">
+                            <label>附件</label>
+                            <a style="color: #5db9f8;text-decoration: underline;" href="/sofn-sys-web/sysTemplate/fileDownload?fileUrl=http:{{queryResult.fileUrl}}&fileName={{queryResult.fileName}}">{{queryResult.attachName}}</a>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="closeBtn" class="gui-btn" ng-click="closeModal()">关闭</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal -->
+    </div>
+</div>

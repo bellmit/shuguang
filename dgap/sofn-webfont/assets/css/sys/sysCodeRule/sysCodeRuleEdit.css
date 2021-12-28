@@ -1,0 +1,22 @@
+ table input{
+     height: 30px;
+}
+ .selectTable tr td {
+     padding:10px 20px;
+     text-align: left;
+ }
+ .selectTable tr td:first-child {
+     text-align: right;
+ }
+ .selectTable select {
+    width: 250px;
+ }
+ .selectTable input,span{
+     vertical-align: middle;
+ }
+ .selectTable span{
+     margin-left: 5px;
+ }
+#save {
+    margin-left: 20px;
+}

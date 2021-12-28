@@ -1,0 +1,9 @@
+.gui-list li{
+    padding: 5px 15px;
+}
+.gui-list li .form-item{
+    margin-bottom: 0;
+}
+.ovh .gui-list{
+    max-width: 1000px;
+}

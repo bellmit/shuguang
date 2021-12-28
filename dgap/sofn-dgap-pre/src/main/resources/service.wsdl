@@ -1,0 +1,50 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:schema="http://mycompany.com/hr/schemas"
+                  xmlns:tns="http://mycompany.com/hr/definitions"
+                  targetNamespace="http://mycompany.com/hr/definitions">
+    <wsdl:types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://mycompany.com/hr/schemas"
+                        schemaLocation="service.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="Request">
+        <wsdl:part element="schema:REQUEST" name="Request"/>
+    </wsdl:message>
+
+    <wsdl:message name="Response">
+        <wsdl:part element="schema:RESPONSE" name="Response"/>
+    </wsdl:message>
+
+    <wsdl:portType name="Resource">
+        <wsdl:operation name="add">
+            <wsdl:input message="tns:Request" name="Request"/>
+            <wsdl:output message="tns:Response" name="Response"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="ResourceBinding" type="tns:Resource">
+        <soap:binding style="document"
+                      transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="add">
+            <soap:operation soapAction="http://mycompany.com/RequestHoliday"/>
+            <wsdl:input name="Request">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="Response">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="ResourceService">
+        <wsdl:port binding="tns:ResourceBinding" name="ResourcePort">
+            <soap:address location="http://localhost:8080/resourceService/"/>
+        </wsdl:port>
+        <wsdl:port name="DirectoryPort" binding="ResourceBinding">
+
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

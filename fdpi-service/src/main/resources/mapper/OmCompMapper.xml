@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.OmCompMapper">
+    <select id="getConvertList" resultType="com.sofn.fdpi.vo.OmBreedProcTableVo">
+            select * from (
+            SELECT
+            ob.ID AS ID,
+            ob.deal_type as dealType,
+            ob.province as province,
+            ob.cell_comp,
+            ob.transfer_comp,
+            ob.obversion as obversion,
+            case when (SELECT comp_name FROM om_comp WHERE ID = ob.cell_comp ) is null
+            then ob.cell_comp
+            else (SELECT comp_name FROM om_comp WHERE ID = ob.cell_comp)
+            END AS cellComp,
+            (SELECT comp_name FROM om_comp WHERE ID = ob.transfer_comp) AS transferComp,
+            ob.credential AS credential,
+            ob.import_size AS importSize,
+            ob.deal_date AS dealDate,
+            ob.customs_list AS customsList,
+            ob.deal_num AS dealNum,
+            ob.operator AS operator,
+            ob.del_flag as del_flag,
+            '2' as dataType
+        FROM
+            om_import_to_breed AS ob
+            UNION ALL
+            SELECT
+            ob.ID AS ID,
+            ob.deal_type as dealType,
+            ob.province as province,
+            ob.cell_comp,
+            ob.transfer_comp,
+            ob.obversion as obversion,
+            case when (SELECT comp_name FROM om_comp WHERE ID = ob.cell_comp ) is null
+            then ob.cell_comp
+            else (SELECT comp_name FROM om_comp WHERE ID = ob.cell_comp )
+            END AS cellComp,
+            ( SELECT comp_name FROM om_comp WHERE ID = ob.transfer_comp ) AS transferComp,
+            ob.credential AS credential,
+            ob.import_size AS importSize,
+            ob.deal_date AS dealDate,
+            ob.customs_list AS customsList,
+            ob.deal_num AS dealNum,
+            ob.operator AS operator,
+            ob.del_flag as del_flag,
+            '3' as dataType
+        FROM
+            om_breed_to_proc AS ob
+        ) as two
+        <where>
+            del_flag='N'
+            <if test='searchType!=null and searchType!=""'>
+                and dealType=#{searchType}
+            </if>
+            <if test='regionCode!=null and regionCode!=""'>
+                and province=#{regionCode}
+            </if>
+            <if test="cellComp!=null and cellComp!=''">
+                and (cell_comp=#{cellComp} or cellComp like '%' || #{cellComp} || '%')
+            </if>
+            <if test="transferComp!=null and transferComp!=''">
+                and (transfer_comp=#{transferComp} or transferComp like '%' || #{transferComp} || '%')
+            </if>
+            <if test="credential!=null and credential!=''">
+                and credential like '%' || #{credential} || '%'
+            </if>
+            <if test="dealDate!=null">
+                and dealDate=#{dealDate}
+            </if>
+        </where>
+            <if test='order=="desc"'>
+                order by ${field} desc
+            </if>
+            <if test='order=="asc"'>
+                order by ${field} asc
+            </if>
+    </select>
+</mapper>

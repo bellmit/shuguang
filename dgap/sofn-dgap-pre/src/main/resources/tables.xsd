@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<xsd:schema xmlns="http://sharpx.org/schema/table" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://sharpx.org/schema/table" elementFormDefault="qualified">
+
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+
+    <xsd:element name="RESOURCE">
+        <xsd:annotation>
+            <xsd:documentation>
+                资源
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="NAME">
+                    <xsd:annotation>
+                        <xsd:documentation>资源名称</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="DIRECTORY">
+        <xsd:annotation>
+            <xsd:documentation>
+                资源目录
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="NAME">
+                    <xsd:annotation>
+                        <xsd:documentation>资源目录名称</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>

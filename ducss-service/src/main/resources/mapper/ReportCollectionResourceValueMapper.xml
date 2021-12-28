@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.ReportCollectionResourceValueMapper">
+
+    <select id="getInfoGroupByProvince" parameterType="java.util.Map"
+            resultType="com.sofn.ducss.model.wordmodel.ReportWordProduct">
+
+        select sum(collect_resource) as produce,dr.region_code as areaId,dr.region_name as areaName
+        from straw_utilize_sum a
+        left join ducss_region_copy_sys dr on dr.region_code = a.area_id
+        left join sys_dictionary sd on sd.dict_key = a.straw_type
+        where dr."level" = 'province'
+        and dr."year" = #{regionYear}
+        and a."year" = #{year}
+        group by dr.region_code,dr.region_name
+        order by sum(theory_resource) desc
+    </select>
+
+
+    <select id="getInfoGroupByArea" parameterType="java.util.Map"
+            resultType="com.sofn.ducss.model.wordmodel.ReportWordProduct">
+          select sum(collect_resource) as produce,dr.region_code as areaId,dr.region_name as areaName
+            from straw_utilize_sum a
+            left join ducss_region_copy_sys dr on dr.region_code = a.area_id
+            left join sys_dictionary sd on sd.dict_key = a.straw_type
+            where dr."level" = 'county'
+            and dr."year" = #{regionYear}
+            and a."year" = #{year}
+            group by dr.region_code,dr.region_name
+            order by sum(theory_resource) desc
+    </select>
+
+
+    <select id="getInfoGroupByStraw" parameterType="java.util.Map"
+            resultType="com.sofn.ducss.model.wordmodel.ReportWordProduct">
+           select sum(collect_resource) as produce,a.straw_type as strawCode,sd.dict_value as strawName
+            from straw_utilize_sum a
+            left join ducss_region_copy_sys dr on dr.region_code = a.area_id
+            left join sys_dictionary sd on sd.dict_key = a.straw_type
+            where dr."level" = 'province'
+            and dr."year" = #{regionYear}
+            and a."year" = #{year}
+            group by a.straw_type,sd.dict_value
+            order by sum(theory_resource) desc
+    </select>
+
+
+    <select id="getUtilzeInfo" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            SUM (main_fertilising) + SUM (main_forage) + SUM (main_fuel) + SUM (main_base) + SUM (main_material) + SUM (disperse_fertilising) + SUM (disperse_forage) + SUM (disperse_fuel) + SUM (disperse_base) + SUM (disperse_material) AS count1,
+            SUM (main_fertilising) + SUM (disperse_fertilising) AS fertilisingcount,
+            SUM (main_forage) + SUM (disperse_forage) AS foragecount,
+            SUM (main_fuel) + SUM (disperse_fuel) AS fuelcount,
+            SUM (main_base) + SUM (disperse_base) AS basecount,
+            SUM (main_material) + SUM (disperse_material) AS materialcount
+        FROM
+            straw_utilize_sum A
+        LEFT JOIN ducss_region_copy_sys dr ON A .area_id = dr.region_code
+        WHERE
+            A . YEAR = '2019'
+        AND dr. YEAR = '2019'
+        AND dr."level" = 'province'
+
+
+    </select>
+
+    <select id="getUtilizeRateInfoGroupProvince" parameterType="java.util.Map"
+            resultType="com.sofn.ducss.model.wordmodel.ReportUtilizeInfo">
+        select comprehensive_rate as number1, a.straw_usage  as number2, a."collect" as number3,
+        a.area_id as areaId, dr.region_name as areaName from production_usage_sum a
+        LEFT join ducss_region_copy_sys dr on a.area_id = dr.region_code
+         where a.year = #{year}
+        and dr."year" = #{regionYear}
+        and dr."level" = 'province'
+    </select>
+
+    <select id="getUtilizeRateInfoGroupAreaId" parameterType="java.util.Map"
+            resultType="com.sofn.ducss.model.wordmodel.ReportUtilizeInfo">
+        select comprehensive_rate as number1, a.straw_usage  as number2, a."collect" as number3,
+        a.area_id as areaId, dr.region_name as areaName from production_usage_sum a
+        LEFT join ducss_region_copy_sys dr on a.area_id = dr.region_code
+         where a.year = #{year}
+        and dr."year" = #{regionYear}
+        and dr."level" = 'county'
+    </select>
+
+    <select id="getUtilizeRateInfoGroupStraw" parameterType="java.util.Map"
+            resultType="com.sofn.ducss.model.wordmodel.ReportUtilizeInfo">
+          select
+            case sum(a.collect_resource) when 0 then 0
+            else
+            sum(a.straw_usage)/sum(a.collect_resource) * 100 end as number1,
+            sum(a.straw_usage) as number2,
+            sum(a.collect_resource) as number3 ,
+            a.straw_type  as strawId,
+            sd.dict_value as strawName
+             from straw_usage_sum a
+            LEFT join ducss_region_copy_sys dr on a.area_id = dr.region_code
+            left join sys_dictionary sd on a.straw_type = sd.dict_key
+             where a.year = #{year}
+            and dr."year" =  #{regionYear}
+            and dr."level" = 'province'
+            GROUP BY a.straw_type ,sd.dict_value
+            order by number1 desc
+    </select>
+
+
+    <select id="getReturnInfoGroupByChina" parameterType="java.util.Map"
+            resultType="java.util.Map">
+
+        SELECT
+            SUM (main_total) + SUM (disperse_total) as number1,
+            SUM (main_total) as number2,
+            SUM (disperse_total) as number3,
+						sum(collect_resource) as number4,
+						case sum(collect_resource) when 0 then 0
+						else SUM (main_total) / sum(collect_resource) * 100 end number5,
+						case sum(collect_resource) when 0 then 0
+						else SUM (disperse_total) / sum(collect_resource) * 100 end number6
+        FROM
+            straw_utilize_sum A
+        LEFT JOIN ducss_region_copy_sys dr ON A .area_id = dr.region_code
+        WHERE
+            A ."year" = #{year}
+        AND dr."year" = #{regionYear}
+        AND dr."level" = 'province'
+    </select>
+
+
+    <select id="getReturnInfoGroupByProvince" parameterType="java.util.Map"
+            resultType="com.sofn.ducss.model.wordmodel.ReportUtilizeInfo">
+            SELECT
+                            case sum(collect_resource) when 0 then 0
+                            else SUM (disperse_total) / sum(collect_resource) * 100 end number1,
+                SUM (disperse_total) as number2,
+                            sum(collect_resource) as number3,
+
+                            a.area_id as areaId,
+                            dr.region_name as areaName
+            FROM
+                straw_utilize_sum A
+            LEFT JOIN ducss_region_copy_sys dr ON A .area_id = dr.region_code
+            WHERE
+                A ."year" = #{year}
+            AND dr."year" =  #{regionYear}
+            AND dr."level" = 'province'
+            GROUP BY 	a.area_id,
+                            dr.region_name
+            ORDER BY
+                number1 DESC
+    </select>
+
+
+    <select id="getReturnInfoGroupByStraw" parameterType="java.util.Map"
+            resultType="com.sofn.ducss.model.wordmodel.ReportUtilizeInfo">
+          SELECT
+                            case sum(collect_resource) when 0 then 0
+                            else SUM (disperse_total) / sum(collect_resource) * 100 end number1,
+                SUM (disperse_total) as number2,
+                            sum(collect_resource) as number3,
+                            a.straw_type as strawId,
+                            sd.dict_value AS strawName
+            FROM
+                straw_utilize_sum A
+            LEFT JOIN ducss_region_copy_sys dr ON A .area_id = dr.region_code
+					  left join sys_dictionary sd on sd.dict_key = a.straw_type
+            WHERE
+                A ."year" = #{year}
+            AND dr."year" =  #{regionYear}
+            AND dr."level" = 'province'
+            GROUP BY
+            a.straw_type,
+            sd.dict_value
+            ORDER BY
+                number1 DESC
+    </select>
+
+    <select id="getFiveMaterials" parameterType="java.util.Map"
+            resultType="java.util.Map">
+        select
+            sum(main_fertilising) + sum(disperse_fertilising) as fertilising,
+            sum(main_forage) + sum(disperse_forage) as forage,
+            sum(main_fuel) + sum(disperse_fuel) as fuel,
+            sum(main_base) + sum(disperse_base) as base,
+            sum(main_material) + sum(disperse_material) as material,
+            sum(collect_resource) as collectresource,
+            case sum(collect_resource) when 0 then 0
+            else (sum(main_fertilising) + sum(disperse_fertilising)) / sum(collect_resource) * 100 end fertilisingc,
+
+            case sum(collect_resource) when 0 then 0
+            else (sum(main_forage) + sum(disperse_forage)) / sum(collect_resource) * 100 end foragec,
+
+            case sum(collect_resource) when 0 then 0
+            else (sum(main_fuel) + sum(disperse_fuel)) / sum(collect_resource) * 100 end fuelc,
+
+            case sum(collect_resource) when 0 then 0
+            else (sum(main_base) + sum(disperse_base)) / sum(collect_resource) * 100 end basec,
+
+            case sum(collect_resource) when 0 then 0
+            else (sum(main_material) + sum(disperse_material)) / sum(collect_resource) * 100 end materialc
+         from straw_utilize_sum a left join ducss_region_copy_sys dr on a.area_id = dr.region_code
+        where dr."year" = #{regionYear} and a.year = #{year} and dr."level" = 'province'
+
+    </select>
+
+
+</mapper>

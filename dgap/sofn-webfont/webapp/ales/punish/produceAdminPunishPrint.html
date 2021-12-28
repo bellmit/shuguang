@@ -1,0 +1,72 @@
+    <link rel="stylesheet" href="assets/css/ales/punish/produceAdminPunishPrint.css"/>
+	<div class="gui-breadcrumbs">
+		<a ui-sref="index.content.ales/punish/produceAdminPunishlist">执法系统</a>&gt;
+		<a ui-sref="index.content.ales/punish/produceAdminPunishlist">日常执法管理</a>&gt;
+		<a ui-sref="index.content.ales/punish/produceAdminPunishlist">行政处罚</a>&gt;
+		<span>打印</span>
+	</div>
+        <div class="  gui-section gui-section-wid" id="printContent" >
+            <form class="mt15" id="produceAdminPunishForm" name="produceAdminPunishForm">
+			 <h4 style="height:20px; line-height:20px; text-align:center;font-weight:bold;">行政处罚信息</h4>
+				<table class="ApplyTable mt15">
+					<tr style="height: 30px;">
+						<td style="text-align: right">行政处罚决定案号：</td>
+						<td style="text-align: left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span ng-bind="reCord.punishCode"></span></td>
+					</tr>
+					<tr style="height: 30px;">
+						<td style="text-align: right">当事主体：</td>
+						<td style="text-align: left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span ng-bind="reCord.enterpriseIdName"></span></td>
+					</tr>
+					<tr style="height: 30px;">
+						<td style="text-align: right"> 当事主体身份码：</td>
+						<td style="text-align: left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span ng-bind="reCord.enterpriseCode"></span></td>
+					</tr>
+					<tr style="height: 30px;">
+						<td style="text-align: right"> 当事人：</td>
+						<td style="text-align: left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span ng-bind="reCord.legalPerson"></span></td>
+					</tr>
+					<tr style="height: 30px;">
+						<td style="text-align: right">案件名称：</td>
+						<td style="text-align: left"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span ng-bind="reCord.caseName"></span></td>
+					</tr>
+					<tr style="height: 30px;">
+						<td style="text-align: right">违法产品名称：</td>
+						<td style="text-align: left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span ng-bind="reCord.productName"></span></td>
+					</tr>
+					<tr style="height: 30px;">
+						<td style="text-align: right">标称生产企业：</td>
+						<td style="text-align: left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span ng-bind="reCord.enterpriseName"></span></td>
+					</tr>
+					<tr style="height: 30px;">
+						<td style="text-align: right">生产日期或批次：</td>
+						<td style="text-align: left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span ng-bind="reCord.manufactureDate"></span></td>
+					</tr>
+					<tr style="height: 30px;">
+						<td style="text-align: right">案件定性：</td>
+						<td style="text-align: left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span ng-bind="reCord.punishQualitative"></span></td>
+					</tr>
+					<tr style="height: 30px;">
+						<td style="text-align: right"> 行政处罚决定：</td>
+						<td style="text-align: left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span ng-bind="reCord.punishResult"></span></td>
+					</tr>
+					<tr style="height: 30px;">
+						<td style="text-align: right">决定书文件：</td>
+						<td style="text-align: left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span ng-bind="reCord.punishFilesName"></span></td>
+					</tr>
+					<tr style="height: 50px;">
+						<td style="text-align: left"></td>
+					</tr>
+					<tr style="height: 50px;">
+						<td><p><span style="font-family:'应用字体 Regular', '应用字体';">当事人对上述案件内容无异议。</span></p><p><span style="font-family:'应用字体 Regular', '应用字体';">当事人签名（盖章）：</span></p><p><span style="font-family:'应用字体 Regular', '应用字体';">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span></p><p><span style="font-family:'应用字体 Regular', '应用字体';">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 年&nbsp; &nbsp;&nbsp; 月&nbsp; &nbsp;&nbsp; 日&nbsp; &nbsp;&nbsp; </span></p><p><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p></td>
+						<td><p><span style="font-family:'应用字体 Regular', '应用字体';">执法人（签名）：</span></p><p><span style="font-family:'应用字体 Regular', '应用字体';">执法单位（公章）：</span></p><p><span style="font-family:'应用字体 Regular', '应用字体';"><br><br></span></p><p><span style="font-family:'应用字体 Regular', '应用字体';"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 年&nbsp; &nbsp;&nbsp; 月&nbsp; &nbsp;&nbsp; 日&nbsp; &nbsp;&nbsp; </span></p><p><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p></td>
+					</tr>
+				</table>
+        </form>
+       </div>
+	<p class="mt15 mb25" style="text-align: center">
+		<button class="gui-btn" ui-sref="index.content.ales/punish/produceAdminPunishlist" >取消</button>
+		<button class="gui-btn" type="button" id="PrintArea" value="xxxx">打印</button>
+	</p>
+
+
+

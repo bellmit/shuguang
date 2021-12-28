@@ -1,0 +1,104 @@
+<link rel="stylesheet" href="../../assets/css/monitor/task.css"/>
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+<link rel="stylesheet" href="../../assets/css/monitor/subjSvList.css"/>
+<link rel="stylesheet" href="../../libs/bootstrap/bootstrap-3.3.5-dist/css/bootstrap.css"/>
+<script type="text/javascript" src="../../../../libs/eCharts/echarts.min.js"></script>
+<div class="gui-breadcrumbs">
+    <a href="#"  ui-sref="index.content.monitor/execUnit/Recheck/routineMonitoringRecheck">{{detail.monitorClass}}</a>&gt;
+    <span>任务详情</span>
+</div>
+<div class="gui-section">
+    <ul class="gui-tab">
+        <li role="presentation" class="active"><a ng-click="taskDetail()">任务详情</a></li>
+        <li role="presentation" class="pointer"><a ng-click="sampleMessage()">抽样</a></li>
+        <li role="presentation" class="pointer"><a ng-click="test()">检测</a></li>
+        <li role="presentation" class="pointer"><a ng-click="routineMonitorList()">检测信息汇总</a></li>
+        <li role="presentation" class="pointer"><a ng-click="routineReportUpload()">报告上传</a></li>
+    </ul>
+</div>
+    <div id="printContent" class="col-md-12" style="margin-left: 5px">
+        <h5 class="col-md-10" style="margin-bottom: 20px">任务名称:<span id="taskName">{{detail.taskName}}</span></h5>
+        <h5 class="col-md-10">基本信息</h5>
+        <table class="table table-bordered" style="width: 70%;line-height: 150%" >
+            <tr>
+                <td style="width: 20%">发布单位</td>
+                <td ng-bind="detail.sampleLink" style="width: 30%"></td>
+                <td style="width: 30%">复检单位</td>
+                <td ng-bind="detectionOrgan" style="width: 20%"></td>
+            </tr>
+            <tr>
+                <td>任务时间</td>
+                <td>{{detail.startTime}}-{{detail.endTime}}</td>
+                <td>抽样结果上报截止时间</td>
+                <td ng-bind="detail.deadline"></td>
+            </tr>
+            <tr>
+                <td>附件</td>
+                <td ng-bind="detail.attachment"></td>
+                <td>文件号</td>
+                <td ng-bind="detail.attachmentcode"></td>
+            </tr>
+            <tr>
+                <td>备注</td>
+                <td ng-bind="detail.comment"></td>
+                <td>任务优先级</td>
+                <td>{{priority}}</td>
+            </tr>
+        </table>
+        <h5 class="col-md-10" style="margin-top: 50px">监测信息</h5>
+        <div class="mt15 tb NewsSize col-lg-12 col-xs-12 col-sm-12 col-md-12">
+            <table id="grid" class="gui-table mt15" style="width: 100%">
+            </table>
+        </div>
+    </div>
+    <div style="text-align: center;margin-bottom: 5px">
+        <span class="gui-btn" style="width: 60px" type="button"  id="printArea">打印</span>&nbsp;&nbsp;
+        <span class="gui-btn" style="width: 60px" type="button"  ng-click="download()">下载</span>&nbsp;&nbsp;
+        <span class="gui-btn" style="width: 60px" type="button"  ng-click="returnResume()">返回</span>&nbsp;&nbsp;
+    </div>
+<div class="modal fade" id="dModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-style" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="modalTitle">标准判断</h4>
+            </div>
+            <div class="modal-body" style="min-height: 100px;">
+                <table class="table table-bordered table-striped table-hover data-table col-lg-12 col-xs-12 col-sm-12 col-md-12">
+                    <tr>
+                        <th>序号</th>
+                        <th>监测对象</th>
+                        <th ng-repeat="i in items">{{i.name}}</th>
+                    </tr>
+                    <tr id="{{x.id}}" ng-repeat="x in adsCheckObject">
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{x.name}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <span class="gui-btn"  data-dismiss="modal">关闭</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 模态框（Modal）查看监测对象、检测项目 -->
+<div class="modal fade" id="xModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-stylesm" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h6 class="modal-title" id="x_title"></h6>
+            </div>
+            <div class="modal-body" style="min-height: 100px;">
+                <span id="x_content"></span>
+            </div>
+            <div class="modal-footer">
+                <span class="gui-btn"  data-dismiss="modal">关闭</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+

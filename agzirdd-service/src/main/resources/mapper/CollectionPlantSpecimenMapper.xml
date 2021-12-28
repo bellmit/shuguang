@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agzirdd.mapper.CollectionPlantSpecimenMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.agzirdd.model.CollectionPlantSpecimen" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="SPECIMEN_COLLECTION_ID" property="specimenCollectionId" jdbcType="VARCHAR" />
+    <result column="SPECIES_ID" property="speciesId" jdbcType="VARCHAR" />
+    <result column="SPECIES_NAME" property="speciesName" jdbcType="VARCHAR" />
+    <result column="LATIN_NAME" property="latinName" jdbcType="VARCHAR" />
+    <result column="SYNONYMS" property="synonyms" jdbcType="VARCHAR" />
+    <result column="TRAIT" property="trait" jdbcType="VARCHAR" />
+    <result column="TRAIT_NAME" property="traitName" jdbcType="VARCHAR" />
+    <result column="HEIGHT" property="height" jdbcType="VARCHAR" />
+    <result column="ROOT_IMG" property="rootImg" jdbcType="VARCHAR" />
+    <result column="STEM_IMG" property="stemImg" jdbcType="VARCHAR" />
+    <result column="LEAF_IMG" property="leafImg" jdbcType="VARCHAR" />
+    <result column="FLOWER_IMG" property="flowerImg" jdbcType="VARCHAR" />
+    <result column="FRUIT_IMG" property="fruitImg" jdbcType="VARCHAR" />
+    <result column="SEED_IMG" property="seedImg" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID,SPECIMEN_COLLECTION_ID,SPECIES_ID,SPECIES_NAME,LATIN_NAME,SYNONYMS,TRAIT,TRAIT_NAME,
+    HEIGHT,ROOT_IMG,STEM_IMG,LEAF_IMG,FLOWER_IMG,FRUIT_IMG,SEED_IMG,CREATE_TIME
+  </sql>
+
+
+  <select id="getCollectionPlantSpecimenByQuery" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM COLLECTION_PLANT_SPECIMEN
+    <where>
+      1=1
+      <if test="specimenCollectionId != null and specimenCollectionId != ''">
+        and SPECIMEN_COLLECTION_ID = #{specimenCollectionId}
+      </if>
+      <if test="speciesId != null and speciesId != ''">
+        and SPECIES_ID = #{speciesId}
+      </if>
+
+    </where>
+    ORDER BY CREATE_TIME desc
+  </select>
+
+  <select id="getCollectionPlantSpecimenBySpecimenCollectionId" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM COLLECTION_PLANT_SPECIMEN
+    <where>
+      1=1
+      <if test="specimenCollectionId != null and specimenCollectionId != ''">
+        and SPECIMEN_COLLECTION_ID = #{specimenCollectionId}
+      </if>
+    </where>
+    ORDER BY CREATE_TIME desc
+  </select>
+
+  <delete id="deleteCollectionPlantSpecimen" parameterType="java.lang.String">
+    delete
+    from COLLECTION_PLANT_SPECIMEN
+    where
+    SPECIMEN_COLLECTION_ID = #{specimenCollectionId}
+  </delete>
+
+</mapper>

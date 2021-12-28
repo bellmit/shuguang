@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysReportMapper">
+
+    <resultMap id="sysReportResultMap" type="com.sofn.sys.vo.SysReportVo">
+        <result column="id" property="id"></result>
+        <result column="reportName" property="reportName"></result>
+        <result column="appId" property="appId"></result>
+        <result column="remark" property="remark"></result>
+        <result column="reportType" property="reportType"></result>
+        <result column="subSystemName" property="subSystemName"></result>
+    </resultMap>
+
+    <sql id="sysReportResultMapSql">
+        A.ID                  id                   ,
+        A.REPORT_NAME         reportName           ,
+        A.APP_ID              appId                ,
+        A.REMARK              remark               ,
+        A.REPORT_TYPE         reportType
+    </sql>
+
+    <update id="deleteSysReportById" parameterType="java.util.Map">
+        update SYS_REPORT set DEL_FLAG = 'Y',UPDATE_USER_ID = #{updateUserId},UPDATE_TIME=#{updateDate}
+        WHERE ID = #{id}
+    </update>
+
+    <select id="getReportCountByNameAndAppId" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM SYS_REPORT WHERE REPORT_NAME = #{reportName} AND APP_ID = #{appId} AND DEL_FLAG != 'Y'
+        <if test="id!=null and id != ''">
+            AND ID != #{id}
+        </if>
+    </select>
+
+    <select id="getSysReportByCondition" parameterType="java.util.Map" resultMap="sysReportResultMap">
+        SELECT
+        <include refid="sysReportResultMapSql" /> ,
+        SS.SUBSYSTEM_NAME subSystemName
+        FROM SYS_REPORT A
+        LEFT JOIN SYS_SUBSYSTEM SS ON A.APP_ID = SS.APP_ID AND SS.DEL_FLAG != 'Y'
+        WHERE A.DEL_FLAG != 'Y'
+        <if test="reportName != null and reportName != ''">
+            AND A.REPORT_NAME like '%' || #{reportName} || '%'
+        </if>
+        <if test="appId != null and reportName != ''">
+            AND A.APP_ID = #{appId}
+        </if>
+        <if test="reportType != null and reportType != ''">
+            AND A.REPORT_TYPE = #{reportType}
+        </if>
+    </select>
+
+</mapper>

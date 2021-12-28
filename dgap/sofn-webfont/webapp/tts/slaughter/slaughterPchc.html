@@ -1,0 +1,43 @@
+<div class="gui-breadcrumbs">
+    <a href="">追溯系统</a>&gt;
+    <a href="">屠宰管理</a>&gt;
+    <span>屠宰批次合成</span>
+</div>
+<div class="gui-section">
+    <div class="gui-form-group">
+        <span class="important">产品种类</span>
+        <div class="gui-select">
+            <select ng-model="ttsScltxxcjScgl.harvestUnit" name="in_harvestUnit" id="proType">
+                <option value="">请选择</option>
+            </select>
+        </div>
+        <span class="important">产品名称</span>
+        <input type="hidden" ng-model="ttsScltxxcjScgl.productId" name="in_productId">
+        <input type="text" class="gui-input" ng-model="ttsScltxxcjScgl.productName" name="in_productName" placeholder="请输入产品名称">
+        <button class="gui-btn" id="ToCheck">查询</button>
+        
+        
+    </div><div class="gui-actions"><button class="gui-btn fr ml15" id="ToClean"><i class="gui-icon"></i>清空</button><button class="gui-btn fr" id="ToCphc"><i class="gui-icon icon-compose"></i>产品合成</button></div>
+    <div>
+        <table id="grid" class="gui-table">
+        </table>
+    </div>
+</div>
+<!-- 选择产品信息  start -->
+<div class="modal fade" id="product_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-style">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel"> 产品信息</h4>
+            </div>
+            <div class="modal-body">
+                <table id="productList" class="gui-table">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>

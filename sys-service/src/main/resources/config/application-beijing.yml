@@ -1,0 +1,106 @@
+spring:
+  rabbitmq:
+    password: ENC(IhWiyFY8yjLSMtqtvgFaehi7h4gQ2y8E)
+    username: rabbitmq
+    port: 15672
+    addresses: 10.2.17.61
+    #开启发送失败返回 10.0.50.101
+    publisher-returns: true
+    #开启发送确认
+    publisher-confirms: true
+    listener:
+      simple:
+        #指定最小的消费者数量
+        concurrency: 2
+        #指定最大的消费者数量
+        max-concurrency: 2
+        #开启ack
+        acknowledge-mode: auto
+      #开启ack
+      direct:
+        acknowledge-mode: auto
+    #支持消息的确认与返回
+    template:
+      mandatory: true
+  redis:
+    redisson:
+      file: classpath:config/redisson-beijing.yaml
+
+  datasource:
+    driver-class-name: com.uxsino.uxdb.Driver
+    url: jdbc:uxdb://10.2.17.25:9999/sys?stringtype=unspecified
+    username: uxdb
+#    password: uxdb
+#    password: Sofn!@#236
+    password: ENC(G82SAl1AZ9Cnix/Gqge5tIhXJPtsSFBf)
+    filters: stat
+
+    druid:
+      async-init: true
+      initial-size: 15
+      max-active: 30
+      min-idle: 10
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      #validation-query: SELECT 1 FROM DUAL
+      #connection-properties: config.decrypt=true;config.decrypt.key=${spring.datasource.publicKey}
+      filter:
+        config:
+          enabled: true
+
+sofn:
+  cleardata:
+    enable: false
+  enableRemoveSpace:
+    enable: true
+  rabbitmq:
+    enable: true
+  fineReport:
+    enable: true
+    password: ENC(uk7UUz8AxJtMhyxz71lHog==)
+    reportUrl: http://10.2.17.31:8080/webroot/decision/view/report?viewlet=
+  inforFlow:
+    enable: true
+    processModelUrl: http://10.2.17.33:8088/ProcessModeler/
+  elasticsearch:
+    ip: 10.2.17.43
+    host: 9299
+    userName: elastic
+    password: ENC(F3eynbkZ+McMbYA35aAm2paSPEaj/ag1)
+eureka:
+  instance:
+    hostname: ${spring.cloud.client.ip-address}
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    lease-renewal-interval-in-seconds: 1
+    lease-expiration-duration-in-seconds: 2
+  client:
+    service-url:
+      defaultZone: http://10.2.17.71:8880/eureka/,http://10.2.17.72:8880/eureka/,http://10.2.17.73:8880/eureka/
+
+
+xxl:
+  job:
+    admin:
+      addresses: http://10.2.17.61:8653/xxl-job-admin
+    executor:
+      appname: sys-job-executor
+      port: 8651
+      ip:
+      logpath: /data/applogs/xxl-job/jobhandler
+      logretentiondays: 30
+    accessToken:
+
+proxy:
+  user:
+    username: quzhijie
+    password: e10adc3949ba59abbe56e057f20f883e
+    
+jasypt:
+  encryptor:
+    password: sofn@2021    

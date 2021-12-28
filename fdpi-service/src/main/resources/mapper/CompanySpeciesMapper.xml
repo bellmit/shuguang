@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.CompanySpeciesMapper" >
+
+    <resultMap id="companySpeciesMap" type="com.sofn.fdpi.vo.CompanySpeciesVO">
+        <result property="companyId" column="COMPANY_ID"></result>
+        <result property="companyName" column="COMPANY_NAME"></result>
+        <result property="speciesId" column="SPECIES_ID"></result>
+        <result property="speciesName" column="SPECIES_NAME"></result>
+        <result property="speciesNum" column="SPECIES_NUM"></result>
+        <result property="id" column="ID"></result>
+        <result property="lastChangeTime" column="LAST_CHANGE_TIME"></result>
+    </resultMap>
+
+    <resultMap id="companySpeciesInfoMapper" type="com.sofn.fdpi.vo.CompanySpeciesInfoVO">
+        <result column="ID" property="id"></result>
+        <result column="SPE_NAME" property="speName"></result>
+        <result column="LATIN_NAME" property="latinName"></result>
+        <result column="TRADE_NAME" property="tradeName"></result>
+        <result column="LOCAL_NAME" property="localName"></result>
+        <result column="PRO_LEVEL" property="proLevel"></result>
+        <result column="CITES" property="cites"></result>
+        <result column="IDENTIFY" property="identify"></result>
+        <result column="PEDIGREE" property="pedigree"></result>
+        <result column="INTRO" property="intro"></result>
+        <result column="HABIT" property="habit"></result>
+        <result column="DISTRIBUTION" property="distribution"></result>
+        <result column="CON_STATUS" property="conStatus"></result>
+        <result column="TAM_TYPE" property="tamType"></result>
+        <result column="SPE_STATUS" property="speStatus"></result>
+        <result column="SPE_ORIGIN" property="speOrigin"></result>
+        <result column="PHOTO" property="photo"></result>
+        <result column="NUM" property="num"></result>
+    </resultMap>
+
+    <resultMap id="companySpeciesStockMap" type="com.sofn.fdpi.vo.CompanySpeciesStockVO">
+        <result property="id" column="ID"></result>
+        <result property="changeTime" column="CH_TIME"></result>
+        <result property="companyId" column="COMP_ID"></result>
+        <result property="companyName" column="COMP_NAME"></result>
+        <result property="speciesId" column="SPECIES_ID"></result>
+        <result property="speciesName" column="SPE_NAME"></result>
+        <result property="billType" column="BILL_TYPE"></result>
+        <result property="importMark" column="IMPORT_MARK"></result>
+        <result property="beforeNum" column="BEFORE_NUM"></result>
+        <result property="changeNum" column="CH_NUM"></result>
+        <result property="afterNum" column="AFTER_NUM"></result>
+        <result property="lastChangeUserId" column="LAST_CHANGE_USER_ID"></result>
+        <result property="otherComName" column="OTHER_COM_NAME"></result>
+    </resultMap>
+
+    <select id="listCompanySpeciesVO" resultMap="companySpeciesMap">
+        SELECT
+            A.ID,
+            A.LAST_CHANGE_TIME,
+            A.SPE_NUM SPECIES_NUM,
+            A.COMP_ID COMPANY_ID,
+            B.COMP_NAME COMPANY_NAME,
+            A.SPECIES_ID SPECIES_ID,
+            C.SPE_NAME SPECIES_NAME
+        FROM
+            COMP_SPE_STOCK A
+            LEFT JOIN TB_COMP B ON A.COMP_ID = B.ID
+            LEFT JOIN TB_SPECIES C ON A.SPECIES_ID = C.ID
+        WHERE
+            1=1
+            <if test="companyId!=null">
+                AND A.COMP_ID = #{companyId}
+            </if>
+            <if test="speciesId!=null">
+                AND A.SPECIES_ID = #{speciesId}
+            </if>
+    </select>
+
+
+
+    <select id="getCompanySpeciesInfo" resultMap="companySpeciesInfoMapper">
+        SELECT
+            A.ID,
+            A.SPE_NAME,
+            A.LATIN_NAME,
+            A.TRADE_NAME,
+            A.LOCAL_NAME,
+            A.PRO_LEVEL,
+            A.CITES,
+            A.IDENTIFY,
+            A.PEDIGREE,
+            A.INTRO,
+            A.HABIT,
+            A.DISTRIBUTION,
+            A.CON_STATUS,
+            A.TAM_TYPE,
+            A.SPE_STATUS,
+            A.SPE_ORIGIN,
+            A.PHOTO,
+            B.SPE_NUM NUM
+        FROM
+            TB_SPECIES A
+            LEFT JOIN COMP_SPE_STOCK B ON A.ID = B.SPECIES_ID
+            WHERE B.COMP_ID=#{companyId}
+            AND A.ID=#{speciesId}
+    </select>
+
+    <select id="listCompanySpeciesStock" resultMap="companySpeciesStockMap">
+        SELECT
+            A.ID,
+            A.COMP_ID,
+            B.COMP_NAME,
+            A.SPECIES_ID,
+            C.SPE_NAME,
+            A.BILL_TYPE,
+            A.IMPORT_MARK,
+            A.BEFORE_NUM,
+            A.CH_NUM,
+            A.AFTER_NUM,
+            A.CH_TIME,
+            A.LAST_CHANGE_USER_ID,
+            A.OTHER_COM_NAME
+        FROM
+            COMP_SPE_STOCKFLOW A
+            LEFT JOIN TB_COMP B ON A.COMP_ID=B.ID
+            LEFT JOIN TB_SPECIES C ON C.ID=A.SPECIES_ID
+            WHERE A.COMP_ID=#{companyId}
+            AND A.SPECIES_ID=#{speciesId}
+    </select>
+
+</mapper>

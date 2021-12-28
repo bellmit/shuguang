@@ -1,0 +1,72 @@
+<link rel="stylesheet" href="assets/css/ales/taskManage/myCheckTask.css"/>
+<div class="gui-breadcrumbs">
+    <a ui-sref="index.content.ales/taskManage/myCheckTask">执法系统</a>&gt;
+    <a ui-sref="index.content.ales/taskManage/myCheckTask">监督抽查管理</a>&gt;
+    <span>监督抽查任务</span>
+</div>
+<div class="gui-section">
+    <!--页签-->
+    <ul id="myTab" class="nav nav-tabs clearfix gov-h">
+        <li class="active" ng-click="myTab('新任务')" name="newTask">
+            <a data-toggle="tab">
+                <span>已接受任务：</span>
+                <span class="badge" name="span_Task_Count" style="background-color: darkred">0</span>
+            </a>
+        </li>
+        <li ng-click="myTab('历史任务')" name="historyTask"><a data-toggle="tab"><b>历史任务</b></a></li>
+    </ul>
+    <div id="myTabContent" class="tab-content ml25pr30 clearfix gov-h">
+        <div class="tab-pane fade in active mt15" id="wtInfo">
+            <div class="gui-actions">
+                <span>任务名称</span>
+                <input class="gui-input" type="text" name="myTaskName" style="width: 200px" maxlength="30" id="myTaskNameid"/>
+                日期
+                <input id="taskDateBeginId" style="cursor: pointer;width: 120px;" readonly="readonly"
+                       class=" gui-input" name="taskDateBegin" type="text"
+                       onFocus="var endDate=$dp.$('taskDateEndId');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'taskDateEndId\')}'})"/>
+                至
+                <input id="taskDateEndId" name="taskDateEnd" class="gui-input"
+                       style="cursor: pointer;width: 120px;" readonly="readonly" type="text"
+                       onFocus="WdatePicker({minDate:'#F{$dp.$D(\'taskDateBeginId\')}'})"/>
+                <button id="myTaskToCheckid" class="gui-btn" ng-click="queryNewTask()">查询</button>
+                <button class="gui-btn" ng-click="cleanSelectModelQuery()">重置</button>
+            </div>
+            <hr/>
+            <div class="container-fluid" id="TaskCont">
+                <div class="row-fluid clearfix gov-h" id="MY-TASK">
+                    <div class="col-md-6 col-lg-4 col-sm-6 column">
+                        <div id="CS_DIV_NO_TASK" style="display: none">
+                            <div class="div_gz_style">
+                                <p class="text-info">
+                                    您没有新的任务！
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--历史任务-->
+        <div class="tab-pane fade in active" id="ypinfo">
+            <div class="gui-section">
+                <div class="gui-actions">
+                    <span>任务名称</span>
+                    <input class="gui-input" type="text" name="History_Task_NAME" style="width: 200px"maxlength="30"/>
+                    日期
+                    <input id="History_Task_Date_Begin" name="History_Task_Date_Begin"
+                           style="cursor: pointer;width: 120px;margin-right: 0px;" readonly="readonly"
+                           class="gui-input" type="text"
+                           onFocus="var endDate=$dp.$('History_Task_Date_End');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'History_Task_Date_End\')}'})"/>
+                    至
+                    <input id="History_Task_Date_End" name="History_Task_Date_End" class="gui-input"
+                           style="cursor: pointer;width: 120px;" readonly="readonly" type="text"
+                           onFocus="WdatePicker({minDate:'#F{$dp.$D(\'History_Task_Date_Begin\')}'})"/>
+                    <button id="historyTaskToCheckid" class="gui-btn">查询</button>
+                    <button class="gui-btn" ng-click="cleanSelectHistoryQuery()">重置</button>
+                </div>
+                <table id="grid" class="gui-table">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

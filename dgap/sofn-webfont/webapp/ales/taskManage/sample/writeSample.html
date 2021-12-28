@@ -1,0 +1,902 @@
+<link rel="stylesheet" href="assets/css/ales/etl/etlAddDailyEnforceLaw.css" />
+<div class="gui-breadcrumbs">
+    <a href="" ng-click="backList()">执法系统</a>&gt;
+    <a href="" ng-click="back()">抽样单列表</a>&gt;
+    <span>抽样单填报</span>
+</div>
+<!--主体-->
+<div class="gui-section" style="max-width: 1000px;margin: auto">
+    <!--头-->
+    <h3 class="col-md-9 col-md-offset-3" style="margin-bottom: 20px">农业部 农产品质量安全抽样单</h3>
+    <table class="gui-table"  id = "attributeForms"style="width: 90%;line-height: 80%;font-size: small;">
+        <tr><!-- <span class="asterisk">*</span> -->
+            <td width="40%" style="text-align: left"><label>产品追溯码</label>
+                &#12288;<input style="width:55%" class="gui-input" type="text"
+                               ng-model="alesTaskSample.productTraceabilityCode"
+                               name="productTraceabilityCodeInput"
+                                >
+                    <button class="gui-btn btn-sm" ng-click="getMessage()">追溯码确认
+                    </button>
+                <!-- 2018年8月21日10:50:12 业务需求变动取消生成临时码功能 -->
+                   <!-- <button class="gui-btn btn-sm" ng-click="temporaryCode()" name="productTraceabilityCodeButton">生成临时码 </button>-->
+            </td>
+            <!--<td width="10%" rowspan="2">
+                <div id="code" style=""></div>
+            </td>-->
+        </tr>
+        <!-- 2018年8月21日10:50:12 业务需求变动生成样品编码功能支持手动输入判重 -->
+        <tr>
+            <td class="form-group" width="80%" style="text-align: left;"><label>样品编码<span class="asterisk">*</span></label>
+                &#12288;&#12288;<input  style="width:55%"
+                                        type="text"
+                                        class="gui-input"
+                                        name="sampleCodeInput"
+                                        ng-model="alesTaskSample.sampleCode"
+                                        maxlength="21"
+                                        onmouseout ="verifyCode()"
+                                        required data-bv-notempty-message="请录入数据"
+                                        pattern="^\w+$"
+                                        data-bv-message="请输入正确样品编码格式为字母、数字及其组合"/>
+
+                <button type="button" name="temporarySampleCode" class="gui-btn btn-sm" ng-click="temporarySampleCode()">生成样品编码
+                </button>
+                <button type="button" name="sampleCodePrint" class="gui-btn btn-sm"  ng-click="sampleCodePrint()">打印样品编码
+                </button>
+            </td>
+
+        </tr>
+        <!-- 取消验证规则提示 2018年8月21日11:15:06 -->
+        <tr>
+            <td height="35px"  style="text-align: left">
+                <label></label>
+                <label class="isCode" style="font-weight: normal;display: none;color: #a94442;font-size: 12px;">样品编码已存在</label>
+            </td>
+        </tr>
+    </table>
+    <!--内容-->
+    <table class="gui-table" id="attributeForm">
+        <tr style="text-align: left">
+            <td>样品名称<span class="asterisk">*</span></td>
+            <td class="form-group"><input style="width: 100%;" type="text" class="gui-input"
+                                          ng-model="alesTaskSample.sampleName" name="sampleName" required
+                                          data-bv-notempty-message="内容不能是空" readonly="readonly"></td>
+            <td>样品编号<span class="asterisk">*</span></td>
+            <td class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                          readOnly="true" ng-model="alesTaskSample.sampleCode"></td>
+
+        </tr>
+        <tr style="text-align: left">
+            <td>商标</td>
+            <td class="form-group"><input type="text" class="gui-input" ng-model="alesTaskSample.tradeMark"
+                                          pattern="^[\u4E00-\u9FA5A-Za-z0-9_-]{0,60}$"
+                                          trim
+                                          data-bv-message="只支持汉字、字母、数字、连接符下划线及其组合"
+                                          maxlength="60"
+                                          class="gui-input form-control"
+                                          placeholder="商标"
+                                          style="width: 100%"
+                                          name="tradeMark"></td>
+            <td>包装</td>
+            <td class="form-group">
+                <label class="radio-inline">
+                    <input type="radio" name="packing" value="有"> 有
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="packing" value="无"> 无
+                </label>
+            </td>
+        </tr>
+        <tr style="text-align: left">
+            <td>等级</td>
+            <td class="form-group"><input type="text" class="gui-input" ng-model="alesTaskSample.grade"
+                                          pattern="^[\u4E00-\u9FA5A-Za-z0-9_-]{0,60}$"
+                                          trim
+                                          data-bv-message="只支持汉字、字母、数字、连接符下划线及其组合"
+                                          maxlength="60"
+                                          class="gui-input form-control"
+                                          placeholder="等级"
+                                          style="width: 100%"
+                                          name="grade"></td>
+            <td>标识</td>
+            <td class="form-group">
+                <label class="radio-inline">
+                    <input type="radio" name="identify" value="有"> 有
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="identify" value="无"> 无
+                </label>
+            </td>
+        </tr>
+        <tr style="text-align: left">
+            <td>型号规格</td>
+            <td class="form-group"><input type="text" class="gui-input" style="width: 100%"
+                                          ng-model="alesTaskSample.specificationGx" name="specificationGx"
+                                          pattern="^[\u4E00-\u9FA5A-Za-z0-9_-]{0,60}$"
+                                          trim
+                                          data-bv-message="只支持汉字、字母、数字、连接符下划线及其组合"
+                                          maxlength="60"
+                                          class="gui-input form-control"
+                                          placeholder="型号规格"></td>
+            <td>执行标准</td>
+            <td class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                          ng-model="alesTaskSample.standard" name="standard"
+                                          pattern="^[\u4E00-\u9FA5A-Za-z0-9_-]{0,60}$"
+                                          trim
+                                          data-bv-message="只支持汉字、字母、数字、连接符下划线及其组合"
+                                          maxlength="60"
+                                          class="gui-input form-control"
+                                          placeholder="执行标准"></td>
+        </tr>
+        <tr style="text-align: left">
+            <td>生产日期<span class="asterisk">*</span></td>
+            <td class="form-group">
+                <input id="produceDate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd '})" name="produceDate"   class="gui-input">
+            </td>
+            <td>产地</td>
+            <td style="text-align:left">
+                <div class="gui-select" style="width: 100%;">
+                    <select id="sheng" style="width: 32%">
+                        <option value="">--省--</option>
+                    </select>
+                </div>
+                <div class="gui-select" style="width: 100%;">
+                    <select id="shi" style="width: 32%">
+                        <option value="">--市--</option>
+                    </select>
+                </div>
+                <div class="gui-select" style="width: 100%;">
+                    <select id="xian" style="width: 32%">
+                        <option value="" ng-model="alesTaskSample.producingArea">--区/县--</option>
+                    </select>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>产品认证情况<span class="asterisk">*</span></td>
+            <td colspan="3" style="text-align:left" class="form-group">
+                <label class="radio-inline">
+                    <input type="radio" name="produceCertificate" value="无公害农产品"
+                           required data-bv-notempty-message="请选择数据"> 无公害农产品
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="produceCertificate" value="绿色食品"
+                           required data-bv-notempty-message="请选择数据"> 绿色食品
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="produceCertificate" value="有机食品"
+                           required data-bv-notempty-message="请选择数据"> 有机食品
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="produceCertificate" value="其他"
+                           required data-bv-notempty-message="请选择数据"> 其他
+                </label>
+            </td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">抽样数量<span class="asterisk">*</span></td>
+            <td colspan="1" class="form-group">
+                <input type="text" style="width: 100%;" class="gui-input" ng-model="alesTaskSample.sampleAmount" name="sampleAmount" required data-bv-notempty-message="请录入数据" pattern="[0-9]{1,10}$" minlength="1" maxlength="10" data-bv-message="抽样数量必须为数字">
+            </td>
+            <td colspan="2" class="form-group">
+                <span>抽样单位</span>
+                <div class="gui-select">
+                    <select name="sampleUnitType">
+
+
+                        <option ng-repeat="x in sampleUnitTypes" value="{{x.dictName}}" ng-selected="{{ x.dictName == alesTaskSample.sampleUnitType }}">{{x.dictName}}</option>
+                    </select>
+                </div>
+            </td>
+        </tr>        
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">抽样基数<span class="asterisk">*</span></td>
+            <td colspan="1" class="form-group">
+                <input type="text" style="width: 100%;" class="gui-input" ng-model="alesTaskSample.sampleBase" name="sampleBase" required data-bv-notempty-message="请录入数据" pattern="[0-9]{1,10}$" data-bv-message="抽样基数必须为数字" minlength="1" maxlength="10">
+            </td>
+            <td colspan="2" class="form-group">
+                <span>抽样单位</span>
+                <div class="gui-select">
+                    <select name="sampleBaseUnitType">
+                        <option ng-repeat="x in sampleUnitTypes" value="{{x.dictName}}" ng-selected="{{ x.dictName == alesTaskSample.sampleBaseUnitType }}">{{x.dictName}}</option>
+                    </select>
+                </div>
+            </td>
+        </tr>        
+        <tr>
+            <td>抽样场所<span class="asterisk">*</span></td>
+            <td colspan="3" style="text-align:left" class="form-group">
+                <label class="checkbox-inline">
+                    <input type="radio" name="samplePlace" value="生产基地/企业" required
+                           data-bv-notempty-message="请选择数据"> 生产基地/企业
+                </label>
+                <label class="checkbox-inline">
+                    <input type="radio" name="samplePlace" value="屠宰场" required
+                           data-bv-notempty-message="请选择数据"> 屠宰场
+                </label>
+                <label class="checkbox-inline">
+                    <input type="radio" name="samplePlace" value="农贸市场" required
+                           data-bv-notempty-message="请选择数据"> 农贸市场
+                </label>
+                <label class="checkbox-inline">
+                    <input type="radio" name="samplePlace" value="批发市场" required
+                           data-bv-notempty-message="请选择数据"> 批发市场
+                </label>
+                <label class="checkbox-inline">
+                    <input type="radio" name="samplePlace" value="超市" required
+                           data-bv-notempty-message="请选择数据"> 超市
+                </label>
+                <label class="checkbox-inline">
+                    <input type="radio" name="samplePlace" value="其他" required
+                           data-bv-notempty-message="请选择数据"> 其他
+                </label>
+            </td>
+        </tr>
+        <tr style="text-align: left">
+            <td rowspan="9">受检单位情况</td>
+            <td style="text-align: right;padding-right: 10px;">受检单位名称<span class="asterisk">*</span></td>
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="alesTaskSample.testedDeparment" name="testedDeparment"
+                                                      required data-bv-notempty-message="请录入数据"
+                                                      pattern="^[\u4E00-\u9FA5()（）]{0,60}$"
+                                                      data-bv-message="受检单位名称支持汉字+中英文括号"></td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">通讯地址<span class="asterisk">*</span></td>
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="alesTaskSample.testedAddress" name="testedAddress"
+                                                      required data-bv-notempty-message="请详细填写省、市、区县、乡镇、街道、社区楼牌号等信息" pattern="^[0-9\u4e00-\u9fa5]{0,30}$" maxlength="50" minlength="1"
+                                                      data-bv-message="受检单位地址必须为1-30位字符"></td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">法定人代表<span class="asterisk">*</span></td>
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="alesTaskSample.testedLegalrep" name="testedLegalrep"
+                                                      required data-bv-notempty-message="请录入数据"
+                                                      pattern="^[\u4E00-\u9FA5A-Za-z·]{0,60}$"
+                                                      data-bv-message="法定代表人必须为1-60位汉字·英文字母">
+            </td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">联系人<span class="asterisk">*</span></td>
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="alesTaskSample.testedLinkman" name="testedLinkman"
+                                                      required data-bv-notempty-message="请录入数据"
+                                                      pattern="^[\u4E00-\u9FA5A-Za-z·]{0,60}$" data-bv-message="联系人必须为1-60位汉字·英文字母">
+            </td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">联系电话</td><!-- data-bv-notempty="true"
+                                                      data-bv-notempty-message="联系人电话不能为空"-->
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="alesTaskSample.testedLinkmanphone"
+                                                      name="testedLinkmanphone"
+
+                                                      data-bv-istelephone="true"
+                                                      ></td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">传真</td>
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="alesTaskSample.testedLinkmanfax"
+                                                      name="testedLinkmanfax"  pattern="[^((0\d{2,3})-?)(\d{7,8})$][\d{11,12}]|[\d{7,8}]" maxlength="12"
+                                                      data-bv-message="请正确输入受检人传真"></td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">受检人<span class="asterisk">*</span></td>
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="alesTaskSample.testedPerson" name="testedPerson"
+                                                      required data-bv-notempty-message="请录入数据"
+                                                      pattern="^[\u4E00-\u9FA5A-Za-z·]{0,60}$" data-bv-message="受检人必须为1-60位汉字·英文字母">
+            </td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">联系电话</td><!-- data-bv-notempty="true"
+                                                      data-bv-notempty-message="联系人电话不能为空" -->
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="alesTaskSample.testedPersonphone"
+                                                      name="testedPersonphone"
+                                                      data-bv-istelephone="true"
+                                                      data-bv-message="请输入正确的电话号码"
+            ></td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">传真</td>
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="alesTaskSample.testedPersonfax" name="testedPersonfax" maxlength="12"
+                                                      pattern="[^((0\d{2,3})-?)(\d{7,8})$][\d{11,12}]|[\d{7,8}]" data-bv-message="请正确输入受检单位传真">
+            </td>
+        </tr>
+        <tr style="text-align: left">
+            <td rowspan="7">生产单位情况</td>
+            <td colspan="3" class="form-group">
+                <p>
+                    <label class="checkbox-inline">
+                        <input type="radio"   name="productionsTatus"   ng-click="copyInfoToTested()"  value="自产"> 自产
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="radio" name="productionsTatus" value="收购"> 收购
+                    </label>
+                </p>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">单位名称<span class="asterisk">*</span></td>
+            <td colspan="2" class="form-group"><input style="width: 100%;" type="text" class="gui-input"
+                                                      ng-model="alesTaskSample.productionDeparment"
+                                                      name="productionDeparment" required
+                                                      data-bv-notempty-message="请录入数据" pattern="^[\u4E00-\u9FA5()（）]{0,60}$"
+                                                      data-bv-message="生产单位名称支持汉字+中英文括号"></td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">通讯地址<span class="asterisk">*</span></td>
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="alesTaskSample.productionAddress"
+                                                      name="productionAddress" required
+                                                      data-bv-notempty-message="请详细填写省、市、区县、乡镇、街道、社区楼牌号等信息" pattern="^[0-9\u4e00-\u9fa5]{0,30}$"
+                                                      data-bv-message="通讯地址必须为1-30位汉字"></td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">邮编</td>
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="alesTaskSample.productionZipcode"
+                                                      name="productionZipcode" pattern="^\d{6}$"
+                                                      data-bv-message="请正确输入生产单位邮编"></td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">联系人<span class="asterisk">*</span></td>
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="alesTaskSample.productionLinkman"
+                                                      name="productionLinkman" required
+                                                      data-bv-notempty-message="请录入数据" pattern="^[\u4e00-\u9fa5A-Za-z·]{0,60}$"
+                                                      data-bv-message="联系人必须为1-60位汉字·英文字母"></td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">联系电话</td><!-- data-bv-notempty="true"
+                                                      data-bv-notempty-message="联系人电话不能为空"-->
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="alesTaskSample.productionLinkmanphone"
+                                                      name="productionLinkmanphone"
+
+                                                      data-bv-istelephone="true"
+                                                      data-bv-message="请输入正确的电话号码"
+            ></td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">传真</td>
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="alesTaskSample.productionLinkmanfax"
+                                                      name="productionLinkmanfax" pattern="^((0\d{2,3})-?)(\d{7,8})$"
+                                                      data-bv-message="请正确输入生产单位传真"></td>
+        </tr>
+        <tr style="text-align: left">
+            <td rowspan="7">抽样单位情况</td>
+            <td style="text-align: right;padding-right: 10px;">单位名称<span class="asterisk">*</span></td>
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="alesTaskSample.sampleDeparment" name="sampleDeparment"
+                                                      required data-bv-notempty-message="请录入数据"
+                                                      pattern="^[\u4E00-\u9FA5()（）]{0,60}$"
+                                                      data-bv-message="抽样单位名称支持汉字+中英文括号"></td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">联系人<span class="asterisk">*</span></td>
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="alesTaskSample.sampleLinkman" name="sampleLinkman"
+                                                      required data-bv-notempty-message="请录入数据"
+                                                      pattern="^[\u4e00-\u9fa5A-Za-z·]{0,60}$" data-bv-message="联系人必须为1-60位汉字·英文zi'm">
+            </td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">通讯地址<span class="asterisk">*</span></td>
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="alesTaskSample.sampleAddress" name="sampleAddress"
+                                                      required data-bv-notempty-message="请详细填写省、市、区县、乡镇、街道、社区楼牌号等信息"  pattern="[\s\S]{0,100}" maxlength="100" minlength="1"
+                                                      data-bv-message="生产单位地址必须为1-100位字符"></td>
+        </tr>
+        <tr>
+            <td style="text-align: right;padding-right: 10px;">邮编</td>
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="alesTaskSample.sampleZipcode" name="sampleZipcode"
+                                                      pattern="^\d{6}$" data-bv-message="请正确输入抽样单位邮编"></td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">联系电话</td><!--data-bv-notempty="true"
+                                                      data-bv-notempty-message="联系人电话不能为空"-->
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="alesTaskSample.samplePhone" name="samplePhone"
+
+                                                      data-bv-istelephone="true"
+                                                      data-bv-message="请输入正确的电话号码"
+            ></td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">传真</td>
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="alesTaskSample.sampleFax" name="sampleFax"
+                                                      pattern="^((0\d{2,3})-?)(\d{7,8})$" data-bv-message="请正确输入抽样单位传真">
+            </td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">E-mail</td>
+            <td colspan="2" class="form-group"><input type="text" style="width: 100%;" class="gui-input"
+                                                      ng-model="alesTaskSample.sampleEmail" name="sampleEmail"
+                                                      pattern="^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$"
+                                                      data-bv-message="请正确输入邮箱"></td>
+        </tr>
+        <tr style="text-align: left">
+            <td style="text-align: right;padding-right: 10px;">检测任务依据<span class="asterisk">*</span></td>
+            <td colspan="4" style="height: 80px;margin-left: 5px" class="form-group">
+                <input type="text" class="gui-input" style="width:90%;" ng-model="alesTaskSample.proof"
+                       name="proof" required data-bv-notempty-message="请录入数据">
+            </td>
+        </tr>
+        <tr style="height: 80px;text-align: left">
+            <td colspan="">
+                <label class="">抽样时间<span class="asterisk">*</span><i class="xinhao">&#12288;</i>&#12288;</label>
+            </td>
+            <td colspan="4">
+                <input id="sampleDate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd '})" name="sampleDate"
+                       class="gui-input">
+            </td>
+        </tr>
+    </table>
+
+    <table>
+        <tr style="height: 80px;text-align: left">
+            <td>
+                <label class="">附件<span class="asterisk">*</span></label>
+            </td>
+            <td name="filesupload" style="display:block" colspan="3" style="height: 80px;margin-left: 5px" class="form-group">
+                <div file-upload options="vm.uploadOptions" files="vm.files"></div>
+                <p> 备注：图片只支持 “jpg,jpeg,png,gif,bmp” 格式，大小不超过5M。</p>
+            </td>
+            <td name="filesview" style="display:none" colspan="3" style="height: 80px;margin-left: 5px" class="form-group">
+                <div class="_box" id="imgSpot"/>
+            </td>
+        </tr>
+        <tr style="height: 80px;text-align: left">
+            <td>
+                <label class="">抽样人员<span class="asterisk">*</span></label>
+            </td>
+            <td colspan="3"　class="form-group">
+                <input type="text" class="gui-input" ng-model="alesTaskSample.samplePerson"
+                       name="samplePerson" required data-bv-notempty-message="请录入数据"
+                       ng-click="selectPerson()">
+            </td>
+        </tr>
+    </table>
+    
+    <p style="text-align: center;" class="mt15 mb25">
+        <span type="button" class="gui-btn " ng-click="back()">返回</span>
+        <button class="gui-btn" type="button" ng-click="reset()" name="reset_button" style="display:none">重置</button>
+        <button class="gui-btn" type="button" ng-click="saveInfo()" name="saveInfo_button">保存</button>
+      <!--  <button class="gui-btn" type="button" ng-click="samplePrint()">打印抽样条码</button>  2018年8月14日14:15:56 屏蔽打印抽样条码功能-->
+    </p>
+</div>
+<!-- 样品编码打印模态框 -->
+<div class="modal fade" id="sample_Code_Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="sampleCodeModal">
+                    <span>样品编码打印</span>
+                </h4>
+            </div>
+            <!-- style="height: 60px;width:80%;"  -->
+            <div class="modal-body">
+                <table id="printBox" style="width: 80%;height: 100px;border: 2px solid silver;margin: auto">
+                    <tr style="height: 20px;">
+                        <td></td>
+                    </tr>
+                    <tr >
+                       <td><h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;任务名称:{{entrustTaskName}}</h4></td>
+                    </tr>
+                    <tr style="height: 10px;">
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;样品编码:{{alesTaskSample.sampleCode}}</h4></td>
+                    </tr>
+                    <tr style="height: 10px;">
+                        <td></td>
+                    </tr>
+                </table>
+               <!-- <span>任务名称:</span><input  ng-model="entrustTaskNameInfo" name="entrustTaskNameInfo" />
+                <span>样品编码:</span><input  ng-model="sampleCodeInfo" name="sampleCodeInfo" />-->
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" data-dismiss="modal">取消</button>
+               <!-- <button class="gui-btn" ng-disabled="jcdxModal.$invalid" disabled="disabled" ng-click="save()">保存</button>-->
+                </button><button class="gui-btn" data-dismiss="modal" class="gui-btn btn-sm" ng-click="printSampleCode()">打印</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--生成临时码摸态框-->
+<div class="modal fade" id="dModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                    class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="modalTitle">生成临时码</h4>
+            </div>
+            <div class="modal-body" style="min-height: 100px;">
+                <form name="tempCodeForm" id="tempCodeForm" class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">主体类别<span style="color:red;">*</span>&nbsp;&nbsp;</label>
+                        <span class="gui-select">
+                            <input type="text" name="mainManagementBody" id="mainManagementBody" class="form-control" ng-model="productions" readonly="readonly" style="width: 150px;" />
+<!--                                <select name="mainManagementBody" id="mainManagementBody" class="form-control" ng-model="productions" ng-click="subjectCear()">
+                                    <option value="生产主体">生产主体</option>
+                                    <option value="经营主体">经营主体</option>
+                                    <option value="生产经营主体">生产经营主体</option>
+                                </select-->>
+                            </span>
+                        <button class="gui-btn"  id="chooseBodys"  ng-click="chooseBody();">选择主体</button>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">组织形式<span style="color:red;">*</span>&nbsp;&nbsp;</label>
+                        <span>
+                             <input type="text" name="organizationForms" id="organizationForms"  class="form-control" ng-model="tissues" readonly="readonly" style="width: 150px;">
+                          <!--      <select name="organizationForms" id="organizationForms" class="form-control" ng-model="tissues">
+                                    <option value="企业/个体工商户">企业/个体工商户</option>
+                                    <option value="合作社">合作社</option>
+                                    <option value="家庭农场">家庭农场</option>
+                                    <option value="个人">个人</option>
+                                </select>-->
+                            </span>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">主体号<span style="color:red;">*</span>&nbsp;&nbsp;</label>
+                        <input class="gui-input" type="hidden" name="standardId">
+                        <input class="gui-input" type="text" name="subjectName" maxlength="18" minlength="15" placeholder="请输入主体号" class="form-control"
+                               ng-model="mainBodyNumber" readonly="readonly">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">农产品名称<span style="color:red;">*</span>&nbsp;&nbsp;</label>
+                        <input type="hidden" name="standardId">
+                        <input class="gui-input" type="text" name="standardName" placeholder="请输入农产品分类码" class="form-control"
+                               ng-model="projectCategoryCode" readonly="readonly">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer mgt-15">
+                <span class="gui-btn" data-dismiss="modal">关闭</span>
+                <span class="gui-btn" type="button" ng-click="addCheckItem()">添加</span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 受检单位选择 -->
+<div class="modal fade" id="sJUnit_Model" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>主体单位</span>
+                </h4>
+            </div>
+            <div class="gui-TabCut ">
+                <ul class="clearfix gov-h">
+                    <li id="entTab" class="fl gp-r gui-TabCheck" ng-click="switchEnt()">生产经营主体</li>
+                    <li id="entTempTab" class="fl gp-r" ng-click="switchEntTemp()">临时登记主体</li>
+                </ul>
+                <div class="gui-botLine"></div>
+            </div>
+            <div id="entDiv">
+                <form class="gui-form-group">
+                    <div class="modal-body clearfix gov-h">
+                        <div class="gui-select" style="width: 30%;">
+                            <select id="sjUnitShen" style="width: 100px">
+                                <option value="">--省--</option>
+                            </select>
+                        </div>
+                        <div class="gui-select" style="width: 30%;">
+                            <select id="sjUnitShi" style="width: 100px">
+                                <option value="">--市--</option>
+                            </select>
+                        </div>
+                        <div class="gui-select" style="width: 30%;">
+                            <select id="sjUnitXian" style="width: 100px">
+                                <option value="">--县--</option>
+                            </select>
+                        </div>
+                        <input class="gui-input mt15" type="text" name="entIdCode" placeholder="请输入编码">
+                        <input class="gui-input mt15" type="text" name="sjUnitName" placeholder="请输入名称">
+                        <button id="sJUnitSelectTocheck" class="gui-btn" data-toggle="tooltip" data-placement="right"
+                                title="根据输入条件检索列表" ng-click="querySjUnit()">查询
+                        </button>
+                    </div>
+                </form>
+                <table id="sJUnitTaskGrid" style="width: 100%;" class="gui-table mt15">
+                </table>
+                <div class="modal-footer">
+                    <button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+                    <button class="gui-btn" type="button" ng-click="selectSzDwButt()">确定</button>
+                </div>
+            </div>
+            <div id="entTempDiv" style="display: none;">
+                <form class="gui-form-group"  id="entTempForm">
+                    <div class="modal-body clearfix gov-h">
+                        <div class="gui-select" style="width: 30%;">
+                            <select id="sjUnitShenTemp" style="width: 100px">
+                                <option value="">--省--</option>
+                            </select>
+                        </div>
+                        <div class="gui-select" style="width: 30%;">
+                            <select id="sjUnitShiTemp" style="width: 100px">
+                                <option value="">--市--</option>
+                            </select>
+                        </div>
+                        <div class="gui-select" style="width: 30%;">
+                            <select id="sjUnitXianTemp" style="width: 100px">
+                                <option value="">--县--</option>
+                            </select>
+                        </div>
+                        <input class="gui-input mt15" type="text" name="sjUnitNameTemp" placeholder="请输入临时主体名称">
+                        <button id="sJUnitSelectTocheckTemp" class="gui-btn" data-toggle="tooltip" data-placement="right"
+                                title="根据输入条件检索列表" ng-click="querySjUnitTemp()">查询
+                        </button>
+                        <button data-toggle="tooltip" class="gui-btn" data-placement="right" ng-click="addEntTemp()">新增临时登记主体</button>
+                    </div>
+                </form>
+                <table id="sJUnitTaskGridTemp" style="width: 100%;" class="gui-table mt15">
+                </table>
+                <div class="modal-footer">
+                    <button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+                    <button class="gui-btn" type="button" ng-click="selectSzDwButtTemp()">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 生产经营临时主体注册,modal(模板) -->
+<div class="modal fade " id="entTempModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid" style="height:800px;overflow: auto;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">生产经营主体临时注册</h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <div class="Sup_contain_section_contain" style="margin-top: 0px;padding: 0px 0px 20px 0px">
+                    <ul class="inspectionUl" id="entTemp">
+                        <li style="border-top: 1px solid #9d9d9d;padding-top: 5px">生产经营主体信息</li>
+                        <li>
+                            <ul class="Sup_contain_section_contain_ul">
+                                <li class="fl">组织形式<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl">
+                                    <span ng-repeat="c in orgMode">
+                                <input name="entityScaleId" id="entityScaleId" type="radio" ng-model="subjEntTemp.entityScaleId"  value="{{c.id}}" ng-click="selectEntityScale(c.dictName)"/><span>{{c.dictName}}</span>
+                                    </span>
+                                </li>
+                            </ul>
+                        </li>
+                        <li id="credType" style="display: block;">
+                            <ul class="Sup_contain_section_contain_ul">
+                                <li class="fl">证件类型<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl">
+                                    <select ng-model="subjEntTemp.credType" ng-init="subjEntTemp.credType='普通营业执照(有独立组织机构代码证)'" ng-change="selectBusiness()" id="selectBusiness" class="gui-select" data-bv-notempty="true" data-bv-notempty-message="证照类型不能为空">
+                                        <option value="普通营业执照(有独立组织机构代码证)" selected = "selected" >普通营业执照(有独立组织机构代码证)</option>
+                                        <option value="三证合一营业执照(无独立组织机构代码证)">三证合一营业执照(无独立组织机构代码证)</option>
+                                    </select>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <ul class="Sup_contain_section_contain_ul">
+                                <li class="fl">主体类型<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl">
+                                    <span ng-repeat="b in subjType">
+                                <input  name="entityTypeId" id="entityTypeId" type="radio" ng-model="subjEntTemp.entityTypeId"  value="{{b.id}}"/><span>{{b.dictName}}</span>
+                                    </span>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <ul class="Sup_contain_section_contain_ul">
+                                <li class="fl">所属行业<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl">
+                                    <span ng-repeat="a in industryType">
+                                <input type="checkbox" value="{{a.id}}" id="entityIndustryId" name="entityIndustryId"><span class="checkedIndustryTypeText" ng-bind="a.dictName"></span>
+                                        <!--<input  name="entityIndustryId" type="radio" ng-model="subjEntTemp.entityIndustryId"  value="{{a.id}}"/><span>{{a.dictName}}</span>-->
+                                    </span>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <ul class="Sup_contain_section_contain_Text">
+                                <li class="fl">企业名称<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl form-group">
+                                    <input class="gui-input form-control" name="entityName" type="text" ng-model="subjEntTemp.entityName" maxlength="50"
+                                    data-bv-notempty="true" data-bv-notempty-message="企业名称不能为空"
+                                    data-bv-stringlength="true" data-bv-stringlength-max="50"
+                                    data-bv-stringlength-message="企业名称不能超过50个字符" />
+                                  <!-- 验证方式2  onblur="entityNameValidation()"
+                                    <div class="entityNullCss" style="display: none;color: #a94442;font-size: 12px">
+                                        企业名称不能为空,名称不能超过50个字符
+                                    </div>-->
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <ul class="Sup_contain_section_contain_Text">
+                                <li class="fl">证照号码<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl form-group">
+                                    <input class="gui-input form-control" name="orgCode" type="text" ng-model="subjEntTemp.orgCode" minlength="15" maxlength="18"
+                                  data-bv-notempty="true"
+                                    data-bv-notempty-message="证照号码不能为空"
+                                    data-bv-regexp="true"
+                                    data-bv-regexp-regexp="^[0-9A-HJ-NPQRTUWXY]{2}\d{6}[0-9A-HJ-NPQRTUWXY]{10}$|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])|X\d{1}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$)|(^[A|B|C|D|E|F|G|H|Q|W|O|P|J|M|N|X|L|K|U|Y|T]\d{8}|[0-9]\d{8}([0-9]|[A|B|C|D|E|F|G|H|Q|W|O|P|J|M|N|X|L|K|U|Y|T])\d{9}[A|B|C|D|E|F|G|H|Q|W|O|P|J|M|N|X|L|K|U|Y|T]\d{1}$)|(^[A|B|C|D|E|F|G|H|Q|W|O|P|J|M|N|X|L|K|U|Y|T]|[0-9]\d{15}$)"
+                                    data-bv-regexp-message="企业请填写工商注册号，个人请填写身份证号" />
+                                   <!-- 验证方式2         onblur="orgCodeValidation()"
+                                    <div class="orgCodeNullValCss" style="display: none;color: #a94442;font-size: 12px">
+                                        企业请填写工商注册号，个人请填写身份证号
+                                    </div>-->
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <ul class="Sup_contain_section_contain_Text">
+                                <li class="fl">所属区域<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl form-group">
+                                    <div class="gui-select">
+                                        <select class="form-control" id="subjTempSheng" name="subjTempSheng" data-bv-notempty="true" data-bv-notempty-message="省不能为空">
+                                            <option value="">--省--</option>
+                                        </select>
+                                    </div>
+                                    <div class="gui-select">
+                                        <select class="form-control" id="subjTempShi" name="subjTempShi" data-bv-notempty="true" data-bv-notempty-message="市不能为空">
+                                            <option value="">--市--</option>
+                                        </select>
+                                    </div>
+                                    <div class="gui-select">
+                                        <select class="form-control" id="subjTempXian" name="subjTempXian" data-bv-notempty="true" data-bv-notempty-message="县不能为空">
+                                            <option value="">--区/县--</option>
+                                        </select>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li style="">
+                            <ul class="Sup_contain_section_contain_Text">
+                                <li class="fl">详细地址<span style="color:red;"></span></li>
+                                <li class="fl form-group">
+                                    <input class="gui-input" type="text" name="address" ng-model="subjEntTemp.address"
+                                     data-bv-notempty="true"
+                                       data-bv-notempty-message="详请详细填写省、市、区县、乡镇、街道、社区楼牌号等信息"
+                                       data-bv-stringlength="true"
+                                       data-bv-stringlength-max="50"
+                                       data-bv-stringlength-message="详细地址不能超过50个字符"
+                                       onkeyup="this.value=this.value.replace(/^ +| +$/g,'')"
+                                       required data-bv-notempty-message="请详细填写省、市、区县、乡镇、街道、社区楼牌号等信息"/>
+                                    <!--验证方式 2 onblur="addressReminder()"
+                                    <div class="addNullCss" style="display: none;color: #a94442;font-size: 12px">
+                                        请详细填写省、市、区县、乡镇、街道、社区楼牌号等信息
+                                    </div>-->
+                                </li>
+                            </ul>
+                        </li>
+                        <li style="border-top: 1px solid #9d9d9d;padding-top: 5px">联系人信息</li>
+                        <li>
+                            <ul class="Sup_contain_section_contain_Text">
+                                <li class="fl">联系人姓名<span style="color:red;">*</span>
+                                </li>
+                                <li class="fl form-group">
+                                    <input class="gui-input form-control" type="text" name="contactName" ng-model="subjEntTemp.contactName"  minlength="1" maxlength="10"
+                                     data-bv-notempty="true" data-bv-notempty-message="联系人姓名不能为空"
+                                     data-bv-stringlength="true" data-bv-stringlength-max="50"
+                                     data-bv-stringlength-message="联系人姓名不能超过10个字符"  />
+                                   <!-- 验证方式2 onblur="contactNameValidation()"
+                                    <div class="contactNameNullValCss" style="display: none;color: #a94442;font-size: 12px">
+                                        联系人姓名不能为空,不能超过50个字符
+                                    </div>-->
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <ul class="Sup_contain_section_contain_Text">
+                                <li class="fl">联系电话<span style="color:red;">*</span><!--data-bv-notempty="true"
+                                           data-bv-notempty-message="联系人电话不能为空"-->
+                                </li>
+                                <li class="fl form-group">
+                                    <input class="gui-input form-control" type="text" name="contactPhone" ng-model="subjEntTemp.contactPhone"
+
+                                           data-bv-istelephone="true"
+                                           data-bv-message="请输入正确的电话号码" />
+                                   <!--验证方式2  onblur="contactPhoneValidation()"
+                                    <div class="contactPhoneNullValCss" style="display: none;color: #a94442;font-size: 12px">
+                                        请输入正确的电话号码：（座机：028-5582235或手机：13100000000）
+                                    </div>-->
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <ul class="Sup_contain_section_contain_Text">
+                                <li class="fl">电子邮箱
+                                </li>
+                                <li class="fl form-group" style="text-align: left">
+                                    <input class="gui-input form-control" type="text" name="contactEmail" ng-model="subjEntTemp.contactEmail" data-bv-stringlength="true" data-bv-stringlength-max="50" data-bv-stringlength-message="电子邮箱不能超过50个字符" data-bv-emailaddress="true" data-bv-emailaddress-message="输入不是一个有效的电子邮件地址" />
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- <li id="businessHead" style="border-bottom: 1px solid #9d9d9d;padding-top: 5px;">主体证照信息<span style="color:red;">*</span></li>
+                         <li id="businessContent">
+                             <ul>
+                                 <li style="margin-right:65px;" class="fl form-group">
+                                     <div file-upload options="vm.uploadHeadOptions" files="vm.businessLicenceimg"></div>
+                                 </li>
+                                 <li id="selectOrganizationCertificateimg" style="margin-right:10px;" class="fl form-group">
+                                     <div file-upload options="vm.uploadHeadOptions" files="vm.organizationCertificateimg"></div>
+                                 </li>
+                             </ul>
+                         </li>-->
+                        <!--  <li style="border-bottom: 1px solid #9d9d9d;padding-top: 5px;">法定代表人证照信息<span style="color:red;"></span></li>
+                          <li>
+                              <ul>
+                                  <li style="margin-right:65px;" class="fl form-group">
+                                      <div file-upload options="vm.uploadHeadOptions" files="vm.positiveIdcardeimg"></div>
+                                  </li>
+                                  <li style="margin-right:15px;" class="fl form-group">
+                                      <div file-upload options="vm.uploadHeadOptions" files="vm.negativeIdcardimg"></div>
+                                  </li>
+                                  <li class="fl form-group">
+                                      <div file-upload options="vm.uploadHeadOptions" files="vm.handIdcardimg"></div>
+                                  </li>
+                              </ul>
+                          </li>-->
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" data-dismiss="modal">取消</button>
+                <button class="gui-btn" ng-click="addSubjEntTemp()">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 抽样人员选择 -->
+<div class="modal fade" id="selectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylemid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">
+                    <span>人员选择</span>
+                </h4>
+            </div>
+            <div class="modal-body clearfix gov-h">
+                <input class="gui-input mt15" type="text" name="selectQueryName" placeholder="请输入名称">
+                <button class="gui-btn " id="selectTocheck" data-toggle="tooltip" data-placement="right"
+                        title="根据输入条件检索列表">查询
+                </button>
+                <!--list-->
+                <table id="selectGrid" style="width: 100%;" class="gui-table mt15">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" ng-click="selectModalQdButt()">选择</button>
+                <button type="button" class="gui-btn"  data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style type="text/css">
+    .asterisk {
+        right: -70px;
+        top: -3px;
+        color: red;
+        font-family: xinhao;
+    }
+</style>

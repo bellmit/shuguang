@@ -1,0 +1,13 @@
+spring:
+  redis:
+    redisson:
+      file: classpath:config/redisson-test.yaml
+eureka:
+  instance:
+    hostname: localhost
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://localhost:8880/eureka/
+
+

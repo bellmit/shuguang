@@ -1,0 +1,112 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css">
+<div class="gui-breadcrumbs">
+    <a ui-sref="index.content.sys/adsModelCheckStandard/adsModelCheckStandard">系统管理</a>&gt;
+    <a ui-sref="index.content.sys/adsModelCheckStandard/adsModelCheckStandard">基础数据管理</a>&gt;
+    <a ui-sref="index.content.sys/adsModelCheckStandard/adsModelCheckStandard">检测基本配置</a>&gt;
+    <span>检测标准</span>
+</div>
+<div class="gui-section">
+    <form id="sectionForm">
+    <div class="gui-form-group form-group clearfix">
+        标准名称：<input class="gui-input" data-bv-stringlength="true" data-bv-stringlength-max="30" data-bv-stringlength-message="不能超过30个字符长度"  type="text"  id="nameS" name="nameS"  ng-keyup="onInputChanged($event)" placeholder="请输入标准名称">
+        <button class="gui-btn" id="seachTask">查询</button>
+    </div><div class="gui-actions">
+        <button class="gui-btn fr ml15" onclick="delAdsModelCheckStandard()"><i class="gui-icon icon-remove"></i>删除</button>
+        <button class="gui-btn fr" ng-click="addAdsModel()"><i class="gui-icon icon-add"></i>新增</button>
+    </div>
+    
+    <div>
+        <table id="grid" class="gui-table" style="width: 100%"></table>
+    </div>
+    </form>
+</div>
+<!-- 新增模型_检测标准model -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">新增检测标准</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="addAdsModelCheckStandard" data-bv-excluded="">
+                    <div class="form-item form-group">
+                        <label class="required">标准名称</label>
+                        <input type="text" id="name" name="name" class="gui-input form-control text-height-28" data-bv-notempty="true" data-bv-notempty-message="内容不能是空" data-bv-stringlength="true" data-bv-stringlength-max="60" data-bv-stringlength-message="不能超过60个字符长度" >
+                    </div>
+                    <div class="form-item form-group">
+                        <label class="required">标准上限值</label>
+                        <input type="text" id="value" name="value" class="gui-input form-control text-height-28" data-bv-numeric="true" data-bv-numeric-message="请输入数字" data-bv-notempty="true" data-bv-notempty-message="内容不能是空">
+                    </div>
+                    <!-- <div class="form-group line-20">
+                        <p></p>
+                        <label class="col-sm-5 control-task text-right">标准名称:&nbsp&nbsp</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input type="text" id="name" name="name" class="form-control text-height-28" data-bv-notempty="true" data-bv-notempty-message="内容不能是空" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-5 control-task text-right">检测标准上限值:&nbsp&nbsp</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input type="text" id="value" name="value" class="form-control text-height-28" data-bv-numeric="true" data-bv-numeric-message="请输入数字" data-bv-notempty="true" data-bv-notempty-message="内容不能是空" />
+                            </div>
+                        </div>
+                    </div> -->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="gui-btn" ng-click="addAdsModelCheckStandard()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 修改模型_检测标准model -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">修改检测标准</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="updateAdsModelCheckStandard" data-bv-excluded="">
+                    <div class="form-item form-group">
+                        <label class="required">标准名称</label>
+                        <input type="hidden" id="id" name="id">
+                        <input type="text" id="nameU" name="nameU" class="gui-input form-control text-height-28" data-bv-notempty="true" data-bv-notempty-message="内容不能是空"  data-bv-stringlength="true" data-bv-stringlength-max="60" data-bv-stringlength-message="不能超过60个字符长度" >
+                    </div>
+                    <div class="form-item form-group">
+                        <label class="required">标准上限值</label>
+                        <input type="text" id="valueU" name="valueU" class="gui-input form-control text-height-28" data-bv-numeric="true" data-bv-numeric-message="请输入数字" data-bv-notempty="true" data-bv-notempty-message="内容不能是空">
+                    </div>
+                    <!-- <div class="form-group line-20">
+                        <p></p>
+                        <label class="col-sm-5 control-task text-right">标准名称:&nbsp&nbsp</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input type="hidden" id="id" name="id" />
+                                <input type="text" id="nameU" name="nameU" class="form-control text-height-28" data-bv-notempty="true" data-bv-notempty-message="内容不能是空" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group line-20">
+                        <label class="col-sm-5 control-task text-right">检测标准上限值:&nbsp&nbsp</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input type="text" id="valueU" name="valueU" class="form-control text-height-28" data-bv-numeric="true" data-bv-numeric-message="请输入数字" data-bv-notempty="true" data-bv-notempty-message="内容不能是空" />
+                            </div>
+                        </div>
+                    </div> -->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gui-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="gui-btn" ng-click="updateAdsModel()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>

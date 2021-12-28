@@ -1,0 +1,37 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+<link rel="stylesheet" href="../../assets/css/monitor/subjSvList.css"/>
+<style>
+    .file-preview{
+        display: none;
+    }
+</style>
+<div id="crumbs" class="gui-breadcrumbs">
+    <a href="#" ui-sref="index.content.monitor/execUnit/specialMonitor/routineMonitoringSpecial">专项监测</a>&gt;
+    <span>报告上传</span>
+</div>
+<div class="gui-section">
+    <ul class="gui-tab">
+        <li role="presentation" class="pointer"><a ng-click="taskDetail()">任务详情</a></li>
+        <li role="presentation" class="pointer"><a ng-click="sampleMessage()">抽样</a></li>
+        <li role="presentation" class="pointer"><a ng-click="test()">检测</a></li>
+        <li role="presentation" class="pointer"><a ng-click="routineMonitorList()">检测信息汇总</a></li>
+        <li role="presentation" class="active"><a ng-click="routineReportUpload()">报告上传</a></li>
+    </ul>
+</div>
+<div class="gui-section">
+    <div class="col-md-11 col-md-offset-1">
+        <p class="col-lg-1 col-xs-0 col-sm-1 col-md-1"></p>
+        <div class="modal-body">
+            <div class="row">
+                <span class="gui-btn " ng-if="disabled" style="background-color: grey">上传</span>
+                <span ng-show="reportEnabled" ng-if="!disabled" class="gui-btn " ng-click="addAdsFile()">上传</span>
+                <div style="width: 600px" ng-show="reportEnabled">
+                    <form method="post" enctype="multipart/form-data" id="eventForm">
+                        <div file-upload options="vm.uploadOptions" files="vm.files"></div>
+                    </form>
+                    <p> 备注：文件只支持 “word，pdf，xlsx，rar” 格式，文件大小不超过50M。 </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

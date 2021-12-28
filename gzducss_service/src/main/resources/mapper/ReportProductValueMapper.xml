@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.ReportProductValueMapper">
+
+    <select id="getProductInfoGroupByProvince" parameterType="java.util.Map" resultType="com.sofn.ducss.model.wordmodel.ReportWordProduct">
+        select dr.region_name as areaName,a.year as year, a.area_id as areaId, a.produce as produce  from production_usage_sum a
+        inner join ducss_region_copy_sys dr on dr.region_code =  a.area_id and dr.level = 'province'
+        where a.year = #{year}
+        and dr.year = #{regionYear}
+        and EXISTS
+        (select area_id from collect_flow cf where cf.year = #{year} and cf.status in ('1', '5') and cf.area_id = a.area_id)
+        order by produce desc
+    </select>
+
+
+    <select id="getProductInfoGroupByArea" parameterType="java.util.Map" resultType="com.sofn.ducss.model.wordmodel.ReportWordProduct">
+        select dr.region_name as areaName,a.year as year, a.area_id as areaId, a.produce  as produce  from production_usage_sum a
+        inner join ducss_region_copy_sys dr on dr.region_code =  a. area_id
+        where a.year = #{year}
+        and dr.year = #{regionYear}
+        and dr."level" = 'county'
+        order by produce desc
+    </select>
+    
+    
+    <select id="getProductInfoGroupStraw" parameterType="java.util.Map" resultType="com.sofn.ducss.model.wordmodel.ReportWordProduct">
+        select sum(theory_resource)  as produce, straw_type as areaId, sd.dict_value as areaName from straw_utilize_sum a
+        left join ducss_region_copy_sys dr on dr.region_code = a.area_id
+        left join sys_dictionary sd on sd.dict_key = a.straw_type
+        where dr."level" = 'province'
+        and dr."year" = #{regionYear}
+        and a."year" = #{year}
+        group by straw_type, sd.dict_value
+        order by sum(theory_resource) desc
+    </select>
+
+    <select id="getProductInfoGroupAreaAndStraw" parameterType="java.util.Map" resultType="com.sofn.ducss.model.wordmodel.ReportWordProduct">
+        select sum(theory_resource) as produce, straw_type as strawCode, sd.dict_value as strawName,dr.region_code as areaId,dr.region_name as areaName from straw_utilize_sum a
+        left join ducss_region_copy_sys dr on dr.region_code = a.area_id
+        left join sys_dictionary sd on sd.dict_key = a.straw_type
+        where dr."level" = 'province'
+        and dr."year" = #{regionYear}
+        and a."year" = #{year}
+        group by straw_type, sd.dict_value,dr.region_code,dr.region_name
+        order by sum(theory_resource) desc
+    </select>
+
+</mapper>

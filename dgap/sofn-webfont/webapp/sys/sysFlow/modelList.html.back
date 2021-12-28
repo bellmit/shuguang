@@ -1,0 +1,60 @@
+<link rel="stylesheet" href="assets/css/tts/base/baseInfoList.css"/>
+<link rel="stylesheet" href="assets/css/tts/base/baseAdd.css"/>
+    <div class="Sup_contain_section col-lg-12 col-xs-12 col-sm-12 col-md-12">
+        <div class="Sup_contain_section_head col-lg-12 col-xs-12 col-sm-12 col-md-12">
+            <h2 id="Sup_contain_section_head_h2">
+            <a href=""><span >追溯系统  > </span></a>  
+            <a href=""><span >内部管理  > </span></a>
+            <span >流程管理  </span>
+            </h2>
+        </div>
+        <p class="col-lg-1 col-xs-0 col-sm-1 col-md-1"></p>
+        <!-- 检测机构主体信息-->
+        <div class="Sup_contain_section_contain col-lg-10 col-xs-12 col-sm-10 col-md-10">
+            <div class="Sup_contain_section_selectNews col-lg-12 col-xs-12 col-sm-12 col-md-12">
+            	<!--自定义条件分页查询，结合controller 自己写，不生成
+                <input name="in_name" type="text" placeholder="姓名"/>
+                <input name="in_tel" type="text" placeholder="电话号码"/>
+                -->
+                <!--<button ui-sref="index.content.sys/sysFlow/addSysFlow">创建</button>-->
+                <button class="fr" ng-click="listAdd()">创建</button>
+            </div>
+            <!-- 模板管理主体信息-->
+            <div class="Sup_contain_section_contain_01">
+            <div  class=" tb NewsSize col-lg-12 col-xs-12 col-sm-12 col-md-12" >
+                <table id="grid" class="table table-bordered data-table col-lg-12 col-xs-12 col-sm-12 col-md-12">
+                </table>
+            </div>
+            </div>
+        </div>
+        
+        <!--add Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+            <div class="modal-dialog modal-style" >
+                <div class="modal-content">
+                    <div class="modal-header" style="text-align: center">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">创建模型信息</h4>
+                    </div>
+                    <div class="modal-body" style="text-align: center">
+	            		名称:<input type="text" ng-model="name" name="name"  placeholder="请输入名称"  />
+	                        <p/>
+	                   	KEY:<input type="text" ng-model="key" name="key"  placeholder="请输入key"  />
+	          				<p/>          
+	                 	描述:<input type="text" ng-model="description" name="description"  placeholder="请输入描述" />
+	          				<p/>         
+	                  	
+                    </div>
+            
+                    <div class="modal-footer">
+                        <button type="button" class="" ng-disabled="myform.JGname.$dirty&&myform.JGname.$invalid" ng-click="addModels()">保存</button>
+                        <button type="button" class=" " data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        
+    </div>

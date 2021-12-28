@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sofn.fdzem.mapper.BiologicalResidueMonitoringMapper">
+
+
+    <!--分页+条件查询-->
+    <select id="selectListByQuery" resultType="com.sofn.fdzem.model.BiologicalResidueMonitoring" parameterType="java.lang.String">
+        select
+        <include refid="Base_column_list"/>
+        from tb_biological_residue_monitoring
+        where monitoring_point_id = #{monitoringPointId}
+    </select>
+    <!--删除-->
+    <delete id="removeById" parameterType="java.lang.String">
+        delete from tb_biological_residue_monitoring where monitoring_point_id = #{monitoringPointId}
+    </delete>
+<!--更新-->
+    <update id="update" parameterType="com.sofn.fdzem.model.BiologicalResidueMonitoring">
+        update tb_biological_residue_monitoring set
+        coliform = #{coliform},cu = #{cu},
+        pb = #{pb},cd = #{cd},t_hg = #{tHg},
+        i_as = #{iAs},
+        cr = #{cr},me_hg = #{meHg}
+        where id=#{id}
+    </update>
+
+    <!--添加-->
+    <insert id="insert" parameterType="com.sofn.fdzem.model.BiologicalResidueMonitoring">
+        insert into tb_biological_residue_monitoring
+        (<include refid="Base_column_list"/>)
+         values
+        (#{id},#{monitoringPointId},#{coliform},#{cu},#{pb},#{cd},#{tHg},#{iAs},#{cr},#{meHg})
+    </insert>
+
+    <sql id="Base_column_list">
+        id,monitoring_point_id,coliform,cu,pb,cd,t_hg,i_as,cr,me_hg
+    </sql>
+
+
+</mapper>

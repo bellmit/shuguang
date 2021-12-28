@@ -1,0 +1,142 @@
+<div class="gui-section">
+    <form name="myForm" novalidate>
+        <div class="ovh">
+            <ul class="gui-list">
+                <li>
+                    <div class="form-item form-group" ng-class="{'hasxx-error': myForm.requiredField.$touched && myForm.requiredField.$invalid}">
+                        <label class="title required">必填</label>
+                        <input type="text" class="gui-input" ng-model="required" name="requiredField" required placeholder="不能为空" />
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title required">最小长度</label>
+                        <input type="text" class="gui-input" ng-model="min" name="minField" minlength="5" required placeholder="至少5位以上，中文、英文、数字、_" />
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title required">最大长度</label>
+                        <input type="text" class="gui-input" ng-model="max" name="maxField" maxlength="10" required placeholder="最多能输入10位字符" />
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title required">正则模式</label>
+                        <input type="text" class="gui-input" ng-model="pattern" name="patternField" ng-pattern="/^[a-zA-Z]{1,20}$/" required placeholder="1-20位英文字符" />
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title required">统一社会信用代码</label>
+                        <input type="text" class="gui-input" ng-model="usci" usci-check maxlength="18" name="usciField" required placeholder="18位统一社会信用代码" />
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title required">组织机构代码</label>
+                        <input type="text" class="gui-input" ng-model="oc" oc-check maxlength="10" name="ocField" required placeholder="10位组织机构代码" />
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title required">营业执照</label>
+                        <input type="text" class="gui-input" ng-model="bc" bc-check maxlength="15" name="bcField" required placeholder="15位营业执照" />
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title">ngChange</label>
+                        <input type="text" class="gui-input" ng-model="change" name="changeField" ng-change="onChange()" placeholder="监视输入变化" />
+                        <p>{{formattedString}}</p>
+                        <div ng-messages="myForm.changeField.$error" ng-show="myForm.changeField.$touched" ng-messages-include="validateTemplate/error.html"></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title">可选</label>
+                        <input type="text" class="gui-input" ng-model="optional" name="optionalField" placeholder="可为空" />
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title required">Email</label>
+                        <input type="text" class="gui-input" ng-model="mail" mail-check name="mailField" placeholder="支持163、QQ、Gmail、outlook等主流邮箱" />
+                        <div ng-messages="myForm.mailField.$error" ng-show="myForm.mailField.$touched" ng-messages-include="validateTemplate/error.html"></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title required">手机号</label>
+                        <input type="text" class="gui-input" ng-model="mobile" mobile-check maxlength="11" name="mobileField" placeholder="请输入11位手机号码" />
+                        <div ng-messages="myForm.mobileField.$error" ng-show="myForm.mobileField.$touched" ng-messages-include="validateTemplate/error.html"></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title required">固定电话</label>
+                        <input type="text" class="gui-input" ng-model="phone" phone-check required maxlength="12" name="phoneField" placeholder="固定电话" />
+                        <div ng-messages="myForm.phoneField.$error" ng-show="myForm.phoneField.$touched" ng-messages-include="validateTemplate/error.html"></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title required">身份证号</label>
+                        <input type="text" class="gui-input" ng-model="idCard" id-check required maxlength="18" name="idCardField" placeholder="18位二代身份证号码" />
+                        <div ng-messages="myForm.idCardField.$error" ng-show="myForm.idCardField.$touched" ng-messages-include="validateTemplate/error.html"></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title required">ipv4</label>
+                        <input type="text" class="gui-input" ng-model="ip" ipv4-check required name="ipField" placeholder="ipv4地址" />
+                    </div>
+                </li>
+
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title required">url</label>
+                        <input type="text" class="gui-input" ng-model="url" url-check required name="urlField" placeholder="前缀为http、https协议地址" />
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title">日期</label>
+                        <input type="text" class="gui-input" ng-model="date" name="dateField" readonly onfocus="WdatePicker({skin:'default',dateFmt:'yyyy-mm-dd'})" placeholder="--请选择日期--" />
+                        <div ng-messages="myForm.dateField.$error" ng-messages-include="validateTemplate/error.html"></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title required">数字</label>
+                        <input type="number" class="gui-input" ng-model="number" number-check maxlength="10" name="numberField" placeholder="整数、两位小数" />
+                        <div ng-messages="myForm.numberField.$error" ng-show="myForm.numberField.$touched" ng-messages-include="validateTemplate/error.html"></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title">文本域</label>
+                        <textarea class="gui-textarea" ng-model="textarea" maxlength="120" placeholder="最多120个字符"></textarea>
+                        <div ng-messages="myForm.textareaField.$error" ng-show="myForm.textareaField.$touched" ng-messages-include="validateTemplate/error.html"></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <label class="title">下拉框</label>
+                        <div class="gui-select">
+                            <select name="type" class="form-control" ng-model="select" required>
+                            	<option value="">请选择</option>
+                                <option value="1">选项一</option>
+                                <option value="2">选项二</option>
+                                <option value="3">选项三</option>
+                            </select>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div class="text-center">
+                <button type="submit" class="gui-btn" ng-click="submit()" ng-disabled="myForm.$invalid" disabled="disabled">提交</button>
+            </div>
+        </div>
+    </form>
+</div>

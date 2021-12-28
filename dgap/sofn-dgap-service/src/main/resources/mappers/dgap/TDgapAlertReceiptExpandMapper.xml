@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.dao.dgap.TDgapAlertReceiptExpandMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.model.generator.TDgapAlertReceipt" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="ALERT_ID" property="alertId" jdbcType="VARCHAR" />
+    <result column="RECEIPT_BY" property="receiptBy" jdbcType="VARCHAR" />
+    <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="DEL_FLAG" property="delFlag" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD1" property="reservedField1" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD2" property="reservedField2" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD3" property="reservedField3" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD4" property="reservedField4" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD5" property="reservedField5" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD6" property="reservedField6" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD7" property="reservedField7" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD8" property="reservedField8" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD9" property="reservedField9" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD10" property="reservedField10" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD11" property="reservedField11" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD12" property="reservedField12" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD13" property="reservedField13" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD14" property="reservedField14" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD15" property="reservedField15" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD16" property="reservedField16" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD17" property="reservedField17" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD18" property="reservedField18" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD19" property="reservedField19" jdbcType="VARCHAR" />
+    <result column="RESERVED_FIELD20" property="reservedField20" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="getReceipts" resultType="com.sofn.model.generator.TDgapAlertReceipt">
+  SELECT * FROM T_DGAP_ALERT_RECEIPT T WHERE T.DEL_FLAG='N' ORDER BY T.UPDATE_TIME DESC
+</select>
+    <select id="selectReceipts" resultType="com.sofn.model.generator.TDgapAlertReceipt">
+      SELECT * FROM T_DGAP_AlERT_RECEIPT T WHERE T.DEL_FLAG='N' AND T.ALERT_ID=#{alertId,jdbcType=VARCHAR}
+    </select>
+<select id="checkUser" parameterType="java.lang.String" resultType="java.util.List">
+  SELECT T.RECEIPT_BY,T.ALERT_ID FROM T_DGAP_AlERT_RECEIPT T WHERE 1=1
+  <if test="alertId !=null and alertId !=''">
+    AND T.ALERT_ID=#{_parameter,jdbcType=VARCHAR}
+  </if>
+</select>
+  <select id="getbyReceipt" parameterType="java.lang.String" resultType="com.sofn.model.generator.TDgapAlertReceipt">
+    SELECT * FROM T_DGAP_ALERT_RECEIPT T WHERE T.DEL_FLAG='N'
+    <if test="alertId !=null and alertId !=''">
+      AND T.ALERT_ID=#{alertId}
+    </if>
+    <if test="receiptBy !=null and receiptBy !=''">
+    AND T.RECEIPT_BY=#{receiptBy}
+   </if>
+  </select>
+</mapper>

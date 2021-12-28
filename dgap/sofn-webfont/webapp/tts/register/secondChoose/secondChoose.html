@@ -1,0 +1,85 @@
+<link rel="stylesheet" href="assets/styles/register.css">
+<script src="assets/js/tts/register/icheck.js"></script>
+<header class="gui-header clearfix">
+    <div class="section-logo" ui-sref="login/loginCheck">
+        <img src="/assets/imgs/icon/logo.png" alt="国家农产品质量安全追溯管理信息平台（政务办公）" class="logo">
+        <h1>国家农产品质量安全追溯管理信息平台<em></em></h1>
+    </div>
+</header>
+<div>
+    <ul class="gui-step">
+            <li>
+                <strong>1</strong>
+                <span>创建账号</span>
+            </li>
+            <li class="active">
+                <strong>2</strong>
+                <span>备案申请</span>
+            </li>
+            <li>
+                <strong>3</strong>
+                <span>备案审核</span>
+            </li>
+            <li>
+                <strong>4</strong>
+                <span>备案成功</span>
+            </li>
+        </ul>
+</div>
+<div class="gui-section">
+    <div class="ovh section-wrap">
+        
+        <div class="gui-page-head">
+            <h3>主体类型选择</h3>
+        </div>
+        <ul class="gui-list">
+            <li>
+                <div class="form-item">
+                    <span class="title">组织形式</span>
+                    <div class="text-field">
+                        <label class="radio-item" ng-repeat="item in orgs">
+                            <input type="radio" value="{{item.id}}" ng-model="bean.userType" name="userType" dictvalue="{{item.dictValue}}">
+                            <span id="checkedUserTypeText" ng-bind="item.dictName"></span>
+                        </label>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">主体类型</span>
+                    <div class="text-field">
+                        <label class="radio-item" ng-repeat="item in subTypes">
+                            <input type="radio" value="{{item.id}}" ng-model="bean.ztType " name="ztType"><span id="{{item.id}}" ng-mouseover="mainTip(item.id)" ng-bind="item.dictName"></span>
+                        </label>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">主体属性</span>
+                    <div class="text-field">
+                        <label class="radio-item" ng-repeat="item in subjPropertys">
+                            <input type="checkbox" value="{{item.id}}" ng-model="bean.ztProperty[item.id]" name="ztProperty[]"><span class="checkedZtPropertyText" ng-bind="item.dictName"></span>
+                        </label>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-item">
+                    <span class="title">所属行业</span>
+                    <div class="text-field">
+                        <label class="radio-item" ng-repeat="item in industrys">
+                            <input type="checkbox" value="{{item.id}}" ng-model="bean.industryType[item.id]" name="industryType[]"><span class="checkedIndustryTypeText" ng-bind="item.dictName"></span>
+                        </label>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="text-center">
+                    <button class="gui-btn mr15" ng-click="secondChooseReNextStep()">上一步</button>
+                    <button class="gui-btn" ng-click="secondChooseNextStep()">下一步</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

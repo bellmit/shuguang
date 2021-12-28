@@ -1,0 +1,93 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+<div class="gui-breadcrumbs">
+    <a href="">监测系统</a>&gt;
+    <a href="">监测模型</a>&gt;
+    <a href="">基本配置</a>&gt;
+    <a href="" id="checkObject">检测对象</a>&gt;
+    <span>新增</span>
+</div>
+<div class="gui-section">
+    <ul class="gui-tab" role="tablist">
+        <li role="presentation" class="active"><a role="tab" data-toggle="tab" ng-click="goCheckObject()">检测对象</a></li>
+        <li role="presentation" class="pointer" ><a role="tab" data-toggle="tab" ng-click="goCheckStandard()">检测标准</a></li>
+        <li role="presentation" class="pointer" ><a role="tab" data-toggle="tab" ng-click="goCheckItem()">检测项目</a></li>
+        <!--<li role="presentation" class="pointer" ><a role="tab" data-toggle="tab" ng-click="goModelType()">模型种类</a></li>-->
+        <li role="presentation" class="pointer" ><a role="tab" data-toggle="tab" ng-click="goSampleLink()">抽样环节</a></li>
+        <li role="presentation" class="pointer" ><a role="tab" data-toggle="tab" ng-click="goJudgeStabdard()">判定标准</a></li>
+    </ul>
+    <div class="Sup_contain_section_contain ml25pr30" style="max-width: 800px;margin: auto">
+        <div class="Sup_contain_section_contain_head ">
+            <div class="mt15">
+                <div class="well" style="background-color:white;margin-top: 20px;">
+                    <form class="form-horizontal" id="addForm">
+                        <div class="form-group line-20 clearfix gov-h">
+                            <label class="col-sm-5 control-task text-right">对象名称<span class="this-after1">*</span></label>
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <input type="hidden" name="gbCode" />
+                                    <input type="hidden" name="productCode"/>
+                                    <input type="hidden" name="productName"/>
+                                    <input type="hidden" name="pdIndustry" />
+                                    <input type="text" name="name" class="gui-input Sup_contain_section_contain_input" style="width: 300px;" placeholder="点击选择产品名称" readonly="readonly" onclick="findProductInfo()"/>
+                                </div>
+                            </div>
+                        </div>
+                       <!-- <div class="form-group line-20 clearfix gov-h">
+                            <label class="col-sm-5 control-task text-right">抽样数量<span class="this-after1">*</span></label>
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <input type="text" name="numbers" class="gui-input Sup_contain_section_contain_input" style="width: 300px;"
+                                           data-bv-notempty="true"
+                                           data-bv-notempty-message="内容不能是空"
+                                           data-bv-integer="true"
+                                           data-bv-min="0"
+                                           data-bv-integer-message="请输入整数"/>
+                                </div>
+                            </div>
+                        </div>-->
+                        <div style="text-align:center;">
+                            <span class="gui-btn" type="button" ng-click="back()">取消</span>
+                            <span type="button" class="gui-btn mgl-30" id="add">提交</span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="product_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-style" style="width: 800px" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                <h4 class="modal-title" id="myModalLabel1">产品信息</h4>
+            </div>
+            <div class="modal-body mt15" style="padding: 0px 10px">
+                <div class="gui-section">
+                    <div class="gui-form-group">
+                        <span class="gui-select">
+                            <select id="pro_industry" style="width: 150px;"  name="industry" >
+                               <option ng-repeat="n in activities" value="{{n.dictValue}}">{{n.dictName}}</option>
+                            </select>
+                             </span>
+                             <input class="gui-input"  name="keyWord" type="text" placeholder="请输入名称关键字"/>
+                             <button class="gui-btn" id="ToCheck">查询</button>
+                        <div class="NewsSize mt15" >
+                            <table id="productList" class="gui-table table table-striped table-hover" style="width: 100%">
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="modal-body" style="padding: 0px 10px">-->
+
+            <!--</div>-->
+            <div class="modal-footer">
+                <span class="gui-btn" data-dismiss="modal">关闭</span>
+                <span type="button" class="gui-btn" data-dismiss="modal">确定</span>
+            </div>
+        </div>
+    </div>
+</div>

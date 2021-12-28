@@ -1,0 +1,97 @@
+server:
+  port: 8944
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: @project.artifactId@
+  profiles:
+    active: test
+    include: filter
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  thymeleaf:
+    cache: false
+
+management:
+  server:
+    servlet:
+      context-path: /ducss
+    ssl:
+      enabled: false
+
+
+druid:
+  pool:
+    initialSize: 10
+    maxActive: 100
+    minIdle: 10
+
+
+#mybatis-plus
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*Mapper.xml
+  typeAliasesPackage: com.sofn.ducss.model
+  global-config:
+    id-type: 3
+    field-strategy: 2
+    auto-set-db-type: true
+    db-column-underline: false
+    refresh-mapper: true
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+
+eureka:
+  instance:
+    # 心跳时间，即服务续约间隔时间（缺省为30s）
+    lease-renewal-interval-in-seconds: 10
+    # 发呆时间，即服务续约到期时间（缺省为90s）
+    lease-expiration-duration-in-seconds: 20
+  client:
+    healthcheck:
+      # 开启健康检查（依赖spring-boot-starter-actuator）
+      enabled: true
+    fetch-registry: true
+    register-with-eureka: true
+
+logging:
+  config: classpath:logback-spring.xml
+
+# swagger配置
+swagger:
+  # 扫描包
+  base-package: com.sofn.ducss.web
+  # 名称
+  name: 农作物秸秆资源台账子系统
+  # 接口前缀
+  prefix: /ducss
+
+callback:
+  dir: /usr/
+
+feign:
+  client:
+    config:
+      remote-service:
+        connectTimeout: 600000
+        readTimeout: 480000
+
+ribbon:
+  ReadTimeout: 600000
+  ConnectTimeout: 480000
+
+# 异步线程配置
+# 配置核心线程数
+async:
+  executor:
+   thread:
+     core_pool_size: 30
+     # 配置最大线程数
+     max_pool_size: 30
+     # 配置队列大小
+     queue_capacity: 99988
+     # 配置线程池中的线程的名称前缀
+     name_prefix: async-importDB-

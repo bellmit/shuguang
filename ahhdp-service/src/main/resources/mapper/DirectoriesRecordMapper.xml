@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ahhdp.mapper.DirectoriesRecordMapper">
+    <select id="listByParams" resultType="com.sofn.ahhdp.model.DirectoriesRecord">
+        select * from DIRECTORIES_RECORD
+        <where>
+            <if test="areaName != null and areaName != ''">
+                and (OLD_NAME like '%'||#{areaName}||'%' or NEW_NAME like '%'||#{areaName}||'%')
+            </if>
+            <if test="company != null and company != ''">
+                and (OLD_REGION like '%'||#{company}||'%' or NEW_REGION like '%'||#{company}||'%')
+            </if>
+            <if test="category != null and category != ''">
+                and CATEGORY like '%'||#{category}||'%'
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND CHANGE_TIME &lt;= #{endTime}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                AND CHANGE_TIME &gt;= #{startTime}
+            </if>
+        </where>
+        order by CHANGE_TIME desc
+    </select>
+
+    <select id="listByParamsForPublish" resultType="com.sofn.ahhdp.model.DirectoriesRecord">
+        select
+        CODE,
+        CATEGORY,
+        OLD_NAME,
+        (case when NEW_NAME is null then OLD_NAME when NEW_NAME = '' then OLD_NAME else NEW_NAME end) NEW_NAME,
+        OLD_REGION,
+        (case when NEW_REGION is null then OLD_REGION when NEW_REGION = '' then OLD_REGION else NEW_REGION end) NEW_REGION
+        from DIRECTORIES_RECORD
+        <where>
+            to_char(CHANGE_TIME,'YYYY')  = #{year}
+            <if test="type == 'name'">
+                and NEW_NAME != '' and NEW_NAME is not null
+            </if>
+            <if test="type == 'company'">
+                and NEW_REGION != '' and NEW_REGION is not null
+            </if>
+        </where>
+        order by CHANGE_TIME desc
+    </select>
+
+    <select id="getYears" resultType="String">
+       select distinct to_char(CHANGE_TIME,'YYYY') from DIRECTORIES_RECORD;
+    </select>
+
+</mapper>

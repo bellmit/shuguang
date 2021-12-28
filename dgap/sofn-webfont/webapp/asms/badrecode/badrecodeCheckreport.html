@@ -1,0 +1,509 @@
+<link rel="stylesheet" href="assets/css/asms/badrecode/badrecodeCheckreport.css" />
+<link rel="stylesheet" href="assets/css/asms/badrecode/badrecodeList.css" />
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">监管系统</a>&gt;
+    <a ui-sref="index.content.asms/badrecode/badrecodeList">主体管理</a>&gt;
+    <a ui-sref="index.content.asms/badrecode/badrecodeList">不良记录</a>&gt;
+    <span>查看</span>
+</div>
+<div class="gui-section">
+    <form class="bs-example bs-example-form" role="form">
+        <div class="clearfix gov-h">
+            <ul>
+                <li class="Bor_line">基本信息</li>
+            </ul>
+            <div class="mt15 " id="enterprisezhuti" style="display: none;">
+                <!--主体名称-->
+                <div class="form-group">
+                    <label class="col-lg-1 control-label">主体名称：</label>
+                    <a style="cursor: pointer;" id="modifyInfo" onclick="lookEnterprise()"><span ng-bind="enterprise.enterpriseName"></span></a>
+                </div>
+                <!--企业注册号-->
+                <div class="form-group" id="creditCodeDiv">
+                    <label class="col-lg-1 control-label">企业注册号：</label>
+                    <span ng-bind="enterprise.creditCode"></span>
+                </div>
+                <!--所属区域-->
+                <div class="form-group">
+                    <label class="col-lg-1 control-label">所属区域：</label>
+                    <span ng-bind="area"></span>
+                </div>
+            </div>
+            <div class="mt15 " id="enterpriseTmep" style="display: none;">
+                <!--主体名称-->
+                <div class="form-group">
+                    <label class="col-lg-1 control-label">主体名称：</label>
+                    <a style="cursor: pointer;" onclick="lookEnterprise()"><span ng-bind="subjEnt.entityName"></span></a>
+                </div>
+                <!--所属区域-->
+                <div class="form-group">
+                    <label class="col-lg-1 control-label">所属区域：</label>
+                    <span ng-bind="areaId"></span>
+                </div>
+            </div>
+            <table id="badRecordGrid" class="gui-table" style="width: 100%">
+            </table>
+        </div>
+    </form>
+    <div style="text-align: center" class="mt15">
+        <button class="gui-btn" ng-click="RemoveLocal()" ui-sref="index.content.asms/badrecode/badrecodeList">关闭</button>
+        <input id="ID" type="text" style="visibility: hidden" />
+    </div>
+</div>
+<div class="modal fade " id="enterprise_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 70%;padding-top:15px;">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <button ng-click="removeXXX()" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title" id="change">主体详细信息</h3>
+            </div>
+            <div class="modal-body">
+                <div class="Sup_contain_section_contain col-lg-12 col-xs-12 col-sm-12 col-md-12">
+                    <!--第一部分  企业/个体工商户、合作社的内容-->
+                    <ul id="firstContent" style="display: none;">
+                        <li class="Bor_line">主体信息</li>
+                        <li>
+                            <ul>
+                                <li>主体名称：<span ng-bind="enterprise.enterpriseName"></span></li>
+                                <li>组织形式：<span ng-bind="enterprise.entityScaleName"></span></li>
+                                <li>主体类型：<span ng-bind="enterprise.entityTypeName"></span></li>
+                                <li>主体属性：<span ng-bind="enterprise.entityPropertyName"></span></li>
+                                <li>所属行业：<span ng-bind="enterprise.entityIndustryName"></span></li>
+                                <li>证件类型：<span ng-bind="enterprise.cardType"></span></li>
+                                <li>企业工商注册号：<span ng-bind="enterprise.creditCode"></span></li>
+                                <li>组织机构代码：<span ng-bind="enterprise.organizationCode"></span></li>
+                                <li>营业期限/有效期：<span style="word-break: break-all" ng-bind="enterprise.businessOperationStart"></span>至
+                                    <span style="word-break: break-all" ng-bind="enterprise.businessOperationEnd"></span></li>
+                                <li>年产量：<span ng-bind="enterprise.annualOutput"></span><span ng-bind="enterprise.unitName"></span></li>
+                                <li>所属区域：<span ng-bind="area"></span></li>
+                                <li>详细地址：<span ng-bind="enterprise.address"></span></li>
+                            </ul>
+                        </li>
+                        <li class="Bor_line">
+                            三品一标信息
+                        </li>
+                        <li class="_box">
+                            <img src="assets/imgs/photo/greenFood.png" style="width:10%;height:10%;" alt="" />
+                            <img src="assets/imgs/photo/pollutionFreeAgricultureProducts.png" style="width:9%;height:9%;" alt="" />
+                            <img src="assets/imgs/photo/organicFood.png" style="width:8%;height:8%;" alt="" />
+                            <img src="assets/imgs/photo/agricultureProductsGeography.png" style="width:7%;height:7%;" alt="" />
+                        </li>
+                        <li class="Bor_line">
+                            法定代表人信息
+                        </li>
+                        <li>
+                            <ul>
+                                <li>法定代表人：<span ng-bind="enterprise.legalName"></span></li>
+                                <li>身份证号：<span ng-bind="enterprise.legalIdnumber"></span></li>
+                                <li>联系电话：<span ng-bind="enterprise.legalPhone"></span></li>
+                            </ul>
+                        </li>
+                        <li class="Bor_line">
+                            联系人信息
+                        </li>
+                        <li>
+                            <ul>
+                                <li>姓名：<span ng-bind="enterprise.contactName"></span></li>
+                                <li>联系电话：<span ng-bind="enterprise.contactPhone"></span></li>
+                                <li>邮箱：<span ng-bind="enterprise.contactEmail"></span></li>
+                            </ul>
+                        </li>
+                        <br/>
+                    </ul>
+                    <!--第二部分  家庭农场的内容-->
+                    <ul id="secondContent" style="display: none;">
+                        <li class="Bor_line">主体信息</li>
+                        <li>
+                            <ul>
+                                <li>主体名称：<span ng-bind="enterprise.enterpriseName"></span></li>
+                                <li>组织形式：<span ng-bind="enterprise.entityScaleName"></span></li>
+                                <li>主体类型：<span ng-bind="enterprise.entityTypeName"></span></li>
+                                <li>主体属性：<span ng-bind="enterprise.entityPropertyName"></span></li>
+                                <li>所属行业：<span ng-bind="enterprise.entityIndustryName"></span></li>
+                                <li>年产量：<span ng-bind="enterprise.annualOutput"></span><span ng-bind="enterprise.unitName"></span></li>
+                                <li>所属区域：<span ng-bind="area"></span></li>
+                                <li>详细地址：<span ng-bind="enterprise.address"></span></li>
+                            </ul>
+                        </li>
+                        <li class="Bor_line">
+                            三品一标信息
+                        </li>
+                        <li class="_box">
+                            <img src="assets/imgs/photo/greenFood.png" style="width:10%;height:10%;" alt="" />
+                            <img src="assets/imgs/photo/pollutionFreeAgricultureProducts.png" style="width:9%;height:9%;" alt="" />
+                            <img src="assets/imgs/photo/organicFood.png" style="width:8%;height:8%;" alt="" />
+                            <img src="assets/imgs/photo/agricultureProductsGeography.png" style="width:7%;height:7%;" alt="" />
+                        </li>
+                        <li class="Bor_line">
+                            经营者信息
+                        </li>
+                        <li>
+                            <ul>
+                                <li>经营者姓名：<span ng-bind="enterprise.legalName"></span></li>
+                                <li>身份证号：<span ng-bind="enterprise.legalIdnumber"></span></li>
+                                <li>联系电话：<span ng-bind="enterprise.legalPhone"></span></li>
+                                <li>电子邮箱：<span ng-bind="enterprise.contactEmail"></span></li>
+                                <li>传真号码：<span ng-bind="enterprise.faxNumber"></span></li>
+                            </ul>
+                        </li>
+                        <br/>
+                    </ul>
+                    <!--第三部分  个人的内容-->
+                    <ul id="thirdContent" style="display: none;">
+                        <li>
+                            <ul>
+                                <li>主体名称：<span ng-bind="enterprise.enterpriseName"></span></li>
+                                <li>组织形式：<span ng-bind="enterprise.entityScaleName"></span></li>
+                                <li>主体类型：<span ng-bind="enterprise.entityTypeName"></span></li>
+                                <li>主体属性：<span ng-bind="enterprise.entityPropertyName"></span></li>
+                                <li>所属行业：<span ng-bind="enterprise.entityIndustryName"></span></li>
+                                <li>年产量：<span ng-bind="enterprise.annualOutput"></span><span ng-bind="enterprise.unitName"></span></li>
+                                <li>所属区域：<span ng-bind="area"></span></li>
+                                <li>详细地址：<span ng-bind="enterprise.address"></span></li>
+                                <li>电子邮箱：<span ng-bind="enterprise.contactEmail"></span></li>
+                                <li>传真号码：<span ng-bind="enterprise.faxNumber"></span></li>
+                            </ul>
+                        </li>
+                        <li class="Bor_line">
+                            三品一标信息
+                        </li>
+                        <li class="_box">
+                            <img src="assets/imgs/photo/greenFood.png" style="width:10%;height:10%;" alt="" />
+                            <img src="assets/imgs/photo/pollutionFreeAgricultureProducts.png" style="width:9%;height:9%;" alt="" />
+                            <img src="assets/imgs/photo/organicFood.png" style="width:8%;height:8%;" alt="" />
+                            <img src="assets/imgs/photo/agricultureProductsGeography.png" style="width:7%;height:7%;" alt="" />
+                        </li>
+                        <li class="Bor_line">
+                            个人信息
+                        </li>
+                        <li>
+                            <ul>
+                                <li>真实姓名：<span ng-bind="enterprise.legalName"></span></li>
+                                <li>身份证号：<span ng-bind="enterprise.legalIdnumber"></span></li>
+                                <li>联系电话：<span ng-bind="enterprise.legalPhone"></span></li>
+                                <li>姓名：<span ng-bind="enterprise.contactName"></span></li>
+                                <li>联系电话：<span ng-bind="enterprise.contactPhone"></span></li>
+                                <li>邮箱：<span ng-bind="enterprise.contactEmail"></span></li>
+                            </ul>
+                        </li>
+                        <br/>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="removeWindow()" type="button" class="gui-btn" data-dismiss="modal">返回</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+    <input type="hidden" name="enterpriseId" />
+</div>
+<!--基地巡查详细信息模态框-->
+<div class="modal fade" id="baseInspection" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm" style="width: 65%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">
+                    <span>基地巡查信息</span>
+                </h4>
+            </div>
+            <div class="Sup_contain_section_contain gui-section ">
+                <ul class="mt15">
+                    <li class="Bor_line">巡查信息</li>
+                    <li>
+                        <!--<p>主体名称：<span ng-bind="subjEnt.enterpriseName"></span></p>-->
+                        <div class="gui-mainViews" style="">
+                            <p>主体信息</p>
+                            <ul>
+                                <li>主体名称：<span ng-bind="subjEnt.enterpriseName" /></li>
+                                <li>组织形式：<span ng-bind="subjEnt.entityScaleName" /></li>
+                                <li>所属行业：<span ng-bind="subjEnt.entityIndustryName" /></li>
+                                <li>主体地址：<span ng-bind="subjEnt.address" /></li>
+                                <li id="frdb">法定代表人：<span ng-bind="subjEnt.legalName" /></li>
+                                <li id="dbdh">代表电话：<span ng-bind="subjEnt.legalPhone" /></li>
+                                <li>联 系 人：<span ng-bind="subjEnt.contactName" /></li>
+                                <li>联系电话：<span ng-bind="subjEnt.contactPhone" /></li>
+                                <li>
+                                    <button class="gui-btn" ng-click="gis()">查看地理位置</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="Bor_line">
+                        巡查处理意见
+                    </li>
+                    <li>
+                        <p>任务类型：<span ng-bind="baseInspection.inspectionTypeName"></span></p>
+                        <p>巡查结果：<span ng-bind="baseInspection.inspectionResult"></span></p>
+                        <p>
+                            巡查意见：
+                        </p>
+                        <textarea class="gui-textarea" readonly name="" id="" cols="80" rows="5" ng-bind="baseInspection.inspectionView">
+                        </textarea>
+                    </li>
+                    <li class="Bor_line">现场取证</li>
+                    <li class="_box" id="imgSpot">
+                    </li>
+                    <li class="Bor_line">现场视频</li>
+                    <li class="_box" id = "videoSpot">
+                    </li>
+                    <li class="Bor_line">巡查机构信息</li>
+                    <li class="_box col-lg-12 col-xs-12 col-sm-12 col-md-12" style="margin-top: 10px;">
+                        <div class="col-lg-3 col-xs-12 col-sm-3 col-md-3" style="width: 220px;margin-right: 20px;">巡查时间
+                            <input style="margin-top: 5px" class="gui-input" type="text" readonly ng-model="baseInspection.inspectionTime" />
+                        </div>
+                        <div class="col-lg-3 col-xs-12 col-sm-3 col-md-3" style="width: 220px;margin-right: 20px;">巡查机构
+                            <input style="margin-top: 5px" class="gui-input" type="text" readonly ng-model="baseInspection.inspectionSvName" />
+                        </div>
+                        <div class="col-lg-3 col-xs-12 col-sm-3 col-md-3" style="width: 220px;margin-right: 20px;">巡查人员
+                            <input style="margin-top: 5px" class="gui-input" type="text" readonly title="{{baseInspection.inspectionUserName}}" ng-model="baseInspection.inspectionUserName" />
+                        </div>
+                    </li>
+                    <li class="Bor_line">被巡查对象签字</li>
+                    <li class="_box">
+                        <div>负责人签字
+                            <input style="margin-top: 5px" class="gui-input" readonly ng-model="baseInspection.headSign" type="text" name="inspectionSvId" />
+                        </div>
+                        <div><span>签字照片</span> <span id="headSignFile"> 暂无签字照片</span></div>
+                    </li>
+                    <li>
+                        <button class="gui-btn" style="background-color:#47b995;" ng-click="closeModel()">关闭</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--地图显示模态框-->
+<div class="modal fade" id="gis" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog " style="width: 80%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">
+                    <span>查看地理位置</span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="mapDiv" style="width:100%; height:500px;"></div>
+                <!-- point overlay -->
+                <div id="info" class="ol-popup gui-hide"><div id="info-content"></div></div>
+                <div id="searchBar"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--现场巡查详细信息模态框-->
+<div class="modal fade" id="etlDailyEnforceLaw" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog removeBor" style="width: 40%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">现场巡查信息</h4>
+            </div>
+            <div class="modal-body clearfix gov-h" style="padding-left: 0px;padding-right: 0px;padding-top: 0px;">
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                        <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">任务名称&nbsp;:</label>
+                        <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.taskName" />
+                    </div>
+                    <br/>
+                    <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                        <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">执法时间&nbsp;:</label>
+                        <div class="col-lg-6 col-sm-6 col-md-6 ">
+                            <span ng-bind="beginTime"></span>
+                            <span ng-bind="endTime"></span>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                        <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">被巡查对象&nbsp;:</label>
+                        <span class="col-lg-6 col-sm-6 col-md-6" type="text" class="form-control gui-input" ng-bind="reCord.enterpriseName" />
+                    </div>
+                    <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                        <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">被巡查对象地址:</label>
+                        <span class="col-lg-6 col-sm-6 col-md-6" type="text" class="form-control" ng-bind="areaId" />
+                    </div>
+                    <br/>
+                    <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                        <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">巡查人数&nbsp;:</label>
+                        <span class="col-lg-6 col-sm-6 col-md-6" type="text" class="form-control" ng-bind="reCord.taskPersonCount" />
+                    </div>
+                    <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                        <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">执法人员&nbsp;:</label>
+                        <span type="text" class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.taskPersonName"></span>
+                    </div>
+                    <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                        <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">巡查结果&nbsp;:</label>
+                        <span type="text" class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.enforceLawResultFlag"></span>
+                    </div>
+                    <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                        <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">巡查意见&nbsp;:</label>
+                        <span type="text" class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.enforceLawResult"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer mt15">
+                <button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--行政处罚模态框-->
+<div class="modal fade" id="produceAdminPunish" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog removeBor">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">行政处罚信息</h4>
+            </div>
+            <div class="modal-body clearfix gov-h " style="padding-left: 0px;padding-right: 0px;">
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                        <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">行政处罚来源&nbsp;:</label>
+                        <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.penaltySource" />
+                    </div>
+                    <br/>
+                    <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                        <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">行政处罚决定案号&nbsp;:</label>
+                        <span class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.punishCode" />
+                    </div>
+                    <br/>
+                    <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                        <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">当事主体&nbsp;:</label>
+                        <span class="col-lg-6 col-sm-6 col-md-6" type="text" class="form-control gui-input" ng-bind="reCord.enterpriseIdName" />
+                    </div>
+                    <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                        <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">当事主体身份码:</label>
+                        <span class="col-lg-6 col-sm-6 col-md-6" type="text" class="form-control" ng-bind="reCord.enterpriseCode" />
+                    </div>
+                    <br/>
+                    <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                        <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">当事人&nbsp;:</label>
+                        <span class="col-lg-6 col-sm-6 col-md-6"  style="display: block ;white-space: normal;word-wrap : break-word ;" type="text" class="form-control" ng-bind="reCord.legalPerson" />
+                    </div>
+                    <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                        <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">案件名称&nbsp;:</label>
+                        <span type="text" class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.caseName" />
+                    </div>
+                    <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                        <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">违法产品名称&nbsp;:</label>
+                        <span type="text" class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.productName"></span>
+                    </div>
+                    <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                        <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">标称生产企业&nbsp;:</label>
+                        <span type="text" class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.enterpriseName"></span>
+                    </div>
+                    <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                        <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">生产日期或批次&nbsp;:</label>
+                        <span type="text" class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.manufactureDate">"></span>
+                    </div>
+                    <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                        <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">案件定性&nbsp;:</label>
+                        <span type="text" class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.punishQualitative"></span>
+                    </div>
+                    <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                        <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">标称生产企业&nbsp;:</label>
+                        <span type="text" class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.enterpriseName"></span>
+                    </div>
+                    <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                        <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">决定书&nbsp;:</label>
+                        <a class="col-lg-6 col-sm-6 col-md-6" style="cursor: pointer;" onclick="downloadFile()"><span ng-bind="reCord.punishFilesName"></span></a>
+                    </div>
+                    <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                        <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">执法单位&nbsp;:</label>
+                        <span type="text" class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.enforceLawId"></span>
+                    </div>
+                    <div class="col-lg-12 col-sm-12 col-md-12 mt15">
+                        <label class="col-lg-5 col-sm-5 col-md-5" style="text-align: right;padding-right: 15px">执法人员&nbsp;:</label>
+                        <span type="text" class="col-lg-6 col-sm-6 col-md-6" ng-bind="reCord.enforceLawPeople"></span>
+                    </div>
+                </div>
+                <div class="modal-footer mt15">
+                    <button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--抽样检测模态框-->
+<div class="modal fade" id="productAndAdsCheckInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog removeBor" style="width: 50%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">产品检测详情</h4>
+            </div>
+            <div class="modal-body clearfix gov-h" style="padding-left: 0px;padding-right: 0px;padding-top: 0px;">
+                <br>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <td class="mt15" style="text-align: right;padding-left: 50px;font-weight: bold;height: 30px;padding-right: 10px;">
+                                &nbsp;&nbsp;&nbsp;任务名称 :
+                            </td>
+                            <td>
+                                <span ng-bind="productAndAdsCheckInfo.taskName"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right;padding-left: 50px;font-weight: bold;height: 30px;padding-right: 10px">
+                                &nbsp;&nbsp;&nbsp;抽样单位 :
+                            </td>
+                            <td>
+                                <span ng-bind="productAndAdsCheckInfo.detectionOrgan"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right;padding-left: 50px;font-weight: bold;height: 30px;padding-right: 10px">
+                                &nbsp;&nbsp;&nbsp;检测单位 :
+                            </td>
+                            <td>
+                                <span ng-bind="productAndAdsCheckInfo.detectionOrgan"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right;padding-left: 50px;font-weight: bold;height: 30px;padding-right: 10px">
+                                &nbsp;&nbsp;样品名称 :
+                            </td>
+                            <td>
+                                <span ng-bind="productAndAdsCheckInfo.sampleName"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right;padding-left: 50px;font-weight: bold;height: 30px;padding-right: 10px">
+                                样品编码 :
+                            </td>
+                            <td>
+                                <span ng-bind="productAndAdsCheckInfo.sampleCode"></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <table id="badProductListGrid" class="gui-table" style=" margin-left:50px;width: 80%">
+                <thead>
+                    <tr>
+                        <th>检测项目</th>
+                        <th>检测值</th>
+                        <th>限量值</th>
+                        <th>单位</th>
+                        <th>抽检结果</th>
+                        <th>LOD</th>
+                        <th>LOQ</th>
+                    </tr>
+                </thead>
+                <tbody class="diy-input-nobody">
+                </tbody>
+            </table>
+            <div class="modal-footer mt15">
+                <button type="button" class="gui-btn" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>

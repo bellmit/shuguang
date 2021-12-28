@@ -1,0 +1,9 @@
+.gui-tree-sidebar .easyui-Owndirevtive .tree-title {
+  color: #333;
+}
+.gui-tree-sidebar .tree-node-selected {
+  background-color: #20944d;
+}
+.gui-tree-sidebar .tree-node-selected .tree-title {
+  color: #fff;
+}

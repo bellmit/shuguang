@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.ProStillMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.ducss.model.ProStill" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="fill_no" property="fillNo" jdbcType="VARCHAR" />
+    <result column="year" property="year" jdbcType="VARCHAR" />
+    <result column="province_id" property="provinceId" jdbcType="VARCHAR" />
+    <result column="city_id" property="cityId" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaId" jdbcType="VARCHAR" />
+    <result column="report_area" property="reportArea" jdbcType="VARCHAR" />
+    <result column="create_user_name" property="createUserName" jdbcType="VARCHAR" />
+    <result column="create_user_id" property="createUserId" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, fill_no, year, province_id, city_id, area_id, report_area, create_user_name, create_user_id, create_date
+  </sql>
+  <select id="getProStillByPage" parameterType="java.util.Map" resultType="com.sofn.ducss.model.ProStill">
+    select t1.*
+    from pro_still t1
+    where 1=1
+    and t1.area_id=#{countyId}
+    <if test="year!=null and year!=''">
+      and t1.year=#{year}
+    </if>
+    <if
+            test="dateBegin!=null and dateBegin!='' and dateEnd!=null and dateEnd!=''">
+      <![CDATA[
+			AND t1.create_date >= DATE_FORMAT(#{dateBegin},'%Y-%m-%d %H:%i:%S')
+			AND t1.create_date <= DATE_FORMAT(concat(#{dateEnd},' 23:59:59'),'%Y-%m-%d %H:%i:%S')
+			]]>
+    </if>
+    order by t1.create_date desc
+  </select>
+
+  <select id="getProStill" parameterType="java.util.Map" resultType="com.sofn.ducss.model.ProStill">
+    select t1.*
+    from pro_still t1
+    where 1=1
+    and t1.area_id=#{countyId}
+    <if test="year!=null and year!=''">
+      and t1.year=#{year}
+    </if>
+    ORDER BY t1.create_time DESC
+  </select>
+
+  <select id="selectProStillById" parameterType="java.lang.String" resultType="com.sofn.ducss.model.ProStill">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM pro_still
+    WHERE id = #{id}
+
+  </select>
+
+  <select id="getProStillTotalCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(*)
+    from pro_still t1
+    where 1=1
+    and t1.area_id=#{areaId}
+    and t1.year=#{year}
+  </select>
+
+  <insert id="insertProStill" parameterType="com.sofn.ducss.model.ProStill">
+    insert into
+    pro_still(id,fill_no,year,province_id,city_id,area_id,report_area,create_user_name,
+    create_user_id,create_date,create_time) values
+    (#{id,jdbcType=VARCHAR},#{fillNo,jdbcType=VARCHAR},#{year,jdbcType=VARCHAR},#{provinceId,jdbcType=VARCHAR},#{cityId,jdbcType=VARCHAR},
+    #{areaId,jdbcType=VARCHAR},#{reportArea,jdbcType=VARCHAR},#{createUserName,jdbcType=VARCHAR},
+    #{createUserId,jdbcType=VARCHAR},#{createDate,jdbcType=TIMESTAMP},#{createTime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <delete id="deleteById" parameterType="java.lang.String">
+    delete from pro_still where id=#{id}
+  </delete>
+
+  <select id="selectProStillIdByYear" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT id FROM pro_still WHERE area_id=#{countyId} ORDER BY create_time DESC LIMIT 1
+  </select>
+
+</mapper>

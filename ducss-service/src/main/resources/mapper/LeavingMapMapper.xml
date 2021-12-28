@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.ducss.mapper.LeavingMapMapper">
+
+    <select id="getReturnLeave" parameterType="java.util.Map" resultType="java.util.Map">
+      SELECT
+            case SUM (A .collect_resource) when 0 then 0
+            else
+            SUM (A .pro_still_field) / SUM (A .collect_resource) * 100 end RETURNRATIO,
+            sum(a.pro_still_field) VALUE1,
+            sum(a.collect_resource) VALUE2,
+            a.area_id AREAID,
+            a.year as  YEAR
+        FROM
+            return_leave_sum a
+        left join collect_flow cf  on a.area_id = cf.area_id and cf.year = #{year}
+        WHERE
+            a.area_id IN
+            <foreach collection="areaIds" item="areaId" separator="," open="(" close=")">
+                #{areaId}
+            </foreach>
+            AND a.year = #{year}
+            <if test="strawType != null and strawType != ''" >
+                and a.straw_type = #{strawType}
+            </if>
+            and cf.status in ('1','2','5')
+         group by  a.area_id, a.year
+         order by a.area_id
+    </select>
+    
+    <select id="getDisperseTotalRatio" parameterType="java.util.Map" resultType="java.util.Map">
+        select
+        a.area_id AREAID,
+        case sum(a.collect_resource ) when 0 then 0
+        else
+        sum(a.disperse_total) / sum(a.collect_resource ) * 100 end RETURNRATIO,
+        sum(a.disperse_total) VALUE1,
+        sum(a.collect_resource ) VALUE2
+        from straw_utilize_sum a
+        left join collect_flow cf  on a.area_id = cf.area_id and cf.year = #{year}
+        where a.area_id in
+        <foreach collection="areaIds" item="areaId" separator="," open="(" close=")">
+             #{areaId}
+        </foreach>
+        and a.year =  #{year}
+        <if test="strawType != null and strawType != ''" >
+            and a.straw_type = #{strawType}
+        </if>
+        and cf.status in ('1','2','5')
+        group by a.area_id
+        order by a.area_id
+    </select>
+
+    <select id="getMainTotalRatio" parameterType="java.util.Map" resultType="java.util.Map" >
+
+        select
+        a.area_id AREAID,
+        case sum(a.collect_resource ) when 0 then 0
+        else
+        sum(a.main_total) / sum(a.collect_resource ) * 100 end RETURNRATIO,
+        sum(a.main_total) VALUE1,
+        sum(a.collect_resource ) VALUE2
+        from straw_utilize_sum a
+        left join collect_flow cf  on a.area_id = cf.area_id and cf.year = #{year}
+        where a.area_id in
+        <foreach collection="areaIds" item="areaId" separator="," open="(" close=")">
+             #{areaId}
+        </foreach>
+        and cf.status in ('1','2','5')
+        and a.year =  #{year}
+        <if test="strawType != null and strawType != ''" >
+            and a.straw_type = #{strawType}
+        </if>
+        group by a.area_id
+        order by a.area_id
+    </select>
+    
+    
+    <select id="getLeavingPieChart" parameterType="java.util.Map" resultType="java.util.Map">
+        select b.dict_value DICTNAME,
+            sum(${value1}) VALUE1,
+            sum(${value2}) VALUE2
+         from ${tableName}  a
+         left join sys_dictionary b on a.straw_type = b.dict_key and b.dict_type = 'straw_type'
+         where a.area_id in
+                <foreach collection="areaIds" item="areaId" separator="," open="(" close=")">
+                     #{areaId}
+                </foreach>
+         and year = #{year}
+        group by b.dict_value,b.order_no
+        order by b.order_no
+    </select>
+
+
+
+</mapper>

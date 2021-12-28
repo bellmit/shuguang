@@ -1,0 +1,84 @@
+<link rel="stylesheet" href="assets/css/asms/subjSv/subjSvList.css"/>
+<div class="gui-mainBc">
+    <div class="gui-breadcrumbs">
+        <a href="">系统管理</a>&gt;
+        <a href="">用户管理</a>&gt;
+        <span>机构用户管理</span>
+    </div>
+    <div class="gui-section">
+        <ul class="gui-tab ng-scope">
+            <li><a ui-sref="index.content.sys/user/sysSubjEntList">生产经营主体</a></li>
+            <li><a ui-sref="index.content.sys/user/sysSubjSvList">监管机构</a></li>
+            <li class="active"><a ui-sref="index.content.sys/user/sysSubjDtList">检测机构</a></li>
+            <li><a ui-sref="index.content.sys/user/sysSubjElList">执法机构</a></li>
+            <!--<li><a ui-sref="index.content.sys/user/sysSubjSPYBList">三品一标</a></li>-->
+        </ul>
+        <div class="gui-form-group">
+            <span id="AnyArea">所属区域</span>
+            <div class="gui-select">
+                <select id="sheng" >
+                    <option value="">省</option>
+                </select>
+            </div>
+            <div class="gui-select">
+                <select id="shi">
+                    <option value="">市</option>
+                </select>
+            </div>
+            <div class="gui-select">
+                <select id="xian">
+                    <option value="">区/县</option>
+                </select>
+            </div>
+            <form id="queryForm" class="mt15">
+                <span>注册日期</span>
+                <input id="dateBegin" name="dateBegin" style="cursor: pointer;width: 100px;" readonly="readonly" class="Wdate gui-input" type="text" onFocus="var endDate=$dp.$('dateEnd');WdatePicker({onpicked:function(){endDate.focus();},maxDate:'#F{$dp.$D(\'dateEnd\')}'})"/>
+                -
+                <input id="dateEnd" name="dateEnd" class="Wdate gui-input" style="cursor: pointer;width: 100px;" readonly="readonly" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'dateBegin\')}'})"/>
+                <span>机构名称</span>
+                <input class="gui-input" type="text" placeholder="请输入机构名称" name="dtName" maxlength="30"/>
+                <button class="gui-btn" ng-click="querySubjDtList()">查询</button>
+                <button class="gui-btn " ng-click="reloadArea()">重置</button>
+            </form>
+        </div>
+        <div class="gui-actions">
+            <button class="gui-btn fr addSubjSv ml15 mr15" ui-sref="index.content.sys/user/sysSubjDtAdd" ng-if="menuAuthority == readWriteAuthority">
+                <i class="gui-icon icon-add"></i>
+                新增</button>
+            <button class="gui-btn fr intoSubjSv" id="importSubjDt" >
+                <i class="gui-icon icon-export"></i>
+                批量导入</button>
+        </div>
+        <table id="dtGrid"
+               class="gui-table mt15" style="width: 100%">
+        </table>
+    </div>
+<!-- 模态框（Modal） -->
+<div class="modal fade " id="importModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm" >
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">批量导入检测机构</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div style="width: 500px">
+                        <form enctype="multipart/form-data">
+                            <input id="file-1"  type="file" name="file"  multiple=" true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="5">
+                            <br>
+                        </form>
+                        <a href="webapp\asms\subjDt\jcdrModel.xlsx" style="color:#0000FF;">检测导入模板</a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" data-dismiss="modal">关闭</button>
+                <button class="gui-btn" type="button" id="save" ng-click="importSubjDt()">提交</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+</div>

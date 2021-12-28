@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../bootstrap/bootstrap-3.3.5-dist/css/bootstrap.css"/>
+<link rel="stylesheet" type="text/css" href="../dtree/css/dtreeck.css">
+	<style type="text/css">
+		body,td,th {
+			font-size: 12px;
+		}
+		a:link {
+			font-family: "宋体";
+			font-size: 12px;
+			color: #0000FF;
+			text-decoration: none;
+		}
+		a:visited {
+			font-family: "宋体";
+			font-size: 12px;
+			color: #0000FF;
+			text-decoration: none;
+		}
+		a:hover {
+			font-family: "宋体";
+			font-size: 12px;
+			color: #CC6600;
+			text-decoration: none;
+		}
+		a:active {
+			font-family: "宋体";
+			font-size: 12px;
+			color: #006600;
+			text-decoration: none;
+		}
+		.panel-header, .panel-body {
+			border-width: 0px;
+		}
+		.datagrid,.combo-p{
+			border:solid 1px #D4D4D4;
+		}
+		.datagrid *{
+			-webkit-box-sizing: content-box;
+			-moz-box-sizing: content-box;
+			box-sizing: content-box;
+		}
+	</style>
+</head>
+<body>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+    Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-style" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                   
+<table width="100%" align="center" cellpadding="0" cellspacing="0">
+	<tr>
+		<td colspan="1" bgcolor="#FFFFFF" valign="top" width="35%" style="padding-left: 30px;">
+		</td>
+		<td bgcolor="#FFFFFF" valign="top" height="65%" align="left">
+		 <form  method="post" id="regform">
+			<table width="70%"   cellpadding="1" cellspacing="0" border="0" style="margin-top: 10px;">
+				
+				<tr>
+					<td width="20%" align="right">下拉</td>
+					<td width="30%" align="left">
+					<input type="text" id="menu_parent_name"   style="width: 150px;"> 
+					<input type="hidden" id="menu_parent" name="menu_parent"><!-- 父菜单id -->
+					<input type="hidden" id="oprate" name="oprate"><!-- radio -->
+					<input type="hidden" id="menu_id" name="menu_id"><!-- 父菜单id -->
+					</td>
+					<td width="20%" align="right"></td>
+					<td width="30%" align="left">
+					
+					
+					</td>
+				</tr>
+				
+			</table>
+			</form>
+		</td>
+	</tr>
+</table>
+
+
+<div id="treediv" style="display: none;position:absolute;overflow:scroll;  width: 150px;height:200px;  padding: 5px;background: #fff;color: #fff;border: 1px solid #cccccc"  >
+<div align="right"><a href="##" id="closed"><font color="#000">关闭&nbsp;</font></a></div>
+	<script language="JavaScript" type="text/JavaScript">
+				//树代码
+				mydtree = new dTree('mydtree','../dtree/css/imgmenu/','no','no');
+				mydtree.add(0,
+					  -1,
+					  "根目录",
+					  "javascript:setvalue('0','根目录')",
+					  "根目录",
+					  "_self",
+					  false);
+				
+				mydtree.add(37,
+				0,
+				'PDA消息管理',
+				"javascript:setvalue('37','PDA消息管理')",
+				'PDA消息管理',
+				'_self',
+				false);
+				
+				mydtree.add(40,
+				0,
+				'法律法规管理',
+				"javascript:setvalue('40','法律法规管理')",
+				'法律法规管理',
+				'_self',
+				false);
+				
+				mydtree.add(44,
+				0,
+				'基础信息管理',
+				"javascript:setvalue('44','基础信息管理')",
+				'基础信息管理',
+				'_self',
+				false);
+				
+				mydtree.add(39,
+				37,
+				'通知通告',
+				"javascript:setvalue('39','通知通告')",
+				'通知通告',
+				'_self',
+				false);
+				
+				mydtree.add(86,
+				37,
+				'消息管理',
+				"javascript:setvalue('86','消息管理')",
+				'消息管理',
+				'_self',
+				false);
+				
+				mydtree.add(88,
+				37,
+				'应急预案',
+				"javascript:setvalue('88','应急预案')",
+				'应急预案',
+				'_self',
+				false);
+				
+				mydtree.add(41,
+				40,
+				'法律法规管理',
+				"javascript:setvalue('41','法律法规管理')",
+				'法律法规管理',
+				'_self',
+				false);
+				
+				mydtree.add(42,
+				40,
+				'法律法规查看',
+				"javascript:setvalue('42','法律法规查看')",
+				'法律法规查看',
+				'_self',
+				false);
+				
+				mydtree.add(45,
+				44,
+				'检查项目管理',
+				"javascript:setvalue('45','检查项目管理')",
+				'检查项目管理',
+				'_self',
+				false);
+				
+				mydtree.add(49,
+				44,
+				'被监督单位管理',
+				"javascript:setvalue('49','被监督单位管理')",
+				'被监督单位管理',
+				'_self',
+				false);
+				
+				mydtree.add(62,
+				44,
+				'单位大类别管理',
+				"javascript:setvalue('62','单位大类别管理')",
+				'单位大类别管理',
+				'_self',
+				false);
+				
+				mydtree.add(63,
+				44,
+				'单位小类别管理',
+				"javascript:setvalue('63','单位小类别管理')",
+				'单位小类别管理',
+				'_self',
+				false);
+				
+				mydtree.add(64,
+				44,
+				'检查类别管理',
+				"javascript:setvalue('64','检查类别管理')",
+				'检查类别管理',
+				'_self',
+				false);
+				
+				mydtree.add(65,
+				44,
+				'检查小类管理',
+				"javascript:setvalue('65','检查小类管理')",
+				'检查小类管理',
+				'_self',
+				false);
+				
+				
+				
+			
+			   document.write(mydtree);
+			   
+			</script>
+</div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../jquery/jquery-1.11.3.js"></script>
+<script src="../bootstrap/bootstrap-3.3.5-dist/js/bootstrap.js"></script>
+<script language="Javascript" type="text/javascript" src="../dtree/js/dtreeck.js"></script>
+<scirpt language="Javascript" type="text/javascript" src="../dtree/js/jquery.js"></scirpt>
+<script type="text/javascript">
+//生成弹出层的代码
+<!-- 弹出层-->
+xOffset = 0;//向右偏移量
+yOffset = 25;//向下偏移量
+
+var toshow = "treediv";//要显示的层的id
+var target = "menu_parent_name";//目标控件----也就是想要点击后弹出树形菜单的那个控件id
+
+
+$("#"+target).click(function (){
+	$("#"+toshow)
+	.css("position", "absolute")
+	.css("left", $("#"+target).position().left+xOffset + "px")
+	.css("top", $("#"+target).position().top+yOffset +"px").show();
+});
+//关闭层
+$("#closed").click(function(){
+	$("#"+toshow).hide();
+});
+
+//判断鼠标在不在弹出层范围内
+ function   checkIn(id){
+	var yy = 20;   //偏移量
+	var str = "";
+	var   x=window.event.clientX;   
+	var   y=window.event.clientY;   
+	var   obj=$("#"+id)[0];
+	if(x>obj.offsetLeft&&x<(obj.offsetLeft+obj.clientWidth)&&y>(obj.offsetTop-yy)&&y<(obj.offsetTop+obj.clientHeight)){   
+		return true;
+	}else{   
+		return false;
+	}   
+  }   
+//点击body关闭弹出层
+	$(document).click(function(){
+		var is = checkIn("treediv");
+		if(!is){
+			$("#"+toshow).hide();
+		}
+	});
+<!-- 弹出层-->
+//生成弹出层的代码
+//点击菜单树给文本框赋值------------------菜单树里加此方法
+function setvalue(id,name){
+	$("#menu_parent_name").val(name);
+	$("#menu_parent").val(id);
+	$("#treediv").hide();
+}
+
+</script>
+
+</body>
+</html>

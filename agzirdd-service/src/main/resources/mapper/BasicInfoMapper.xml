@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agzirdd.mapper.BasicInfoMapper" >
+
+  <resultMap id="BaseResultMap" type="com.sofn.agzirdd.model.BasicInfo" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="BELONG_YEAR" property="belongYear" jdbcType="VARCHAR" />
+    <result column="MONITOR_ID" property="monitorId" jdbcType="VARCHAR" />
+    <result column="MONITOR_NAME" property="monitorName" jdbcType="VARCHAR" />
+    <result column="PROVINCE_ID" property="provinceId" jdbcType="VARCHAR" />
+    <result column="CITY_ID" property="cityId" jdbcType="VARCHAR" />
+    <result column="COUNTY_ID" property="countyId" jdbcType="VARCHAR" />
+    <result column="AREA_NAME" property="areaName" jdbcType="VARCHAR" />
+    <result column="LONGITUDE" property="longitude" jdbcType="VARCHAR" />
+    <result column="LATITUDE" property="latitude" jdbcType="VARCHAR" />
+    <result column="RESPONSIBLE_DEPARTMENT" property="responsibleDepartment" jdbcType="VARCHAR" />
+    <result column="LEADING_CADRE" property="leadingCadre" jdbcType="VARCHAR" />
+    <result column="TELEPHONE" property="telephone" jdbcType="VARCHAR" />
+    <result column="EXECUTIVE" property="executive" jdbcType="VARCHAR" />
+    <result column="EXE_PHONE" property="exePhone" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="CREATE_USER_ID" property="createUserId" jdbcType="VARCHAR" />
+    <result column="CREATE_USER_NAME" property="createUserName" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ID, BELONG_YEAR,MONITOR_ID, MONITOR_NAME, PROVINCE_ID, CITY_ID, COUNTY_ID, AREA_NAME, LONGITUDE,
+    LATITUDE, RESPONSIBLE_DEPARTMENT, LEADING_CADRE, TELEPHONE, EXECUTIVE, EXE_PHONE, 
+    STATUS, REMARK,CREATE_USER_ID, CREATE_USER_NAME, CREATE_TIME
+  </sql>
+
+
+  <select id="getBasicInfoByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM BASIC_INFO
+    <where>
+        1=1
+    <if test="monitorName != null and monitorName != ''">
+        and MONITOR_NAME like '%'||#{monitorName}||'%'
+    </if>
+    <if test="provinceId != null and provinceId != ''">
+      and PROVINCE_ID = #{provinceId}
+    </if>
+    <if test="cityId != null and cityId != ''">
+      and CITY_ID = #{cityId}
+    </if>
+    <if test="countyId != null and countyId != ''">
+      and COUNTY_ID = #{countyId}
+    </if>
+    <if test="status != null and status != ''">
+      and STATUS = #{status}
+    </if>
+    <if test="beginDate != null and beginDate != ''">
+      AND CREATE_TIME &gt;=to_date(#{beginDate},'yyyy-MM-dd')
+    </if>
+    <if test="endDate != null and endDate != ''">
+      AND CREATE_TIME &lt;(to_date(#{endDate},'yyyy-MM-dd'))+1
+    </if>
+    <if test="createUserId != null and createUserId != ''">
+      AND CREATE_USER_ID = #{createUserId}
+    </if>
+    </where>
+    ORDER BY CREATE_TIME desc
+  </select>
+
+  <select id="getBasicInfoById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from BASIC_INFO
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <!--修改监测点基本信息状态-->
+  <update id="updateStatus" parameterType="java.util.Map">
+    update BASIC_INFO
+    <set >
+      <if test=" status != null and  status != '' " >
+        STATUS = #{status},
+      </if>
+      <if test=" remark != null and  remark != '' " >
+        remark = #{remark,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where
+    ID = #{id}
+  </update>
+
+
+</mapper>

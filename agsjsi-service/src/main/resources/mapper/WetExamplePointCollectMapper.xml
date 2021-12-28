@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agsjsi.mapper.WetExamplePointCollectMapper">
+    <resultMap id="baseResultMap" type="com.sofn.agsjsi.vo.WetExamplePointCollectVo">
+        <id column="ID" property="id" jdbcType="VARCHAR"></id>
+        <result column="WET_NAME" property="wetName" jdbcType="VARCHAR"></result>
+        <result column="WET_CODE" property="wetCode" jdbcType="VARCHAR"></result>
+        <result column="WET_TOTAL_AREA" property="wetTotalArea" jdbcType="VARCHAR"></result>
+        <result column="WET_PLAQUE_COUNT" property="wetPlaqueCount" jdbcType="VARCHAR"></result>
+        <result column="WET_TYPE1" property="wetType1" jdbcType="VARCHAR"></result>
+        <result column="WET_TYPE_AREA1" property="wetTypeArea1" jdbcType="VARCHAR"></result>
+        <result column="WET_MODEL1" property="wetModel1" jdbcType="VARCHAR"></result>
+        <result column="WET_MODEL_AREA1" property="wetModelArea1" jdbcType="VARCHAR"></result>
+        <result column="WET_TYPE2" property="wetType2" jdbcType="VARCHAR"></result>
+        <result column="WET_TYPE_AREA2" property="wetTypeArea2" jdbcType="VARCHAR"></result>
+        <result column="WET_MODEL2" property="wetModel2" jdbcType="VARCHAR"></result>
+        <result column="WET_MODEL_AREA2" property="wetModelArea2" jdbcType="VARCHAR"></result>
+        <result column="REGION_IN_CH" property="regionInCh" jdbcType="VARCHAR"></result>
+        <result column="NORTH_LATITUDE" property="northLatitude" jdbcType="VARCHAR"></result>
+        <result column="EAST_LONGITUDE" property="eastLongitude" jdbcType="VARCHAR"></result>
+        <result column="SECOND_BASIN" property="secondBasin" jdbcType="VARCHAR"></result>
+        <result column="RIVER_LEVEL" property="riverLevel" jdbcType="VARCHAR"></result>
+        <result column="AVG_ALTITUDE" property="avgAltitude" jdbcType="VARCHAR"></result>
+        <result column="WATER_SUPPLY" property="waterSupply" jdbcType="VARCHAR"></result>
+        <result column="WET_NEAR_SEA" property="wetNearSea" jdbcType="VARCHAR"></result>
+        <result column="SALINITY" property="salinity" jdbcType="VARCHAR"></result>
+        <result column="WATER_TEMP" property="waterTemp" jdbcType="VARCHAR"></result>
+        <result column="LAND_OWNERSHIP" property="landOwnership" jdbcType="VARCHAR"></result>
+        <result column="PLANT_TYPE" property="plantType" jdbcType="VARCHAR"></result>
+        <result column="PLANT_AREA" property="plantArea" jdbcType="VARCHAR"></result>
+        <result column="NAME_IN_CH" property="nameInCh" jdbcType="VARCHAR"></result>
+        <result column="LATIN_NAME" property="latinName" jdbcType="VARCHAR"></result>
+        <result column="FAMILY_NAME" property="familyName" jdbcType="VARCHAR"></result>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"></result>
+        <result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR"></result>
+        <result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR"></result>
+        <result column="CREATE_USER_NAME" property="createUserName" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <resultMap id="excelResultMap" type="com.sofn.agsjsi.vo.excelBean.WetExamplePointCollectExcel">
+        <result column="WET_NAME" property="wetName" jdbcType="VARCHAR"></result>
+        <result column="WET_CODE" property="wetCode" jdbcType="VARCHAR"></result>
+        <result column="WET_TOTAL_AREA" property="wetTotalArea" jdbcType="VARCHAR"></result>
+        <result column="WET_PLAQUE_COUNT" property="wetPlaqueCount" jdbcType="VARCHAR"></result>
+        <result column="WET_TYPE1" property="wetType1" jdbcType="VARCHAR"></result>
+        <result column="WET_TYPE_AREA1" property="wetTypeArea1" jdbcType="VARCHAR"></result>
+        <result column="WET_MODEL1" property="wetModel1" jdbcType="VARCHAR"></result>
+        <result column="WET_MODEL_AREA1" property="wetModelArea1" jdbcType="VARCHAR"></result>
+        <result column="WET_TYPE2" property="wetType2" jdbcType="VARCHAR"></result>
+        <result column="WET_TYPE_AREA2" property="wetTypeArea2" jdbcType="VARCHAR"></result>
+        <result column="WET_MODEL2" property="wetModel2" jdbcType="VARCHAR"></result>
+        <result column="WET_MODEL_AREA2" property="wetModelArea2" jdbcType="VARCHAR"></result>
+        <result column="REGION_IN_CH" property="regionInCh" jdbcType="VARCHAR"></result>
+        <result column="NORTH_LATITUDE" property="northLatitude" jdbcType="VARCHAR"></result>
+        <result column="EAST_LONGITUDE" property="eastLongitude" jdbcType="VARCHAR"></result>
+        <result column="SECOND_BASIN" property="secondBasin" jdbcType="VARCHAR"></result>
+        <result column="RIVER_LEVEL" property="riverLevel" jdbcType="VARCHAR"></result>
+        <result column="AVG_ALTITUDE" property="avgAltitude" jdbcType="VARCHAR"></result>
+        <result column="WATER_SUPPLY" property="waterSupply" jdbcType="VARCHAR"></result>
+        <result column="WET_NEAR_SEA" property="wetNearSea" jdbcType="VARCHAR"></result>
+        <result column="SALINITY" property="salinity" jdbcType="VARCHAR"></result>
+        <result column="WATER_TEMP" property="waterTemp" jdbcType="VARCHAR"></result>
+        <result column="LAND_OWNERSHIP" property="landOwnership" jdbcType="VARCHAR"></result>
+        <result column="PLANT_TYPE" property="plantType" jdbcType="VARCHAR"></result>
+        <result column="PLANT_AREA" property="plantArea" jdbcType="VARCHAR"></result>
+        <result column="NAME_IN_CH" property="nameInCh" jdbcType="VARCHAR"></result>
+        <result column="LATIN_NAME" property="latinName" jdbcType="VARCHAR"></result>
+        <result column="FAMILY_NAME" property="familyName" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <select id="listForCondition" parameterType="string" resultMap="baseResultMap">
+        select A.ID,A.WET_NAME,A.WET_CODE
+        ,A.SECOND_BASIN,A.RIVER_LEVEL
+        ,A.STATUS,A.CREATE_TIME,A.CREATE_USER_NAME
+        -- 状态value（状态0：已保存；1：已撤回；2：已上报；3：市级退回；4：市级通过；5：省级退回；6：省级通过；7：总站退回；8：总站通过）
+        ,(case A.STATUS when '0' then '已保存'
+        when '1' then '已撤回'
+        when '2' then '已上报'
+        when '3' then '市级退回'
+        when '4' then '市级通过'
+        when '5' then '省级退回'
+        when '6' then '省级通过'
+        when '7' then '总站退回'
+        when '8' then '总站通过'
+        when '9' then '专家批复'
+        end ) as STATUS_NAME
+        from wet_example_point_collect A
+        <where>
+            A.DEL_FLAG='N'
+            <if test="wetName!=null and wetName!=''">
+                and A.WET_NAME like '%'|| #{wetName}|| '%'
+            </if>
+            <if test="wetCode!=null and wetCode!=''">
+                and A.WET_CODE like '%'||#{wetCode} ||'%'
+            </if>
+            <if test="secondBasin!=null and secondBasin!=''">
+                and A.SECOND_BASIN like '%' || #{secondBasin} || '%'
+            </if>
+            <if test="status!=null and status!=''">
+                and A.STATUS = #{status}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                and A.CREATE_TIME &gt;=to_date(#{startTime},'YYYY-MM-DD')
+            </if>
+            <if test="endTime != null and endTime != ''">
+                and A.CREATE_TIME &lt;=(to_date(#{endTime},'YYYY-MM-DD HH24:MI:SS')+interval '1 D,-1 S')
+            </if>
+            <if test="orgProvinceCode!=null and orgProvinceCode!=''">
+                and A.ORG_PROVINCE_CODE = #{orgProvinceCode}
+            </if>
+            <if test="orgCityCode!=null and orgCityCode!=''">
+                and A.ORG_CITY_CODE = #{orgCityCode}
+            </if>
+            <if test="orgAreaCode!=null and orgAreaCode!=''">
+                and A.ORG_AREA_CODE = #{orgAreaCode}
+            </if>
+            <if test="sysUserLevel!=null and sysUserLevel !=''">
+                <choose>
+                    <when test='sysUserLevel=="4"'>
+                        and A.STATUS in ('8','9')
+                    </when>
+                    <when test='sysUserLevel=="3"'>
+                        and A.STATUS in ('6','8','9')
+                    </when>
+                    <when test='sysUserLevel=="2"'>
+                        and A.STATUS in ('4','6','8','9')
+                    </when>
+                    <when test='sysUserLevel=="1"'>
+                        and A.STATUS  in ('2','4','6','8','9')
+                    </when>
+                </choose>
+            </if>
+            <if test='approveFlag=="1"'>
+                and A.STATUS &gt;= '2'
+            </if>
+        </where>
+        ORDER BY A.CREATE_TIME DESC
+    </select>
+
+    <select id="listForExport" parameterType="java.util.Map" resultMap="excelResultMap">
+        select A.WET_NAME,A.WET_CODE,A.WET_TOTAL_AREA
+        ,A.WET_PLAQUE_COUNT,A.WET_TYPE1,A.WET_TYPE_AREA1
+        ,A.WET_MODEL1,A.WET_MODEL_AREA1,A.WET_TYPE2,A.WET_TYPE_AREA2
+        ,A.WET_MODEL2,A.WET_MODEL_AREA2,A.REGION_IN_CH,A.NORTH_LATITUDE,A.EAST_LONGITUDE
+        ,A.SECOND_BASIN,A.RIVER_LEVEL,A.AVG_ALTITUDE,A.WATER_SUPPLY
+        ,A.WET_NEAR_SEA,A.SALINITY,A.WATER_TEMP,A.LAND_OWNERSHIP
+        ,A.PLANT_TYPE,A.PLANT_AREA,A.NAME_IN_CH,A.LATIN_NAME
+        ,A.FAMILY_NAME
+        from wet_example_point_collect A
+        <where>
+            A.DEL_FLAG='N'
+            <if test="wetName!=null and wetName!=''">
+                and A.WET_NAME like '%' || #{wetName} || '%'
+            </if>
+            <if test="wetCode!=null and wetCode!=''">
+                and A.WET_CODE like '%' || #{wetCode} || '%'
+            </if>
+            <if test="secondBasin!=null and secondBasin!=''">
+                and A.SECOND_BASIN like '%'|| #{secondBasin} ||'%'
+            </if>
+            <if test="status!=null and status!=''">
+                and A.STATUS = #{status}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                and A.CREATE_TIME &gt;=to_date(#{startTime},'YYYY-MM-DD')
+            </if>
+            <if test="endTime != null and endTime != ''">
+                and A.CREATE_TIME &lt;=(to_date(#{endTime},'YYYY-MM-DD HH24:MI:SS')+interval '1 D,-1 S')
+            </if>
+            <if test="orgProvinceCode!=null and orgProvinceCode!=''">
+                and A.ORG_PROVINCE_CODE = #{orgProvinceCode}
+            </if>
+            <if test="orgCityCode!=null and orgCityCode!=''">
+                and A.ORG_CITY_CODE = #{orgCityCode}
+            </if>
+            <if test="orgAreaCode!=null and orgAreaCode!=''">
+                and A.ORG_AREA_CODE = #{orgAreaCode}
+            </if>
+            <if test="sysUserLevel!=null and sysUserLevel !=''">
+                <choose>
+                    <when test='sysUserLevel=="4"'>
+                        and A.STATUS in ('8','9')
+                    </when>
+                    <when test='sysUserLevel=="3"'>
+                        and A.STATUS in ('6','8','9')
+                    </when>
+                    <when test='sysUserLevel=="2"'>
+                        and A.STATUS in ('4','6','8','9')
+                    </when>
+                    <when test='sysUserLevel=="1"'>
+                        and A.STATUS in ('2','4','6','8','9')
+                    </when>
+                </choose>
+            </if>
+            <if test='approveFlag =="1"'>
+                and A.STATUS &gt;= '2'
+            </if>
+        </where>
+        ORDER BY A.CREATE_TIME DESC
+    </select>
+
+    <select id="getObj" parameterType="java.lang.String" resultMap="baseResultMap">
+        select A.ID,A.WET_NAME,A.WET_CODE,A.WET_TOTAL_AREA
+        ,A.WET_PLAQUE_COUNT,A.WET_TYPE1,A.WET_TYPE_AREA1
+        ,A.WET_MODEL1,A.WET_MODEL_AREA1,A.WET_TYPE2,A.WET_TYPE_AREA2
+        ,A.WET_MODEL2,A.WET_MODEL_AREA2,A.PROVINCE_CODE,A.CITY_CODE
+        ,A.AREA_CODE,A.REGION_IN_CH,A.NORTH_LATITUDE,A.EAST_LONGITUDE
+        ,A.SECOND_BASIN,A.RIVER_LEVEL,A.AVG_ALTITUDE,A.WATER_SUPPLY
+        ,A.WET_NEAR_SEA,A.SALINITY,A.WATER_TEMP,A.LAND_OWNERSHIP
+        ,A.PLANT_TYPE,A.PLANT_AREA,A.NAME_IN_CH,A.LATIN_NAME
+        ,A.FAMILY_NAME,A.STATUS,A.CREATE_TIME,A.CREATE_USER_NAME
+        -- 状态value（状态0：已保存；1：已撤回；2：已上报；3：市级退回；4：市级通过；5：省级退回；6：省级通过；7：总站退回；8：总站通过）
+        ,(case A.STATUS when '0' then '已保存'
+        when '1' then '已撤回'
+        when '2' then '已上报'
+        when '3' then '市级退回'
+        when '4' then '市级通过'
+        when '5' then '省级退回'
+        when '6' then '省级通过'
+        when '7' then '总站退回'
+        when '8' then '总站通过'
+        when '9' then '专家批复'
+        end ) as STATUS_NAME
+        from wet_example_point_collect A
+        <where>
+            A.DEL_FLAG='N'
+            <if test="id!=null and id !=''">
+                and A.ID = #{id}
+            </if>
+        </where>
+        LIMIT 1 offset 0
+    </select>
+    <select id="listForSelect" parameterType="string" resultType="com.sofn.agsjsi.vo.DropDownVo">
+        select id ,WET_NAME as name
+        from wet_example_point_collect
+        <where>
+            DEL_FLAG='N'
+            AND STATUS='9'
+            <if test="lastRegionCode!=null and lastRegionCode !=''">
+                and (PROVINCE_CODE=#{lastRegionCode} or CITY_CODE=#{lastRegionCode} or AREA_CODE=#{lastRegionCode})
+            </if>
+        </where>
+    </select>
+</mapper>

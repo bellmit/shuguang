@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysDictMapper" >
+    <resultMap id="BaseResultMap" type="com.sofn.sys.model.SysDict" >
+        <id column="ID" jdbcType="VARCHAR" property="id" />
+        <!--<result column="DICTTYPEID" jdbcType="VARCHAR" property="sysDictType.id" />-->
+        <result column="DICTCODE" jdbcType="VARCHAR" property="dictcode" />
+        <result column="DICTNAME" jdbcType="VARCHAR" property="dictname" />
+        <result column="ENABLE" jdbcType="VARCHAR" property="enable" />
+        <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+        <result column="CREATE_USER_ID" jdbcType="VARCHAR" property="createUserId" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="UPDATE_USER_ID" jdbcType="VARCHAR" property="updateUserId" />
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+        <association property="sysDictType" javaType="com.sofn.sys.model.SysDictType">
+            <result column="DICTTYPEID" property="id" />
+        </association>
+    </resultMap>
+    <select id="getDictById" resultMap="BaseResultMap">
+            SELECT
+                SYS_DICT.ID,
+                SYS_DICT.DICTTYPEID DICTTYPEID,
+                SYS_DICT.DICTCODE,
+                SYS_DICT.DICTNAME,
+                SYS_DICT.ENABLE,
+                SYS_DICT.REMARK,
+                SYS_DICT.CREATE_USER_ID,
+                SYS_DICT.CREATE_TIME,
+                SYS_DICT.UPDATE_USER_ID,
+                SYS_DICT.UPDATE_TIME
+            FROM
+                SYS_DICT,SYS_DICT_TYPE
+            WHERE SYS_DICT.ID=#{id} AND SYS_DICT.DICTTYPEID = SYS_DICT_TYPE.ID
+    </select>
+    <select id="getDictInfo" resultMap="BaseResultMap">
+           SELECT
+                ID,
+                DICTTYPEID,
+                DICTCODE,
+                DICTNAME,
+                ENABLE,
+                REMARK,
+                CREATE_USER_ID,
+                CREATE_TIME,
+                UPDATE_USER_ID,
+                UPDATE_TIME
+            FROM
+                SYS_DICT
+    </select>
+    <select id="getDictByName" resultMap="BaseResultMap">
+        SELECT
+        ID,
+        DICTTYPEID,
+        DICTCODE,
+        DICTNAME,
+        ENABLE,
+        REMARK,
+        CREATE_USER_ID,
+        CREATE_TIME,
+        UPDATE_USER_ID,
+        UPDATE_TIME
+        FROM
+        SYS_DICT
+        <where>
+            <if test="dictName != null and dictName != ''">
+                POSITION (#{dictName} in DICTNAME)>0
+            </if>
+        </where>
+    </select>
+    <select id="getDictByValueAndType" resultMap="BaseResultMap">
+        SELECT
+        ID,
+        DICTTYPEID,
+        DICTCODE,
+        DICTNAME,
+        ENABLE,
+        REMARK,
+        CREATE_USER_ID,
+        CREATE_TIME,
+        UPDATE_USER_ID,
+        UPDATE_TIME
+        FROM
+        SYS_DICT
+        WHERE 1=1
+        <if test="dictcode != null and dictcode != ''">
+            and DICTCODE = #{dictcode}
+        </if>
+        <if test="dictname != null and dictname != ''">
+            and DICTNAME = #{dictname}
+        </if>
+        <if test="dicttypeid != null and dicttypeid != ''">
+            and DICTTYPEID = #{dicttypeid}
+        </if>
+    </select>
+    <select id="getDictNameByValueAndType" resultMap="BaseResultMap">
+        SELECT
+        ID,
+        DICTTYPEID,
+        DICTCODE,
+        DICTNAME,
+        ENABLE,
+        REMARK,
+        CREATE_USER_ID,
+        CREATE_TIME,
+        UPDATE_USER_ID,
+        UPDATE_TIME
+        FROM
+        SYS_DICT
+        WHERE 1=1
+        <if test="dictcode != null and dictcode != ''">
+            and DICTCODE = #{dictcode}
+        </if>
+        <if test="typeValue != null and typeValue != ''">
+            and DICTTYPEID = (SELECT ID FROM SYS_DICT_TYPE WHERE TYPEVALUE = #{typeValue})
+        </if>
+    </select>
+    <select id="getDictListByType" resultMap="BaseResultMap">
+        SELECT
+        ID,
+        DICTTYPEID,
+        DICTCODE,
+        DICTNAME,
+        ENABLE,
+        REMARK,
+        CREATE_USER_ID,
+        CREATE_TIME,
+        UPDATE_USER_ID,
+        UPDATE_TIME
+        FROM
+        SYS_DICT
+        WHERE 1=1
+        <if test="typevalue != null and typevalue != ''">
+            and DICTTYPEID = (SELECT ID FROM SYS_DICT_TYPE WHERE TYPEVALUE = #{typevalue})
+        </if>
+    </select>
+
+    <select id="getDictListByTypeId" resultMap="BaseResultMap">
+        SELECT
+        ID,
+        DICTTYPEID,
+        DICTCODE,
+        DICTNAME,
+        ENABLE,
+        REMARK,
+        CREATE_USER_ID,
+        CREATE_TIME,
+        UPDATE_USER_ID,
+        UPDATE_TIME
+        FROM
+        SYS_DICT
+        WHERE 1=1
+        <if test="typeId != null and typeId != ''">
+            and DICTTYPEID = #{typeId}
+        </if>
+    </select>
+
+    <insert id="saveDictInfo">
+        insert into SYS_DICT (ID,DICTTYPEID,
+          DICTCODE, DICTNAME,ENABLE, REMARK,
+          CREATE_USER_ID, CREATE_TIME, UPDATE_USER_ID,UPDATE_TIME)
+        values (#{id,jdbcType=VARCHAR},#{sysDictType.id,jdbcType=VARCHAR},#{dictcode,jdbcType=VARCHAR},#{dictname,jdbcType=VARCHAR},
+          #{enable,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{createUserId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+          #{updateUserId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <update id="updateDictInfo" >
+        update SYS_DICT
+        set ENABLE = #{enable},UPDATE_USER_ID=#{updateUserId},UPDATE_TIME=#{updateTime}
+        WHERE ID = #{id}
+    </update>
+    <delete id="deleteDictInfo" parameterType="java.util.Map">
+        DELETE FROM SYS_DICT WHERE ID in
+        <foreach collection="ids" open="(" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

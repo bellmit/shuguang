@@ -1,0 +1,319 @@
+<link rel="stylesheet" href="assets/css/dgap/resource/resourceMa.css">
+<link rel="stylesheet" href="/libs/bootstrap/bootstrap-3.3.5-dist/css/bootstrap-switch.min.css">
+<div class="gui-breadcrumbs">
+    <a href="">数据共享系统</a>&gt;
+    <a href="">资源管理</a>&gt;
+    <span>资源管理</span>
+</div>
+<div class="gui-section">
+    <div class="gui-tree-sidebar">
+        <div class="dropdown">
+            <!--<button class="gui-btn btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" ng-click="treeshow()">-->
+            <!--目录信息-->
+            <!--<span class="caret"></span>-->
+            <!--</button>-->
+            <ul class="gui-list">
+                <li ng-click="treeshow($event)"><a>资源目录</a></li>
+                <li role="presentation" ng-click="treeMainLi(n.id, $event)" ng-repeat="n in resourceDir">
+                    <a>{{n.text}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="gui-tree-content">
+        <form>
+            <div class="gui-form-group form-group clearfix">
+                <span class="color-gray">资源名称</span>
+                <input class="gui-input form_input" type="text" id="keyWord" name="resourceNameSe" placeholder="资源名称"
+                       maxlength="30">
+                <span class="color-gray">资源类型</span>
+                <span class="gui-select">
+                    <select name="resourceTypeSelct">
+                        <option value="">--资源类型--</option>
+                        <option value="{{x.id}}" ng-repeat="x in resourceType">{{x.name}}</option>
+                    </select>
+                </span>
+                <button class="gui-btn submit-btn" ng-click="queryList();">查询</button>
+                <button class="gui-btn submit-btn" ng-click="cleanData();">重置</button>
+            </div>
+        </form>
+        <div class="gui-actions">
+            <span class="gui-btn fr authority ml15" ng-click="deleteResources();"><i class="gui-icon icon-remove"></i>批量删除</span>
+            <span class="gui-btn fr addResource"   data-toggle="modal"    data-target="#reouseceModal" ><i
+                    class="gui-icon icon-add" ></i>新增</span>
+        </div>
+        <table id="resource" class="gui-table">
+        </table>
+    </div>
+</div>
+<!-- 模态框（新增） -->
+<div class="modal fade" id="reouseceModal" tabindex="-1" role="dialog" aria-labelledby="resDirAddLabel"
+     aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="resAddLabe">
+                    资源管理新增
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="addForm" style="text-align: center">
+                    <div class="form-item form-group">
+                        <label>资源目录<i class="gui-colorRed">*</i></label>
+                        <span class="gui-select">
+                            <select name="resourceDirName" class="gui-select form-control" data-bv-notempty="true"
+                                    data-bv-notempty-message="资源所属目录不能为空">
+                                <option value="">--资源所属目录--</option>
+                                <option ng-repeat="x in resourceDir" value="{{x.id}}" ng-bind="x.text"></option>
+                            </select>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>资源类型<i class="gui-colorRed">*</i></label>
+                        <input  type="text" class="gui-input form-control" value="数据导入"   disabled="disabled">
+                    </div>
+                    <div class="form-item form-group">
+                        <label>资源名称<i class="gui-colorRed">*</i></label>
+                        <input ng-model="resourceName" type="text" class="gui-input form-control"
+                               data-bv-notempty="true" data-bv-notempty-message="资源名称不能为空" name="ame"
+                               data-bv-stringlength="true" data-bv-stringlength-max="30"
+                               data-bv-stringlength-message="资源名称不超过30个字符">
+                    </div>
+                    <div class="form-item form-group">
+                        <label>资源URL<i class="gui-colorRed">*</i></label>
+                        <input id="reourceUrl" ng-model="reourceURL" type="text" class="gui-input form-control" data-bv-notempty="true"
+                               data-bv-notempty-message="资源URL不能为空" name="redme" data-bv-stringlength="true"
+                               data-bv-stringlength-max="100" data-bv-stringlength-message="资源URL不超过100个字符">
+                    </div>
+                    <div class="form-item form-group">
+                        <label>资源状态<i class="gui-colorRed">*</i></label>
+                        <span class="gui-select">
+                            <select name="resourceFlag" class="gui-select form-control" data-bv-notempty="true"
+                                    data-bv-notempty-message="资源状态不能为空">
+                                <option value="">--资源状态--</option>
+                                <option value="A">可用</option>
+                                <option value="N">不可用</option>
+                            </select>
+                        </span>
+                    </div>
+                    <div id="notifier" class="form-item form-group" style="">
+                        <label>通知接口<i class="gui-colorRed">*</i></label>
+                        <span class="gui-select">
+                            <select name="DataNotifier" class="gui-select form-control" data-bv-notempty="true"
+                                    data-bv-notempty-message="通知接口不能为空">
+                                <option value="{{x.id}}" ng-repeat="x in reourceNotifier" ng-bind="x.name"></option>
+                            </select>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>文件路径<i class="gui-colorRed">*</i></label>
+
+                        <input ng-model="reourceFilePath" type="text" class="gui-input form-control" data-bv-notempty="true"
+                               data-bv-notempty-message="文件路径不能为空" name="redmef" data-bv-stringlength="true"
+                               data-bv-stringlength-max="100" data-bv-stringlength-message="文件路径不超过100个字符">
+                    </div>
+                    <div class="form-item form-group">
+                        <label>资源描述<i class="gui-colorRed">*</i></label>
+                        <textarea class="gui-textarea form-control" data-bv-notempty="true"
+                                  data-bv-notempty-message="资源描述不能为空" name="description" data-bv-stringlength="true"
+                                  data-bv-stringlength-max="300"
+                                  data-bv-stringlength-message="资源描述不超过300个字符"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <span type="button" class="gui-btn glyphicon glyphicon-remove addDismiss" data-dismiss="modal"  >取消</span>
+                    <span ng-click="addResource()" class="gui-btn glyphicon glyphicon-ok addResources">
+                        保存
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+
+<!-- 数据导入文件csv上传model -->
+<div class="modal fade " id="importModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-stylesm">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">数据导入上传</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div style="width: 500px">
+                        <form method="post" enctype="multipart/form-data">
+                            <input id="file-1"  type="file" name="file"  multiple=" true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="5">
+                            <br>
+                        </form>
+                        <p> 备注：文件只支持 “csv” 格式，文件大小不超过20M。 </p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="gui-btn" type="button" data-dismiss="modal">关闭</button>
+                <button class="gui-btn" type="button" id="save" ng-click="importCsvData()">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 模态框（修改） -->
+<div class="modal fade" id="reouseceUpdateModal" tabindex="-1" role="dialog" aria-labelledby="resDirAddLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="resUpdateLabe">
+                    资源管理修改
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="resourceUpdateF" style="text-align: center">
+                    <div class="form-item form-group">
+                        <label>资源目录<i class="gui-colorRed">*</i></label>
+                        <span class="gui-select">
+                            <select name="resourceDirNameU" class="gui-select form-control" data-bv-notempty="true"
+                                    data-bv-notempty-message="资源所属目录不能为空！">
+                                <option style="display: none" value="{{resourceDirNameUId}}">{{resourceDirNameU}}
+                                </option>
+                                <option ng-repeat="x in resourceDir" value="{{x.id}}">{{x.text}}</option>
+                            </select>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>资源类型<i class="gui-colorRed">*</i></label>
+                        <span class="gui-select">
+                            <select name="resourceTypeUsesS"    class="gui-select form-control" data-bv-notempty="true"
+                                    data-bv-notempty-message="资源类型不能为空！" disabled>
+                                <option style="display: none" value="{{resourceTypeU}}">{{resourceTypeUName}}</option>
+                           </select>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>资源名称<i class="gui-colorRed">*</i></label>
+                        <input ng-model="resourceNameU" name="resourceNameI" type="text" class="gui-input form-control"
+                               data-bv-notempty="true" data-bv-notempty-message="资源名称不能为空！" data-bv-stringlength="true"
+                               data-bv-stringlength-max="30" data-bv-stringlength-message="资源名称不超过30个字符">
+                    </div>
+                    <div class="form-item form-group">
+                        <label>资源URL<i class="gui-colorRed">*</i></label>
+                        <input class="gui-input form-control" ng-model="reourceURLU" type="text" data-bv-notempty="true"
+                               data-bv-notempty-message="资源URL不能为空！" name="resourceURLI" data-bv-stringlength="true"
+                               data-bv-stringlength-max="100" data-bv-stringlength-message="资源URL不超过100个字符">
+                    </div>
+                    <div id="notifierUpdate" class="form-item form-group" style="display: none">
+                        <label>通知接口<i class="gui-colorRed">*</i></label>
+                        <span class="gui-select">
+                            <select  ng-model="DataNotifierUpdate" class="gui-select form-control" >
+                                <!--<option style="display: none" value="{{notifierid}}">{{notifierName}}</option>-->
+                                <option value="{{x.id}}" ng-repeat="x in reourceNotifier">{{x.name}}</option>
+                            </select>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>文件路径<i class="gui-colorRed">*</i></label>
+                        <input class="gui-input form-control" ng-model="reourceFilePathU" type="text" data-bv-notempty="true"
+                               data-bv-notempty-message="文件路径不能为空！" name="reourceFilePathU" data-bv-stringlength="true"
+                               data-bv-stringlength-max="100" data-bv-stringlength-message="文件路径不超过100个字符">
+                        <!--<input ng-model="reourceFilePathU" type="text" class="gui-input form-control">-->
+                    </div>
+                    <div class="form-item form-group">
+                        <label>资源描述<i class="gui-colorRed">*</i></label>
+                        <textarea class="gui-textarea form-control" data-bv-notempty="true"
+                                  data-bv-notempty-message="资源描述不能为空" name="descriptionU" ng-model="descriptionU"
+                                  data-bv-stringlength="true" data-bv-stringlength-max="300"
+                                  data-bv-stringlength-message="资源描述不超过300个字符"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <span type="button" class="gui-btn glyphicon glyphicon-remove" data-dismiss="modal">取消</span>
+                        <span type="submit" ng-click="resourceUpdata()"
+                              class="gui-btn glyphicon glyphicon-ok resourceUpdateDs">
+                            保存
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal -->
+    </div>
+</div>
+
+
+<!-- 模态框（查看） -->
+<div class="modal fade" id="reouseceCheckModal" tabindex="-1" role="dialog" aria-labelledby="resDirAddLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="resCheckLabe">
+                    查看详情
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="resourceCheckF" style="text-align: center">
+                    <div class="form-item form-group">
+                        <label>资源目录<i class="gui-colorRed">*</i></label>
+                        <span class="gui-select">
+                            <select name="resourceDirNameC" class="gui-select form-control" data-bv-notempty="true" >
+                                <option style="display: none" value="{{resourceDirNameCId}}">{{resourceDirNameC}}
+                                </option>
+                                <option ng-repeat="x in resourceDir" value="{{x.id}}">{{x.text}}</option>
+                            </select>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>资源类型<i class="gui-colorRed">*</i></label>
+                        <span class="gui-select">
+                            <select name="resourceTypeC"    class="gui-select form-control" data-bv-notempty="true" >
+                                <option style="display: none" value="{{resourceTypeU}}">{{resourceTypeUName}}</option>
+                            </select>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>资源名称<i class="gui-colorRed">*</i></label>
+                        <input ng-model="resourceNameC" name="resourceNameC" type="text" class="gui-input form-control" >
+                    </div>
+                    <div class="form-item form-group">
+                        <label>资源URL<i class="gui-colorRed">*</i></label>
+                        <input class="gui-input form-control" ng-model="reourceURLC" type="text" data-bv-notempty="true" name="reourceURLC" >
+                    </div>
+                    <div id="notifierCheck" class="form-item form-group" style="display: none">
+                        <label>通知接口<i class="gui-colorRed">*</i></label>
+                        <span class="gui-select">
+                            <select  ng-model="DataNotifierC" class="gui-select form-control"  >
+                                <option value="{{x.id}}" ng-repeat="x in reourceNotifier">{{x.name}}</option>
+                            </select>
+                        </span>
+                    </div>
+                    <div class="form-item form-group">
+                        <label>文件路径<i class="gui-colorRed">*</i></label>
+                        <input class="gui-input form-control" ng-model="reourceFilePathC" type="text" name="reourceFilePathC" >
+                    </div>
+                    <div class="form-item form-group">
+                        <label>资源描述<i class="gui-colorRed">*</i></label>
+                        <textarea class="gui-textarea form-control"  name="descriptionC" ng-model="descriptionC" ></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <span type="button" class="gui-btn glyphicon glyphicon-remove" data-dismiss="modal">关闭</span>
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal -->
+    </div>
+</div>

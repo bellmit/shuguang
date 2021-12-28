@@ -1,0 +1,261 @@
+<link rel="stylesheet" href="../../assets/css/monitor/task.css"/>
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+<link rel="stylesheet" href="../../assets/css/monitor/subjSvList.css"/>
+<div class="gui-breadcrumbs">
+    <a href="">{{monitorClass}}</a>&gt;
+    <a href="">抽样</a>&gt;
+    <span>下载抽样单</span>
+</div>
+<div class="Sup_contain_section_head_nav bcgreypl25 clearfix gov-h">
+    <ul>
+        <li class="fl"  href="#" ng-click="taskDetail()">任务详情</li>
+        <li class="fl"  href="#" ng-click="sampleMessage()">样品信息</li>
+        <li class="fl"  href="#" ng-click="test()">检测</li>
+        <li class="fl"  href="#" ng-click="routineMonitorList()">检测信息汇总</li>
+        <li class="fl"  href="#" ng-click="routineReportUpload()">报告上传</li>
+    </ul>
+</div>
+<div class="clearfix gov-h ">
+        <div>
+            <ul class="gui-tab" role="tablist">
+                <!--<li role="presentation" class="pointer"><a ng-click="sampelPrint()" role="tab" data-toggle="tab">1.打印抽样条码</a></li>-->
+                <li role="presentation" class="active"><a ng-click="downloadSample()" role="tab" data-toggle="tab">下载抽样单</a></li>
+                <li role="presentation" class="pointer"><a ng-click="sampleMessage()" role="tab" data-toggle="tab">抽样信息管理</a></li>
+            </ul>
+        </div>
+        <div id="printCount" class="ml25pr30">
+            <h3 align="center" class="mt15 mb25">农业农村部 农产品质量安全 {{monitorClass}} 抽样单</h3>
+            <table class="mt15"  style="width: 100%;">
+                <tr>
+                    <td height="35px" style="text-align: left"><span style="display: inline-block">产品编码</span>
+                        <input style="width:70%" class="codeline" type="text" ng-model="productTraceabilityCode"></td>
+                   <!-- <td rowspan="3" style="width: 20%"> <div id="code" style=""></div></td>-->
+                </tr>
+                <tr>
+                    <td height="35px" style="text-align: left"><span style="display: inline-block">样品编码</span>
+                        <input type="text" style="width:70%" class="codeline" ng-model="sampleCode" ></td>
+                </tr>
+                <tr>
+                    <td height="35px" style="text-align: left"><span>产品编码：追溯码、产品批次码、入市追溯凭证之一</span></td>
+                </tr>
+                <tr>
+                    <td colspan="2" height="35px" style="text-align: left"><span>样品编码规则:LXJC+3位单位编码+2位行业+4位年份+2位批次+自定义条码(四位数字,如:0001)</span></td>
+                </tr>
+            </table>
+            <table  style="width: 100%;" class="gui-table">
+                <tr>
+                    <td style="width: 15%">样品名称</td>
+                    <td style="width: 35%;" ><input type="text" class="gui-input" style="width:100%" ng-model="sampleName"></td>
+                    <td style="width: 15%" >样品编号</td>
+                    <td style="width: 35%;" ><input type="text" class="gui-input" style="width:100%" readOnly="true" ng-model="sampleCode"></td>
+                </tr>
+                <tr >
+                    <td>商标</td>
+                    <td ><input type="text" style="width:100%" class="gui-input" ng-model="tradeMark"></td>
+                    <td >包装</td>
+                    <td ><input type="text" style="width:100%" class="gui-input" ng-model="packing"></td>
+                </tr>
+                <tr >
+                    <td>等级</td>
+                    <td ><input type="text" style="width:100%" class="gui-input" ng-model="grade"></td>
+                    <td >标识</td>
+                    <td ><input type="text" style="width:100%" class="gui-input" ng-model="identify"></td>
+                </tr>
+                <tr >
+                    <td>型号规格</td>
+                    <td ><input type="text" style="width:100%" class="gui-input" ng-model="specification"></td>
+                    <td >执行标准</td>
+                    <td ><input type="text" style="width:100%" class="gui-input" ng-model="standard"></td>
+                </tr>
+                <tr >
+                    <td >生成日期或批号</td>
+                    <td ><input type="text" style="width:100%" class="gui-input" ng-model="produceDate"></td>
+                    <td >产地</td>
+                    <td  style="text-align:left">
+                        <div class="gui-select" style="width: 100%;">
+                            <select id="sheng" >
+                                <option value="">--请选择省份--</option>
+                            </select>
+                        </div>
+                        <div class="gui-select mt15" style="width: 100%;">
+                            <select id="shi">
+                                <option value="">--请选择城市--</option>
+                            </select>
+                        </div>
+                        <div class="gui-select mt15" style="width: 100%;">
+                            <select id="xian">
+                                <option value="" ng-model="producingArea">--请选择区/县--</option>
+                            </select>
+                        </div>
+
+
+                        </td>
+                </tr>
+                <tr style="height: 25px">
+                    <td >产品认证情况</td>
+                    <td colspan="3" style="text-align:left">
+                        <label class="checkbox-inline" >
+                            <input type="radio"  id="innocuity" value="innocuity" ng-model="innocuity"> 无公害农产品
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" id="green"   value="green" ng-model="green"> 绿色食品
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" id="organic"  value="organic" ng-model="organic"> 有机食品
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" id="other"  value="other" ng-model="other"> 其他
+                        </label>
+                </tr>
+                <tr >
+                    <td>证书编号</td>
+                    <td colspan="3"><input type="text" class="gui-input" style="width:100%" ng-model="certificateCode"></td>
+                </tr>
+                <tr>
+                    <td >抽样基数</td>
+                    <td colspan="3"><input type="text" class="gui-input" style="width:100%" ng-model="sampleBase"></td>
+                </tr>
+                <tr >
+                    <td  style="height: 50px">抽样场所</td>
+                    <td colspan="3" style="text-align:left">
+                        <label class="checkbox-inline">
+                        <input type="radio" id="base" value="base" ng-model="base"> 生产基地/企业
+                    </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" id="slaughter" value="slaughter" ng-model="slaughter"> 屠宰场
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" id="market" value="market" ng-model="market"> 农贸市场
+                        </label>
+                        <input type="radio" id="wholesale" value="wholesale" ng-model="wholesale"> 批发市场
+                    </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" id="supermar" value="supermar" ng-model="supermar"> 超市
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" id="else" value="else" ng-model="else"> 其他
+                        </label>
+                    </td>
+                </tr>
+                <tr >
+                    <td rowspan="9">受检单位情况</td>
+                    <td  style="width: 16%">受检单位名称</td>
+                    <td colspan="2"><input type="text" class="gui-input" style="width:100%" ng-model="testedDeparment"></td>
+                </tr>
+                <tr >
+                    <td >通讯地址</td>
+                    <td colspan="2"><input class="gui-input" type="text" style="width:100%" ng-model="testedAddress"></td>
+                </tr>
+                <tr >
+                    <td >法定人代表</td>
+                    <td colspan="2"><input class="gui-input" type="text" style="width:100%" ng-model="testedLegalrep"></td>
+                </tr>
+                <tr >
+                    <td  >联系人</td>
+                    <td colspan="2"><input class="gui-input" type="text" style="width:100%" ng-model="testedLinkman"></td>
+                </tr>
+                <tr><td  >电话</td>
+                    <td  colspan="2"><input class="gui-input" type="text" style="width:100%" ng-model="testedLinkmanphone"></td></tr>
+                <tr>
+                    <td >传真</td>
+                    <td colspan="2"><input class="gui-input" type="text" style="width:100%" ng-model="testedLinkmanfax"></td>
+                </tr>
+                <tr >
+                    <td>受检人</td>
+                    <td colspan="2"><input type="text" class="gui-input" style="width:100%" ng-model="testedPerson"></td>
+                </tr>
+                <tr>
+                    <td >电话</td>
+                    <td colspan="2"><input class="gui-input" type="text" style="width:100%" ng-model="testedPersonphone"></td>
+                </tr>
+                <tr>
+                    <td >传真</td>
+                    <td colspan="2"><input type="text" class="gui-input" style="width:100%" ng-model="testedPersonfax"></td>
+                </tr>
+                <tr >
+                    <td rowspan="7">生产单位情况</td>
+                    <td colspan="3">
+                            <label class="checkbox-inline">
+                                <input type="radio" id="production" value="production" ng-model="production"> 生产
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="radio" id="stock" value="stock" ng-model="stock"> 进
+                            </label>
+                        </td>
+                    >
+                </tr>
+                <tr>
+                    <td><span>单位名称</span></td>
+                    <td colspan="2"><input type="text" class="gui-input" style="width:100%" ng-model="productionDeparment"></td>
+                </tr>
+                <tr >
+                    <td >通讯地址</td>
+                    <td colspan="2"><input type="text" class="gui-input" style="width:100%" ng-model="productionAddress"></td>
+                </tr>
+                <tr>
+                    <td>邮编</td>
+                    <td colspan="2"><input type="text" class="gui-input" style="width:100%" ng-model="productionZipcode"></td>
+                </tr>
+                <tr >
+                    <td >联系人</td>
+                    <td colspan="2"><input type="text" class="gui-input" style="width:100%" ng-model="productionLinkman"></td>
+                </tr>
+                <tr>
+                    <td  style="width: 16%">电话</td>
+                    <td colspan="2"><input type="text" class="gui-input" style="width:100%" ng-model="productionLinkmanphone"></td>
+                </tr>
+                <tr>
+                    <td>传真</td>
+                    <td colspan="2"><input type="text" class="gui-input" style="width:100%" ng-model="productionLinkmanfax"></td>
+                </tr>
+                <tr >
+                    <td rowspan="7" >抽样单位情况</td>
+                    <td >单位名称</td>
+                    <td colspan="2"><input type="text" class="gui-input" style="width:100%" ng-model="sampleDeparment"></td>
+                </tr>
+                <tr>
+                    <td >联系人</td>
+                    <td colspan="2"><input type="text" class="gui-input" style="width:100%" ng-model="sampleLinkman"></td>
+                </tr>
+                <tr >
+                    <td >通讯地址</td>
+                    <td colspan="2"><input type="text" class="gui-input" style="width:100%" ng-model="sampleAddress"></td>
+                </tr>
+                <tr>
+                    <td >邮编</td>
+                    <td colspan="2"><input type="text" class="gui-input" style="width:100%" ng-model="sampleZipcode"></td>
+                </tr>
+                <tr >
+                    <td>联系电话</td>
+                    <td colspan="2"><input type="text" class="gui-input" style="width:100%" ng-model="samplePhone"></td>
+                </tr>
+                <tr>
+                    <td >传真</td>
+                    <td colspan="2"><input type="text" class="gui-input" style="width:100%" ng-model="sampleFax"></td>
+                </tr>
+                <tr >
+                    <td >E-mail</td>
+                    <td colspan="2"><input type="text" class="gui-input" style="width:100%" ng-model="sampleEmail"></td>
+                </tr>
+                <tr>
+                    <td >
+                        <label>检测任务依据:</label>
+                    </td>
+                    <td colspan="3">
+                        <input type="text" class="gui-input" style="width:100%" ng-model="proof">
+                    </td>
+                </tr>
+                <tr >
+                    <td  colspan="2">
+                        <span>抽样时间:<input onclick="SelectDate(this)" class="gui-input" name="sampleDate" style="" ></span>
+                    </td>
+                    <td colspan="2">
+                        <span >抽样人员:<input type="text" class="gui-input" style="" ng-model="samplePerson"></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <p  align="center" class="mb25">
+           <!-- <span type="button" class="gui-btn" ng-click="exportExcel()">导出</span>-->
+        </p>
+    </div>

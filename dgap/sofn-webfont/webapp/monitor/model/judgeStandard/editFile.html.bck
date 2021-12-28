@@ -1,0 +1,56 @@
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+<style>
+    .btn-file{
+        margin-bottom: 30px;
+    }
+    .btn-default {
+        margin-bottom: 30px;
+    }
+    #eventForm .file-preview{
+        display: none;
+    }
+</style>
+<div class="gui-breadcrumbs">
+    <a href="">监测系统</a>&gt;
+    <a href="">检测模型</a>&gt;
+    <a href="">判定标准</a>&gt;
+    <span>附件上传</span>
+</div>
+<div class="Sup_contain_section_contain ">
+        <!-- 左侧菜单 -->
+        <div class="col-md-2">
+            <div class="panel-group list-group-panel pdr-20">
+                <div class="panel panel-default">
+                    <div class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="list-group" style="margin-bottom:0px;">
+                                <span class="list-group-item line-20 pointer" ng-click="goBaseInfo()">基本信息</span>
+                                <span class="list-group-item line-20 active">上传附件</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 右侧菜单 -->
+        <div class="col-md-10">
+            <div class="well" style="background-color: white;">
+                <div class="modal-body">
+                    <form method="post" enctype="multipart/form-data" id="eventForm">
+                        <a id="file_name" download="" class="btn btn-link" target="_blank"></a>
+                        <input style="display: inline;width: 225px;" id="file-1" multiple="true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="1" type="file"/>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="pull-left mgl-30 gui-btn" ng-click="goJudgeList()">返回</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+

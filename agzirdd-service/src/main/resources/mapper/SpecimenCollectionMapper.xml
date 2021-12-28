@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agzirdd.mapper.SpecimenCollectionMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.agzirdd.model.SpecimenCollection" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="BELONG_YEAR" property="belongYear" jdbcType="VARCHAR" />
+    <result column="COLLECT_NUMBER" property="collectNumber" jdbcType="VARCHAR" />
+    <result column="COLLECT_TIME" property="collectTime" jdbcType="TIMESTAMP" />
+    <result column="GATHERER" property="gatherer" jdbcType="VARCHAR" />
+    <result column="COMPANY" property="company" jdbcType="VARCHAR" />
+    <result column="PROVINCE_ID" property="provinceId" jdbcType="VARCHAR" />
+    <result column="CITY_ID" property="cityId" jdbcType="VARCHAR" />
+    <result column="COUNTY_ID" property="countyId" jdbcType="VARCHAR" />
+    <result column="TOWN" property="town" jdbcType="VARCHAR" />
+    <result column="LONGITUDE" property="longitude" jdbcType="VARCHAR" />
+    <result column="LATITUDE" property="latitude" jdbcType="VARCHAR" />
+    <result column="ALTITUDE" property="altitude" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+    <result column="CREATE_USER_ID" property="createUserId" jdbcType="VARCHAR" />
+    <result column="CREATE_USER_NAME" property="createUserName" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="ROLE_CODE" property="roleCode" jdbcType="VARCHAR" />
+    <result column="CFDD" property="cfdd" jdbcType="VARCHAR" />
+    <result column="CFTJ" property="cftj" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <resultMap id="testTable" type="com.sofn.agzirdd.vo.SpecimenCollectionForm">
+    <result column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="BELONG_YEAR" property="belongYear" jdbcType="VARCHAR" />
+    <result column="COLLECT_NUMBER" property="collectNumber" jdbcType="VARCHAR" />
+    <result column="COLLECT_TIME" property="collectTime" jdbcType="TIMESTAMP" />
+    <result column="GATHERER" property="gatherer" jdbcType="VARCHAR" />
+    <result column="COMPANY" property="company" jdbcType="VARCHAR" />
+    <result column="PROVINCE_ID" property="provinceId" jdbcType="VARCHAR" />
+    <result column="CITY_ID" property="cityId" jdbcType="VARCHAR" />
+    <result column="COUNTY_ID" property="countyId" jdbcType="VARCHAR" />
+    <result column="TOWN" property="town" jdbcType="VARCHAR" />
+    <result column="LONGITUDE" property="longitude" jdbcType="VARCHAR" />
+    <result column="LATITUDE" property="latitude" jdbcType="VARCHAR" />
+    <result column="ALTITUDE" property="altitude" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+    <result column="AREA_NAME" property="areaName" jdbcType="VARCHAR" />
+    <result column="TYPE_NAME" property="typeName" jdbcType="VARCHAR" />
+    <result column="PLANT_SPECIES_ID" property="plantSpeciesId" jdbcType="VARCHAR" />
+    <result column="PLANT_SPECIES_NAME" property="plantSpeciesName" jdbcType="VARCHAR" />
+    <result column="PLANT_LATIN_NAME" property="plantLatinName" jdbcType="VARCHAR" />
+    <result column="ANIMAL_SPECIES_ID" property="animalSpeciesId" jdbcType="VARCHAR" />
+    <result column="ANIMAL_SPECIES_NAME" property="animalSpeciesName" jdbcType="VARCHAR" />
+    <result column="ANIMAL_LATIN_NAME" property="animalLatinName" jdbcType="VARCHAR" />
+    <result column="MICROBE_SPECIES_ID" property="microbeSpeciesId" jdbcType="VARCHAR" />
+    <result column="MICROBE_SPECIES_NAME" property="microbeSpeciesName" jdbcType="VARCHAR" />
+    <result column="MICROBE_LATIN_NAME" property="microbeLatinName" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ID,BELONG_YEAR,COLLECT_NUMBER,COLLECT_TIME,GATHERER,COMPANY,PROVINCE_ID,CITY_ID,COUNTY_ID,TOWN
+    ,LONGITUDE,LATITUDE,ALTITUDE,STATUS,TYPE,CREATE_USER_ID,CREATE_USER_NAME,CREATE_TIME,ROLE_CODE
+    ,CFDD,CFTJ,PROVINCE_NAME,CITY_NAME,COUNTY_NAME
+
+  </sql>
+
+  <select id="getSpecimenCollectionByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM SPECIMEN_COLLECTION
+    <where>
+      1=1
+      <if test="gatherer != null and gatherer != ''">
+        and GATHERER like '%'||#{gatherer}||'%'
+      </if>
+      <if test="provinceId != null and provinceId != ''">
+        and PROVINCE_ID = #{provinceId}
+      </if>
+      <if test="cityId != null and cityId != ''">
+        and CITY_ID = #{cityId}
+      </if>
+      <if test="countyId != null and countyId != ''">
+        and COUNTY_ID = #{countyId}
+      </if>
+      <if test="inStatus!=null and inStatus!=''">
+        and status in (${inStatus})
+      </if>
+      <if test="status != null and status != ''">
+        and STATUS = #{status}
+      </if>
+      <if test="beginDate != null and beginDate != ''">
+        AND COLLECT_TIME &gt;=to_date(#{beginDate},'yyyy-MM-dd')
+      </if>
+      <if test="endDate != null and endDate != ''">
+        AND COLLECT_TIME &lt;(to_date(#{endDate},'yyyy-MM-dd'))+1
+      </if>
+      <if test="createUserId != null and createUserId != ''">
+        AND CREATE_USER_ID = #{createUserId}
+      </if>
+      <if test="type != null and type != ''">
+        AND TYPE = #{type}
+      </if>
+      <if test="roleCode != null and roleCode != ''">
+        AND ROLE_CODE = #{roleCode}
+      </if>
+    </where>
+    ORDER BY CREATE_TIME desc
+  </select>
+
+  <select id="getSpecimenCollectionByParams" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM SPECIMEN_COLLECTION
+    <where>
+      1=1
+      <if test="collectNumber != null and collectNumber != ''">
+        and COLLECT_NUMBER = #{collectNumber}
+      </if>
+      <if test="provinceId != null and provinceId != ''">
+        and PROVINCE_ID = #{provinceId}
+      </if>
+      <if test="cityId != null and cityId != ''">
+        and CITY_ID = #{cityId}
+      </if>
+      <if test="countyId != null and countyId != ''">
+        and COUNTY_ID = #{countyId}
+      </if>
+      <if test="status != null and status != ''">
+        and STATUS = #{status}
+      </if>
+      <if test="type != null and type != ''">
+        AND TYPE = #{type}
+      </if>
+      <if test="roleCode != null and roleCode != ''">
+        AND ROLE_CODE = #{roleCode}
+      </if>
+    </where>
+    ORDER BY CREATE_TIME desc
+  </select>
+
+  <select id="getSpecimenCollectionForm" parameterType="java.util.Map" resultMap="testTable">
+    SELECT
+    a.ID AS ID,
+    a.BELONG_YEAR AS BELONG_YEAR,
+    a.COLLECT_NUMBER AS COLLECT_NUMBER,
+    a.COLLECT_TIME AS COLLECT_TIME,
+    a.GATHERER AS GATHERER,
+    a.COMPANY AS COMPANY,
+    a.PROVINCE_ID AS PROVINCE_ID,
+    a.PROVINCE_NAME AS PROVINCE_NAME,
+    a.CITY_ID AS CITY_ID,
+    a.CITY_NAME AS CITY_NAME,
+    a.COUNTY_ID AS COUNTY_ID,
+    a.COUNTY_NAME AS COUNTY_NAME,
+    a.TOWN AS TOWN,
+    a.LONGITUDE AS LONGITUDE,
+    a.LATITUDE AS LATITUDE,
+    a.ALTITUDE AS ALTITUDE,
+    a.STATUS AS STATUS,
+    a.TYPE AS TYPE,
+    '' AS AREA_NAME,
+    '' AS TYPE_NAME,
+    b.SPECIES_ID as PLANT_SPECIES_ID,
+    b.SPECIES_NAME as PLANT_SPECIES_NAME,
+    b.LATIN_NAME as PLANT_LATIN_NAME,
+    c.SPECIES_ID as ANIMAL_SPECIES_ID,
+    c.SPECIES_NAME as ANIMAL_SPECIES_NAME,
+    c.LATIN_NAME as ANIMAL_LATIN_NAME,
+    d.SPECIES_ID as MICROBE_SPECIES_ID,
+    d.SPECIES_NAME as MICROBE_SPECIES_NAME,
+    d.LATIN_NAME as MICROBE_LATIN_NAME
+    FROM SPECIMEN_COLLECTION a
+    left join COLLECTION_PLANT_SPECIMEN b
+    on a.ID = b.SPECIMEN_COLLECTION_ID
+    left join COLLECTION_ANIMAL_SPECIMEN c
+    on a.ID = c.SPECIMEN_COLLECTION_ID
+    left join COLLECTION_MICROBE_SPECIMEN d
+    on a.ID = d.SPECIMEN_COLLECTION_ID
+    <where>
+      1=1
+      <if test="gatherer != null and gatherer != ''">
+        and a.GATHERER like '%'||#{gatherer}||'%'
+      </if>
+      <if test="provinceId != null and provinceId != ''">
+        and a.PROVINCE_ID = #{provinceId}
+      </if>
+      <if test="cityId != null and cityId != ''">
+        and a.CITY_ID = #{cityId}
+      </if>
+      <if test="countyId != null and countyId != ''">
+        and a.COUNTY_ID = #{countyId}
+      </if>
+      <if test="inStatus!=null and inStatus!=''">
+        and a.status in (${inStatus})
+      </if>
+      <if test="status != null and status != ''">
+        and a.STATUS = #{status}
+      </if>
+      <if test="beginDate != null and beginDate != ''">
+        AND a.COLLECT_TIME &gt;=to_date(#{beginDate},'yyyy-MM-dd')
+      </if>
+      <if test="endDate != null and endDate != ''">
+        AND a.COLLECT_TIME &lt;(to_date(#{endDate},'yyyy-MM-dd'))+1
+      </if>
+      <if test="createUserId != null and createUserId != ''">
+        AND a.CREATE_USER_ID = #{createUserId}
+      </if>
+      <if test="type != null and type != ''">
+        AND a.TYPE = #{type}
+      </if>
+      <if test="roleCode != null and roleCode != ''">
+        AND a.ROLE_CODE = #{roleCode}
+      </if>
+      <if test="plantSpeciesId != null and plantSpeciesId != ''">
+        AND b.SPECIES_ID = #{plantSpeciesId}
+      </if>
+       <if test="animalSpeciesId != null and animalSpeciesId != ''">
+        AND c.SPECIES_ID = #{animalSpeciesId}
+      </if>
+      <if test="microbeSpeciesId != null and microbeSpeciesId != ''">
+        AND d.SPECIES_ID = #{microbeSpeciesId}
+      </if>
+    </where>
+    ORDER BY a.CREATE_TIME desc
+  </select>
+
+  <select id="getSpecimenCollectionById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from SPECIMEN_COLLECTION
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <!--修改监测点基本信息状态-->
+  <update id="updateStatus" parameterType="java.util.Map">
+    update SPECIMEN_COLLECTION
+    <set >
+      <if test=" status != null and  status != '' " >
+        STATUS = #{status}
+      </if>
+    </set>
+    where
+    ID = #{id}
+  </update>
+</mapper>

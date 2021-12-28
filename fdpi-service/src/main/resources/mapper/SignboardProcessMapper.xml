@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.fdpi.mapper.SignboardProcessMapper">
+
+
+    <sql id="alias_Column_List_sp">
+      sp.ID, sp.APPLY_ID, sp.PERSON, sp.CODE, sp.STATUS, sp.ADVICE, sp.CON_TIME,
+      sp.CREATE_USER_ID, sp.CREATE_TIME, sp.UPDATE_USER_ID, sp.UPDATE_TIME, sp.DEL_FLAG
+    </sql>
+    <sql id="alias_Column_List_sa">
+      sa.APPLY_TYPE, sa.APPLY_TIME, sa.APPLY_NUM, sa.APPLY_CODE
+    </sql>
+    <sql id="alias_Column_List_ts">
+      ts.SPE_NAME
+    </sql>
+
+    <select id="listByParams" resultType="com.sofn.fdpi.model.SignboardProcess">
+        select
+        <include refid="alias_Column_List_sp"/>,<include refid="alias_Column_List_sa"/>,
+        <include refid="alias_Column_List_ts"/>
+        from SIGNBOARD_PROCESS sp right join SIGNBOARD_APPLY sa on sp.APPLY_ID = sa.ID left join TB_SPECIES ts on sa.SPE_ID = ts.ID
+        <where>
+            sp.DEL_FLAG = 'N' and sa.DEL_FLAG = 'N'
+            <if test="status != null and status != ''">
+                and sp.STATUS = #{status}
+            </if>
+            <if test="compId != null and compId != ''">
+                and sa.COMP_ID = #{compId}
+            </if>
+            <if test="speId != null and speId != ''">
+                and sa.SPE_ID = #{speId}
+            </if>
+            <if test="applyDateS != null and applyDateS != ''">
+                and sa.APPLY_TIME &gt;= to_timestamp(#{applyDateS},'yyyy-MM-dd HH24:MI:SS')
+            </if>
+            <if test="applyDateE != null and applyDateE != ''">
+                and sa.APPLY_TIME &lt;= to_timestamp(#{applyDateE},'yyyy-MM-dd HH24:MI:SS')
+            </if>
+            <if test="speName != null and speName != ''">
+                and ts.SPE_NAME like '%' || #{speName} || '%'
+            </if>
+        </where>
+        order by sa.APPLY_TIME desc, sp.UPDATE_TIME desc
+    </select>
+</mapper>

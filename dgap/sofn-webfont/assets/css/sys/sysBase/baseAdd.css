@@ -1,0 +1,11 @@
+.list-wrapper{
+  padding: 15px 0;
+}
+.gui-list{
+  overflow: hidden;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.gui-list .form-item{
+  margin-bottom: 0;
+}

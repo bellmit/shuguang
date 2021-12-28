@@ -1,0 +1,57 @@
+<link rel="stylesheet" href="assets/css/asms/ass/assChecklist.css"/>
+<div class="gui-breadcrumbs">
+    <a ui-sref="index.content.ales/taskManage/alesEntrustDetection">执法系统</a>&gt;
+    <a ui-sref="index.content.ales/taskManage/alesEntrustDetection">任务管理</a>&gt;
+    <a ui-sref="index.content.ales/taskManage/alesEntrustDetection">委托检测任务</a>&gt;
+    <a ui-sref="index.content.ales/taskManage/taskReport/alesEntrustDetectionReport">报告列表</a>&gt;
+    <a ui-sref="index.content.ales/taskManage/taskReport/TaskSampleJcInfoList">样品及检测信息</a>&gt;
+    <span>查看</span>
+</div>
+<div class="Sup_contain_section_contain gui-section clearfix gov-h">
+    <h4>产品检测详情</h4>
+    <!--产品检测详情-->
+    <form class="bs-example bs-example-form" role="form">
+        <div class="">
+               <div class="">
+                <div class="form-group">
+                    <label class="col-lg-3 col-md-3 col-sm-3 control-label">产品编码：</label>
+                    <span  ng-bind="jbInfomation.productCode" name="productCode"></span>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 col-md-3 col-sm-3 control-label">样品编码：</label>
+                    <span  ng-bind="jbInfomation.sampleCode" name="sampleCode"></span>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 col-md-3 col-sm-3 control-label">样品名称：</label>
+                    <span  ng-bind="jbInfomation.sampleName" name="sampleName"></span>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 col-md-3 col-sm-3 control-label">受检单位：</label>
+                    <span ng-bind="jbInfomation.testedDeparment" name="testedDeparment"></span>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 col-md-3 col-sm-3 control-label">抽样单位：</label>
+                    <span  ng-bind="jbInfomation.sampleDeparment" name="sampleDeparment"></span>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 col-md-3 col-sm-3 control-label">检测单位：</label>
+                    <span  ng-bind="jbInfomation.checkOrgan" name="checkOrgan"></span>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 col-md-3 col-sm-3 control-label">任务名称：</label>
+                    <span ng-bind="jbInfomation.taskName" name="taskName"></span>
+                </div>
+            </div>
+        </div>
+    </form>
+    <hr/>
+    <!--<p class="fleft">-->
+    <!--检测项目：<input type="text" placeholder="请输入查找内容" name="monitorTask"/>-->
+    <!--<button id="ToCheck">查询</button>-->
+    <!--</p>-->
+    <div class="col-lg-12 col-xs-12 col-sm-12 col-md-12   tb NewsSize">
+        <table id="productList" class="table table-bordered data-table table-hover table-striped tablewrap"
+               style="width: 100%">
+        </table>
+    </div>
+</div>

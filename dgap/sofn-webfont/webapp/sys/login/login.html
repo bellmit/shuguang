@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../../assets/css/login/login.css">
+</head>
+<body ng-app="myapp" ng-controller="login">
+<div class="login_bg col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="login_text ">
+        <img src="../../assets/imgs/login/login_word.png" alt="">
+    </div>
+    <div class="login_box ">
+        <div class="left fl">
+            <ul>
+                <li><img src="../../assets/imgs/login/login_pic01.png"></li>
+                <li><img src="../../assets/imgs/login/login_left_text.png"></li>
+                <li><img src="../../assets/imgs/login/login_pic02.png"></li>
+            </ul>
+        </div>
+        <div class="right fr">
+            <ul>
+                <li>
+                    <ul>
+                        <li class="fl"><span class="right_cut">普通登录sys1</span></li>
+                        <li class="fl"><span class="right_cut">动态口令登录</span></li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="right_input">
+                <p><img src="../../assets/imgs/login/user.png" alt=""><input type="text" placeholder="用户名" id="account"></p>
+                <p><img src="../../assets/imgs/login/password.png" alt=""><input type="password" placeholder="密码" id="password"></p>
+                <p><input type="text" style="background-color: transparent" id="code">
+                    <img id="validateImg" alt="验证码图片" style="width:100px;vertical-align: top;height: 30px" ng-click="flushValidateCode()"></p>
+                <p class="right_rem"><span class=" fl cursor_pointer" ng-click="imgCut()">
+                    <!--<input type="checkbox"/>-->
+                    <img class="rightimgCut" style="width: 16px;height: 16px" alt="图片">
+                    自动登录</span><span class="fr cursor_pointer">忘记密码</span></p>
+                <p class="right_img"><img ng-click="login()" src="../../assets/imgs/login/login.png" alt=""></p>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

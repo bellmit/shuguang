@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sofn.fdzem.mapper.MonitoringStationTaskMapper">
+
+
+    <!--分页+条件查询-->
+    <select id="selectListByQuery" resultType="com.sofn.fdzem.model.MonitoringStationTask"
+            parameterType="java.util.Map">
+        select
+        <include refid="Base_column_list"/>
+        from tb_monitoring_station_task
+        <where>1=1
+            <if test="year !=null">
+                and year = #{year}
+            </if>
+
+            <if test="status !=null and status != ''">
+                and status = #{status}
+            </if>
+
+            <if test="organizationId !=null and organizationId != ''">
+                and organization_id = #{organizationId}
+            </if>
+
+            <if test="organizationParentId !=null and organizationParentId != ''">
+                and organization_parent_id = #{organizationParentId}
+            </if>
+
+        </where>
+        ORDER BY create_time DESC
+    </select>
+    <select id="selectByName" resultType="com.sofn.fdzem.model.MonitorStation" parameterType="java.lang.String">
+        select id,name,address,longitude,latitude,
+        waters_type,sea_area,waters_name,province,
+        province_city,county_town,is_distribute,distribute_id,
+        organization_id  from tb_monitor_station where name = #{name}
+    </select>
+    <select id="selectListByQueryInfo" resultType="com.sofn.fdzem.model.MonitoringStationTask"
+            parameterType="java.util.Map">
+        select
+        <include refid="Base_column_list"/>
+        from tb_monitoring_station_task
+        <where>1=1
+            <if test="year !=null">
+                and year = #{year}
+            </if>
+            <if test="provice !=null and provice != ''">
+                and provice = #{provice}
+            </if>
+            <if test="city !=null and city != ''">
+                and city = #{city}
+            </if>
+            <if test="county !=null and county != ''">
+                and county = #{county}
+            </if>
+            <if test="seaArea !=null and seaArea != ''">
+                and sea_area = #{seaArea}
+            </if>
+
+            <if test="name !=null and name != ''">
+                and name like CONCAT('%',#{name, jdbcType=VARCHAR}::text,'%')
+            </if>
+
+            <if test="organizationId !=null and organizationId != ''">
+                and organization_id = #{organizationId}
+            </if>
+
+            <if test="organizationParentId !=null and organizationParentId != ''">
+                and organization_parent_id = #{organizationParentId}
+            </if>
+
+        </where>
+        ORDER BY create_time DESC
+    </select>
+    <select id="selectTrend" resultType="com.sofn.fdzem.model.MonitoringStationTask" parameterType="java.util.Map">
+        select
+        <include refid="Base_column_list"/>
+        from tb_monitoring_station_task
+        <where>1=1
+            <if test="year !=null">
+                and year = #{year}
+            </if>
+
+            <if test="name !=null and name != ''">
+                and name like CONCAT('%',#{name, jdbcType=VARCHAR}::text,'%')
+            </if>
+
+            <if test="organizationId !=null and organizationId != ''">
+                and organization_id = #{organizationId}
+            </if>
+
+            <if test="organizationParentId !=null and organizationParentId != ''">
+                and organization_parent_id = #{organizationParentId}
+            </if>
+
+        </where>
+        ORDER BY year
+    </select>
+    <!--删除-->
+    <delete id="removeById" parameterType="java.lang.String">
+        delete from tb_monitoring_station_task where id = #{id}
+    </delete>
+    <!--更新-->
+    <update id="update" parameterType="com.sofn.fdzem.model.MonitoringStationTask">
+        update tb_monitoring_station_task set
+        year = #{year},name = #{name},
+        area = #{area},sea_area = #{seaArea},status = #{status},
+        provice = #{provice},
+        city = #{city},county = #{county},longitude=#{longitude},
+        latitude=#{latitude},address=#{address},waters_name=#{watersName},waters_type=#{watersType}
+        where id=#{id}
+    </update>
+
+    <!--添加-->
+    <insert id="insert" parameterType="com.sofn.fdzem.model.MonitoringStationTask">
+        insert into tb_monitoring_station_task
+        (<include refid="Base_column_list"/>)
+        values
+        (#{id},#{year},#{name},#{monitoringStationNumber},#{area},#{seaArea},#{status},#{createTime},#{provice},#{city},#{county},#{organizationId},#{organizationParentId},#{longitude},#{latitude},#{address},#{watersName},#{watersType})
+    </insert>
+
+    <sql id="Base_column_list">
+         id,year,name,monitoring_station_number,area,sea_area,status,create_time,provice,city,county,organization_id,organization_parent_id,longitude,latitude,address,waters_name,waters_type
+    </sql>
+
+    <!--修改状态-->
+    <update id="updateStatus">
+        update tb_monitoring_station_task set status=#{status}
+        where id=#{id}
+    </update>
+    <!--修改监测批次数-->
+    <update id="updateMonitoringStationNumber">
+        update tb_monitoring_station_task set monitoring_station_number=#{monitoringStationNumber}
+        where id=#{id}
+    </update>
+    <!--根据监测站维护跟新数据-->
+    <update id="updateByMonitorStation">
+        update tb_monitoring_station_task
+        set address=#{address},longitude=#{longitude},latitude=#{latitude},waters_type=#{watersType},
+        waters_name=#{watersName},sea_area=#{seaArea}
+        where name=#{name}
+    </update>
+    <update id="updateBynames">
+        update tb_monitoring_station_task set organization_parent_id=#{id}
+        where name in
+        <foreach item='name' collection='names' open='(' separator=',' close=')'>
+            #{name}
+        </foreach>
+    </update>
+    <update id="updateMonitroIdById">
+        update  tb_monitoring_station_task set organization_parent_id=null
+        where organization_parent_id=#{id}
+    </update>
+
+</mapper>

@@ -1,0 +1,58 @@
+<link rel="stylesheet" href="assets/css/asms/ass/Assess.css"/>
+<style>
+    table thead tr th{
+        text-align: left;
+    }
+</style>
+<div class="gui-breadcrumbs">
+    <a href="javascript:void(0)">监管系统</a>&gt;
+    <a ui-sref="index.content.asms/ass/Assess">监督检查</a>&gt;
+    <span>巡查人员考核</span>
+</div>
+<div class="gui-section">
+    <form class="gui-form-group">
+       <div class="clearfix gov-h">
+           <div class="gui-mediaInline">
+               <!--暂时不设计任务类型的查询-->
+               <!--<span>任务类型</span>-->
+               <!--<div class="gui-select">-->
+                   <!--<select name="Maintype" class="Maintype" style="width: 120px">-->
+                       <!--<option value="">全部</option>-->
+                       <!--<option value="基地">基地</option>-->
+                       <!--<option value="主体">主体</option>-->
+                       <!--<option value="农资">农资</option>-->
+                       <!--<option value="其他">其他</option>-->
+                   <!--</select>-->
+               <!--</div>-->
+               <span>考核类型</span>
+               <div class="gui-select">
+                   <select name="Year" class="Year" style="width: 120px">
+                       <option value="">全部</option>
+                       <option value="年度">年度</option>
+                       <option value="季度">季度</option>
+                       <option value="月度">月度</option>
+                   </select>
+               </div>
+               <span>考核结果</span>
+               <div class="gui-select">
+                   <select name="taskResult" class="Jobstatus" style="width: 120px">
+                       <option value="">全部</option>
+                       <option value="合格">合格</option>
+                       <option value="不合格">不合格</option>
+                       <option value="未审核">未审核</option>
+                   </select>
+               </div>
+               <span>巡查人员</span>
+               <input class="gui-input" type="text" name="username"/>
+           </div>
+           <div class="gui-mediaInline mt15">
+               <button id="ToCheck" ng-disabled="!!btnDisabled" ng-disabled="!!btnDisabled" class="gui-btn" data-toggle="tooltip" data-placement="right" title="根据输入条件检索列表">查询</button>
+               <button data-toggle="tooltip" data-placement="right" class="gui-btn" type="reset">重置</button>
+           </div>
+       </div>
+
+    </form>
+    <table id="grid" class="gui-table mt15"
+           style="width: 100%">
+    </table>
+</div>

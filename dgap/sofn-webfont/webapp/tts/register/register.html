@@ -1,0 +1,61 @@
+<link rel="stylesheet" href="assets/styles/register.css">
+<header class="gui-header clearfix">
+    <div class="section-logo" ui-sref="login/login">
+        <img src="/assets/imgs/icon/logo.png" alt="国家农产品质量安全追溯管理信息平台（政务办公）" class="logo">
+        <h1>国家农产品质量安全追溯管理信息平台<em></em></h1>
+    </div>
+</header>
+<div>
+    <ul class="gui-step">
+        <li class="active">
+            <strong>1</strong>
+            <span>创建账号</span>
+        </li>
+        <li>
+            <strong>2</strong>
+            <span>备案申请</span>
+        </li>
+        <li>
+            <strong>3</strong>
+            <span>备案审核</span>
+        </li>
+        <li>
+            <strong>4</strong>
+            <span>备案成功</span>
+        </li>
+    </ul>
+</div>
+<div class="gui-section">
+    <div class="ovh">
+        <div class="gui-page-head">
+            <h3>注册账户</h3>
+        </div>
+        <form id="attributeForm" method="post" class="form-horizontal" data-bv-message="This value is not valid">
+            <ul class="gui-list">
+                <li>
+                    <div class="form-item form-group">
+                        <span class="title">账户名称</span>
+                        <input type="text" class="gui-input form-control" ng-model="bean.accounts" name="accounts" id="accounts" onblur="repeatCheck()" placeholder="请输入账户名称" data-bv-message="用户名是无效的" data-bv-notempty="true" data-bv-notempty-message="用户名不能为空" data-bv-regexp="true" data-bv-regexp-regexp="[a-zA-Z0-9_\.]+" data-bv-regexp-message="用户名只能由字母、数字和下划线组成" data-bv-stringlength="true" data-bv-stringlength-min="4" data-bv-stringlength-max="18" data-bv-stringlength-message="用户名最少4个字符，不超过18个字符">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <span class="title">输入密码</span>
+                        <input type="password" class="gui-input form-control" ng-model="bean.password" name="password" placeholder="请输入密码" data-bv-notempty="true" data-bv-notempty-message="密码不能是空" data-bv-stringlength="true" data-bv-stringlength-min="8" data-bv-stringlength-max="16" data-bv-stringlength-message="密码最少8个字符，不超过16个字符" data-bv-different="true" data-bv-different-field="accounts" data-bv-different-message="密码不能与用户名相同">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-item form-group">
+                        <span class="title">确认密码</span>
+                        <input type="password" class="gui-input form-control" ng-model="bean.rePassword" name="rePassword" data-bv-notempty="true" placeholder="请再次输入密码" data-bv-notempty-message="确认密码不能是空" data-bv-stringlength="true" data-bv-stringlength-min="8" data-bv-stringlength-max="16" data-bv-stringlength-message="密码最少8个字符，不超过16个字符" data-bv-identical="true" data-bv-identical-field="password" data-bv-identical-message="两次输入的密码不一致" data-bv-different="true" data-bv-different-field="accounts" data-bv-different-message="密码不能与用户名相同">
+                    </div>
+                </li>
+                <li>
+                    <div class="text-center">
+                        <button ng-click="regNextStep()" class="gui-btn">下一步</button>
+                    </div>
+                </li>
+            </ul>
+        </form>
+    </div>
+</div>

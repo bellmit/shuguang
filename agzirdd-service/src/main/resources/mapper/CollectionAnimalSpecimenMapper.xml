@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.agzirdd.mapper.CollectionAnimalSpecimenMapper" >
+  <resultMap id="BaseResultMap" type="com.sofn.agzirdd.model.CollectionAnimalSpecimen" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="SPECIMEN_COLLECTION_ID" property="specimenCollectionId" jdbcType="VARCHAR" />
+    <result column="SPECIES_ID" property="speciesId" jdbcType="VARCHAR" />
+    <result column="SPECIES_NAME" property="speciesName" jdbcType="VARCHAR" />
+    <result column="LATIN_NAME" property="latinName" jdbcType="VARCHAR" />
+    <result column="PHYLUM" property="phylum" jdbcType="VARCHAR" />
+    <result column="COMPENDIUM" property="compendium" jdbcType="VARCHAR" />
+    <result column="ITEM" property="item" jdbcType="VARCHAR" />
+    <result column="SECTION" property="section" jdbcType="VARCHAR" />
+    <result column="CLASSIFY" property="classify" jdbcType="VARCHAR" />
+    <result column="CLASSIFY_NAME" property="classifyName" jdbcType="VARCHAR" />
+    <result column="IMG" property="img" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ID,SPECIMEN_COLLECTION_ID,SPECIES_ID,SPECIES_NAME,LATIN_NAME,PHYLUM,COMPENDIUM
+    ,ITEM,SECTION,CLASSIFY,CLASSIFY_NAME,IMG,CREATE_TIME
+
+  </sql>
+
+  <select id="getCollectionAnimalSpecimenByQuery" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM COLLECTION_ANIMAL_SPECIMEN
+    <where>
+      1=1
+      <if test="specimenCollectionId != null and specimenCollectionId != ''">
+        and SPECIMEN_COLLECTION_ID = #{specimenCollectionId}
+      </if>
+      <if test="speciesId != null and speciesId != ''">
+        and SPECIES_ID = #{speciesId}
+      </if>
+
+    </where>
+    ORDER BY CREATE_TIME desc
+  </select>
+
+  <select id="getCollectionAnimalSpecimenBySpecimenCollectionId" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM COLLECTION_ANIMAL_SPECIMEN
+    <where>
+      1=1
+      <if test="specimenCollectionId != null and specimenCollectionId != ''">
+        and SPECIMEN_COLLECTION_ID = #{specimenCollectionId}
+      </if>
+    </where>
+    ORDER BY CREATE_TIME desc
+  </select>
+
+  <delete id="deleteCollectionAnimalSpecimen" parameterType="java.lang.String">
+    delete
+    from COLLECTION_ANIMAL_SPECIMEN
+    where
+    SPECIMEN_COLLECTION_ID = #{specimenCollectionId}
+  </delete>
+
+</mapper>

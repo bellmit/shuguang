@@ -1,0 +1,51 @@
+<div class="gui-breadcrumbs">
+    <a href="">内部管理</a>&gt;
+    <a href="">客户信息管理管理</a>&gt;
+    <span>客户详细信息</span>
+</div>
+<div class="gui-section">
+    <div class="ovh">
+        <ul class="gui-list">
+            <!--<li><div class="form-item"><span>客户编号:</span><input ng-model="id" id="2" disabled type="text" class="gui-input"/></div></li>-->
+            <li>
+                <div class="form-item"><span class="title">客户名字:</span>
+                    <input ng-model="userName" disabled type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">联系方式:</span>
+                    <input ng-model="phone" disabled type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">客户主体用户码:</span>
+                    <input ng-model="customerUserIdCode" disabled type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">单位主体身份码:</span>
+                    <input ng-model="customerEntityIdCode" disabled type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">单位名称:</span>
+                    <input ng-model="name" disabled type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="form-item"><span class="title">单位地址:</span>
+                    <input ng-model="address" disabled type="text" class="gui-input">
+                </div>
+            </li>
+            <li>
+                <div class="text-center">
+                    <button class="gui-btn" ng-click="deleteData()">删除</button>
+                    <button class="gui-btn" ng-click="removeLocalStorage()" ui-sref="index.content.tts/TtsScltxxcjCustomer/TtsScltxxcjCustomerlist">取消</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="modal fade">
+    <input ng-model="id" id="customerId" type="text">
+</div>

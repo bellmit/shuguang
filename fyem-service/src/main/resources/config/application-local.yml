@@ -1,0 +1,43 @@
+spring:
+  datasource:
+    driver-class-name: com.uxsino.uxdb.Driver
+    url: jdbc:uxdb://192.168.21.62:5432/fyem_test?stringtype=unspecified
+    username: uxdb
+    publicKey: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBANyn4cBxe7d4CXcqjonqBuOktZYcO8u9wZQlO3fB/WvhoYJTz/vEzLY/Z1ZGG1HVU0TqAT/BXsVVEHPUE8DMtxcCAwEAAQ==
+    password: Mintq73K1qHiTTO5DZgGuZ68jGNz60gZk2QDVv9rHqSFcs1dyj2Ebl29Urivt5NcvSM+h2AhQ1q3Y/P6qkUIrQ==
+#    password: sofn@123
+#    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://192.168.21.129:3306/fyem_test?characterEncoding=UTF-8&useUnicode=true&useSSL=false&autoReconnect=true&failOverReadOnly=false
+#    username: root
+#    password: 123456
+
+    druid:
+      async-init: true
+      initial-size: 15
+      max-active: 30
+      min-idle: 10
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      validation-query: SELECT 1
+      connection-properties: config.decrypt=true;config.decrypt.key=${spring.datasource.publicKey}
+      filter:
+        config:
+          enabled: true
+
+  redis:
+    redisson:
+      file: classpath:config/redisson-local.yaml
+
+eureka:
+  instance:
+    hostname: ${spring.cloud.client.ip-address}
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://localhost:8880/eureka/

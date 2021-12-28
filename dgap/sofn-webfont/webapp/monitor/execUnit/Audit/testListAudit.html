@@ -1,0 +1,231 @@
+<link rel="stylesheet" href="../../assets/css/monitor/cq.css"/>
+<link rel="stylesheet" href="../../assets/css/monitor/base.css"/>
+<link rel="stylesheet" href="../../assets/css/monitor/task.css"/>
+<link rel="stylesheet" href="../../assets/css/monitor/subjSvList.css"/>
+<link rel="stylesheet" href="assets/css/sys/sysBase/baseInfoList.css"/>
+<style>
+    #eventForm .file-preview{
+        display: none;
+    }
+</style>
+<div class="gui-breadcrumbs">
+    <a href="">监督抽查</a>&gt;
+    <span>检测</span>
+</div>
+<div class="gui-section">
+    <ul class="gui-tab">
+        <li role="presentation" class="pointer"><a ng-click="sampleMessage()">样品信息</a></li>
+        <li role="presentation" class="active"><a ng-click="test()">检测</a></li>
+        <li role="presentation" class="pointer"><a ng-click="routineMonitorList()">检测信息汇总</a></li>
+        <!--<li role="presentation" class="pointer"><a ng-click="routineReportUpload()">报告上传</a></li>-->
+    </ul>
+</div>
+    <div class="gui-section">
+        <div id="product" style="margin:30px 10px 10px 30px;">
+            <span>任务名称：  暂无数据 </span>
+        </div>
+        <span class="gui-btn btn bg-primary pull-right" ng-click="reback()">返回详情页</span>
+        <div id="example">
+            <div class="gui-actions">
+                <span ng-show="!isAborted" class="gui-btn" type="button" onclick="add()" id="after"><i class="gui-icon icon-add"></i>检测</span>
+                <span ng-show="!isAborted" class="gui-btn" type="button" onclick="up()" id="next"><i class="gui-icon icon-add"></i>上报</span>
+                <!--<span class="gui-btn" type="button" onclick="showDel()" id="del"><i class="gui-icon icon-remove"></i>删除</span>-->
+                <span ng-show="!isAborted" class="gui-btn" type="button" onclick="newPage()" id="open"><i class="gui-icon icon-add"></i>生成检测任务单</span>
+                <span class="gui-btn" type="button" onclick="exportExcel()" id="ex"><i class="gui-icon icon-add"></i>批量导出</span>&nbsp;&nbsp;
+                <span ng-show="!isAborted" class="gui-btn" type="button" onclick="importInfo()" id="import"><i class="gui-icon icon-import"></i>批量导入</span>
+            </div>
+        </div>
+
+        <!--<div class="Sup_contain_section_contain col-lg-10 col-xs-12 col-sm-10 col-md-10" style="margin:0px 10px 30px 30px;" id="hehe">-->
+            <!--&lt;!&ndash; 检测机构主体信息&ndash;&gt;-->
+            <!--<div class="Sup_contain_section_contain_01">-->
+                <!--<div  class=" tb NewsSize col-lg-12 col-xs-12 col-sm-12 col-md-12" >-->
+                    <!--<table id="mygrid" class="table table-bordered data-table table-hover table-striped tablewrap" style="width: 100%;height: 100px">-->
+                    <!--</table>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div  class="mt15 tb NewsSize col-lg-12 col-xs-12 col-sm-12 col-md-12" >
+            <table id="mygrid" class="gui-table table-hover table-striped tablewrap data-table table-hover table-striped tablewrap" style="width: 100%">
+            </table>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="product_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog modal-style" style="width:600px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                </div>
+                <div class="modal-body">
+                    <div style="width: 500px;margin:10px 10px 10px 30px;">
+
+                        <div style="float:left;">请选择上传文件：</div>
+                        <form method="post" enctype="multipart/form-data" id="eventForm">
+                            <input name="file" style="float:left;" style="display: inline;width: 225px" id="file-1" multiple="true" data-overwrite-initial="false" data-min-file-count="1" data-max-file-count="1" type="file"/>
+                        </form>
+                        <a style="margin:50px 10px 10px 120px;" >只支持先批量导出样品信息，再批量导入</a>
+                    </div>
+                </div>
+                <div id="myinfo" style="margin:30px 10px 10px 30px;">
+                    <!--<button id="save" onclick="save()">确定</button>&nbsp;&nbsp;&nbsp;-->
+                    <!--<button id="cancel" onclick="cancel()">取消</button>-->
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="product_info2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog modal-style" style="width: 800px" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                    <h4 class="modal-title" id="myModalLabel1">查看检测信息详情</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <table id="productList" class="table table-striped table-bordered table-hover" style="width: 100%">
+
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <span type="button" class="gui-btn" data-dismiss="modal">确定</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="product_info3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog modal-style" style="width: 800px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                    <h4 class="modal-title" id="myModalLabel12">修改产品检测结果</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="someInfo" style="overflow: hidden">
+
+                    </div>
+                    <div style="float: left;margin-top: 10px">
+                        <span id="productCode"></span>
+                    </div>
+                    <div style="float: left;margin-top: 15px">
+                        <table id="productList2" class="gui-table">
+
+                        </table>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="modal-footer">
+                    <div id="myinfo2" style="margin:30px 10px 10px 30px;">
+                        <span type="button" class="gui-btn" data-dismiss="modal">取消</span>&nbsp;&nbsp;&nbsp;
+                        <span class="gui-btn" onclick="saveInfo()">保存</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="win" style="display:none; POSITION:absolute; left:50%; top:50%; width:400px; height:260px; margin-left:-300px; margin-top:-120px; border:1px solid #888; background-color:#ffffff; text-align:center">
+        <h4 style="margin: 20px 0px 20px 0px " class="modal-title" id="myModalLabel13">生成检测任务单</h4>
+        <div id="someInfo2">
+            <div style="margin: 0px 0px 10px 0px">任务通知时间:<input type="text" id="tipTime" class="" name="endTime" readonly="readonly" style="width:140px;" value="new Date()"></div>
+        </div>
+        <div>
+            <div style="margin: 0px 0px 0px 30px">
+                要求完成时间:<input type="text" id="startTime" class="gui-input Wdate"  name="startTime" readonly="readonly" onfocus = "WdatePicker({dateFmt:'yyyy-MM-dd '}) ">
+            </div>
+        </div>
+        <div style="margin: 20px 0px 0px 0px">
+            <span class="gui-btn" onclick="createPage()">生成检测任务单</span>
+            <span class="gui-btn" onclick="gg()">取消</span>&nbsp;&nbsp;&nbsp;
+        </div>
+    </div>
+
+</div>
+
+<!--打印弹窗-->
+<div class="modal fade" id="product_info4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-style" style="width: 1100px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                <h4 class="modal-title" id="myModalLabel11">打印检测信息详情</h4>
+            </div>
+            <div id="printCount">
+                <div class="modal-body">
+                    <div>
+                        <table class="gui-table">
+                            <tr style="">
+                                <td style="width: 15%" colspan="2"><span id="monclass"></span>&nbsp;&nbsp;&nbsp;&nbsp;检测任务详情</td>
+                            </tr>
+                            <tr style="">
+                                <td style="width: 15%" colspan="2">基本信息</td>
+                            </tr>
+                            <tr style="">
+                                <td style="width: 15%" >任务名称</td>
+                                <td style="width: 35%;" ><span id="taskName">{{detail.taskName}}</span></td>
+                            </tr>
+                            <tr style="">
+                                <td style="width: 15%" >年度</td>
+                                <td style="width: 35%;" ><span id="year">{{detail.year}}</span></td>
+                            </tr>
+                            <tr style="">
+                                <td style="width: 15%" >批次</td>
+                                <td style="width: 35%;" ><span id="pc">{{detail.batch}}</span></td>
+                            </tr>
+                            <tr style="">
+                                <td style="width: 15%" >发布单位</td>
+                                <td style="width: 35%;" ><span id="fbdw">{{detail.releaseUnit}}</span></td>
+                            </tr>
+                            <tr style="">
+                                <td style="width: 15%" >开始时间</td>
+                                <td style="width: 35%;" ><span id="starttimes">{{detail.startTime}}</span></td>
+                            </tr>
+                            <tr style="">
+                                <td style="width: 15%" >结束时间</td>
+                                <td style="width: 35%;" ><span id="endtime">{{detail.endTime}}</span></td>
+                            </tr>
+                            <tr style="">
+                                <td style="width: 15%" >抽样上报截止时间</td>
+                                <td style="width: 35%;" ><span id="jztime">{{detail.deadline}}</span></td>
+                            </tr>
+                            <tr style="">
+                                <td style="width: 15%" >抽检分离</td>
+                                <!--<td style="width: 35%;" ><span id="cjfl">2018</span></td>-->
+                                <td ng-if="detail.separation==0" style="width: 35%;">否</td>
+                                <td ng-if="detail.separation==1" style="width: 35%;">是</td>
+                            </tr>
+                        </table>
+                        <table  class="gui-table">
+                            <tr style="">
+                                <td style="width: 15%" colspan="2">检测信息</td>
+                            </tr>
+                            <tr style="">
+                                <td style="width: 15%" >样品名称</td>
+                                <td style="width: 35%;" ><span id="samname"></span></td>
+                            </tr>
+                            <tr style="">
+                                <td style="width: 15%" >样品编码</td>
+                                <td style="width: 35%;" ><span id="samcode"></span></td>
+                            </tr>
+                            <tr style="">
+                                <td style="width: 15%" >抽样单位</td>
+                                <td style="width: 35%;" ><span id="cy"></span></td>
+                            </tr>
+                        </table>
+                        <table id="productList1" class="gui-table" style="width: 100%;">
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span type="button" class="gui-btn" id="printArea" ng-click="sub()">打印</span>
+                <span type="button" class="gui-btn" data-dismiss="modal">返回</span>
+            </div>
+        </div>
+    </div>
+</div>

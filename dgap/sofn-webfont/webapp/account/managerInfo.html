@@ -1,0 +1,182 @@
+<header class="gui-header clearfix">
+    <div class="section-logo" ui-sref="login/login">
+        <img src="/assets/imgs/icon/logo.png" alt="国家农产品质量安全追溯管理信息平台（政务办公）" class="logo">
+        <h1>国家农产品质量安全追溯管理信息平台<em></em></h1>
+    </div>
+    <div class="section-nav">
+        <span class="gui-dropdown">
+      <span class="current">
+        <img src="../assets/imgs/icon/img_11.png" alt=""/>
+        <span class="text">admin</span>
+        </span>
+        <ul class="dropdown-list clearfix" id="oUl">
+            <li><a name="个人中心">个人中心</a></li>
+            <li><a name="退出登录">退出登录</a></li>
+            <li><a name="注销登录">注销登录</a></li>
+        </ul>
+        </span>
+    </div>
+</header>
+<div class="gui-breadcrumbs">
+    <a href="">追溯系统</a>&gt;
+    <a href="">用户主体管理</a>&gt;
+    <span>管理员信息</span>
+    <button class="gui-btn fr mr15" ng-click="callBack()" style="margin-top: 4px;">关闭</button>
+</div>
+<div class="gui-section">
+    <ul class="gui-list mt15">
+        <li>
+            <div class="form-item">
+                <label>账号</label>
+                <input type="text" class="gui-input" id="accounts" ng-model="accounts" name="accounts" readonly="readonly" />
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="gui-section">
+    <ul class="gui-list">
+        <li>
+            <div class="form-item">
+                <label>主体名称</label>
+                <input type="text" class="gui-input" id="enterpriseName" ng-model="enterpriseName" name="enterpriseName" readonly="readonly" />
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="gui-section">
+    <ul class="gui-list">
+        <li>
+            <div class="form-item">
+                <label>主体地址</label>
+                <input type="text" class="gui-input" id="address" ng-model="address" name="address" readonly="readonly" />
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="gui-section">
+    <ul class="gui-list">
+        <li>
+            <div class="form-item">
+                <label>真实姓名</label>
+                <input type="text" class="gui-input" id="realName" ng-model="realName" name="realName" readonly="readonly" />
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="gui-section">
+    <ul class="gui-list">
+        <li>
+            <div class="form-item">
+                <label>联系电话</label>
+                <input type="text" class="gui-input" id="contactPhone" ng-model="contactPhone" name="contactPhone" readonly="readonly" />
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="gui-section">
+    <ul class="gui-list">
+        <li>
+            <div class="form-item">
+                <label>电子邮箱</label>
+                <input type="text" class="gui-input" id="contactEmail" ng-model="contactEmail" name="contactEmail" readonly="readonly" />
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="gui-section">
+    <ul class="gui-list">
+        <li>
+            <div class="form-item">
+                <label>身份证号码</label>
+                <input type="text" class="gui-input" id="legalIdnumber" ng-model="legalIdnumber" name="legalIdnumber" readonly="readonly" />
+            </div>
+        </li>
+    </ul>
+</div>
+<!-- <div class="Sup_contain_section col-lg-12 col-xs-12 col-sm-12 col-md-12">
+    <div class="Sup_contain_section_head col-lg-12 col-xs-12 col-sm-12 col-md-12">
+        <h2 id="Sup_contain_section_head_h2">
+            <a href=""><span>追溯系统> </span></a>
+            <a href=""><span>用户主体管理> </span></a>
+            <span>管理员信息</span>
+        </h2>
+    </div>
+    <p class="col-lg-1 col-xs-0 col-sm-1 col-md-1"></p>
+    <div class="Sup_contain_section col-lg-12 col-xs-12 col-sm-12 col-md-12" align="center">
+        <div class="col-lg-2 col-xs-2 col-sm-2 col-md-2" align="left">
+        </div>
+        <div class="Sup_contain_section col-lg-8 col-xs-8 col-sm-8 col-md-8"> -->
+<!--  <div class="form-group">
+                <div class="col-lg-2 col-xs-2 col-sm-2 col-md-2" align="left">
+                   
+                </div>
+                <div class="col-lg-10 col-xs-10 col-sm-10 col-md-10">
+                    <input type="text" class="form-control" id="accounts" ng-model="accounts"
+                           name="accounts" readonly="readonly"
+                            />
+                </div>
+            </div>
+            <div class="form-group " >
+                <div class="col-lg-2 col-xs-2 col-sm-2 col-md-2" align="left">
+                    <label class="control-label">主体名称</label>
+                </div>
+                <div class="col-lg-10 col-xs-10 col-sm-10 col-md-10">
+                    <input type="text" class="form-control" id="enterpriseName" ng-model="enterpriseName"
+                           name="enterpriseName" readonly="readonly"
+                            />
+                </div>
+            </div> -->
+<!--  <div class="form-group">
+                <div class="col-lg-2 col-xs-2 col-sm-2 col-md-2" align="left">
+                    <label class="control-label">主体地址</label>
+                </div>
+                <div class="col-lg-10 col-xs-10 col-sm-10 col-md-10">
+                    <input type="text" class="form-control" id="address" ng-model="address"
+                           name="address" readonly="readonly"
+                            />
+                </div>
+            </div> -->
+<!--  <div class="form-group">
+                <div class="col-lg-2 col-xs-2 col-sm-2 col-md-2" align="left">
+                    <label class="control-label">真实姓名</label>
+                </div>
+                <div class="col-lg-10 col-xs-10 col-sm-10 col-md-10">
+                    <input type="text" class="form-control" id="realName" ng-model="realName"
+                           name="realName" readonly="readonly"
+                            />
+                </div>
+            </div> -->
+<!-- <div class="form-group">
+                <div class="col-lg-2 col-xs-2 col-sm-2 col-md-2" align="left">
+                    <label class="control-label">联系电话</label>
+                </div>
+                <div class="col-lg-10 col-xs-10 col-sm-10 col-md-10">
+                    <input type="text" class="form-control" id="contactPhone" ng-model="contactPhone"
+                           name="contactPhone" readonly="readonly"
+                            />
+                </div>
+            </div> -->
+<!--  <div class="form-group">
+                <div class="col-lg-2 col-xs-2 col-sm-2 col-md-2" align="left">
+                    <label class="control-label">电子邮箱</label>
+                </div>
+                <div class="col-lg-10 col-xs-10 col-sm-10 col-md-10">
+                    <input type="text" class="form-control" id="contactEmail" ng-model="contactEmail"
+                           name="contactEmail" readonly="readonly"
+                            />
+                </div>
+            </div> -->
+<!--  <div class="form-group">
+                <div class="col-lg-2 col-xs-2 col-sm-2 col-md-2" align="left">
+                    <label class="control-label">身份证号码</label>
+                </div>
+                <div class="col-lg-10 col-xs-10 col-sm-10 col-md-10">
+                    <input type="text" class="form-control" id="legalIdnumber" ng-model="legalIdnumber"
+                           name="legalIdnumber" readonly="readonly"
+                            />
+                </div>
+            </div> -->
+<!--  </div>
+        <div class="Sup_contain_section col-lg-2 col-xs-2 col-sm-2 col-md-2"></div>
+    </div>
+</div> -->

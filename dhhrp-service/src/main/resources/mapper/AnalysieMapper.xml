@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.dhhrp.mapper.AnalysieMapper">
+
+    <sql id="alias_Column_List_b">
+      b.id, b.proportion, b.amount, b.monitoring_time, b.year
+    </sql>
+
+    <select id="listByParams" parameterType="java.util.Map" resultType="com.sofn.dhhrp.model.Baseinfo">
+        select
+        <include refid="alias_Column_List_b"/>
+        from baseinfo b
+        <where>
+            b.del_flag = 'N'
+            <if test="pointName != null and pointName != ''">
+                and b.point_name like '%' || #{pointName} || '%'
+            </if>
+            <!--<if test="year != null and year != ''">
+                and to_char(b.monitoring_time,'YYYY') = #{year}
+            </if>-->
+            <if test="year != null and year != ''">
+                and b.year = #{year}
+            </if>
+            <if test="variety != null and variety != ''">
+                and b.variety = #{variety}
+            </if>
+            <if test="status != null and status != ''">
+                and b.status = #{status}
+            </if>
+            <if test="province != null and province != ''">
+                and b.province = #{province}
+            </if>
+            <if test="city != null and city != ''">
+                and b.city = #{city}
+            </if>
+            <if test="county != null and county != ''">
+                and b.county = #{county}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                and b.monitoring_time &lt;= #{endTime}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                and b.monitoring_time &gt;= #{startTime}
+            </if>
+            <if test="createUserId != null and createUserId != ''">
+                and b.create_user_id = #{createUserId}
+            </if>
+            <choose>
+                <!--市级审核权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.dhhrp.constants.Constants@REGION_TYPE_CITY">
+                    and b.status > '1'
+                </when>
+                <!--省级审核权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.dhhrp.constants.Constants@REGION_TYPE_PROVINCE">
+                    and b.status > '3'
+                </when>
+                <!--总站审核权限-->
+                <when test="organizationLevel!=null and organizationLevel eq @com.sofn.dhhrp.constants.Constants@REGION_TYPE_MINISTRY">
+                    and b.status > '5'
+                </when>
+            </choose>
+        </where>
+        order by create_time desc
+    </select>
+
+
+
+</mapper>

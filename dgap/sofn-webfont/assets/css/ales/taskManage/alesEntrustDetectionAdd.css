@@ -1,0 +1,79 @@
+.Sup_contain_section_contain_head{
+    text-align: center;
+    margin: auto;
+    overflow: hidden;
+}
+.Sup_contain_section_contain_head p{
+    font-size: 25px;
+    margin:20px 0px 30px 20px;
+}
+/*.Sup_contain_section_contain_head ul li:after{*/
+    /*content: "";*/
+    /*height: 0px;*/
+    /*display: table;*/
+    /*clear: both;*/
+/*}*/
+.Sup_contain_section_contain_head span{
+    margin-right: 5px;
+    display: inline-block;
+    text-align: right;
+    height: 30px;
+    line-height: 30px;
+    vertical-align: middle;
+}
+.gui-select{
+    width: 100%;
+}
+.Sup_contain_section_contain_input{
+    width: 450px;
+    outline: none;
+    /*height: 30px;*/
+}
+.Sup_contain_section_contain_head_button{
+    width: 120px;
+    height: 30px;
+    font-size: 20px;
+    background: #20944d;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    outline: none;
+    margin: 15px 60px 15px 150px;
+
+}
+
+/*按钮*/
+.Fleft{
+    float: none;
+    text-align: right;
+}
+.Fleft_center{
+    float: none;
+    text-align: right;
+}
+.Head_title_num{
+    font-size: 30px;
+    text-align: center;
+}
+/*隐藏input边框*/
+.diy-input-nobody>TR>TD>input{
+    border-left:0px;
+    border-top:0px;
+    border-right:0px;
+    border-bottom:1px;
+}
+/**/
+.file-box{ position:relative;width:340px}
+
+.txt{ height:30px; border:0px solid #cdcdcd; width:230px;}
+
+.btn{ background-color:#FAB013; border:1px solid #FAB013;height:30px; width:70px;color: #FFFFFF;}
+
+.file{ position:absolute; top:0; right:80px; height:24px; filter:alpha(opacity:0);opacity: 0;width:260px }
+
+/*.table-bordered tbody tr td{*/
+    /*border: 1px solid #fff;*/
+    /*font-size:18px;*/
+    /*padding:9px;*/
+    /*text-align:left;*/
+/*}*/

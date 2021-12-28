@@ -1,0 +1,49 @@
+<link rel="stylesheet" href="assets/css/asms/subjSv/subjSvList.css"/>
+<div class="gui-mainBc">
+    <div class="gui-breadcrumbs">
+        <a href="">系统管理</a>&gt;
+        <a href="">用户管理</a>&gt;
+        <span>机构用户管理</span>
+    </div>
+    <div class="gui-section ">
+        <ul class="gui-tab ng-scope">
+            <li><a ui-sref="index.content.sys/user/sysSubjEntList">生产经营主体</a></li>
+            <li><a ui-sref="index.content.sys/user/sysSubjSvList">监管机构</a></li>
+            <li><a ui-sref="index.content.sys/user/sysSubjDtList">检测机构</a></li>
+            <li><a ui-sref="index.content.sys/user/sysSubjElList">执法机构</a></li>
+            <li class="active"><a ui-sref="index.content.sys/user/sysSubjSPYBList">三品一标</a></li>
+        </ul>
+        <div class="">
+            <form id="queryForm" class=" gui-form-group " style="">
+                <div class="mt15">
+                    <span>认证类型</span>
+                    <div class="gui-select">
+                        <select name="spybLicType">
+                            <option value="">全部</option>
+                            <option  ng-repeat="x in authenticationType" value="{{x.dictValue}}">{{x.dictName}}</option>
+                        </select>
+                    </div>
+                    <span>信息完善情况</span>
+                    <div class="gui-select">
+                        <select name="infoImprovedState">
+                            <option value="">全部</option>
+                            <option  ng-repeat="x in infoImprovedStateList" value="{{x.dictValue}}">{{x.dictName}}</option>
+                        </select>
+                    </div>
+                    <span>主体名称</span>
+                    <input class="gui-input" type="text" style="width: 150px;" placeholder="请输入主体名称" name="entName" maxlength="30"/>
+                    <button class="gui-btn" ng-click="querySubjEntList()">查询</button>
+                    <button class="gui-btn" ng-click="reloadArea()">
+                        重置</button>
+                </div>
+            </form>
+            <div class="gui-actions">
+                <button class="fr ml15 gui-btn intoSubjSv"  ng-click="exportSubjEnt()">
+                    <i class="gui-icon icon-export"></i>批量导出</button>
+            </div>
+            <table id="entGrid"
+                   class="gui-table mt15" >
+            </table>
+        </div>
+    </div>
+</div>
