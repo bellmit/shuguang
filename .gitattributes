@@ -1,0 +1,4 @@
+*.jar filter=lfs diff=lfs merge=lfs -text
+*.war filter=lfs diff=lfs merge=lfs -text
+filebeat filter=lfs diff=lfs merge=lfs -text
+*/filebeat filter=lfs diff=lfs merge=lfs -text
