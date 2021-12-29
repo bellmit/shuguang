@@ -21,7 +21,7 @@ target/
 *.iws
 *.iml
 *.ipr
-
+aaa.wangwang
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
